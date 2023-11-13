@@ -1,0 +1,23 @@
+{
+  "name": "@itell/tailwind",
+  "main": "dist/index.js",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@itell/core": "workspace:^",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.29",
+    "tailwindcss": "^3.3.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.2.2"
+  }
+}

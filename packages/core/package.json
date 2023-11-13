@@ -1,0 +1,80 @@
+{
+  "name": "@itell/core",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.es.js"
+    },
+    "./hooks": {
+      "require": "./dist/hooks.cjs.js",
+      "import": "./dist/hooks.es.js"
+    },
+    "./note": {
+      "require": "./dist/note.cjs.js",
+      "import": "./dist/note.es.js"
+    },
+    "./utils": {
+      "require": "./dist/utils.cjs.js",
+      "import": "./dist/utils.es.js"
+    },
+    "./config": {
+      "require": "./dist/config.cjs.js",
+      "import": "./dist/config.es.js"
+    },
+    "./dashboard": {
+      "require": "./dist/dashboard.cjs.js",
+      "import": "./dist/dashboard.es.js"
+    },
+    "./contentlayer": {
+      "require": "./dist/contentlayer.cjs.js",
+      "import": "./dist/contentlayer.es.js"
+    },
+    "./types": {
+      "require": "./dist/types.cjs.js",
+      "import": "./dist/types.es.js"
+    }
+  },
+  "typings": "./index.d.ts",
+  "files": [
+    "dist",
+    "index.d.ts",
+    "hooks.d.ts",
+    "utils.d.ts",
+    "config.d.ts",
+    "contentlayer.d.ts"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^1.2.1",
+    "date-fns": "2.29.3",
+    "date-fns-tz": "^2.0.0",
+    "github-slugger": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "range-serializer": "^0.0.2",
+    "tailwind-merge": "^1.14.0",
+    "zod": "^3.22.2"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^20.6.0",
+    "@types/react": "^18.2.21",
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-node-polyfills": "^0.11.3",
+    "vitest": "^0.31.4"
+  }
+}

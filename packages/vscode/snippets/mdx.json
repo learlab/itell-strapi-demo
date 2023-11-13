@@ -1,0 +1,102 @@
+{
+    "imageComponent": {
+        "key": "imageComponent",
+        "prefix": "image",
+        "description": "Insert an image component",
+        "body": [
+            "<Image alt='${1}' src='${2}'>",
+            "${3}",
+            "</Image>"
+        ]
+    },
+    "stepperComponent": {
+        "key": "stepperComponent",
+        "prefix": "stepper",
+        "description": "Insert a multi-step component",
+        "body": [
+            "<Stepper value='$1'>",
+            "\t<StepperHeader>",
+            "\t\t<Step value='$1'>",
+            "\t\t\t$2",
+            "\t\t</Step>",
+            "\t</StepperHeader>",
+            "\t<StepperBody>",
+            "\t\t<StepperPanel value='$1'>",
+            "\t\t\t$3",
+            "\t\t</StepperPanel>",
+            "\t</StepperBody>",
+            "</Stepper>"
+        ]
+    },
+    "accordionsComponent": {
+        "key": "accordionsComponent",
+        "prefix": "accordions",
+        "description": "Insert an accordions component",
+        "body": [
+            "<Accordions>",
+            "\t<Accordion value='$1'>",
+            "\t\t$2",
+            "\t</Accordion>",
+            "</Accordions>"
+        ]
+    },
+    "tabsComponent": {
+        "key": "tabsComponent",
+        "prefix": "tabs",
+        "description": "Insert a tabs component",
+        "body": [
+            "<Tabs value='$1'>",
+            "\t<TabsHeader>",
+            "\t\t<Tab value='$1'>",
+            "\t\t\t$0",
+            "\t\t</Tab>",
+            "\t</TabsHeader>",
+            "\t<TabsBody>",
+            "\t\t<TabPanel value='$1'>",
+            "\t\t\t$2",
+            "\t\t</TabPanel>",
+            "\t</TabsBody>",
+            "</Tabs>"
+        ]
+    },
+    "iframeComponent": {
+        "key": "iframeComponent",
+        "prefix": "iframe",
+        "description": "Insert an iframe component",
+        "body": [
+            "<Iframe src='$1' title='$2'>",
+            "\t$3",
+            "</Iframe>"
+        ]
+    },
+    "infoComponent": {
+        "key": "infoComponent",
+        "prefix": "info",
+        "description": "Insert an info component",
+        "body": [
+            "<Info>",
+            "\t$1",
+            "</Info>"
+        ]
+    },
+    "warningComponent": {
+        "key": "warningComponent",
+        "prefix": "warning",
+        "description": "Insert a warning component",
+        "body": [
+            "<Warning>",
+            "\t$1",
+            "</Warning>"
+        ]
+    },
+    "calloutComponent": {
+        "key": "calloutComponent",
+        "prefix": "callout",
+        "description": "Insert a callout component",
+        "body": [
+            "<Callout>",
+            "\t$1",
+            "</Callout>"
+        ]
+    }
+}
