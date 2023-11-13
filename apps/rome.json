@@ -1,0 +1,16 @@
+{
+    "linter": {
+        "rules": {
+            "a11y": {
+                "useValidAnchor": "off",
+                "useAnchorContent": "off",
+                "useButtonType": "off",
+                "useIframeTitle": "off",
+                "noSvgWithoutTitle": "off"
+            },
+            "suspicious": {
+                "noEmptyInterface": "off"
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+# Introduction
+
+## Common formatting
+
+### Headings
+
+To create a heading, add one to six `#` symbols before your heading text. The number of `#` you use will determine the size of the heading.
+
+```markdown
+# Level 1
+
+## Level 2
+
+### Level 3
+```
+
+### Styling text
+
+You can indicate emphasis with bold, italic, or strikethrough text.
+
+| Style         | Syntax             | Keyboard shortcut   | Example                      | Output                     |
+| ------------- | ------------------ | ------------------- | ---------------------------- | -------------------------- |
+| Bold          | `** **` or `__ __` | command/control + b | `**This is bold text**`      | **This is bold text**      |
+| Italic        | `* *` or `_ _`     | command/control + i | `*This text is italicized*`  | _This text is italicized_  |
+| Strikethrough | `~~ ~~`            |                     | `~~This was mistaken text~~` | ~~This was mistaken text~~ |
+
+## LaTeX formula
+
+You can insert LaTeX formula in your markdown file. For example, `$\sqrt{3x-1}+(1+x)^2$` will be rendered as $\sqrt{3x-1}+(1+x)^2$.
+
+To create a block-level formula, surround it with `$$`:
+
+```latex
+$$
+\frac{n!}{k!(n-k)!} = \binom{n}{k}
+$$
+```
+
+will be rendered as
+
+$$
+\frac{n!}{k!(n-k)!} = \binom{n}{k}
+$$

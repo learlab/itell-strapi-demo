@@ -1,0 +1,16 @@
+{
+  "index": "Introduction",
+  "getting-started": "Getting Started",
+  "data": "Data Collection",
+  "development": "Development",
+  "about": {
+    "title": "About",
+    "type": "page"
+  },
+  "contact": {
+    "title": "Contact ↗",
+    "type": "page",
+    "href": "https://learlab.org/contact/",
+    "newWindow": true
+  }
+}
