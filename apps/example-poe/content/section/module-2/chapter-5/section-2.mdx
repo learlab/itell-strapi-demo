@@ -1,0 +1,321 @@
+---
+title: Adjusting Nominal Values To Real Values
+---
+
+## Overview
+
+<Info title="By the end of this section, you will be able to:">
+
+- Define and contrast nominal GDP and real GDP
+
+- Explain GDP deflator
+
+- Calculate real GDP based on nominal GDP values
+
+</Info>
+
+When examining economic statistics, there is a crucial distinction worth emphasizing. The distinction is between nominal and real measurements, which refer to whether or not **inflation** has distorted a given statistic. Looking at economic statistics without considering inflation is like looking through a pair of binoculars and trying to guess how close something is: unless you know how strong the lenses are, you cannot guess the distance very accurately. Similarly, if you do not know the inflation rate, it is difficult to figure out if a rise in GDP is due mainly to a rise in the overall level of prices or to a rise in quantities of goods produced. The **nominal value** of any economic statistic means that we measure the statistic in terms of actual prices that exist at the time. The **real value** refers to the same statistic after it has been adjusted for inflation. Generally, it is the real value that is more important.
+
+## Converting Nominal to Real GDP
+
+Table 5.5 shows U.S. GDP at five-year intervals since 1960 in nominal dollars; that is, GDP measured using the actual market prices prevailing in each stated year. Figure 5.7 also reflects this data in a graph.
+
+| Year | Nominal GDP (billions of dollars) | GDP Deflator (2005 = 100) |
+| ---- | --------------------------------- | ------------------------- |
+| 1960 | 543.3                             | 19.0                      |
+| 1965 | 743.7                             | 20.3                      |
+| 1970 | 1,075.9                           | 24.8                      |
+| 1975 | 1,688.9                           | 34.1                      |
+| 1980 | 2,862.5                           | 48.3                      |
+| 1985 | 4,346.7                           | 62.3                      |
+| 1990 | 5,979.6                           | 72.7                      |
+| 1995 | 7,664.0                           | 81.7                      |
+| 2000 | 10,289.7                          | 89.0                      |
+| 2005 | 13,095.4                          | 100.0                     |
+| 2010 | 14,958.3                          | 110.0                     |
+
+<Caption>
+  Table 5.5 U.S. Nominal GDP and the GDP Deflator (Source: www.bea.gov)
+</Caption>
+
+<div className="grid grid-cols-2 gap-4">
+  <div className="col-span-2 md:col-span-1">
+    <Image
+      src="/images/module-2/chapter-5/section-2/ce357ca8aa292628d712694c165e283919b280eb.jpg"
+      alt="The graph shows that nominal GDP has risen substantially since 1960 to a high of $14,527 in 2010."
+      width={400}
+      height={300}
+    >
+      **Figure 5.7 U.S. Nominal GDP, 1960-2010**
+    </Image>
+  </div>
+  <div className="col-span-2 md:col-span-1">
+    If an unwary analyst compared nominal GDP in 1960 to nominal GDP in 2010, it
+    might appear that national output had risen by a factor of more than
+    twenty-seven over this time (that is, GDP of \$14,958 billion in 2010
+    divided by GDP of $543 billion in 1960 = 27.5). This conclusion would be
+    highly misleading. Recall that we define nominal GDP as the quantity of
+    every final good or service produced multiplied by the price at which it was
+    sold, summed up for all goods and services. In order to see how much
+    production has actually increased, we need to extract the effects of higher
+    prices on nominal GDP. We can easily accomplish this using the GDP deflator.
+  </div>
+</div>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <Image
+      src="/images/module-2/chapter-5/section-2/a1d93cbb5c61e8d66f00a5421e2244053c28480c.png"
+      alt="The graph shows that the U.S. GDP deflator has risen substantially since 1960."
+      width={400}
+      height={300}
+    >
+      **Figure 5.8 U.S. GDP Deflator, 1960-2010**
+    </Image>
+  </div>
+  <div>
+    The **GDP deflator** is a price index measuring the average prices of all
+    goods and services included in the economy. We explore price indices in
+    detail and how we compute them in chapter on inflation, but this definition
+    will suffice in the context of this chapter. Table 5.5 provides the GDP
+    deflator data and Figure 5.8 shows it graphically.
+
+    **Figure 5.8** shows that the price level has risen dramatically since 1960. The price level in 2010 was almost six times higher than in 1960 (the deflator for 2010 was 110 versus a level of 19 in 1960). Clearly, much of the growth in nominal GDP was due to inflation, not an actual change in the quantity of goods and services produced, in other words, not in real GDP.
+
+  </div>
+</div>
+
+<Callout>
+
+Recall that nominal GDP can rise for two reasons:
+
+- an increase in output.
+
+- and/or an increase in prices.
+
+</Callout>
+
+What is needed is to extract the increase in prices from nominal GDP so as to measure only changes in output. After all, the dollars used to measure nominal GDP in 1960 are worth more than the inflated dollars of 1990—and the price index tells exactly how much more. This adjustment is easy to do if you understand that nominal measurements are in value terms, where:
+
+$$
+\text{Value} = \text{Price} \times \text{Quantity} \\
+\text{or} \\
+\text{Nominal GDP} = \text{GDP Deflator} \times \text{Real GDP}
+$$
+
+Let's look at an example at the micro level. Suppose the t-shirt company, Coolshirts, sells 10 t-shirts at a price of \$9 each.
+
+$$
+\begin{aligned}
+\text{Coolshirt's nominal revenue from sales} &= \text{Price} \times \text{Quantity} \\
+&= \text{\$9} \times 10\\
+&= \text{\$90}
+\end{aligned}
+$$
+
+Then,
+
+$$
+\begin{aligned}
+\text{Coolshirt's real income} &= \text{Nominal revenue} / \text{Price} \\
+&= \text{\$90} / \text{\$9}  \\
+&= 10 \\
+\end{aligned}
+$$
+
+In other words, when we compute “real” measurements we are trying to obtain actual quantities, in this case, 10 t-shirts.
+
+With GDP, it is just a tiny bit more complicated. We start with the same formula as above:
+
+$$
+\text{Real GDP} = \text{Nominal GDP} / \text{Price Index}
+$$
+
+For reasons that we will explain in more detail below, mathematically, a price index is a two-digit decimal number like 1.00 or 0.85 or 1.25. Because some people have trouble working with decimals, when the price index is published, it has traditionally been multiplied by 100 to get integer numbers like 100, 85, or 125. What this means is that when we “deflate” nominal figures to get real figures (by dividing the nominal by the price index), we also need to remember to divide the published price index by 100 to make the math work. Thus, the formula becomes:
+
+$$
+\text{Real GDP} = (\text{Nominal GDP} \times 100) / \text{Price Index}
+$$
+
+<Warning>
+$$
+\begin{aligned}
+\text{Nominal GDP} &= \text{GDP Deflator} / \text{Real GDP} \\
+\text{Real GDP} &= \text{Nominal GDP} / \text{Price Index} \\
+\text{Real GDP}  &= (\text{Nominal GDP} x 100) / \text{Price Index}
+\end{aligned}
+$$
+</Warning>
+
+## Computing GDP
+
+We can use the data in Table 5.5 to compute real GDP.
+
+| Year | Nominal GDP (billions of dollars) | GDP Deflator (2005 = 100) |
+| ---- | --------------------------------- | ------------------------- |
+| 1960 | 543.3                             | 19.0                      |
+| 1965 | 743.7                             | 20.3                      |
+| 1970 | 1,075.9                           | 24.8                      |
+| 1975 | 1,688.9                           | 34.1                      |
+| 1980 | 2,862.5                           | 48.3                      |
+| 1985 | 4,346.7                           | 62.3                      |
+| 1990 | 5,979.6                           | 72.7                      |
+| 1995 | 7,664.0                           | 81.7                      |
+| 2000 | 10,289.7                          | 89.0                      |
+| 2005 | 13,095.4                          | 100.0                     |
+| 2010 | 14,958.3                          | 110.0                     |
+
+<Steps>
+
+<Caption>**Table 5.5**</Caption>
+
+####
+
+Look at [Table 5.5](6-2-adjusting-nominal-values-to-real-values#Table_19_05), to see that, in 1960, nominal GDP was $543.3 billion and the price index (GDP deflator) was 19.0.
+
+####
+
+To calculate the real GDP in 1960, use the formula:
+
+$$
+\begin{aligned}
+\text{Real GDP} &= (\text{Nominal GDP} \times 100) / \text{Price Index} \\
+&= \text{\$543 billion} \times 100 / 19 \\
+&= \text{\$2,859.5 billion}
+\end{aligned}
+$$
+
+We'll do this in two parts to make it clear. First adjust the price index:
+
+- 19 divided by 100 = 0.19.
+
+- Then divide into nominal GDP: \$543.3 billion / 0.19 = \$2,859.5 billion.
+
+####
+
+Use the same formula to calculate the real GDP in 1965.
+
+$$
+\begin{aligned}
+\text{Real GDP} &= (\text{Nominal GDP} \times 100) / \text{Price Index} \\
+&= \text{\$743.7 billion} x 100 / 20.3 \\
+&= \text{\$3,663.5 billion}
+\end{aligned}
+$$
+
+####
+
+Continue using this formula to calculate all of the real GDP values from 1960 through 2010. The calculations and the results are in Table 5.6.
+
+| Year | Nominal GDP (billions of dollars) | GDP Deflator (2005 = 100) | Calculations                   | Real GDP (billions of 2005 dollars) |
+| ---- | --------------------------------- | ------------------------- | ------------------------------ | ----------------------------------- |
+| 1960 | 543.3                             | 19.0                      | &nbsp;&nbsp;543.3 / (19.0/100) | 2859.5                              |
+| 1965 | 743.7                             | 20.3                      | &nbsp;&nbsp;743.7 / (20.3/100) | 3663.5                              |
+| 1970 | 1075.9                            | 24.8                      | 1,075.9 / (24.8/100)           | 4338.3                              |
+| 1975 | 1688.9                            | 34.1                      | 1,688.9 / (34.1/100)           | 4952.8                              |
+| 1980 | 2862.5                            | 48.3                      | 2,862.5 / (48.3/100)           | 5926.5                              |
+| 1985 | 4346.7                            | 62.3                      | 4,346.7 / (62.3/100)           | 6977.0                              |
+| 1990 | 5979.6                            | 72.7                      | 5,979.6 / (72.7/100)           | 8225.0                              |
+| 1995 | 7664.0                            | 82.0                      | &nbsp;7,664 / (82.0/100)       | 9346.3                              |
+| 2000 | 10289.7                           | 89.0                      | 10,289.7 / (89.0/100)          | 11561.5                             |
+| 2005 | 13095.4                           | 100.0                     | 13,095.4 / (100.0/100)         | 13095.4                             |
+| 2010 | 14958.3                           | 110.0                     | 14,958.3 / (110.0/100)         | 13598.5                             |
+
+<Caption>**Table 5.6**</Caption>
+
+####
+
+There are a couple things to notice here. Whenever you compute a real statistic, one year (or period) plays a special role. It is called the base year (or base period). The base year is the year whose prices we use to compute the real statistic. When we calculate real GDP, for example, we take the quantities of goods and services produced in each year (for example, 1960 or 1973) and multiply them by their prices in the base year (in this case, 2005), so we get a measure of GDP that uses prices that do not change from year to year. That is why real GDP is labeled “Constant Dollars” or, in this example, “2005 Dollars,” which means that real GDP is constructed using prices that existed in 2005. While the example here uses 2005 as the base year, more generally, you can use any year as the base year. The formula is:
+
+$$
+\text{GDP Deflator} = (\text{Nominal GDP} \times 100) / \text{Real GDP}
+$$
+
+####
+
+Rearranging the formula and using the data from 2005, we get the following:
+
+$$
+\begin{aligned}
+\text{Real GDP} &= (\text{Nominal GDP} \times 100) / \text{Price Index} \\
+&= \text{\$13,094.5 billion} \times 100/100 \\
+&= \text{\$13,095.4 billion}
+\end{aligned}
+$$
+
+####
+
+Comparing real GDP and nominal GDP for 2005, you see they are the same. This is no accident. It is because we have chosen 2005 as the “base year” in this example. Since the price index in the base year always has a value of 100 (by definition), nominal and real GDP are always the same in the base year.
+
+Look at the data for 2010.
+
+$$
+\begin{aligned}
+\text{Real GDP} &= (\text{Nominal GDP} \times 100) / \text{Price Index} \\
+&= \text{\$14,958.3 billion} \times 100/110
+\end{aligned}
+$$
+
+</Steps>
+
+Use this data to make another observation: As long as inflation is positive, meaning prices increase on average from year to year, real GDP should be less than nominal GDP in any year after the base year. The reason for this is that the value of nominal GDP is “inflated” by inflation. Similarly, as long as inflation is positive, real GDP should be greater than nominal GDP in any year before the base year.
+
+[Figure 5.9](6-2-adjusting-nominal-values-to-real-values#CNX_Econ_C19_013) shows the U.S. nominal and real GDP since 1960. Because 2005 is the base year, the nominal and real values are exactly the same in that year. However, over time, the rise in nominal GDP looks much larger than the rise in real GDP (that is, the nominal GDP line rises more steeply than the real GDP line), because the presence of inflation, especially in the 1970s exaggerates the rise in nominal GDP.
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <Image
+      alt="The graph shows the relationship between real GDP and nominal GDP. After 2005, nominal GDP appears lower than real GDP because dollars are now worth less than they were in 2005."
+      src="/images/module-2/chapter-5/section-2/705e77b01ed19eeacc8c965bf86390044ef8aeac.png"
+      width={400}
+      height={400}
+    >
+      **Figure 5.9 U.S. Nominal and Real GDP, 1960-2012**
+    </Image>
+  </div>
+  <div>
+    The purple line measures U.S. GDP in nominal dollars. The blue line measures
+    U.S. GDP in real dollars, where all dollar values are converted to 2005
+    dollars. Since we express real GDP in 2005 dollars, the two lines cross in
+    2005. However, real GDP will appear higher than nominal GDP in the years
+    before 2005, because dollars were worth less in 2005 than in previous years.
+    Conversely, real GDP will appear lower in the years after 2005, because
+    dollars were worth more in 2005 than in later years.
+  </div>
+</div>
+
+Let's return to the question that we posed originally: How much did GDP increase in real terms? What was the real GDP growth rate from 1960 to 2010? To find the real growth rate, we apply the formula for percentage change:
+
+$$
+((\text{2010 real GDP - 1960 real GDP 1960}) \times 100) \; / \; \text{real GDP 1960} = \text{\% change} \\
+((13,598.5 - 2,859.5) \times 100) / 2859 = \text{376\%}
+$$
+
+In other words, the U.S. economy has increased real production of goods and services
+by nearly a factor of four since 1960. Of course, that understates the material
+improvement since it fails to capture improvements in the quality of products
+and the invention of new products.
+
+There is a quicker way to answer this question approximately, using another math trick. Because:
+
+$$
+\begin{aligned}
+\text{Nominal} &= \text{Price} \times \text{Quantity} \\
+\text{\% change in Nominal} &= \text{\% change in Price} + \text{\% change in Quantity} \\
+\text{or, \% change in Quantity} &= \text{\% change in Nominal} - \text{\% changein Price}
+\end{aligned}
+$$
+
+Therefore, real GDP growth rate (% change in quantity) equals the growth rate in nominal GDP (% change in value) minus the inflation rate (% change in price).
+
+Note that using this equation provides an approximation for small changes in the levels. For more accurate measures, we should use the first formula.
+
+<YoutubeVideo
+  src="https://www.youtube.com/embed/rGqhTQyY6g4"
+  title="Nominal vs. Real GDP"
+>
+  "Are you better off today than you were 4 years ago? What about 40 years ago?"
+  These sorts of questions invite a different kind of query: what exactly do we
+  mean, when we say "better off?" And more importantly, how do we know if we're
+  better off or not?
+</YoutubeVideo>

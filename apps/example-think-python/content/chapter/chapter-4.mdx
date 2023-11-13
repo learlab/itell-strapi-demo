@@ -1,0 +1,585 @@
+---
+title: "Conditionals and recursion"
+qa: true
+---
+
+
+The main topic of this chapter is the `if` statement, which executes different code depending on the state of the program. But first I want to introduce two new operators: floor division and modulus.
+
+<div className = "content-chunk" data-subsection-id = "floor-division-and-modules">
+
+## Floor division and modulus
+
+The **floor division** operator, `//`, divides two numbers and rounds down to an integer. For example, suppose the run time of a movie is 105 minutes. You might want to know how long that is in hours. Conventional division returns a floating-point number:
+
+```python
+>>> minutes = 105
+>>> minutes / 60
+1.75
+```
+
+But we don't normally write hours with decimal points. Floor division returns the integer number of hours, rounding down:
+
+```python
+>>> minutes = 105
+>>> hours = minutes // 60
+>>> hours
+1
+```
+
+To get the remainder, you could subtract off one hour in minutes:
+
+```python
+>>> remainder = minutes - hours * 60
+>>> remainder
+45
+```
+
+An alternative is to use the modulus operator, `%`, which divides two numbers and returns the remainder.
+
+```python
+>>> remainder = minutes % 60
+>>> remainder
+45
+```
+
+The modulus operator is more useful than it seems. For example, you can check whether one number is divisible by another—if `x % y` is zero, then x is divisible by y.
+
+Also, you can extract the right-most digit or digits from a number. For example, `x % 10` yields the right-most digit of x (in base 10). Similarly `x % 100` yields the last two digits.
+
+If you are using Python 2, division works differently. The division operator, `/`, performs floor division if both operands are integers, and floating-point division if either operand is a float.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "boolean-expressions">
+
+## Boolean expressions
+
+A boolean expression is an expression that is either true or false. The following examples use the operator ==, which compares two operands and produces True if they are equal and False otherwise:
+
+```python
+>>> 5 == 5
+True
+>>> 5 == 6
+False
+```
+
+`True` and `False` are special values that belong to the type `bool`; they are not strings:
+
+```python
+>>> type(True)
+<class 'bool'>
+>>> type(False)
+<class 'bool'>
+```
+
+The `==` operator is one of the relational operators; the others are:
+
+```python
+x != y               # x is not equal to y
+x > y                # x is greater than y
+x < y                # x is less than y
+x >= y               # x is greater than or equal to y
+x <= y               # x is less than or equal to y
+```
+
+Although these operations are probably familiar to you, the Python symbols are different from the mathematical symbols. A common error is to use a single equal sign (`=`) instead of a double equal sign (`==`). Remember that `=` is an assignment operator and `==` is a relational operator. There is no such thing as `=<` or `=>`.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "logical-operators">
+
+## Logical operators
+
+There are three logical operators: `and`, `or`, and `not`. The semantics (meaning) of these operators is similar to their meaning in English. For example, `x > 0` and `x <div 10` is true only if x is greater than 0 and less than 10.
+
+`n % 2 == 0` or `n % 3 == 0` is true if _either_ or _both_ of the conditions is true, that is, if the number is divisible by 2 or 3.
+
+Finally, the `not` operator negates a boolean expression, so `not (x > y)` is true if x > y is false, that is, if `x` is less than or equal to `y`.
+
+Strictly speaking, the operands of the logical operators should be boolean expressions, but Python is not very strict. Any nonzero number is interpreted as True:
+
+```python
+>>> 42 and True
+True
+```
+
+This flexibility can be useful, but there are some subtleties to it that might be confusing. You might want to avoid it (unless you know what you are doing).
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "conditional-execution">
+
+## Conditional execution
+
+In order to write useful programs, we almost always need the ability to check conditions and change the behavior of the program accordingly. Conditional statements give us this ability. The simplest form is the if statement:
+
+```python
+if x > 0:
+    print('x is positive')
+```
+
+The boolean expression after if is called the condition. If it is true, the indented statement runs. If not, nothing happens.
+
+if statements have the same structure as function definitions: a header followed by an indented body. Statements like this are called compound statements.
+
+There is no limit on the number of statements that can appear in the body, but there has to be at least one. Occasionally, it is useful to have a body with no statements (usually as a place keeper for code you haven't written yet). In that case, you can use the pass statement, which does nothing.
+
+```python
+if x < 0:
+    pass          # TODO: need to handle negative values!
+```
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "alternative-execution">
+
+## Alternative execution
+
+A second form of the if statement is "alternative execution", in which there are two possibilities and the condition determines which one runs. The syntax looks like this:
+
+```python
+if x % 2 == 0:
+    print('x is even')
+else:
+    print('x is odd')
+```
+
+If the remainder when x is divided by 2 is 0, then we know that x is even, and the program displays an appropriate message. If the condition is false, the second set of statements runs. Since the condition must be true or false, exactly one of the alternatives will run. The alternatives are called branches, because they are branches in the flow of execution.
+
+<CodingTime>
+
+When writing longer boolean expressions, you can use **De Morgan's theorem** to make them easier to read. The theorem can be expressed in English as
+
+- _Not_ (**A** and **B**) is the same as _Not_ **A** or _Not_ **B**.
+
+- _Not_ (**A** or **B**) is the same as _Not_ **A** and _Not_ **B**
+
+For example, consider the following boolean expression
+
+```python
+!x or !y
+```
+
+This expression can be stated as _Not_ **x** or _Not_ **y**. And by **De Morgan's theorem**, this is the same as _Not_ (**x** and **y**), which in code is
+
+```python
+!(x && y)
+```
+
+There is no rule of thumb for when one side of the transformation is more understandable than the other as it depends on the context and domain problem. But it is good to know that you can transform boolean expressions in this way.
+
+In the following exercise, imagine we are managing a website with some vip users, and we want to keep them engaged by sending them emails if they are not active for some period of time. The following code works, but the boolean check is a bit hard to read. Rewrite it using **De Morgan's theorem**.
+
+<Notebook script="chapter-4/demorgan.py" />
+
+</CodingTime>
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "chained-conditionals">
+
+## Chained conditionals
+
+Sometimes there are more than two possibilities and we need more than two branches. One way to express a computation like that is a **chained conditional**:
+
+```python
+if x < y:
+    print('x is less than y')
+elif x > y:
+    print('x is greater than y')
+else:
+    print('x and y are equal')
+```
+
+`elif` is an abbreviation of “else if”. Again, exactly one branch will run. There is no limit on the number of elif statements. If there is an else clause, it has to be at the end, but there doesn't have to be one.
+
+```python
+if choice == 'a':
+    draw_a()
+elif choice == 'b':
+    draw_b()
+elif choice == 'c':
+    draw_c()
+```
+
+Each condition is checked in order. If the first is false, the next is checked, and so on. If one of them is true, the corresponding branch runs and the statement ends. Even if more than one condition is true, only the first true branch runs.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "nested-conditionals">
+
+## Nested conditionals
+
+One conditional can also be nested within another. We could have written the example in the previous section like this:
+
+```python
+if x == y:
+    print('x and y are equal')
+else:
+    if x < y:
+        print('x is less than y')
+    else:
+        print('x is greater than y')
+```
+
+The outer conditional contains two branches. The first branch contains a simple statement. The second branch contains another if statement, which has two branches of its own. Those two branches are both simple statements, although they could have been conditional statements as well.
+
+Although the indentation of the statements makes the structure apparent, **nested conditionals** become difficult to read very quickly. It is a good idea to avoid them when you can.
+
+Logical operators often provide a way to simplify nested conditional statements. For example, we can rewrite the following code using a single conditional:
+
+```python
+if 0 < x:
+    if x < 10:
+        print('x is a positive single-digit number.')
+```
+
+The `print` statement runs only if we make it past both conditionals, so we can get the same effect with the and operator:
+
+```python
+if 0 < x and x < 10:
+    print('x is a positive single-digit number.')
+```
+
+For this kind of condition, Python provides a more concise option:
+
+```python
+if 0 < x < 10:
+    print('x is a positive single-digit number.')
+```
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "recursion">
+
+
+## Recursion
+
+It is legal for one function to call another; it is also legal for a function to call itself. It may not be obvious why that is a good thing, but it turns out to be one of the most magical things a program can do. For example, look at the following function:
+
+```python
+def countdown(n):
+    if n <= 0:
+        print('Blastoff!')
+    else:
+        print(n)
+        countdown(n - 1)
+```
+
+If `n` is 0 or negative, it outputs the word, "Blastoff!"" Otherwise, it outputs `n` and then calls a function named `countdown`—itself—passing `n - 1` as an argument.
+
+What happens if we call this function like this?
+
+```python
+>>> countdown(3)
+```
+
+<Steps>
+
+####
+
+The execution of countdown begins with `n=3`, and since `n` is greater than 0, it outputs the value 3, and then calls itself...
+
+####
+
+The execution of countdown begins with `n=2`, and since `n` is greater than 0, it outputs the value 2, and then calls itself...
+
+####
+
+The execution of countdown begins with `n=1`, and since n is greater than 0, it outputs the value 1, and then calls itself...
+
+####
+
+The execution of countdown begins with `n=0`, and since n is not greater than 0, it outputs the word, “Blastoff!” and then returns.
+The countdown that got `n=1` returns.
+
+####
+
+The countdown that got `n=2` returns.
+
+####
+
+The countdown that got `n=3` returns.
+
+</Steps>
+
+And then you're back in **main**. So, the total output looks like this:
+
+```python
+3
+2
+1
+Blastoff!
+```
+
+A function that calls itself is **recursive**; the process of executing it is called **recursion**.
+
+As another example, we can write a function that prints a string `n` times.
+
+```python
+def print_n(s, n):
+    if n <= 0:
+        return
+    print(s)
+    print_n(s, n-1)
+```
+
+If `n <= 0` the return statement exits the function. The flow of execution immediately returns to the caller, and the remaining lines of the function don't run.
+
+The rest of the function is similar to countdown: it displays `s` and then calls itself to display `s` n-1 additional times. So the number of lines of output is `1 + (n - 1)`, which adds up to n.
+
+For simple examples like this, it is probably easier to use a for loop. But we will see examples later that are hard to write with a for loop and easy to write with recursion, so it is good to start early.
+
+</div>
+
+
+<div className = "content-chunk" data-subsection-id ="stack-diagrams-for-recursive-functions">
+
+## Stack diagrams for recursive functions
+
+In Section 3.9, we used a stack diagram to represent the state of a program during a function call. The same kind of diagram can help interpret a recursive function.
+
+Every time a function gets called, Python creates a frame to contain the function's local variables and parameters. For a recursive function, there might be more than one frame on the stack at the same time.
+
+Figure 5.1 shows a stack diagram for countdown called with `n = 3`.
+
+<Image
+  src="https://greenteapress.com/thinkpython2/html/thinkpython2005.png"
+  height={600}
+  width={300}
+  alt="Figure 5.1: Stack diagram"
+>
+  Figure 5.1: Stack diagram.
+</Image>
+
+As usual, the top of the stack is the frame for `__main__`. It is empty because we did not create any variables in `__main__` or pass any arguments to it.
+
+The four countdown frames have different values for the parameter `n`. The bottom of the stack, where `n=0`, is called the **base case**. It does not make a recursive call, so there are no more frames.
+
+As an exercise, draw a stack diagram for `print_n` called with `s = 'Hello'` and `n=2`. Then write a function called `do_n` that takes a function object and a number, `n`, as arguments, and that calls the given function `n` times.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "infinite-recursion">
+
+## Infinite recursion
+
+If a recursion never reaches a base case, it goes on making recursive calls forever, and the program never terminates. This is known as **infinite recursion**, and it is generally not a good idea. Here is a minimal program with an infinite recursion:
+
+```python
+def recurse():
+    recurse()
+```
+
+In most programming environments, a program with infinite recursion does not really run forever. Python reports an error message when the maximum recursion depth is reached:
+
+```python
+File "<stdin>", line 2, in recurse
+File "<stdin>", line 2, in recurse
+File "<stdin>", line 2, in recurse
+.
+.
+.
+File "<stdin>", line 2, in recurse
+RuntimeError: Maximum recursion depth exceeded
+```
+
+This traceback is a little bigger than the one we saw in the previous chapter. When the error occurs, there are 1000 `recurse` frames on the stack!
+
+If you encounter an infinite recursion by accident, review your function to confirm that there is a base case that does not make a recursive call. And if there is a base case, check whether you are guaranteed to reach it.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "keyboard-input">
+
+## Keyboard input
+
+The programs we have written so far accept no input from the user. They just do the same thing every time.
+
+Python provides a built-in function called `input` that stops the program and waits for the user to type something. When the user presses **Return** or **Enter**, the program resumes and `input` returns what the user typed as a string. In Python 2, the same function is called `raw_input`.
+
+```python
+>>> text = input()
+What are you waiting for?
+>>> text
+'What are you waiting for?'
+```
+
+Before getting input from the user, it is a good idea to print a prompt telling the user what to type. `input` can take a prompt as an argument:
+
+```python
+>>> name = input('What...is your name?\n')
+What...is your name?
+Arthur, King of the Britons!
+>>> name
+'Arthur, King of the Britons!'
+```
+
+The sequence `\n` at the end of the prompt represents a **newline**, which is a special character that causes a line break. That's why the user's input appears below the prompt.
+
+If you expect the user to type an integer, you can try to convert the return value to `int`:
+
+```python
+>>> prompt = 'What...is the airspeed velocity of an unladen swallow?\n'
+>>> speed = input(prompt)
+What...is the airspeed velocity of an unladen swallow?
+42
+>>> int(speed)
+42
+```
+
+But if the user types something other than a string of digits, you get an error:
+
+```python
+>>> speed = input(prompt)
+What...is the airspeed velocity of an unladen swallow?
+What do you mean, an African or a European swallow?
+>>> int(speed)
+ValueError: invalid literal for int() with base 10
+```
+
+We will see how to handle this kind of error later.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "debugging">
+
+## Debugging
+
+When a syntax or runtime error occurs, the error message contains a lot of information, but it can be overwhelming. The most useful parts are usually:
+
+- What kind of error it was, and
+
+- Where it occurred.
+
+Syntax errors are usually easy to find, but there are a few gotchas. Whitespace errors can be tricky because spaces and tabs are invisible and we are used to ignoring them.
+
+```python
+>>> x = 5
+>>>  y = 6
+  File "<stdin>", line 1
+    y = 6
+    ^
+IndentationError: unexpected indent
+```
+
+In this example, the problem is that the second line is indented by one space. But the error message points to y, which is misleading. In general, error messages indicate where the problem was discovered, but the actual error might be earlier in the code, sometimes on a previous line.
+
+The same is true of runtime errors. Suppose you are trying to compute a signal-to-noise ratio in decibels. The formula is SNR<sub>db</sub> = 10 log10 (P<sub>signal</sub> / P<sub>noise</sub>). In Python, you might write something like this:
+
+```python
+import math
+signal_power = 9
+noise_power = 10
+ratio = signal_power // noise_power
+decibels = 10 * math.log10(ratio)
+print(decibels)
+```
+
+When you run this program, you get an exception:
+
+```python
+Traceback (most recent call last):
+  File "snr.py", line 5, in ?
+    decibels = 10 * math.log10(ratio)
+ValueError: math domain error
+```
+
+The error message indicates line 5, but there is nothing wrong with that line. To find the real error, it might be useful to print the value of ratio, which turns out to be 0. The problem is in line 4, which uses floor division instead of floating-point division.
+
+You should take the time to read error messages carefully, but don't assume that everything they say is correct.
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "glossary">
+
+## Glossary
+
+<Definition text="floor division">
+  An operator, denoted //, that divides two numbers and rounds down (toward
+  negative infinity) to an integer.
+</Definition>
+
+<Definition text="modulus operator">
+  An operator, denoted with a percent sign (%), that works on integers and
+  returns the remainder when one number is divided by another.
+</Definition>
+
+<Definition text="boolean expression">
+  An expression whose value is either True or False.
+</Definition>
+
+<Definition text="relational operator">
+One of the operators that compares its operands: `==`, `!=`, `>`, `<`, `>=`, and `<=`.
+</Definition>
+
+<Definition text="logical operator">
+  One of the operators that combines boolean expressions: and, or, and not.
+</Definition>
+
+<Definition text="conditional statement">
+  A statement that controls the flow of execution depending on some condition.
+</Definition>
+
+<Definition text="condition">
+  The boolean expression in a conditional statement that determines which branch
+  runs.
+</Definition>
+
+<Definition text="compound statement">
+  A statement that consists of a header and a body. The header ends with a colon
+  (:). The body is indented relative to the header.
+</Definition>
+
+<Definition text="branch">
+  One of the alternative sequences of statements in a conditional statement.
+</Definition>
+
+<Definition text="chained conditional">
+  A conditional statement with a series of alternative branches.
+</Definition>
+
+<Definition text="nested conditional">
+  A conditional statement that appears in one of the branches of another
+  conditional statement.
+</Definition>
+
+<Definition text="return statement">
+  A statement that causes a function to end immediately and return to the
+  caller.
+</Definition>
+
+<Definition text="recursion">
+  The process of calling the function that is currently executing.
+</Definition>
+
+<Definition text="base case">
+  A conditional branch in a recursive function that does not make a recursive
+  call.
+</Definition>
+
+<Definition text="infinite recursion">
+  A recursion that doesn't have a base case, or never reaches it. Eventually, an
+  infinite recursion causes a runtime error.
+</Definition>
+
+</div>
+
+<div className = "content-chunk" data-subsection-id = "exercises-1">
+
+## Exercise 1
+
+The `time` module provides a function, also named `time`, that returns the current Greenwich Mean Time in “the epoch”, which is an arbitrary time used as a reference point. On UNIX systems, the epoch is 1 January 1970.
+
+```python
+>>> import time
+>>> time.time()
+1437746094.5735958
+```
+
+Write a script that reads the current time and converts it to a time of day in hours, minutes, and seconds, plus the number of days since the epoch.
+
+<Notebook code="# try the exercise above" />
+
+</div>
