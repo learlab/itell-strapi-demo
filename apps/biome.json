@@ -1,0 +1,15 @@
+{
+    "linter": {
+        "rules": {
+            "complexity": {
+                "noForEach": "off"
+            },
+            "correctness": {
+                "useExhaustiveDependencies": "warn"
+            },
+            "a11y": {
+                "useButtonType": "warn"
+            }
+        }
+    }
+}
