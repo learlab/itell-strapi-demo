@@ -10,10 +10,8 @@ export const getScore = async ({
 	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/summary`, {
 		method: "POST",
 		body: JSON.stringify({
-			textbook_name: TEXTBOOK_NAME,
 			summary: input,
-			chapter_index: location.chapter,
-			section_index: location.section,
+			page_slug: location.section,
 		}),
 		headers: {
 			"Content-Type": "application/json",
