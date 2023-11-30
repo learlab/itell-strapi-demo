@@ -28,7 +28,7 @@ export const PageVisibilityModal = () => {
 
 	if (status === undefined || status === "unlocked") return null;
 
-	if (status === "unauthorized") {
+	if (status === "unauthorizedf") {
 		return (
 			<Dialog
 				open={open}
