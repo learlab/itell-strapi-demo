@@ -1,8 +1,6 @@
 import { type Prisma } from "@prisma/client";
 import db from "./db";
-import { format, subDays } from "date-fns";
-import { getDatesBetween } from "@itell/core/utils";
-import { FocusTimeData, getTotalViewTime } from "./focus-time";
+import { subDays } from "date-fns";
 
 export const getSummaryStats = async ({
 	where,
@@ -41,7 +39,7 @@ export const getClassStudents = async (classId: string) => {
 };
 
 export const getClassStudentStats = async (classId: string) => {
-	const students = await db.user.findMany({
+	return await db.user.findMany({
 		where: {
 			classId,
 		},
@@ -50,7 +48,6 @@ export const getClassStudentStats = async (classId: string) => {
 			name: true,
 			email: true,
 			chapter: true,
-			section: true,
 			created_at: true,
 			_count: {
 				select: {
@@ -59,8 +56,6 @@ export const getClassStudentStats = async (classId: string) => {
 			},
 		},
 	});
-
-	return students;
 };
 
 export const getStudentsCount = async (classId: string) => {
@@ -73,12 +68,12 @@ export const getStudentsCount = async (classId: string) => {
 
 export const getRecentSummaries = async (uid: string) => {
 	// fetch summaries during last week
-	const targetDate = subDays(new Date(), 6);
+	const targetDate = subDays(new Date(), 7);
 	const summaries = await db.summary.findMany({
 		where: {
 			userId: uid,
 			created_at: {
-				gte: targetDate,
+				gt: targetDate,
 			},
 		},
 		orderBy: {

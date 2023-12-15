@@ -1,7 +1,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-export const defaultNoteColorLight = "#3b82f6";
+export const defaultNoteColorLight = "#75a7f8";
 export const defaultNoteColorDark = "#a3bffa";
 export const defaultHighlightColor = "yellow";
 

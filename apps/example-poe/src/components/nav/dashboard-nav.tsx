@@ -22,6 +22,7 @@ export async function DashboardNav(props: Props) {
 				</Link>
 				<BackToTextbook />
 			</div>
+
 			<DashboardNavMenu {...props} />
 		</div>
 	);

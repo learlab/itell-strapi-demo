@@ -1,11 +1,10 @@
 "use client";
 
-import { FormEvent, Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { EditIcon } from "lucide-react";
 import { NoteCard } from "@/types/note";
 import { useClickOutside } from "@itell/core/hooks";
-import { trpc } from "@/trpc/trpc-provider";
-import NoteDelete from "./node-delete";
+import { NoteDelete } from "./node-delete";
 import { cn, relativeDate } from "@itell/core/utils";
 import { ForwardIcon } from "lucide-react";
 import { Spinner } from "../spinner";
@@ -18,15 +17,16 @@ import {
 	deserializeRange,
 	getElementsByNoteId,
 } from "@itell/core/note";
-import { SectionLocation } from "@/types/location";
+import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
+import { useSession } from "next-auth/react";
+import { useFormStatus } from "react-dom";
 
 interface Props extends NoteCard {
-	location: SectionLocation;
+	chapter: number;
 	newNote?: boolean;
 }
 
 type EditState = {
-	input: string;
 	color: string;
 	editing: boolean;
 	collapsed: boolean;
@@ -36,7 +36,6 @@ type EditState = {
 };
 
 type EditDispatch =
-	| { type: "set_input"; payload: string }
 	| { type: "collapse_note" }
 	| { type: "toggle_collapsed" }
 	| { type: "toggle_editing" }
@@ -56,23 +55,28 @@ export default function ({
 	y,
 	highlightedText,
 	noteText,
-	location,
+	chapter,
 	updated_at,
 	created_at,
 	serializedRange,
 	color,
 	newNote = false,
 }: Props) {
+	const { data: session } = useSession();
+	const [input, setInput] = useState(noteText || "");
+
 	const elementsRef = useRef<HTMLElement[]>();
 	const elements = elementsRef.current;
 	const [shouldCreate, setShouldCreate] = useState(newNote);
-	const [recordId, setRecordId] = useState<string>(newNote ? "" : id);
+	const [recordId, setRecordId] = useState<string | undefined>(
+		newNote ? undefined : id,
+	);
+
+	const isUnsaved = !recordId || input !== noteText;
+
 	const [editState, dispatch] = useImmerReducer<EditState, EditDispatch>(
 		(draft, action) => {
 			switch (action.type) {
-				case "set_input":
-					draft.input = action.payload;
-					break;
 				case "collapse_note":
 					if (!draft.showDeleteModal) {
 						draft.editing = false;
@@ -108,7 +112,6 @@ export default function ({
 			}
 		},
 		{
-			input: noteText, // textarea input
 			color, // border color: ;
 			editing: newNote, // true: show textarea, false: show noteText
 			collapsed: !newNote, // if the note card is expanded
@@ -118,53 +121,44 @@ export default function ({
 		},
 	);
 	const [isHidden, setIsHidden] = useState(false);
-	const {
-		deleteNote: deleteContextNote,
-		updateNote: updateContextNote,
-		incrementNoteCount,
-	} = useNotesStore();
-	const updateNote = trpc.note.update.useMutation({
-		onSuccess: () => {
-			dispatch({ type: "finish_upsert" });
-		},
-	});
-	const createNote = trpc.note.create.useMutation({
-		onSuccess: () => {
-			dispatch({ type: "finish_upsert" });
-		},
-	});
-	const deleteNote = trpc.note.delete.useMutation();
+	const { deleteNote: deleteContextNote, updateNote: updateContextNote } =
+		useNotesStore();
+
 	const containerRef = useClickOutside<HTMLDivElement>(() => {
 		dispatch({ type: "collapse_note" });
 	});
 
-	const isUnsaved = !id || editState.input !== noteText;
-	const isLoading =
-		updateNote.isLoading || createNote.isLoading || deleteNote.isLoading;
-
-	const handleSubmit = async (e: FormEvent) => {
-		e.preventDefault();
+	const formAction = async (data: FormData) => {
+		const input = data.get("input") as string;
 		if (shouldCreate) {
 			// create new note
-			await createNote.mutateAsync({
-				id,
-				y,
-				noteText: editState.input,
-				highlightedText,
-				location,
-				color: editState.color,
-				range: serializedRange,
-			});
+			await createNote(
+				{
+					id,
+					y,
+					noteText: input,
+					highlightedText,
+					chapter,
+					color: editState.color,
+					range: serializedRange,
+					user: {
+						connect: {
+							id: session?.user?.id as string,
+						},
+					},
+				},
+				false,
+			); // do not revalidate
 			setRecordId(id);
 			setShouldCreate(false);
 		} else {
 			// edit existing note
-			updateContextNote({ id, noteText: editState.input });
-			await updateNote.mutateAsync({
-				id: recordId,
-				noteText: editState.input,
-			});
+			updateContextNote({ id, noteText: input });
+			if (recordId) {
+				await updateNote(recordId, { noteText: input });
+			}
 		}
+		dispatch({ type: "finish_upsert" });
 	};
 
 	const emphasizeNote = (element: HTMLElement) => {
@@ -188,11 +182,10 @@ export default function ({
 			elements.forEach(unHighlightNote);
 		}
 		setIsHidden(true);
-		incrementNoteCount(-1);
-		if (id) {
+		deleteContextNote(id);
+		if (recordId) {
 			// delete note in database
-			deleteContextNote(id);
-			await deleteNote.mutateAsync({ id });
+			await deleteNote(id);
 		}
 		dispatch({ type: "finish_delete" });
 	};
@@ -237,131 +230,123 @@ export default function ({
 		) as HTMLElement[];
 	}, []);
 
-	return (
-		<Fragment>
-			<div
-				className={cn(
-					"absolute w-full rounded-md border-2 bg-background",
-					editState.collapsed ? "z-10" : "z-50",
-					isHidden && "hidden",
-				)}
-				style={{
-					top: y - 100,
-					borderColor: editState.color,
-				}}
-				ref={containerRef}
-				{...triggers}
-			>
-				<div className="relative">
-					{/* edit icon overlay */}
-					{editState.showEdit && (
-						<button
-							className="absolute left-0 top-0 w-full h-full bg-secondary/50 z-50 flex items-center justify-center"
-							onClick={() => {
-								dispatch({ type: "toggle_collapsed" });
-								dispatch({ type: "set_show_edit", payload: false });
-								// this is needed when a note is not saved
-								// and the user clicked outside and clicked back again
-								if (!id) {
-									dispatch({ type: "set_editing", payload: true });
-								} else {
-									dispatch({ type: "set_editing", payload: false });
-								}
-							}}
-						>
-							<EditIcon />
-						</button>
+	const FormFooter = () => {
+		const { pending } = useFormStatus();
+		return (
+			<footer className="mt-2">
+				{isUnsaved && <p className="text-sm text-muted-foreground">unsaved</p>}
+				<div className="flex justify-end gap-1">
+					<NoteDelete
+						open={editState.showDeleteModal}
+						onOpenChange={(val) =>
+							dispatch({
+								type: "set_show_delete_modal",
+								payload: val,
+							})
+						}
+						onDelete={handleDelete}
+					/>
+					{editState.editing && (
+						<Button disabled={pending} variant="ghost" size="sm" type="submit">
+							{pending ? <Spinner /> : <ForwardIcon className="w-4 h-4" />}
+						</Button>
 					)}
+				</div>
+			</footer>
+		);
+	};
 
-					<div className="font-light tracking-tight text-sm relative p-2">
-						{editState.collapsed ? (
-							<p className="line-clamp-3 text-sm mb-0">
-								{editState.input || "Note"}
-							</p>
-						) : (
-							<div className="mt-1">
-								<NoteColorPicker
-									color={editState.color}
-									onChange={(color) => {
-										dispatch({ type: "set_color", payload: color });
-										if (elements) {
-											elements.forEach((element) => {
-												element.style.backgroundColor = color;
-											});
-										}
-										if (id) {
-											updateNote.mutate({ id, color });
-										}
-									}}
-								/>
+	return (
+		<div
+			className={cn(
+				"absolute w-full rounded-md border-2 bg-background",
+				editState.collapsed ? "z-10" : "z-20",
+				isHidden && "hidden",
+			)}
+			style={{
+				top: y - 100,
+				borderColor: editState.color,
+			}}
+			ref={containerRef}
+			{...triggers}
+		>
+			<div className="relative">
+				{/* edit icon overlay */}
+				{editState.showEdit && (
+					<button
+						type="button"
+						className="absolute left-0 top-0 w-full h-full bg-secondary/50 z-20 flex items-center justify-center"
+						onClick={() => {
+							dispatch({ type: "toggle_collapsed" });
+							dispatch({ type: "set_show_edit", payload: false });
+							// this is needed when a note is not saved
+							// and the user clicked outside and clicked back again
+							if (!id) {
+								dispatch({ type: "set_editing", payload: true });
+							} else {
+								dispatch({ type: "set_editing", payload: false });
+							}
+						}}
+					>
+						<EditIcon />
+					</button>
+				)}
 
+				<div className="font-light tracking-tight text-sm relative p-2">
+					{editState.collapsed ? (
+						<p className="line-clamp-3 text-sm mb-0">{input || "Note"}</p>
+					) : (
+						<div className="mt-1">
+							<NoteColorPicker
+								color={editState.color}
+								onChange={(color) => {
+									dispatch({ type: "set_color", payload: color });
+									if (elements) {
+										elements.forEach((element) => {
+											element.style.backgroundColor = color;
+										});
+									}
+									if (id) {
+										updateNote(id, { color });
+									}
+								}}
+							/>
+
+							<form action={formAction}>
 								{editState.editing ? (
-									<form>
-										<TextArea
-											placeholder="leave a note here"
-											value={editState.input}
-											onValueChange={(val) =>
-												dispatch({ type: "set_input", payload: val })
-											}
-											autoFocus
-											autoHeight
-										/>
-									</form>
+									<TextArea
+										placeholder="leave a note here"
+										autoFocus
+										autoHeight
+										name="input"
+										value={input}
+										onValueChange={setInput}
+									/>
 								) : (
 									<button
+										type="button"
 										onClick={() =>
 											dispatch({ type: "set_editing", payload: true })
 										}
 										className="flex w-full text-left px-1 py-2 rounded-md hover:bg-accent"
 									>
 										<span className="mb-0">
-											{editState.input || <EditIcon className="w-4 h-4" />}
+											{input || <EditIcon className="w-4 h-4" />}
 										</span>
 									</button>
 								)}
-								<footer className="mt-2">
-									{isUnsaved && (
-										<p className="text-sm text-muted-foreground">unsaved</p>
-									)}
-									<div className="flex justify-end">
-										{!isLoading && (
-											<NoteDelete
-												onDelete={handleDelete}
-												onOpen={() => {
-													dispatch({
-														type: "set_show_delete_modal",
-														payload: true,
-													});
-												}}
-											/>
-										)}
-										{editState.editing && (
-											<Button
-												disabled={isLoading}
-												variant="ghost"
-												size="sm"
-												onClick={handleSubmit}
-											>
-												{updateNote.isLoading || createNote.isLoading ? (
-													<Spinner />
-												) : (
-													<ForwardIcon className="w-4 h-4" />
-												)}
-											</Button>
-										)}
-									</div>
-								</footer>
-								{/* {(updated_at || created_at) && (
-									<p className="text-xs text-right mt-2 mb-0">
-										updated at{" "}
-										{relativeDate((updated_at || created_at) as Date)}
-									</p>
-								)} */}
-							</div>
-						)}
-					</div>
+								<FormFooter />
+							</form>
+
+							{(updated_at || created_at) && (
+								<p className="text-xs text-right mt-2 mb-0">
+									updated at {relativeDate((updated_at || created_at) as Date)}
+								</p>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
-		</Fragment>
+		</div>
 	);
 }

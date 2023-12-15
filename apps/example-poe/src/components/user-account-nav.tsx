@@ -9,16 +9,14 @@ import {
 	DropdownMenuSeparator,
 } from "./client-components";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
 	ChevronDownIcon,
 	ChevronUpIcon,
-	CompassIcon,
 	FileBoxIcon,
+	GraduationCapIcon,
 	LineChartIcon,
 	LogOutIcon,
-	PieChartIcon,
 	SettingsIcon,
 } from "lucide-react";
 import { Spinner } from "./spinner";
@@ -26,6 +24,7 @@ import Link from "next/link";
 import UserAvatar from "./user-avatar";
 
 export const UserAccountNav = () => {
+	const [isSignOutLoading, setIsSignOutLoading] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const { data: session, status } = useSession();
 	const user = session?.user;
@@ -43,7 +42,7 @@ export const UserAccountNav = () => {
 	}
 
 	return (
-		<div className="ml-auto flex items-center gap-1">
+		<div className="ml-auto">
 			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
 					<UserAvatar
@@ -90,21 +89,28 @@ export const UserAccountNav = () => {
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
-						<Link href="/guide">
-							<CompassIcon className="h-4 w-4 mr-2" /> Guide
+						<Link href="/dashboard/class">
+							<GraduationCapIcon className="h-4 w-4 mr-2" /> Class
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className="cursor-pointer"
-						onSelect={(event) => {
+						disabled={isSignOutLoading}
+						onSelect={async (event) => {
 							event.preventDefault();
-							signOut({
+							setIsSignOutLoading(true);
+							await signOut({
 								callbackUrl: `${window.location.origin}/auth`,
 							});
+							setIsSignOutLoading(false);
 						}}
 					>
-						<LogOutIcon className="h-4 w-4 mr-2" />
+						{isSignOutLoading ? (
+							<Spinner className="w-4 h-4 mr-2" />
+						) : (
+							<LogOutIcon className="w-4 h-4 mr-2" />
+						)}
 						Sign out
 					</DropdownMenuItem>
 				</DropdownMenuContent>

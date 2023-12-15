@@ -18,6 +18,7 @@ export const EventTracker = ({ user }: { user: User }) => {
 		const chunks = Array.from(
 			document.querySelectorAll("#page-content .content-chunk"),
 		) as HTMLDivElement[];
+
 		setChunks(chunks);
 	}, []);
 

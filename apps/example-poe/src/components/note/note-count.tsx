@@ -1,43 +1,43 @@
-"use client";
-
-import { Count, useNotesStore } from "@/lib/store";
-import { useEffect } from "react";
+import { getCurrentUser } from "@/lib/auth";
+import db from "@/lib/db";
+import { User } from "@prisma/client";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
-} from "@/components/client-components";
-import pluralize from "pluralize";
+} from "../client-components";
 import { StickyNoteIcon } from "lucide-react";
+import pluralize from "pluralize";
 
 type Props = {
-	count: Count;
+	user: User;
+	chapter: number;
 };
 
-// rendered by NoteList to set the count in the store
-export const SetNoteCount = (props: Props) => {
-	const setCount = useNotesStore((store) => store.setCount);
+export const NoteCount = async ({ user, chapter }: Props) => {
+	const res = (await db.$queryRaw`
+			SELECT COUNT(*),
+					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
+			FROM notes
+			WHERE user_id = ${user.id} AND chapter = ${chapter}
+			GROUP BY CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`) as {
+		count: number;
+		type: string;
+	}[];
 
-	useEffect(() => {
-		setCount(props.count);
-	}, []);
+	const noteCount = res.find((r) => r.type === "note")?.count || 0;
+	const highlightCount = res.find((r) => r.type === "highlight")?.count || 0;
 
-	return null;
-};
-
-// rendered by TocSidebar
-export const NoteCount = () => {
-	const count = useNotesStore((store) => store.count);
 	return (
 		<HoverCard>
 			<HoverCardTrigger>
 				<Button variant={"link"} className="text-sm px-0 text-left">
+					<StickyNoteIcon className="w-4 h-4 mr-1 inline" />
 					<span>
-						<StickyNoteIcon className="w-4 h-4 mr-1 inline" />
-						{`${pluralize("note", count.note, true)}, ${pluralize(
+						{`${pluralize("note", noteCount, true)}, ${pluralize(
 							"highlight",
-							count.highlight,
+							highlightCount,
 							true,
 						)}`}
 					</span>

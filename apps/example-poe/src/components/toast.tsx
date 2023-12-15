@@ -11,8 +11,8 @@ export default function ShowToast() {
 	useEffect(() => {
 		if (searchParams) {
 			const isAuthRedirect = searchParams.get("auth-redirect");
-			if (session?.user && isAuthRedirect) {
-				toast.success("Successfully signed in!");
+			if (session && isAuthRedirect) {
+				// toast.success("Successfully signed in!");
 			}
 		}
 	}, [searchParams, session]);

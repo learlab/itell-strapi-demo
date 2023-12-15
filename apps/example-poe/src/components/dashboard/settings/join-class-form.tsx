@@ -1,32 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
+import { Errorbox, Input, buttonVariants } from "@itell/ui/server";
+import { useSearchParams } from "next/navigation";
+import { getTeacherWithClassId } from "@/lib/server-actions";
+import { useFormState, useFormStatus } from "react-dom";
+import { User } from "@prisma/client";
+import { ClassInviteModal } from "./class-invite-modal";
+import { Button } from "@itell/ui/client";
 import { Spinner } from "@/components/spinner";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	Button,
-} from "@/components/client-components";
-import { Errorbox, Input } from "@itell/ui/server";
-import { useRouter } from "next/navigation";
-import {
-	getTeacherWithClassId,
-	updateUserWithClassId,
-} from "@/lib/server-actions";
-import { useSession } from "next-auth/react";
-import { useFormState } from "react-dom";
+
+type Props = {
+	user: User;
+};
 
 type FormState =
-	| { data: null; error: null }
-	| { data: { teacherName: string }; error: null }
-	| { data: null; error: string };
+	| { teacher: User; error: null }
+	| { teacher: null; error: string }
+	| { teacher: null; error: null };
 
 const onSubmit = async (
 	prevState: FormState,
@@ -35,36 +26,32 @@ const onSubmit = async (
 	const classId = formData.get("code") as string;
 	const teacher = await getTeacherWithClassId(classId);
 	if (!teacher) {
-		return { data: null, error: "Invalid class code" };
+		return { teacher: null, error: "Invalid class code" };
 	}
 
 	return {
-		data: {
-			teacherName: teacher.name as string,
-		},
+		teacher,
 		error: null,
 	};
 };
 
-export const JoinClassForm = () => {
-	const router = useRouter();
-	const { data: session } = useSession();
-	const [joinClassModalOpen, setJoinClassModalOpen] = useState(false);
+export const SubmitButton = () => {
+	const { pending } = useFormStatus();
+	return (
+		<Button disabled={pending}>
+			{pending && <Spinner className="inline-flex mr-2" />}Submit
+		</Button>
+	);
+};
 
-	// @ts-ignore
-	const [formState, formAction] = useFormState<FormState>(onSubmit, {
-		data: null,
+export const JoinClassForm = ({ user }: Props) => {
+	const searchParams = useSearchParams();
+	const classIdToJoin = searchParams?.get("join_class_code");
+
+	const [formState, formAction] = useFormState(onSubmit, {
+		teacher: null,
 		error: null,
 	});
-	const [code, setCode] = useState("");
-
-	const [joinClassLoading, setJoinClassLoading] = useState(false);
-
-	useEffect(() => {
-		if (formState.data?.teacherName) {
-			setJoinClassModalOpen(true);
-		}
-	}, [formState]);
 
 	return (
 		<div className="space-y-4">
@@ -81,54 +68,19 @@ export const JoinClassForm = () => {
 					name="code"
 					placeholder="Enter your class code here"
 					type="text"
-					onChange={(e) => setCode(e.currentTarget.value)}
+					required
+					defaultValue={classIdToJoin || ""}
 				/>
-				<Button type="submit">Submit</Button>
+				<SubmitButton />
 			</form>
 			{/* dialog to confirm joining a class */}
-			<AlertDialog
-				open={joinClassModalOpen}
-				onOpenChange={(val) => setJoinClassModalOpen(val)}
-			>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Join a Class</AlertDialogTitle>
-						<AlertDialogDescription>
-							You are about to join a class taught by{" "}
-							{formState.data?.teacherName}. Your learning data will be shared
-							with your teacher.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction
-							disabled={joinClassLoading}
-							className="bg-primary"
-							onClick={async (e) => {
-								e.preventDefault();
-								setJoinClassLoading(true);
-
-								if (session?.user) {
-									await updateUserWithClassId({
-										userId: session.user.id,
-										classId: code,
-									});
-
-									setJoinClassLoading(false);
-									setJoinClassModalOpen(false);
-									toast.success(
-										"You are now added to class. Go to the statistics page on the sidebar to check your progress.",
-									);
-
-									router.refresh();
-								}
-							}}
-						>
-							{joinClassLoading ? <Spinner /> : " Continue"}
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+			{formState.teacher && (
+				<ClassInviteModal
+					user={user}
+					teacherToJoin={formState.teacher}
+					classId={classIdToJoin as string}
+				/>
+			)}
 		</div>
 	);
 };

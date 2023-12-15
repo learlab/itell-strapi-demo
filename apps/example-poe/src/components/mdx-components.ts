@@ -4,47 +4,32 @@ import {
 	Keyterm,
 	Callout,
 	Caption,
-	Typography,
 	Blockquote,
+	Definition,
 	Steps,
-	Columns,
-	Column,
 	YoutubeVideo,
 } from "@itell/ui/server";
-import {
-	Accordion,
-	AccordionItem,
-	Image,
-} from "@/components/client-components";
-import {
-	Tabs,
-	TabsHeader,
-	Tab,
-	TabPanel,
-	TabsBody,
-} from "@/components/ui/tabs";
-import { TextOverImage } from "@/components/ui/text-over-image";
+import Image from "@/components/ui/image";
+import { Exercise } from "./exercise";
+import { Notebook } from "@/components/code/notebook";
+import { CodeRepl } from "@/components/code/code-repl-wrapper";
+import { CodingTime } from "@/components/code/coding-time";
 
 export const MdxComponents = {
-	YoutubeVideo,
-	Image,
+	// YoutubeVideo,
 	Blockquote,
-	Accordion,
-	AccordionItem,
-	TextOverImage,
 	Info,
 	Warning,
 	Keyterm,
 	Callout,
 	Caption,
-	Typography,
+	Definition,
 	Steps,
-	Columns,
-	Column,
-	// tab related
-	Tabs,
-	TabsHeader,
-	Tab,
-	TabPanel,
-	TabsBody,
+	// exercise related
+	Exercise,
+	Notebook,
+	CodeRepl,
+	Image,
+	YoutubeVideo,
+	CodingTime,
 };

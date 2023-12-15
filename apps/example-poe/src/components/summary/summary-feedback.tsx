@@ -1,7 +1,8 @@
 import { ScoreType } from "@/lib/constants";
-import { SummaryFeedbackType } from "@/lib/summary";
+import type { SummaryFeedbackType } from "@/lib/summary";
 import { keyof } from "@itell/core/utils";
-import { Info, Typography, Warning } from "@itell/ui/server";
+import { Info, Warning } from "@itell/ui/server";
+import { Accordion, AccordionItem } from "../client-components";
 
 type Props = {
 	feedback: SummaryFeedbackType;
@@ -9,38 +10,41 @@ type Props = {
 
 export const SummaryFeedback = ({ feedback }: Props) => {
 	const FeedbackBody = (
-		<div className="text-light leading-relaxed">
-			{feedback.prompt}
-			<details className="mt-2">
-				<summary>Details</summary>
-				{keyof(feedback.individualPrompt).map((key) => {
-					const individualFeedback = feedback.individualPrompt[key];
-					let label: string;
-					if (key === ScoreType.similarity) {
-						label = "Topic Similarity";
-					} else if (key === ScoreType.containment) {
-						label = "Topic Borrowing";
-					} else {
-						label = key;
-					}
-					return (
-						individualFeedback.prompt && (
-							<p key={key}>
-								<span style={{ textTransform: "capitalize" }}>{`${
-									individualFeedback.isPassed ? "✅" : "❌"
-								} ${label}: `}</span>
-								{feedback.individualPrompt[key].prompt}
+		<div className="font-light leading-relaxed space-y-2">
+			<p>{feedback.prompt}</p>
+			{feedback.suggestedKeyphrases && (
+				<div>
+					Try to include the following keywords:
+					<ul className="list-disc">
+						{feedback.suggestedKeyphrases.map((keyphrase) => (
+							<li className="text-accent-foreground">{keyphrase}</li>
+						))}
+					</ul>
+				</div>
+			)}
+			{feedback.promptDetails && (
+				<Accordion value="first">
+					<AccordionItem
+						value="first"
+						title="Scoring details"
+						accordionTriggerClassName="text-sm underline-none"
+					>
+						{feedback.promptDetails.map((detail) => (
+							<p key={detail.type} className="space-x-1">
+								<span>{detail.feedback.isPassed ? "✅" : "❌"}</span>
+								<span className="font-semibold">{detail.type}:</span>
+								<span>{detail.feedback.prompt}</span>
 							</p>
-						)
-					);
-				})}
-			</details>
+						))}
+					</AccordionItem>
+				</Accordion>
+			)}
 		</div>
 	);
 
 	return feedback.isPassed ? (
-		<Info>{FeedbackBody}</Info>
+		<Info className="animate-in fade-in-50">{FeedbackBody}</Info>
 	) : (
-		<Warning>{FeedbackBody}</Warning>
+		<Warning className="animate-in fade-in-50">{FeedbackBody}</Warning>
 	);
 };

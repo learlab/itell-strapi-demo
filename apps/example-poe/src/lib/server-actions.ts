@@ -2,6 +2,9 @@
 
 import { Prisma } from "@prisma/client";
 import db from "./db";
+import { cookies } from "next/headers";
+import { isLastChapter } from "./chapters";
+import { revalidatePath } from "next/cache";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -11,12 +14,31 @@ export const deleteSummary = async (id: string) => {
 	});
 };
 
+export const createSummary = async (input: Prisma.SummaryCreateInput) => {
+	return await db.summary.create({
+		data: input,
+	});
+};
+
+export const updateSummary = async (
+	id: string,
+	data: Prisma.SummaryUpdateInput,
+) => {
+	return await db.summary.update({
+		where: {
+			id,
+		},
+		data,
+	});
+};
+
 export const deleteNote = async (id: string) => {
-	return await db.note.delete({
+	await db.note.delete({
 		where: {
 			id,
 		},
 	});
+	revalidatePath(".");
 };
 
 export const createConstructedResponse = async (
@@ -35,7 +57,19 @@ export const createConstructedResponseFeedback = async (
 	});
 };
 
-export const updateUserWithClassId = async ({
+export const updateUser = async (
+	userId: string,
+	data: Prisma.UserUpdateInput,
+) => {
+	return await db.user.update({
+		where: {
+			id: userId,
+		},
+		data,
+	});
+};
+
+export const updateUserClassId = async ({
 	userId,
 	classId,
 }: {
@@ -48,6 +82,38 @@ export const updateUserWithClassId = async ({
 		},
 		data: {
 			classId,
+		},
+	});
+};
+
+export const incrementUserChapter = async (userId: string, chapter: number) => {
+	const user = await db.user.findUnique({ where: { id: userId } });
+	if (user) {
+		const userChapter = user.chapter;
+		// only update if the call is from the user's current chapter
+		if (userChapter === chapter && !isLastChapter(chapter)) {
+			return await db.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					chapter: {
+						increment: 1,
+					},
+				},
+			});
+		}
+	}
+};
+
+export const getUserChapterSummaryCount = async (
+	userId: string,
+	chapter: number,
+) => {
+	return await db.summary.count({
+		where: {
+			userId,
+			chapter,
 		},
 	});
 };
@@ -87,14 +153,30 @@ export const createFocusTime = async (input: Prisma.FocusTimeCreateInput) => {
 	});
 };
 
-export const updateUser = async (
-	userId: string,
-	data: Prisma.UserUpdateInput,
+export const createNote = async (
+	data: Prisma.NoteCreateInput,
+	revalidate = true,
 ) => {
-	return await db.user.update({
-		where: {
-			id: userId,
-		},
-		data,
-	});
+	await db.note.create({ data });
+
+	if (revalidate) {
+		revalidatePath(".");
+	}
+};
+
+export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
+	await db.note.update({ where: { id }, data });
+
+	revalidatePath(".");
+};
+
+export const setClassSettings = (classId: string) => {
+	if (classId === "wes_class") {
+		cookies().set(
+			"class_settings",
+			JSON.stringify({
+				no_feedback_pages: [1, 2],
+			}),
+		);
+	}
 };

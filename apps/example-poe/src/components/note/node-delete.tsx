@@ -1,38 +1,52 @@
 "use client";
 import { TrashIcon } from "lucide-react";
+
 import {
+	Button,
 	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
+	AlertDialogTrigger,
 	AlertDialogContent,
-	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/client-components";
-
-import { Button } from "../client-components";
-import { useState } from "react";
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogAction,
+	AlertDialogCancel,
+} from "../client-components";
 import { Spinner } from "../spinner";
+import { useState } from "react";
 
 type Props = {
+	// need this prop to tell note-card the modal is open
+	// otherwise the button becomes unclickable as useClickOutside is triggered
+	open: boolean;
+	onOpenChange: (val: boolean) => void;
 	onDelete: () => Promise<void>;
-	onOpen: () => void;
 };
 
-export default function NoteDeleteModal({ onDelete, onOpen }: Props) {
+export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	return (
-		<AlertDialog>
-			<AlertDialogTrigger asChild onClick={onOpen}>
-				<Button variant="ghost" size="sm">
+		<AlertDialog
+			open={open}
+			onOpenChange={(val) => {
+				onOpenChange(val);
+			}}
+		>
+			<AlertDialogTrigger>
+				<Button variant="ghost" size="sm" type="button">
 					<TrashIcon className="w-4 h-4" />
 				</Button>
 			</AlertDialogTrigger>
-			<AlertDialogContent className="z-50">
+			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Delete this Note</AlertDialogTitle>
+					<AlertDialogTitle>
+						Are you sure you want to delete this note?
+					</AlertDialogTitle>
+					<AlertDialogDescription>
+						This action cannot be undone.
+					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -43,6 +57,7 @@ export default function NoteDeleteModal({ onDelete, onOpen }: Props) {
 							await onDelete();
 							setIsLoading(false);
 						}}
+						className="bg-red-600 focus:ring-red-600"
 					>
 						{isLoading ? <Spinner /> : <span>Delete</span>}
 					</AlertDialogAction>
@@ -50,4 +65,4 @@ export default function NoteDeleteModal({ onDelete, onOpen }: Props) {
 			</AlertDialogContent>
 		</AlertDialog>
 	);
-}
+};

@@ -1,19 +1,28 @@
 import { env } from "@/env.mjs";
-import { SummaryResponseSchema } from "@/trpc/schema";
-import { SectionLocation } from "@/types/location";
+import { SummaryResponse, SummaryResponseSchema } from "@itell/core/summary";
 import { TEXTBOOK_NAME } from "./constants";
+
+// for returning something when AI feedback is not enabled
+export const createEmptyScore = (): SummaryResponse => ({
+	included_keyphrases: [],
+	suggested_keyphrases: [],
+	content: -1,
+	wording: -1,
+	similarity: -1,
+	containment: -1,
+});
 
 export const getScore = async ({
 	input,
-	location,
-}: { input: string; location: SectionLocation }) => {
+	chapter,
+}: { input: string; chapter: number }) => {
 	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/summary`, {
 		method: "POST",
 		body: JSON.stringify({
-			textbook_name: TEXTBOOK_NAME,
 			summary: input,
-			chapter_index: location.chapter,
-			section_index: location.section,
+			chapter_index: chapter,
+			textbook_name: TEXTBOOK_NAME,
+			section_index: null,
 		}),
 		headers: {
 			"Content-Type": "application/json",

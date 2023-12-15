@@ -5,38 +5,27 @@ import {
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
+	DialogTrigger,
 } from "@/components/ui/dialog";
 import { createConstructedResponseFeedback } from "@/lib/server-actions";
-import {
-	Button,
-	Checkbox,
-	Label,
-	RadioGroup,
-	RadioGroupItem,
-	TextArea,
-} from "../client-components";
+import { Button, Checkbox, Label, TextArea } from "../client-components";
 import { useState } from "react";
 import { Spinner } from "../spinner";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 type Props = {
-	isPositive: boolean;
+	type: "positive" | "negative";
 	pageSlug: string;
-	open: boolean;
-	onOpenChange: (val: boolean) => void;
 };
 
-export const FeedbackModal = ({
-	open,
-	onOpenChange,
-	isPositive,
-	pageSlug,
-}: Props) => {
+export const FeedbackModal = ({ type, pageSlug }: Props) => {
+	const { data: session } = useSession();
+	const isPositive = type === "positive";
 	const allTags = isPositive
 		? ["informative", "supportive", "helpful"]
 		: ["nonsensical", "inaccurate", "harmful"];
-	const { data: session } = useSession();
 	const [input, setInput] = useState("");
 	const [tags, setTags] = useState<string[]>([]);
 	const [isPending, setIsPending] = useState(false);
@@ -58,12 +47,18 @@ export const FeedbackModal = ({
 			},
 		});
 		setIsPending(false);
-		onOpenChange(false);
 		toast.success("Thanks for your feedback. We'll review it shortly.");
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Dialog>
+			<DialogTrigger asChild>
+				{isPositive ? (
+					<ThumbsUp className="hover:stroke-emerald-400 hover:cursor-pointer w-4 h-4" />
+				) : (
+					<ThumbsDown className="hover:stroke-rose-700 hover:cursor-pointer w-4 h-4" />
+				)}
+			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>Provide additional feedback</DialogHeader>
 				<div className="w-3/4">

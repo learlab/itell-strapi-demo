@@ -34,28 +34,23 @@ type FormState = { error: null | string };
 const SubmitButton = () => {
 	const { pending } = useFormStatus();
 	return (
-		<Button type="submit" disabled={pending}>
+		<Button disabled={pending}>
 			{pending && <Spinner className="mr-2 w-4 h-4" />} Save
 		</Button>
 	);
 };
 
 export const WebsiteSettings = ({ user }: { user: User }) => {
-	const { data: session } = useSession();
-
 	const onSubmit = async (
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
-		if (!session?.user.id) {
-			return { error: "Failed to get user status. Please log in again" };
-		}
 		const data = {
 			timeZone: formData.get("time_zone") as string,
 		};
 
 		try {
-			await updateUser(session.user.id, data);
+			await updateUser(user.id, data);
 			toast.success("Settings saved!");
 			return { error: null };
 		} catch (err) {
@@ -68,7 +63,7 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 
 	return (
 		<div className="space-y-4">
-			<h3 className="mb-4 text-lg font-semibold leading-relaxed">
+			<h3 className="mb-4 text-lg font-medium leading-relaxed">
 				Website Settings
 			</h3>
 			<form action={formAction} className="space-y-2 max-w-2xl">

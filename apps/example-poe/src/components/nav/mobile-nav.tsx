@@ -13,17 +13,6 @@ interface MobileNavProps {
 	children?: React.ReactNode;
 }
 
-const TopLink = ({ href, text }: { href: string; text: string }) => {
-	return (
-		<Link
-			href={href}
-			className="flex w-full items-center rounded-md p-2 text-sm font-medium"
-		>
-			<span className="font-bold">{text}</span>
-		</Link>
-	);
-};
-
 export function MobileNav({ items, children }: MobileNavProps) {
 	useLockBody();
 
@@ -34,10 +23,12 @@ export function MobileNav({ items, children }: MobileNavProps) {
 			)}
 		>
 			<div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
-				<div className="border-b-2">
-					<TopLink href="/" text="Home" />
-					<TopLink href="/dashboard" text="Dashboard" />
-				</div>
+				<Link
+					href="/"
+					className="flex w-full items-center rounded-md p-2 text-sm font-medium border-border border-b-2"
+				>
+					<span className="font-bold">Home</span>
+				</Link>
 				<nav className="grid grid-flow-row auto-rows-max text-sm">
 					{items.map((item, index) => (
 						<Link

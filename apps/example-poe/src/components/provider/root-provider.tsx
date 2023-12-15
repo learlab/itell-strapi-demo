@@ -4,7 +4,8 @@ import { Provider as BalancerProvider } from "react-wrap-balancer";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { TRPCProvider } from "@/trpc/trpc-provider";
-import { ThemeProvider } from "../theme/theme-provider";
+
+import { ThemeProvider } from "next-themes";
 
 export const RootProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -12,8 +13,8 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
 			<TRPCProvider>
 				<BalancerProvider>
 					<ThemeProvider attribute="class" defaultTheme="light">
-						{children}
 						<Toaster richColors />
+						{children}
 					</ThemeProvider>
 				</BalancerProvider>
 			</TRPCProvider>

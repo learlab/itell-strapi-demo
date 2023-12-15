@@ -3,19 +3,9 @@ import Balancer from "react-wrap-balancer";
 
 const cards = [
 	{
-		front: "What is GDP and how is it computed?",
-		back: "GDP is defined as the current value of all final goods and services produced in a nation in a year.",
-		url: "/module-2/chapter-5/section-1",
-	},
-	{
-		front: "What is the difference between microeconomics and macroeconomics?",
-		back: "Microeconomics focuses of individual actors within an economy, whereas macroeconomics focuses on the economy as a whole, or the sum of all individual actions. ",
-		url: "/module-1/chapter-1/section-2",
-	},
-	{
-		front:
-			"Are households primarily buyers or sellers in the goods and services market? In the labor market? ",
-		back: "Households are primarily buyers in the goods and services market, as they use their income to purchase food, housing, education, transportation and many other items. Households are typically sellers in the labor market, offering their labor for a salary or hourly wage in order to earn a living.  ",
+		front: "What is the `^` operator called in Python?",
+		back: "It is a bitwise operator called XOR.",
+		url: "/chapter-1/#arithmetic-operators",
 	},
 ];
 

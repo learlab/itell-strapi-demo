@@ -12,6 +12,7 @@ import { ClassInfo } from "./settings/class-info";
 import { Profile } from "./settings/profile";
 import { ClassRequestModal } from "./settings/class-request-modal";
 import { WebsiteSettings } from "./settings/website-settings";
+import { ClassRegister } from "./settings/class-register";
 
 export const SettingsForm = async ({ user }: { user: User }) => {
 	const teacher = await getTeacherWithClassId(user.classId);
@@ -28,7 +29,11 @@ export const SettingsForm = async ({ user }: { user: User }) => {
 					<Separator />
 					<WebsiteSettings user={user} />
 					<Separator />
-					<ClassInfo teacher={teacher} />
+					{teacher ? (
+						<ClassInfo teacher={teacher} user={user} />
+					) : (
+						<ClassRegister user={user} />
+					)}
 				</CardContent>
 			</Card>
 			<ClassRequestModal user={user} />

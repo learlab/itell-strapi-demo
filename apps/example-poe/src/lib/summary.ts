@@ -1,14 +1,18 @@
-import { SummaryResponse } from "@/trpc/schema";
+import { SummaryResponse } from "@itell/core/summary";
 import { ScoreThreshold, ScoreType } from "./constants";
 
 export interface Feedback {
 	isPassed: boolean;
 	prompt: string | null;
 }
+
+export type IndividualPrompt = { type: ScoreType; feedback: Feedback };
+
 export type SummaryFeedbackType = {
 	isPassed: boolean;
 	prompt: string;
-	individualPrompt: Record<ScoreType, Feedback>;
+	promptDetails: IndividualPrompt[] | null; // can be null when AI feedback is not enabled
+	suggestedKeyphrases: string[] | null;
 };
 
 export const containmentFeedback = (score: number): Feedback => {
@@ -89,6 +93,15 @@ export const wordingFeedback = (score: number | null): Feedback => {
 	};
 };
 
+export const simpleFeedback = (): SummaryFeedbackType => {
+	return {
+		isPassed: true,
+		prompt: "You summary is accepted.",
+		promptDetails: null,
+		suggestedKeyphrases: null,
+	};
+};
+
 export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 	const wording = wordingFeedback(response.wording);
 	const content = contentFeedback(response.content);
@@ -112,21 +125,31 @@ export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 				"Good job on summarizing this section. Please move forward to the next section.";
 		}
 	} else {
-		prompt = `Before moving onto the next section, you will need to revise the summary you wrote using the feedback provided.
-
-		Try to include the following key ideas from the section above: ${response.suggested_keyphrases.join(
-			", ",
-		)}`;
+		prompt =
+			"Before moving onto the next section, you will need to revise the summary you wrote using the feedback provided.";
 	}
 
 	return {
 		isPassed,
 		prompt,
-		individualPrompt: {
-			[ScoreType.wording]: wording,
-			[ScoreType.content]: content,
-			[ScoreType.containment]: containment,
-			[ScoreType.similarity]: similarity,
-		},
+		suggestedKeyphrases: response.suggested_keyphrases,
+		promptDetails: [
+			{
+				type: ScoreType.wording,
+				feedback: wording,
+			},
+			{
+				type: ScoreType.content,
+				feedback: content,
+			},
+			{
+				type: ScoreType.similarity,
+				feedback: similarity,
+			},
+			{
+				type: ScoreType.containment,
+				feedback: containment,
+			},
+		],
 	};
 };

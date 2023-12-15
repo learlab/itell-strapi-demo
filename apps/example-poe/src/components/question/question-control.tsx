@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { QuestionBox } from "./question-box";
-import { SectionLocation } from "@/types/location";
 import { useQA } from "../context/qa-context";
 import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
@@ -13,17 +12,19 @@ type Question = { question: string; answer: string };
 type Props = {
 	isPageMasked: boolean;
 	selectedQuestions: Map<number, Question>;
-	location: SectionLocation;
+	chapter: number;
+	isFeedbackEnabled: boolean;
 };
 
 export const QuestionControl = ({
-	selectedQuestions,
-	location,
+	isFeedbackEnabled,
 	isPageMasked,
+	selectedQuestions,
+	chapter,
 }: Props) => {
 	// Ref for current chunk
-	const [nodes, setNodes] = useState<JSX.Element[]>([]);
 	const { currentChunk, chunks, setChunks } = useQA();
+	const [nodes, setNodes] = useState<JSX.Element[]>([]);
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
@@ -54,21 +55,10 @@ export const QuestionControl = ({
 		}
 	};
 
-	const hideScrollBackButton = () => {
-		const button = document.querySelector(
-			".scroll-back-button-container",
-		) as HTMLDivElement;
-
-		if (button) {
-			button.remove();
-		}
-	};
-
 	const insertNextChunkButton = (el: HTMLDivElement) => {
 		// insert button container
 		const buttonContainer = document.createElement("div");
-		buttonContainer.className =
-			"next-chunk-button-container flex justify-center items-center p-4 gap-2";
+		buttonContainer.className = "next-chunk-button-container";
 		el.style.filter = "none";
 		el.appendChild(buttonContainer);
 
@@ -96,10 +86,11 @@ export const QuestionControl = ({
 		addNode(
 			createPortal(
 				<QuestionBox
+					isFeedbackEnabled={isFeedbackEnabled}
+					isPageMasked={isPageMasked}
 					question={q.question}
 					answer={q.answer}
-					chapter={location.chapter}
-					section={location.section}
+					chapter={chapter}
 					subsection={index}
 				/>,
 				questionContainer,

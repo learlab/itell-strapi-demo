@@ -16,23 +16,26 @@ import { useSession } from "next-auth/react";
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 import { useNotesStore } from "@/lib/store";
 import { createNoteElements, serializeRange } from "@itell/core/note";
-import { SectionLocation } from "@/types/location";
-import { Spinner } from "../spinner";
+import { revalidatePath } from "next/cache";
+import { createNote } from "@/lib/server-actions";
 
 type SelectionData = ReturnType<typeof useTextSelection>;
 
-export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
+export const NoteToolbar = ({ chapter }: { chapter: number }) => {
 	const [show, setShow] = useState(true);
-	const [target, setTarget] = useState<HTMLElement | undefined>(undefined);
+	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
-	const { createNote, incrementHighlightCount, incrementNoteCount } =
-		useNotesStore();
-	const createHighlight = trpc.note.create.useMutation();
 	const { data: session } = useSession();
+	const { createNote: createContextNote } = useNotesStore();
 
 	const handleClick = (event: Event) => {
 		if (event.target instanceof HTMLElement) {
-			if (event.target.classList.contains("question-box-text")) {
+			if (
+				event.target.tagName === "SPAN" ||
+				event.target.classList.contains("cm-line") ||
+				event.target.classList.contains("cm-editor") ||
+				event.target.classList.contains("question-box-text")
+			) {
 				setShow(false);
 			} else {
 				setShow(true);
@@ -47,7 +50,9 @@ export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 			el.addEventListener("click", handleClick);
 		}
 
-		return () => el.removeEventListener("click", handleClick);
+		return () => {
+			el.removeEventListener("click", handleClick);
+		};
 	}, []);
 
 	const commands = [
@@ -68,15 +73,13 @@ export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 						color: noteColor,
 					});
 
-					createNote({
+					createContextNote({
 						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
 						color: noteColor,
 						serializedRange,
 					});
-
-					incrementNoteCount();
 				} else {
 					toast.warning("Please select some text to take a note");
 				}
@@ -109,19 +112,22 @@ export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 						selection?.removeAllRanges();
 					}
 
-					await createHighlight.mutateAsync({
-						id: id,
+					await createNote({
+						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
-						location,
+						chapter,
 						color: defaultHighlightColor,
 						range: serializedRange,
+						user: {
+							connect: {
+								id: session?.user?.id as string,
+							},
+						},
 					});
 
-					incrementHighlightCount();
 					createHighlightListeners(id, (event) => {
 						deleteHighlightListener(event);
-						incrementHighlightCount(-1);
 					});
 				} else {
 					toast.warning("Please select some text to take a note");
@@ -134,7 +140,7 @@ export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 			action: async ({ textContent }: SelectionData) => {
 				if (textContent) {
 					await navigator.clipboard.writeText(textContent);
-					toast.info("Copied to clipboard");
+					toast.success("Copied to clipboard");
 				}
 			},
 		},
@@ -161,27 +167,23 @@ export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 						)}
 						style={style}
 					>
-						{createHighlight.isLoading ? (
-							<Spinner />
-						) : (
-							commands.map((command) => (
-								<Button
-									variant="ghost"
-									color="blue-gray"
-									className="flex items-center gap-2 p-2"
-									onClick={() => {
-										if (!session?.user && command.label !== "Copy") {
-											return toast.warning("You need to be logged in.");
-										}
-										command.action(data);
-									}}
-									key={command.label}
-								>
-									{command.icon}
-									{command.label}
-								</Button>
-							))
-						)}
+						{commands.map((command) => (
+							<Button
+								variant="ghost"
+								color="blue-gray"
+								className="flex items-center gap-2 p-2"
+								onClick={() => {
+									if (!session?.user && command.label !== "Copy") {
+										return toast.warning("You need to be logged in first.");
+									}
+									command.action(data);
+								}}
+								key={command.label}
+							>
+								{command.icon}
+								{command.label}
+							</Button>
+						))}
 					</div>
 				);
 			}}

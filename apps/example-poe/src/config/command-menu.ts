@@ -1,11 +1,11 @@
-import { allSectionsSorted } from "@/lib/sections";
-import { makeLocationHref } from "@/lib/utils";
+import { allChaptersSorted } from "@/lib/chapters";
+import { makeChapterHref } from "@/lib/utils";
 
 export const CommandMenuConfig = {
-	textbookPages: allSectionsSorted.map((s) => {
+	textbookPages: allChaptersSorted.map((c) => {
 		return {
-			title: `${s.location.chapter}.${s.location.section} ${s.title}`,
-			href: makeLocationHref(s.location),
+			title: `${c.chapter}. ${c.title}`,
+			href: makeChapterHref(c.chapter),
 		};
 	}),
 	tools: [

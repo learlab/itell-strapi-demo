@@ -43,7 +43,7 @@ export const StudentBadges = async ({ user }: { user: User }) => {
 		<>
 			<DashboardBadge
 				className={
-					comparisons.totalCount > 0 ? "border-green-500" : "border-destructive"
+					comparisons.totalCount >= 0 ? "border-info" : "border-destructive"
 				}
 				title="Total Summaries"
 				value={studentStats.totalCount}
@@ -53,9 +53,7 @@ export const StudentBadges = async ({ user }: { user: User }) => {
 			/>
 			<DashboardBadge
 				className={
-					comparisons.passedCount > 0
-						? "border-green-500"
-						: "border-destructive"
+					comparisons.passedCount >= 0 ? "border-info" : "border-destructive"
 				}
 				title="Passed Summaries"
 				value={studentStats.passedCount}

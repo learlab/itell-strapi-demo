@@ -9,8 +9,18 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { updateUserWithClassId } from "@/lib/server-actions";
-import { Button } from "@itell/ui/client";
+import { setClassSettings, updateUserClassId } from "@/lib/server-actions";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	Button,
+} from "@itell/ui/client";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,14 +33,17 @@ type Props = {
 };
 
 export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
-	const [open, setOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(true);
 	const router = useRouter();
 	const [joinClassLoading, setJoinClassLoading] = useState(false);
 	const canJoinClass = !user.classId && teacherToJoin;
 
 	const joinClass = async () => {
 		setJoinClassLoading(true);
-		await updateUserWithClassId({ userId: user.id, classId });
+		await updateUserClassId({ userId: user.id, classId });
+
+		setClassSettings(classId);
+
 		setJoinClassLoading(false);
 
 		toast.success("You have joined the class! Redirecting.");
@@ -40,16 +53,17 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Join a class</DialogTitle>
-					<DialogDescription>
+		<AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>Join a class</AlertDialogTitle>
+					<AlertDialogDescription>
 						{user.classId ? (
 							<p>
-								It looks like you are trying to join a class, but you have
-								already been in one. Contact lear.lab.vu@gmail.com if you
-								believe this is a mistake.
+								It looks like you are trying to join a class with class code{" "}
+								<span className="font-semibold">{classId}</span>, but you are
+								already in a class. Contact lear.lab.vu@gmail.com if you believe
+								this is a mistake.
 							</p>
 						) : teacherToJoin ? (
 							<p>
@@ -65,22 +79,22 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 								your teacher.
 							</p>
 						)}
-					</DialogDescription>
-				</DialogHeader>
-				<DialogFooter>
-					<Button onClick={() => setOpen(false)}>Cancel</Button>
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					{canJoinClass && (
-						<Button
+						<AlertDialogAction
 							onClick={joinClass}
-							variant="secondary"
 							disabled={joinClassLoading}
+							className="bg-primary focus:ring-primary"
 						>
 							{joinClassLoading && <Spinner className="mr-2 inline" />}
 							Confirm
-						</Button>
+						</AlertDialogAction>
 					)}
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
 	);
 };

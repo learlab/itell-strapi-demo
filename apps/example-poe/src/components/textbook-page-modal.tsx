@@ -1,33 +1,33 @@
-import { Section } from "contentlayer/generated";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { MainMdx } from "./mdx";
-import { Button } from "./client-components";
+import { Chapter } from "contentlayer/generated";
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	DialogTrigger,
+} from "./client-components";
 import Link from "next/link";
 import { buttonVariants } from "@itell/ui/server";
-import { makeLocationHref } from "@/lib/utils";
+import { MainMdx } from "./main-mdx";
 
 export const TextbookPageModal = ({
-	page,
+	chapter,
 	title,
-}: { page: Section; title?: string }) => {
+}: { chapter: Chapter; title?: string }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button variant="ghost" className="text-lg font-bold underline">
-					{title ? title : page.title}
+					{title ? title : chapter.title}
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-3xl h-[800px] top-4 bottom-4 overflow-y-auto  ">
 				<div className="flex justify-end mt-8">
-					<Link
-						href={makeLocationHref(page.location)}
-						className={buttonVariants()}
-					>
+					<Link href={chapter.url} className={buttonVariants()}>
 						Go to section
 					</Link>
 				</div>
 
-				<MainMdx code={page.body.code} />
+				<MainMdx code={chapter.body.code} />
 			</DialogContent>
 		</Dialog>
 	);

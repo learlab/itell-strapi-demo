@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Label } from "@/components/client-components";
-import { Spinner } from "@/components/spinner";
 import {
 	Dialog,
 	DialogTrigger,
@@ -10,6 +9,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { Spinner } from "@/components/spinner";
 import { Input } from "@itell/ui/server";
 import { User } from "@prisma/client";
 
@@ -62,8 +62,7 @@ export const ClassRequestModal = ({ className, user }: Props) => {
 					<DialogTitle>Request a class code</DialogTitle>
 					<DialogDescription>
 						Send us a message to use this textbook for your own class. After you
-						are approved, you will receive a unique class code from email to
-						send to students.
+						are approved, you will be emailed a class code to send to students.
 					</DialogDescription>
 				</DialogHeader>
 				<form className="space-y-4" onSubmit={handleSubmit}>

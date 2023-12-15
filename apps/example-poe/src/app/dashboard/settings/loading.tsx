@@ -29,14 +29,14 @@ export default function DashboardSettingsLoading() {
 				<CardContent className="space-y-4">
 					<Profile.Skeleton />
 					<Separator />
-					<h3 className="mb-4 text-lg font-semibold leading-relaxed">
+					<h3 className="mb-4 text-lg font-medium leading-relaxed">
 						Website Settings
 					</h3>
 					<Skeleton className="h-8 w-[120px]" />
 					<Skeleton className="h-24 w-[400px]" />
 					<Skeleton className="h-8 w-[40px]" />
 					<Separator />
-					<h3 className="mb-4 text-lg font-semibold leading-relaxed">
+					<h3 className="mb-4 text-lg font-medium leading-relaxed">
 						Class Information
 					</h3>
 					<Skeleton className="h-8 w-[400px]" />
