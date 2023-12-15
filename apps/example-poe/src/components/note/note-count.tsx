@@ -9,6 +9,7 @@ import {
 	HoverCardTrigger,
 } from "@/components/client-components";
 import pluralize from "pluralize";
+import { StickyNoteIcon } from "lucide-react";
 
 type Props = {
 	count: Count;
@@ -30,17 +31,20 @@ export const NoteCount = () => {
 	const count = useNotesStore((store) => store.count);
 	return (
 		<HoverCard>
-			<HoverCardTrigger asChild>
-				<Button variant="link" className="pl-0">
-					{`${pluralize("note", count.note, true)}, ${pluralize(
-						"highlight",
-						count.highlight,
-						true,
-					)}`}
+			<HoverCardTrigger>
+				<Button variant={"link"} className="text-sm px-0 text-left">
+					<span>
+						<StickyNoteIcon className="w-4 h-4 mr-1 inline" />
+						{`${pluralize("note", count.note, true)}, ${pluralize(
+							"highlight",
+							count.highlight,
+							true,
+						)}`}
+					</span>
 				</Button>
 			</HoverCardTrigger>
-			<HoverCardContent className="w-40 text-sm">
-				<div>Leave a note or highlight by selecting the text</div>
+			<HoverCardContent className="w-48 text-sm">
+				<p>Leave a note or highlight by selecting the text</p>
 			</HoverCardContent>
 		</HoverCard>
 	);

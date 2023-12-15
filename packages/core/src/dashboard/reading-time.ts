@@ -14,8 +14,7 @@ export const PrevDaysLookup = {
 } as const;
 
 export type ReadingTimeEntry = {
-	totalViewTime: number | null;
-	data: { totalViewTime: number }[];
+	totalViewTime: number;
 	created_at: Date;
 };
 
@@ -26,24 +25,24 @@ export const getGroupedReadingTime = async (
 	// fetch reading time during last week
 	const readingTimeByGroup = data.reduce((acc, entry) => {
 		// for some legacy records, totalViewTime is null
-		const totalViewTime = entry.totalViewTime
-			? entry.totalViewTime
-			: (entry.data as { totalViewTime: number }[]).reduce(
-					(acc, cur) => acc + cur.totalViewTime,
-					0,
-			  );
 		const entryDate = new Date(entry.created_at);
 		// find the smallest date in intervalDates that is greater than entryDate
 		const thresholdDate = intervalDates.find((date) => entryDate <= date);
 
 		if (thresholdDate) {
 			const formattedDate = formatDate(thresholdDate, "yyyy-MM-dd");
-			acc.set(formattedDate, (acc.get(formattedDate) || 0) + totalViewTime);
+			acc.set(
+				formattedDate,
+				(acc.get(formattedDate) || 0) + entry.totalViewTime,
+			);
 		} else {
 			// when the entry date is greater than the last date in intervalDates, group it with the last date
 			const lastDate = intervalDates[intervalDates.length - 1];
 			const formattedDate = formatDate(lastDate, "yyyy-MM-dd");
-			acc.set(formattedDate, (acc.get(formattedDate) || 0) + totalViewTime);
+			acc.set(
+				formattedDate,
+				(acc.get(formattedDate) || 0) + entry.totalViewTime,
+			);
 		}
 
 		return acc;

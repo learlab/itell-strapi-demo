@@ -7,32 +7,55 @@ import {
 	AccordionItem as BaseAccordionItem,
 	AccordionTrigger as BaseAccordionTrigger,
 } from "./accordion";
+import { cn } from "@itell/core/utils";
 
-type Props = {
+type AccordionProps = {
+	className?: string;
 	children: React.ReactNode;
 	value: string[] | string;
-	className?: string;
+};
+
+type AccordionItemProps = React.ComponentPropsWithoutRef<
+	typeof BaseAccordionItem
+> & {
+	value: string;
+	title?: string;
+	children: React.ReactNode;
+	accordionTriggerClassName?: string;
+	accordionContentClassName?: string;
 };
 
 export const AccordionItem = ({
 	value,
 	title,
 	children,
-}: { value: string; title?: string; children: React.ReactNode }) => {
+	accordionTriggerClassName,
+	accordionContentClassName,
+	...rest
+}: AccordionItemProps) => {
 	return (
-		<BaseAccordionItem value={value}>
+		<BaseAccordionItem value={value} {...rest}>
 			{/* radix accordion title uses h3, which is too large in mdx components */}
-			<BaseAccordionTrigger className="text-lg py-1">
+			<BaseAccordionTrigger
+				className={cn("text-lg py-1", accordionTriggerClassName)}
+			>
 				{title || value}
 			</BaseAccordionTrigger>
 			<BaseAccordionContent>
-				<div className="font-light leading-relaxed">{children}</div>
+				<div
+					className={cn(
+						"font-light leading-relaxed",
+						accordionContentClassName,
+					)}
+				>
+					{children}
+				</div>
 			</BaseAccordionContent>
 		</BaseAccordionItem>
 	);
 };
 
-export const Accordion = ({ children, value, className }: Props) => {
+export const Accordion = ({ children, value, className }: AccordionProps) => {
 	if (typeof value === "string") {
 		value = [value];
 	}

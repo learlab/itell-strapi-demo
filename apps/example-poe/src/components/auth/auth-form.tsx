@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { GoogleLoginButton, OutlookLoginButton } from "./login-buttons";
 import { useEffect, useTransition } from "react";
-import Spinner from "../spinner";
+import { Spinner } from "../spinner";
 
 export const AuthForm = () => {
 	const { data: session } = useSession();

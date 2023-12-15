@@ -30,6 +30,18 @@
       "require": "./dist/dashboard.cjs.js",
       "import": "./dist/dashboard.es.js"
     },
+    "./components": {
+      "require": "./dist/components.cjs.js",
+      "import": "./dist/components.es.js"
+    },
+    "./summary": {
+      "require": "./dist/summary.cjs.js",
+      "import": "./dist/summary.es.js"
+    },
+    "./qa": {
+      "require": "./dist/qa.cjs.js",
+      "import": "./dist/qa.es.js"
+    },
     "./contentlayer": {
       "require": "./dist/contentlayer.cjs.js",
       "import": "./dist/contentlayer.es.js"
@@ -46,6 +58,8 @@
     "hooks.d.ts",
     "utils.d.ts",
     "config.d.ts",
+    "components.d.ts",
+    "summary.d.ts",
     "contentlayer.d.ts"
   ],
   "scripts": {

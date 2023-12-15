@@ -7,11 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export const keyof = <T extends Object>(obj: T) =>
-	Object.keys(obj) as (keyof T)[];
+export const keyof = <T extends {}>(obj: T) => Object.keys(obj) as (keyof T)[];
 
 export const groupby = <
-	TData extends Object,
+	TData extends {},
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	TTransformer extends (arg: TData) => any = (arg: TData) => TData,
 >(

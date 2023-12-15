@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import Spinner from "@/components/spinner";
+import { Spinner } from "@/components/spinner";
 import {
 	AlertDialog,
 	AlertDialogAction,

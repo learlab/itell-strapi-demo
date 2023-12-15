@@ -1,13 +1,13 @@
 import { ScoreType } from "@/lib/constants";
-import { SummaryFeedback } from "@/lib/summary";
+import { SummaryFeedbackType } from "@/lib/summary";
 import { keyof } from "@itell/core/utils";
 import { Info, Typography, Warning } from "@itell/ui/server";
 
 type Props = {
-	feedback: SummaryFeedback;
+	feedback: SummaryFeedbackType;
 };
 
-export default function Feedback({ feedback }: Props) {
+export const SummaryFeedback = ({ feedback }: Props) => {
 	const FeedbackBody = (
 		<div className="text-light leading-relaxed">
 			{feedback.prompt}
@@ -43,4 +43,4 @@ export default function Feedback({ feedback }: Props) {
 	) : (
 		<Warning>{FeedbackBody}</Warning>
 	);
-}
+};

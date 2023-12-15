@@ -19,10 +19,18 @@ export const deleteNote = async (id: string) => {
 	});
 };
 
-export const createQuestionAnswer = async (
-	input: Prisma.ConstructedResponsesCreateInput,
+export const createConstructedResponse = async (
+	input: Prisma.ConstructedResponseCreateInput,
 ) => {
-	return await db.constructedResponses.create({
+	return await db.constructedResponse.create({
+		data: input,
+	});
+};
+
+export const createConstructedResponseFeedback = async (
+	input: Prisma.ConstructedResponseFeedbackCreateInput,
+) => {
+	return await db.constructedResponseFeedback.create({
 		data: input,
 	});
 };
@@ -67,8 +75,14 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 	return user;
 };
 
-export const createEvents = async (input: Prisma.EventCreateInput[]) => {
-	return await db.event.createMany({
+export const createEvent = async (input: Prisma.EventCreateInput) => {
+	return await db.event.create({
+		data: input,
+	});
+};
+
+export const createFocusTime = async (input: Prisma.FocusTimeCreateInput) => {
+	return await db.focusTime.create({
 		data: input,
 	});
 };

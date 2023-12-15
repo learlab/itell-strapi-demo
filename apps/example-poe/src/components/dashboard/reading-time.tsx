@@ -49,15 +49,14 @@ const getReadingTime = async (
 	startDate: Date,
 	intervalDates: Date[],
 ) => {
-	const data = (await db.focusTime.findMany({
+	const data = await db.focusTime.findMany({
 		where: {
 			userId: uid,
 			created_at: {
 				gte: startDate,
 			},
 		},
-		// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-	})) as { data: any; totalViewTime: number; created_at: Date }[];
+	});
 	const readingTimeGrouped = await getGroupedReadingTime(data, intervalDates);
 	return readingTimeGrouped;
 };
@@ -100,18 +99,13 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 					</HoverCard>
 				</CardTitle>
 				<CardDescription>
-					<p>
-						{name ? name : "You"} spent {(totalViewTime / 60).toFixed(2)}{" "}
-						minutes reading the textbook, wrote {""}
-						<Link
-							className="font-semibold underline"
-							href="/dashboard/summaries"
-						>
-							{pluralize("summary", summaryCounts, true)}
-						</Link>{" "}
-						during{" "}
-						{`${format(startDate, "LLL, dd")}-${format(new Date(), "LLL, dd")}`}
-					</p>
+					{name ? name : "You"} spent {(totalViewTime / 60).toFixed(2)} minutes
+					reading the textbook, wrote {""}
+					<Link className="font-semibold underline" href="/dashboard/summaries">
+						{pluralize("summary", summaryCounts, true)}
+					</Link>{" "}
+					during{" "}
+					{`${format(startDate, "LLL, dd")}-${format(new Date(), "LLL, dd")}`}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="pl-2 space-y-2">

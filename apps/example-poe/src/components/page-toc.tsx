@@ -1,6 +1,5 @@
 import { cn } from "@itell/core/utils";
 import { BookmarkIcon } from "lucide-react";
-import { NoteCount } from "./note/note-count";
 
 type Heading = {
 	level: "one" | "two" | "three" | "other";
@@ -11,7 +10,7 @@ type TocSidebarProps = {
 	headings: Heading[];
 };
 
-export function TocSidebar({ headings }: TocSidebarProps) {
+export const PageToc = ({ headings }: TocSidebarProps) => {
 	return (
 		<div>
 			<p className="font-medium text-sm flex items-center">
@@ -41,9 +40,6 @@ export function TocSidebar({ headings }: TocSidebarProps) {
 						</li>
 					))}
 			</ul>
-			<div className="mt-8">
-				<NoteCount />
-			</div>
 		</div>
 	);
-}
+};

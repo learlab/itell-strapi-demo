@@ -15,6 +15,7 @@ export default async function getChapters({
 		.map((section) => ({
 			id: section._id,
 			title: section.title,
+			module: section.location.module,
 			chapter: section.location.chapter,
 			section: section.location.section,
 			url: section.url,

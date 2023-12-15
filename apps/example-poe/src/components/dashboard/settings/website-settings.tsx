@@ -11,7 +11,7 @@ import {
 } from "@/components/client-components";
 import { User } from "@prisma/client";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
-import Spinner from "@/components/spinner";
+import { Spinner } from "@/components/spinner";
 import { useFormState, useFormStatus } from "react-dom";
 import { Errorbox } from "@itell/ui/server";
 import { useSession } from "next-auth/react";

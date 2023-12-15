@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Label } from "@/components/client-components";
-import Spinner from "@/components/spinner";
+import { Spinner } from "@/components/spinner";
 import {
 	Dialog,
 	DialogTrigger,

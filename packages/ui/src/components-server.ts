@@ -11,5 +11,4 @@ export * from "./components/blockquote";
 export * from "./components/steps";
 export * from "./components/columns";
 export * from "./components/youtube";
-export * from "./components/checkbox";
 export * from "./components/dashboard-badge";

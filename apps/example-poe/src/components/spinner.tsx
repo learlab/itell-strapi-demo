@@ -5,6 +5,6 @@ type Props = {
 	className?: string;
 };
 
-export default function Spinner({ className }: Props) {
+export const Spinner = ({ className }: Props) => {
 	return <Loader2 className={cn("h-4 w-4 animate-spin", className)} />;
-}
+};

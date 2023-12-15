@@ -45,12 +45,6 @@ const Section = defineDocumentType(() => ({
 			description: "Whether the section requires a summary",
 			required: false,
 		},
-		page_slug: {
-			type: "string",
-			default: "placeholder",
-			description: "slug of page",
-			required: false,
-		},
 	},
 	computedFields: {
 		url: {

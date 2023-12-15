@@ -1,72 +1,36 @@
 import Balancer from "react-wrap-balancer";
-import { PageSummary } from "@/components/summary/page-summary";
 import { notFound } from "next/navigation";
 import { SectionLocation } from "@/types/location";
-import getChapters from "@/lib/sidebar";
-import { PageVisibilityModal } from "@/components/page-visibility-modal";
 import { getPagerLinksForSection } from "@/lib/pager";
-import NoteList from "@/components/note/note-list";
-import Highlighter from "@/components/note/note-toolbar";
-import { ArrowUpIcon, PencilIcon } from "lucide-react";
+import { NoteList } from "@/components/note/note-list";
+import { NoteToolbar } from "@/components/note/note-toolbar";
 import { Fragment, Suspense } from "react";
 import { allSectionsSorted } from "@/lib/sections";
-import { Button, Pager } from "@/components/client-components";
-import { ModuleSidebar } from "@/components/module-sidebar";
-import { TocSidebar } from "@/components/toc-sidebar";
+import { Pager } from "@/components/client-components";
+import { PageToc } from "@/components/page-toc";
 import { Section } from "contentlayer/generated";
-import Spinner from "@/components/spinner";
-import { EventTracker } from "@/components/telemetry/event-tracker";
+import { Spinner } from "@/components/spinner";
 import { PageContent } from "@/components/section/page-content";
 import { QuestionControl } from "@/components/question/question-control";
 import { getCurrentUser } from "@/lib/auth";
 import { env } from "@/env.mjs";
 import { getPageQuestions } from "@/lib/question";
-
-export const generateStaticParams = async () => {
-	return allSectionsSorted.map((section) => {
-		return {
-			slug: section.url.split("/"),
-		};
-	});
-};
-
-export const generateMetadata = ({
-	params,
-}: { params: { slug: string[] } }) => {
-	const section = allSectionsSorted.find(
-		(section) => section.url === params.slug.join("/"),
-	);
-	if (section) {
-		return {
-			title: section.title,
-			description: section.body.raw.slice(0, 100),
-		};
-	}
-};
-
-const AnchorLink = ({
-	text,
-	href,
-	icon,
-}: { text: string; href: string; icon: React.ReactNode }) => {
-	return (
-		<a href={href}>
-			<Button
-				size="sm"
-				variant="ghost"
-				className="flex items-center gap-1 mb-0 py-1"
-			>
-				{icon}
-				{text}
-			</Button>
-		</a>
-	);
-};
+import { PageTitle } from "@/components/page-title";
+import { getUser } from "@/lib/user";
+import { isLocationAfter, isLocationUnlockedWithoutUser } from "@/lib/location";
+import { PageStatusModal } from "@/components/page-status/page-status-modal";
+import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
+import { PageStatus } from "@/components/page-status/page-status";
+import { NoteCount } from "@/components/note/note-count";
+import { isProduction } from "@/lib/constants";
+import { EventTracker } from "@/components/telemetry/event-tracker";
 
 export default async function ({ params }: { params: { slug: string[] } }) {
-	const user = await getCurrentUser();
+	const sessionUser = await getCurrentUser();
+	const user = sessionUser ? await getUser(sessionUser.id) : null;
 	const whitelist = JSON.parse(env.SUMMARY_WHITELIST || "[]") as string[];
-	const showVisibilityModal = !whitelist.includes(user?.email || "");
+	const isUserWhitelisted = whitelist.includes(user?.email || "");
+
 	const path = params.slug.join("/");
 	const sectionIndex = allSectionsSorted.findIndex((section) => {
 		return section.url === path;
@@ -80,13 +44,6 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	const enableQA = section.qa;
 	const currentLocation = section.location as SectionLocation;
 	const pagerLinks = getPagerLinksForSection(sectionIndex);
-	const chapters = await getChapters({
-		module: currentLocation.module,
-		allSections: allSectionsSorted,
-	});
-
-	const hasSummary = section.summary;
-	const isDev = process.env.NODE_ENV === "development";
 
 	// Would be easier if we change chapter and section in Supabase to strings that match the
 	// formatting of subsection indices (i.e., strings with leading zeroes)
@@ -102,7 +59,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		{ question: string; answer: string }
 	>();
 	if (enableQA) {
-		const chooseQuestion = (question: typeof questions[0]) => {
+		const chooseQuestion = (question: (typeof questions)[0]) => {
 			let targetQuestion = question.question;
 			// band-aid solution for YouTube videos until we implement content-types via Strapi
 			if (question.slug.includes("learn-with-videos")) {
@@ -133,69 +90,84 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		}
 	}
 
+	const isUserLatestPage = user
+		? user.chapter === currentLocation.chapter &&
+		  user.section === currentLocation.section
+		: false;
+	// can view page, with no blurred chunks
+	const isPageUnlocked = user
+		? isLocationAfter(
+				{
+					module: user.module,
+					chapter: user.chapter,
+					section: user.section,
+				},
+				currentLocation,
+		  )
+		: isLocationUnlockedWithoutUser(currentLocation);
+	// can view page, but with blurred chunks
+	const isPageMasked = user ? !isPageUnlocked : true;
+
 	return (
 		<Fragment>
-			<div className="grid grid-cols-12 gap-6 px-2 relative">
-				{showVisibilityModal && <PageVisibilityModal />}
-				{!isDev && <EventTracker />}
-
-				<aside className="module-sidebar col-span-2 sticky top-20 h-fit">
-					<ModuleSidebar
-						chapters={chapters}
-						currentLocation={currentLocation}
-					/>
-					<div className="mt-12 flex flex-col">
-						{hasSummary && (
-							<AnchorLink
-								icon={<PencilIcon className="w-4 h-4" />}
-								text="Write a Summary"
-								href="#page-summary"
-							/>
-						)}
-						<AnchorLink
-							icon={<ArrowUpIcon className="w-4 h-4" />}
-							text="Back to Top"
-							href="#page-title"
-						/>
-					</div>
-				</aside>
-
-				<section className="page-content relative col-span-8">
-					<h1
-						className="text-3xl font-semibold mb-4 text-center"
-						id="page-title"
-					>
-						<Balancer>{section.title}</Balancer>
-					</h1>
-					{enableQA && (
-						<QuestionControl
-							selectedQuestions={selectedQuestions}
-							location={currentLocation}
-						/>
+			<section className="page-content relative col-span-8">
+				<PageTitle>
+					<Balancer>{section.title}</Balancer>
+					{isUserLatestPage ? (
+						<EyeIcon />
+					) : isPageUnlocked ? (
+						<UnlockIcon />
+					) : (
+						<LockIcon />
 					)}
-					<PageContent code={section.body.code} />
-					<Highlighter location={currentLocation} />
-					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
-				</section>
+				</PageTitle>
+				<PageContent code={section.body.code} />
+				<NoteToolbar location={currentLocation} />
+				<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
+			</section>
 
-				<aside className="toc-sidebar col-span-2 relative">
-					<div className="sticky top-20">
-						<TocSidebar headings={section.headings} />
+			<aside className="toc-sidebar col-span-2 relative">
+				<div className="sticky top-20">
+					<PageToc headings={section.headings} />
+					<div className="mt-8 flex flex-col gap-2">
+						<PageStatus
+							status={
+								isUserLatestPage
+									? "current"
+									: isPageUnlocked
+									  ? "unlocked"
+									  : "locked"
+							}
+						/>
+						<NoteCount />
 					</div>
-					<Suspense
-						fallback={
-							<p className="text-sm text-muted-foreground mt-8">
-								<Spinner className="inline mr-2" />
-								loading notes
-							</p>
-						}
-					>
-						<NoteList location={currentLocation} />
-					</Suspense>
-				</aside>
-			</div>
+				</div>
+				<Suspense
+					fallback={
+						<p className="text-sm text-muted-foreground mt-8">
+							<Spinner className="inline mr-2" />
+							loading notes
+						</p>
+					}
+				>
+					<NoteList location={currentLocation} />
+				</Suspense>
+			</aside>
 
-			{hasSummary && <PageSummary location={currentLocation} />}
+			<PageStatusModal
+				location={currentLocation}
+				user={user}
+				isWhitelisted={isUserWhitelisted}
+			/>
+			{section.qa && (
+				<QuestionControl
+					isPageMasked={isPageMasked}
+					selectedQuestions={selectedQuestions}
+					location={currentLocation}
+				/>
+			)}
+
+			{user && isProduction && <EventTracker user={user} />}
 		</Fragment>
 	);
 }

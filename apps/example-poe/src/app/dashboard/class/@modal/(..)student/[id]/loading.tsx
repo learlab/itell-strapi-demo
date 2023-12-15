@@ -1,5 +1,5 @@
 import { StudentDetailsModal } from "@/components/dashboard/student/student-details-modal";
-import Spinner from "@/components/spinner";
+import { Spinner } from "@/components/spinner";
 import {
 	Dialog,
 	DialogDescription,

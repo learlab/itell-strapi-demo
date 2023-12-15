@@ -13,7 +13,7 @@ import {
 
 import { Button } from "../client-components";
 import { useState } from "react";
-import Spinner from "../spinner";
+import { Spinner } from "../spinner";
 
 type Props = {
 	onDelete: () => Promise<void>;

@@ -1,7 +1,6 @@
 import path from "node:path";
 import dts from "vite-plugin-dts";
 import { UserConfigExport, defineConfig } from "vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 const app = async (): Promise<UserConfigExport> => {
 	return defineConfig({
@@ -10,6 +9,11 @@ const app = async (): Promise<UserConfigExport> => {
 				insertTypesEntry: true,
 			}),
 		],
+		resolve: {
+			alias: {
+				"@/": `${path.resolve(__dirname, "src")}/`,
+			},
+		},
 		build: {
 			lib: {
 				entry: {
@@ -21,6 +25,9 @@ const app = async (): Promise<UserConfigExport> => {
 					note: path.resolve(__dirname, "src/note/index.ts"),
 					dashboard: path.resolve(__dirname, "src/dashboard/index.ts"),
 					types: path.resolve(__dirname, "src/types/index.ts"),
+					components: path.resolve(__dirname, "src/components/index.ts"),
+					summary: path.resolve(__dirname, "src/summary/index.ts"),
+					qa: path.resolve(__dirname, "src/qa/index.ts"),
 				},
 				name: "core",
 				formats: ["es", "cjs"],

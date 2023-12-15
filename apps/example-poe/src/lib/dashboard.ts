@@ -71,43 +71,6 @@ export const getStudentsCount = async (classId: string) => {
 	});
 };
 
-export const getReadingTime = async (uid: string) => {
-	// fetch reading time during last week
-	const today = new Date();
-	const startDate = subDays(new Date(), 6);
-	const data = await db.focusTime.findMany({
-		where: {
-			userId: uid,
-			created_at: {
-				gte: startDate,
-			},
-		},
-	});
-
-	const readingTimeByDay = data.reduce((acc, entry) => {
-		const date = format(entry.created_at, "yyyy-MM-dd");
-		const entryTotalViewTime =
-			entry.totalViewTime || getTotalViewTime(entry.data as FocusTimeData[]);
-		acc.set(date, (acc.get(date) || 0) + entryTotalViewTime);
-		return acc;
-	}, new Map<string, number>());
-
-	const dates = getDatesBetween(startDate, today).map((d) =>
-		format(d, "yyyy-MM-dd"),
-	);
-	let totalViewTime = 0;
-	const chartData = [];
-	for (const date of dates) {
-		totalViewTime += readingTimeByDay.get(date) || 0;
-		chartData.push({
-			name: format(new Date(date), "LLL, dd"),
-			value: (readingTimeByDay.get(date) || 0) / 60,
-		});
-	}
-
-	return { chartData, totalViewTime };
-};
-
 export const getRecentSummaries = async (uid: string) => {
 	// fetch summaries during last week
 	const targetDate = subDays(new Date(), 6);

@@ -8,10 +8,9 @@ import {
 	DialogFooter,
 	DialogHeader,
 } from "@/components/ui/dialog";
-import { useFocusTime } from "@itell/core/hooks";
 import { Warning } from "@itell/ui/server";
-import Spinner from "../spinner";
-import Feedback from "./summary-feedback";
+import { Spinner } from "../spinner";
+import { SummaryFeedback } from "./summary-feedback";
 import { makeLocationHref, makeInputKey } from "@/lib/utils";
 import { useSummary } from "@/lib/hooks/use-summary";
 import { useSession } from "next-auth/react";
@@ -20,11 +19,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ConfettiExplosion from "react-confetti-explosion";
 import { numOfWords } from "@itell/core/utils";
-import {
-	FOCUS_TIME_COUNT_INTERVAL,
-	FOCUS_TIME_SAVE_INTERVAL,
-	PAGE_SUMMARY_THRESHOLD,
-} from "@/lib/constants";
+import { PAGE_SUMMARY_THRESHOLD, isProduction } from "@/lib/constants";
 import { trpc } from "@/trpc/trpc-provider";
 import { SectionLocation } from "@/types/location";
 import { allSectionsSorted } from "@/lib/sections";
@@ -34,7 +29,6 @@ import { toast } from "sonner";
 
 export const SummaryInput = ({ location }: { location: SectionLocation }) => {
 	const [showProceedModal, setShowProceedModal] = useState(false);
-	const createFocusTime = trpc.focusTime.create.useMutation();
 	const { state, setInput, score, create } = useSummary({
 		useLocalStorage: true,
 	});
@@ -59,25 +53,6 @@ export const SummaryInput = ({ location }: { location: SectionLocation }) => {
 	);
 
 	const incrementUserLocation = trpc.user.incrementLocation.useMutation();
-	const {
-		saveFocusTime,
-		start: startFocusTimeCounting,
-		pause: pauseFocusTimeCounting,
-	} = useFocusTime({
-		async mutationFn({ summaryId, focusTimeData, totalViewTime }) {
-			await createFocusTime.mutateAsync({
-				summaryId,
-				data: focusTimeData,
-				totalViewTime,
-			});
-		},
-		chunksFn: () => {
-			return Array.from(
-				document.querySelectorAll("#page-content .content-chunk"),
-			);
-		},
-		countInterval: FOCUS_TIME_COUNT_INTERVAL,
-	});
 
 	const handleSubmit = async (e: FormEvent) => {
 		if (sessionStatus === "authenticated" && location) {
@@ -93,15 +68,7 @@ export const SummaryInput = ({ location }: { location: SectionLocation }) => {
 			// score the summary
 			const response = await score(location);
 			if (response) {
-				const savedSummary = await create(
-					response.result,
-					response.feedback,
-					location,
-				);
-				if (savedSummary) {
-					// this focus-time record is associated with a summary
-					saveFocusTime(savedSummary.id);
-				}
+				await create(response.result, response.feedback, location);
 			}
 		} else {
 			router.push("/auth");
@@ -118,7 +85,7 @@ export const SummaryInput = ({ location }: { location: SectionLocation }) => {
 				lastSection.location.section !== location.section
 			) {
 				fetchSummaryCount().then(({ data: count }) => {
-					if (count && count > PAGE_SUMMARY_THRESHOLD) {
+					if (count && count >= PAGE_SUMMARY_THRESHOLD) {
 						setShowProceedModal(true);
 					}
 				});
@@ -142,25 +109,9 @@ export const SummaryInput = ({ location }: { location: SectionLocation }) => {
 		router.push(makeLocationHref(incrementLocation(location)));
 	};
 
-	let autoSaveTimer: NodeJS.Timer | null = null;
-
-	useEffect(() => {
-		if (process.env.NODE_ENV !== "production") {
-			autoSaveTimer = setInterval(() => {
-				saveFocusTime();
-			}, FOCUS_TIME_SAVE_INTERVAL);
-		}
-
-		return () => {
-			if (autoSaveTimer) {
-				clearInterval(autoSaveTimer);
-			}
-		};
-	}, []);
-
 	return (
 		<>
-			{state.feedback && <Feedback feedback={state.feedback} />}
+			{state.feedback && <SummaryFeedback feedback={state.feedback} />}
 			{state.feedback?.isPassed && (
 				<ConfettiExplosion width={window.innerWidth} />
 			)}
@@ -174,10 +125,8 @@ export const SummaryInput = ({ location }: { location: SectionLocation }) => {
 					onValueChange={(val) => setInput(val)}
 					rows={10}
 					className="resize-none rounded-md shadow-md p-4 w-full"
-					onFocus={() => pauseFocusTimeCounting()}
-					onBlur={() => startFocusTimeCounting()}
 					onPaste={(e) => {
-						if (process.env.NODE_ENV === "production") {
+						if (isProduction) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

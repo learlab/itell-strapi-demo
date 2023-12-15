@@ -1,3 +1,5 @@
+"use client";
+
 import { Chapter } from "@/types/section";
 import Balancer from "react-wrap-balancer";
 import { cn } from "@itell/core/utils";
@@ -7,6 +9,10 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "./client-components";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { makeLocationHref } from "@/lib/utils";
 
 type ModuleSidebarProps = {
 	chapters: Chapter[];
@@ -17,6 +23,18 @@ export function ModuleSidebar({
 	chapters,
 	currentLocation,
 }: ModuleSidebarProps) {
+	const [activeLocation, setActiveLocation] = useState(currentLocation);
+	const router = useRouter();
+
+	const navigatePage = (location: {
+		module: number;
+		chapter: number;
+		section: number;
+	}) => {
+		setActiveLocation(location);
+		router.push(makeLocationHref(location), {});
+	};
+
 	return (
 		<nav className="space-y-1">
 			{chapters.map((chapter) => (
@@ -29,15 +47,15 @@ export function ModuleSidebar({
 						<div
 							className={cn("relative hover:bg-accent rounded-md mb-2", {
 								"bg-accent":
-									chapter.chapter === currentLocation.chapter &&
-									currentLocation.section === 0,
+									activeLocation.chapter === chapter.chapter &&
+									activeLocation.section === 0,
 							})}
 						>
-							<a href={`/${chapter.url}`} className="block mb-1 p-1">
+							<Link href={`/${chapter.url}`} className="block mb-1 p-1">
 								<h5 className="font-semibold leading-relaxed">
 									<Balancer as="div">{chapter.title}</Balancer>
 								</h5>
-							</a>
+							</Link>
 						</div>
 					</CollapsibleTrigger>
 
@@ -48,17 +66,26 @@ export function ModuleSidebar({
 									"px-2 py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
 									{
 										"bg-accent":
-											section.chapter === currentLocation.chapter &&
-											section.section === currentLocation.section,
+											section.chapter === activeLocation.chapter &&
+											section.section === activeLocation.section,
 									},
 								)}
 								key={section.url}
 							>
-								<a href={`/${section.url}`}>
-									<p className="text-sm font-light">
+								<button
+									type="button"
+									onClick={() =>
+										navigatePage({
+											module: section.module,
+											chapter: section.chapter,
+											section: section.section || 0,
+										})
+									}
+								>
+									<p className="text-sm font-light text-left">
 										<Balancer>{`${index + 1}. ${section.title}`}</Balancer>
 									</p>
-								</a>
+								</button>
 							</li>
 						))}
 					</CollapsibleContent>

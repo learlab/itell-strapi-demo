@@ -30,11 +30,19 @@ export const Keyterm = ({
 	);
 };
 
-export const Info = ({
-	title,
-	children,
-}: { title?: string; children: React.ReactNode }) => (
-	<Alert className="bg-info dark:bg-inherit dark:border-2 dark:border-info">
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+	title?: string;
+	children: React.ReactNode;
+}
+
+export const Info = ({ title, children, className, ...rest }: Props) => (
+	<Alert
+		className={cn(
+			"bg-info dark:bg-inherit dark:border-2 dark:border-info",
+			className,
+		)}
+		{...rest}
+	>
 		<InfoIcon className="h-4 w-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		{/* align content with icon when there is no title */}
@@ -44,11 +52,8 @@ export const Info = ({
 	</Alert>
 );
 
-export const Errorbox = ({
-	title,
-	children,
-}: { title?: string; children: React.ReactNode }) => (
-	<Alert variant="destructive">
+export const Errorbox = ({ title, children, ...rest }: Props) => (
+	<Alert variant="destructive" {...rest}>
 		<AlertTriangleIcon className="h-4 w-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		<AlertDescription className={cn({ "callout-no-title": !title })}>
@@ -57,11 +62,11 @@ export const Errorbox = ({
 	</Alert>
 );
 
-export const Warning = ({
-	title,
-	children,
-}: { title?: string; children: React.ReactNode }) => (
-	<Alert className="bg-warning dark:bg-inherit dark:border-warning">
+export const Warning = ({ title, children, className, ...rest }: Props) => (
+	<Alert
+		className={cn("bg-warning dark:bg-inherit dark:border-warning", className)}
+		{...rest}
+	>
 		<AlertCircleIcon className="h-4 w-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		<AlertDescription className={cn({ "callout-no-title": !title })}>

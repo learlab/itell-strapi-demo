@@ -35,21 +35,25 @@ export const DashboardBadge = ({
 			</CardHeader>
 			<CardContent>
 				<div className="text-2xl font-bold">{roundNumber(value)}</div>
-				{description && (
+				{description ? (
 					<p className="text-xs text-muted-foreground mt-2">
 						{typeof description === "number" ? (
 							<span className="inline-flex items-center gap-2">
-								{description > 0 ? (
+								{description >= 0 ? (
 									<TrendingUp className="w-4 h-4 fill-green-500" />
 								) : (
 									<TrendingDown className="w-4 h-4 fill-destructive" />
 								)}
-								{`${description > 0 ? "+ " : ""}${roundNumber(description)}`}
+								{`${description >= 0 ? "+ " : ""}${roundNumber(description)}`}
 								{comparing && " compared to class"}
 							</span>
 						) : (
 							description
 						)}
+					</p>
+				) : (
+					<p className="text-sm text-muted-foreground">
+						class stats unavailable
 					</p>
 				)}
 			</CardContent>

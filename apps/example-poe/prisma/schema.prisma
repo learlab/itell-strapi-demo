@@ -57,14 +57,27 @@ model User {
 
   classId String? @map("class_id")
 
-  accounts  Account[]
-  sessions  Session[]
-  summaries Summary[]
-  notes     Note[]
-  FocusTime FocusTime[]
+  accounts                    Account[]
+  sessions                    Session[]
+  summaries                   Summary[]
+  notes                       Note[]
+  ConstructedResponse         ConstructedResponse[]
+  ConstructedResponseFeedback ConstructedResponseFeedback[]
+  Event                       Event[]
+  FocusTime                   FocusTime[]
 
   @@index([classId])
   @@map("users")
+}
+
+model FocusTime {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  totalViewTime Int      @map("total_view_time")
+  created_at    DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("focus_times")
 }
 
 model Event {
@@ -74,6 +87,8 @@ model Event {
   page       String
   data       Json?
   created_at DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("events")
 }
@@ -99,20 +114,19 @@ model Summary {
   id   String @id @default(uuid())
   user User   @relation(fields: [userId], references: [id])
 
-  userId           String      @map("user_id")
-  classId          String?     @map("class_id")
+  userId           String   @map("user_id")
+  classId          String?  @map("class_id")
   module           Int
   chapter          Int
   section          Int
   isPassed         Boolean
-  containmentScore Float       @map("containment_score")
-  similarityScore  Float       @map("similarity_score")
-  wordingScore     Float?      @map("wording_score")
-  contentScore     Float?      @map("content_score")
+  containmentScore Float    @map("containment_score")
+  similarityScore  Float    @map("similarity_score")
+  wordingScore     Float?   @map("wording_score")
+  contentScore     Float?   @map("content_score")
   text             String
-  created_at       DateTime    @default(now())
-  updated_at       DateTime    @updatedAt
-  FocusTime        FocusTime[]
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
 
   @@map("summaries")
 }
@@ -134,24 +148,6 @@ model Note {
   user   User   @relation(fields: [userId], references: [id])
 
   @@map("notes")
-}
-
-model FocusTime {
-  id String @id @default(uuid())
-
-  data Json
-
-  totalViewTime Float?
-
-  summaryId String?  @map("summary_id")
-  summary   Summary? @relation(fields: [summaryId], references: [id])
-
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id])
-
-  created_at DateTime @default(now())
-
-  @@map("focus_time")
 }
 
 model Section {
@@ -183,7 +179,7 @@ model SubSection {
   @@map("subsections")
 }
 
-model ConstructedResponses {
+model ConstructedResponse {
   id String @id @default(uuid())
 
   userId     String   @map("user_id")
@@ -194,5 +190,22 @@ model ConstructedResponses {
   response   String
   created_at DateTime @default(now())
 
+  user User @relation(fields: [userId], references: [id])
+
   @@map("constructed_responses")
+}
+
+model ConstructedResponseFeedback {
+  id String @id @default(uuid())
+
+  userId     String   @map("user_id")
+  pageSlug   String   @map("page_slug")
+  isPositive Boolean  @map("is_positive")
+  feedback   String
+  tags       String[]
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("constructed_responses_feedback")
 }

@@ -8,7 +8,7 @@ import { trpc } from "@/trpc/trpc-provider";
 import NoteDelete from "./node-delete";
 import { cn, relativeDate } from "@itell/core/utils";
 import { ForwardIcon } from "lucide-react";
-import Spinner from "../spinner";
+import { Spinner } from "../spinner";
 import { useImmerReducer } from "use-immer";
 import NoteColorPicker from "./note-color-picker";
 import { Button, TextArea } from "../client-components";

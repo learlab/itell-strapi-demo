@@ -6,9 +6,7 @@ import { Highlight } from "./highlight";
 import { NewNoteList } from "./new-note-list";
 import { NoteCount, SetNoteCount } from "./note-count";
 
-export default async function NoteList({
-	location,
-}: { location: SectionLocation }) {
+export const NoteList = async ({ location }: { location: SectionLocation }) => {
 	const user = await getCurrentUser();
 	if (!user) {
 		return null;
@@ -45,4 +43,4 @@ export default async function NoteList({
 			<NewNoteList location={location} />
 		</div>
 	);
-}
+};

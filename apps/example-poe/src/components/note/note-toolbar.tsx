@@ -17,13 +17,11 @@ import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 import { useNotesStore } from "@/lib/store";
 import { createNoteElements, serializeRange } from "@itell/core/note";
 import { SectionLocation } from "@/types/location";
-import Spinner from "../spinner";
+import { Spinner } from "../spinner";
 
 type SelectionData = ReturnType<typeof useTextSelection>;
 
-export default function HighlightToolbar({
-	location,
-}: { location: SectionLocation }) {
+export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | undefined>(undefined);
 	const noteColor = useNoteColor();
@@ -189,4 +187,4 @@ export default function HighlightToolbar({
 			}}
 		/>
 	);
-}
+};

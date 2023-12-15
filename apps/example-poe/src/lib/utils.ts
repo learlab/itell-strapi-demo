@@ -54,7 +54,8 @@ export const makeInputKey = (location: SectionLocation) => {
 };
 
 export const makeLocationHref = (location: SectionLocation) => {
-	const sectionSlug = location.section ? `/section-${location.section}` : "";
+	const sectionSlug =
+		location.section !== 0 ? `/section-${location.section}` : "";
 	return `/module-${location.module}/chapter-${location.chapter}${sectionSlug}`;
 };
 

@@ -10,7 +10,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useTransition } from "react";
 import { ReadingTimeChartLevel } from "@itell/core/types";
-import Spinner from "../spinner";
+import { Spinner } from "../spinner";
 
 export const UserStatisticsControl = () => {
 	const router = useRouter();

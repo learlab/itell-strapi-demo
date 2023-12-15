@@ -5,7 +5,7 @@ export interface Feedback {
 	isPassed: boolean;
 	prompt: string | null;
 }
-export type SummaryFeedback = {
+export type SummaryFeedbackType = {
 	isPassed: boolean;
 	prompt: string;
 	individualPrompt: Record<ScoreType, Feedback>;
@@ -18,13 +18,13 @@ export const containmentFeedback = (score: number): Feedback => {
 			prompt:
 				"You need to depend less on the language in the text and focus more on rewriting the key ideas of the section.",
 		};
-	} else {
-		return {
-			isPassed: true,
-			prompt:
-				"You did a good job of using your own language to describe the main ideas in the section.",
-		};
 	}
+
+	return {
+		isPassed: true,
+		prompt:
+			"You did a good job of using your own language to describe the main ideas in the section.",
+	};
 };
 
 export const similarityFeedback = (score: number): Feedback => {
@@ -34,13 +34,13 @@ export const similarityFeedback = (score: number): Feedback => {
 			prompt:
 				"You did a good job of staying on topic and writing about the main ideas of the text.",
 		};
-	} else {
-		return {
-			isPassed: false,
-			prompt:
-				"To be successful, you need to better stay on topic. Find the main ideas of the text and focus your summary on those ideas",
-		};
 	}
+
+	return {
+		isPassed: false,
+		prompt:
+			"To be successful, you need to better stay on topic. Find the main ideas of the text and focus your summary on those ideas",
+	};
 };
 
 export const contentFeedback = (score: number | null): Feedback => {
@@ -57,13 +57,13 @@ export const contentFeedback = (score: number | null): Feedback => {
 			prompt:
 				" You need to include more key ideas and details from the section to successfully summarize the content. Consider focusing on the main ideas of the section and providing support for those ideas in your summary.",
 		};
-	} else {
-		return {
-			isPassed: true,
-			prompt:
-				"You did a good job of including key ideas and details from the section.",
-		};
 	}
+
+	return {
+		isPassed: true,
+		prompt:
+			"You did a good job of including key ideas and details from the section.",
+	};
 };
 
 export const wordingFeedback = (score: number | null): Feedback => {
@@ -80,16 +80,16 @@ export const wordingFeedback = (score: number | null): Feedback => {
 			prompt:
 				" You need to paraphrase words and ideas in the section better. Focus on using different words and sentences than those found in the section. Also, try to use more objective language (or less emotional language).",
 		};
-	} else {
-		return {
-			isPassed: true,
-			prompt:
-				"You did a good job of paraphrasing words and sentences from the section and using objective language.",
-		};
 	}
+
+	return {
+		isPassed: true,
+		prompt:
+			"You did a good job of paraphrasing words and sentences from the section and using objective language.",
+	};
 };
 
-export const getFeedback = (response: SummaryResponse): SummaryFeedback => {
+export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 	const wording = wordingFeedback(response.wording);
 	const content = contentFeedback(response.content);
 	const similarity = similarityFeedback(response.similarity);
