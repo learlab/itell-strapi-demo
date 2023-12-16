@@ -11,9 +11,6 @@ import {
 } from "@itell/ui/server";
 import Image from "@/components/ui/image";
 import { Exercise } from "./exercise";
-import { Notebook } from "@/components/code/notebook";
-import { CodeRepl } from "@/components/code/code-repl-wrapper";
-import { CodingTime } from "@/components/code/coding-time";
 
 export const MdxComponents = {
 	// YoutubeVideo,
@@ -27,9 +24,6 @@ export const MdxComponents = {
 	Steps,
 	// exercise related
 	Exercise,
-	Notebook,
-	CodeRepl,
 	Image,
 	YoutubeVideo,
-	CodingTime,
 };

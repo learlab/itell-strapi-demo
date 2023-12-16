@@ -1,29 +1,32 @@
-import { ChapterSidebar } from "@/components/chapter-sidebar";
-import { PageSummary } from "@/components/summary/page-summary";
-import { allChaptersSorted } from "@/lib/chapters";
-import { cn } from "@itell/core/utils";
-import { buttonVariants } from "@itell/ui/server";
-import { ArrowUpIcon, PencilIcon } from "lucide-react";
+import { allSectionsSorted } from "@/lib/sections";
+import { Button } from "@/components/client-components";
 import { notFound } from "next/navigation";
-
-export const dynamic = "force-dynamic";
+import getChapters from "@/lib/sidebar";
+import { Section } from "contentlayer/generated";
+import { SectionLocation } from "@/types/location";
+import { isProduction } from "@/lib/constants";
+import { PageSummary } from "@/components/summary/page-summary";
+import { ArrowUpIcon, PencilIcon } from "lucide-react";
+import { ModuleSidebar } from "@/components/module-sidebar";
 
 export const generateStaticParams = async () => {
-	return allChaptersSorted.map((chapter) => {
+	return allSectionsSorted.map((section) => {
 		return {
-			slug: chapter.url,
+			slug: section.url.split("/"),
 		};
 	});
 };
 
-export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-	const chapter = allChaptersSorted.find(
-		(chapter) => chapter.url === params.slug,
+export const generateMetadata = ({
+	params,
+}: { params: { slug: string[] } }) => {
+	const section = allSectionsSorted.find(
+		(section) => section.url === params.slug.join("/"),
 	);
-	if (chapter) {
+	if (section) {
 		return {
-			title: chapter.title,
-			description: chapter.body.raw.slice(0, 80),
+			title: section.title,
+			description: section.body.raw.slice(0, 100),
 		};
 	}
 };
@@ -32,53 +35,52 @@ const AnchorLink = ({
 	text,
 	href,
 	icon,
-}: { text: string; href: string; icon: React.ReactNode }) => (
-	<a
-		href={href}
-		className={cn(
-			buttonVariants({ size: "sm", variant: "ghost" }),
-			"flex justify-start items-center gap-2 mb-0 py-1",
-		)}
-	>
-		{icon}
-		<span>{text}</span>
-	</a>
-);
-
-// this layout specifies the following structure
-// <container>
-// 	    <left-aside>
-// 		    <ChapterSidebar />
-// 	    </left-aside>
-//
-//      {children}
-//      <Summary />
-// 	<container>
+}: { text: string; href: string; icon: React.ReactNode }) => {
+	return (
+		<a href={href}>
+			<Button
+				size="sm"
+				variant="ghost"
+				className="flex items-center gap-1 mb-0 py-1"
+			>
+				{icon}
+				{text}
+			</Button>
+		</a>
+	);
+};
 
 export default async function ({
 	children,
 	params,
-}: { children: React.ReactNode; params: { slug: string } }) {
-	const isDev = process.env.NODE_ENV === "development";
-	const url = params.slug;
-	const chapterIndex = allChaptersSorted.findIndex((section) => {
-		return section.url === url;
+}: { children: React.ReactNode; params: { slug: string[] } }) {
+	const path = params.slug.join("/");
+
+	const sectionIndex = allSectionsSorted.findIndex((section) => {
+		return section.url === path;
 	});
 
-	if (chapterIndex === -1) {
+	if (sectionIndex === -1) {
 		return notFound();
 	}
-	const chapter = allChaptersSorted[chapterIndex];
-	const requireSummary = chapter.summary;
+	const section = allSectionsSorted[sectionIndex] as Section;
+	const currentLocation = section.location as SectionLocation;
+	const chapters = await getChapters({
+		module: currentLocation.module,
+		allSections: allSectionsSorted,
+	});
+
+	const requireSummary = section.summary;
 
 	return (
 		<>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
-				<aside className="chapter-sidebar md:col-span-2">
+				<aside className="module-sidebar col-span-2 sticky top-20 h-fit">
+					{" "}
 					<div className="sticky top-20">
-						<ChapterSidebar
-							currentChapter={chapter.chapter}
-							chapters={allChaptersSorted}
+						<ModuleSidebar
+							chapters={chapters}
+							currentLocation={currentLocation}
 						/>
 						<div className="mt-12 flex flex-col gap-2">
 							{requireSummary && (
@@ -99,8 +101,7 @@ export default async function ({
 
 				{children}
 			</div>
-
-			{requireSummary && <PageSummary chapter={chapter.chapter} />}
+			{requireSummary && <PageSummary location={section.location} />}
 		</>
 	);
 }
