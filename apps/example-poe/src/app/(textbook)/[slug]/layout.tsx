@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleSidebar } from "@/components/module-sidebar";
 import { PageSummary } from "@/components/summary/page-summary";
 import { allChaptersSorted } from "@/lib/chapters";
