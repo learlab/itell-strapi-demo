@@ -5,15 +5,13 @@ import { CreateLoginButton } from "../client-components";
 import Image from "next/image";
 
 export const GoogleLoginButton = CreateLoginButton({
-	action: () => {
-		let res;
-		try{
-			res = signIn("google")
+	action: async () => {
+		try {
+			await signIn("google");
+			console.log("success")
+		} catch (error) {
+			console.log(error);
 		}
-		catch(e){
-			console.log(e);
-		}
-		return res
 	},
 	icon: (
 		<Image
