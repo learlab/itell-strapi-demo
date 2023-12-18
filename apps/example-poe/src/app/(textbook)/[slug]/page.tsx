@@ -7,7 +7,7 @@ import { Fragment, Suspense } from "react";
 import { allChaptersSorted } from "@/lib/chapters";
 import { Pager } from "@/components/client-components";
 import { PageToc } from "@/components/page-toc";
-import { PageContent } from "@/components/page-content";
+import { PageContent } from "@/components/section/page-content";
 import { Spinner } from "@/components/spinner";
 import { getPageQuestions } from "@/lib/question";
 import { QuestionControl } from "@/components/question/question-control";
