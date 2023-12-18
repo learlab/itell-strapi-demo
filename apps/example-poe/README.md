@@ -1,3 +1,3 @@
-# Principles of Macroeconomics
+# Business Law and the Legal Environment
 
-ITELL example textbook
+ITELL textbook
