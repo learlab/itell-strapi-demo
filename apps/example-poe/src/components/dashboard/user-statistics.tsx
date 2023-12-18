@@ -3,7 +3,10 @@ import { Suspense } from "react";
 import { StudentBadges } from "./student/student-badges";
 import { UserBadges } from "./user/user-badges";
 import { ReadingTime } from "./reading-time";
-import { ReadingTimeChartLevel } from "@itell/core/types";
+import {
+	ReadingTimeChartLevel,
+	ReadingTimeChartParams,
+} from "@itell/core/types";
 import { UserStatisticsControl } from "./user-statistics-control";
 import { z } from "zod";
 import { DashboardBadge } from "@itell/ui/server";

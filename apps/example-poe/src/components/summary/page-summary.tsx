@@ -1,35 +1,30 @@
 import { Suspense } from "react";
 import { SummaryCount } from "./summary-count";
 import { SummaryDescription } from "./summary-description";
-import { isChapterWithFeedback } from "@/lib/chapter";
-import { SummaryForm } from "./summary-form";
+import { SectionLocation } from "@/types/location";
 import { getCurrentUser } from "@/lib/auth";
-import { Warning } from "@itell/ui/server";
 import {
 	ErrorType,
 	SummaryFormState,
 	getFeedback,
-	simpleFeedback,
 	validateSummary,
 } from "@itell/core/summary";
 import cld3 from "@/lib/cld";
 import { getScore } from "@/lib/score";
 import {
 	createSummary,
-	getUserChapterSummaryCount,
-	incrementUserChapter,
+	getUserLocationSummaryCount,
+	incrementUserLocation,
 } from "@/lib/server-actions";
-import { isLastChapter } from "@/lib/chapters";
+import { isLastLocation } from "@/lib/location";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { Warning } from "@itell/ui/server";
+import { SummaryForm } from "./summary-form";
 
-type Props = {
-	chapter: number;
-};
-
-export const PageSummary = async ({ chapter }: Props) => {
+export const PageSummary = async ({
+	location,
+}: { location: SectionLocation }) => {
 	const user = await getCurrentUser();
-
-	const isFeedbackEnabled = isChapterWithFeedback(chapter);
 	const onSubmit = async (
 		prevState: SummaryFormState,
 		formData: FormData,
@@ -53,7 +48,7 @@ export const PageSummary = async ({ chapter }: Props) => {
 			};
 		}
 
-		const response = await getScore({ input, chapter });
+		const response = await getScore({ input, location });
 
 		if (!response.success) {
 			return {
@@ -64,14 +59,13 @@ export const PageSummary = async ({ chapter }: Props) => {
 				feedback: null,
 			};
 		}
-
-		const feedback = isFeedbackEnabled
-			? getFeedback(response.data)
-			: simpleFeedback();
+		const feedback = getFeedback(response.data);
 
 		await createSummary({
 			text: input,
-			chapter,
+			module: location.module,
+			chapter: location.chapter,
+			section: location.section,
 			isPassed: feedback.isPassed,
 			containmentScore: response.data.containment,
 			similarityScore: response.data.similarity,
@@ -85,21 +79,21 @@ export const PageSummary = async ({ chapter }: Props) => {
 		});
 
 		if (feedback.isPassed) {
-			await incrementUserChapter(userId, chapter);
+			await incrementUserLocation(userId, location);
 
 			return {
-				canProceed: !isLastChapter(chapter),
+				canProceed: !isLastLocation(location),
 				response: response.data,
 				feedback,
 				error: null,
 			};
 		}
 
-		const summaryCount = await getUserChapterSummaryCount(userId, chapter);
+		const summaryCount = await getUserLocationSummaryCount(userId, location);
 		if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
-			await incrementUserChapter(userId, chapter);
+			await incrementUserLocation(userId, location);
 			return {
-				canProceed: !isLastChapter(chapter),
+				canProceed: !isLastLocation(location),
 				response: response.data,
 				feedback,
 				error: null,
@@ -126,13 +120,9 @@ export const PageSummary = async ({ chapter }: Props) => {
 				{user ? (
 					<>
 						<Suspense fallback={<SummaryCount.Skeleton />}>
-							<SummaryCount chapter={chapter} />
+							<SummaryCount location={location} />
 						</Suspense>
-						<SummaryForm
-							chapter={chapter}
-							isFeedbackEnabled={isFeedbackEnabled}
-							onSubmit={onSubmit}
-						/>
+						<SummaryForm location={location} onSubmit={onSubmit} />
 					</>
 				) : (
 					<Warning>

@@ -1,7 +1,6 @@
 "use client";
 
-import { useCurrentChunkLocal } from "@/lib/hooks/utils";
-import { getCurrentChunkLocal } from "@/lib/utils";
+import { getCurrentChunkLocal, useCurrentChunkLocal } from "@/lib/hooks/utils";
 import React, { useEffect, useState } from "react";
 
 type QAContextType = {

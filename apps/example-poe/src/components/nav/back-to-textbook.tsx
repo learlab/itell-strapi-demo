@@ -1,12 +1,12 @@
 "use client";
 
-import { useLastVisitedChapterUrl } from "@/lib/hooks/use-last-visited-chapter";
+import { useLastVisitedSectionUrl } from "@/lib/hooks/use-last-visited-section";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
 import Link from "next/link";
 
 export const BackToTextbook = () => {
-	const url = useLastVisitedChapterUrl();
+	const url = useLastVisitedSectionUrl();
 
 	return (
 		<Link

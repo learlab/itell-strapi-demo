@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@itell/core/utils";
+import { Confetti } from "@/components/ui/confetti";
 import {
 	Card,
 	CardContent,
@@ -8,37 +9,37 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Spinner } from "../spinner";
 import { getQAScore } from "@/lib/question";
+import { useQA } from "../context/qa-context";
 import { FeedbackModal } from "./feedback-modal";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
+	TextArea,
 } from "../client-components";
 import { toast } from "sonner";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { useSession } from "next-auth/react";
-import { createConstructedResponse } from "@/lib/server-actions";
-import { TextArea } from "@/components/client-components";
+import { createConstructedResponse, createEvent } from "@/lib/server-actions";
 import { NextChunkButton } from "./next-chunk-button";
 import { isProduction } from "@/lib/constants";
 import { useFormState, useFormStatus } from "react-dom";
-import { Confetti } from "../ui/confetti";
 
 type QuestionScore = 0 | 1 | 2;
 
 type Props = {
-	isPageMasked: boolean;
 	question: string;
 	answer: string;
 	chapter: number;
+	section: number;
 	subsection: number;
-	isFeedbackEnabled: boolean;
+	isPageMasked: boolean;
 };
 
 // state for answer correctness
@@ -76,10 +77,10 @@ const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 export const QuestionBox = ({
 	question,
 	chapter,
+	section,
 	subsection,
 	answer,
 	isPageMasked,
-	isFeedbackEnabled,
 }: Props) => {
 	const { data: session } = useSession();
 	const [isShaking, setIsShaking] = useState(false);
@@ -115,30 +116,10 @@ export const QuestionBox = ({
 			};
 		}
 
-		if (!isFeedbackEnabled) {
-			if (isProduction) {
-				await createConstructedResponse({
-					response: input,
-					chapter: chapter,
-					subsection: subsection,
-					score: -1,
-					user: {
-						connect: {
-							id: session.user.id,
-						},
-					},
-				});
-			}
-
-			return {
-				answerStatus: AnswerStatus.BOTH_CORRECT,
-				error: null,
-			};
-		}
-
 		const response = await getQAScore({
 			input,
 			chapter: String(chapter),
+			section: String(section),
 			subsection: String(subsection),
 		});
 
@@ -157,6 +138,7 @@ export const QuestionBox = ({
 			await createConstructedResponse({
 				response: input,
 				chapter: chapter,
+				section: section,
 				subsection: subsection,
 				score,
 				user: {
@@ -252,11 +234,11 @@ export const QuestionBox = ({
 					</CardDescription>
 					<FeedbackModal
 						type="positive"
-						pageSlug={`${chapter}-${subsection}`}
+						pageSlug={`${chapter}-${section}-${subsection}`}
 					/>
 					<FeedbackModal
 						type="negative"
-						pageSlug={`${chapter}-${subsection}`}
+						pageSlug={`${chapter}-${section}-${subsection}`}
 					/>
 				</CardHeader>
 
@@ -287,7 +269,7 @@ export const QuestionBox = ({
 					{answerStatus === AnswerStatus.BOTH_CORRECT ? (
 						<div className="flex items-center flex-col">
 							<p className="text-xl2 text-emerald-600 text-center">
-								Your answer was {isFeedbackEnabled ? "Correct" : "Accepted"}!
+								Your answer was Correct!
 							</p>
 							{isPageMasked && (
 								<p className="text-sm">

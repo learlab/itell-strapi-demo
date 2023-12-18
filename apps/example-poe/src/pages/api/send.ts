@@ -1,9 +1,9 @@
 import { RequestClassCodeTemplate } from "@/components/email-templates/request-class-code";
 import { env } from "@/env.mjs";
+import { resend } from "@/lib/resend";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
 
-const resend = new Resend(env.RESEND_API_KEY);
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const { email, message } = JSON.parse(req.body) as {
 		message: string;
@@ -13,10 +13,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const data = await resend.emails.send({
 			from: "itell-class-code@qiushiyan.dev",
 			to: ["lear.lab.vu@gmail.com"],
-			subject: "Request Class Code for ITELL (Think Python)",
+			subject: "Request Class Code for ITELL",
 			// @ts-ignore
 			react: RequestClassCodeTemplate({
-				origin: "https://itell-think-python.vercel.app",
+				origin: "https://itell.vercel.app",
 				email,
 				message,
 			}),
@@ -25,7 +25,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		res.status(200).json(data);
 	} catch (error) {
 		console.log(error);
-
 		res.status(400).json(error);
 	}
 };

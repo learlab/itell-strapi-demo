@@ -1,37 +1,33 @@
 import SummaryOperations from "@/components/dashboard/summary-operations";
 import { ScoreBadge } from "@/components/score/badge";
+import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { getCurrentUser } from "@/lib/auth";
-import { allChaptersSorted, isLastChapter } from "@/lib/chapters";
-import {
-	DEFAULT_TIME_ZONE,
-	PAGE_SUMMARY_THRESHOLD,
-	ScoreType,
-} from "@/lib/constants";
+import { PAGE_SUMMARY_THRESHOLD, ScoreType } from "@/lib/constants";
 import db from "@/lib/db";
-import { getUser } from "@/lib/user";
+import { allSectionsSorted } from "@/lib/sections";
 import { cn, relativeDate } from "@itell/core/utils";
 import { Badge, buttonVariants } from "@itell/ui/server";
 import { Summary, User } from "@prisma/client";
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
-import { makeChapterHref } from "@/lib/utils";
 import {
 	ErrorType,
 	SummaryFormState,
 	getFeedback,
-	simpleFeedback,
 	validateSummary,
 } from "@itell/core/summary";
 import { getScore } from "@/lib/score";
-import { isChapterWithFeedback } from "@/lib/chapter";
 import {
-	getUserChapterSummaryCount,
-	incrementUserChapter,
+	getUserLocationSummaryCount,
+	incrementUserLocation,
 	updateSummary,
 } from "@/lib/server-actions";
-import { SummaryForm } from "@/components/summary/summary-form";
 import { revalidatePath } from "next/cache";
+import { isLastLocation } from "@/lib/location";
+import { SectionLocation } from "@/types/location";
+import Link from "next/link";
+import { makeLocationHref } from "@/lib/utils";
+import { SummaryForm } from "@/components/summary/summary-form";
 
 async function getSummaryForUser(summaryId: Summary["id"], userId: User["id"]) {
 	return await db.summary.findFirst({
@@ -49,14 +45,9 @@ interface PageProps {
 }
 
 export default async function ({ params }: PageProps) {
-	const currentUser = await getCurrentUser();
-	if (!currentUser) {
-		return redirect("/auth");
-	}
-	const user = await getUser(currentUser.id);
-
+	const user = await getCurrentUser();
 	if (!user) {
-		return notFound();
+		return redirect("/auth");
 	}
 	const summary = await getSummaryForUser(params.id, user.id);
 
@@ -64,11 +55,16 @@ export default async function ({ params }: PageProps) {
 		return notFound();
 	}
 
-	const chapter = allChaptersSorted.find((c) => c.chapter === summary.chapter);
-	if (!chapter) {
+	const section = allSectionsSorted.find(
+		(section) =>
+			section.location.chapter === summary.chapter &&
+			section.location.section === summary.section,
+	);
+	if (!section) {
 		return notFound();
 	}
-	const isFeedbackEnabled = isChapterWithFeedback(chapter.chapter);
+
+	const location = section.location as SectionLocation;
 
 	const onSubmit = async (
 		prevState: SummaryFormState,
@@ -81,7 +77,7 @@ export default async function ({ params }: PageProps) {
 		if (error) {
 			return { error, canProceed: false, response: null, feedback: null };
 		}
-		const response = await getScore({ input, chapter: chapter.chapter });
+		const response = await getScore({ input, location });
 
 		if (!response.success) {
 			return {
@@ -93,9 +89,7 @@ export default async function ({ params }: PageProps) {
 			};
 		}
 
-		const feedback = isFeedbackEnabled
-			? getFeedback(response.data)
-			: simpleFeedback();
+		const feedback = getFeedback(response.data);
 
 		await updateSummary(params.id, {
 			text: input,
@@ -109,24 +103,21 @@ export default async function ({ params }: PageProps) {
 		revalidatePath(`/summary/${params.id}`);
 
 		if (feedback.isPassed) {
-			await incrementUserChapter(user.id, chapter.chapter);
+			await incrementUserLocation(user.id, location);
 
 			return {
-				canProceed: !isLastChapter(chapter.chapter),
+				canProceed: !isLastLocation(location),
 				response: response.data,
 				feedback,
 				error: null,
 			};
 		}
 
-		const summaryCount = await getUserChapterSummaryCount(
-			user.id,
-			chapter.chapter,
-		);
+		const summaryCount = await getUserLocationSummaryCount(user.id, location);
 		if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
-			await incrementUserChapter(user.id, chapter.chapter);
+			await incrementUserLocation(user.id, location);
 			return {
-				canProceed: !isLastChapter(chapter.chapter),
+				canProceed: !isLastLocation(location),
 				response: response.data,
 				feedback,
 				error: null,
@@ -147,10 +138,7 @@ export default async function ({ params }: PageProps) {
 				<div className="flex items-center space-x-10">
 					<SummaryBackButton />
 					<p className="text-sm text-muted-foreground">
-						{`Created at ${relativeDate(
-							summary.created_at,
-							user.timeZone || DEFAULT_TIME_ZONE,
-						)}`}
+						{`Created at ${relativeDate(summary.created_at)}`}
 					</p>
 				</div>
 				<SummaryOperations summary={summary} />
@@ -163,7 +151,11 @@ export default async function ({ params }: PageProps) {
 						</Badge>
 					</div>
 					<p className="tracking-tight text-sm text-muted-foreground">
-						Revise your summary here.
+						Revise your summary here. After getting a new score, you can choose
+						to update the old summary.
+					</p>
+					<p className="tracking-tight text-sm text-muted-foreground">
+						Click on the title to review this section's content.
 					</p>
 					<div className="flex flex-col gap-2">
 						<ScoreBadge
@@ -179,22 +171,23 @@ export default async function ({ params }: PageProps) {
 					</div>
 				</aside>
 				<div className="space-y-2">
+					<TextbookPageModal page={section} />
+
 					<Link
-						href={makeChapterHref(chapter.chapter)}
+						href={makeLocationHref(location)}
 						className={cn(
 							buttonVariants({ variant: "link" }),
 							"block text-xl font-semibold text-center underline",
 						)}
 					>
-						{chapter.title}
+						{section.title}
 					</Link>
 					<p className="text-sm text-muted-foreground text-center">
 						{`Last updated at ${relativeDate(summary.updated_at)}`}
 					</p>
 					<div className="max-w-2xl mx-auto">
 						<SummaryForm
-							isFeedbackEnabled={isFeedbackEnabled}
-							chapter={chapter.chapter}
+							location={location}
 							onSubmit={onSubmit}
 							textareaClassName="min-h-[400px]"
 						/>

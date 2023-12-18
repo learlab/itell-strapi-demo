@@ -10,11 +10,11 @@ import { SummarySubmitButton } from "./summary-submit-button";
 import { SummaryProceedModal } from "./summary-proceed-modal";
 import pluralize from "pluralize";
 import { makeInputKey } from "@/lib/utils";
-import { Confetti } from "../ui/confetti";
+import Confetti from "react-dom-confetti";
+import { SectionLocation } from "@/types/location";
 
 type Props = {
-	isFeedbackEnabled: boolean;
-	chapter: number;
+	location: SectionLocation;
 	textareaClassName?: string;
 	onSubmit: (
 		prevState: SummaryFormState,
@@ -30,8 +30,7 @@ const initialState: SummaryFormState = {
 };
 
 export const SummaryForm = ({
-	isFeedbackEnabled,
-	chapter,
+	location,
 	onSubmit,
 	textareaClassName,
 }: Props) => {
@@ -45,13 +44,16 @@ export const SummaryForm = ({
 				className="mt-2 space-y-4"
 				action={(payload) => {
 					localStorage.setItem(
-						makeInputKey(chapter),
+						makeInputKey(location),
 						payload.get("input") as string,
 					);
 					formAction(payload);
 				}}
 			>
-				<SummaryInput chapter={chapter} textAreaClassName={textareaClassName} />
+				<SummaryInput
+					location={location}
+					textAreaClassName={textareaClassName}
+				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton />
@@ -59,14 +61,12 @@ export const SummaryForm = ({
 			</form>
 			{formState.canProceed && (
 				<SummaryProceedModal
-					chapter={chapter}
+					location={location}
 					isPassed={formState.feedback?.isPassed || false}
 					title={
-						isFeedbackEnabled
-							? formState.feedback?.isPassed
-								? "Good job summarizing the text"
-								: "You can now move on"
-							: "Your summary is accepted"
+						formState.feedback?.isPassed
+							? "Good job summarizing the text"
+							: "You can now move on"
 					}
 				>
 					<div>

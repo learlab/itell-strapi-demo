@@ -14,10 +14,10 @@ export default function () {
 				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<DashboardBadge.Skeletons />
 				</div>
-				<div>
-					<Skeleton className="w-96 h-12" />
+				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+					<Skeleton className="col-span-4 h-[350px]" />
+					<Skeleton className="col-span-3 h-[350px]" />
 				</div>
-				<Skeleton className="w-full h-[350px]" />
 			</div>
 		</DashboardShell>
 	);

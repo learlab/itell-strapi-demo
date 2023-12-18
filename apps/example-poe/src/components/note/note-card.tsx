@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EditIcon } from "lucide-react";
 import { NoteCard } from "@/types/note";
 import { useClickOutside } from "@itell/core/hooks";
@@ -17,12 +17,13 @@ import {
 	deserializeRange,
 	getElementsByNoteId,
 } from "@itell/core/note";
-import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
+import { SectionLocation } from "@/types/location";
 import { useSession } from "next-auth/react";
+import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
 import { useFormStatus } from "react-dom";
 
 interface Props extends NoteCard {
-	chapter: number;
+	location: SectionLocation;
 	newNote?: boolean;
 }
 
@@ -55,7 +56,7 @@ export default function ({
 	y,
 	highlightedText,
 	noteText,
-	chapter,
+	location,
 	updated_at,
 	created_at,
 	serializedRange,
@@ -138,7 +139,9 @@ export default function ({
 					y,
 					noteText: input,
 					highlightedText,
-					chapter,
+					module: location.module,
+					chapter: location.chapter,
+					section: location.section,
 					color: editState.color,
 					range: serializedRange,
 					user: {

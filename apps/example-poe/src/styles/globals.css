@@ -4,8 +4,13 @@
 
 @import url("@itell/ui/dist/style.css");
 
-pre {
-  font-family: "IBM Plex Mono", monospace;
+.columns .column figure:first-child,
+.columns .column figure:first-child img {
+  margin-top: 0;
+}
+
+.columns .column p:first-child {
+  margin-top: 0;
 }
 
 .inset-center {
@@ -35,7 +40,6 @@ svg {
 #page-title,
 #page-content h2,
 #page-content h3 {
-  @apply flex items-center gap-2;
   scroll-margin-top: 80px;
 }
 
@@ -45,13 +49,15 @@ svg {
 }
 
 @media (max-width: 768px) {
-  .chapter-sidebar {
+  .module-sidebar {
     display: none;
   }
-}
 
-@media (max-width: 1024px) {
   .toc-sidebar {
     display: none;
+  }
+
+  .page-content {
+    grid-column: span 12;
   }
 }

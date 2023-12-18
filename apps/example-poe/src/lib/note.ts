@@ -22,6 +22,7 @@ export const createHighlightListeners = (
 	cb: (e: Event) => void,
 ) => {
 	const highlightElements = getElementsByNoteId(id);
+	console.log("highlightElements", highlightElements);
 	if (!highlightElements) {
 		return;
 	}

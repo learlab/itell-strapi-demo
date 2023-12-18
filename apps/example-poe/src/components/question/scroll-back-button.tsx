@@ -28,8 +28,8 @@ export const ScrollBackButton = () => {
 					buttonVariants({ variant: "secondary" }),
 					"bg-emerald-400  hover:bg-emerald-200 text-white m-2 p-2",
 				)}
-				type="button"
 				onClick={scrollToCurrentChunk}
+				type="button"
 			>
 				Click Here to Scroll Back Up to Your Current Subsection
 			</button>

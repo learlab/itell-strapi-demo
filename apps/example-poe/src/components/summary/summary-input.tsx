@@ -1,19 +1,38 @@
 "use client";
 
-import { useState } from "react";
-import { TextArea } from "../client-components";
-import { isProduction } from "@/lib/constants";
-import { toast } from "sonner";
+import { Button, TextArea } from "@/components/client-components";
+import {
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+} from "@/components/ui/dialog";
+import { Warning } from "@itell/ui/server";
+import { Spinner } from "../spinner";
+import { SummaryFeedback } from "./summary-feedback";
+import { makeLocationHref, makeInputKey } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { cn, numOfWords } from "@itell/core/utils";
-import { makeInputKey } from "@/lib/utils";
+import { PAGE_SUMMARY_THRESHOLD, isProduction } from "@/lib/constants";
+import { trpc } from "@/trpc/trpc-provider";
+import { SectionLocation } from "@/types/location";
+import { allSectionsSorted } from "@/lib/sections";
+import { incrementLocation, isLocationAfter } from "@/lib/location";
+import pluralize from "pluralize";
+import { toast } from "sonner";
+
 type Props = {
-	chapter: number;
+	location: SectionLocation;
 	textAreaClassName?: string;
 };
 
-export const SummaryInput = ({ chapter, textAreaClassName }: Props) => {
+export const SummaryInput = ({ location, textAreaClassName }: Props) => {
 	const [input, setInput] = useState(
-		localStorage.getItem(makeInputKey(chapter)) || "",
+		localStorage.getItem(makeInputKey(location)) || "",
 	);
 	return (
 		<>

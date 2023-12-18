@@ -9,7 +9,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { setClassSettings, updateUserClassId } from "@/lib/server-actions";
+import { updateUserClassId } from "@/lib/server-actions";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -42,8 +42,6 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 		setJoinClassLoading(true);
 		await updateUserClassId({ userId: user.id, classId });
 
-		setClassSettings(classId);
-
 		setJoinClassLoading(false);
 
 		toast.success("You have joined the class! Redirecting.");
@@ -57,7 +55,7 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>Join a class</AlertDialogTitle>
-					<AlertDialogDescription>
+					<AlertDialogDescription asChild>
 						{user.classId ? (
 							<p>
 								It looks like you are trying to join a class with class code{" "}

@@ -1,17 +1,21 @@
 import { z } from "zod";
 import { protectedProcedure, router } from "../utils";
+import { SectionLocationSchema } from "../schema";
 
-const NoteRouter = router({
-	getByChapter: protectedProcedure
-		.input(z.object({ chapter: z.number() }))
+export const NoteRouter = router({
+	getByLocation: protectedProcedure
+		.input(z.object({ location: SectionLocationSchema }))
 		.query(async ({ ctx, input }) => {
 			const { id } = ctx.user;
-			return await ctx.prisma.note.findMany({
+			const res = await ctx.prisma.note.findMany({
 				where: {
 					userId: id,
-					chapter: input.chapter,
+					module: input.location.module,
+					chapter: input.location.chapter,
+					section: input.location.section,
 				},
 			});
+			return res;
 		}),
 
 	getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -31,8 +35,8 @@ const NoteRouter = router({
 				noteText: z.string().optional(),
 				highlightedText: z.string(),
 				color: z.string(),
-				chapter: z.number(),
 				range: z.string(),
+				location: SectionLocationSchema,
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -43,14 +47,15 @@ const NoteRouter = router({
 					noteText: input.noteText,
 					highlightedText: input.highlightedText,
 					y: input.y,
-					chapter: input.chapter,
+					module: input.location.module,
+					chapter: input.location.chapter,
+					section: input.location.section,
 					color: input.color,
 					userId: id,
 					range: input.range,
 				},
 			});
 		}),
-
 	update: protectedProcedure
 		.input(
 			z.object({
@@ -81,5 +86,3 @@ const NoteRouter = router({
 			});
 		}),
 });
-
-export default NoteRouter;

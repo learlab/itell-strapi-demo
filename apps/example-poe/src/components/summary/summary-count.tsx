@@ -1,11 +1,14 @@
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
+import { SectionLocation } from "@/types/location";
 import { cn } from "@itell/core/utils";
 import { Skeleton, buttonVariants } from "@itell/ui/server";
 import Link from "next/link";
 import pluralize from "pluralize";
 
-export const SummaryCount = async ({ chapter }: { chapter: number }) => {
+export const SummaryCount = async ({
+	location,
+}: { location: SectionLocation }) => {
 	const user = await getCurrentUser();
 	if (!user) {
 		return null;
@@ -17,7 +20,9 @@ export const SummaryCount = async ({ chapter }: { chapter: number }) => {
 		},
 		where: {
 			userId: user.id,
-			chapter: chapter,
+			module: location.module,
+			chapter: location.chapter,
+			section: location.section,
 		},
 	});
 	const passedSummaryCount =

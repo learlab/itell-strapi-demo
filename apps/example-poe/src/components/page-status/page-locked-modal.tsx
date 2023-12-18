@@ -11,17 +11,18 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
-import { makeChapterHref } from "@/lib/utils";
 import { Button } from "../client-components";
+import { makeLocationHref } from "@/lib/utils";
 import { isProduction } from "@/lib/constants";
+import { SectionLocation } from "@/types/location";
 
 type Props = {
-	userChapter: number;
+	userLocation: SectionLocation;
 };
 
-export const PageLockedModal = ({ userChapter }: Props) => {
+export const PageLockedModal = ({ userLocation }: Props) => {
 	const [open, setOpen] = useState(true);
-	const href = makeChapterHref(userChapter);
+	const href = makeLocationHref(userLocation);
 	return (
 		<Dialog
 			open={open}
@@ -36,10 +37,12 @@ export const PageLockedModal = ({ userChapter }: Props) => {
 					<DialogTitle>You haven't unlocked this chapter yet</DialogTitle>
 				</DialogHeader>
 				<div>
-					Submit a passing summary for{" "}
-					<Link href={href} className="font-medium underline">
-						<span className="font-medium underline">Chapter {userChapter}</span>
-					</Link>{" "}
+					Submit a passing summary for
+					<Link href={href}>
+						<span className="font-medium underline">
+							{` Chapter ${userLocation.chapter}.${userLocation.section} `}
+						</span>
+					</Link>
 					first.
 				</div>
 				<DialogFooter>

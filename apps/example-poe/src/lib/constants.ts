@@ -1,8 +1,8 @@
 export enum ScoreType {
-	content = "Content",
-	wording = "Wording",
-	similarity = "Topic Similarity",
-	containment = "Topic Borrowing",
+	content = "content",
+	wording = "wording",
+	similarity = "topic similarity",
+	containment = "topic borrowing",
 }
 
 export const ScoreThreshold: Record<ScoreType, number> = {
@@ -13,7 +13,7 @@ export const ScoreThreshold: Record<ScoreType, number> = {
 };
 
 export const FOCUS_TIME_SAVE_INTERVAL = 60000;
-export const TEXTBOOK_NAME = "think-python-2e";
+export const TEXTBOOK_NAME = "macroeconomics-2e";
 export const PAGE_SUMMARY_THRESHOLD = 2;
 export const DEFAULT_TIME_ZONE = "America/Chicago";
 export const isProduction = process.env.NODE_ENV === "production";

@@ -20,13 +20,14 @@ export const NextChunkButton = ({
 	standalone,
 	...rest
 }: Props) => {
-	const { currentChunk, setCurrentChunk, chunks } = useQA();
+	const { setCurrentChunk, chunks, currentChunk } = useQA();
 	const { data: session } = useSession();
 	const [_, setCurrentChunkLocal] = useCurrentChunkLocal();
+
 	// submit event
 	const submitEvent = async () => {
 		if (session) {
-			createEvent({
+			await createEvent({
 				eventType: clickEventType,
 				page: location.href,
 				user: {

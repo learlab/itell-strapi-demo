@@ -1,61 +1,62 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import SummaryCreateButton from "@/components/dashboard/summary-create-button";
 import { SummaryList } from "@/components/dashboard/summary-list";
 import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
-import { redirect } from "next/navigation";
-import { ChapterSelect } from "@/components/dashboard/summaries/chapter-select";
 import { getUser } from "@/lib/user";
+import { groupby } from "@itell/core/utils";
 import { User } from "@prisma/client";
-import { Suspense } from "react";
-import { SummaryCount } from "@/components/summary/summary-count";
-import pluralize from "pluralize";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 
-type PageProps = {
-	searchParams: {
-		chapter?: string;
-	};
-};
-
-export default async function ({ searchParams }: PageProps) {
-	const { chapter } = searchParams;
+export default async function () {
 	const currentUser = await getCurrentUser();
 	if (!currentUser) {
 		return redirect("/auth");
 	}
 
-	const queryChapter = chapter ? parseInt(chapter) : undefined;
 	const [user, userSummaries] = await Promise.all([
 		getUser(currentUser.id),
 		db.summary.findMany({
 			where: {
 				userId: currentUser.id,
-				chapter: queryChapter,
 			},
-			orderBy: [{ created_at: "desc" }, { chapter: "asc" }],
+			orderBy: [{ created_at: "desc" }, { chapter: "asc" }, { section: "asc" }],
 		}),
 	]);
 
+	if (!userSummaries) {
+		return notFound();
+	}
+
+	if (userSummaries.length === 0) {
+		return (
+			<DashboardShell>
+				<DashboardHeader heading="Summary" text="Create and manage summaries.">
+					<SummaryCreateButton />
+				</DashboardHeader>
+				<p className="p-2">
+					You have not made any summary yet. Start with{" "}
+					<Link
+						href="/module-1/chapter-1/section-1"
+						className="underline font-medium"
+					>
+						Section 1
+					</Link>
+					!
+				</p>
+			</DashboardShell>
+		);
+	}
+
+	// // convert date here since they will be passed from server components to client components
+	const summariesByModule = groupby(userSummaries, (summary) => summary.module);
+
 	return (
 		<DashboardShell>
-			<DashboardHeader heading="Summary" text="Create and manage summaries" />
-			<ChapterSelect defaultChapter={queryChapter} />
-			<div className="p-2 space-y-4">
-				{userSummaries.length === 0 ? (
-					<p className=" text-muted-foreground text-sm">No summary found</p>
-				) : (
-					<Suspense key={chapter} fallback={<p>hello world</p>}>
-						<p className="text-sm leading-relaxed">
-							{`You have written ${pluralize(
-								"summary",
-								userSummaries.length,
-								true,
-							)} ${queryChapter ? `for chapter ${queryChapter}` : ""}`}
-						</p>
-						<SummaryList summaries={userSummaries} user={user as User} />
-					</Suspense>
-				)}
-			</div>
+			<DashboardHeader heading="Summary" text="Create and manage summaries." />
+			<SummaryList summariesByModule={summariesByModule} user={user as User} />
 		</DashboardShell>
 	);
 }

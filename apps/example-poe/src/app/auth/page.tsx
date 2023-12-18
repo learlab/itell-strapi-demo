@@ -1,10 +1,10 @@
+import { cn } from "@itell/core/utils";
 import Link from "next/link";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import { Button } from "@/components/client-components";
 import FlipCard from "@/components/flip-card";
 import { AuthForm } from "@/components/auth/auth-form";
 import { Warning } from "@itell/ui/server";
-import { getSiteConfig } from "@/lib/config";
 import { isProduction } from "@/lib/constants";
 
 type PageProps = {
@@ -22,7 +22,6 @@ const ErrorDict: Record<string, string> = {
 };
 
 export default async function ({ searchParams }: PageProps) {
-	const config = await getSiteConfig();
 	const error = searchParams?.error;
 	const errorMessage = error ? ErrorDict[error] : null;
 	return (
@@ -38,17 +37,12 @@ export default async function ({ searchParams }: PageProps) {
 					<div className="flex flex-col space-y-2 text-center">
 						<CommandIcon className="mx-auto h-6 w-6" />
 						<h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
-						<p className="font-light tracking-tight text-lg">{config.title}</p>
 						{/* <p className="text-sm text-muted-foreground">
 							Enter your email to sign in to your account
 						</p>
 						<p className="text-sm text-muted-foreground">TBD</p> */}
 					</div>
-					{error && (
-						<Warning className="max-w-lg mx-auto">
-							{errorMessage ? errorMessage : error}
-						</Warning>
-					)}
+					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
 					<AuthForm />
 				</div>
 			</div>

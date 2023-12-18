@@ -12,13 +12,15 @@ import { useRouter } from "next/navigation";
 import pluralize from "pluralize";
 import { Button } from "../client-components";
 import { useState, useTransition } from "react";
-import { makeChapterHref } from "@/lib/utils";
 import { Spinner } from "../spinner";
+import { incrementLocation } from "@/lib/location";
+import { makeLocationHref } from "@/lib/utils";
+import { SectionLocation } from "@/types/location";
 
 type Props = {
 	// when this is false, the user writes enough summaries more than the threshold
 	isPassed: boolean;
-	chapter: number;
+	location: SectionLocation;
 	children?: React.ReactNode;
 	title: string;
 };
@@ -26,7 +28,7 @@ type Props = {
 export const SummaryProceedModal = ({
 	title,
 	isPassed,
-	chapter,
+	location,
 	children,
 }: Props) => {
 	const [open, setOpen] = useState(true);
@@ -35,7 +37,7 @@ export const SummaryProceedModal = ({
 
 	const handleClick = () => {
 		startTransition(() => {
-			router.push(makeChapterHref(chapter + 1));
+			router.push(makeLocationHref(incrementLocation(location)));
 		});
 	};
 
@@ -47,8 +49,8 @@ export const SummaryProceedModal = ({
 				</DialogHeader>
 				{children}
 				<DialogFooter>
-					<Button onClick={handleClick}>
-						{pending && <Spinner className="mr-2 inline" />} Next Chapter
+					<Button onClick={handleClick} disabled={pending}>
+						{pending && <Spinner className="mr-2 inline" />} Next Section
 					</Button>
 				</DialogFooter>
 			</DialogContent>

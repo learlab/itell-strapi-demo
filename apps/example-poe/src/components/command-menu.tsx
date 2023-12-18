@@ -1,5 +1,3 @@
-// @ts-nocheck
-// there is a  bug in the typings for ui/command, ignore for now
 "use client";
 
 import * as React from "react";
@@ -48,12 +46,12 @@ export function CommandMenu() {
 			<Button
 				variant="outline"
 				className={cn(
-					"hidden relative w-full justify-start text-sm text-muted-foreground sm:inline-flex sm:pr-12 md:w-32 lg:w-48",
+					"relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-32 lg:w-48",
 				)}
 				onClick={() => setOpen(true)}
 			>
 				<span className="inline-flex">Search...</span>
-				<kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+				<kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
 					<span className="text-xs">⌘</span>K
 				</kbd>
 			</Button>

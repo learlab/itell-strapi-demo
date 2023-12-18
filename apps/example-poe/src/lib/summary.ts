@@ -1,4 +1,4 @@
-import { SummaryResponse } from "@itell/core/summary";
+import { SummaryResponse } from "@/trpc/schema";
 import { ScoreThreshold, ScoreType } from "./constants";
 
 export interface Feedback {
@@ -93,15 +93,6 @@ export const wordingFeedback = (score: number | null): Feedback => {
 	};
 };
 
-export const simpleFeedback = (): SummaryFeedbackType => {
-	return {
-		isPassed: true,
-		prompt: "You summary is accepted.",
-		promptDetails: null,
-		suggestedKeyphrases: null,
-	};
-};
-
 export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 	const wording = wordingFeedback(response.wording);
 	const content = contentFeedback(response.content);
@@ -125,8 +116,11 @@ export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 				"Good job on summarizing this section. Please move forward to the next section.";
 		}
 	} else {
-		prompt =
-			"Before moving onto the next section, you will need to revise the summary you wrote using the feedback provided.";
+		prompt = `Before moving onto the next section, you will need to revise the summary you wrote using the feedback provided.
+
+		Try to include the following key ideas from the section above: ${response.suggested_keyphrases.join(
+			", ",
+		)}`;
 	}
 
 	return {

@@ -1,10 +1,11 @@
 import NoteCard from "./note-card";
+import { SectionLocation } from "@/types/location";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
 import { Highlight } from "./highlight";
 import { NewNoteList } from "./new-note-list";
 
-export const NoteList = async ({ chapter }: { chapter: number }) => {
+export const NoteList = async ({ location }: { location: SectionLocation }) => {
 	const user = await getCurrentUser();
 	if (!user) {
 		return null;
@@ -13,10 +14,12 @@ export const NoteList = async ({ chapter }: { chapter: number }) => {
 	const notesAndHighlights = await db.note.findMany({
 		where: {
 			userId: user.id,
-			chapter,
+			module: location.module,
+			chapter: location.chapter,
+			section: location.section,
 		},
 	});
-	const notes = notesAndHighlights.filter((note) => Boolean(note.noteText));
+	const notes = notesAndHighlights.filter((note) => note.noteText !== null);
 	const highlights = notesAndHighlights.filter(
 		(note) => note.noteText === null,
 	);
@@ -24,20 +27,13 @@ export const NoteList = async ({ chapter }: { chapter: number }) => {
 	return (
 		<div>
 			{notes.map((note) => (
-				// @ts-ignore noteText will not be null
-				<NoteCard
-					key={note.id}
-					{...note}
-					serializedRange={note.range}
-					chapter={chapter}
-					newNote={false}
-				/>
+				// @ts-ignore
+				<NoteCard key={note.y} {...note} location={location} />
 			))}
 			{highlights.map((highlight) => (
-				<Highlight key={highlight.id} {...highlight} />
+				<Highlight key={highlight.y} {...highlight} />
 			))}
-			{/* for rendering notes that are newly created */}
-			<NewNoteList chapter={chapter} />
+			<NewNoteList location={location} />
 		</div>
 	);
 };

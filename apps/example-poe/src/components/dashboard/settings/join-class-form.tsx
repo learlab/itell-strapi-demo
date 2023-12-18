@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Errorbox, Input, buttonVariants } from "@itell/ui/server";
+import { Errorbox, Input } from "@itell/ui/server";
 import { useSearchParams } from "next/navigation";
 import { getTeacherWithClassId } from "@/lib/server-actions";
 import { useFormState, useFormStatus } from "react-dom";

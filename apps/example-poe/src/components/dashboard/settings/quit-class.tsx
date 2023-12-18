@@ -13,7 +13,6 @@ import { updateUserClassId } from "@/lib/server-actions";
 import { isProduction } from "@/lib/constants";
 import { AlertDialogDescription, Button } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
-import { deleteClassSettings } from "@/lib/class";
 import { useState } from "react";
 import { Spinner } from "@/components/spinner";
 
@@ -30,7 +29,7 @@ export const QuitClass = ({ userId }: Props) => {
 
 	return (
 		<AlertDialog>
-			<AlertDialogTrigger>
+			<AlertDialogTrigger asChild>
 				<Button>Quit Class</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
@@ -44,7 +43,7 @@ export const QuitClass = ({ userId }: Props) => {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction>
+					<AlertDialogAction asChild>
 						<Button
 							onClick={async () => {
 								setIsLoading(true);
@@ -52,8 +51,6 @@ export const QuitClass = ({ userId }: Props) => {
 									userId,
 									classId: null,
 								});
-
-								deleteClassSettings();
 
 								setIsLoading(false);
 								router.refresh();

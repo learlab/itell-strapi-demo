@@ -16,12 +16,13 @@ import { useSession } from "next-auth/react";
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 import { useNotesStore } from "@/lib/store";
 import { createNoteElements, serializeRange } from "@itell/core/note";
-import { revalidatePath } from "next/cache";
+import { SectionLocation } from "@/types/location";
+import { Spinner } from "../spinner";
 import { createNote } from "@/lib/server-actions";
 
 type SelectionData = ReturnType<typeof useTextSelection>;
 
-export const NoteToolbar = ({ chapter }: { chapter: number }) => {
+export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
@@ -116,7 +117,9 @@ export const NoteToolbar = ({ chapter }: { chapter: number }) => {
 						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
-						chapter,
+						module: location.module,
+						chapter: location.chapter,
+						section: location.section,
 						color: defaultHighlightColor,
 						range: serializedRange,
 						user: {

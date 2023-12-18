@@ -1,6 +1,4 @@
-import { ScoreType } from "@/lib/constants";
 import type { SummaryFeedbackType } from "@/lib/summary";
-import { keyof } from "@itell/core/utils";
 import { Info, Warning } from "@itell/ui/server";
 import { Accordion, AccordionItem } from "../client-components";
 

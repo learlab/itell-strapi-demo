@@ -3,7 +3,7 @@ import { SettingsForm } from "@/components/dashboard/settings-form";
 import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
 import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
-import { getTeacherWithClassId } from "@/lib/server-actions";
+import { getTeacherWithClassId } from "@/lib/class";
 import { getUser } from "@/lib/user";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -19,10 +19,10 @@ export const metadata: Metadata = {
 type Props = {
 	searchParams?: Record<string, string>;
 };
+
 export default async function ({ searchParams }: Props) {
 	const currentUser = await getCurrentUser();
-	const classId = searchParams?.join_class_code;
-	const teacherToJoin = classId ? await getTeacherWithClassId(classId) : null;
+	const inviteClassId = searchParams?.join_class_code;
 
 	if (!currentUser) {
 		return redirect("/auth");
@@ -33,15 +33,19 @@ export default async function ({ searchParams }: Props) {
 		return redirect("/auth");
 	}
 
+	const teacher = inviteClassId
+		? await getTeacherWithClassId(inviteClassId)
+		: null;
+
 	return (
 		<DashboardShell>
 			<DashboardHeader heading={title} text={description} />
 			<SettingsForm user={user} />
-			{classId && (
+			{inviteClassId && (
 				<ClassInviteModal
 					user={user}
-					teacherToJoin={teacherToJoin}
-					classId={classId}
+					teacherToJoin={teacher}
+					classId={inviteClassId}
 				/>
 			)}
 		</DashboardShell>

@@ -2,9 +2,9 @@
 
 import { Prisma } from "@prisma/client";
 import db from "./db";
-import { cookies } from "next/headers";
-import { isLastChapter } from "./chapters";
 import { revalidatePath } from "next/cache";
+import { SectionLocation } from "@/types/location";
+import { incrementLocation } from "./location";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -86,34 +86,36 @@ export const updateUserClassId = async ({
 	});
 };
 
-export const incrementUserChapter = async (userId: string, chapter: number) => {
+export const incrementUserLocation = async (
+	userId: string,
+	location: SectionLocation,
+) => {
 	const user = await db.user.findUnique({ where: { id: userId } });
 	if (user) {
-		const userChapter = user.chapter;
-		// only update if the call is from the user's current chapter
-		if (userChapter === chapter && !isLastChapter(chapter)) {
-			return await db.user.update({
-				where: {
-					id: userId,
-				},
-				data: {
-					chapter: {
-						increment: 1,
-					},
-				},
-			});
-		}
+		const newLocation = incrementLocation(location);
+		return await db.user.update({
+			where: {
+				id: userId,
+			},
+			data: {
+				module: newLocation.module,
+				chapter: newLocation.chapter,
+				section: newLocation.section,
+			},
+		});
 	}
 };
 
-export const getUserChapterSummaryCount = async (
+export const getUserLocationSummaryCount = async (
 	userId: string,
-	chapter: number,
+	location: SectionLocation,
 ) => {
 	return await db.summary.count({
 		where: {
 			userId,
-			chapter,
+			module: location.module,
+			chapter: location.chapter,
+			section: location.section,
 		},
 	});
 };
@@ -168,15 +170,4 @@ export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
 	await db.note.update({ where: { id }, data });
 
 	revalidatePath(".");
-};
-
-export const setClassSettings = (classId: string) => {
-	if (classId === "wes_class") {
-		cookies().set(
-			"class_settings",
-			JSON.stringify({
-				no_feedback_pages: [1, 2],
-			}),
-		);
-	}
 };

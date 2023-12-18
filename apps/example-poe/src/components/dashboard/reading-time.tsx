@@ -16,6 +16,7 @@ import {
 	getGroupedReadingTime,
 	getReadingTimeChartData,
 	PrevDaysLookup,
+	ReadingTimeEntry,
 } from "@itell/core/dashboard";
 import { ReadingTimeChart } from "./reading-time-chart";
 import { InfoIcon } from "lucide-react";
