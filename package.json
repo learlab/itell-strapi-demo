@@ -26,12 +26,6 @@
   "keywords": [],
   "license": "ISC",
   "dependencies": {
-    "@tanstack/react-query": "^4.0.0",
-    "@trpc/client": "^10.40.0",
-    "@trpc/next": "^10.40.0",
-    "@trpc/react-query": "^10.40.0",
-    "@trpc/server": "^10.40.0",
-    "turbo": "^1.9.3",
-    "zod": "^3.22.2"
+    "turbo": "^1.9.3"
   }
 }
