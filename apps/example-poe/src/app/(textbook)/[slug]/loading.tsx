@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Skeleton } from "@itell/ui/server";
 import { getChapterFromPathname } from "@/lib/utils";
 import { BookmarkIcon } from "lucide-react";

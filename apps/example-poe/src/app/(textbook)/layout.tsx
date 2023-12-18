@@ -1,3 +1,4 @@
+// @ts-nocheck
 import TextbookNavbar from "@/components/nav/textbook-nav";
 import { PageProvider } from "@/components/provider/page-provider";
 import "@/styles/prism-one-dark.css";

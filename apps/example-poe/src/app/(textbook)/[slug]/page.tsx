@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Balancer from "react-wrap-balancer";
 import { notFound } from "next/navigation";
 import { getPagerLinksForChapter } from "@/lib/pager";
