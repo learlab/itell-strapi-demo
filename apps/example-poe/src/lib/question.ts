@@ -35,6 +35,7 @@ export const getQAScore = async ({
 		chunk_slug = "temp chunk slug";
 	}
 	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/answer`, {
+		mode: 'no-cors',
 		method: "POST",
 		body: JSON.stringify({
 			page_slug:page_slug,
