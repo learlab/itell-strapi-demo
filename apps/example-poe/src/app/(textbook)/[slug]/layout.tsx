@@ -95,9 +95,7 @@ export default async function ({
 
 				{children}
 			</div>
-			{requireSummary && (
-				<PageSummary location={section.location} pageSlug={section.page_slug} />
-			)}
+			{requireSummary && <PageSummary pageSlug={section.page_slug} />}
 		</>
 	);
 }
