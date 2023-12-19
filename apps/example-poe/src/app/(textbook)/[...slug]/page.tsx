@@ -115,9 +115,6 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	}
 
 
-
-
-
 	const isUserLatestPage = user
 		? user.chapter === currentLocation.chapter &&
 		  user.section === currentLocation.section
