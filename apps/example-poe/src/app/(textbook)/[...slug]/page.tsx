@@ -55,15 +55,6 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 
 	// const mdxFilePath = "./content/section/module-"+ currentLocation.module +"/chapter-" + currentLocation.chapter + "/section-"+currentLocation.section+".mdx"
 	let page_slug:string = section.page_slug;
-	// await fs.readFile(mdxFilePath, "utf8", (err, data) => {
-	// 	if (err) {
-	// 		console.log(err);
-	// 	}
-	//
-	// 	const lines = data.split('\n');
-	//
-	// 	page_slug = lines[2].split(" ")[1];
-	// });
 	console.log(page_slug);
 	const pageId = page_slug;
 
@@ -78,80 +69,52 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 
 	const res = await fetch("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]="+pageId+"&populate[Content]=*", {cache: "no-store"});
 	let data = await res.json();
-	let attributes;
-	if(data){
-		if(data["data"]){
-			if(data["data"][0]){
-				if(data["data"][0]["attributes"]){
-					attributes = data["data"][0]["attributes"];
-					if(attributes["HasSummary"]){
-						enableQA = true;
-						const chooseQuestion = (question: (typeof questions)[0]) => {
-							let targetQuestion = question.question;
-							// band-aid solution for YouTube videos until we implement content-types via Strapi
-							// if (question.slug.includes("learn-with-videos")) {
-							// 	targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
-							// }
+	let attributes = data["data"][0]["attributes"];
+	if(attributes["HasSummary"]){
+		enableQA = true;
+		const chooseQuestion = (question: (typeof questions)[0]) => {
+			let targetQuestion = question.question;
+			// band-aid solution for YouTube videos until we implement content-types via Strapi
+			// if (question.slug.includes("learn-with-videos")) {
+			// 	targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
+			// }
 
-							if (targetQuestion && question.answer) {
-								selectedQuestions.set(question.subsection, {
-									question: targetQuestion,
-									answer: question.answer,
-								});
-							}
-						};
-
-						let questions = [];
-						for(let i = 0; i < attributes["Content"].length; ++i){
-							if(attributes["Content"][i]["__component"]==="page.chunk"){
-								const QAResponse = JSON.parse(attributes["Content"][i]["QuestionAnswerResponse"]);
-								let question = {
-									subsection: i,
-									question:QAResponse.question,
-									answer:QAResponse.answer,
-								}
-								questions.push(question);
-							}
-						}
-
-						for (let index = 0; index < questions.length; index++) {
-							// Each subsection has a 1/3 chance of spawning a question
-							if (Math.random() < 1 / 3) {
-								chooseQuestion(questions[index]);
-							}
-						}
-
-						// Each page will have at least one question
-						if (selectedQuestions.size === 0) {
-							const randChunk = Math.floor(Math.random() * (questions.length - 1));
-							chooseQuestion(questions[randChunk]);
-						}
-						else{
-							console.log("6");
-						}
-
-					}
-					else{
-						console.log("5");
-					}
-				}
-				else{
-					console.log("4");
-				}
+			if (targetQuestion && question.answer) {
+				selectedQuestions.set(question.subsection, {
+					question: targetQuestion,
+					answer: question.answer,
+				});
 			}
-			else{
-				console.log("3");
-				console.log("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]="+pageId+"&populate[Content]=*")
-				console.log(data);
+		};
+
+		let questions = [];
+		for(let i = 0; i < attributes["Content"].length; ++i){
+			if(attributes["Content"][i]["__component"]==="page.chunk"){
+				const QAResponse = JSON.parse(attributes["Content"][i]["QuestionAnswerResponse"]);
+				let question = {
+					subsection: i,
+					question:QAResponse.question,
+					answer:QAResponse.answer,
+				}
+				questions.push(question);
 			}
 		}
-		else{
-			console.log("2");
+
+		for (let index = 0; index < questions.length; index++) {
+			// Each subsection has a 1/3 chance of spawning a question
+			if (Math.random() < 1 / 3) {
+				chooseQuestion(questions[index]);
+			}
 		}
+
+		// Each page will have at least one question
+		if (selectedQuestions.size === 0) {
+			const randChunk = Math.floor(Math.random() * (questions.length - 1));
+			chooseQuestion(questions[randChunk]);
+		}
+
 	}
-	else{
-		console.log("1");
-	}
+
 	console.log("enabled qa:" + enableQA);
 
 
