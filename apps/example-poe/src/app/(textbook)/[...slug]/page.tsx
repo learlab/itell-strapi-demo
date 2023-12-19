@@ -1,31 +1,30 @@
 // @ts-nocheck
 import Balancer from "react-wrap-balancer";
-import { notFound } from "next/navigation";
-import { SectionLocation } from "@/types/location";
-import { getPagerLinksForSection } from "@/lib/pager";
-import { NoteList } from "@/components/note/note-list";
-import { NoteToolbar } from "@/components/note/note-toolbar";
-import { Fragment, Suspense } from "react";
-import { allSectionsSorted } from "@/lib/sections";
-import { Pager } from "@/components/client-components";
-import { PageToc } from "@/components/page-toc";
-import { Section } from "contentlayer/generated";
-import { Spinner } from "@/components/spinner";
-import { PageContent } from "@/components/section/page-content";
-import { QuestionControl } from "@/components/question/question-control";
-import { getCurrentUser } from "@/lib/auth";
-import { env } from "@/env.mjs";
-import { getPageQuestions } from "@/lib/question";
-import { PageTitle } from "@/components/page-title";
-import { getUser } from "@/lib/user";
-import { isLocationAfter, isLocationUnlockedWithoutUser } from "@/lib/location";
-import { PageStatusModal } from "@/components/page-status/page-status-modal";
-import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
-import { PageStatus } from "@/components/page-status/page-status";
-import { NoteCount } from "@/components/note/note-count";
-import { isProduction } from "@/lib/constants";
-import { EventTracker } from "@/components/telemetry/event-tracker";
-import fs from "fs";
+import {notFound} from "next/navigation";
+import {SectionLocation} from "@/types/location";
+import {getPagerLinksForSection} from "@/lib/pager";
+import {NoteList} from "@/components/note/note-list";
+import {NoteToolbar} from "@/components/note/note-toolbar";
+import {Fragment, Suspense} from "react";
+import {allSectionsSorted} from "@/lib/sections";
+import {Pager} from "@/components/client-components";
+import {PageToc} from "@/components/page-toc";
+import {Section} from "contentlayer/generated";
+import {Spinner} from "@/components/spinner";
+import {PageContent} from "@/components/section/page-content";
+import {QuestionControl} from "@/components/question/question-control";
+import {getCurrentUser} from "@/lib/auth";
+import {env} from "@/env.mjs";
+import {getPageQuestions} from "@/lib/question";
+import {PageTitle} from "@/components/page-title";
+import {getUser} from "@/lib/user";
+import {isLocationAfter, isLocationUnlockedWithoutUser} from "@/lib/location";
+import {PageStatusModal} from "@/components/page-status/page-status-modal";
+import {EyeIcon, LockIcon, UnlockIcon} from "lucide-react";
+import {PageStatus} from "@/components/page-status/page-status";
+import {NoteCount} from "@/components/note/note-count";
+import {isProduction} from "@/lib/constants";
+import {EventTracker} from "@/components/telemetry/event-tracker";
 
 export default async function ({ params }: { params: { slug: string[] } }) {
 	const sessionUser = await getCurrentUser();
@@ -54,13 +53,11 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	// }-${currentLocation.section < 10 ? "0" : ""}${currentLocation.section}`;
 
 	// const mdxFilePath = "./content/section/module-"+ currentLocation.module +"/chapter-" + currentLocation.chapter + "/section-"+currentLocation.section+".mdx"
-	let page_slug:string = section.page_slug;
-	console.log(page_slug);
-	const pageId = page_slug;
+	const pageId = section.page_slug;
 
 
 	// get subsections
-	let questions: Awaited<ReturnType<typeof getPageQuestions>> = [];
+	//let questions: Awaited<ReturnType<typeof getPageQuestions>> = [];
 	// Subsections to be passed onto page
 	const selectedQuestions = new Map<
 		number,
@@ -95,6 +92,8 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 					subsection: i,
 					question:QAResponse.question,
 					answer:QAResponse.answer,
+					page_slug: pageId,
+					chunk_slug: attributes["Content"][i]["Slug"],
 				}
 				questions.push(question);
 			}
@@ -115,7 +114,6 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 
 	}
 
-	console.log("enabled qa:" + enableQA);
 
 
 

@@ -25,17 +25,14 @@ export const getPageQuestions = async (pageId: string) => {
 // async function to get QA scores from scoring API
 export const getQAScore = async ({
 	input,
-	chapter,
-	section,
-	subsection,
-}: { input: string; chapter: string; section: string; subsection: string }) => {
+	chunk_slug,
+	page_slug,
+}: { input: string; chunk_slug: string; page_slug: string }) => {
 	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/answer`, {
 		method: "POST",
 		body: JSON.stringify({
-			textbook_name: TEXTBOOK_NAME,
-			chapter_index: chapter,
-			section_index: section,
-			subsection_index: subsection,
+			page_slug:page_slug,
+			chunk_slug:chunk_slug,
 			answer: input,
 		}),
 		headers: {

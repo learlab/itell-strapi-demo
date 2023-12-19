@@ -40,6 +40,8 @@ type Props = {
 	section: number;
 	subsection: number;
 	isPageMasked: boolean;
+	chunk_slug: string;
+	page_slug: string;
 };
 
 // state for answer correctness
@@ -75,10 +77,12 @@ const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 };
 
 export const QuestionBox = ({
-	question,
 	chapter,
 	section,
 	subsection,
+	question,
+	chunk_slug,
+	page_slug,
 	answer,
 	isPageMasked,
 }: Props) => {
@@ -118,9 +122,8 @@ export const QuestionBox = ({
 
 		const response = await getQAScore({
 			input,
-			chapter: String(chapter),
-			section: String(section),
-			subsection: String(subsection),
+			chunk_slug: chunk_slug,
+			page_slug: page_slug,
 		});
 
 		if (!response.success) {
