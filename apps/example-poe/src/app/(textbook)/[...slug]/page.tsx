@@ -80,7 +80,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	let data = await res.json();
 
 
-	if(data["data"]["attributes"]["HasSummary"]){
+	if(data["data"][0]["attributes"]["HasSummary"]){
 		const chooseQuestion = (question: (typeof questions)[0]) => {
 			let targetQuestion = question.question;
 			// band-aid solution for YouTube videos until we implement content-types via Strapi
