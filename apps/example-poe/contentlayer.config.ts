@@ -33,6 +33,11 @@ const Section = defineDocumentType(() => ({
 			description: "The title of the Section",
 			required: true,
 		},
+		page_slug: {
+			type: "string",
+			description: "The page slug",
+			required: true,
+		},
 		qa: {
 			type: "boolean",
 			description: "If the page should include question & answers",

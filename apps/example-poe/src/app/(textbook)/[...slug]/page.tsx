@@ -52,21 +52,21 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	// const pageId = `${currentLocation.chapter < 10 ? "0" : ""}${
 	// 	currentLocation.chapter
 	// }-${currentLocation.section < 10 ? "0" : ""}${currentLocation.section}`;
-	const pageId = async () => {
-		const mdxFilePath = "../../../../content/section/module-"+ currentLocation.module +"/chapter-" + currentLocation.chapter + "/section-"+currentLocation.section;
-		let page_slug:string = "";
-		await fs.readFile(mdxFilePath, "utf8", (err, data) => {
-			if (err) {
-				console.log(err);
-			}
 
-			const lines = data.split('\n');
+	// const mdxFilePath = "./content/section/module-"+ currentLocation.module +"/chapter-" + currentLocation.chapter + "/section-"+currentLocation.section+".mdx"
+	let page_slug:string = section.page_slug;
+	// await fs.readFile(mdxFilePath, "utf8", (err, data) => {
+	// 	if (err) {
+	// 		console.log(err);
+	// 	}
+	//
+	// 	const lines = data.split('\n');
+	//
+	// 	page_slug = lines[2].split(" ")[1];
+	// });
+	console.log(page_slug);
+	const pageId = page_slug;
 
-			page_slug = lines[2].split(" ")[1];
-		});
-		console.log(page_slug);
-		return page_slug;
-	};
 
 	// get subsections
 	let questions: Awaited<ReturnType<typeof getPageQuestions>> = [];
@@ -89,9 +89,9 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 						const chooseQuestion = (question: (typeof questions)[0]) => {
 							let targetQuestion = question.question;
 							// band-aid solution for YouTube videos until we implement content-types via Strapi
-							if (question.slug.includes("learn-with-videos")) {
-								targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
-							}
+							// if (question.slug.includes("learn-with-videos")) {
+							// 	targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
+							// }
 
 							if (targetQuestion && question.answer) {
 								selectedQuestions.set(question.subsection, {
@@ -126,11 +126,31 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 							const randChunk = Math.floor(Math.random() * (questions.length - 1));
 							chooseQuestion(questions[randChunk]);
 						}
+						else{
+							console.log("6");
+						}
 
 					}
+					else{
+						console.log("5");
+					}
+				}
+				else{
+					console.log("4");
 				}
 			}
+			else{
+				console.log("3");
+				console.log("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]="+pageId+"&populate[Content]=*")
+				console.log(data);
+			}
 		}
+		else{
+			console.log("2");
+		}
+	}
+	else{
+		console.log("1");
 	}
 	console.log("enabled qa:" + enableQA);
 
@@ -211,11 +231,13 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 				user={user}
 				isWhitelisted={isUserWhitelisted}
 			/>
+			{enableQA && (
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}
 					location={currentLocation}
 				/>
+			)}
 
 
 			{user && isProduction && <EventTracker user={user} />}
