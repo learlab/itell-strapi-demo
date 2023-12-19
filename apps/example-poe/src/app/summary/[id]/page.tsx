@@ -62,8 +62,6 @@ export default async function ({ params }: PageProps) {
 		return notFound();
 	}
 
-	const location = section.location as SectionLocation;
-
 	const onSubmit = async (
 		prevState: SummaryFormState,
 		formData: FormData,
@@ -75,7 +73,7 @@ export default async function ({ params }: PageProps) {
 		if (error) {
 			return { error, canProceed: false, response: null, feedback: null };
 		}
-		const response = await getScore({ input, location });
+		const response = await getScore({ input, pageSlug: section.page_slug });
 
 		if (!response.success) {
 			return {

@@ -22,11 +22,10 @@ import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
 
 type Props = {
-	location: SectionLocation;
 	pageSlug: string;
 };
 
-export const PageSummary = async ({ pageSlug, location }: Props) => {
+export const PageSummary = async ({ pageSlug }: Props) => {
 	const user = await getCurrentUser();
 	const onSubmit = async (
 		prevState: SummaryFormState,
@@ -51,7 +50,7 @@ export const PageSummary = async ({ pageSlug, location }: Props) => {
 			};
 		}
 
-		const response = await getScore({ input, location });
+		const response = await getScore({ input, pageSlug });
 
 		if (!response.success) {
 			return {
