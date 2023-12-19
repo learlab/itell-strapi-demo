@@ -43,7 +43,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	}
 
 	const section = allSectionsSorted[sectionIndex] as Section;
-	const enableQA = section.qa;
+	let enableQA = false;
 	const currentLocation = section.location as SectionLocation;
 	const pagerLinks = getPagerLinksForSection(sectionIndex);
 
@@ -85,6 +85,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 				if(data["data"][0]["attributes"]){
 					attributes = data["data"][0]["attributes"];
 					if(attributes["HasSummary"]){
+						enableQA = true;
 						const chooseQuestion = (question: (typeof questions)[0]) => {
 							let targetQuestion = question.question;
 							// band-aid solution for YouTube videos until we implement content-types via Strapi
@@ -208,7 +209,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 				user={user}
 				isWhitelisted={isUserWhitelisted}
 			/>
-			{section.qa && (
+			{enableQA && (
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}
