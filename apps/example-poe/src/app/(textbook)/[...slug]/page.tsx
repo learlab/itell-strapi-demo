@@ -126,12 +126,13 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 							const randChunk = Math.floor(Math.random() * (questions.length - 1));
 							chooseQuestion(questions[randChunk]);
 						}
-						console.log("enabled qa:" + enableQA);
+
 					}
 				}
 			}
 		}
 	}
+	console.log("enabled qa:" + enableQA);
 
 
 
