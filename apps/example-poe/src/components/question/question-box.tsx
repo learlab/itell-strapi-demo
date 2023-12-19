@@ -292,7 +292,9 @@ export const QuestionBox = ({
 							{answerStatus !== AnswerStatus.UNANSWERED && (
 								<HoverCard>
 									<HoverCardTrigger asChild>
-										<Button variant="secondary">Reveal Answer</Button>
+										<Button variant="secondary" type="button">
+											Reveal Answer
+										</Button>
 									</HoverCardTrigger>
 									<HoverCardContent className="w-80">
 										<p className="leading-relaxed">{answer}</p>

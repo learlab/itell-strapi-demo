@@ -58,7 +58,7 @@ export const NextChunkButton = ({
 
 	return (
 		<div className="flex justify-center items-center p-4 gap-2">
-			<Button variant="secondary" onClick={onSubmit} {...rest}>
+			<Button variant="secondary" type="button" onClick={onSubmit} {...rest}>
 				{children}
 			</Button>
 			{standalone && (
