@@ -39,6 +39,7 @@ type Props = {
 	chapter: number;
 	section: number;
 	subsection: number;
+	pageSlug: string;
 	isPageMasked: boolean;
 };
 
@@ -76,10 +77,11 @@ const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 
 export const QuestionBox = ({
 	question,
+	answer,
 	chapter,
 	section,
 	subsection,
-	answer,
+	pageSlug,
 	isPageMasked,
 }: Props) => {
 	const { data: session } = useSession();
@@ -137,9 +139,7 @@ export const QuestionBox = ({
 			// when there is no session, question won't be displayed
 			await createConstructedResponse({
 				response: input,
-				chapter: chapter,
-				section: section,
-				subsection: subsection,
+				pageSlug,
 				score,
 				user: {
 					connect: {

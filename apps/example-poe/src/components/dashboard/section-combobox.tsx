@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@itell/ui/client";
 import { allSectionsSorted } from "@/lib/sections";
-import { Location, SectionLocation } from "@/types/location";
+import { SectionLocation } from "@/types/location";
 
 export default function ({
 	onValueChange,
@@ -33,7 +33,7 @@ export default function ({
 			label: `${section.location.chapter}.${section.location.section} ${section.title}`,
 		}));
 	const [selectedSection, setSelectedSection] = React.useState<
-		typeof sections[0] | undefined
+		(typeof sections)[0] | undefined
 	>(undefined);
 
 	const findSectionByValue = (value: string) => {

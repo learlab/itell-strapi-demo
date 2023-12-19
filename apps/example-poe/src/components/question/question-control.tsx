@@ -14,12 +14,14 @@ type Props = {
 	isPageMasked: boolean;
 	selectedQuestions: Map<number, Question>;
 	location: SectionLocation;
+	pageSlug: string;
 };
 
 export const QuestionControl = ({
 	selectedQuestions,
 	location,
 	isPageMasked,
+	pageSlug,
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
@@ -101,6 +103,7 @@ export const QuestionControl = ({
 					chapter={location.chapter}
 					section={location.section}
 					subsection={index}
+					pageSlug={pageSlug}
 					isPageMasked={isPageMasked}
 				/>,
 				questionContainer,

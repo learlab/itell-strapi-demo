@@ -49,9 +49,7 @@ model User {
   image         String?
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
-  module        Int       @default(1)
-  chapter       Int       @default(1)
-  section       Int       @default(1)
+  pageSlug      String?   @map("page_slug")
 
   timeZone String? @map("time_zone")
 
@@ -116,9 +114,7 @@ model Summary {
 
   userId           String   @map("user_id")
   classId          String?  @map("class_id")
-  module           Int
-  chapter          Int
-  section          Int
+  pageSlug         String   @map("page_slug")
   isPassed         Boolean
   containmentScore Float    @map("containment_score")
   similarityScore  Float    @map("similarity_score")
@@ -136,9 +132,7 @@ model Note {
   y               Float
   noteText        String?  @map("note_text")
   highlightedText String   @map("highlighted_text")
-  module          Int
-  chapter         Int
-  section         Int
+  pageSlug        String   @map("page_slug")
   color           String   @default("#3730a3")
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
@@ -152,9 +146,7 @@ model Note {
 
 model Section {
   sectionId  String  @id @map("section_id")
-  module     Int?
-  chapter    Int?
-  section    Int?
+  pageSlug   String  @map("page_slug")
   rawText    String  @map("raw_text")
   cleanText  String  @map("clean_text")
   keyphrases String?
@@ -165,6 +157,7 @@ model Section {
 model SubSection {
   id         String   @id
   sectionId  String   @map("section_id")
+  pageSlug   String   @map("page_slug")
   subsection Int
   heading    String
   raw_text   String?
@@ -183,9 +176,7 @@ model ConstructedResponse {
   id String @id @default(uuid())
 
   userId     String   @map("user_id")
-  chapter    Int
-  section    Int
-  subsection Int
+  pageSlug   String   @map("page_slug")
   score      Int
   response   String
   created_at DateTime @default(now())

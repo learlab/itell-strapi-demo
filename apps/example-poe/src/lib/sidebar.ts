@@ -1,24 +1,19 @@
-import { Section } from "contentlayer/generated";
+import { Section, allSections } from "contentlayer/generated";
 import { Chapter, SidebarSection } from "@/types/section";
 import { sortSections } from "./utils";
 import { groupby } from "@itell/core/utils";
+import { allSectionsSorted } from "./sections";
 
-export default async function getChapters({
-	allSections,
-	module,
-}: {
-	allSections: Section[];
-	module: number;
-}) {
-	const sections: SidebarSection[] = allSections
+export const getModuleChapters = (module: number) => {
+	const sections: SidebarSection[] = allSectionsSorted
 		.filter((section) => section.location.module === module)
 		.map((section) => ({
 			id: section._id,
 			title: section.title,
-			module: section.location.module,
+			slug: section.slug,
+			url: section.url,
 			chapter: section.location.chapter,
 			section: section.location.section,
-			url: section.url,
 		}));
 
 	const sectionsSorted = sortSections(sections);
@@ -35,4 +30,4 @@ export default async function getChapters({
 	}
 
 	return output;
-}
+};

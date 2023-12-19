@@ -1,28 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { GoogleLoginButton } from "../auth/login-buttons";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
 import { Button } from "../client-components";
-import { makeLocationHref } from "@/lib/utils";
 import { isProduction } from "@/lib/constants";
-import { SectionLocation } from "@/types/location";
+import { makePageHref } from "@/lib/utils";
 
 type Props = {
-	userLocation: SectionLocation;
+	userPageSlug: string | null;
 };
 
-export const PageLockedModal = ({ userLocation }: Props) => {
+export const PageLockedModal = ({ userPageSlug }: Props) => {
 	const [open, setOpen] = useState(true);
-	const href = makeLocationHref(userLocation);
+	const href = makePageHref(userPageSlug || "what-is-law");
 	return (
 		<Dialog
 			open={open}
@@ -38,10 +35,8 @@ export const PageLockedModal = ({ userLocation }: Props) => {
 				</DialogHeader>
 				<div>
 					Submit a passing summary for
-					<Link href={href}>
-						<span className="font-medium underline">
-							{` Chapter ${userLocation.chapter}.${userLocation.section} `}
-						</span>
+					<Link href={href} className="mx-1 underline font-semibold">
+						<span> this page </span>
 					</Link>
 					first.
 				</div>

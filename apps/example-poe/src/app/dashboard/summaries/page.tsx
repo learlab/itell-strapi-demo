@@ -4,9 +4,11 @@ import { SummaryList } from "@/components/dashboard/summary-list";
 import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
+import { allSectionsSorted } from "@/lib/sections";
 import { getUser } from "@/lib/user";
 import { groupby } from "@itell/core/utils";
 import { User } from "@prisma/client";
+import { Section } from "contentlayer/generated";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -22,7 +24,7 @@ export default async function () {
 			where: {
 				userId: currentUser.id,
 			},
-			orderBy: [{ created_at: "desc" }, { chapter: "asc" }, { section: "asc" }],
+			orderBy: [{ created_at: "desc" }],
 		}),
 	]);
 
@@ -51,7 +53,19 @@ export default async function () {
 	}
 
 	// // convert date here since they will be passed from server components to client components
-	const summariesByModule = groupby(userSummaries, (summary) => summary.module);
+	const summaries = userSummaries.map((s) => {
+		const page = allSectionsSorted.find(
+			(section) => section.slug === s.pageSlug,
+		) as Section;
+
+		return {
+			...s,
+			module: page.location.module as number,
+			pageTitle: page.title,
+		};
+	});
+
+	const summariesByModule = groupby(summaries, (summary) => summary.module);
 
 	return (
 		<DashboardShell>

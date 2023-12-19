@@ -1,4 +1,4 @@
-import SummaryOperations from "@/components/dashboard/summary-operations";
+import { SummaryOperations } from "@/components/dashboard/summary-operations";
 import { ScoreBadge } from "@/components/score/badge";
 import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
@@ -18,16 +18,16 @@ import {
 } from "@itell/core/summary";
 import { getScore } from "@/lib/score";
 import {
-	getUserLocationSummaryCount,
-	incrementUserLocation,
+	getUserPageSummaryCount,
+	incrementUserPage,
 	updateSummary,
 } from "@/lib/server-actions";
 import { revalidatePath } from "next/cache";
-import { isLastLocation } from "@/lib/location";
 import { SectionLocation } from "@/types/location";
 import Link from "next/link";
-import { makeLocationHref } from "@/lib/utils";
+import { makePageHref } from "@/lib/utils";
 import { SummaryForm } from "@/components/summary/summary-form";
+import { isLastPage } from "@/lib/location";
 
 async function getSummaryForUser(summaryId: Summary["id"], userId: User["id"]) {
 	return await db.summary.findFirst({
@@ -56,9 +56,7 @@ export default async function ({ params }: PageProps) {
 	}
 
 	const section = allSectionsSorted.find(
-		(section) =>
-			section.location.chapter === summary.chapter &&
-			section.location.section === summary.section,
+		(section) => section.slug === summary.pageSlug,
 	);
 	if (!section) {
 		return notFound();
@@ -103,21 +101,24 @@ export default async function ({ params }: PageProps) {
 		revalidatePath(`/summary/${params.id}`);
 
 		if (feedback.isPassed) {
-			await incrementUserLocation(user.id, location);
+			await incrementUserPage(user.id, summary.pageSlug);
 
 			return {
-				canProceed: !isLastLocation(location),
+				canProceed: !isLastPage(summary.pageSlug),
 				response: response.data,
 				feedback,
 				error: null,
 			};
 		}
 
-		const summaryCount = await getUserLocationSummaryCount(user.id, location);
+		const summaryCount = await getUserPageSummaryCount(
+			user.id,
+			summary.pageSlug,
+		);
 		if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
-			await incrementUserLocation(user.id, location);
+			await incrementUserPage(user.id, summary.pageSlug);
 			return {
-				canProceed: !isLastLocation(location),
+				canProceed: !isLastPage(summary.pageSlug),
 				response: response.data,
 				feedback,
 				error: null,
@@ -141,7 +142,7 @@ export default async function ({ params }: PageProps) {
 						{`Created at ${relativeDate(summary.created_at)}`}
 					</p>
 				</div>
-				<SummaryOperations summary={summary} />
+				<SummaryOperations summary={summary} pageUrl={section.url} />
 			</div>
 			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
 				<aside className="hidden w-[200px] flex-col md:flex space-y-4">
@@ -174,7 +175,7 @@ export default async function ({ params }: PageProps) {
 					<TextbookPageModal page={section} />
 
 					<Link
-						href={makeLocationHref(location)}
+						href={makePageHref(section.slug)}
 						className={cn(
 							buttonVariants({ variant: "link" }),
 							"block text-xl font-semibold text-center underline",
@@ -187,7 +188,7 @@ export default async function ({ params }: PageProps) {
 					</p>
 					<div className="max-w-2xl mx-auto">
 						<SummaryForm
-							location={location}
+							pageSlug={section.slug}
 							onSubmit={onSubmit}
 							textareaClassName="min-h-[400px]"
 						/>

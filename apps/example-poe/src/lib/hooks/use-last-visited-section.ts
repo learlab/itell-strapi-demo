@@ -1,40 +1,34 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "./utils";
 import { useLocalStorage } from "@itell/core/hooks";
-import { makeLocationHref } from "../utils";
-import { SectionLocationSchema } from "@/trpc/schema";
+import { usePathname } from "next/navigation";
+import { firstPageUrl } from "../constants";
 
-export const useTrackLastVisitedSection = () => {
-	const location = useLocation();
-	const [_, setLastVisitedSection] = useLocalStorage<string | undefined>(
-		"last-visited-section",
+const key = "last-visited-page";
+
+export const useTrackLastVisitedPage = () => {
+	const pathname = usePathname();
+	const [_, setLastPageUrl] = useLocalStorage<string | undefined>(
+		key,
 		undefined,
 	);
 
 	useEffect(() => {
-		if (location) {
-			setLastVisitedSection(JSON.stringify(location));
+		if (pathname) {
+			setLastPageUrl(pathname);
 		}
-	}, [location]);
+	}, [pathname]);
 };
 
-export const useLastVisitedSectionUrl = () => {
-	const [lastVisitedSection, _] = useLocalStorage<string | undefined>(
-		"last-visited-section",
-		undefined,
-	);
-	const [url, setUrl] = useState<string>("/module-1/chapter-1");
+export const useLastVisitedPageUrl = () => {
+	const [lastPage, _] = useLocalStorage<string | undefined>(key, undefined);
+	const [url, setUrl] = useState<string>(firstPageUrl);
 
 	useEffect(() => {
-		if (lastVisitedSection) {
-			const parsedSection = JSON.parse(lastVisitedSection);
-			const parsedSectionResult =
-				SectionLocationSchema.safeParse(parsedSection);
-			if (parsedSectionResult.success) {
-				setUrl(makeLocationHref(parsedSectionResult.data));
-			}
+		if (lastPage) {
+			const url = lastPage;
+			setUrl(url);
 		}
-	}, [lastVisitedSection]);
+	}, [lastPage]);
 
 	return url;
 };

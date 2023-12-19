@@ -38,10 +38,12 @@ const SelectModule = ({
 	);
 };
 
+export type SummaryData = Summary & { module: number; pageTitle: string };
+
 export const SummaryList = ({
 	summariesByModule,
 	user,
-}: { summariesByModule: Record<string, Summary[]>; user: User }) => {
+}: { summariesByModule: Record<string, SummaryData[]>; user: User }) => {
 	const modules = keyof(summariesByModule);
 	const [selectedModule, setSelectedModule] = useState(modules[0]);
 	const moduleSummaries = summariesByModule[selectedModule];

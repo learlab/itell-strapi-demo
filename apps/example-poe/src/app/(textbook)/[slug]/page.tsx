@@ -17,32 +17,35 @@ import { env } from "@/env.mjs";
 import { getPageQuestions } from "@/lib/question";
 import { PageTitle } from "@/components/page-title";
 import { getUser } from "@/lib/user";
-import { isLocationAfter, isLocationUnlockedWithoutUser } from "@/lib/location";
+import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
 import { PageStatusModal } from "@/components/page-status/page-status-modal";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import { PageStatus } from "@/components/page-status/page-status";
 import { NoteCount } from "@/components/note/note-count";
 import { isProduction } from "@/lib/constants";
 import { EventTracker } from "@/components/telemetry/event-tracker";
+import { QuizDialog } from "@/components/quiz/quiz-modal";
 
-export default async function ({ params }: { params: { slug: string[] } }) {
+export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
 	const whitelist = JSON.parse(env.SUMMARY_WHITELIST || "[]") as string[];
 	const isUserWhitelisted = whitelist.includes(user?.email || "");
 
-	const path = params.slug.join("/");
 	const sectionIndex = allSectionsSorted.findIndex((section) => {
-		return section.url === path;
+		if (section.slug.startsWith("what-is")) {
+			console.log("section slug", section.slug, "params slug", params.slug);
+		}
+		return section.slug === params.slug;
 	});
 
 	if (sectionIndex === -1) {
 		return notFound();
 	}
 
-	const section = allSectionsSorted[sectionIndex] as Section;
-	const enableQA = section.qa;
-	const currentLocation = section.location as SectionLocation;
+	const page = allSectionsSorted[sectionIndex] as Section;
+	const enableQA = page.qa;
+	const currentLocation = page.location as SectionLocation;
 	const pagerLinks = getPagerLinksForSection(sectionIndex);
 
 	// Would be easier if we change chapter and section in Supabase to strings that match the
@@ -90,21 +93,11 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		}
 	}
 
-	const isUserLatestPage = user
-		? user.chapter === currentLocation.chapter &&
-		  user.section === currentLocation.section
-		: false;
+	const isUserLatestPage = user ? user.pageSlug === params.slug : false;
 	// can view page, with no blurred chunks
 	const isPageUnlocked = user
-		? isLocationAfter(
-				{
-					module: user.module,
-					chapter: user.chapter,
-					section: user.section,
-				},
-				currentLocation,
-		  )
-		: isLocationUnlockedWithoutUser(currentLocation);
+		? isPageAfter(user.pageSlug, page.slug)
+		: isPageUnlockedWithoutUser(page.slug);
 	// can view page, but with blurred chunks
 	const isPageMasked = user ? !isPageUnlocked : true;
 
@@ -112,7 +105,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		<Fragment>
 			<section className="page-content relative col-span-8">
 				<PageTitle>
-					<Balancer>{section.title}</Balancer>
+					<Balancer>{page.title}</Balancer>
 					{isUserLatestPage ? (
 						<EyeIcon />
 					) : isPageUnlocked ? (
@@ -121,14 +114,15 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 						<LockIcon />
 					)}
 				</PageTitle>
-				<PageContent code={section.body.code} />
-				<NoteToolbar location={currentLocation} />
+				<QuizDialog />
+				<PageContent code={page.body.code} />
+				<NoteToolbar pageSlug={page.slug} />
 				<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 			</section>
 
 			<aside className="toc-sidebar col-span-2 relative">
 				<div className="sticky top-20">
-					<PageToc headings={section.headings} />
+					<PageToc headings={page.headings} />
 					<div className="mt-8 flex flex-col gap-2">
 						<PageStatus
 							status={
@@ -139,12 +133,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 									  : "locked"
 							}
 						/>
-						{user && (
-							<NoteCount
-								user={user}
-								location={section.location as SectionLocation}
-							/>
-						)}
+						{user && <NoteCount user={user} pageSlug={page.slug} />}
 					</div>
 				</div>
 				<Suspense
@@ -155,19 +144,21 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 						</p>
 					}
 				>
-					<NoteList location={currentLocation} />
+					<NoteList pageSlug={page.slug} />
 				</Suspense>
 			</aside>
 
 			<PageStatusModal
-				location={currentLocation}
 				user={user}
+				pageSlug={page.slug}
 				isWhitelisted={isUserWhitelisted}
 			/>
-			{section.qa && (
+			{page.qa && (
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}
+					pageSlug={page.slug}
+					// location is kept here because question scoring still need the chapter, section, index
 					location={currentLocation}
 				/>
 			)}

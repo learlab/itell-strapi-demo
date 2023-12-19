@@ -1,4 +1,4 @@
-import { Location, SectionLocation } from "@/types/location";
+import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
@@ -49,14 +49,12 @@ export const sortSections = (sections: SidebarSection[]) => {
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-export const makeInputKey = (location: SectionLocation) => {
-	return `chapter-${location.chapter}-section-${location.section}-summary`;
+export const makeInputKey = (slug: string) => {
+	return `${slug}-summary`;
 };
 
-export const makeLocationHref = (location: SectionLocation) => {
-	const sectionSlug =
-		location.section !== 0 ? `/section-${location.section}` : "";
-	return `/module-${location.module}/chapter-${location.chapter}${sectionSlug}`;
+export const makePageHref = (slug: string) => {
+	return `/${slug}`;
 };
 
 export const isTextbookPage = (location: Location) => {

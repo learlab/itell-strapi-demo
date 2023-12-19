@@ -1,7 +1,7 @@
 import { env } from "@/env.mjs";
 import { TEXTBOOK_NAME } from "./constants";
-import { QAScoreSchema } from "@/trpc/schema";
 import db from "./db";
+import { QAScoreSchema } from "@itell/core/qa";
 
 export const getPageQuestions = async (pageId: string) => {
 	return await db.subSection.findMany({
