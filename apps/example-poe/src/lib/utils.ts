@@ -1,7 +1,6 @@
 import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
 import { allSectionsSorted } from "./sections";
-import { Section } from "contentlayer/generated";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
 	const regex = /embed\/([\w-]+)\?/;
@@ -61,7 +60,7 @@ export const makePageHref = (slug: string) => {
 
 export const getPageData = (slug: string | null) => {
 	const index = allSectionsSorted.findIndex((s) => s.page_slug === slug);
-	const page = index === -1 ? allSectionsSorted[0] : allSectionsSorted[index];
+	const page = index === -1 ? allSectionsSorted[1] : allSectionsSorted[index];
 
 	return {
 		id: page._id,

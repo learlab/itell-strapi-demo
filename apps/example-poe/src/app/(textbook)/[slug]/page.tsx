@@ -1,6 +1,5 @@
 import Balancer from "react-wrap-balancer";
 import { notFound } from "next/navigation";
-import { SectionLocation } from "@/types/location";
 import { getPagerLinksForSection } from "@/lib/pager";
 import { NoteList } from "@/components/note/note-list";
 import { NoteToolbar } from "@/components/note/note-toolbar";
@@ -44,7 +43,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	}
 
 	const page = allSectionsSorted[sectionIndex] as Section;
-	const currentLocation = page.location as SectionLocation;
 	const pagerLinks = getPagerLinksForSection(sectionIndex);
 
 	// Subsections to be passed onto page
