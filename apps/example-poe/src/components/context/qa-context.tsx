@@ -1,7 +1,6 @@
 "use client";
 
-import { getCurrentChunkLocal, useCurrentChunkLocal } from "@/lib/hooks/utils";
-import { usePathname } from "next/navigation";
+import { getCurrentChunkLocal, usePageSlug } from "@/lib/hooks/utils";
 import React, { useEffect, useState } from "react";
 
 type QAContextType = {
@@ -16,16 +15,15 @@ export const useQA = () => React.useContext(QAContext);
 
 export const QAProvider = ({ children }: { children: React.ReactNode }) => {
 	const [currentChunk, setCurrentChunk] = useState(0);
+	const slug = usePageSlug();
 	const [chunks, setChunks] = useState<HTMLDivElement[]>();
-	const pathname = usePathname();
 
 	useEffect(() => {
-		if (pathname) {
-			const pageSlug = pathname.split("/")[1];
-			const currentChunkLocal = getCurrentChunkLocal(pageSlug);
+		if (slug) {
+			const currentChunkLocal = getCurrentChunkLocal(slug);
 			setCurrentChunk(currentChunkLocal);
 		}
-	}, [pathname]);
+	}, [slug]);
 
 	return (
 		<QAContext.Provider

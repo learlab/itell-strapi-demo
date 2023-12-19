@@ -124,7 +124,6 @@ export const QuestionControl = ({
 	const handleChunk = (el: HTMLDivElement, index: number) => {
 		const isChunkUnvisited = index > currentChunk;
 		const chunkSlug = el.dataset.subsectionId;
-		console.log("chunkSlug", chunkSlug);
 		if (chunkSlug && selectedQuestions.has(chunkSlug)) {
 			insertQuestion(el, chunkSlug);
 		}

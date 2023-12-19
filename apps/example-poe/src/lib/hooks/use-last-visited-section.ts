@@ -2,21 +2,22 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "@itell/core/hooks";
 import { usePathname } from "next/navigation";
 import { firstPageUrl } from "../constants";
+import { usePageSlug } from "./utils";
 
 const key = "last-visited-page";
 
 export const useTrackLastVisitedPage = () => {
-	const pathname = usePathname();
+	const slug = usePageSlug();
 	const [_, setLastPageUrl] = useLocalStorage<string | undefined>(
 		key,
 		undefined,
 	);
 
 	useEffect(() => {
-		if (pathname) {
-			setLastPageUrl(pathname);
+		if (slug) {
+			setLastPageUrl(`/${slug}`);
 		}
-	}, [pathname]);
+	}, [slug]);
 };
 
 export const useLastVisitedPageUrl = () => {

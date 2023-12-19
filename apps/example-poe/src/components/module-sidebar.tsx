@@ -23,7 +23,6 @@ export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
 	const router = useRouter();
 
 	const navigatePage = (page: ActivePage) => {
-		console.log(page);
 		setActivePage(page);
 		router.push(page.url);
 	};
