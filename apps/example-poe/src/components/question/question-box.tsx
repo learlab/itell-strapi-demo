@@ -9,11 +9,10 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
-import { AlertTriangle, ThumbsDown, ThumbsUp } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Spinner } from "../spinner";
 import { getQAScore } from "@/lib/question";
-import { useQA } from "../context/qa-context";
 import { FeedbackModal } from "./feedback-modal";
 import {
 	Button,
@@ -26,7 +25,7 @@ import { toast } from "sonner";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { useSession } from "next-auth/react";
-import { createConstructedResponse, createEvent } from "@/lib/server-actions";
+import { createConstructedResponse } from "@/lib/server-actions";
 import { NextChunkButton } from "./next-chunk-button";
 import { isProduction } from "@/lib/constants";
 import { useFormState, useFormStatus } from "react-dom";
@@ -303,6 +302,7 @@ export const QuestionBox = ({
 							{answerStatus === AnswerStatus.BOTH_CORRECT &&
 							isNextButtonDisplayed ? (
 								<NextChunkButton
+									pageSlug={pageSlug}
 									clickEventType="post-question chunk reveal"
 									onClick={() => setIsNextButtonDisplayed(false)}
 								>
@@ -317,6 +317,7 @@ export const QuestionBox = ({
 									{answerStatus !== AnswerStatus.UNANSWERED &&
 										isNextButtonDisplayed && (
 											<NextChunkButton
+												pageSlug={pageSlug}
 												clickEventType="post-question chunk reveal"
 												variant="ghost"
 												onClick={() => setIsNextButtonDisplayed(false)}
