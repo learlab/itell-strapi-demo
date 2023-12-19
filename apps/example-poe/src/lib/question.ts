@@ -8,7 +8,7 @@ export const QuestionSchema = z.object({
 	answer: z.string(),
 	page_slug:z.string(),
 	chunk_slug:z.string(),
-	subsection:z.string(),
+	subsection:z.number(),
 });
 export type Question = z.infer<typeof QuestionSchema>;
 export type SelectedQuestions = Map<string, Question>;
