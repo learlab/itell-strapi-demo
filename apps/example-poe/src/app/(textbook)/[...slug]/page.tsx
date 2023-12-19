@@ -78,50 +78,61 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 
 	const res = await fetch("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]=pageID&populate[Content]=*", {cache: "no-store"});
 	let data = await res.json();
+	let attributes;
+	if(data){
+		if(data["data"]){
+			if(data["data"][0]){
+				if(data["data"][0]["attributes"]){
+					attributes = data["data"][0]["attributes"];
+					if(attributes["HasSummary"]){
+						const chooseQuestion = (question: (typeof questions)[0]) => {
+							let targetQuestion = question.question;
+							// band-aid solution for YouTube videos until we implement content-types via Strapi
+							if (question.slug.includes("learn-with-videos")) {
+								targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
+							}
 
+							if (targetQuestion && question.answer) {
+								selectedQuestions.set(question.subsection, {
+									question: targetQuestion,
+									answer: question.answer,
+								});
+							}
+						};
 
-	if(data["data"][0]["attributes"]["HasSummary"]){
-		const chooseQuestion = (question: (typeof questions)[0]) => {
-			let targetQuestion = question.question;
-			// band-aid solution for YouTube videos until we implement content-types via Strapi
-			if (question.slug.includes("learn-with-videos")) {
-				targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
-			}
+						let questions = [];
+						for(let i = 0; i < attributes["Content"].length; ++i){
+							if(attributes["Content"][i]["__component"]==="page.chunk"){
+								const QAResponse = JSON.parse(attributes["Content"][i]["QuestionAnswerResponse"]);
+								let question = {
+									subsection: i,
+									question:QAResponse.question,
+									answer:QAResponse.answer,
+								}
+								questions.push(question);
+							}
+						}
 
-			if (targetQuestion && question.answer) {
-				selectedQuestions.set(question.subsection, {
-					question: targetQuestion,
-					answer: question.answer,
-				});
-			}
-		};
+						for (let index = 0; index < questions.length; index++) {
+							// Each subsection has a 1/3 chance of spawning a question
+							if (Math.random() < 1 / 3) {
+								chooseQuestion(questions[index]);
+							}
+						}
 
-		let questions = [];
-		for(let i = 0; i < data["data"][0]["attributes"]["Content"].length; ++i){
-			if(data["data"][0]["attributes"]["Content"][i]["__component"]==="page.chunk"){
-				const QAResponse = JSON.parse(data["data"][0]["attributes"]["Content"][i]["QuestionAnswerResponse"]);
-				let question = {
-					subsection: i,
-					question:QAResponse.question,
-					answer:QAResponse.answer,
+						// Each page will have at least one question
+						if (selectedQuestions.size === 0) {
+							const randChunk = Math.floor(Math.random() * (questions.length - 1));
+							chooseQuestion(questions[randChunk]);
+						}
+					}
 				}
-				questions.push(question);
 			}
-		}
-
-		for (let index = 0; index < questions.length; index++) {
-			// Each subsection has a 1/3 chance of spawning a question
-			if (Math.random() < 1 / 3) {
-				chooseQuestion(questions[index]);
-			}
-		}
-
-		// Each page will have at least one question
-		if (selectedQuestions.size === 0) {
-			const randChunk = Math.floor(Math.random() * (questions.length - 1));
-			chooseQuestion(questions[randChunk]);
 		}
 	}
+
+
+
 
 	const isUserLatestPage = user
 		? user.chapter === currentLocation.chapter &&
