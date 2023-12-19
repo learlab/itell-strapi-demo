@@ -7,7 +7,12 @@ import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
 
-type Question = { question: string; answer: string };
+type Question = {
+	page_slug: string;
+	chunk_slug: string;
+	question: string;
+	answer: string;
+	subsection: number;};
 
 type Props = {
 	isPageMasked: boolean;
@@ -101,7 +106,9 @@ export const QuestionControl = ({
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					isPageMasked={isPageMasked}
-				/>,
+				 	chapter={location.chapter}
+					section={location.section}
+					subsection={index}/>,
 				questionContainer,
 			),
 		);

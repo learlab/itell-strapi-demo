@@ -39,6 +39,8 @@ type Props = {
 	chunkSlug: string;
 	pageSlug: string;
 	isPageMasked: boolean;
+	chunk_slug: string;
+	page_slug: string;
 };
 
 // state for answer correctness
