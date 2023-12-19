@@ -5,23 +5,21 @@ import {
 	HoverCardTrigger,
 } from "@/components/client-components";
 import pluralize from "pluralize";
-import { StickyNoteIcon } from "lucide-react";
 import { User } from "@prisma/client";
-import { SectionLocation } from "@/types/location";
 import db from "@/lib/db";
 
 type Props = {
 	user: User;
-	location: SectionLocation;
+	pageSlug: string;
 };
 
 // rendered by TocSidebar
-export const NoteCount = async ({ user, location }: Props) => {
+export const NoteCount = async ({ user, pageSlug }: Props) => {
 	const res = (await db.$queryRaw`
 			SELECT COUNT(*),
 					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
 			FROM notes
-			WHERE user_id = ${user.id} AND chapter = ${location.chapter} AND section = ${location.section}
+			WHERE user_id = ${user.id} AND page_slug = ${pageSlug}
 			GROUP BY CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`) as {
 		count: number;
 		type: string;

@@ -11,10 +11,9 @@ import { SummaryProceedModal } from "./summary-proceed-modal";
 import pluralize from "pluralize";
 import { makeInputKey } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
-import { SectionLocation } from "@/types/location";
 
 type Props = {
-	location: SectionLocation;
+	pageSlug: string;
 	textareaClassName?: string;
 	onSubmit: (
 		prevState: SummaryFormState,
@@ -30,7 +29,7 @@ const initialState: SummaryFormState = {
 };
 
 export const SummaryForm = ({
-	location,
+	pageSlug,
 	onSubmit,
 	textareaClassName,
 }: Props) => {
@@ -44,14 +43,14 @@ export const SummaryForm = ({
 				className="mt-2 space-y-4"
 				action={(payload) => {
 					localStorage.setItem(
-						makeInputKey(location),
+						makeInputKey(pageSlug),
 						payload.get("input") as string,
 					);
 					formAction(payload);
 				}}
 			>
 				<SummaryInput
-					location={location}
+					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
@@ -61,7 +60,7 @@ export const SummaryForm = ({
 			</form>
 			{formState.canProceed && (
 				<SummaryProceedModal
-					location={location}
+					pageSlug={pageSlug}
 					isPassed={formState.feedback?.isPassed || false}
 					title={
 						formState.feedback?.isPassed

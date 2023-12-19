@@ -19,19 +19,19 @@ import {
 	DropdownMenuTrigger,
 } from "@itell/ui/client";
 import { CircleEllipsisIcon, TrashIcon } from "lucide-react";
-import { trpc } from "@/trpc/trpc-provider";
 import { Spinner } from "../spinner";
 import Link from "next/link";
-import { makeLocationHref } from "@/lib/utils";
+import { makePageHref } from "@/lib/utils";
 import { deleteSummary } from "@/lib/server-actions";
 
-export default function ({ summary }: { summary: Summary }) {
+type Props = {
+	pageUrl: string;
+	summary: Summary;
+};
+
+export const SummaryOperations = ({ summary, pageUrl }: Props) => {
 	const router = useRouter();
-	const sectionHref = makeLocationHref({
-		module: summary.module,
-		chapter: summary.chapter,
-		section: summary.section,
-	});
+
 	const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
 	const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
 
@@ -47,7 +47,7 @@ export default function ({ summary }: { summary: Summary }) {
 						className="flex cursor-pointer items-center"
 						onSelect={() => setShowDeleteAlert(true)}
 					>
-						<Link href={sectionHref}>Go to section</Link>
+						<Link href={pageUrl}>Go to section</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						className="flex cursor-pointer items-center text-destructive focus:text-destructive"
@@ -96,4 +96,4 @@ export default function ({ summary }: { summary: Summary }) {
 			</AlertDialog>
 		</>
 	);
-}
+};

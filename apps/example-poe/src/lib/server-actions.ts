@@ -3,8 +3,7 @@
 import { Prisma } from "@prisma/client";
 import db from "./db";
 import { revalidatePath } from "next/cache";
-import { SectionLocation } from "@/types/location";
-import { incrementLocation } from "./location";
+import { nextPage } from "./location";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -86,36 +85,29 @@ export const updateUserClassId = async ({
 	});
 };
 
-export const incrementUserLocation = async (
-	userId: string,
-	location: SectionLocation,
-) => {
+export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	const user = await db.user.findUnique({ where: { id: userId } });
 	if (user) {
-		const newLocation = incrementLocation(location);
+		const slug = nextPage(pageSlug);
 		return await db.user.update({
 			where: {
 				id: userId,
 			},
 			data: {
-				module: newLocation.module,
-				chapter: newLocation.chapter,
-				section: newLocation.section,
+				pageSlug: slug,
 			},
 		});
 	}
 };
 
-export const getUserLocationSummaryCount = async (
+export const getUserPageSummaryCount = async (
 	userId: string,
-	location: SectionLocation,
+	pageSlug: string,
 ) => {
 	return await db.summary.count({
 		where: {
 			userId,
-			module: location.module,
-			chapter: location.chapter,
-			section: location.section,
+			pageSlug,
 		},
 	});
 };

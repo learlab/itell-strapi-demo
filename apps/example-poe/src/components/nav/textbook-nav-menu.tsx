@@ -2,7 +2,6 @@
 
 import { cn, groupby, keyof } from "@itell/core/utils";
 import Link from "next/link";
-import { useLocation } from "@/lib/hooks/utils";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -13,7 +12,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import React, { useState } from "react";
 import { allSectionsSorted } from "@/lib/sections";
-import UserAvatar from "../user-avatar";
 import ThemeToggle from "../theme/theme-toggle";
 import { MenuIcon, XIcon } from "lucide-react";
 import { MobileNav } from "./mobile-nav";
@@ -26,9 +24,10 @@ const moduleChapters = groupby(
 	(section) => ({
 		title: section.title,
 		chapter: section.location.chapter,
-		url: `/module-${section.location.module}/chapter-${section.location.chapter}`,
+		url: section.url,
 	}),
 );
+
 const modules = keyof(moduleChapters);
 
 const ChapterItem = React.forwardRef<
@@ -58,15 +57,12 @@ const ChapterItem = React.forwardRef<
 ChapterItem.displayName = "ChapterItem";
 
 export default function TextbookNavMenu() {
-	const location = useLocation();
 	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
-
 	const moduleTriggers = modules.map((module) => {
-		const firstChapter = moduleChapters[module][0].chapter;
+		const firstChapter = moduleChapters[module][0];
 		return {
 			module,
-			active: location && location.module === Number(module),
-			url: `/module-${module}/chapter-${firstChapter}`,
+			url: firstChapter.url,
 		};
 	});
 
@@ -74,14 +70,10 @@ export default function TextbookNavMenu() {
 		<>
 			<NavigationMenu className="hidden md:flex w-full px-8 lg:px-4 py-2">
 				<NavigationMenuList>
-					{moduleTriggers.map(({ module, active, url }) => {
+					{moduleTriggers.map(({ module, url }) => {
 						return (
 							<NavigationMenuItem key={module}>
-								<NavigationMenuTrigger
-									className={cn({
-										"bg-accent": active,
-									})}
-								>
+								<NavigationMenuTrigger>
 									<Link href={url}>Module {module}</Link>
 								</NavigationMenuTrigger>
 								<NavigationMenuContent>
@@ -111,6 +103,7 @@ export default function TextbookNavMenu() {
 				<button
 					className="flex items-center gap-2"
 					onClick={() => setShowMobileMenu(!showMobileMenu)}
+					type="button"
 				>
 					{showMobileMenu ? <XIcon /> : <MenuIcon />}
 					<span className="font-bold">Menu</span>

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import TextbookScrollProgress from "./textbook-scroll-progress";
 import SiteNav from "./site-nav";
 import { getSiteConfig } from "@/lib/config";
 import TextbookNavMenu from "./textbook-nav-menu";
+import { ScrollProgress } from "./textbook-scroll-progress";
 
 export default async function TextbookNavbar() {
 	const { title } = await getSiteConfig();
@@ -16,7 +16,7 @@ export default async function TextbookNavbar() {
 				<TextbookNavMenu />
 			</div>
 
-			<TextbookScrollProgress />
+			<ScrollProgress />
 		</SiteNav>
 	);
 }

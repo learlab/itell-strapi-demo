@@ -8,6 +8,7 @@ import { useCurrentChunkLocal } from "@/lib/hooks/utils";
 
 interface Props extends React.ComponentPropsWithRef<typeof Button> {
 	onClick?: () => void;
+	pageSlug: string;
 	clickEventType: string;
 	standalone?: boolean;
 	children: React.ReactNode;
@@ -18,11 +19,12 @@ export const NextChunkButton = ({
 	clickEventType,
 	children,
 	standalone,
+	pageSlug,
 	...rest
 }: Props) => {
 	const { setCurrentChunk, chunks, currentChunk } = useQA();
 	const { data: session } = useSession();
-	const [_, setCurrentChunkLocal] = useCurrentChunkLocal();
+	const [_, setCurrentChunkLocal] = useCurrentChunkLocal(pageSlug);
 
 	// submit event
 	const submitEvent = async () => {

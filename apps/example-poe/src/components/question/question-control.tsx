@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { QuestionBox } from "./question-box";
-import { SectionLocation } from "@/types/location";
 import { useQA } from "../context/qa-context";
 import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
@@ -17,14 +16,14 @@ type Question = {
 
 type Props = {
 	isPageMasked: boolean;
-	selectedQuestions: Map<number, Question>;
-	location: SectionLocation;
+	selectedQuestions: Map<string, Question>;
+	pageSlug: string;
 };
 
 export const QuestionControl = ({
 	selectedQuestions,
-	location,
 	isPageMasked,
+	pageSlug,
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
@@ -81,6 +80,7 @@ export const QuestionControl = ({
 			createPortal(
 				<NextChunkButton
 					clickEventType="chunk reveal"
+					pageSlug={pageSlug}
 					standalone
 					className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
 				>
@@ -91,20 +91,20 @@ export const QuestionControl = ({
 		);
 	};
 
-	const insertQuestion = (el: HTMLDivElement, index: number) => {
+	const insertQuestion = (el: HTMLDivElement, chunkSlug: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
 		el.appendChild(questionContainer);
 
-		const q = selectedQuestions.get(index) as Question;
+		const q = selectedQuestions.get(chunkSlug) as Question;
 
 		addNode(
 			createPortal(
 				<QuestionBox
 					question={q.question}
 					answer={q.answer}
-					chunk_slug={q.chunk_slug}
-					page_slug={q.page_slug}
+					chunkSlug={chunkSlug}
+					pageSlug={pageSlug}
 					isPageMasked={isPageMasked}
 				 	chapter={location.chapter}
 					section={location.section}
@@ -123,8 +123,9 @@ export const QuestionControl = ({
 
 	const handleChunk = (el: HTMLDivElement, index: number) => {
 		const isChunkUnvisited = index > currentChunk;
-		if (selectedQuestions.has(index)) {
-			insertQuestion(el, index);
+		const chunkSlug = el.dataset.subsectionId;
+		if (chunkSlug && selectedQuestions.has(chunkSlug)) {
+			insertQuestion(el, chunkSlug);
 		}
 
 		if (isPageMasked) {
@@ -146,9 +147,11 @@ export const QuestionControl = ({
 		const prevChunkElement = chunks.at(currentChunk - 1);
 
 		if (currentChunkElement) {
+			const currentChunkSlug = currentChunkElement.dataset
+				.subsectionId as string;
 			currentChunkElement.style.filter = "none";
 			if (
-				!selectedQuestions.has(currentChunk) &&
+				!selectedQuestions.has(currentChunkSlug) &&
 				currentChunk !== chunks.length - 1
 			) {
 				insertNextChunkButton(currentChunkElement);
@@ -158,6 +161,10 @@ export const QuestionControl = ({
 		// when a fresh page is loaded,. set up ref data and prepare chunk styles
 		if (currentChunk !== 0 && prevChunkElement) {
 			hideNextChunkButton(prevChunkElement);
+		}
+
+		if (currentChunk === chunks.length - 1) {
+			hideScrollBackButton();
 		}
 	};
 

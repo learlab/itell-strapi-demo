@@ -10,15 +10,21 @@ export default async function () {
 	const location = getLocationFromPathname(
 		headersList.get("x-pathname") as string,
 	);
-	const title = allSectionsSorted.find(s => s.location.chapter === location.chapter && s.location.section === location.section)
-		?.title as string;
+	const title = allSectionsSorted.find(
+		(s) =>
+			s.location.chapter === location.chapter &&
+			s.location.section === location.section,
+	)?.title as string;
+
+	const arr = Array.from(Array(10).keys());
+
 	return (
 		<>
 			<section className="relative col-span-12 md:col-span-10 lg:col-span-8 space-y-4">
 				<PageTitle>{title}</PageTitle>
 
-				{Array.from({ length: 10 }).map(() => (
-					<Skeleton className="w-full h-28 mb-4" />
+				{arr.map((i) => (
+					<Skeleton className="w-full h-28 mb-4" key={i} />
 				))}
 			</section>
 
@@ -28,8 +34,8 @@ export default async function () {
 					<BookmarkIcon className="ml-2 w-4 h-4" />
 				</p>
 				<ul className="mt-2 space-y-2">
-					{Array.from({ length: 5 }).map(() => (
-						<Skeleton className="w-32 h-7" />
+					{arr.slice(0, 5).map((i) => (
+						<Skeleton className="w-32 h-7" key={i} />
 					))}
 				</ul>
 			</aside>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useTrackLastVisitedSection } from "@/lib/hooks/use-last-visited-section";
+import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-section";
 
 export const TrackLastVisitedSection = () => {
-	useTrackLastVisitedSection();
+	useTrackLastVisitedPage();
 
 	return null;
 };

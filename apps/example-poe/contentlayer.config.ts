@@ -10,6 +10,9 @@ import {
 	getSlugFromFlattenedPath,
 } from "./src/lib/contentlayer";
 
+const slugify = (str: string) =>
+	str.toLowerCase().replace(/\s/g, "-").replace(/[?.!]/g, "");
+
 const Site = defineDocumentType(() => ({
 	name: "Site",
 	filePathPattern: "site/**/*.{md,mdx}",
@@ -35,7 +38,7 @@ const Section = defineDocumentType(() => ({
 		},
 		page_slug: {
 			type: "string",
-			description: "The page slug",
+			description: "The slug of the page",
 			required: true,
 		},
 		qa: {
@@ -54,16 +57,11 @@ const Section = defineDocumentType(() => ({
 	computedFields: {
 		url: {
 			type: "string",
-			resolve: (doc) =>
-				getSlugFromFlattenedPath(doc._raw.flattenedPath, "section/"),
+			resolve: (doc) => `/${doc.page_slug}`,
 		},
 		location: {
 			type: "json",
 			resolve: (doc) => getLocationFromFlattenedPath(doc._raw.flattenedPath),
-		},
-		slug: {
-			type: "json",
-			resolve: (doc) => doc.title.toLowerCase().replace(/\s/g, "-"),
 		},
 		headings: {
 			type: "json",

@@ -9,11 +9,10 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
-import { AlertTriangle, ThumbsDown, ThumbsUp } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Spinner } from "../spinner";
 import { getQAScore } from "@/lib/question";
-import { useQA } from "../context/qa-context";
 import { FeedbackModal } from "./feedback-modal";
 import {
 	Button,
@@ -26,7 +25,7 @@ import { toast } from "sonner";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { useSession } from "next-auth/react";
-import { createConstructedResponse, createEvent } from "@/lib/server-actions";
+import { createConstructedResponse } from "@/lib/server-actions";
 import { NextChunkButton } from "./next-chunk-button";
 import { isProduction } from "@/lib/constants";
 import { useFormState, useFormStatus } from "react-dom";
@@ -36,9 +35,8 @@ type QuestionScore = 0 | 1 | 2;
 type Props = {
 	question: string;
 	answer: string;
-	chapter: number;
-	section: number;
-	subsection: number;
+	chunkSlug: string;
+	pageSlug: string;
 	isPageMasked: boolean;
 	chunk_slug: string;
 	page_slug: string;
@@ -77,13 +75,10 @@ const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 };
 
 export const QuestionBox = ({
-	chapter,
-	section,
-	subsection,
 	question,
-	chunk_slug,
-	page_slug,
 	answer,
+	chunkSlug,
+	pageSlug,
 	isPageMasked,
 }: Props) => {
 	const { data: session } = useSession();
@@ -122,8 +117,8 @@ export const QuestionBox = ({
 
 		const response = await getQAScore({
 			input,
-			chunk_slug: chunk_slug,
-			page_slug: page_slug,
+			chunkSlug,
+			pageSlug,
 		});
 
 		if (!response.success) {
@@ -140,9 +135,7 @@ export const QuestionBox = ({
 			// when there is no session, question won't be displayed
 			await createConstructedResponse({
 				response: input,
-				chapter: chapter,
-				section: section,
-				subsection: subsection,
+				pageSlug,
 				score,
 				user: {
 					connect: {
@@ -235,14 +228,8 @@ export const QuestionBox = ({
 						make mistakes. Let us know how you feel about iTELL AI's performance
 						using the feedback icons to the right (thumbs up or thumbs down).{" "}
 					</CardDescription>
-					<FeedbackModal
-						type="positive"
-						pageSlug={`${chapter}-${section}-${subsection}`}
-					/>
-					<FeedbackModal
-						type="negative"
-						pageSlug={`${chapter}-${section}-${subsection}`}
-					/>
+					<FeedbackModal type="positive" pageSlug={pageSlug} />
+					<FeedbackModal type="negative" pageSlug={pageSlug} />
 				</CardHeader>
 
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
@@ -317,6 +304,7 @@ export const QuestionBox = ({
 							{answerStatus === AnswerStatus.BOTH_CORRECT &&
 							isNextButtonDisplayed ? (
 								<NextChunkButton
+									pageSlug={pageSlug}
 									clickEventType="post-question chunk reveal"
 									onClick={() => setIsNextButtonDisplayed(false)}
 								>
@@ -331,6 +319,7 @@ export const QuestionBox = ({
 									{answerStatus !== AnswerStatus.UNANSWERED &&
 										isNextButtonDisplayed && (
 											<NextChunkButton
+												pageSlug={pageSlug}
 												clickEventType="post-question chunk reveal"
 												variant="ghost"
 												onClick={() => setIsNextButtonDisplayed(false)}

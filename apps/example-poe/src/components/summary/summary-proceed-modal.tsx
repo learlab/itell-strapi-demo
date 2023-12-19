@@ -13,14 +13,13 @@ import pluralize from "pluralize";
 import { Button } from "../client-components";
 import { useState, useTransition } from "react";
 import { Spinner } from "../spinner";
-import { incrementLocation } from "@/lib/location";
-import { makeLocationHref } from "@/lib/utils";
-import { SectionLocation } from "@/types/location";
+import { nextPage } from "@/lib/location";
+import { makePageHref } from "@/lib/utils";
 
 type Props = {
-	// when this is false, the user writes enough summaries more than the threshold
+	// when false, the user writes enough summaries more than the threshold
 	isPassed: boolean;
-	location: SectionLocation;
+	pageSlug: string;
 	children?: React.ReactNode;
 	title: string;
 };
@@ -28,7 +27,7 @@ type Props = {
 export const SummaryProceedModal = ({
 	title,
 	isPassed,
-	location,
+	pageSlug,
 	children,
 }: Props) => {
 	const [open, setOpen] = useState(true);
@@ -37,7 +36,7 @@ export const SummaryProceedModal = ({
 
 	const handleClick = () => {
 		startTransition(() => {
-			router.push(makeLocationHref(incrementLocation(location)));
+			router.push(makePageHref(nextPage(pageSlug)));
 		});
 	};
 
@@ -50,7 +49,7 @@ export const SummaryProceedModal = ({
 				{children}
 				<DialogFooter>
 					<Button onClick={handleClick} disabled={pending}>
-						{pending && <Spinner className="mr-2 inline" />} Next Section
+						{pending && <Spinner className="mr-2 inline" />} Next Page
 					</Button>
 				</DialogFooter>
 			</DialogContent>

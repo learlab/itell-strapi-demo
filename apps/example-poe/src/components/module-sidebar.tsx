@@ -1,9 +1,8 @@
 "use client";
 
-import { Chapter } from "@/types/section";
+import { ActivePage, Chapter, SidebarSection } from "@/types/section";
 import Balancer from "react-wrap-balancer";
 import { cn } from "@itell/core/utils";
-import { SectionLocation } from "@/types/location";
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -12,27 +11,20 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { makeLocationHref } from "@/lib/utils";
+import { makePageHref } from "@/lib/utils";
 
 type ModuleSidebarProps = {
 	chapters: Chapter[];
-	currentLocation: SectionLocation;
+	currentPage: ActivePage;
 };
 
-export function ModuleSidebar({
-	chapters,
-	currentLocation,
-}: ModuleSidebarProps) {
-	const [activeLocation, setActiveLocation] = useState(currentLocation);
+export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
+	const [activePage, setActivePage] = useState(currentPage);
 	const router = useRouter();
 
-	const navigatePage = (location: {
-		module: number;
-		chapter: number;
-		section: number;
-	}) => {
-		setActiveLocation(location);
-		router.push(makeLocationHref(location), {});
+	const navigatePage = (page: ActivePage) => {
+		setActivePage(page);
+		router.push(page.url);
 	};
 
 	return (
@@ -40,18 +32,16 @@ export function ModuleSidebar({
 			{chapters.map((chapter) => (
 				<Collapsible
 					key={chapter.chapter}
-					open={chapter.chapter === currentLocation.chapter}
+					open={chapter.chapter === activePage.chapter}
 					className="list-none"
 				>
 					<CollapsibleTrigger className="px-1 gap-0">
 						<div
 							className={cn("relative hover:bg-accent rounded-md mb-2", {
-								"bg-accent":
-									activeLocation.chapter === chapter.chapter &&
-									activeLocation.section === 0,
+								"bg-accent": chapter.chapter === activePage.chapter,
 							})}
 						>
-							<Link href={`/${chapter.url}`} className="block mb-1 p-1">
+							<Link href={chapter.url} className="block mb-1 p-1">
 								<h5 className="font-semibold leading-relaxed">
 									<Balancer as="div">{chapter.title}</Balancer>
 								</h5>
@@ -65,9 +55,7 @@ export function ModuleSidebar({
 								className={cn(
 									"px-2 py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
 									{
-										"bg-accent":
-											section.chapter === activeLocation.chapter &&
-											section.section === activeLocation.section,
+										"bg-accent": section.url === activePage.url,
 									},
 								)}
 								key={section.url}
@@ -76,9 +64,9 @@ export function ModuleSidebar({
 									type="button"
 									onClick={() =>
 										navigatePage({
-											module: section.module,
-											chapter: section.chapter,
-											section: section.section || 0,
+											chapter: chapter.chapter,
+											section: section.section,
+											url: section.url,
 										})
 									}
 								>

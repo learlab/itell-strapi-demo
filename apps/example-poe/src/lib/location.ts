@@ -1,13 +1,9 @@
-import { SectionLocation } from "@/types/location";
 import { allSectionsSorted } from "./sections";
 
-export const incrementLocation = (location: SectionLocation) => {
-	const { module, chapter, section } = location;
+// returns the slug for the new section
+export const nextPage = (slug: string): string => {
 	const currentSectionIndex = allSectionsSorted.findIndex(
-		(s) =>
-			module === s.location.module &&
-			chapter === s.location.chapter &&
-			section === s.location.section,
+		(s) => s.page_slug === slug,
 	);
 
 	// If current section is the last one or not found, return the same location
@@ -15,7 +11,7 @@ export const incrementLocation = (location: SectionLocation) => {
 		currentSectionIndex === -1 ||
 		currentSectionIndex === allSectionsSorted.length - 1
 	) {
-		return location;
+		return slug;
 	}
 
 	// Get the next section
@@ -23,7 +19,7 @@ export const incrementLocation = (location: SectionLocation) => {
 
 	if (nextSection) {
 		if (nextSection.summary) {
-			return nextSection.location;
+			return nextSection.page_slug;
 		}
 
 		// find the next section that requires a summary
@@ -31,34 +27,28 @@ export const incrementLocation = (location: SectionLocation) => {
 			.slice(currentSectionIndex + 1)
 			.find((s) => s.summary);
 		if (nextSectionWithSummary) {
-			return nextSectionWithSummary.location;
+			return nextSectionWithSummary.page_slug;
 		}
-		return location;
+		return slug;
 	}
 
-	return location;
+	return slug;
 };
 
-export const isLocationUnlockedWithoutUser = (location: SectionLocation) => {
-	return location.chapter === 1 && location.section === 0;
+export const isPageUnlockedWithoutUser = (slug: string) => {
+	return (
+		slug === "introduction-to-law-and-legal-systems" || slug === "what-is-law"
+	);
 };
 
-export const isLocationAfter = (a: SectionLocation, b: SectionLocation) => {
-	const aIndex = allSectionsSorted.findIndex(
-		(s) => s.location.chapter === a.chapter && s.location.section === a.section,
-	);
-	const bIndex = allSectionsSorted.findIndex(
-		(s) => s.location.chapter === b.chapter && s.location.section === b.section,
-	);
+export const isPageAfter = (a: string | null, b: string | null) => {
+	const aIndex = allSectionsSorted.findIndex((s) => s.page_slug === a);
+	const bIndex = allSectionsSorted.findIndex((s) => s.page_slug === b);
 
 	return aIndex > bIndex;
 };
 
-export const isLastLocation = (location: SectionLocation) => {
+export const isLastPage = (slug: string) => {
 	const lastSection = allSectionsSorted[allSectionsSorted.length - 1];
-	return (
-		location.module === lastSection.location.module &&
-		location.chapter === lastSection.location.chapter &&
-		location.section === lastSection.location.section
-	);
+	return lastSection.page_slug === slug;
 };

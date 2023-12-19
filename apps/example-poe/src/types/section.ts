@@ -1,10 +1,9 @@
 export type SidebarSection = {
 	id: string;
 	title: string;
-	module: number;
-	chapter: number;
-	section: number | undefined;
 	url: string;
+	chapter: number;
+	section: number;
 };
 
 export type Chapter = {
@@ -13,3 +12,5 @@ export type Chapter = {
 	url: string;
 	sections: SidebarSection[];
 };
+
+export type ActivePage = Omit<SidebarSection, "id" | "title">;

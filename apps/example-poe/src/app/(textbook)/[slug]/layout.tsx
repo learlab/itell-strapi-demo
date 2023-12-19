@@ -1,10 +1,9 @@
 import { allSectionsSorted } from "@/lib/sections";
 import { Button } from "@/components/client-components";
 import { notFound } from "next/navigation";
-import getChapters from "@/lib/sidebar";
+import { getModuleChapters } from "@/lib/sidebar";
 import { Section } from "contentlayer/generated";
 import { SectionLocation } from "@/types/location";
-import { isProduction } from "@/lib/constants";
 import { PageSummary } from "@/components/summary/page-summary";
 import { ArrowUpIcon, PencilIcon } from "lucide-react";
 import { ModuleSidebar } from "@/components/module-sidebar";
@@ -12,16 +11,14 @@ import { ModuleSidebar } from "@/components/module-sidebar";
 export const generateStaticParams = async () => {
 	return allSectionsSorted.map((section) => {
 		return {
-			slug: section.url.split("/"),
+			slug: section.page_slug,
 		};
 	});
 };
 
-export const generateMetadata = ({
-	params,
-}: { params: { slug: string[] } }) => {
+export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 	const section = allSectionsSorted.find(
-		(section) => section.url === params.slug.join("/"),
+		(section) => section.page_slug === params.slug,
 	);
 	if (section) {
 		return {
@@ -53,11 +50,9 @@ const AnchorLink = ({
 export default async function ({
 	children,
 	params,
-}: { children: React.ReactNode; params: { slug: string[] } }) {
-	const path = params.slug.join("/");
-
+}: { children: React.ReactNode; params: { slug: string } }) {
 	const sectionIndex = allSectionsSorted.findIndex((section) => {
-		return section.url === path;
+		return section.page_slug === params.slug;
 	});
 
 	if (sectionIndex === -1) {
@@ -65,22 +60,21 @@ export default async function ({
 	}
 	const section = allSectionsSorted[sectionIndex] as Section;
 	const currentLocation = section.location as SectionLocation;
-	const chapters = await getChapters({
-		module: currentLocation.module,
-		allSections: allSectionsSorted,
-	});
+	const chapters = getModuleChapters(currentLocation.module);
 
 	const requireSummary = section.summary;
-
 	return (
 		<>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
 				<aside className="module-sidebar col-span-2 sticky top-20 h-fit">
-					{" "}
 					<div className="sticky top-20">
 						<ModuleSidebar
 							chapters={chapters}
-							currentLocation={currentLocation}
+							currentPage={{
+								chapter: section.location.chapter,
+								section: section.location.section,
+								url: section.url,
+							}}
 						/>
 						<div className="mt-12 flex flex-col gap-2">
 							{requireSummary && (
@@ -101,7 +95,9 @@ export default async function ({
 
 				{children}
 			</div>
-			{requireSummary && <PageSummary location={section.location} />}
+			{requireSummary && (
+				<PageSummary location={section.location} pageSlug={section.page_slug} />
+			)}
 		</>
 	);
 }

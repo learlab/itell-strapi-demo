@@ -5,7 +5,6 @@ import { HighlighterIcon, CopyIcon, PencilIcon } from "lucide-react";
 import { Popover } from "react-text-selection-popover";
 import { toast } from "sonner";
 import { useTextSelection } from "use-text-selection";
-import { trpc } from "@/trpc/trpc-provider";
 import {
 	defaultHighlightColor,
 	useNoteColor,
@@ -16,13 +15,15 @@ import { useSession } from "next-auth/react";
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 import { useNotesStore } from "@/lib/store";
 import { createNoteElements, serializeRange } from "@itell/core/note";
-import { SectionLocation } from "@/types/location";
-import { Spinner } from "../spinner";
 import { createNote } from "@/lib/server-actions";
 
 type SelectionData = ReturnType<typeof useTextSelection>;
 
-export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
+type Props = {
+	pageSlug: string;
+};
+
+export const NoteToolbar = ({ pageSlug }: Props) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
@@ -117,9 +118,7 @@ export const NoteToolbar = ({ location }: { location: SectionLocation }) => {
 						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
-						module: location.module,
-						chapter: location.chapter,
-						section: location.section,
+						pageSlug,
 						color: defaultHighlightColor,
 						range: serializedRange,
 						user: {

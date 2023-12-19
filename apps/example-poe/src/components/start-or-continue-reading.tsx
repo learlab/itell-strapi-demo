@@ -1,15 +1,16 @@
 "use client";
 
-import { useLastVisitedSectionUrl } from "@/lib/hooks/use-last-visited-section";
+import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-section";
 import { useTransition } from "react";
 import { Button } from "./client-components";
 import { useRouter } from "next/navigation";
 import { Spinner } from "./spinner";
+import { firstPageUrl } from "@/lib/constants";
 
 export const StartOrContinueReading = () => {
-	const url = useLastVisitedSectionUrl();
+	const url = useLastVisitedPageUrl();
 	const text = url ? "Continue Reading" : "Start Reading";
-	const href = url || "/module-1/chapter-1";
+	const href = url || firstPageUrl;
 	const router = useRouter();
 	const [pending, startTransition] = useTransition();
 

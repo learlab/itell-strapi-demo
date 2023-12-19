@@ -1,7 +1,7 @@
 import { env } from "@/env.mjs";
-import { SummaryResponseSchema } from "@/trpc/schema";
 import { SectionLocation } from "@/types/location";
 import { TEXTBOOK_NAME } from "./constants";
+import { SummaryResponseSchema } from "@itell/core/summary";
 
 export const getScore = async ({
 	input,

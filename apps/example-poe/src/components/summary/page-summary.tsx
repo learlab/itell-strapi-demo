@@ -13,17 +13,20 @@ import cld3 from "@/lib/cld";
 import { getScore } from "@/lib/score";
 import {
 	createSummary,
-	getUserLocationSummaryCount,
-	incrementUserLocation,
+	getUserPageSummaryCount,
+	incrementUserPage,
 } from "@/lib/server-actions";
-import { isLastLocation } from "@/lib/location";
+import { isLastPage } from "@/lib/location";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
 
-export const PageSummary = async ({
-	location,
-}: { location: SectionLocation }) => {
+type Props = {
+	location: SectionLocation;
+	pageSlug: string;
+};
+
+export const PageSummary = async ({ pageSlug, location }: Props) => {
 	const user = await getCurrentUser();
 	const onSubmit = async (
 		prevState: SummaryFormState,
@@ -63,9 +66,7 @@ export const PageSummary = async ({
 
 		await createSummary({
 			text: input,
-			module: location.module,
-			chapter: location.chapter,
-			section: location.section,
+			pageSlug,
 			isPassed: feedback.isPassed,
 			containmentScore: response.data.containment,
 			similarityScore: response.data.similarity,
@@ -79,21 +80,21 @@ export const PageSummary = async ({
 		});
 
 		if (feedback.isPassed) {
-			await incrementUserLocation(userId, location);
+			await incrementUserPage(userId, pageSlug);
 
 			return {
-				canProceed: !isLastLocation(location),
+				canProceed: !isLastPage(pageSlug),
 				response: response.data,
 				feedback,
 				error: null,
 			};
 		}
 
-		const summaryCount = await getUserLocationSummaryCount(userId, location);
+		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
 		if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
-			await incrementUserLocation(userId, location);
+			await incrementUserPage(userId, pageSlug);
 			return {
-				canProceed: !isLastLocation(location),
+				canProceed: !isLastPage(pageSlug),
 				response: response.data,
 				feedback,
 				error: null,
@@ -120,9 +121,9 @@ export const PageSummary = async ({
 				{user ? (
 					<>
 						<Suspense fallback={<SummaryCount.Skeleton />}>
-							<SummaryCount location={location} />
+							<SummaryCount pageSlug={pageSlug} />
 						</Suspense>
-						<SummaryForm location={location} onSubmit={onSubmit} />
+						<SummaryForm pageSlug={pageSlug} onSubmit={onSubmit} />
 					</>
 				) : (
 					<Warning>

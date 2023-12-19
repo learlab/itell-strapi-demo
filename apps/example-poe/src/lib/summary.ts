@@ -1,4 +1,4 @@
-import { SummaryResponse } from "@/trpc/schema";
+import { SummaryResponse } from "@itell/core/summary";
 import { ScoreThreshold, ScoreType } from "./constants";
 
 export interface Feedback {

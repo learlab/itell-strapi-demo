@@ -1,11 +1,14 @@
-import NoteCard from "./note-card";
-import { SectionLocation } from "@/types/location";
+import { NoteCard } from "./note-card";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
 import { Highlight } from "./highlight";
 import { NewNoteList } from "./new-note-list";
 
-export const NoteList = async ({ location }: { location: SectionLocation }) => {
+type Props = {
+	pageSlug: string;
+};
+
+export const NoteList = async ({ pageSlug }: Props) => {
 	const user = await getCurrentUser();
 	if (!user) {
 		return null;
@@ -14,9 +17,7 @@ export const NoteList = async ({ location }: { location: SectionLocation }) => {
 	const notesAndHighlights = await db.note.findMany({
 		where: {
 			userId: user.id,
-			module: location.module,
-			chapter: location.chapter,
-			section: location.section,
+			pageSlug,
 		},
 	});
 	const notes = notesAndHighlights.filter((note) => note.noteText !== null);
@@ -28,12 +29,12 @@ export const NoteList = async ({ location }: { location: SectionLocation }) => {
 		<div>
 			{notes.map((note) => (
 				// @ts-ignore
-				<NoteCard key={note.y} {...note} location={location} />
+				<NoteCard key={note.y} {...note} pageSlug={pageSlug} />
 			))}
 			{highlights.map((highlight) => (
 				<Highlight key={highlight.y} {...highlight} />
 			))}
-			<NewNoteList location={location} />
+			<NewNoteList pageSlug={pageSlug} />
 		</div>
 	);
 };

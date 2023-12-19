@@ -3,11 +3,9 @@ import { allSectionsSorted } from "@/lib/sections";
 import { User } from "@prisma/client";
 
 export const UserProgress = ({ user }: { user: User }) => {
-	const isBlankUser = user.chapter === 1 && user.section === 1;
+	const isBlankUser = !user.pageSlug;
 	const usersIndex = allSectionsSorted.findIndex(
-		(section) =>
-			section.location.chapter === user.chapter - 1 &&
-			section.location.section === user.section,
+		(section) => section.page_slug === user.pageSlug,
 	);
 	const sectionsUnlocked = isBlankUser ? 0 : usersIndex + 1;
 	const progress = (sectionsUnlocked / allSectionsSorted.length) * 100;

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { EditIcon } from "lucide-react";
-import { NoteCard } from "@/types/note";
+import { NoteCard as NoteCardType } from "@/types/note";
 import { useClickOutside } from "@itell/core/hooks";
 import { NoteDelete } from "./node-delete";
 import { cn, relativeDate } from "@itell/core/utils";
@@ -17,13 +17,12 @@ import {
 	deserializeRange,
 	getElementsByNoteId,
 } from "@itell/core/note";
-import { SectionLocation } from "@/types/location";
 import { useSession } from "next-auth/react";
 import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
 import { useFormStatus } from "react-dom";
 
-interface Props extends NoteCard {
-	location: SectionLocation;
+interface Props extends NoteCardType {
+	pageSlug: string;
 	newNote?: boolean;
 }
 
@@ -51,18 +50,18 @@ type EditDispatch =
 // on mouse enter, add class = "emphasize"
 // on delete add class = "unhighlighted"
 // styles are in global.css
-export default function ({
+export const NoteCard = ({
 	id,
 	y,
 	highlightedText,
 	noteText,
-	location,
+	pageSlug,
 	updated_at,
 	created_at,
 	serializedRange,
 	color,
 	newNote = false,
-}: Props) {
+}: Props) => {
 	const { data: session } = useSession();
 	const [input, setInput] = useState(noteText || "");
 
@@ -139,9 +138,7 @@ export default function ({
 					y,
 					noteText: input,
 					highlightedText,
-					module: location.module,
-					chapter: location.chapter,
-					section: location.section,
+					pageSlug,
 					color: editState.color,
 					range: serializedRange,
 					user: {
@@ -352,4 +349,4 @@ export default function ({
 			</div>
 		</div>
 	);
-}
+};
