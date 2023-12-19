@@ -12,14 +12,12 @@ type Question = { question: string; answer: string };
 
 type Props = {
 	isPageMasked: boolean;
-	selectedQuestions: Map<number, Question>;
-	location: SectionLocation;
+	selectedQuestions: Map<string, Question>;
 	pageSlug: string;
 };
 
 export const QuestionControl = ({
 	selectedQuestions,
-	location,
 	isPageMasked,
 	pageSlug,
 }: Props) => {
@@ -88,21 +86,19 @@ export const QuestionControl = ({
 		);
 	};
 
-	const insertQuestion = (el: HTMLDivElement, index: number) => {
+	const insertQuestion = (el: HTMLDivElement, chunkSlug: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
 		el.appendChild(questionContainer);
 
-		const q = selectedQuestions.get(index) as Question;
+		const q = selectedQuestions.get(chunkSlug) as Question;
 
 		addNode(
 			createPortal(
 				<QuestionBox
 					question={q.question}
 					answer={q.answer}
-					chapter={location.chapter}
-					section={location.section}
-					subsection={index}
+					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					isPageMasked={isPageMasked}
 				/>,
@@ -120,8 +116,10 @@ export const QuestionControl = ({
 
 	const handleChunk = (el: HTMLDivElement, index: number) => {
 		const isChunkUnvisited = index > currentChunk;
-		if (selectedQuestions.has(index)) {
-			insertQuestion(el, index);
+		const chunkSlug = el.dataset.subsectionId;
+		console.log("chunkSlug", chunkSlug);
+		if (chunkSlug && selectedQuestions.has(chunkSlug)) {
+			insertQuestion(el, chunkSlug);
 		}
 
 		if (isPageMasked) {
@@ -143,9 +141,11 @@ export const QuestionControl = ({
 		const prevChunkElement = chunks.at(currentChunk - 1);
 
 		if (currentChunkElement) {
+			const currentChunkSlug = currentChunkElement.dataset
+				.subsectionId as string;
 			currentChunkElement.style.filter = "none";
 			if (
-				!selectedQuestions.has(currentChunk) &&
+				!selectedQuestions.has(currentChunkSlug) &&
 				currentChunk !== chunks.length - 1
 			) {
 				insertNextChunkButton(currentChunkElement);

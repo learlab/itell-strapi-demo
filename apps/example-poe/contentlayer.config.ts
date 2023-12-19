@@ -36,6 +36,11 @@ const Section = defineDocumentType(() => ({
 			description: "The title of the Section",
 			required: true,
 		},
+		page_slug: {
+			type: "string",
+			description: "The slug of the page",
+			required: true,
+		},
 		qa: {
 			type: "boolean",
 			description: "If the page should include question & answers",
@@ -52,18 +57,11 @@ const Section = defineDocumentType(() => ({
 	computedFields: {
 		url: {
 			type: "string",
-			resolve: (doc) => {
-				const slug = slugify(doc.title);
-				return `/${slug}`;
-			},
+			resolve: (doc) => `/${doc.page_slug}`,
 		},
 		location: {
 			type: "json",
 			resolve: (doc) => getLocationFromFlattenedPath(doc._raw.flattenedPath),
-		},
-		slug: {
-			type: "string",
-			resolve: (doc) => slugify(doc.title),
 		},
 		headings: {
 			type: "json",

@@ -11,14 +11,14 @@ import { ModuleSidebar } from "@/components/module-sidebar";
 export const generateStaticParams = async () => {
 	return allSectionsSorted.map((section) => {
 		return {
-			slug: section.slug,
+			slug: section.page_slug,
 		};
 	});
 };
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 	const section = allSectionsSorted.find(
-		(section) => section.slug === params.slug,
+		(section) => section.page_slug === params.slug,
 	);
 	if (section) {
 		return {
@@ -52,7 +52,7 @@ export default async function ({
 	params,
 }: { children: React.ReactNode; params: { slug: string } }) {
 	const sectionIndex = allSectionsSorted.findIndex((section) => {
-		return section.slug === params.slug;
+		return section.page_slug === params.slug;
 	});
 
 	if (sectionIndex === -1) {
@@ -96,7 +96,7 @@ export default async function ({
 				{children}
 			</div>
 			{requireSummary && (
-				<PageSummary location={section.location} pageSlug={section.slug} />
+				<PageSummary location={section.location} pageSlug={section.page_slug} />
 			)}
 		</>
 	);

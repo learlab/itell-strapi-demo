@@ -14,7 +14,11 @@ import { PageContent } from "@/components/section/page-content";
 import { QuestionControl } from "@/components/question/question-control";
 import { getCurrentUser } from "@/lib/auth";
 import { env } from "@/env.mjs";
-import { getPageQuestions } from "@/lib/question";
+import {
+	QuestionSchema,
+	SelectedQuestions,
+	getPageQuestions,
+} from "@/lib/question";
 import { PageTitle } from "@/components/page-title";
 import { getUser } from "@/lib/user";
 import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
@@ -45,10 +49,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	// Subsections to be passed onto page
 	let enableQA = false;
-	const selectedQuestions = new Map<
-		number,
-		{ question: string; answer: string }
-	>();
+	const selectedQuestions: SelectedQuestions = new Map();
 
 	const questions = await getPageQuestions(page.page_slug);
 	if (questions) {
@@ -56,8 +57,15 @@ export default async function ({ params }: { params: { slug: string } }) {
 			Boolean(c.QuestionAnswerResponse),
 		);
 
-		const chooseQuestion = (c: (typeof chunks)[number]) =>
-			selectedQuestions.set(c.Slug, JSON.parse(c.QuestionAnswerResponse));
+		const chooseQuestion = (c: (typeof chunks)[number]) => {
+			if (c.QuestionAnswerResponse) {
+				const parsed = JSON.parse(c.QuestionAnswerResponse);
+				const questionParsed = QuestionSchema.safeParse(parsed);
+				if (questionParsed.success) {
+					selectedQuestions.set(c.Slug, questionParsed.data);
+				}
+			}
+		};
 		if (chunks.length > 0) {
 			enableQA = true;
 			chunks.forEach((chunk) => {
@@ -77,8 +85,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const isUserLatestPage = user ? user.pageSlug === params.slug : false;
 	// can view page, with no blurred chunks
 	const isPageUnlocked = user
-		? isPageAfter(user.pageSlug, page.slug)
-		: isPageUnlockedWithoutUser(page.slug);
+		? isPageAfter(user.pageSlug, page.page_slug)
+		: isPageUnlockedWithoutUser(page.page_slug);
 	// can view page, but with blurred chunks
 	const isPageMasked = user ? !isPageUnlocked : true;
 
@@ -96,7 +104,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					)}
 				</PageTitle>
 				<PageContent code={page.body.code} />
-				<NoteToolbar pageSlug={page.slug} />
+				<NoteToolbar pageSlug={page.page_slug} />
 				<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 			</section>
 
@@ -113,7 +121,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 									  : "locked"
 							}
 						/>
-						{user && <NoteCount user={user} pageSlug={page.slug} />}
+						{user && <NoteCount user={user} pageSlug={page.page_slug} />}
 					</div>
 				</div>
 				<Suspense
@@ -124,16 +132,16 @@ export default async function ({ params }: { params: { slug: string } }) {
 						</p>
 					}
 				>
-					<NoteList pageSlug={page.slug} />
+					<NoteList pageSlug={page.page_slug} />
 				</Suspense>
 			</aside>
 
 			<PageStatusModal
 				user={user}
-				pageSlug={page.slug}
+				pageSlug={page.page_slug}
 				isWhitelisted={isUserWhitelisted}
 			/>
-			{page.qa && (
+			{enableQA && (
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}

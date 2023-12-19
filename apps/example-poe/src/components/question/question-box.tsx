@@ -36,9 +36,7 @@ type QuestionScore = 0 | 1 | 2;
 type Props = {
 	question: string;
 	answer: string;
-	chapter: number;
-	section: number;
-	subsection: number;
+	chunkSlug: string;
 	pageSlug: string;
 	isPageMasked: boolean;
 };
@@ -78,9 +76,7 @@ const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 export const QuestionBox = ({
 	question,
 	answer,
-	chapter,
-	section,
-	subsection,
+	chunkSlug,
 	pageSlug,
 	isPageMasked,
 }: Props) => {
@@ -120,9 +116,8 @@ export const QuestionBox = ({
 
 		const response = await getQAScore({
 			input,
-			chapter: String(chapter),
-			section: String(section),
-			subsection: String(subsection),
+			chunkSlug,
+			pageSlug,
 		});
 
 		if (!response.success) {
@@ -232,14 +227,8 @@ export const QuestionBox = ({
 						make mistakes. Let us know how you feel about iTELL AI's performance
 						using the feedback icons to the right (thumbs up or thumbs down).{" "}
 					</CardDescription>
-					<FeedbackModal
-						type="positive"
-						pageSlug={`${chapter}-${section}-${subsection}`}
-					/>
-					<FeedbackModal
-						type="negative"
-						pageSlug={`${chapter}-${section}-${subsection}`}
-					/>
+					<FeedbackModal type="positive" pageSlug={pageSlug} />
+					<FeedbackModal type="negative" pageSlug={pageSlug} />
 				</CardHeader>
 
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
