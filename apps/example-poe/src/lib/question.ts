@@ -6,6 +6,9 @@ import qs from "qs";
 export const QuestionSchema = z.object({
 	question: z.string(),
 	answer: z.string(),
+	page_slug:z.string(),
+	chunk_slug:z.string(),
+	subsection:z.string(),
 });
 export type Question = z.infer<typeof QuestionSchema>;
 export type SelectedQuestions = Map<string, Question>;
