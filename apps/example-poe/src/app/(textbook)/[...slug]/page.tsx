@@ -211,13 +211,12 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 				user={user}
 				isWhitelisted={isUserWhitelisted}
 			/>
-			{enableQA && (
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}
 					location={currentLocation}
 				/>
-			)}
+
 
 			{user && isProduction && <EventTracker user={user} />}
 		</Fragment>
