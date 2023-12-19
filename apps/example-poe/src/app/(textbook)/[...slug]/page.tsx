@@ -99,7 +99,6 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 					chunk_slug: attributes["Content"][i]["Slug"],
 				}
 				questions.push(question);
-				console.log(question);
 			}
 		}
 

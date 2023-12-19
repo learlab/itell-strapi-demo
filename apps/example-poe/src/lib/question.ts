@@ -28,12 +28,6 @@ export const getQAScore = async ({
 	chunk_slug,
 	page_slug,
 }: { input: string; chunk_slug: string; page_slug: string }) => {
-	if(page_slug == null){
-		page_slug = "temp page slug";
-	}
-	if(chunk_slug == null){
-		chunk_slug = "temp chunk slug";
-	}
 	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/answer`, {
 		mode: 'no-cors',
 		method: "POST",
