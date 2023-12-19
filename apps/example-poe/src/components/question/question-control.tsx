@@ -12,7 +12,8 @@ type Question = {
 	page_slug: string;
 	chunk_slug: string;
 	question: string;
-	answer: string };
+	answer: string;
+	subsection: number;};
 
 type Props = {
 	isPageMasked: boolean;

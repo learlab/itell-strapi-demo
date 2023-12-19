@@ -80,6 +80,9 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 				selectedQuestions.set(question.subsection, {
 					question: targetQuestion,
 					answer: question.answer,
+					subsection: question.subsection,
+					page_slug: question.page_slug,
+					chunk_slug: question.chunk_slug,
 				});
 			}
 		};
@@ -96,6 +99,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 					chunk_slug: attributes["Content"][i]["Slug"],
 				}
 				questions.push(question);
+				console.log(question);
 			}
 		}
 
