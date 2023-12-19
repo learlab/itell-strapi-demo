@@ -10,7 +10,7 @@ export const getModuleChapters = (module: number) => {
 		.map((section) => ({
 			id: section._id,
 			title: section.title,
-			slug: section.slug,
+			slug: section.page_slug,
 			url: section.url,
 			chapter: section.location.chapter,
 			section: section.location.section,

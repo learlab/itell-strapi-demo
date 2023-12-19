@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 export const UserProgress = ({ user }: { user: User }) => {
 	const isBlankUser = !user.pageSlug;
 	const usersIndex = allSectionsSorted.findIndex(
-		(section) => section.slug === user.pageSlug,
+		(section) => section.page_slug === user.pageSlug,
 	);
 	const sectionsUnlocked = isBlankUser ? 0 : usersIndex + 1;
 	const progress = (sectionsUnlocked / allSectionsSorted.length) * 100;

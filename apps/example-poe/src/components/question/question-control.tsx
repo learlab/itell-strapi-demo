@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { QuestionBox } from "./question-box";
-import { SectionLocation } from "@/types/location";
 import { useQA } from "../context/qa-context";
 import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
@@ -76,6 +75,7 @@ export const QuestionControl = ({
 			createPortal(
 				<NextChunkButton
 					clickEventType="chunk reveal"
+					pageSlug={pageSlug}
 					standalone
 					className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
 				>
@@ -155,6 +155,10 @@ export const QuestionControl = ({
 		// when a fresh page is loaded,. set up ref data and prepare chunk styles
 		if (currentChunk !== 0 && prevChunkElement) {
 			hideNextChunkButton(prevChunkElement);
+		}
+
+		if (currentChunk === chunks.length - 1) {
+			hideScrollBackButton();
 		}
 	};
 

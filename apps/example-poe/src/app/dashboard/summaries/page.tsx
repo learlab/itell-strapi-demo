@@ -55,7 +55,7 @@ export default async function () {
 	// // convert date here since they will be passed from server components to client components
 	const summaries = userSummaries.map((s) => {
 		const page = allSectionsSorted.find(
-			(section) => section.slug === s.pageSlug,
+			(section) => section.page_slug === s.pageSlug,
 		) as Section;
 
 		return {

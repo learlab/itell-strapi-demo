@@ -56,7 +56,7 @@ export default async function ({ params }: PageProps) {
 	}
 
 	const section = allSectionsSorted.find(
-		(section) => section.slug === summary.pageSlug,
+		(section) => section.page_slug === summary.pageSlug,
 	);
 	if (!section) {
 		return notFound();
@@ -175,7 +175,7 @@ export default async function ({ params }: PageProps) {
 					<TextbookPageModal page={section} />
 
 					<Link
-						href={makePageHref(section.slug)}
+						href={makePageHref(section.page_slug)}
 						className={cn(
 							buttonVariants({ variant: "link" }),
 							"block text-xl font-semibold text-center underline",
@@ -188,7 +188,7 @@ export default async function ({ params }: PageProps) {
 					</p>
 					<div className="max-w-2xl mx-auto">
 						<SummaryForm
-							pageSlug={section.slug}
+							pageSlug={section.page_slug}
 							onSubmit={onSubmit}
 							textareaClassName="min-h-[400px]"
 						/>

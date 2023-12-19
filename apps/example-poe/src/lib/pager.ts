@@ -12,7 +12,7 @@ export const getPagerLinksForSection = (index: number) => {
 		const section = allSectionsSorted[index - 1];
 		links.prev = {
 			text: `${section.location.chapter}.${section.location.section} ${section.title}`,
-			href: `/${section.url}`,
+			href: section.url,
 		};
 	}
 
@@ -20,7 +20,7 @@ export const getPagerLinksForSection = (index: number) => {
 		const section = allSectionsSorted[index + 1];
 		links.next = {
 			text: `${section.location.chapter}.${section.location.section} ${section.title}`,
-			href: `/${section.url}`,
+			href: section.url,
 		};
 	}
 

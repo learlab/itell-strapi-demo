@@ -3,7 +3,7 @@ import { allSectionsSorted } from "./sections";
 // returns the slug for the new section
 export const nextPage = (slug: string): string => {
 	const currentSectionIndex = allSectionsSorted.findIndex(
-		(s) => s.slug === slug,
+		(s) => s.page_slug === slug,
 	);
 
 	// If current section is the last one or not found, return the same location
@@ -19,7 +19,7 @@ export const nextPage = (slug: string): string => {
 
 	if (nextSection) {
 		if (nextSection.summary) {
-			return nextSection.slug;
+			return nextSection.page_slug;
 		}
 
 		// find the next section that requires a summary
@@ -27,7 +27,7 @@ export const nextPage = (slug: string): string => {
 			.slice(currentSectionIndex + 1)
 			.find((s) => s.summary);
 		if (nextSectionWithSummary) {
-			return nextSectionWithSummary.slug;
+			return nextSectionWithSummary.page_slug;
 		}
 		return slug;
 	}
@@ -42,13 +42,13 @@ export const isPageUnlockedWithoutUser = (slug: string) => {
 };
 
 export const isPageAfter = (a: string | null, b: string | null) => {
-	const aIndex = allSectionsSorted.findIndex((s) => s.slug === a);
-	const bIndex = allSectionsSorted.findIndex((s) => s.slug === b);
+	const aIndex = allSectionsSorted.findIndex((s) => s.page_slug === a);
+	const bIndex = allSectionsSorted.findIndex((s) => s.page_slug === b);
 
 	return aIndex > bIndex;
 };
 
 export const isLastPage = (slug: string) => {
 	const lastSection = allSectionsSorted[allSectionsSorted.length - 1];
-	return lastSection.slug === slug;
+	return lastSection.page_slug === slug;
 };
