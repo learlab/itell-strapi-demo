@@ -24,7 +24,6 @@ import { PageStatus } from "@/components/page-status/page-status";
 import { NoteCount } from "@/components/note/note-count";
 import { isProduction } from "@/lib/constants";
 import { EventTracker } from "@/components/telemetry/event-tracker";
-import { QuizDialog } from "@/components/quiz/quiz-modal";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
@@ -33,10 +32,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const isUserWhitelisted = whitelist.includes(user?.email || "");
 
 	const sectionIndex = allSectionsSorted.findIndex((section) => {
-		if (section.slug.startsWith("what-is")) {
-			console.log("section slug", section.slug, "params slug", params.slug);
-		}
-		return section.slug === params.slug;
+		return section.page_slug === params.slug;
 	});
 
 	if (sectionIndex === -1) {
@@ -44,52 +40,37 @@ export default async function ({ params }: { params: { slug: string } }) {
 	}
 
 	const page = allSectionsSorted[sectionIndex] as Section;
-	const enableQA = page.qa;
 	const currentLocation = page.location as SectionLocation;
 	const pagerLinks = getPagerLinksForSection(sectionIndex);
 
-	// Would be easier if we change chapter and section in Supabase to strings that match the
-	// formatting of subsection indices (i.e., strings with leading zeroes)
-	const pageId = `${currentLocation.chapter < 10 ? "0" : ""}${
-		currentLocation.chapter
-	}-${currentLocation.section < 10 ? "0" : ""}${currentLocation.section}`;
-
-	// get subsections
-	let questions: Awaited<ReturnType<typeof getPageQuestions>> = [];
 	// Subsections to be passed onto page
+	let enableQA = false;
 	const selectedQuestions = new Map<
 		number,
 		{ question: string; answer: string }
 	>();
-	if (enableQA) {
-		const chooseQuestion = (question: (typeof questions)[0]) => {
-			let targetQuestion = question.question;
-			// band-aid solution for YouTube videos until we implement content-types via Strapi
-			if (question.slug.includes("learn-with-videos")) {
-				targetQuestion = `(Watch the YouTube video above to answer this question) ${targetQuestion}`;
+
+	const questions = await getPageQuestions(page.page_slug);
+	if (questions) {
+		const chunks = questions.data[0].attributes.Content.filter((c) =>
+			Boolean(c.QuestionAnswerResponse),
+		);
+
+		const chooseQuestion = (c: (typeof chunks)[number]) =>
+			selectedQuestions.set(c.Slug, JSON.parse(c.QuestionAnswerResponse));
+		if (chunks.length > 0) {
+			enableQA = true;
+			chunks.forEach((chunk) => {
+				if (Math.random() < 1 / 3) {
+					chooseQuestion(chunk);
+				}
+			});
+
+			// Each page will have at least one question
+			if (selectedQuestions.size === 0) {
+				const randChunk = Math.floor(Math.random() * (chunks.length - 1));
+				chooseQuestion(chunks[randChunk]);
 			}
-
-			if (targetQuestion && question.answer) {
-				selectedQuestions.set(question.subsection, {
-					question: targetQuestion,
-					answer: question.answer,
-				});
-			}
-		};
-
-		questions = await getPageQuestions(pageId);
-
-		for (let index = 0; index < questions.length - 1; index++) {
-			// Each subsection has a 1/3 chance of spawning a question
-			if (Math.random() < 1 / 3) {
-				chooseQuestion(questions[index]);
-			}
-		}
-
-		// Each page will have at least one question
-		if (selectedQuestions.size === 0) {
-			const randChunk = Math.floor(Math.random() * (questions.length - 1));
-			chooseQuestion(questions[randChunk]);
 		}
 	}
 
@@ -114,7 +95,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<LockIcon />
 					)}
 				</PageTitle>
-				<QuizDialog />
 				<PageContent code={page.body.code} />
 				<NoteToolbar pageSlug={page.slug} />
 				<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
@@ -157,9 +137,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}
-					pageSlug={page.slug}
-					// location is kept here because question scoring still need the chapter, section, index
-					location={currentLocation}
+					pageSlug={page.page_slug}
 				/>
 			)}
 
