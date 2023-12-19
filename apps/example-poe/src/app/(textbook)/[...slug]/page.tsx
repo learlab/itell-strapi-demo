@@ -97,9 +97,9 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		};
 
 		let questions = [];
-		for(let i = 0; i < data["data"]["attributes"]["Content"].length; ++i){
-			if(data["data"]["attributes"]["Content"][i]["__component"]==="page.chunk"){
-				const QAResponse = JSON.parse(data["data"]["attributes"]["Content"][i]["QuestionAnswerResponse"]);
+		for(let i = 0; i < data["data"][0]["attributes"]["Content"].length; ++i){
+			if(data["data"][0]["attributes"]["Content"][i]["__component"]==="page.chunk"){
+				const QAResponse = JSON.parse(data["data"][0]["attributes"]["Content"][i]["QuestionAnswerResponse"]);
 				let question = {
 					subsection: i,
 					question:QAResponse.question,
