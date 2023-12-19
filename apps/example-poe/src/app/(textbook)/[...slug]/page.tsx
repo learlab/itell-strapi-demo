@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Balancer from "react-wrap-balancer";
 import { notFound } from "next/navigation";
 import { SectionLocation } from "@/types/location";
@@ -51,28 +52,21 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 	// const pageId = `${currentLocation.chapter < 10 ? "0" : ""}${
 	// 	currentLocation.chapter
 	// }-${currentLocation.section < 10 ? "0" : ""}${currentLocation.section}`;
-	const pageId = async function() {
+	const pageId = async () => {
 		const mdxFilePath = "../../../../content/section/module-"+ currentLocation.module +"/chapter-" + currentLocation.chapter + "/section-"+currentLocation.section;
-		console.log(mdxFilePath);
-		// fs.readFile(filePath, 'utf8', (err, data) => {
-		// 	if (err) {
-		// 		callback(err, null);
-		// 		return;
-		// 	}
-		//
-		// 	const lines = data.split('\n');
-		//
-		// 	// Check if the file has at least 4 lines
-		// 	if (lines.length >= 4) {
-		// 		const fourthLine = lines[3];
-		// 		callback(null, fourthLine);
-		// 	} else {
-		// 		callback('File does not have at least 4 lines', null);
-		// 	}
-		// });
+		let page_slug:string = "";
+		await fs.readFile(mdxFilePath, "utf8", (err, data) => {
+			if (err) {
+				console.log(err);
+			}
 
-		return "";
-	}();
+			const lines = data.split('\n');
+
+			page_slug = lines[2].split(" ")[1];
+		});
+		console.log(page_slug);
+		return page_slug;
+	};
 
 	// get subsections
 	let questions: Awaited<ReturnType<typeof getPageQuestions>> = [];
@@ -81,7 +75,12 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		number,
 		{ question: string; answer: string }
 	>();
-	if (enableQA) {
+
+	const res = await fetch("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]=pageID&populate[Content]=*", {cache: "no-store"});
+	let data = await res.json();
+
+
+	if(data["data"]["attributes"]["HasSummary"]){
 		const chooseQuestion = (question: (typeof questions)[0]) => {
 			let targetQuestion = question.question;
 			// band-aid solution for YouTube videos until we implement content-types via Strapi
@@ -97,9 +96,20 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 			}
 		};
 
-		questions = await getPageQuestions(pageId);
+		let questions = [];
+		for(let i = 0; i < data["data"]["attributes"]["Content"].length; ++i){
+			if(data["data"]["attributes"]["Content"][i]["__component"]==="page.chunk"){
+				const QAResponse = JSON.parse(data["data"]["attributes"]["Content"][i]["QuestionAnswerResponse"]);
+				let question = {
+					subsection: i,
+					question:QAResponse.question,
+					answer:QAResponse.answer,
+				}
+				questions.push(question);
+			}
+		}
 
-		for (let index = 0; index < questions.length - 1; index++) {
+		for (let index = 0; index < questions.length; index++) {
 			// Each subsection has a 1/3 chance of spawning a question
 			if (Math.random() < 1 / 3) {
 				chooseQuestion(questions[index]);
