@@ -26,6 +26,7 @@
   "keywords": [],
   "license": "ISC",
   "dependencies": {
+    "fs": "0.0.1-security",
     "turbo": "^1.9.3"
   }
 }

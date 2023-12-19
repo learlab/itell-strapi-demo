@@ -24,6 +24,7 @@ import { PageStatus } from "@/components/page-status/page-status";
 import { NoteCount } from "@/components/note/note-count";
 import { isProduction } from "@/lib/constants";
 import { EventTracker } from "@/components/telemetry/event-tracker";
+import fs from "fs";
 
 export default async function ({ params }: { params: { slug: string[] } }) {
 	const sessionUser = await getCurrentUser();
@@ -47,9 +48,31 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 
 	// Would be easier if we change chapter and section in Supabase to strings that match the
 	// formatting of subsection indices (i.e., strings with leading zeroes)
-	const pageId = `${currentLocation.chapter < 10 ? "0" : ""}${
-		currentLocation.chapter
-	}-${currentLocation.section < 10 ? "0" : ""}${currentLocation.section}`;
+	// const pageId = `${currentLocation.chapter < 10 ? "0" : ""}${
+	// 	currentLocation.chapter
+	// }-${currentLocation.section < 10 ? "0" : ""}${currentLocation.section}`;
+	const pageId = async function() {
+		const mdxFilePath = "../../../../content/section/module-"+ currentLocation.module +"/chapter-" + currentLocation.chapter + "/section-"+currentLocation.section;
+		console.log(mdxFilePath);
+		// fs.readFile(filePath, 'utf8', (err, data) => {
+		// 	if (err) {
+		// 		callback(err, null);
+		// 		return;
+		// 	}
+		//
+		// 	const lines = data.split('\n');
+		//
+		// 	// Check if the file has at least 4 lines
+		// 	if (lines.length >= 4) {
+		// 		const fourthLine = lines[3];
+		// 		callback(null, fourthLine);
+		// 	} else {
+		// 		callback('File does not have at least 4 lines', null);
+		// 	}
+		// });
+
+		return "";
+	}();
 
 	// get subsections
 	let questions: Awaited<ReturnType<typeof getPageQuestions>> = [];
