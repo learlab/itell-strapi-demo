@@ -76,7 +76,7 @@ export default async function ({ params }: { params: { slug: string[] } }) {
 		{ question: string; answer: string }
 	>();
 
-	const res = await fetch("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]=pageID&populate[Content]=*", {cache: "no-store"});
+	const res = await fetch("https://itell-strapi-um5h.onrender.com/api/pages?filters[slug][$eq]="+pageId+"&populate[Content]=*", {cache: "no-store"});
 	let data = await res.json();
 	let attributes;
 	if(data){
