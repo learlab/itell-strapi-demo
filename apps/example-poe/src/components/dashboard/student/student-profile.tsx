@@ -23,7 +23,10 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 				<CardTitle>
 					<div className="flex items-center justify-between">
 						<p>{student.name}</p>
-						<p className="text-muted-foreground text-sm font-medium">{`at Chapter ${student.chapter}`}</p>
+						<p className="text-muted-foreground text-sm font-medium">
+							at section{" "}
+							<span className="ml-1 font-semibold">{student.pageSlug}</span>
+						</p>
 					</div>
 				</CardTitle>
 				<CardDescription className="space-y-4">

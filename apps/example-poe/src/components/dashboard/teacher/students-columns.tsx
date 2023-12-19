@@ -17,7 +17,7 @@ import { buttonVariants } from "@itell/ui/server";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type StudentData = Pick<User, "id" | "email" | "name" | "created_at"> & {
-	progress: { chapter: number; section: number };
+	progress: { chapter: number; section: number; title: string; index: number };
 	summaryCounts: number;
 };
 
@@ -76,7 +76,7 @@ export const columns: ColumnDef<StudentData>[] = [
 		},
 		cell: ({ row }) => {
 			const progress = row.original.progress;
-			return `${progress.chapter}.${progress.section}`;
+			return `${progress.chapter}.${progress.section} ${progress.title}`;
 		},
 	},
 	{

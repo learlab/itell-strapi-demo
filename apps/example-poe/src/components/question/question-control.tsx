@@ -6,17 +6,11 @@ import { useQA } from "../context/qa-context";
 import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
-
-type Question = {
-	page_slug: string;
-	chunk_slug: string;
-	question: string;
-	answer: string;
-	subsection: number;};
+import { SelectedQuestions } from "@/lib/question";
 
 type Props = {
 	isPageMasked: boolean;
-	selectedQuestions: Map<string, Question>;
+	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
 };
 
@@ -96,22 +90,22 @@ export const QuestionControl = ({
 		questionContainer.className = "question-container";
 		el.appendChild(questionContainer);
 
-		const q = selectedQuestions.get(chunkSlug) as Question;
+		const q = selectedQuestions.get(chunkSlug);
 
-		addNode(
-			createPortal(
-				<QuestionBox
-					question={q.question}
-					answer={q.answer}
-					chunkSlug={chunkSlug}
-					pageSlug={pageSlug}
-					isPageMasked={isPageMasked}
-				 	chapter={location.chapter}
-					section={location.section}
-					subsection={index}/>,
-				questionContainer,
-			),
-		);
+		if (q) {
+			addNode(
+				createPortal(
+					<QuestionBox
+						question={q.question}
+						answer={q.answer}
+						chunkSlug={chunkSlug}
+						pageSlug={pageSlug}
+						isPageMasked={isPageMasked}
+					/>,
+					questionContainer,
+				),
+			);
+		}
 	};
 
 	useEffect(() => {

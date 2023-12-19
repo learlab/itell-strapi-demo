@@ -38,8 +38,6 @@ type Props = {
 	chunkSlug: string;
 	pageSlug: string;
 	isPageMasked: boolean;
-	chunk_slug: string;
-	page_slug: string;
 };
 
 // state for answer correctness
@@ -117,8 +115,8 @@ export const QuestionBox = ({
 
 		const response = await getQAScore({
 			input,
-			chunkSlug,
-			pageSlug,
+			chunk_slug: chunkSlug,
+			page_slug: pageSlug,
 		});
 
 		if (!response.success) {

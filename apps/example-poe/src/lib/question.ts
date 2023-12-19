@@ -72,8 +72,8 @@ export const getQAScore = async ({
 		cache: "no-store",
 		method: "POST",
 		body: JSON.stringify({
-			page_slug:page_slug,
-			chunk_slug:chunk_slug,
+			page_slug: page_slug,
+			chunk_slug: chunk_slug,
 			answer: input,
 		}),
 		headers: {
@@ -87,7 +87,7 @@ export const getQAScore = async ({
 	}
 	const data = await response.json();
 	if (!data) {
-		throw new Error('Empty response');
+		throw new Error("Empty response");
 	}
 	return QAScoreSchema.safeParse(data);
 };

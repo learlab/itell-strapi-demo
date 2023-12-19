@@ -42,7 +42,7 @@ export const PageLockedModal = ({ userPageSlug }: Props) => {
 				</div>
 				<DialogFooter>
 					<Button>
-						<Link href={href}>Go to chapter</Link>
+						<Link href={href}>Go to page</Link>
 					</Button>
 				</DialogFooter>
 			</DialogContent>

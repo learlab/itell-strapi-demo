@@ -13,26 +13,33 @@ import { TeacherBadges } from "./teacher-badges";
 import { Suspense } from "react";
 import { allSectionsSorted } from "@/lib/sections";
 import { Progress } from "@/components/client-components";
+import { getPageData } from "@/lib/utils";
 
 export const TeacherClass = async ({ classId }: { classId: string }) => {
 	const students = await getClassStudentStats(classId);
+	const studentData: StudentData[] = students.map((s) => {
+		const page = getPageData(s.pageSlug);
+		return {
+			id: s.id,
+			name: s.name,
+			email: s.email,
+			created_at: s.created_at,
+			progress: {
+				chapter: page.chapter,
+				section: page.section,
+				index: page.index,
+				title: page.title,
+			},
+			summaryCounts: s._count.summaries,
+		};
+	});
 
-	const studentData: StudentData[] = students.map((s) => ({
-		id: s.id,
-		name: s.name,
-		email: s.email,
-		created_at: s.created_at,
-		progress: { chapter: s.chapter, section: s.section },
-		summaryCounts: s._count.summaries,
-	}));
-
-	const classChapter = Math.floor(
-		students.reduce((acc, student) => acc + student.chapter, 0) /
+	const classIndex = Math.floor(
+		studentData.reduce((acc, student) => acc + student.progress.index, 0) /
 			students.length,
 	);
-	const totalChapter =
-		allSectionsSorted[allSectionsSorted.length - 1].location.chapter;
-	const classProgress = (classChapter / totalChapter) * 100;
+
+	const classProgress = (classIndex / allSectionsSorted.length) * 100;
 
 	return (
 		<Card>
@@ -58,7 +65,7 @@ export const TeacherClass = async ({ classId }: { classId: string }) => {
 				<div className="flex items-center gap-4">
 					<Progress value={classProgress} className="w-1/3" />
 					<p className="text-muted-foreground">
-						{classProgress.toFixed(2)}% completed, {totalChapter} chapters
+						{classProgress.toFixed(2)}% completed
 					</p>
 				</div>
 

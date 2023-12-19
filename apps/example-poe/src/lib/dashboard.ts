@@ -49,8 +49,7 @@ export const getClassStudentStats = async (classId: string) => {
 			id: true,
 			name: true,
 			email: true,
-			chapter: true,
-			section: true,
+			pageSlug: true,
 			created_at: true,
 			_count: {
 				select: {
