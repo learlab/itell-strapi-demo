@@ -40,6 +40,12 @@ export const getQAScore = async ({
 			"Content-Type": "application/json",
 		},
 	});
+	if (!data) {
+		throw new Error('Empty response');
+	}
+	if (!response.ok) {
+		throw new Error(`HTTP error! Status: ${response.status}`);
+	}
 	const data = await response.json();
 	return QAScoreSchema.safeParse(data);
 };
