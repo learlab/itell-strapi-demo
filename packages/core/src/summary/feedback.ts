@@ -131,15 +131,12 @@ export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 	let prompt: string;
 	if (isPassed) {
 		if (passedNum > 3) {
-			prompt =
-				"Excellent job on summarizing the text. Please move forward to the next page.";
+			prompt = "Excellent job on summarizing the text.";
 		} else {
-			prompt =
-				"Good job on summarizing the text. Please move forward to the next page.";
+			prompt = "Good job on summarizing the text.";
 		}
 	} else {
-		prompt =
-			"Before moving onto the next page, you will need to revise the summary you wrote using the feedback provided.";
+		prompt = "You summary could be proved. Please see the suggestions below.";
 	}
 
 	return {

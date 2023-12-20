@@ -2,19 +2,15 @@
 
 import { Warning } from "@itell/ui/server";
 import { SummaryFeedback } from "./summary-feedback";
-import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { ErrorFeedback, SummaryFormState } from "@itell/core/summary";
 import { SummaryInput } from "./summary-input";
 import { useFormState } from "react-dom";
 import { SummarySubmitButton } from "./summary-submit-button";
 import { SummaryProceedModal } from "./summary-proceed-modal";
-import pluralize from "pluralize";
 import { makeInputKey } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
-import { isPageAfter } from "@/lib/location";
 import { useQA } from "../context/qa-context";
 import { useEffect, useState } from "react";
-import { useCurrentChunk } from "@/lib/hooks/utils";
 
 type Props = {
 	value?: string;
@@ -60,9 +56,17 @@ export const SummaryForm = ({
 		}
 	}, [chunks, currentChunk]);
 
+	formState.canProceed;
+
 	return (
 		<>
-			{formState.feedback && <SummaryFeedback feedback={formState.feedback} />}
+			{formState.feedback && (
+				<SummaryFeedback
+					pageSlug={pageSlug}
+					feedback={formState.feedback}
+					canProceed={formState.canProceed}
+				/>
+			)}
 			<Confetti active={formState.feedback?.isPassed || false} />
 			<form
 				className="mt-2 space-y-4"

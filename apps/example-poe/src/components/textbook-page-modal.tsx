@@ -3,7 +3,6 @@ import { MainMdx } from "./mdx";
 import { Button } from "./client-components";
 import Link from "next/link";
 import { buttonVariants } from "@itell/ui/server";
-import { makePageHref } from "@/lib/utils";
 import { Page } from "contentlayer/generated";
 
 export const TextbookPageModal = ({
