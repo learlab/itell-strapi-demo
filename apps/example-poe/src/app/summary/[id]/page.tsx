@@ -179,6 +179,8 @@ export default async function ({ params }: PageProps) {
 					</p>
 					<div className="max-w-2xl mx-auto">
 						<SummaryForm
+							inputEnabled={true}
+							value={summary.text}
 							pageSlug={section.page_slug}
 							onSubmit={onSubmit}
 							textareaClassName="min-h-[400px]"

@@ -13,10 +13,13 @@ import { makeInputKey } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
 import { isPageAfter } from "@/lib/location";
 import { useQA } from "../context/qa-context";
+import { useEffect, useState } from "react";
 
 type Props = {
-	disabled?: boolean;
+	value?: string;
 	pageSlug: string;
+	pageVisible?: boolean;
+	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	textareaClassName?: string;
 	onSubmit: (
 		prevState: SummaryFormState,
@@ -32,19 +35,29 @@ const initialState: SummaryFormState = {
 };
 
 export const SummaryForm = ({
-	disabled,
+	value,
+	inputEnabled,
+	pageVisible,
 	pageSlug,
 	onSubmit,
 	textareaClassName,
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
+	const [inputDisabled, setInputDisabled] = useState(true);
 	const { chunks, currentChunk } = useQA();
 
-	// input is disabled when
-	// 1. the page is locked
-	// 2. or not all chunks have been revealed
-	const inputDisabled =
-		disabled || (chunks && currentChunk < chunks.length - 1);
+	useEffect(() => {
+		if (chunks) {
+			// input is disabled when
+			// 1. the page is not visible
+			// 2. or not all chunks have been revealed
+			if (!pageVisible) {
+				setInputDisabled(true);
+			} else {
+				setInputDisabled(currentChunk < chunks.length - 1);
+			}
+		}
+	}, [chunks, currentChunk]);
 
 	return (
 		<>
@@ -61,7 +74,8 @@ export const SummaryForm = ({
 				}}
 			>
 				<SummaryInput
-					disabled={inputDisabled}
+					value={value}
+					disabled={inputEnabled ? false : inputDisabled}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>

@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { cn, numOfWords } from "@itell/core/utils";
 import { isProduction } from "@/lib/constants";
 import { toast } from "sonner";
-import { useQA } from "../context/qa-context";
 
 type Props = {
 	pageSlug: string;
+	value?: string;
 	disabled?: boolean;
 	textAreaClassName?: string;
 };
@@ -18,11 +18,12 @@ export const SummaryInput = ({
 	pageSlug,
 	disabled,
 	textAreaClassName,
+	value = "",
 }: Props) => {
-	const [input, setInput] = useState("");
+	const [input, setInput] = useState(value);
 
 	useEffect(() => {
-		setInput(localStorage.getItem(makeInputKey(pageSlug)) || "");
+		setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
 	}, []);
 
 	return (

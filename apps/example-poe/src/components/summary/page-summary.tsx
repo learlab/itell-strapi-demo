@@ -102,10 +102,10 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 		};
 	};
 
-	const disabled = isPageUnlockedWithoutUser(pageSlug)
-		? true
-		: isPageAfter(pageSlug, user?.pageSlug || null);
-
+	// visible = unlocked or current page
+	const pageVisible =
+		isPageUnlockedWithoutUser(pageSlug) ||
+		!isPageAfter(pageSlug, user?.pageSlug || null);
 	return (
 		<section
 			className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
@@ -121,7 +121,7 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 							<SummaryCount pageSlug={pageSlug} />
 						</Suspense>
 						<SummaryForm
-							disabled={disabled}
+							pageVisible={pageVisible}
 							pageSlug={pageSlug}
 							onSubmit={onSubmit}
 						/>
