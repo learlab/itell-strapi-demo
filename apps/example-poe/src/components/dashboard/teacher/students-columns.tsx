@@ -13,7 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/client-components";
 import Link from "next/link";
-import { buttonVariants } from "@itell/ui/server";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type StudentData = Pick<User, "id" | "email" | "name" | "created_at"> & {

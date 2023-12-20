@@ -7,25 +7,19 @@ import { cn, numOfWords } from "@itell/core/utils";
 import { isProduction } from "@/lib/constants";
 import { toast } from "sonner";
 import { useQA } from "../context/qa-context";
-import { isPageAfter } from "@/lib/location";
 
 type Props = {
 	pageSlug: string;
-	isPageUnlocked: boolean;
+	disabled?: boolean;
 	textAreaClassName?: string;
 };
 
 export const SummaryInput = ({
 	pageSlug,
-	isPageUnlocked,
+	disabled,
 	textAreaClassName,
 }: Props) => {
 	const [input, setInput] = useState("");
-	const { chunks, currentChunk } = useQA();
-
-	const canEdit = isPageUnlocked
-		? true
-		: chunks && currentChunk >= chunks.length - 1;
 
 	useEffect(() => {
 		setInput(localStorage.getItem(makeInputKey(pageSlug)) || "");
@@ -40,7 +34,7 @@ export const SummaryInput = ({
 				value={input}
 				onValueChange={(val) => setInput(val)}
 				rows={10}
-				disabled={!canEdit}
+				disabled={disabled}
 				disabledText="Please finish the entire page first"
 				className={cn(
 					"resize-none rounded-md shadow-md p-4 w-full ",

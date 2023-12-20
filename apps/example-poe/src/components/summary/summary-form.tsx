@@ -12,10 +12,11 @@ import pluralize from "pluralize";
 import { makeInputKey } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
 import { isPageAfter } from "@/lib/location";
+import { useQA } from "../context/qa-context";
 
 type Props = {
+	disabled?: boolean;
 	pageSlug: string;
-	userPageSlug?: string | null;
 	textareaClassName?: string;
 	onSubmit: (
 		prevState: SummaryFormState,
@@ -31,20 +32,19 @@ const initialState: SummaryFormState = {
 };
 
 export const SummaryForm = ({
-	userPageSlug,
+	disabled,
 	pageSlug,
 	onSubmit,
 	textareaClassName,
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
+	const { chunks, currentChunk } = useQA();
 
-	//  userPageSlug will be undefined when no prop is passe
-	// this is used for the summary edit page, where the textarea is always enabled
-	// note this is different from null, where the textarea is disabled
-	const isPageUnlocked =
-		userPageSlug === undefined
-			? true
-			: isPageAfter(userPageSlug, pageSlug, true);
+	// input is disabled when
+	// 1. the page is locked
+	// 2. or not all chunks have been revealed
+	const inputDisabled =
+		disabled || (chunks && currentChunk < chunks.length - 1);
 
 	return (
 		<>
@@ -61,13 +61,13 @@ export const SummaryForm = ({
 				}}
 			>
 				<SummaryInput
-					isPageUnlocked={isPageUnlocked}
+					disabled={inputDisabled}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton disabled={!isPageUnlocked} />
+					<SummarySubmitButton disabled={inputDisabled} />
 				</div>
 			</form>
 			{formState.canProceed && (

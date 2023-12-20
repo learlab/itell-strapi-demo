@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { SummaryCount } from "./summary-count";
 import { SummaryDescription } from "./summary-description";
-import { SectionLocation } from "@/types/location";
 import { getCurrentUser } from "@/lib/auth";
 import {
 	ErrorType,
@@ -15,7 +14,11 @@ import {
 	getUserPageSummaryCount,
 	incrementUserPage,
 } from "@/lib/server-actions";
-import { isLastPage } from "@/lib/location";
+import {
+	isLastPage,
+	isPageAfter,
+	isPageUnlockedWithoutUser,
+} from "@/lib/location";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
@@ -99,6 +102,10 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 		};
 	};
 
+	const disabled = isPageUnlockedWithoutUser(pageSlug)
+		? true
+		: isPageAfter(pageSlug, user?.pageSlug || null);
+
 	return (
 		<section
 			className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
@@ -114,8 +121,8 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 							<SummaryCount pageSlug={pageSlug} />
 						</Suspense>
 						<SummaryForm
+							disabled={disabled}
 							pageSlug={pageSlug}
-							userPageSlug={user.pageSlug}
 							onSubmit={onSubmit}
 						/>
 					</>

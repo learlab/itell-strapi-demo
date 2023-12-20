@@ -41,17 +41,10 @@ export const isPageUnlockedWithoutUser = (slug: string) => {
 	);
 };
 
-export const isPageAfter = (
-	a: string | null,
-	b: string | null,
-	eq?: boolean,
-) => {
+export const isPageAfter = (a: string | null, b: string | null) => {
 	const aIndex = allSectionsSorted.findIndex((s) => s.page_slug === a);
 	const bIndex = allSectionsSorted.findIndex((s) => s.page_slug === b);
 
-	if (eq) {
-		return aIndex >= bIndex;
-	}
 	return aIndex > bIndex;
 };
 
