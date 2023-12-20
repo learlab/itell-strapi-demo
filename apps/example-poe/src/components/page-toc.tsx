@@ -13,33 +13,31 @@ type TocSidebarProps = {
 export const PageToc = ({ headings }: TocSidebarProps) => {
 	return (
 		<div>
-			<p className="font-medium text-sm flex items-center">
+			<p className="font-medium flex items-center">
 				<BookmarkIcon className="mr-2 w-4 h-4" />
 				<span>ON THIS PAGE</span>
 			</p>
-			<ul className="mt-2 space-y-1">
+
+			<ol className="list-disc mt-2 space-y-2 pl-4">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
-						<li
-							key={heading.slug}
-							className="font-light tracking-tighter line-clamp-2"
-						>
+						<li key={heading.slug}>
 							<a
 								data-level={heading.level}
 								href={`#${heading.slug}`}
 								className={cn("hover:underline inline-flex ", {
-									"text-base": heading.level === "one",
-									"text-sm": heading.level === "two",
-									"text-muted-foreground text-xs pl-2":
-										heading.level === "three",
+									"text-lg": heading.level === "two",
+									"text-sm": heading.level === "three",
+									"text-muted-foreground text-sm pl-2":
+										heading.level === "other",
 								})}
 							>
 								{heading.text}
 							</a>
 						</li>
 					))}
-			</ul>
+			</ol>
 		</div>
 	);
 };

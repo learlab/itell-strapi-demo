@@ -9,7 +9,6 @@ import {
 	getFeedback,
 	validateSummary,
 } from "@itell/core/summary";
-import cld3 from "@/lib/cld";
 import { getScore } from "@/lib/score";
 import {
 	createSummary,
@@ -38,16 +37,6 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 		const error = await validateSummary(input);
 		if (error) {
 			return { error, canProceed: false, response: null, feedback: null };
-		}
-
-		const { language } = cld3.findLanguage(input);
-		if (language !== "en") {
-			return {
-				error: ErrorType.LANGUAGE_NOT_EN,
-				canProceed: false,
-				response: null,
-				feedback: null,
-			};
 		}
 
 		const response = await getScore({ input, pageSlug });

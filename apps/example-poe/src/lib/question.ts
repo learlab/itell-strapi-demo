@@ -47,11 +47,7 @@ export const getPageQuestions = async (pageSlug: string) => {
 	});
 
 	const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
-	const response = await (
-		await fetch(endpoint, {
-			cache: "no-cache",
-		})
-	).json();
+	const response = await (await fetch(endpoint)).json();
 
 	const parsed = PageQuestionsSchema.safeParse(response);
 
@@ -81,7 +77,6 @@ export const getQAScore = async ({
 		},
 	});
 
-	console.log(response);
 	if (!response.ok) {
 		throw new Error(`HTTP error! Status: ${response.status}`);
 	}

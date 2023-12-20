@@ -64,20 +64,24 @@ export const SummaryForm = ({
 					isPassed={formState.feedback?.isPassed || false}
 					title={
 						formState.feedback?.isPassed
-							? "Good job summarizing the text"
-							: "You can now move on"
+							? "Good job summarizing the text 🎉"
+							: "You can now move on 👏"
 					}
 				>
-					<div>
+					<div className="space-y-2">
 						{formState.feedback?.isPassed ? (
 							<p>You can now move on to the next page</p>
 						) : (
 							<p>
 								You have written more than{" "}
 								{pluralize("summary", PAGE_SUMMARY_THRESHOLD, true)} for this
-								page, you can now move on to the next page
+								page.
 							</p>
 						)}
+						<p>
+							you can now move on to the next page by clicking the page link
+							above the summary box or the left sidebar.
+						</p>
 					</div>
 				</SummaryProceedModal>
 			)}

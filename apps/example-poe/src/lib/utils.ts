@@ -58,7 +58,16 @@ export const makePageHref = (slug: string) => {
 	return `/${slug}`;
 };
 
-export const getPageData = (slug: string | null) => {
+export type PageData = {
+	id: string;
+	index: number;
+	title: string;
+	page_slug: string;
+	chapter: number;
+	section: number;
+};
+
+export const getPageData = (slug: string | null): PageData => {
 	const index = allSectionsSorted.findIndex((s) => s.page_slug === slug);
 	const page = index === -1 ? allSectionsSorted[1] : allSectionsSorted[index];
 

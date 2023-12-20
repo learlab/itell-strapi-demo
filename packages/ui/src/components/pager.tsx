@@ -1,12 +1,13 @@
 import { cn } from "@itell/core/utils";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
-import { buttonVariants } from "./button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { Button } from "./button";
+import { ChevronLeftIcon, ChevronRightIcon, BanIcon } from "lucide-react";
 
 export type PageLinkData = {
 	text: string;
 	href: string;
+	disabled?: boolean;
 	icon?: React.ReactNode;
 };
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,17 +15,14 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 	next: PageLinkData | null;
 }
 
-export const PageLink = ({ text, href, icon }: PageLinkData) => {
+export const PageLink = ({ text, href, icon, disabled }: PageLinkData) => {
 	return (
-		<Link
-			href={href}
-			className={cn(buttonVariants({ variant: "outline" }), "h-fit max-w-sm")}
-		>
+		<Button variant="outline" disabled={disabled} className="max-w-sm h-fit">
 			{icon}
-			<p className="font-light leading-relaxed">
+			<Link href={href} className={"font-light leading-relaxed"}>
 				<Balancer>{text}</Balancer>
-			</p>
-		</Link>
+			</Link>
+		</Button>
 	);
 };
 
@@ -41,14 +39,32 @@ export const Pager = ({ prev, next, ...rest }: Props) => {
 				<PageLink
 					text={prev.text}
 					href={prev.href}
-					icon={prev.icon || <ChevronLeftIcon className="w-4 h-4 mr-2" />}
+					disabled={prev.disabled}
+					icon={
+						prev.icon ? (
+							prev.icon
+						) : prev.disabled ? (
+							<BanIcon className="w-h4 h-4 mr-2" />
+						) : (
+							<ChevronLeftIcon className="w-4 h-4 mr-2" />
+						)
+					}
 				/>
 			)}
 			{next && (
 				<PageLink
 					text={next.text}
 					href={next.href}
-					icon={next.icon || <ChevronRightIcon className="w-4 h-4 mr-2" />}
+					disabled={next.disabled}
+					icon={
+						next.icon ? (
+							next.icon
+						) : next.disabled ? (
+							<BanIcon className="w-h4 h-4 mr-2" />
+						) : (
+							<ChevronRightIcon className="w-4 h-4 mr-2" />
+						)
+					}
 				/>
 			)}
 		</div>

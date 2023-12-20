@@ -1,6 +1,6 @@
 import Balancer from "react-wrap-balancer";
 import { notFound } from "next/navigation";
-import { getPagerLinksForSection } from "@/lib/pager";
+import { getPagerLinks } from "@/lib/pager";
 import { NoteList } from "@/components/note/note-list";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { Fragment, Suspense } from "react";
@@ -34,16 +34,20 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const whitelist = JSON.parse(env.SUMMARY_WHITELIST || "[]") as string[];
 	const isUserWhitelisted = whitelist.includes(user?.email || "");
 
-	const sectionIndex = allSectionsSorted.findIndex((section) => {
+	const pageIndex = allSectionsSorted.findIndex((section) => {
 		return section.page_slug === params.slug;
 	});
 
-	if (sectionIndex === -1) {
+	if (pageIndex === -1) {
 		return notFound();
 	}
 
-	const page = allSectionsSorted[sectionIndex] as Section;
-	const pagerLinks = getPagerLinksForSection(sectionIndex);
+	const page = allSectionsSorted[pageIndex];
+
+	const pagerLinks = getPagerLinks({
+		pageIndex,
+		userPageSlug: user?.pageSlug || null,
+	});
 
 	// Subsections to be passed onto page
 	let enableQA = false;

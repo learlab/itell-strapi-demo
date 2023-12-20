@@ -89,7 +89,7 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	const user = await db.user.findUnique({ where: { id: userId } });
 	if (user) {
 		const slug = nextPage(pageSlug);
-		return await db.user.update({
+		await db.user.update({
 			where: {
 				id: userId,
 			},
@@ -97,6 +97,8 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 				pageSlug: slug,
 			},
 		});
+
+		revalidatePath(".");
 	}
 };
 

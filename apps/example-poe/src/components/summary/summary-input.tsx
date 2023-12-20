@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { cn, numOfWords } from "@itell/core/utils";
 import { isProduction } from "@/lib/constants";
 import { toast } from "sonner";
+import { useQA } from "../context/qa-context";
 
 type Props = {
 	pageSlug: string;
@@ -14,6 +15,9 @@ type Props = {
 
 export const SummaryInput = ({ pageSlug, textAreaClassName }: Props) => {
 	const [input, setInput] = useState("");
+	const { chunks, currentChunk } = useQA();
+
+	const canEdit = chunks && currentChunk >= chunks.length - 1;
 
 	useEffect(() => {
 		setInput(localStorage.getItem(makeInputKey(pageSlug)) || "");
@@ -24,10 +28,15 @@ export const SummaryInput = ({ pageSlug, textAreaClassName }: Props) => {
 			<p className="text-sm font-light">Number of words: {numOfWords(input)}</p>
 			<TextArea
 				name="input"
-				placeholder="Write your summary here."
+				placeholder={
+					canEdit
+						? "Write your summary here"
+						: "Please finish the entire page first"
+				}
 				value={input}
 				onValueChange={(val) => setInput(val)}
 				rows={10}
+				disabled={!canEdit}
 				className={cn(
 					"resize-none rounded-md shadow-md p-4 w-full",
 					textAreaClassName,
