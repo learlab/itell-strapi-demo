@@ -2,7 +2,6 @@
 
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 
-import { useNotesStore } from "@/lib/store";
 import { createNoteElements, deserializeRange } from "@itell/core/note";
 import { useEffect } from "react";
 type Props = {

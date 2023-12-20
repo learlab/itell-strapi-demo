@@ -6,12 +6,7 @@ import Image from "next/image";
 
 export const GoogleLoginButton = CreateLoginButton({
 	action: async () => {
-		try {
-			await signIn("google");
-			console.log("success")
-		} catch (error) {
-			console.log(error);
-		}
+		await signIn("google");
 	},
 	icon: (
 		<Image

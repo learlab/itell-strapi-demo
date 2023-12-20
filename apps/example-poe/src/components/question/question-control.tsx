@@ -127,7 +127,7 @@ export const QuestionControl = ({
 				el.style.filter = "blur(4px)";
 			}
 
-			if (chunks && index === chunks.length - 1) {
+			if (chunks && chunks.length > 0 && index === chunks.length - 1) {
 				insertScrollBackButton(el);
 			}
 		}
@@ -137,7 +137,6 @@ export const QuestionControl = ({
 		chunks: HTMLDivElement[],
 		currentChunk: number,
 	) => {
-		console.log("current chunk", currentChunk);
 		const currentChunkElement = chunks.at(currentChunk);
 		const prevChunkElement = chunks.at(currentChunk - 1);
 

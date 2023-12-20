@@ -132,23 +132,20 @@ export const NoteCard = ({
 		const input = data.get("input") as string;
 		if (shouldCreate) {
 			// create new note
-			await createNote(
-				{
-					id,
-					y,
-					noteText: input,
-					highlightedText,
-					pageSlug,
-					color: editState.color,
-					range: serializedRange,
-					user: {
-						connect: {
-							id: session?.user?.id as string,
-						},
+			await createNote({
+				id,
+				y,
+				noteText: input,
+				highlightedText,
+				pageSlug,
+				color: editState.color,
+				range: serializedRange,
+				user: {
+					connect: {
+						id: session?.user?.id as string,
 					},
 				},
-				false,
-			); // do not revalidate
+			});
 			setRecordId(id);
 			setShouldCreate(false);
 		} else {
