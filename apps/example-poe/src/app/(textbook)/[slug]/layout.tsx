@@ -61,8 +61,8 @@ export default async function ({
 	const section = allSectionsSorted[sectionIndex] as Section;
 	const currentLocation = section.location as SectionLocation;
 	const chapters = getModuleChapters(currentLocation.module);
-
 	const requireSummary = section.summary;
+	console.log("require summary", requireSummary);
 	return (
 		<>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">

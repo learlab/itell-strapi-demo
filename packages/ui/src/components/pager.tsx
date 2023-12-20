@@ -17,8 +17,11 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const PageLink = ({ text, href, icon, disabled }: PageLinkData) => {
 	return (
 		<Button variant="outline" disabled={disabled} className="max-w-sm h-fit">
-			{icon}
-			<Link href={href} className="font-light leading-relaxed text-pretty">
+			<Link
+				href={href}
+				className="font-light leading-relaxed text-pretty inline-flex items-center gap-2"
+			>
+				{icon}
 				{text}
 			</Link>
 		</Button>

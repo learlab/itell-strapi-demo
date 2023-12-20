@@ -28,8 +28,6 @@ export const useCurrentChunkLocal = (pageSlug: string) => {
 	return [val, setVal] as const;
 };
 
-// TODO useCurrentChunkLocal throws an error (location is undefined)
-// quick fix: use getCurrentChunkLocal instead, which is simply getting the value from localStorage
 export const getCurrentChunkLocal = (pageSlug: string) => {
 	const key = `current-chunk-${pageSlug}`;
 	const val = localStorage.getItem(key);
