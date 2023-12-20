@@ -19,13 +19,15 @@ import { isLastPage } from "@/lib/location";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
+import { getUser } from "@/lib/user";
 
 type Props = {
 	pageSlug: string;
 };
 
 export const PageSummary = async ({ pageSlug }: Props) => {
-	const user = await getCurrentUser();
+	const sessionUser = await getCurrentUser();
+	const user = await getUser(sessionUser?.id || "");
 	const onSubmit = async (
 		prevState: SummaryFormState,
 		formData: FormData,
@@ -111,7 +113,11 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 						<Suspense fallback={<SummaryCount.Skeleton />}>
 							<SummaryCount pageSlug={pageSlug} />
 						</Suspense>
-						<SummaryForm pageSlug={pageSlug} onSubmit={onSubmit} />
+						<SummaryForm
+							pageSlug={pageSlug}
+							userPageSlug={user.pageSlug}
+							onSubmit={onSubmit}
+						/>
 					</>
 				) : (
 					<Warning>

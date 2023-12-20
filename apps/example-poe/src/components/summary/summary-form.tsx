@@ -13,6 +13,7 @@ import { makeInputKey } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
 
 type Props = {
+	userPageSlug: string | null;
 	pageSlug: string;
 	textareaClassName?: string;
 	onSubmit: (
@@ -29,6 +30,7 @@ const initialState: SummaryFormState = {
 };
 
 export const SummaryForm = ({
+	userPageSlug,
 	pageSlug,
 	onSubmit,
 	textareaClassName,
@@ -50,6 +52,7 @@ export const SummaryForm = ({
 				}}
 			>
 				<SummaryInput
+					userPageSlug={userPageSlug}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
