@@ -15,6 +15,7 @@ export const useQA = () => React.useContext(QAContext);
 
 export const QAProvider = ({ children }: { children: React.ReactNode }) => {
 	const [currentChunk, setCurrentChunk] = useState(0);
+
 	const slug = usePageSlug();
 	const [chunks, setChunks] = useState<HTMLDivElement[]>();
 
