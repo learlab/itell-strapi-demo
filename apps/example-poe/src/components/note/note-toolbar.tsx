@@ -68,7 +68,6 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				const range = window.getSelection()?.getRangeAt(0);
 				if (range && clientRect && textContent) {
 					const id = crypto.randomUUID();
-					const serializedRange = serializeRange(range);
 					createNoteElements({
 						id,
 						range,
@@ -80,7 +79,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
 						color: noteColor,
-						serializedRange,
+						range: serializeRange(range),
 					});
 				} else {
 					toast.warning("Please select some text to take a note");

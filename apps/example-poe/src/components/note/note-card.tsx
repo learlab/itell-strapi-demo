@@ -58,7 +58,7 @@ export const NoteCard = ({
 	pageSlug,
 	updated_at,
 	created_at,
-	serializedRange,
+	range,
 	color,
 	newNote = false,
 }: Props) => {
@@ -139,7 +139,7 @@ export const NoteCard = ({
 				highlightedText,
 				pageSlug,
 				color: editState.color,
-				range: serializedRange,
+				range,
 				user: {
 					connect: {
 						id: session?.user?.id as string,
@@ -210,11 +210,13 @@ export const NoteCard = ({
 		// for new note, spans are created in note-toolbar.tsx
 		if (!newNote) {
 			try {
-				createNoteElements({
-					id,
-					range: deserializeRange(serializedRange),
-					color,
-				});
+				setTimeout(() => {
+					createNoteElements({
+						id,
+						range: deserializeRange(range),
+						color,
+					});
+				}, 300);
 			} catch (err) {
 				console.error("create note element", err);
 			}

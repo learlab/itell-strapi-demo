@@ -23,7 +23,7 @@ export const useNotesStore = create(
 	immer<State & Actions>((set) => ({
 		notes: [],
 		highlights: [],
-		createNote: ({ id, y, highlightedText, color, serializedRange }) =>
+		createNote: ({ id, y, highlightedText, color, range }) =>
 			set((state) => {
 				state.notes.push({
 					id,
@@ -31,7 +31,7 @@ export const useNotesStore = create(
 					highlightedText,
 					noteText: "",
 					color,
-					serializedRange,
+					range,
 				});
 			}),
 		updateNote: ({ id, noteText }) =>

@@ -27,7 +27,10 @@ const main = async () => {
 		});
 
 		if (!teacher) {
-			return console.log("can't find teacher with email", entry.teacher_email);
+			return console.error(
+				"can't find teacher with email",
+				entry.teacher_email,
+			);
 		}
 
 		await db.teacher.upsert({
