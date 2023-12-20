@@ -17,12 +17,12 @@ export const PageStatus = ({ status }: Props) => {
 				<Button className="text-left text-sm px-0 " variant="link">
 					{status === "locked" ? (
 						<span>
-							<LockIcon className="w-4 -h-4 mr-1 inline" />
+							<LockIcon className="size-4 mr-1 inline" />
 							locked
 						</span>
 					) : status === "unlocked" ? (
 						<span>
-							<UnlockIcon className="w-4 -h-4 mr-1 inline" />
+							<UnlockIcon className="size-4 mr-1 inline" />
 							unlocked
 						</span>
 					) : (

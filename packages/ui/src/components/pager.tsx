@@ -43,7 +43,7 @@ export const Pager = ({ prev, next, ...rest }: Props) => {
 						prev.icon ? (
 							prev.icon
 						) : prev.disabled ? (
-							<BanIcon className="w-h4 h-4 mr-2" />
+							<BanIcon className="size-4 mr-2" />
 						) : (
 							<ChevronLeftIcon className="size-4 mr-2" />
 						)
@@ -59,7 +59,7 @@ export const Pager = ({ prev, next, ...rest }: Props) => {
 						next.icon ? (
 							next.icon
 						) : next.disabled ? (
-							<BanIcon className="w-h4 h-4 mr-2" />
+							<BanIcon className="size-4 mr-2" />
 						) : (
 							<ChevronRightIcon className="size-4 mr-2" />
 						)
