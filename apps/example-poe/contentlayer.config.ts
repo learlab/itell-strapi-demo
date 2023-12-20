@@ -26,8 +26,8 @@ const Site = defineDocumentType(() => ({
 	},
 }));
 
-const Section = defineDocumentType(() => ({
-	name: "Section",
+const Page = defineDocumentType(() => ({
+	name: "Page",
 	filePathPattern: "section/**/*.{md,mdx}",
 	contentType: "mdx",
 	fields: {
@@ -72,7 +72,7 @@ const Section = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Section, Site],
+	documentTypes: [Page, Site],
 	mdx: {
 		remarkPlugins: [remarkGfm, remarkMath],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings, rehypeKatex],

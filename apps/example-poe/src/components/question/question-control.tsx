@@ -21,7 +21,7 @@ export const QuestionControl = ({
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const { currentChunk, chunks, setChunks } = useQA();
+	const { chunks, setChunks, currentChunk } = useQA();
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
@@ -137,6 +137,7 @@ export const QuestionControl = ({
 		chunks: HTMLDivElement[],
 		currentChunk: number,
 	) => {
+		console.log("current chunk", currentChunk);
 		const currentChunkElement = chunks.at(currentChunk);
 		const prevChunkElement = chunks.at(currentChunk - 1);
 

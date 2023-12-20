@@ -11,7 +11,7 @@ import { StudentData, columns } from "./students-columns";
 import { getClassStudentStats } from "@/lib/dashboard";
 import { TeacherBadges } from "./teacher-badges";
 import { Suspense } from "react";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import { Progress } from "@/components/client-components";
 import { getPageData } from "@/lib/utils";
 
@@ -39,7 +39,7 @@ export const TeacherClass = async ({ classId }: { classId: string }) => {
 			students.length,
 	);
 
-	const classProgress = (classIndex / allSectionsSorted.length) * 100;
+	const classProgress = (classIndex / allPagesSorted.length) * 100;
 
 	return (
 		<Card>

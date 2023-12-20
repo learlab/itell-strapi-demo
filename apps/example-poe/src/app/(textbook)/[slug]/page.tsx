@@ -3,7 +3,7 @@ import { getPagerLinks } from "@/lib/pager";
 import { NoteList } from "@/components/note/note-list";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { Fragment, Suspense } from "react";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import { Pager } from "@/components/client-components";
 import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/section/page-content";
@@ -32,7 +32,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const whitelist = JSON.parse(env.SUMMARY_WHITELIST || "[]") as string[];
 	const isUserWhitelisted = whitelist.includes(user?.email || "");
 
-	const pageIndex = allSectionsSorted.findIndex((section) => {
+	const pageIndex = allPagesSorted.findIndex((section) => {
 		return section.page_slug === params.slug;
 	});
 
@@ -40,7 +40,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 		return notFound();
 	}
 
-	const page = allSectionsSorted[pageIndex];
+	const page = allPagesSorted[pageIndex];
+	const pageSlug = page.page_slug;
 
 	const pagerLinks = getPagerLinks({
 		pageIndex,
@@ -51,7 +52,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	let enableQA = false;
 	const selectedQuestions: SelectedQuestions = new Map();
 
-	const questions = await getPageQuestions(page.page_slug);
+	const questions = await getPageQuestions(pageSlug);
 	if (questions) {
 		const chunks = questions.data[0].attributes.Content.filter((c) =>
 			Boolean(c.QuestionAnswerResponse),
@@ -85,8 +86,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const isUserLatestPage = user ? user.pageSlug === params.slug : false;
 	// can view page, with no blurred chunks
 	const isPageUnlocked = user
-		? isPageAfter(user.pageSlug, page.page_slug)
-		: isPageUnlockedWithoutUser(page.page_slug);
+		? isPageAfter(user.pageSlug, pageSlug)
+		: isPageUnlockedWithoutUser(pageSlug);
 	// can view page, but with blurred chunks
 	const isPageMasked = user ? !isPageUnlocked : true;
 
@@ -104,7 +105,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					)}
 				</PageTitle>
 				<PageContent code={page.body.code} />
-				<NoteToolbar pageSlug={page.page_slug} />
+				<NoteToolbar pageSlug={pageSlug} />
 				<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 			</section>
 
@@ -121,7 +122,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 									  : "locked"
 							}
 						/>
-						{user && <NoteCount user={user} pageSlug={page.page_slug} />}
+						{user && <NoteCount user={user} pageSlug={pageSlug} />}
 					</div>
 				</div>
 				<Suspense
@@ -132,20 +133,20 @@ export default async function ({ params }: { params: { slug: string } }) {
 						</p>
 					}
 				>
-					<NoteList pageSlug={page.page_slug} />
+					<NoteList pageSlug={pageSlug} />
 				</Suspense>
 			</aside>
 
 			<PageStatusModal
 				user={user}
-				pageSlug={page.page_slug}
+				pageSlug={pageSlug}
 				isWhitelisted={isUserWhitelisted}
 			/>
 			{enableQA && (
 				<QuestionControl
 					isPageMasked={isPageMasked}
 					selectedQuestions={selectedQuestions}
-					pageSlug={page.page_slug}
+					pageSlug={pageSlug}
 				/>
 			)}
 

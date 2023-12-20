@@ -5,7 +5,7 @@ import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { getCurrentUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD, ScoreType } from "@/lib/constants";
 import db from "@/lib/db";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import { cn, relativeDate } from "@itell/core/utils";
 import { Badge, buttonVariants } from "@itell/ui/server";
 import { Summary, User } from "@prisma/client";
@@ -55,12 +55,14 @@ export default async function ({ params }: PageProps) {
 		return notFound();
 	}
 
-	const section = allSectionsSorted.find(
+	const page = allPagesSorted.find(
 		(section) => section.page_slug === summary.pageSlug,
 	);
-	if (!section) {
+	if (!page) {
 		return notFound();
 	}
+
+	const pageSlug = page.page_slug;
 
 	const onSubmit = async (
 		prevState: SummaryFormState,
@@ -73,7 +75,7 @@ export default async function ({ params }: PageProps) {
 		if (error) {
 			return { error, canProceed: false, response: null, feedback: null };
 		}
-		const response = await getScore({ input, pageSlug: section.page_slug });
+		const response = await getScore({ input, pageSlug });
 
 		if (!response.success) {
 			return {
@@ -140,7 +142,7 @@ export default async function ({ params }: PageProps) {
 						{`Created at ${relativeDate(summary.created_at)}`}
 					</p>
 				</div>
-				<SummaryOperations summary={summary} pageUrl={section.url} />
+				<SummaryOperations summary={summary} pageUrl={page.url} />
 			</div>
 			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
 				<aside className="hidden w-[200px] flex-col md:flex space-y-4">
@@ -171,7 +173,7 @@ export default async function ({ params }: PageProps) {
 				</aside>
 				<div className="space-y-2">
 					<div className="text-center">
-						<TextbookPageModal page={section} />
+						<TextbookPageModal page={page} />
 					</div>
 
 					<p className="text-sm text-muted-foreground text-center">
@@ -181,7 +183,7 @@ export default async function ({ params }: PageProps) {
 						<SummaryForm
 							inputEnabled={true}
 							value={summary.text}
-							pageSlug={section.page_slug}
+							pageSlug={pageSlug}
 							onSubmit={onSubmit}
 							textareaClassName="min-h-[400px]"
 						/>

@@ -14,6 +14,7 @@ import Confetti from "react-dom-confetti";
 import { isPageAfter } from "@/lib/location";
 import { useQA } from "../context/qa-context";
 import { useEffect, useState } from "react";
+import { useCurrentChunk } from "@/lib/hooks/utils";
 
 type Props = {
 	value?: string;
@@ -95,14 +96,8 @@ export const SummaryForm = ({
 					}
 				>
 					<div className="space-y-2">
-						{formState.feedback?.isPassed ? (
-							<p>You can now move on to the next page</p>
-						) : (
-							<p>
-								You have written more than{" "}
-								{pluralize("summary", PAGE_SUMMARY_THRESHOLD, true)} for this
-								page.
-							</p>
+						{formState.feedback?.isPassed && (
+							<p>You have written multiple summaries for this page.</p>
 						)}
 						<p>
 							you can now move on to the next page by clicking the page link

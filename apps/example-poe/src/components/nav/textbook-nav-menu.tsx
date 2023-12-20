@@ -11,7 +11,7 @@ import {
 	NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import React, { useState } from "react";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import ThemeToggle from "../theme/theme-toggle";
 import { MenuIcon, XIcon } from "lucide-react";
 import { MobileNav } from "./mobile-nav";
@@ -19,7 +19,7 @@ import { CommandMenu } from "../command-menu";
 import { UserAccountNav } from "../user-account-nav";
 
 const moduleChapters = groupby(
-	allSectionsSorted.filter((section) => section.location.section === 0),
+	allPagesSorted.filter((section) => section.location.section === 0),
 	(section) => section.location.module,
 	(section) => ({
 		title: section.title,

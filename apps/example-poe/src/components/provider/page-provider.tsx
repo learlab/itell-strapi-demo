@@ -2,6 +2,11 @@
 
 import { QAProvider } from "../context/qa-context";
 
-export const PageProvider = ({ children }: { children: React.ReactNode }) => {
-	return <QAProvider>{children}</QAProvider>;
+type Props = {
+	pageSlug: string;
+	children: React.ReactNode;
+};
+
+export const PageProvider = ({ children, pageSlug }: Props) => {
+	return <QAProvider pageSlug={pageSlug}>{children}</QAProvider>;
 };

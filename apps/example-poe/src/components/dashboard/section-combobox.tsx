@@ -13,7 +13,7 @@ import {
 	CommandItem,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@itell/ui/client";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import { SectionLocation } from "@/types/location";
 
 export default function ({
@@ -24,7 +24,7 @@ export default function ({
 	const [value, setValue] = React.useState("");
 
 	const [open, setOpen] = React.useState(false);
-	const sections = allSectionsSorted
+	const pages = allPagesSorted
 		.filter((section) => section.location.section !== 0)
 		.map((section) => ({
 			module: section.location.module as number,
@@ -33,13 +33,13 @@ export default function ({
 			label: `${section.location.chapter}.${section.location.section} ${section.title}`,
 		}));
 	const [selectedSection, setSelectedSection] = React.useState<
-		(typeof sections)[0] | undefined
+		(typeof pages)[0] | undefined
 	>(undefined);
 
 	const findSectionByValue = (value: string) => {
 		// example value: 1.1 Introduction
 		const [chapter, section] = value.split(" ")[0].split(".");
-		return sections.find(
+		return pages.find(
 			(s) => String(s.chapter) === chapter && String(s.section) === section,
 		);
 	};
@@ -62,7 +62,7 @@ export default function ({
 					<CommandInput placeholder="Search a section" />
 					<CommandEmpty>No section found.</CommandEmpty>
 					<CommandGroup className="justify-start overflow-y-auto">
-						{sections.map((section) => (
+						{pages.map((section) => (
 							<CommandItem
 								key={section.label}
 								onSelect={(currentValue) => {

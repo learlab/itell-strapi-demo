@@ -1,8 +1,8 @@
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 
 export const CommandMenuConfig = {
-	textbookPages: allSectionsSorted.map((s) => {
+	textbookPages: allPagesSorted.map((s) => {
 		return {
 			title: `${s.location.chapter}.${s.location.section} ${s.title}`,
 			href: s.url,

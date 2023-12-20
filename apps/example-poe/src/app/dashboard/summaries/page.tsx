@@ -4,11 +4,11 @@ import { SummaryList } from "@/components/dashboard/summary-list";
 import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 import { getUser } from "@/lib/user";
 import { groupby } from "@itell/core/utils";
 import { User } from "@prisma/client";
-import { Section } from "contentlayer/generated";
+import { Page } from "contentlayer/generated";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -54,9 +54,9 @@ export default async function () {
 
 	// // convert date here since they will be passed from server components to client components
 	const summaries = userSummaries.map((s) => {
-		const page = allSectionsSorted.find(
+		const page = allPagesSorted.find(
 			(section) => section.page_slug === s.pageSlug,
-		) as Section;
+		) as Page;
 
 		return {
 			...s,
