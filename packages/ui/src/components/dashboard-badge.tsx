@@ -40,9 +40,9 @@ export const DashboardBadge = ({
 						{typeof description === "number" ? (
 							<span className="inline-flex items-center gap-2">
 								{description >= 0 ? (
-									<TrendingUp className="w-4 h-4 fill-green-500" />
+									<TrendingUp className="size-4 fill-green-500" />
 								) : (
-									<TrendingDown className="w-4 h-4 fill-destructive" />
+									<TrendingDown className="size-4 fill-destructive" />
 								)}
 								{`${description >= 0 ? "+ " : ""}${roundNumber(description)}`}
 								{comparing && " compared to class"}

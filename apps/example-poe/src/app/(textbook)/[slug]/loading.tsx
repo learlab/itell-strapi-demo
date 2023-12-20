@@ -31,7 +31,7 @@ export default async function () {
 			<aside className="toc-sidebar col-span-2 relative">
 				<p className="font-medium text-sm flex items-center">
 					<span>ON THIS PAGE</span>
-					<BookmarkIcon className="ml-2 w-4 h-4" />
+					<BookmarkIcon className="ml-2 size-4" />
 				</p>
 				<ul className="mt-2 space-y-2">
 					{arr.slice(0, 5).map((i) => (

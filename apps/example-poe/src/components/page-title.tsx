@@ -6,7 +6,7 @@ export const PageTitle = ({ children }: { children: React.ReactNode }) => {
 		<h1
 			className={cn(
 				buttonVariants({ variant: "ghost" }),
-				"text-3xl font-semibold mb-4 text-center flex items-center justify-center gap-2 h-fit",
+				"text-3xl font-semibold mb-4 text-center flex items-center justify-center gap-2 h-fit text-pretty",
 			)}
 			id="page-title"
 		>

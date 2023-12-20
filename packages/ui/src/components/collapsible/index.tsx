@@ -12,7 +12,7 @@ import { cn } from "@itell/core/utils";
 
 export function CollapsibleTrigger({
 	children,
-	icon = <ChevronsUpDown className="h-4 w-4" />,
+	icon = <ChevronsUpDown className="size-4" />,
 	className,
 }: { children: React.ReactNode; icon?: React.ReactNode; className?: string }) {
 	return (

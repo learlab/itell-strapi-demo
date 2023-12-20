@@ -43,7 +43,7 @@ export const Info = ({ title, children, className, ...rest }: Props) => (
 		)}
 		{...rest}
 	>
-		<InfoIcon className="h-4 w-4" />
+		<InfoIcon className="size-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		{/* align content with icon when there is no title */}
 		<AlertDescription className={cn({ "callout-no-title": !title })}>
@@ -54,7 +54,7 @@ export const Info = ({ title, children, className, ...rest }: Props) => (
 
 export const Errorbox = ({ title, children, ...rest }: Props) => (
 	<Alert variant="destructive" {...rest}>
-		<AlertTriangleIcon className="h-4 w-4" />
+		<AlertTriangleIcon className="size-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		<AlertDescription className={cn({ "callout-no-title": !title })}>
 			{children}
@@ -67,7 +67,7 @@ export const Warning = ({ title, children, className, ...rest }: Props) => (
 		className={cn("bg-warning dark:bg-inherit dark:border-warning", className)}
 		{...rest}
 	>
-		<AlertCircleIcon className="h-4 w-4" />
+		<AlertCircleIcon className="size-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		<AlertDescription className={cn({ "callout-no-title": !title })}>
 			{children}

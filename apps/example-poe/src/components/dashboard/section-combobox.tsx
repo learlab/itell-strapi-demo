@@ -54,7 +54,7 @@ export default function ({
 					className="w-[400px] justify-between text-left"
 				>
 					{value ? selectedSection?.label : "Select a section"}
-					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+					<ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[400px] p-0">
@@ -84,7 +84,7 @@ export default function ({
 							>
 								<Check
 									className={cn(
-										"mr-2 h-4 w-4",
+										"mr-2 size-4",
 										value === section.label ? "opacity-100" : "opacity-0",
 									)}
 								/>

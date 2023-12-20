@@ -20,7 +20,7 @@ export const TextbookPageModal = ({
 			<DialogContent className="sm:max-w-3xl h-[800px] top-4 bottom-4 overflow-y-auto  ">
 				<div className="flex justify-end mt-8">
 					<Link href={page.url} className={buttonVariants()}>
-						Go to section
+						Go to page
 					</Link>
 				</div>
 

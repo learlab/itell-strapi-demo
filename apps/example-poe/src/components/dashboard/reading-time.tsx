@@ -87,7 +87,7 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 								className="pl-0 text-lg flex items-center gap-1"
 							>
 								Total Reading Time
-								<InfoIcon className="w-4 h-4" />
+								<InfoIcon className="size-4" />
 							</Button>
 						</HoverCardTrigger>
 						<HoverCardContent>

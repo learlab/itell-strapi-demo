@@ -10,7 +10,7 @@ export const SummaryBackButton = () => {
 			href={"/dashboard/summaries"}
 			className={buttonVariants({ variant: "ghost" })}
 		>
-			<ChevronLeft className="w-4 h-4" />
+			<ChevronLeft className="size-4" />
 			Back
 		</Link>
 	);

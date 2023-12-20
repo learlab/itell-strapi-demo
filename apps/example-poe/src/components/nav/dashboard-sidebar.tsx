@@ -21,7 +21,7 @@ export function DashboardSidebar({ items }: DashboardNavProps) {
 	return (
 		<nav className="grid items-start gap-2">
 			{items.map((item) => {
-				const Icon = item.icon || <ArrowRightIcon className="mr-2 h-4 w-4" />;
+				const Icon = item.icon || <ArrowRightIcon className="mr-2 size-4" />;
 				return (
 					item.href && (
 						<Link key={item.href} href={item.disabled ? "/" : item.href}>

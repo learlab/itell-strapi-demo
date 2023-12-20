@@ -39,7 +39,7 @@ export const SummaryOperations = ({ summary, pageUrl }: Props) => {
 		<>
 			<DropdownMenu>
 				<DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
-					<CircleEllipsisIcon className="h-4 w-4" />
+					<CircleEllipsisIcon className="size-4" />
 					<span className="sr-only">Open</span>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
@@ -47,7 +47,7 @@ export const SummaryOperations = ({ summary, pageUrl }: Props) => {
 						className="flex cursor-pointer items-center"
 						onSelect={() => setShowDeleteAlert(true)}
 					>
-						<Link href={pageUrl}>Go to section</Link>
+						<Link href={pageUrl}>Go to page</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						className="flex cursor-pointer items-center text-destructive focus:text-destructive"
@@ -87,7 +87,7 @@ export const SummaryOperations = ({ summary, pageUrl }: Props) => {
 							{isDeleteLoading ? (
 								<Spinner className="mr-2" />
 							) : (
-								<TrashIcon className="mr-2 h-4 w-4" />
+								<TrashIcon className="mr-2 size-4" />
 							)}
 							<span>Delete</span>
 						</AlertDialogAction>

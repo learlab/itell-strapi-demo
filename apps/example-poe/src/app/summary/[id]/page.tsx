@@ -170,17 +170,10 @@ export default async function ({ params }: PageProps) {
 					</div>
 				</aside>
 				<div className="space-y-2">
-					<TextbookPageModal page={section} />
+					<div className="text-center">
+						<TextbookPageModal page={section} />
+					</div>
 
-					<Link
-						href={makePageHref(section.page_slug)}
-						className={cn(
-							buttonVariants({ variant: "link" }),
-							"block text-xl font-semibold text-center underline",
-						)}
-					>
-						{section.title}
-					</Link>
 					<p className="text-sm text-muted-foreground text-center">
 						{`Last updated at ${relativeDate(summary.updated_at)}`}
 					</p>

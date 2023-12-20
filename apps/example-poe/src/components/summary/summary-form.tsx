@@ -11,10 +11,11 @@ import { SummaryProceedModal } from "./summary-proceed-modal";
 import pluralize from "pluralize";
 import { makeInputKey } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
+import { isPageAfter } from "@/lib/location";
 
 type Props = {
-	userPageSlug: string | null;
 	pageSlug: string;
+	userPageSlug?: string | null;
 	textareaClassName?: string;
 	onSubmit: (
 		prevState: SummaryFormState,
@@ -37,6 +38,14 @@ export const SummaryForm = ({
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
 
+	//  userPageSlug will be undefined when no prop is passe
+	// this is used for the summary edit page, where the textarea is always enabled
+	// note this is different from null, where the textarea is disabled
+	const isPageUnlocked =
+		userPageSlug === undefined
+			? true
+			: isPageAfter(userPageSlug, pageSlug, true);
+
 	return (
 		<>
 			{formState.feedback && <SummaryFeedback feedback={formState.feedback} />}
@@ -52,13 +61,13 @@ export const SummaryForm = ({
 				}}
 			>
 				<SummaryInput
-					userPageSlug={userPageSlug}
+					isPageUnlocked={isPageUnlocked}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton />
+					<SummarySubmitButton disabled={!isPageUnlocked} />
 				</div>
 			</form>
 			{formState.canProceed && (

@@ -35,7 +35,7 @@ const SubmitButton = () => {
 	const { pending } = useFormStatus();
 	return (
 		<Button disabled={pending}>
-			{pending && <Spinner className="mr-2 w-4 h-4" />} Save
+			{pending && <Spinner className="mr-2 size-4" />} Save
 		</Button>
 	);
 };

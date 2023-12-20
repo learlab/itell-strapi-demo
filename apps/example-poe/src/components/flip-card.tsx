@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Balancer from "react-wrap-balancer";
 
 const cards = [
 	{
@@ -35,15 +34,15 @@ export default function FlipCard() {
 							alt=""
 						/>
 						<div className="inset-center inset-x-0  text-gray-100  text-center leading-4 group-hover:hidden">
-							<p className="text-xl font-normal leading-relaxed">
-								<Balancer>{card.front}</Balancer>
+							<p className="text-xl font-normal leading-relaxed text-pretty">
+								{card.front}
 							</p>
 						</div>
 					</div>
 					<div className="absolute inset-0 h-full w-full rounded-xl bg-black/70 px-12 text-center text-gray-100 [transform:rotateY(180deg)] [backface-visibility:hidden]">
 						<div className="flex min-h-full flex-col items-center justify-center text-white">
-							<p className="font-light leading-relaxed">
-								<Balancer>{card.back}</Balancer>
+							<p className="font-light leading-relaxed text-pretty">
+								{card.back}
 							</p>
 							{card.url && (
 								<Link

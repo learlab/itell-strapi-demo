@@ -54,9 +54,9 @@ export const FeedbackModal = ({ type, pageSlug }: Props) => {
 		<Dialog>
 			<DialogTrigger asChild>
 				{isPositive ? (
-					<ThumbsUp className="hover:stroke-emerald-400 hover:cursor-pointer w-4 h-4" />
+					<ThumbsUp className="hover:stroke-emerald-400 hover:cursor-pointer size-4" />
 				) : (
-					<ThumbsDown className="hover:stroke-rose-700 hover:cursor-pointer w-4 h-4" />
+					<ThumbsDown className="hover:stroke-rose-700 hover:cursor-pointer size-4" />
 				)}
 			</DialogTrigger>
 			<DialogContent>

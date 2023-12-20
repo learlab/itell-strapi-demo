@@ -32,22 +32,22 @@ export const TeacherBadges = async ({ studentIds }: Props) => {
 			<DashboardBadge
 				title="Average Submitted Summaries"
 				value={classStats.avgTotalCount}
-				icon={<PencilIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<PencilIcon className="size-4 text-muted-foreground" />}
 			/>
 			<DashboardBadge
 				title="Average Passed Summaries"
 				value={classStats.avgPassedCount}
-				icon={<FlagIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<FlagIcon className="size-4 text-muted-foreground" />}
 			/>
 			<DashboardBadge
 				title="Average Content Score"
 				value={classStats.avgContentScore}
-				icon={<FileTextIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<FileTextIcon className="size-4 text-muted-foreground" />}
 			/>
 			<DashboardBadge
 				title="Average Wording Score"
 				value={classStats.avgWordingScore}
-				icon={<WholeWordIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<WholeWordIcon className="size-4 text-muted-foreground" />}
 			/>
 		</div>
 	);

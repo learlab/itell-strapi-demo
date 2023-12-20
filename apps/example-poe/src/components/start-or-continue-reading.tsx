@@ -24,7 +24,7 @@ export const StartOrContinueReading = () => {
 			disabled={pending}
 			size="lg"
 		>
-			{pending && <Spinner className="w-4 h-4 mr-2" />} {text}
+			{pending && <Spinner className="size-4 mr-2" />} {text}
 		</Button>
 	);
 };

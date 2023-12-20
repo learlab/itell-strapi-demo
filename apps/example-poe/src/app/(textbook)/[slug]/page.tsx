@@ -1,4 +1,3 @@
-import Balancer from "react-wrap-balancer";
 import { notFound } from "next/navigation";
 import { getPagerLinks } from "@/lib/pager";
 import { NoteList } from "@/components/note/note-list";
@@ -7,8 +6,6 @@ import { Fragment, Suspense } from "react";
 import { allSectionsSorted } from "@/lib/sections";
 import { Pager } from "@/components/client-components";
 import { PageToc } from "@/components/page-toc";
-import { Section } from "contentlayer/generated";
-import { Spinner } from "@/components/spinner";
 import { PageContent } from "@/components/section/page-content";
 import { QuestionControl } from "@/components/question/question-control";
 import { getCurrentUser } from "@/lib/auth";
@@ -27,6 +24,7 @@ import { PageStatus } from "@/components/page-status/page-status";
 import { NoteCount } from "@/components/note/note-count";
 import { isProduction } from "@/lib/constants";
 import { EventTracker } from "@/components/telemetry/event-tracker";
+import { Spinner } from "@/components/spinner";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
@@ -96,7 +94,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 		<Fragment>
 			<section className="page-content relative col-span-8">
 				<PageTitle>
-					<Balancer>{page.title}</Balancer>
+					{page.title}
 					{isUserLatestPage ? (
 						<EyeIcon />
 					) : isPageUnlocked ? (

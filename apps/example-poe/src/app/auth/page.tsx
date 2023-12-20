@@ -37,7 +37,7 @@ export default async function ({ searchParams }: PageProps) {
 			<div className="col-span-2 lg:p-8 lg:col-span-1">
 				<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 					<div className="flex flex-col space-y-2 text-center">
-						<CommandIcon className="mx-auto h-6 w-6" />
+						<CommandIcon className="mx-auto size-6" />
 						<h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
 						<p className="font-light tracking-tight text-lg">{config.title}</p>
 						{/* <p className="text-sm text-muted-foreground">

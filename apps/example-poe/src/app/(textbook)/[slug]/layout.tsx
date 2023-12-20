@@ -79,13 +79,13 @@ export default async function ({
 						<div className="mt-12 flex flex-col gap-2">
 							{requireSummary && (
 								<AnchorLink
-									icon={<PencilIcon className="w-4 h-4" />}
+									icon={<PencilIcon className="size-4" />}
 									text="Write a summary"
 									href="#page-summary"
 								/>
 							)}
 							<AnchorLink
-								icon={<ArrowUpIcon className="w-4 h-4" />}
+								icon={<ArrowUpIcon className="size-4" />}
 								text="Back to top"
 								href="#page-title"
 							/>

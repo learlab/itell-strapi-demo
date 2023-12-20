@@ -61,7 +61,7 @@ export const Step = ({ step, currentStep }: Props) => {
 			>
 				<div className="flex items-center justify-center">
 					{status === "complete" ? (
-						<CheckIcon className="h-6 w-6 text-white" />
+						<CheckIcon className="size-6 text-white" />
 					) : (
 						<span>{step}</span>
 					)}

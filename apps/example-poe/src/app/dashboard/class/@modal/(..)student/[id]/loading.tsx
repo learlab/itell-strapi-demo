@@ -15,7 +15,7 @@ export default function () {
 			<InterceptedDialogContent className="md:max-w-2xl lg:max-w-4xl max-h-[600px] overflow-y-scroll">
 				<DialogHeader>
 					<DialogTitle>
-						<Spinner className="mr-2 w-4 h-4 inline" /> loading student details
+						<Spinner className="mr-2 size-4 inline" /> loading student details
 					</DialogTitle>
 				</DialogHeader>
 			</InterceptedDialogContent>

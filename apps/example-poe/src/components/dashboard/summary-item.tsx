@@ -29,9 +29,9 @@ export function SummaryItem({ summary, timeZone }: PostItemProps) {
 			<div className="flex items-center justify-between">
 				<p className="line-clamp-2">{summary.text}</p>
 				{summary.isPassed ? (
-					<CheckCircle className="w-4 h-4 stroke-info" />
+					<CheckCircle className="size-4 stroke-info" />
 				) : (
-					<XCircle className="w-4 h-4 stroke-warning" />
+					<XCircle className="size-4 stroke-warning" />
 				)}
 			</div>
 		</Link>

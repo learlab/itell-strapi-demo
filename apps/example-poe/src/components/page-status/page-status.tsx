@@ -27,7 +27,7 @@ export const PageStatus = ({ status }: Props) => {
 						</span>
 					) : (
 						<span>
-							<EyeIcon className="w-4 h-4 mr-1 inline" />
+							<EyeIcon className="size-4 mr-1 inline" />
 							in progress
 						</span>
 					)}
@@ -37,8 +37,8 @@ export const PageStatus = ({ status }: Props) => {
 				{status === "current"
 					? "Answer questions and summarize this chapter to move forward"
 					: status === "unlocked"
-					? "You have completed this chapter. You can now view all its content"
-					: "You haven't got access to this chapter yet"}
+					  ? "You have completed this chapter. You can now view all its content"
+					  : "You haven't got access to this chapter yet"}
 			</HoverCardContent>
 		</HoverCard>
 	);

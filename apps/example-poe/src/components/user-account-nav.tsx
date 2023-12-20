@@ -55,9 +55,9 @@ export const UserAccountNav = () => {
 						}}
 					/>
 					{menuOpen ? (
-						<ChevronUpIcon className="h-4 w-4" />
+						<ChevronUpIcon className="size-4" />
 					) : (
-						<ChevronDownIcon className="h-4 w-4" />
+						<ChevronDownIcon className="size-4" />
 					)}
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
@@ -75,23 +75,23 @@ export const UserAccountNav = () => {
 					<DropdownMenuSeparator />
 					<DropdownMenuItem asChild>
 						<Link href="/dashboard">
-							<LineChartIcon className="h-4 w-4 mr-2" /> Dashboard
+							<LineChartIcon className="size-4 mr-2" /> Dashboard
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
 						<Link href="/dashboard/summaries">
-							<FileBoxIcon className="h-4 w-4 mr-2" />
+							<FileBoxIcon className="size-4 mr-2" />
 							Summaries
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
 						<Link href="/dashboard/settings">
-							<SettingsIcon className="h-4 w-4 mr-2" /> Settings
+							<SettingsIcon className="size-4 mr-2" /> Settings
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
 						<Link href="/guide">
-							<CompassIcon className="h-4 w-4 mr-2" /> Guide
+							<CompassIcon className="size-4 mr-2" /> Guide
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
@@ -104,7 +104,7 @@ export const UserAccountNav = () => {
 							});
 						}}
 					>
-						<LogOutIcon className="h-4 w-4 mr-2" />
+						<LogOutIcon className="size-4 mr-2" />
 						Sign out
 					</DropdownMenuItem>
 				</DropdownMenuContent>

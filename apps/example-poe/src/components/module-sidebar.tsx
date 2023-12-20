@@ -1,7 +1,6 @@
 "use client";
 
 import { ActivePage, Chapter, SidebarSection } from "@/types/section";
-import Balancer from "react-wrap-balancer";
 import { cn } from "@itell/core/utils";
 import {
 	Collapsible,
@@ -42,8 +41,8 @@ export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
 							})}
 						>
 							<Link href={chapter.url} className="block mb-1 p-1">
-								<h5 className="font-semibold leading-relaxed">
-									<Balancer as="div">{chapter.title}</Balancer>
+								<h5 className="font-semibold leading-relaxed text-pretty">
+									{chapter.title}
 								</h5>
 							</Link>
 						</div>
@@ -70,8 +69,8 @@ export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
 										})
 									}
 								>
-									<p className="text-sm font-light text-left">
-										<Balancer>{`${index + 1}. ${section.title}`}</Balancer>
+									<p className="text-sm font-light text-left text-pretty">
+										{`${index + 1}. ${section.title}`}
 									</p>
 								</button>
 							</li>

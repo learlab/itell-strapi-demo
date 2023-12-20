@@ -53,7 +53,7 @@ export const UserStatisticsControl = () => {
 		<div className="flex items-center gap-4">
 			<p className="text-sm font-semibold">Change time span</p>
 			{isPending ? (
-				<Spinner className="w-4 h-4" />
+				<Spinner className="size-4" />
 			) : (
 				<Select defaultValue={defaultValue} onValueChange={handleSelect}>
 					<SelectTrigger className="w-[200px]">

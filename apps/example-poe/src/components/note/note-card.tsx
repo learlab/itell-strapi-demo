@@ -248,7 +248,7 @@ export const NoteCard = ({
 					/>
 					{editState.editing && (
 						<Button disabled={pending} variant="ghost" size="sm" type="submit">
-							{pending ? <Spinner /> : <ForwardIcon className="w-4 h-4" />}
+							{pending ? <Spinner /> : <ForwardIcon className="size-4" />}
 						</Button>
 					)}
 				</div>
@@ -331,7 +331,7 @@ export const NoteCard = ({
 										className="flex w-full text-left px-1 py-2 rounded-md hover:bg-accent"
 									>
 										<span className="mb-0">
-											{input || <EditIcon className="w-4 h-4" />}
+											{input || <EditIcon className="size-4" />}
 										</span>
 									</button>
 								)}

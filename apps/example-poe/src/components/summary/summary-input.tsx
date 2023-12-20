@@ -10,20 +10,19 @@ import { useQA } from "../context/qa-context";
 import { isPageAfter } from "@/lib/location";
 
 type Props = {
-	userPageSlug: string | null;
 	pageSlug: string;
+	isPageUnlocked: boolean;
 	textAreaClassName?: string;
 };
 
 export const SummaryInput = ({
-	userPageSlug,
 	pageSlug,
+	isPageUnlocked,
 	textAreaClassName,
 }: Props) => {
 	const [input, setInput] = useState("");
 	const { chunks, currentChunk } = useQA();
 
-	const isPageUnlocked = isPageAfter(userPageSlug, pageSlug);
 	const canEdit = isPageUnlocked
 		? true
 		: chunks && currentChunk >= chunks.length - 1;

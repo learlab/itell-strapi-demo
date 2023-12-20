@@ -15,7 +15,8 @@
             },
             "suspicious": {
                 "noArrayIndexKey": "warn",
-                "noExplicitAny": "warn"
+                "noExplicitAny": "warn",
+                "noEmptyInterface": "warn"
             },
             "style": {
                 "noUselessElse": "warn"

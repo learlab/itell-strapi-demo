@@ -61,7 +61,7 @@ export const Figure = ({
 						className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out "
 						onClick={onExpandClick}
 					>
-						<ExpandIcon className="w-4 h-4 fill-primary" />
+						<ExpandIcon className="size-4 fill-primary" />
 					</Button>
 				)}
 			</div>

@@ -6,7 +6,7 @@ import {
 	UsersIcon,
 } from "lucide-react";
 
-const iconClasses = "mr-2 h-4 w-4";
+const iconClasses = "mr-2 size-4";
 
 export const dashboardConfig: DashboardConfig = {
 	mainNav: [],

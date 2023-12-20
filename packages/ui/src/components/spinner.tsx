@@ -6,7 +6,5 @@ interface Props extends React.ComponentProps<typeof Loader2> {
 }
 
 export const Spinner = ({ className, ...rest }: Props) => {
-	return (
-		<Loader2 className={cn("h-4 w-4 animate-spin", className)} {...rest} />
-	);
+	return <Loader2 className={cn("size-4 animate-spin", className)} {...rest} />;
 };

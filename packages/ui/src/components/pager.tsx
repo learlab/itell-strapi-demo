@@ -1,6 +1,5 @@
 import { cn } from "@itell/core/utils";
 import Link from "next/link";
-import Balancer from "react-wrap-balancer";
 import { Button } from "./button";
 import { ChevronLeftIcon, ChevronRightIcon, BanIcon } from "lucide-react";
 
@@ -19,8 +18,8 @@ export const PageLink = ({ text, href, icon, disabled }: PageLinkData) => {
 	return (
 		<Button variant="outline" disabled={disabled} className="max-w-sm h-fit">
 			{icon}
-			<Link href={href} className={"font-light leading-relaxed"}>
-				<Balancer>{text}</Balancer>
+			<Link href={href} className="font-light leading-relaxed text-pretty">
+				{text}
 			</Link>
 		</Button>
 	);
@@ -46,7 +45,7 @@ export const Pager = ({ prev, next, ...rest }: Props) => {
 						) : prev.disabled ? (
 							<BanIcon className="w-h4 h-4 mr-2" />
 						) : (
-							<ChevronLeftIcon className="w-4 h-4 mr-2" />
+							<ChevronLeftIcon className="size-4 mr-2" />
 						)
 					}
 				/>
@@ -62,7 +61,7 @@ export const Pager = ({ prev, next, ...rest }: Props) => {
 						) : next.disabled ? (
 							<BanIcon className="w-h4 h-4 mr-2" />
 						) : (
-							<ChevronRightIcon className="w-4 h-4 mr-2" />
+							<ChevronRightIcon className="size-4 mr-2" />
 						)
 					}
 				/>

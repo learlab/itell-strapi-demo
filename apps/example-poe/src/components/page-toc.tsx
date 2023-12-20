@@ -14,7 +14,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 	return (
 		<div>
 			<p className="font-medium flex items-center">
-				<BookmarkIcon className="mr-2 w-4 h-4" />
+				<BookmarkIcon className="mr-2 size-4" />
 				<span>ON THIS PAGE</span>
 			</p>
 

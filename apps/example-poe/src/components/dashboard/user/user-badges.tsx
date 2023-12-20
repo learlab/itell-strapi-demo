@@ -18,22 +18,22 @@ export const UserBadges = async ({ uid }: { uid: string }) => {
 			<DashboardBadge
 				title="Total Summaries"
 				value={summaryStats.totalCount}
-				icon={<PencilIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<PencilIcon className="size-4 text-muted-foreground" />}
 			/>
 			<DashboardBadge
 				title="Passed Summaries"
 				value={summaryStats.passedCount}
-				icon={<FlagIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<FlagIcon className="size-4 text-muted-foreground" />}
 			/>
 			<DashboardBadge
 				title="Average Content Score"
 				value={summaryStats.avgContentScore}
-				icon={<FileTextIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<FileTextIcon className="size-4 text-muted-foreground" />}
 			/>
 			<DashboardBadge
 				title="Average Wording Score"
 				value={summaryStats.avgWordingScore}
-				icon={<WholeWordIcon className="w-4 h-4 text-muted-foreground" />}
+				icon={<WholeWordIcon className="size-4 text-muted-foreground" />}
 			/>
 		</>
 	);

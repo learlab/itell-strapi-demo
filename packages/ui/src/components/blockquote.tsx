@@ -21,7 +21,7 @@ export const Blockquote = ({
 		>
 			<svg
 				aria-hidden="true"
-				className="w-4 h-4 mx-auto mb-3"
+				className="size-4 mx-auto mb-3"
 				viewBox="0 0 24 27"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
