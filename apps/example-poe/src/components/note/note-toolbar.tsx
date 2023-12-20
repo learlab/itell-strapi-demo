@@ -60,7 +60,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 	const commands = [
 		{
 			label: "Note",
-			icon: <PencilIcon className="w-5 h-5" />,
+			icon: <PencilIcon className="size-5" />,
 			action: async ({ clientRect, textContent }: SelectionData) => {
 				if (!window.getSelection) {
 					return toast.error("Your browser does not support taking notes");
@@ -89,7 +89,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 		},
 		{
 			label: "Highlight",
-			icon: <HighlighterIcon className="w-5 h-5" />,
+			icon: <HighlighterIcon className="size-5" />,
 			action: async ({ clientRect, textContent }: SelectionData) => {
 				if (!window.getSelection) {
 					return toast.error("Your browser does not support taking notes");
@@ -138,7 +138,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 		},
 		{
 			label: "Copy",
-			icon: <CopyIcon className="w-5 h-5" />,
+			icon: <CopyIcon className="size-5" />,
 			action: async ({ textContent }: SelectionData) => {
 				if (textContent) {
 					await navigator.clipboard.writeText(textContent);
