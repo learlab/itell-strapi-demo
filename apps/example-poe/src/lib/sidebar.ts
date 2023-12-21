@@ -1,11 +1,10 @@
-import { Section, allSections } from "contentlayer/generated";
 import { Chapter, SidebarSection } from "@/types/section";
 import { sortSections } from "./utils";
 import { groupby } from "@itell/core/utils";
-import { allSectionsSorted } from "./sections";
+import { allPagesSorted } from "./pages";
 
 export const getModuleChapters = (module: number) => {
-	const sections: SidebarSection[] = allSectionsSorted
+	const sections: SidebarSection[] = allPagesSorted
 		.filter((section) => section.location.module === module)
 		.map((section) => ({
 			id: section._id,

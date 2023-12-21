@@ -3,7 +3,7 @@ export type CreateNoteInput = {
 	y: number;
 	highlightedText: string;
 	color: string;
-	serializedRange: string;
+	range: string;
 };
 
 export type UpdateNoteInput = {
@@ -17,7 +17,7 @@ export type NoteCard = {
 	noteText: string;
 	highlightedText: string;
 	color: string;
-	serializedRange: string;
+	range: string;
 	updated_at?: Date;
 	created_at?: Date;
 };

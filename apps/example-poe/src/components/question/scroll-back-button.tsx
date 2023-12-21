@@ -5,7 +5,7 @@ import { buttonVariants } from "@itell/ui/server";
 import { useQA } from "../context/qa-context";
 
 export const ScrollBackButton = () => {
-	const { currentChunk, chunks } = useQA();
+	const { chunks, currentChunk } = useQA();
 
 	const scrollToCurrentChunk = () => {
 		if (chunks) {

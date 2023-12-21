@@ -26,14 +26,14 @@ const Site = defineDocumentType(() => ({
 	},
 }));
 
-const Section = defineDocumentType(() => ({
-	name: "Section",
+const Page = defineDocumentType(() => ({
+	name: "Page",
 	filePathPattern: "section/**/*.{md,mdx}",
 	contentType: "mdx",
 	fields: {
 		title: {
 			type: "string",
-			description: "The title of the Section",
+			description: "The title of the page",
 			required: true,
 		},
 		page_slug: {
@@ -41,16 +41,16 @@ const Section = defineDocumentType(() => ({
 			description: "The slug of the page",
 			required: true,
 		},
-		qa: {
-			type: "boolean",
-			description: "If the page should include question & answers",
-			required: false,
-			default: false,
-		},
 		summary: {
 			type: "boolean",
 			default: true,
-			description: "Whether the section requires a summary",
+			description: "Whether the page requires a summary",
+			required: false,
+		},
+		quiz: {
+			type: "boolean",
+			default: false,
+			description: "Whether the page has a quiz",
 			required: false,
 		},
 	},
@@ -72,7 +72,7 @@ const Section = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Section, Site],
+	documentTypes: [Page, Site],
 	mdx: {
 		remarkPlugins: [remarkGfm, remarkMath],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings, rehypeKatex],

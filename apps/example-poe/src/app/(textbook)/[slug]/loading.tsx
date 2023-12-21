@@ -3,14 +3,14 @@ import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { getLocationFromPathname } from "@/lib/utils";
 import { PageTitle } from "@/components/page-title";
-import { allSectionsSorted } from "@/lib/sections";
+import { allPagesSorted } from "@/lib/pages";
 
 export default async function () {
 	const headersList = headers();
 	const location = getLocationFromPathname(
 		headersList.get("x-pathname") as string,
 	);
-	const title = allSectionsSorted.find(
+	const title = allPagesSorted.find(
 		(s) =>
 			s.location.chapter === location.chapter &&
 			s.location.section === location.section,

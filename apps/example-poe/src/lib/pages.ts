@@ -1,6 +1,6 @@
-import { allSections } from "contentlayer/generated";
+import { allPages } from "contentlayer/generated";
 
-export const allSectionsSorted = allSections.slice(0).sort((a, b) => {
+export const allPagesSorted = allPages.slice(0).sort((a, b) => {
 	if (a.location.chapter === b.location.chapter) {
 		if (!a.location.section) {
 			return -1;

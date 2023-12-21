@@ -7,7 +7,8 @@ import {
 	contentFeedback,
 	similarityFeedback,
 	wordingFeedback,
-} from "@/lib/summary";
+} from "@itell/core/summary";
+
 import {
 	Tooltip,
 	TooltipContent,

@@ -37,7 +37,6 @@ export const deleteNote = async (id: string) => {
 			id,
 		},
 	});
-	revalidatePath(".");
 };
 
 export const createConstructedResponse = async (
@@ -149,19 +148,10 @@ export const createFocusTime = async (input: Prisma.FocusTimeCreateInput) => {
 	});
 };
 
-export const createNote = async (
-	data: Prisma.NoteCreateInput,
-	revalidate = true,
-) => {
+export const createNote = async (data: Prisma.NoteCreateInput) => {
 	await db.note.create({ data });
-
-	if (revalidate) {
-		revalidatePath(".");
-	}
 };
 
 export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
 	await db.note.update({ where: { id }, data });
-
-	revalidatePath(".");
 };

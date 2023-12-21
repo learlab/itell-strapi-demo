@@ -31,6 +31,7 @@ type Props = {
 export const PageSummary = async ({ pageSlug }: Props) => {
 	const sessionUser = await getCurrentUser();
 	const user = await getUser(sessionUser?.id || "");
+
 	const onSubmit = async (
 		prevState: SummaryFormState,
 		formData: FormData,

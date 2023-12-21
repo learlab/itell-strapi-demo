@@ -21,7 +21,7 @@ export const QuestionControl = ({
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const { currentChunk, chunks, setChunks } = useQA();
+	const { chunks, setChunks, currentChunk } = useQA();
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
@@ -127,7 +127,7 @@ export const QuestionControl = ({
 				el.style.filter = "blur(4px)";
 			}
 
-			if (chunks && index === chunks.length - 1) {
+			if (chunks && chunks.length > 0 && index === chunks.length - 1) {
 				insertScrollBackButton(el);
 			}
 		}

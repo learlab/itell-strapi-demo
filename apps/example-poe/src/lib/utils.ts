@@ -1,6 +1,6 @@
 import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
-import { allSectionsSorted } from "./sections";
+import { allPagesSorted } from "./pages";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
 	const regex = /embed\/([\w-]+)\?/;
@@ -68,8 +68,8 @@ export type PageData = {
 };
 
 export const getPageData = (slug: string | null): PageData => {
-	const index = allSectionsSorted.findIndex((s) => s.page_slug === slug);
-	const page = index === -1 ? allSectionsSorted[1] : allSectionsSorted[index];
+	const index = allPagesSorted.findIndex((s) => s.page_slug === slug);
+	const page = index === -1 ? allPagesSorted[1] : allPagesSorted[index];
 
 	return {
 		id: page._id,
