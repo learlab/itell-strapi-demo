@@ -33,7 +33,7 @@ const Page = defineDocumentType(() => ({
 	fields: {
 		title: {
 			type: "string",
-			description: "The title of the Section",
+			description: "The title of the page",
 			required: true,
 		},
 		page_slug: {
@@ -41,16 +41,16 @@ const Page = defineDocumentType(() => ({
 			description: "The slug of the page",
 			required: true,
 		},
-		qa: {
-			type: "boolean",
-			description: "If the page should include question & answers",
-			required: false,
-			default: false,
-		},
 		summary: {
 			type: "boolean",
 			default: true,
-			description: "Whether the section requires a summary",
+			description: "Whether the page requires a summary",
+			required: false,
+		},
+		quiz: {
+			type: "boolean",
+			default: false,
+			description: "Whether the page has a quiz",
 			required: false,
 		},
 	},
