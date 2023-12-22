@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import db from "./db";
 import { revalidatePath } from "next/cache";
 import { nextPage } from "./location";
+import { getCurrentUser, getServerAuthSession } from "./auth";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -154,4 +155,24 @@ export const createNote = async (data: Prisma.NoteCreateInput) => {
 
 export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
 	await db.note.update({ where: { id }, data });
+};
+
+export const createQuizAnswer = async ({
+	pageSlug,
+	data,
+}: { pageSlug: string; data: Record<number, number[]> }) => {
+	const user = await getCurrentUser();
+	if (user) {
+		await db.quizAnswer.create({
+			data: {
+				pageSlug,
+				data,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };

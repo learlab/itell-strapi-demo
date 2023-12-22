@@ -2,10 +2,12 @@
 
 import { motion } from "framer-motion";
 import { ComponentProps } from "react";
+import { useQuiz } from "../context/quiz-context";
 
-type Props = { step: number; currentStep: number };
+type Props = { step: number };
 
-export const Step = ({ step, currentStep }: Props) => {
+export const QuizStep = ({ step }: Props) => {
+	const { currentStep } = useQuiz();
 	const status =
 		currentStep === step
 			? "active"
@@ -63,7 +65,7 @@ export const Step = ({ step, currentStep }: Props) => {
 					{status === "complete" ? (
 						<CheckIcon className="size-6 text-white" />
 					) : (
-						<span>{step}</span>
+						<span>{step + 1}</span>
 					)}
 				</div>
 			</motion.div>

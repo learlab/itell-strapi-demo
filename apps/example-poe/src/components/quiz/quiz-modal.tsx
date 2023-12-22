@@ -1,3 +1,4 @@
+import { QuizData, getQuiz } from "@/lib/quiz";
 import {
 	Button,
 	Dialog,
@@ -5,15 +6,19 @@ import {
 	DialogTrigger,
 } from "../client-components";
 import { Quiz } from "./quiz";
+import { isProduction } from "@/lib/constants";
+import { useState } from "react";
 
-export const QuizDialog = () => {
+type Props = {
+	data: QuizData;
+	pageSlug: string;
+};
+
+export const QuizDialog = ({ data, pageSlug }: Props) => {
 	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<Button>open quiz</Button>
-			</DialogTrigger>
-			<DialogContent>
-				<Quiz />
+		<Dialog defaultOpen={true}>
+			<DialogContent canClose={false}>
+				<Quiz pageSlug={pageSlug} />
 			</DialogContent>
 		</Dialog>
 	);

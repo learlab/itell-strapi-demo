@@ -13,12 +13,12 @@ import { TeacherBadges } from "./teacher-badges";
 import { Suspense } from "react";
 import { allPagesSorted } from "@/lib/pages";
 import { Progress } from "@/components/client-components";
-import { getPageData } from "@/lib/utils";
+import { PageData, getPageData } from "@/lib/utils";
 
 export const TeacherClass = async ({ classId }: { classId: string }) => {
 	const students = await getClassStudentStats(classId);
 	const studentData: StudentData[] = students.map((s) => {
-		const page = getPageData(s.pageSlug);
+		const page = getPageData(s.pageSlug) as PageData;
 		return {
 			id: s.id,
 			name: s.name,

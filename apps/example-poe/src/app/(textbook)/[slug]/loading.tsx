@@ -1,27 +1,27 @@
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
-import { getLocationFromPathname } from "@/lib/utils";
+import { getLocationFromPathname, getPageData } from "@/lib/utils";
 import { PageTitle } from "@/components/page-title";
 import { allPagesSorted } from "@/lib/pages";
 
 export default async function () {
 	const headersList = headers();
-	const location = getLocationFromPathname(
-		headersList.get("x-pathname") as string,
-	);
-	const title = allPagesSorted.find(
-		(s) =>
-			s.location.chapter === location.chapter &&
-			s.location.section === location.section,
-	)?.title as string;
+	const pathname = headersList.get("x-pathname") as string;
+	const split = pathname.split("/");
+	let pageSlug: string | null = null;
+	if (split.length === 2) {
+		pageSlug = split[1];
+	}
+
+	const pageData = getPageData(pageSlug);
 
 	const arr = Array.from(Array(10).keys());
 
 	return (
 		<>
 			<section className="relative col-span-12 md:col-span-10 lg:col-span-8 space-y-4">
-				<PageTitle>{title}</PageTitle>
+				<PageTitle>{pageData ? pageData.title : ""}</PageTitle>
 
 				{arr.map((i) => (
 					<Skeleton className="w-full h-28 mb-4" key={i} />

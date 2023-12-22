@@ -65,11 +65,20 @@ export type PageData = {
 	page_slug: string;
 	chapter: number;
 	section: number;
+	nextPageSlug: string | null;
 };
 
-export const getPageData = (slug: string | null): PageData => {
+export const getPageData = (slug: string | null): PageData | null => {
 	const index = allPagesSorted.findIndex((s) => s.page_slug === slug);
-	const page = index === -1 ? allPagesSorted[1] : allPagesSorted[index];
+	if (index === -1) {
+		return null;
+	}
+	const page = allPagesSorted[index];
+
+	const nextPageSlug =
+		index !== allPagesSorted.length - 1
+			? allPagesSorted[index + 1]?.page_slug
+			: null;
 
 	return {
 		id: page._id,
@@ -78,5 +87,6 @@ export const getPageData = (slug: string | null): PageData => {
 		page_slug: page.page_slug,
 		chapter: page.location.chapter as number,
 		section: page.location.section as number,
+		nextPageSlug,
 	};
 };
