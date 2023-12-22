@@ -44,14 +44,17 @@ export const QuizProvider = ({ children }: Props) => {
 					...draft,
 					[answerId]: choices.filter((choice) => choice !== choiceId),
 				};
+			} else {
+				data = {
+					...draft,
+					[answerId]: [...choices, choiceId],
+				};
 			}
-			data = {
-				...draft,
-				[answerId]: [...choices, choiceId],
-			};
 
 			if (!canNext && data[answerId].length > 0) {
 				setCanNext(true);
+			} else if (data[answerId].length === 0) {
+				setCanNext(false);
 			}
 
 			return data;
