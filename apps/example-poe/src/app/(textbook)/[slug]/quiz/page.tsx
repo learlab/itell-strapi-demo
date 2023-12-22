@@ -37,15 +37,15 @@ export default async function ({ params }: Props) {
 	}
 
 	const page = allPagesSorted[pageIndex];
-	const sessionUser = await getCurrentUser();
-	const user = sessionUser ? await getUser(sessionUser.id) : null;
-	const isPageVisible = user
-		? !isPageAfter(pageSlug, user.pageSlug)
-		: isPageUnlockedWithoutUser(pageSlug);
+	// const sessionUser = await getCurrentUser();
+	// const user = sessionUser ? await getUser(sessionUser.id) : null;
+	// const isPageVisible = user
+	// 	? !isPageAfter(pageSlug, user.pageSlug)
+	// 	: isPageUnlockedWithoutUser(pageSlug);
 
-	if (isProduction && !isPageVisible) {
-		return <PageStatusModal user={user} pageSlug={pageSlug} />;
-	}
+	// if (isProduction && !isPageVisible) {
+	// 	return <PageStatusModal user={user} pageSlug={pageSlug} />;
+	// }
 
 	const hasQuiz = page.quiz;
 	if (!hasQuiz) {
