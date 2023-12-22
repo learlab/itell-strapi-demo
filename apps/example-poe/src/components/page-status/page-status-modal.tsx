@@ -4,7 +4,7 @@ import { PageLockedModal } from "./page-locked-modal";
 import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
 
 type Props = {
-	isWhitelisted: boolean;
+	isWhitelisted?: boolean;
 	user: User | null;
 	pageSlug: string;
 };

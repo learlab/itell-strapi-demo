@@ -11,7 +11,8 @@ export const getPagerLinks = ({
 		next: null,
 	};
 
-	const userPage = getPageData(userPageSlug);
+	const userPage = getPageData(userPageSlug) as PageData;
+
 	if (pageIndex > 0) {
 		const page = allPagesSorted[pageIndex - 1];
 		const disabled = userPageSlug

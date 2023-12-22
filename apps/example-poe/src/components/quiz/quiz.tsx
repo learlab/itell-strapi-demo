@@ -1,47 +1,36 @@
-"use client";
+import { getQuiz } from "@/lib/quiz";
+import { QuizFooter } from "./quiz-footer";
+import { QuizHeader } from "./quiz-header";
+import { Skeleton } from "@itell/ui/server";
+import { QuizBody } from "./quiz-body";
 
-import { Fragment, useState } from "react";
-import { Step } from "../ui/step";
+type Props = {
+	pageSlug: string;
+};
 
-export const Quiz = () => {
-	const [step, setStep] = useState(1);
+export const Quiz = async ({ pageSlug }: Props) => {
+	const data = await getQuiz(pageSlug);
+	if (!data) {
+		return <p>no quiz found</p>;
+	}
 
 	return (
-		<Fragment>
-			<div className="flex justify-between rounded p-8">
-				<Step step={1} currentStep={step} />
-				<Step step={2} currentStep={step} />
-				<Step step={3} currentStep={step} />
-				<Step step={4} currentStep={step} />
-			</div>
+		<div className="flex flex-col gap-4 rounded p-4">
+			<QuizHeader stepNum={data.length} />
+			<QuizBody data={data} />
+			<QuizFooter pageSlug={pageSlug} stepNum={data.length} />
+		</div>
+	);
+};
 
-			{/* Dynamic content based on `step` */}
-			<div className="space-y-2 px-8">
-				<div className="h-4 w-5/6 rounded bg-neutral-100" />
-				<div className="h-4 rounded bg-neutral-100" />
-				<div className="h-4 w-4/6 rounded bg-neutral-100" />
-			</div>
-
-			<div className="px-8 pb-8">
-				<div className="mt-10 flex justify-between">
-					<button
-						onClick={() => setStep(step < 2 ? step : step - 1)}
-						className={`${
-							step === 1 ? "pointer-events-none opacity-50" : ""
-						} duration-350 rounded px-2 py-1 text-neutral-400 transition hover:text-neutral-700`}
-					>
-						Back
-					</button>
-					<button
-						onClick={() => setStep(step > 4 ? step : step + 1)}
-						className={`${
-							step > 4 ? "pointer-events-none opacity-50" : ""
-						} bg duration-350 flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white transition hover:bg-blue-600 active:bg-blue-700`}
-					>
-						Continue
-					</button>
-				</div>
-			</div>
-		</Fragment>
+Quiz.Skeleton = () => {
+	return (
+		<div className="flex flex-col gap-4 rounded p-4">
+			<Skeleton className="w-80 h-8" />
+			<Skeleton className="w-80 h-8" />
+			<Skeleton className="w-80 h-8" />
+			<Skeleton className="w-80 h-8" />
+			<Skeleton className="w-80 h-8" />
+		</div>
 	);
 };

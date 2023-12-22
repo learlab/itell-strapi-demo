@@ -1,10 +1,9 @@
 import { Info, Warning } from "@itell/ui/server";
-import { Accordion, AccordionItem, Button } from "../client-components";
+import { Accordion, AccordionItem } from "../client-components";
 import { SummaryFeedbackType } from "@itell/core/summary";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { getPageData, makePageHref } from "@/lib/utils";
-import { allPagesSorted } from "@/lib/pages";
 
 type Props = {
 	canProceed: boolean;
@@ -14,18 +13,17 @@ type Props = {
 
 export const SummaryFeedback = ({ feedback, canProceed, pageSlug }: Props) => {
 	const pageData = getPageData(pageSlug);
-	let nextSlug: string | undefined = undefined;
-	if (pageData.index < allPagesSorted.length - 1) {
-		nextSlug = allPagesSorted[pageData.index + 1].page_slug;
+	if (!pageData) {
+		return null;
 	}
 
 	const FeedbackBody = (
 		<div className="font-light leading-relaxed space-y-2">
 			<header className="flex justify-between">
 				<p>{feedback.prompt}</p>
-				{canProceed && nextSlug && (
+				{canProceed && pageData.nextPageSlug && (
 					<Link
-						href={makePageHref(nextSlug)}
+						href={makePageHref(pageData.nextPageSlug)}
 						className="inline-flex gap-1 items-center hover:underline"
 					>
 						<ChevronRightIcon className="size-4" /> Move on
