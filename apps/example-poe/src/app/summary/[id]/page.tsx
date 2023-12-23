@@ -6,8 +6,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD, ScoreType } from "@/lib/constants";
 import db from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
-import { cn, relativeDate } from "@itell/core/utils";
-import { Badge, buttonVariants } from "@itell/ui/server";
+import { relativeDate } from "@itell/core/utils";
+import { Badge } from "@itell/ui/server";
 import { Summary, User } from "@prisma/client";
 import { notFound, redirect } from "next/navigation";
 import {
@@ -23,9 +23,6 @@ import {
 	updateSummary,
 } from "@/lib/server-actions";
 import { revalidatePath } from "next/cache";
-import { SectionLocation } from "@/types/location";
-import Link from "next/link";
-import { makePageHref } from "@/lib/utils";
 import { SummaryForm } from "@/components/summary/summary-form";
 import { isLastPage } from "@/lib/location";
 

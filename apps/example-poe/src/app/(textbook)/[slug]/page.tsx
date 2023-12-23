@@ -17,7 +17,6 @@ import {
 } from "@/lib/question";
 import { PageTitle } from "@/components/page-title";
 import { getUser } from "@/lib/user";
-import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
 import { PageStatusModal } from "@/components/page-status/page-status-modal";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import { PageStatus } from "@/components/page-status/page-status";

@@ -1,5 +1,4 @@
 import TextbookNavbar from "@/components/nav/textbook-nav";
-import { PageProvider } from "@/components/provider/page-provider";
 import { Fragment } from "react";
 
 export default async function ({

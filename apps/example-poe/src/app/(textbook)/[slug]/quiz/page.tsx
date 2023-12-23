@@ -1,12 +1,7 @@
-import { getCurrentUser } from "@/lib/auth";
-import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
 import { allPagesSorted } from "@/lib/pages";
-import { getUser } from "@/lib/user";
 import { makePageHref } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PageStatusModal } from "@/components/page-status/page-status-modal";
-import { isProduction } from "@/lib/constants";
 import { QuizProvider } from "@/components/context/quiz-context";
 import { Quiz } from "@/components/quiz/quiz";
 import { Suspense } from "react";
