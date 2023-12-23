@@ -2,25 +2,29 @@ import { User } from "@prisma/client";
 import { PageUnauthorizedModal } from "./page-unauthorized-modal";
 import { PageLockedModal } from "./page-locked-modal";
 import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
+import { PageStatus } from "@/lib/page-status";
 
 type Props = {
-	isWhitelisted?: boolean;
 	user: User | null;
-	pageSlug: string;
+	pageStatus: PageStatus;
 };
 
-export const PageStatusModal = ({ pageSlug, user, isWhitelisted }: Props) => {
-	if (isPageUnlockedWithoutUser(pageSlug) || isWhitelisted) {
+export const PageStatusModal = ({ user, pageStatus }: Props) => {
+	const { isPageLatest, isPageUnlocked } = pageStatus;
+
+	if (isPageUnlocked) {
 		return null;
 	}
 
-	if (!user) {
-		return <PageUnauthorizedModal />;
-	}
+	// user with locked page
+	if (user) {
+		if (isPageLatest) {
+			return null;
+		}
 
-	if (isPageAfter(pageSlug, user.pageSlug)) {
 		return <PageLockedModal userPageSlug={user.pageSlug} />;
 	}
 
-	return null;
+	// no user, and page is locked
+	return <PageUnauthorizedModal />;
 };

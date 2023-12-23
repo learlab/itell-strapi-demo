@@ -31,7 +31,7 @@ export const PageLockedModal = ({ userPageSlug }: Props) => {
 		>
 			<DialogContent canClose={!isProduction}>
 				<DialogHeader>
-					<DialogTitle>You haven't unlocked this chapter yet</DialogTitle>
+					<DialogTitle>You haven't unlocked this page yet</DialogTitle>
 				</DialogHeader>
 				<div>
 					Submit a passing summary for

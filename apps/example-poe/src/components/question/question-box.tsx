@@ -37,7 +37,7 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	isPageMasked: boolean;
+	isPageUnlocked: boolean;
 };
 
 // state for answer correctness
@@ -77,12 +77,13 @@ export const QuestionBox = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	isPageMasked,
+	isPageUnlocked,
 }: Props) => {
 	const { data: session } = useSession();
 	const [isShaking, setIsShaking] = useState(false);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
-		useState(isPageMasked);
+	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
+		!isPageUnlocked,
+	);
 
 	// Function to trigger the shake animation
 	const shakeModal = () => {
@@ -259,7 +260,7 @@ export const QuestionBox = ({
 							<p className="text-xl2 text-emerald-600 text-center">
 								Your answer was Correct!
 							</p>
-							{isPageMasked && (
+							{!isPageUnlocked && (
 								<p className="text-sm">
 									Click on the button below to continue reading. Please use the
 									thumbs-up or thumbs-down icons on the top right side of this

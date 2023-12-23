@@ -9,14 +9,14 @@ import { ScrollBackButton } from "./scroll-back-button";
 import { SelectedQuestions } from "@/lib/question";
 
 type Props = {
-	isPageMasked: boolean;
+	isPageUnlocked: boolean;
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
 };
 
 export const QuestionControl = ({
 	selectedQuestions,
-	isPageMasked,
+	isPageUnlocked,
 	pageSlug,
 }: Props) => {
 	// Ref for current chunk
@@ -100,7 +100,7 @@ export const QuestionControl = ({
 						answer={q.answer}
 						chunkSlug={chunkSlug}
 						pageSlug={pageSlug}
-						isPageMasked={isPageMasked}
+						isPageUnlocked={isPageUnlocked}
 					/>,
 					questionContainer,
 				),
@@ -122,7 +122,7 @@ export const QuestionControl = ({
 			insertQuestion(el, chunkSlug);
 		}
 
-		if (isPageMasked) {
+		if (!isPageUnlocked) {
 			if (index !== 0 && isChunkUnvisited) {
 				el.style.filter = "blur(4px)";
 			}
@@ -170,7 +170,7 @@ export const QuestionControl = ({
 	}, [chunks]);
 
 	useEffect(() => {
-		if (chunks && isPageMasked) {
+		if (chunks && !isPageUnlocked) {
 			handleChunkProgress(chunks, currentChunk);
 		}
 	}, [chunks, currentChunk]);

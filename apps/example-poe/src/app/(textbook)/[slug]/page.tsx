@@ -25,6 +25,7 @@ import { NoteCount } from "@/components/note/note-count";
 import { isProduction } from "@/lib/constants";
 import { EventTracker } from "@/components/telemetry/event-tracker";
 import { Spinner } from "@/components/spinner";
+import { getPageStatus } from "@/lib/page-status";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
@@ -82,21 +83,15 @@ export default async function ({ params }: { params: { slug: string } }) {
 			}
 		}
 	}
-
-	const isUserLatestPage = user ? user.pageSlug === params.slug : false;
-	// can view page, with no blurred chunks
-	const isPageUnlocked = user
-		? isPageAfter(user.pageSlug, pageSlug)
-		: isPageUnlockedWithoutUser(pageSlug);
-	// can view page, but with blurred chunks
-	const isPageMasked = user ? !isPageUnlocked : true;
+	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
+	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
 		<Fragment>
 			<section className="page-content relative col-span-8">
 				<PageTitle>
 					{page.title}
-					{isUserLatestPage ? (
+					{isPageLatest ? (
 						<EyeIcon />
 					) : isPageUnlocked ? (
 						<UnlockIcon />
@@ -113,15 +108,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<div className="sticky top-20">
 					<PageToc headings={page.headings} />
 					<div className="mt-8 flex flex-col gap-1">
-						<PageStatus
-							status={
-								isUserLatestPage
-									? "current"
-									: isPageUnlocked
-									  ? "unlocked"
-									  : "locked"
-							}
-						/>
+						<PageStatus status={pageStatus} />
 						{user && <NoteCount user={user} pageSlug={pageSlug} />}
 					</div>
 				</div>
@@ -137,14 +124,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</Suspense>
 			</aside>
 
-			<PageStatusModal
-				user={user}
-				pageSlug={pageSlug}
-				isWhitelisted={isUserWhitelisted}
-			/>
+			<PageStatusModal user={user} pageStatus={pageStatus} />
 			{enableQA && (
 				<QuestionControl
-					isPageMasked={isPageMasked}
+					isPageUnlocked={isPageUnlocked}
 					selectedQuestions={selectedQuestions}
 					pageSlug={pageSlug}
 				/>
