@@ -7,6 +7,7 @@ import { AuthForm } from "@/components/auth/auth-form";
 import { Warning } from "@itell/ui/server";
 import { isProduction } from "@/lib/constants";
 import { getSiteConfig } from "@/lib/config";
+import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
 
 type PageProps = {
 	searchParams?: {
@@ -49,8 +50,8 @@ export default async function ({ searchParams }: PageProps) {
 					<AuthForm />
 				</div>
 			</div>
-			<div className="hidden h-full bg-gray-100 lg:col-span-1 lg:block">
-				<FlipCard />
+			<div className="hidden h-full bg-gray-100 lg:col-span-1 lg:flex lg:items-center">
+				<KnowledgeCarousel />
 			</div>
 		</div>
 	);
