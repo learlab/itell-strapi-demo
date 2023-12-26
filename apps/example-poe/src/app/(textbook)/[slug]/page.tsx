@@ -132,7 +132,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				/>
 			)}
 
-			{user && isProduction && <EventTracker user={user} />}
+			{user && isProduction && <EventTracker />}
 		</Fragment>
 	);
 }

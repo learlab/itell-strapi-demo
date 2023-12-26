@@ -107,13 +107,6 @@ export const QuestionBox = ({
 			};
 		}
 
-		if (!session) {
-			return {
-				...prevState,
-				error: "You must be logged in to submit an answer",
-			};
-		}
-
 		const response = await getQAScore({
 			input,
 			chunk_slug: chunkSlug,
@@ -136,11 +129,6 @@ export const QuestionBox = ({
 				response: input,
 				pageSlug,
 				score,
-				user: {
-					connect: {
-						id: session.user.id,
-					},
-				},
 			});
 		}
 

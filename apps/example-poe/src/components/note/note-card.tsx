@@ -17,7 +17,6 @@ import {
 	deserializeRange,
 	getElementsByNoteId,
 } from "@itell/core/note";
-import { useSession } from "next-auth/react";
 import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
 import { useFormStatus } from "react-dom";
 
@@ -62,7 +61,6 @@ export const NoteCard = ({
 	color,
 	newNote = false,
 }: Props) => {
-	const { data: session } = useSession();
 	const [input, setInput] = useState(noteText || "");
 
 	const elementsRef = useRef<HTMLElement[]>();
@@ -140,11 +138,6 @@ export const NoteCard = ({
 				pageSlug,
 				color: editState.color,
 				range,
-				user: {
-					connect: {
-						id: session?.user?.id as string,
-					},
-				},
 			});
 			setRecordId(id);
 			setShouldCreate(false);

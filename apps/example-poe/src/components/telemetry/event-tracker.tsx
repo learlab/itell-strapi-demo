@@ -8,10 +8,9 @@ import {
 import { createEvent, createFocusTime } from "@/lib/server-actions";
 import { EventTracker as Tracker } from "@itell/core/components";
 import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
-import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 
-export const EventTracker = ({ user }: { user: User }) => {
+export const EventTracker = () => {
 	const [chunks, setChunks] = useState<HTMLDivElement[]>([]);
 
 	useEffect(() => {
@@ -28,11 +27,6 @@ export const EventTracker = ({ user }: { user: User }) => {
 			eventType: "click",
 			page: location.href,
 			data,
-			user: {
-				connect: {
-					id: user.id,
-				},
-			},
 		});
 	};
 
@@ -41,11 +35,6 @@ export const EventTracker = ({ user }: { user: User }) => {
 			eventType: "scroll",
 			page: location.href,
 			data,
-			user: {
-				connect: {
-					id: user.id,
-				},
-			},
 		});
 	};
 
@@ -55,20 +44,10 @@ export const EventTracker = ({ user }: { user: User }) => {
 				eventType: "focus-time",
 				page: location.href,
 				data,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
 			});
 
 			createFocusTime({
 				totalViewTime: data.totalViewTime,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
 			});
 		}
 	};

@@ -15,9 +15,7 @@ export const deleteSummary = async (id: string) => {
 };
 
 export const createSummary = async (input: Prisma.SummaryCreateInput) => {
-	return await db.summary.create({
-		data: input,
-	});
+	return await db.summary.create({ data: input });
 };
 
 export const updateSummary = async (
@@ -41,19 +39,39 @@ export const deleteNote = async (id: string) => {
 };
 
 export const createConstructedResponse = async (
-	input: Prisma.ConstructedResponseCreateInput,
+	input: Omit<Prisma.ConstructedResponseCreateInput, "user">,
 ) => {
-	return await db.constructedResponse.create({
-		data: input,
-	});
+	const user = await getCurrentUser();
+	if (user) {
+		return await db.constructedResponse.create({
+			data: {
+				...input,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };
 
 export const createConstructedResponseFeedback = async (
-	input: Prisma.ConstructedResponseFeedbackCreateInput,
+	input: Omit<Prisma.ConstructedResponseFeedbackCreateInput, "user">,
 ) => {
-	return await db.constructedResponseFeedback.create({
-		data: input,
-	});
+	const user = await getCurrentUser();
+	if (user) {
+		return await db.constructedResponseFeedback.create({
+			data: {
+				...input,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };
 
 export const updateUser = async (
@@ -137,20 +155,58 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 	return user;
 };
 
-export const createEvent = async (input: Prisma.EventCreateInput) => {
-	return await db.event.create({
-		data: input,
-	});
+export const createEvent = async (
+	input: Omit<Prisma.EventCreateInput, "user">,
+) => {
+	const user = await getCurrentUser();
+	if (user) {
+		return await db.event.create({
+			data: {
+				...input,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };
 
-export const createFocusTime = async (input: Prisma.FocusTimeCreateInput) => {
-	return await db.focusTime.create({
-		data: input,
-	});
+export const createFocusTime = async (
+	input: Omit<Prisma.FocusTimeCreateInput, "user">,
+) => {
+	const user = await getCurrentUser();
+	if (user) {
+		return await db.focusTime.create({
+			data: {
+				...input,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };
 
-export const createNote = async (data: Prisma.NoteCreateInput) => {
-	await db.note.create({ data });
+export const createNote = async (
+	input: Omit<Prisma.NoteCreateInput, "user">,
+) => {
+	const user = await getCurrentUser();
+	if (user) {
+		await db.note.create({
+			data: {
+				...input,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };
 
 export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {

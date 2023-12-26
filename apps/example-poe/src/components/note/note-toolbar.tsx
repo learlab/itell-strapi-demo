@@ -120,11 +120,6 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						pageSlug,
 						color: defaultHighlightColor,
 						range: serializedRange,
-						user: {
-							connect: {
-								id: session?.user?.id as string,
-							},
-						},
 					});
 
 					createHighlightListeners(id, (event) => {

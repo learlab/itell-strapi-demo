@@ -1,7 +1,6 @@
 "use client";
 
 import { useQA } from "../context/qa-context";
-import { useSession } from "next-auth/react";
 import { createEvent } from "@/lib/server-actions";
 import { Button } from "../client-components";
 
@@ -22,25 +21,6 @@ export const NextChunkButton = ({
 	...rest
 }: Props) => {
 	const { chunks, currentChunk, setCurrentChunk } = useQA();
-	const { data: session } = useSession();
-
-	// submit event
-	const submitEvent = async () => {
-		if (session) {
-			await createEvent({
-				eventType: clickEventType,
-				page: location.href,
-				user: {
-					connect: {
-						id: session.user.id,
-					},
-				},
-				data: {
-					currentChunk: currentChunk,
-				},
-			});
-		}
-	};
 
 	const onSubmit = async () => {
 		if (chunks && currentChunk < chunks.length - 1) {
@@ -50,7 +30,13 @@ export const NextChunkButton = ({
 		if (onClick) {
 			onClick();
 		}
-		await submitEvent();
+		await createEvent({
+			eventType: clickEventType,
+			page: location.href,
+			data: {
+				currentChunk: currentChunk,
+			},
+		});
 	};
 
 	return (

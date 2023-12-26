@@ -21,7 +21,6 @@ type Props = {
 };
 
 export const FeedbackModal = ({ type, pageSlug }: Props) => {
-	const { data: session } = useSession();
 	const isPositive = type === "positive";
 	const allTags = isPositive
 		? ["informative", "supportive", "helpful"]
@@ -31,20 +30,12 @@ export const FeedbackModal = ({ type, pageSlug }: Props) => {
 	const [isPending, setIsPending] = useState(false);
 
 	const onSubmit = async () => {
-		if (!session?.user) {
-			return toast.warning("You must be logged in to submit feedback.");
-		}
 		setIsPending(true);
 		await createConstructedResponseFeedback({
 			feedback: input,
 			pageSlug,
 			isPositive,
 			tags,
-			user: {
-				connect: {
-					id: session.user.id,
-				},
-			},
 		});
 		setIsPending(false);
 		toast.success("Thanks for your feedback. We'll review it shortly.");
