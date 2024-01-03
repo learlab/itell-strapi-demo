@@ -12,8 +12,14 @@ export const getPageStatus = (
 	userPageSlug: string | null | undefined,
 ): PageStatus => {
 	if (!userPageSlug) {
-		const isPageUnlocked = isPageUnlockedWithoutUser(pageSlug);
-		return { isPageUnlocked, isPageLatest: false };
+		return {
+			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
+			isPageLatest: false,
+		};
+	}
+
+	if (isPageUnlockedWithoutUser(pageSlug)) {
+		return { isPageUnlocked: true, isPageLatest: pageSlug === userPageSlug };
 	}
 
 	const isPageLatest = pageSlug === userPageSlug;

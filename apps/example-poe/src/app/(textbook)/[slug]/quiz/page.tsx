@@ -48,7 +48,7 @@ export default async function ({ params }: Props) {
 
 	return (
 		<QuizProvider>
-			<div className="col-span-5 space-y-4">
+			<div className="col-span-9 lg:col-span-5 space-y-4">
 				<p className="font-light leading-snug">
 					You have completed the page{" "}
 					<span className="font-semibold">{page.title}</span>. Please take a

@@ -11,7 +11,18 @@ export const getPagerLinks = ({
 		next: null,
 	};
 
-	const userPage = getPageData(userPageSlug) as PageData;
+	const userPage = getPageData(userPageSlug);
+
+	if (!userPage) {
+		const page = allPagesSorted[1];
+
+		links.next = {
+			text: `${page.location.chapter}.${page.location.section} ${page.title}`,
+			href: page.url,
+			disabled: false,
+		};
+		return links;
+	}
 
 	if (pageIndex > 0) {
 		const page = allPagesSorted[pageIndex - 1];
