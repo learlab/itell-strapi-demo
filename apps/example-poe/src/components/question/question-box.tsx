@@ -46,6 +46,7 @@ enum AnswerStatus {
 	BOTH_CORRECT = 1,
 	SEMI_CORRECT = 2,
 	BOTH_INCORRECT = 3,
+	PASSED = 4, // fallback when api call fails
 }
 
 // state for border color
@@ -103,7 +104,7 @@ export const QuestionBox = ({
 		if (input.trim() === "") {
 			return {
 				...prevState,
-				error: "Please enter an non-empty answer",
+				error: "Answer cannot be empty",
 			};
 		}
 
@@ -118,6 +119,7 @@ export const QuestionBox = ({
 				console.error("API Response error", response);
 				return {
 					...prevState,
+					answerStatus: AnswerStatus.PASSED,
 					error: "Answer evaluation failed, please try again later",
 				};
 			}
