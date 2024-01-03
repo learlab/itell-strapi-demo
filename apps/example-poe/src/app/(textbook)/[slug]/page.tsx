@@ -25,6 +25,7 @@ import { isProduction } from "@/lib/constants";
 import { EventTracker } from "@/components/telemetry/event-tracker";
 import { Spinner } from "@/components/spinner";
 import { getPageStatus } from "@/lib/page-status";
+import { isPageQuizUnfinished } from "@/lib/server-actions";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
@@ -83,6 +84,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 		}
 	}
 	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
+	const enableQuiz = page.quiz && isPageQuizUnfinished(pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (

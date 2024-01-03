@@ -107,54 +107,60 @@ export const QuestionBox = ({
 			};
 		}
 
-		const response = await getQAScore({
-			input,
-			chunk_slug: chunkSlug,
-			page_slug: pageSlug,
-		});
-
-		if (!response.success) {
-			// API response is not in correct shape
-			console.error("API Response error", response);
-			return {
-				...prevState,
-				error: "Answer evaluation failed, please try again later",
-			};
-		}
-
-		const score = response.data.score as QuestionScore;
-		if (isProduction) {
-			// when there is no session, question won't be displayed
-			await createConstructedResponse({
-				response: input,
-				pageSlug,
-				score,
+		try {
+			const response = await getQAScore({
+				input,
+				chunk_slug: chunkSlug,
+				page_slug: pageSlug,
 			});
-		}
+			if (!response.success) {
+				// API response is not in correct shape
+				console.error("API Response error", response);
+				return {
+					...prevState,
+					error: "Answer evaluation failed, please try again later",
+				};
+			}
 
-		if (score === 2) {
+			const score = response.data.score as QuestionScore;
+			if (isProduction) {
+				// when there is no session, question won't be displayed
+				await createConstructedResponse({
+					response: input,
+					pageSlug,
+					score,
+				});
+			}
+
+			if (score === 2) {
+				return {
+					error: null,
+					answerStatus: AnswerStatus.BOTH_CORRECT,
+				};
+			}
+
+			if (score === 1) {
+				return {
+					error: null,
+					answerStatus: AnswerStatus.SEMI_CORRECT,
+				};
+			}
+
+			if (score === 0) {
+				return {
+					error: null,
+					answerStatus: AnswerStatus.BOTH_INCORRECT,
+				};
+			}
+
+			// for typing purposes, this should never run
+			return prevState;
+		} catch {
 			return {
-				error: null,
-				answerStatus: AnswerStatus.BOTH_CORRECT,
+				error: "Answer evaluation failed, please try again later",
+				answerStatus: prevState.answerStatus,
 			};
 		}
-
-		if (score === 1) {
-			return {
-				error: null,
-				answerStatus: AnswerStatus.SEMI_CORRECT,
-			};
-		}
-
-		if (score === 0) {
-			return {
-				error: null,
-				answerStatus: AnswerStatus.BOTH_INCORRECT,
-			};
-		}
-
-		// for typing purposes, this should never run
-		return prevState;
 	};
 
 	const initialFormState: FormState = {

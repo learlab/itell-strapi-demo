@@ -47,8 +47,13 @@ const AnchorLink = ({
 
 export default async function ({
 	children,
+	modal,
 	params,
-}: { children: React.ReactNode; params: { slug: string } }) {
+}: {
+	children: React.ReactNode;
+	modal: React.ReactNode;
+	params: { slug: string };
+}) {
 	const pageIndex = allPagesSorted.findIndex((section) => {
 		return section.page_slug === params.slug;
 	});
@@ -56,12 +61,14 @@ export default async function ({
 	if (pageIndex === -1) {
 		return notFound();
 	}
+
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.page_slug;
 	const requireSummary = page.summary;
 	const currentLocation = page.location as SectionLocation;
 
 	const chapters = getModuleChapters(currentLocation.module);
+
 	return (
 		<PageProvider pageSlug={pageSlug}>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
@@ -93,6 +100,7 @@ export default async function ({
 				</aside>
 
 				{children}
+				{modal}
 			</div>
 			{requireSummary && <PageSummary pageSlug={pageSlug} />}
 		</PageProvider>

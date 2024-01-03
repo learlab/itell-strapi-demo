@@ -5,6 +5,7 @@ import db from "./db";
 import { revalidatePath } from "next/cache";
 import { nextPage } from "./location";
 import { getCurrentUser, getServerAuthSession } from "./auth";
+import { cookies } from "next/headers";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -231,4 +232,34 @@ export const createQuizAnswer = async ({
 			},
 		});
 	}
+};
+
+const quizCookieKey = (pageSlug: string) => `quiz-${pageSlug}-finished`;
+
+export const maybeCreateQuizCookie = (pageSlug: string) => {
+	// return true if the cookie was created
+	const key = quizCookieKey(pageSlug);
+	const c = cookies();
+	if (!c.has(key)) {
+		c.set(key, "false");
+		return true;
+	}
+
+	return false;
+};
+
+export const finishPageQuiz = (pageSlug: string) => {
+	const key = quizCookieKey(pageSlug);
+	const c = cookies();
+	c.set(key, "true");
+};
+
+export const isPageQuizUnfinished = (pageSlug: string) => {
+	const key = quizCookieKey(pageSlug);
+	const c = cookies();
+	if (c.has(key)) {
+		return c.get(key)?.value === "false";
+	}
+
+	return false;
 };

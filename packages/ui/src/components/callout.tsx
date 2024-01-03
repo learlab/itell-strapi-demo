@@ -6,7 +6,7 @@ import { Card, CardContent } from "./card";
 
 export const Callout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<Card className="my-12 max-w-2xl mx-auto ">
+		<Card className="my-4 max-w-2xl mx-auto ">
 			<CardContent>
 				<div className="text-xl text-center font-serif tracking-tight">
 					{children}
@@ -38,7 +38,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const Info = ({ title, children, className, ...rest }: Props) => (
 	<Alert
 		className={cn(
-			"bg-info dark:bg-inherit dark:border-2 dark:border-info",
+			"bg-info dark:bg-inherit dark:border-2 dark:border-inf my-4",
 			className,
 		)}
 		{...rest}
@@ -64,7 +64,10 @@ export const Errorbox = ({ title, children, ...rest }: Props) => (
 
 export const Warning = ({ title, children, className, ...rest }: Props) => (
 	<Alert
-		className={cn("bg-warning dark:bg-inherit dark:border-warning", className)}
+		className={cn(
+			"bg-warning dark:bg-inherit dark:border-warning my-4",
+			className,
+		)}
 		{...rest}
 	>
 		<AlertCircleIcon className="size-4" />

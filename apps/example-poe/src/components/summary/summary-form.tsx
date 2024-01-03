@@ -2,15 +2,17 @@
 
 import { Warning } from "@itell/ui/server";
 import { SummaryFeedback } from "./summary-feedback";
-import { ErrorFeedback, SummaryFormState } from "@itell/core/summary";
+import { ErrorFeedback } from "@itell/core/summary";
 import { SummaryInput } from "./summary-input";
 import { useFormState } from "react-dom";
 import { SummarySubmitButton } from "./summary-submit-button";
 import { SummaryProceedModal } from "./summary-proceed-modal";
-import { makeInputKey } from "@/lib/utils";
+import { makeInputKey, makePageHref } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
 import { useQA } from "../context/qa-context";
 import { useEffect, useState } from "react";
+import { FormState } from "./page-summary";
+import { useRouter } from "next/navigation";
 
 type Props = {
 	value?: string;
@@ -18,17 +20,8 @@ type Props = {
 	pageVisible?: boolean;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	textareaClassName?: string;
-	onSubmit: (
-		prevState: SummaryFormState,
-		formData: FormData,
-	) => Promise<SummaryFormState>;
-};
-
-const initialState: SummaryFormState = {
-	response: null,
-	feedback: null,
-	canProceed: false,
-	error: null,
+	initialState: FormState;
+	onSubmit: (prevState: FormState, formData: FormData) => Promise<FormState>;
 };
 
 export const SummaryForm = ({
@@ -36,12 +29,14 @@ export const SummaryForm = ({
 	inputEnabled,
 	pageVisible,
 	pageSlug,
+	initialState,
 	onSubmit,
 	textareaClassName,
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const { chunks, currentChunk } = useQA();
+	const router = useRouter();
 
 	useEffect(() => {
 		if (chunks) {
@@ -53,13 +48,19 @@ export const SummaryForm = ({
 			} else {
 				setInputDisabled(currentChunk < chunks.length - 1);
 			}
+		} else {
+			setInputDisabled(false);
 		}
 	}, [chunks, currentChunk]);
 
-	formState.canProceed;
+	useEffect(() => {
+		if (formState.showQuiz) {
+			router.push(`${makePageHref(pageSlug)}/quiz`);
+		}
+	}, [formState]);
 
 	return (
-		<>
+		<section>
 			{formState.feedback && (
 				<SummaryFeedback
 					pageSlug={pageSlug}
@@ -89,7 +90,7 @@ export const SummaryForm = ({
 					<SummarySubmitButton disabled={inputDisabled} />
 				</div>
 			</form>
-			{formState.canProceed && (
+			{formState.canProceed && !formState.showQuiz && (
 				<SummaryProceedModal
 					pageSlug={pageSlug}
 					isPassed={formState.feedback?.isPassed || false}
@@ -110,6 +111,6 @@ export const SummaryForm = ({
 					</div>
 				</SummaryProceedModal>
 			)}
-		</>
+		</section>
 	);
 };

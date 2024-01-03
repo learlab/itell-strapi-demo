@@ -25,13 +25,12 @@ export const PageUnauthorizedModal = () => {
 		>
 			<DialogContent canClose={!isProduction}>
 				<DialogHeader>
-					<DialogTitle>Login in to view the textbook</DialogTitle>
+					<DialogTitle>Log in to view the textbook</DialogTitle>
 					<DialogDescription>
-						We collects anonymous data to improve learning experience. See{" "}
-						<span className="underline">here</span> for more details.
+						We collects anonymous data to improve learning experience
 					</DialogDescription>
 				</DialogHeader>
-				<div className="mt-6">
+				<div className="mt-6 flex justify-center">
 					<GoogleLoginButton />
 				</div>
 			</DialogContent>

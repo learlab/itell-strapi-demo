@@ -35,7 +35,9 @@ export const SummaryFeedback = ({ feedback, canProceed, pageSlug }: Props) => {
 					Try to include the following keywords:
 					<ul className="list-disc">
 						{feedback.suggestedKeyphrases.map((keyphrase) => (
-							<li className="text-accent-foreground">{keyphrase}</li>
+							<li className="text-accent-foreground" key={keyphrase}>
+								{keyphrase}
+							</li>
 						))}
 					</ul>
 				</div>

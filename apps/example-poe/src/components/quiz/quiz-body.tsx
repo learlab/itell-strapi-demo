@@ -20,7 +20,6 @@ const QuizItem = ({
 export const QuizBody = ({ data }: { data: QuizData }) => {
 	const { currentStep, toggleChoice } = useQuiz();
 	const quiz = data[currentStep];
-
 	return (
 		<div className="font-light space-y-4">
 			<p>{quiz.Question}</p>

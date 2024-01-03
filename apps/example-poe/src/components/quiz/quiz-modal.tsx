@@ -1,23 +1,18 @@
-import { QuizData, getQuiz } from "@/lib/quiz";
-import {
-	Button,
-	Dialog,
-	DialogContent,
-	DialogTrigger,
-} from "../client-components";
+import { Dialog, DialogContent, DialogHeader } from "../client-components";
 import { Quiz } from "./quiz";
 import { isProduction } from "@/lib/constants";
-import { useState } from "react";
 
 type Props = {
-	data: QuizData;
 	pageSlug: string;
 };
 
-export const QuizDialog = ({ data, pageSlug }: Props) => {
+export const QuizModal = ({ pageSlug }: Props) => {
 	return (
 		<Dialog defaultOpen={true}>
-			<DialogContent canClose={false}>
+			<DialogContent canClose={isProduction ? false : true}>
+				<DialogHeader>
+					Before moving on, please complete the following quiz.
+				</DialogHeader>
 				<Quiz pageSlug={pageSlug} />
 			</DialogContent>
 		</Dialog>

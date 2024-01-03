@@ -21,7 +21,6 @@ export const SummaryInput = ({
 	value = "",
 }: Props) => {
 	const [input, setInput] = useState(value);
-
 	useEffect(() => {
 		setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
 	}, []);

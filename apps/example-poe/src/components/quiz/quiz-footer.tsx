@@ -6,7 +6,7 @@ import { useQuiz } from "../context/quiz-context";
 import { Spinner } from "../spinner";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createQuizAnswer } from "@/lib/server-actions";
+import { createQuizAnswer, finishPageQuiz } from "@/lib/server-actions";
 import { getPageData, makePageHref } from "@/lib/utils";
 
 const BackButton = () => {
@@ -16,7 +16,6 @@ const BackButton = () => {
 	return (
 		<Button variant="secondary" onClick={prevStep} disabled={!canBack}>
 			Back
-			<span>{currentStep}</span>
 		</Button>
 	);
 };
@@ -62,6 +61,7 @@ export const QuizFooter = ({
 				<form
 					action={async () => {
 						try {
+							finishPageQuiz(pageSlug);
 							await createQuizAnswer({ pageSlug, data: answerData });
 							if (pageData.nextPageSlug) {
 								toast.success("Quiz completed. Redirecting ...");

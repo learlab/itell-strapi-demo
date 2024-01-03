@@ -5,7 +5,7 @@ interface AuthLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: "Register / login",
+	title: "Register / log in",
 	description: "Register or login to your account",
 };
 

@@ -13,6 +13,8 @@ import {
 	createSummary,
 	getUserPageSummaryCount,
 	incrementUserPage,
+	isPageQuizUnfinished,
+	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
 import {
 	isLastPage,
@@ -23,37 +25,49 @@ import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
 import { getUser } from "@/lib/user";
+import { allPagesSorted } from "@/lib/pages";
+import { Page } from "contentlayer/generated";
 
 type Props = {
 	pageSlug: string;
 };
 
+export type FormState = SummaryFormState & {
+	showQuiz: boolean;
+};
+
+const initialState: FormState = {
+	response: null,
+	feedback: null,
+	canProceed: false,
+	error: null,
+	showQuiz: false,
+};
+
 export const PageSummary = async ({ pageSlug }: Props) => {
 	const sessionUser = await getCurrentUser();
 	const user = await getUser(sessionUser?.id || "");
+	const page = allPagesSorted.find((p) => p.page_slug === pageSlug) as Page;
 
 	const onSubmit = async (
-		prevState: SummaryFormState,
+		prevState: FormState,
 		formData: FormData,
-	): Promise<SummaryFormState> => {
+	): Promise<FormState> => {
 		"use server";
 		const input = formData.get("input") as string;
 		const userId = user?.id as string; // this won't be null when called in summary-input
 
 		const error = await validateSummary(input);
 		if (error) {
-			return { error, canProceed: false, response: null, feedback: null };
+			return { ...prevState, error };
 		}
 
 		const response = await getScore({ input, pageSlug });
 
 		if (!response.success) {
 			return {
-				// response parsing error
+				...prevState,
 				error: ErrorType.INTERNAL,
-				canProceed: false,
-				response: null,
-				feedback: null,
 			};
 		}
 		const feedback = getFeedback(response.data);
@@ -73,6 +87,12 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 			},
 		});
 
+		if (page.quiz) {
+			maybeCreateQuizCookie(pageSlug);
+		}
+
+		const showQuiz = page.quiz ? isPageQuizUnfinished(pageSlug) : false;
+
 		if (feedback.isPassed) {
 			await incrementUserPage(userId, pageSlug);
 
@@ -81,17 +101,20 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 				response: response.data,
 				feedback,
 				error: null,
+				showQuiz,
 			};
 		}
 
 		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
 		if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
 			await incrementUserPage(userId, pageSlug);
+
 			return {
 				canProceed: !isLastPage(pageSlug),
 				response: response.data,
 				feedback,
 				error: null,
+				showQuiz,
 			};
 		}
 
@@ -100,6 +123,7 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 			response: null,
 			feedback,
 			error: null,
+			showQuiz: false,
 		};
 	};
 
@@ -125,6 +149,7 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 							pageVisible={pageVisible}
 							pageSlug={pageSlug}
 							onSubmit={onSubmit}
+							initialState={initialState}
 						/>
 					</>
 				) : (
