@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "@itell/core/hooks";
-import { usePathname } from "next/navigation";
 import { firstPageUrl } from "../constants";
 import { usePageSlug } from "./utils";
+import { makePageHref } from "../utils";
 
 const key = "last-visited-page";
 
@@ -15,7 +15,7 @@ export const useTrackLastVisitedPage = () => {
 
 	useEffect(() => {
 		if (slug) {
-			setLastPageUrl(`/${slug}`);
+			setLastPageUrl(makePageHref(slug));
 		}
 	}, [slug]);
 };

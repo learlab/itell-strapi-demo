@@ -6,7 +6,7 @@ import { Fragment, Suspense } from "react";
 import { allPagesSorted } from "@/lib/pages";
 import { Pager } from "@/components/client-components";
 import { PageToc } from "@/components/page-toc";
-import { PageContent } from "@/components/section/page-content";
+import { PageContent } from "@/components/page/page-content";
 import { QuestionControl } from "@/components/question/question-control";
 import { getCurrentUser } from "@/lib/auth";
 import { env } from "@/env.mjs";

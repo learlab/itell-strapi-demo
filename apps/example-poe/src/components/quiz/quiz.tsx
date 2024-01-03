@@ -3,6 +3,7 @@ import { QuizFooter } from "./quiz-footer";
 import { QuizHeader } from "./quiz-header";
 import { Skeleton } from "@itell/ui/server";
 import { QuizBody } from "./quiz-body";
+import { getPageData } from "@/lib/utils";
 
 type Props = {
 	pageSlug: string;
@@ -10,7 +11,8 @@ type Props = {
 
 export const Quiz = async ({ pageSlug }: Props) => {
 	const data = await getQuiz(pageSlug);
-	if (!data) {
+	const pageData = getPageData(pageSlug);
+	if (!data || !pageData) {
 		return <p>no quiz found</p>;
 	}
 
@@ -18,7 +20,7 @@ export const Quiz = async ({ pageSlug }: Props) => {
 		<div className="flex flex-col gap-4 rounded p-4">
 			<QuizHeader stepNum={data.length} />
 			<QuizBody data={data} />
-			<QuizFooter pageSlug={pageSlug} stepNum={data.length} />
+			<QuizFooter data={data} pageData={pageData} />
 		</div>
 	);
 };

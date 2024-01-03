@@ -1,5 +1,5 @@
 import { Blockquote, Card, CardContent } from "@itell/ui/server";
-import { ArrowRightIcon } from "lucide-react";
+import { ArrowRightIcon, LinkIcon } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
@@ -37,7 +37,8 @@ export const KnowledgeCard = ({ text, source, href }: Props) => {
 									className="italic inline-flex items-center hover:underline"
 									href={href}
 								>
-									<ArrowRightIcon className="size-4 mr-2" /> {source}
+									<LinkIcon className="size-4 mr-2" />
+									{source}
 								</Link>
 							</div>
 						</figcaption>

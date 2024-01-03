@@ -1,6 +1,6 @@
 "use client";
 
-import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-section";
+import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { useTransition } from "react";
 import { Button } from "./client-components";
 import { useRouter } from "next/navigation";

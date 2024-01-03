@@ -13,11 +13,13 @@ import { useQA } from "../context/qa-context";
 import { useEffect, useState } from "react";
 import { FormState } from "./page-summary";
 import { useRouter } from "next/navigation";
+import { PageStatus } from "@/lib/page-status";
+import { getChunks } from "@/lib/chunks";
 
 type Props = {
 	value?: string;
 	pageSlug: string;
-	pageVisible?: boolean;
+	pageStatus: PageStatus;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	textareaClassName?: string;
 	initialState: FormState;
@@ -27,31 +29,27 @@ type Props = {
 export const SummaryForm = ({
 	value,
 	inputEnabled,
-	pageVisible,
+	pageStatus,
 	pageSlug,
 	initialState,
 	onSubmit,
 	textareaClassName,
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
-	const [inputDisabled, setInputDisabled] = useState(true);
-	const { chunks, currentChunk } = useQA();
+	const [inputDisabled, setInputDisabled] = useState(
+		pageStatus.isPageUnlocked ? false : true,
+	);
+	const { currentChunk } = useQA();
 	const router = useRouter();
 
 	useEffect(() => {
+		const chunks = getChunks();
 		if (chunks) {
-			// input is disabled when
-			// 1. the page is not visible
-			// 2. or not all chunks have been revealed
-			if (!pageVisible) {
-				setInputDisabled(true);
-			} else {
-				setInputDisabled(currentChunk < chunks.length - 1);
-			}
+			setInputDisabled(currentChunk < chunks.length - 1);
 		} else {
 			setInputDisabled(false);
 		}
-	}, [chunks, currentChunk]);
+	}, [currentChunk]);
 
 	useEffect(() => {
 		if (formState.showQuiz) {

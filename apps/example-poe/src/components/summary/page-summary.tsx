@@ -27,6 +27,7 @@ import { SummaryForm } from "./summary-form";
 import { getUser } from "@/lib/user";
 import { allPagesSorted } from "@/lib/pages";
 import { Page } from "contentlayer/generated";
+import { getPageStatus } from "@/lib/page-status";
 
 type Props = {
 	pageSlug: string;
@@ -127,10 +128,7 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 		};
 	};
 
-	// visible = unlocked or current page
-	const pageVisible =
-		isPageUnlockedWithoutUser(pageSlug) ||
-		!isPageAfter(pageSlug, user?.pageSlug || null);
+	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	return (
 		<section
 			className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
@@ -146,10 +144,10 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 							<SummaryCount pageSlug={pageSlug} />
 						</Suspense>
 						<SummaryForm
-							pageVisible={pageVisible}
 							pageSlug={pageSlug}
 							onSubmit={onSubmit}
 							initialState={initialState}
+							pageStatus={pageStatus}
 						/>
 					</>
 				) : (

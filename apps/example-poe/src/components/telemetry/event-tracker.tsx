@@ -9,15 +9,13 @@ import { createEvent, createFocusTime } from "@/lib/server-actions";
 import { EventTracker as Tracker } from "@itell/core/components";
 import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import { getChunks } from "@/lib/chunks";
 
 export const EventTracker = () => {
 	const [chunks, setChunks] = useState<HTMLDivElement[]>([]);
 
 	useEffect(() => {
-		const chunks = Array.from(
-			document.querySelectorAll("#page-content .content-chunk"),
-		) as HTMLDivElement[];
-		setChunks(chunks);
+		setChunks(getChunks());
 	}, []);
 
 	if (typeof window === "undefined" || chunks.length === 0) return null;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-section";
+import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
 import Link from "next/link";

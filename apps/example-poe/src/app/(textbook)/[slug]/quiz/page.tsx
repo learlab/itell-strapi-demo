@@ -42,8 +42,7 @@ export default async function ({ params }: Props) {
 	// 	return <PageStatusModal user={user} pageSlug={pageSlug} />;
 	// }
 
-	const hasQuiz = page.quiz;
-	if (!hasQuiz) {
+	if (!page.quiz) {
 		return <NoQuiz pageSlug={pageSlug} />;
 	}
 
@@ -51,7 +50,10 @@ export default async function ({ params }: Props) {
 		<QuizProvider>
 			<div className="col-span-5 space-y-4">
 				<p className="font-light leading-snug">
-					Finish the following quiz before moving to the next page
+					You have completed the page{" "}
+					<span className="font-semibold">{page.title}</span>. Please take a
+					second to finish the following quiz and then you can move on to the
+					next page.
 				</p>
 				<Suspense fallback={<Quiz.Skeleton />}>
 					<Quiz pageSlug={pageSlug} />
