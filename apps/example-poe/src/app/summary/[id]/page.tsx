@@ -20,11 +20,14 @@ import { getScore } from "@/lib/score";
 import {
 	getUserPageSummaryCount,
 	incrementUserPage,
+	isPageQuizUnfinished,
 	updateSummary,
 } from "@/lib/server-actions";
 import { revalidatePath } from "next/cache";
 import { SummaryForm } from "@/components/summary/summary-form";
 import { isLastPage } from "@/lib/location";
+import { FormState } from "@/components/summary/page-summary";
+import { getPageStatus } from "@/lib/page-status";
 
 async function getSummaryForUser(summaryId: Summary["id"], userId: User["id"]) {
 	return await db.summary.findFirst({
@@ -40,6 +43,14 @@ interface PageProps {
 		id: string;
 	};
 }
+
+const initialState: FormState = {
+	response: null,
+	feedback: null,
+	canProceed: false,
+	error: null,
+	showQuiz: false,
+};
 
 export default async function ({ params }: PageProps) {
 	const user = await getCurrentUser();
@@ -60,27 +71,26 @@ export default async function ({ params }: PageProps) {
 	}
 
 	const pageSlug = page.page_slug;
+	const pageStatus = await getPageStatus(user.id, pageSlug);
 
 	const onSubmit = async (
-		prevState: SummaryFormState,
+		prevState: FormState,
 		formData: FormData,
-	): Promise<SummaryFormState> => {
+	): Promise<FormState> => {
 		"use server";
 		const input = formData.get("input") as string;
 
 		const error = await validateSummary(input);
 		if (error) {
-			return { error, canProceed: false, response: null, feedback: null };
+			return { ...prevState, error };
 		}
 		const response = await getScore({ input, pageSlug });
 
 		if (!response.success) {
 			return {
 				// response parsing error
+				...prevState,
 				error: ErrorType.INTERNAL,
-				canProceed: false,
-				response: null,
-				feedback: null,
 			};
 		}
 
@@ -97,6 +107,8 @@ export default async function ({ params }: PageProps) {
 
 		revalidatePath(`/summary/${params.id}`);
 
+		const showQuiz = page.quiz ? isPageQuizUnfinished(pageSlug) : false;
+
 		if (feedback.isPassed) {
 			await incrementUserPage(user.id, summary.pageSlug);
 
@@ -105,6 +117,7 @@ export default async function ({ params }: PageProps) {
 				response: response.data,
 				feedback,
 				error: null,
+				showQuiz,
 			};
 		}
 
@@ -119,6 +132,7 @@ export default async function ({ params }: PageProps) {
 				response: response.data,
 				feedback,
 				error: null,
+				showQuiz,
 			};
 		}
 
@@ -127,6 +141,7 @@ export default async function ({ params }: PageProps) {
 			response: null,
 			feedback,
 			error: null,
+			showQuiz: false,
 		};
 	};
 
@@ -180,8 +195,10 @@ export default async function ({ params }: PageProps) {
 						<SummaryForm
 							inputEnabled={true}
 							value={summary.text}
-							pageSlug={pageSlug}
 							onSubmit={onSubmit}
+							pageSlug={pageSlug}
+							pageStatus={pageStatus}
+							initialState={initialState}
 							textareaClassName="min-h-[400px]"
 						/>
 					</div>

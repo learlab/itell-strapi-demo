@@ -16,7 +16,9 @@ export const generateStaticParams = async () => {
 	});
 };
 
-export const generateMetadata = ({ params }: { params: { slug: string } }) => {
+export const generateMetadata = ({
+	params,
+}: { params: { slug: string }; modal: React.ReactNode }) => {
 	const page = allPagesSorted.find((page) => page.page_slug === params.slug);
 	if (page) {
 		return {

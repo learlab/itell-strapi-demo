@@ -1,9 +1,8 @@
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
-import { getLocationFromPathname, getPageData } from "@/lib/utils";
+import { getPageData } from "@/lib/utils";
 import { PageTitle } from "@/components/page-title";
-import { allPagesSorted } from "@/lib/pages";
 
 export default async function () {
 	const headersList = headers();
