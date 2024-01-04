@@ -43,11 +43,13 @@ export const SummaryForm = ({
 	const router = useRouter();
 
 	useEffect(() => {
-		const chunks = getChunks();
-		if (chunks) {
-			setInputDisabled(currentChunk < chunks.length - 1);
-		} else {
-			setInputDisabled(false);
+		if (!pageStatus.isPageUnlocked) {
+			const chunks = getChunks();
+			if (chunks) {
+				setInputDisabled(currentChunk < chunks.length - 1);
+			} else {
+				setInputDisabled(false);
+			}
 		}
 	}, [currentChunk]);
 
