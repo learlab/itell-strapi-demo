@@ -136,7 +136,7 @@ export const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 			prompt = "Good job on summarizing the text.";
 		}
 	} else {
-		prompt = "You summary could be proved. Please see the suggestions below.";
+		prompt = "You summary could be improved. Please see the suggestions below.";
 	}
 
 	return {
