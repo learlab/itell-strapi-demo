@@ -1,7 +1,17 @@
-const { withContentlayer } = require("next-contentlayer");
+const { withContentlayer }  = require("next-contentlayer")
 
-module.exports = withContentlayer({
+
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
 	output: "standalone",
+	images: {
+		remotePatterns:  [{
+			protocol: "https",
+			hostname: "nbjrajrmujlgxmcvqsge.supabase.co"
+		}],
+	},
 	redirects: async () => {
 		return [
 			{
@@ -42,7 +52,7 @@ module.exports = withContentlayer({
 			},
 		];
 	},
-});
+}
 
 const securityHeaders = [
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -76,3 +86,7 @@ const securityHeaders = [
 		value: "camera=(), microphone=(), geolocation=()",
 	},
 ];
+
+
+module.exports =  withContentlayer(nextConfig);
+

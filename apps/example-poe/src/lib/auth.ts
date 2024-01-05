@@ -33,6 +33,20 @@ export const authOptions: NextAuthOptions = {
 		session({ session, user, token }) {
 			if (session.user) {
 				session.user.id = user.id;
+				if (session.user.email) {
+					const emailsWithFeedback =
+						(env.WITH_FEEDBACK_EMAILS as string[]) || [];
+					const emailsWithoutFeedback =
+						(env.NO_FEEDBACK_EMAILS as string[]) || [];
+
+					if (emailsWithFeedback.includes(session.user.email)) {
+						session.user.feedback = true;
+					} else if (emailsWithoutFeedback.includes(session.user.email)) {
+						session.user.feedback = false;
+					} else {
+						session.user.feedback = true;
+					}
+				}
 			}
 			return session;
 		},
@@ -42,8 +56,7 @@ export const authOptions: NextAuthOptions = {
 				: "?auth-redirect=true";
 			// Allows relative callback URLs
 			if (url.startsWith("/")) return `${baseUrl}${url}${suffix}`;
-			// Allows callback URLs on the same origin
-			else if (new URL(url).origin === baseUrl) return `${url}${suffix}`;
+			if (new URL(url).origin === baseUrl) return `${url}${suffix}`;
 			return `${baseUrl}${suffix}`;
 		},
 	},

@@ -6,6 +6,7 @@ import {
 	ErrorType,
 	SummaryFormState,
 	getFeedback,
+	simpleFeedback,
 	validateSummary,
 } from "@itell/core/summary";
 import { getScore } from "@/lib/score";
@@ -55,8 +56,15 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 		formData: FormData,
 	): Promise<FormState> => {
 		"use server";
+		if (!sessionUser) {
+			return {
+				...prevState,
+				error: ErrorType.INTERNAL,
+			};
+		}
+
 		const input = formData.get("input") as string;
-		const userId = user?.id as string; // this won't be null when called in summary-input
+		const userId = sessionUser.id as string; // this won't be null when called in summary-input
 
 		const error = await validateSummary(input);
 		if (error) {
@@ -71,7 +79,9 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 				error: ErrorType.INTERNAL,
 			};
 		}
-		const feedback = getFeedback(response.data);
+		const feedback = sessionUser.feedback
+			? getFeedback(response.data)
+			: simpleFeedback();
 
 		await createSummary({
 			text: input,

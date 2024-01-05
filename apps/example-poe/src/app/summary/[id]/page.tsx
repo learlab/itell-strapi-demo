@@ -14,6 +14,7 @@ import {
 	ErrorType,
 	SummaryFormState,
 	getFeedback,
+	simpleFeedback,
 	validateSummary,
 } from "@itell/core/summary";
 import { getScore } from "@/lib/score";
@@ -94,7 +95,9 @@ export default async function ({ params }: PageProps) {
 			};
 		}
 
-		const feedback = getFeedback(response.data);
+		const feedback = user.feedback
+			? getFeedback(response.data)
+			: simpleFeedback();
 
 		await updateSummary(params.id, {
 			text: input,

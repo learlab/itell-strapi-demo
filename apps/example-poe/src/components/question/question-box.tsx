@@ -204,6 +204,69 @@ export const QuestionBox = ({
 		);
 	}
 
+	if (!session.user.feedback) {
+		return (
+			<Card
+				className={cn(
+					"flex justify-center items-center flex-col py-4 px-6 space-y-2",
+				)}
+			>
+				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
+					{answerStatus !== AnswerStatus.UNANSWERED ? (
+						<div className="flex items-center flex-col">
+							<p className="text-xl2 text-emerald-600 text-center">
+								Your answer was accepted
+							</p>
+							{!isPageUnlocked && (
+								<p className="text-sm">
+									Click on the button below to continue reading. Please use the
+									thumbs-up or thumbs-down icons on the top right side of this
+									box if you have any feedback about this question that you
+									would like to provide before you continue reading.
+								</p>
+							)}
+						</div>
+					) : (
+						question && (
+							<p>
+								<b>Question:</b> {question}
+							</p>
+						)
+					)}
+
+					<form action={formAction} className="w-full space-y-2">
+						<TextArea
+							name="input"
+							rows={2}
+							className="max-w-lg mx-auto rounded-md shadow-md p-4"
+							onPaste={(e) => {
+								if (isProduction) {
+									e.preventDefault();
+									toast.warning("Copy & Paste is not allowed for question");
+								}
+							}}
+						/>
+						<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+							{answerStatus === AnswerStatus.UNANSWERED ? (
+								<SubmitButton answerStatus={answerStatus} />
+							) : (
+								isNextButtonDisplayed && (
+									<NextChunkButton
+										pageSlug={pageSlug}
+										clickEventType="post-question chunk reveal"
+										onClick={() => setIsNextButtonDisplayed(false)}
+									>
+										Click Here to Continue Reading
+									</NextChunkButton>
+								)
+							)}
+						</div>
+					</form>
+				</CardContent>
+			</Card>
+		);
+	}
+
 	return (
 		<>
 			<Card

@@ -14,6 +14,8 @@ const server = z.object({
 	NEXTAUTH_SECRET: z.string(),
 	DATABASE_URL: z.string(),
 	SUMMARY_WHITELIST: z.string().optional(),
+	NO_FEEDBACK_EMAILS: z.string().optional().transform(val => val ? JSON.parse(val) : []),
+	WITH_FEEDBACK_EMAILS: z.string().optional().transform(val => val ? JSON.parse(val) : [] ),
 });
 
 /**
@@ -42,6 +44,8 @@ const processEnv = {
 	DATABASE_URL: process.env.DATABASE_URL,
 	SUMMARY_WHITELIST: process.env.SUMMARY_WHITELIST,
 	NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
+	NO_FEEDBACK_EMAILS: process.env.NO_FEEDBACK_EMAILS,
+	WITH_FEEDBACK_EMAILS: process.env.WITH_FEEDBACK_EMAILS,
 };
 
 // Don't touch the part below
