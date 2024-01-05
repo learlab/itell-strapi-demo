@@ -9,12 +9,7 @@ import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/page/page-content";
 import { QuestionControl } from "@/components/question/question-control";
 import { getCurrentUser } from "@/lib/auth";
-import { env } from "@/env.mjs";
-import {
-	QuestionSchema,
-	SelectedQuestions,
-	getPageQuestions,
-} from "@/lib/question";
+import { getRandomPageQuestions } from "@/lib/question";
 import { PageTitle } from "@/components/page-title";
 import { getUser } from "@/lib/user";
 import { PageStatusModal } from "@/components/page-status/page-status-modal";
@@ -35,6 +30,7 @@ import { PageSummary } from "@/components/summary/page-summary";
 import { ModuleSidebar } from "@/components/module-sidebar";
 import { getModuleChapters } from "@/lib/sidebar";
 import { Page } from "contentlayer/generated";
+import { isPageWithFeedback } from "@/lib/feedback";
 
 const AnchorLink = ({
 	text,
@@ -89,7 +85,6 @@ export const LeftAside = ({ page }: { page: Page }) => {
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
-	const whitelist = JSON.parse(env.SUMMARY_WHITELIST || "[]") as string[];
 
 	const pageIndex = allPagesSorted.findIndex((section) => {
 		return section.page_slug === params.slug;
@@ -102,48 +97,16 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.page_slug;
 
-	const enableSummary = page.summary;
-	const chapters = getModuleChapters(page.location.module);
-
 	const pagerLinks = getPagerLinks({
 		pageIndex,
 		userPageSlug: user?.pageSlug || null,
 	});
 
-	// Subsections to be passed onto page
-	let enableQA = false;
-	const selectedQuestions: SelectedQuestions = new Map();
+	const isFeedbackEnabled = sessionUser
+		? isPageWithFeedback(sessionUser, page)
+		: true;
 
-	const questions = await getPageQuestions(pageSlug);
-	if (questions) {
-		const chunks = questions.data[0].attributes.Content.filter((c) =>
-			Boolean(c.QuestionAnswerResponse),
-		);
-
-		const chooseQuestion = (c: (typeof chunks)[number]) => {
-			if (c.QuestionAnswerResponse) {
-				const parsed = JSON.parse(c.QuestionAnswerResponse);
-				const questionParsed = QuestionSchema.safeParse(parsed);
-				if (questionParsed.success) {
-					selectedQuestions.set(c.Slug, questionParsed.data);
-				}
-			}
-		};
-		if (chunks.length > 0) {
-			enableQA = true;
-			chunks.forEach((chunk) => {
-				if (Math.random() < 1 / 3) {
-					chooseQuestion(chunk);
-				}
-			});
-
-			// Each page will have at least one question
-			if (selectedQuestions.size === 0) {
-				const randChunk = Math.floor(Math.random() * (chunks.length - 1));
-				chooseQuestion(chunks[randChunk]);
-			}
-		}
-	}
+	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
@@ -189,14 +152,22 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</aside>
 			</div>
 
-			<footer>{page.summary && <PageSummary pageSlug={pageSlug} />}</footer>
+			<footer>
+				{page.summary && (
+					<PageSummary
+						pageSlug={pageSlug}
+						isFeedbackEnabled={isFeedbackEnabled}
+					/>
+				)}
+			</footer>
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			{enableQA && (
+			{selectedQuestions.size > 0 && (
 				<QuestionControl
 					isPageUnlocked={isPageUnlocked}
 					selectedQuestions={selectedQuestions}
 					pageSlug={pageSlug}
+					isFeedbackEnabled={isFeedbackEnabled}
 				/>
 			)}
 

@@ -7,17 +7,20 @@ import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
 import { SelectedQuestions } from "@/lib/question";
+import { Page } from "contentlayer/generated";
 
 type Props = {
 	isPageUnlocked: boolean;
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
+	isFeedbackEnabled: boolean;
 };
 
 export const QuestionControl = ({
 	selectedQuestions,
 	isPageUnlocked,
 	pageSlug,
+	isFeedbackEnabled,
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
@@ -101,6 +104,7 @@ export const QuestionControl = ({
 						chunkSlug={chunkSlug}
 						pageSlug={pageSlug}
 						isPageUnlocked={isPageUnlocked}
+						isFeedbackEnabled={isFeedbackEnabled}
 					/>,
 					questionContainer,
 				),

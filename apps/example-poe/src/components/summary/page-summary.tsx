@@ -9,7 +9,7 @@ import {
 	simpleFeedback,
 	validateSummary,
 } from "@itell/core/summary";
-import { getScore } from "@/lib/score";
+import { getScore } from "@/lib/summary";
 import {
 	createSummary,
 	getUserPageSummaryCount,
@@ -32,6 +32,7 @@ import { getPageStatus } from "@/lib/page-status";
 
 type Props = {
 	pageSlug: string;
+	isFeedbackEnabled: boolean;
 };
 
 export type FormState = SummaryFormState & {
@@ -46,7 +47,7 @@ const initialState: FormState = {
 	showQuiz: false,
 };
 
-export const PageSummary = async ({ pageSlug }: Props) => {
+export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 	const sessionUser = await getCurrentUser();
 	const user = await getUser(sessionUser?.id || "");
 	const page = allPagesSorted.find((p) => p.page_slug === pageSlug) as Page;
@@ -72,14 +73,13 @@ export const PageSummary = async ({ pageSlug }: Props) => {
 		}
 
 		const response = await getScore({ input, pageSlug });
-
 		if (!response.success) {
 			return {
 				...prevState,
 				error: ErrorType.INTERNAL,
 			};
 		}
-		const feedback = sessionUser.feedback
+		const feedback = isFeedbackEnabled
 			? getFeedback(response.data)
 			: simpleFeedback();
 

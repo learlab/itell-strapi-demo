@@ -101,11 +101,11 @@ export const SummaryForm = ({
 					}
 				>
 					<div className="space-y-2">
-						{formState.feedback?.isPassed && (
+						{!formState.feedback?.isPassed && (
 							<p>You have written multiple summaries for this page.</p>
 						)}
 						<p>
-							you can now move on to the next page by clicking the page link
+							You can now move on to the next page by clicking the page link
 							above the summary box or the left sidebar.
 						</p>
 					</div>

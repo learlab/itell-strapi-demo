@@ -74,8 +74,8 @@ export default makeSource({
 	contentDirPath: "content",
 	documentTypes: [Page, Site],
 	mdx: {
-		remarkPlugins: [remarkGfm, remarkMath],
-		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings, rehypeKatex],
+		remarkPlugins: [remarkGfm],
+		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
 	},
 	disableImportAliasWarning: true,
 });

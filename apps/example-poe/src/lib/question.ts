@@ -76,12 +76,41 @@ export const getQAScore = async ({
 		},
 	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP error! Status: ${response.status}`);
-	}
 	const data = await response.json();
-	if (!data) {
-		throw new Error("Empty response");
-	}
 	return QAScoreSchema.safeParse(data);
+};
+
+export const getRandomPageQuestions = async (pageSlug: string) => {
+	const selectedQuestions: SelectedQuestions = new Map();
+	const questions = await getPageQuestions(pageSlug);
+	if (questions) {
+		const chunks = questions.data[0].attributes.Content.filter((c) =>
+			Boolean(c.QuestionAnswerResponse),
+		);
+
+		const chooseQuestion = (c: (typeof chunks)[number]) => {
+			if (c.QuestionAnswerResponse) {
+				const parsed = JSON.parse(c.QuestionAnswerResponse);
+				const questionParsed = QuestionSchema.safeParse(parsed);
+				if (questionParsed.success) {
+					selectedQuestions.set(c.Slug, questionParsed.data);
+				}
+			}
+		};
+		if (chunks.length > 0) {
+			chunks.forEach((chunk) => {
+				if (Math.random() < 1 / 3) {
+					chooseQuestion(chunk);
+				}
+			});
+
+			// Each page will have at least one question
+			if (selectedQuestions.size === 0) {
+				const randChunk = Math.floor(Math.random() * (chunks.length - 1));
+				chooseQuestion(chunks[randChunk]);
+			}
+		}
+	}
+
+	return selectedQuestions;
 };

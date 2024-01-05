@@ -30,21 +30,19 @@ export const authOptions: NextAuthOptions = {
 		}),
 	],
 	callbacks: {
-		session({ session, user, token }) {
+		session({ session, user }) {
 			if (session.user) {
 				session.user.id = user.id;
 				if (session.user.email) {
-					const emailsWithFeedback =
-						(env.WITH_FEEDBACK_EMAILS as string[]) || [];
-					const emailsWithoutFeedback =
-						(env.NO_FEEDBACK_EMAILS as string[]) || [];
+					const classOneEmails = (env.CLASS_ONE_EMAILS as string[]) || [];
+					const classTwoEmails = (env.CLASS_TWO_EMAILS as string[]) || [];
 
-					if (emailsWithFeedback.includes(session.user.email)) {
-						session.user.feedback = true;
-					} else if (emailsWithoutFeedback.includes(session.user.email)) {
-						session.user.feedback = false;
+					if (classOneEmails.includes(session.user.email)) {
+						session.user.class = "one";
+					} else if (classTwoEmails.includes(session.user.email)) {
+						session.user.class = "two";
 					} else {
-						session.user.feedback = true;
+						session.user.class = undefined;
 					}
 				}
 			}

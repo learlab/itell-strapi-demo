@@ -12,12 +12,11 @@ import { Summary, User } from "@prisma/client";
 import { notFound, redirect } from "next/navigation";
 import {
 	ErrorType,
-	SummaryFormState,
 	getFeedback,
 	simpleFeedback,
 	validateSummary,
 } from "@itell/core/summary";
-import { getScore } from "@/lib/score";
+import { getScore } from "@/lib/summary";
 import {
 	getUserPageSummaryCount,
 	incrementUserPage,
@@ -29,6 +28,7 @@ import { SummaryForm } from "@/components/summary/summary-form";
 import { isLastPage } from "@/lib/location";
 import { FormState } from "@/components/summary/page-summary";
 import { getPageStatus } from "@/lib/page-status";
+import { isPageWithFeedback } from "@/lib/feedback";
 
 async function getSummaryForUser(summaryId: Summary["id"], userId: User["id"]) {
 	return await db.summary.findFirst({
@@ -73,6 +73,7 @@ export default async function ({ params }: PageProps) {
 
 	const pageSlug = page.page_slug;
 	const pageStatus = await getPageStatus(user.id, pageSlug);
+	const isFeedbackEnabled = isPageWithFeedback(user, page);
 
 	const onSubmit = async (
 		prevState: FormState,
@@ -95,7 +96,7 @@ export default async function ({ params }: PageProps) {
 			};
 		}
 
-		const feedback = user.feedback
+		const feedback = isFeedbackEnabled
 			? getFeedback(response.data)
 			: simpleFeedback();
 

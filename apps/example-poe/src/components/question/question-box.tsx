@@ -38,6 +38,7 @@ type Props = {
 	chunkSlug: string;
 	pageSlug: string;
 	isPageUnlocked: boolean;
+	isFeedbackEnabled: boolean;
 };
 
 // state for answer correctness
@@ -79,6 +80,7 @@ export const QuestionBox = ({
 	chunkSlug,
 	pageSlug,
 	isPageUnlocked,
+	isFeedbackEnabled,
 }: Props) => {
 	const { data: session } = useSession();
 	const [isShaking, setIsShaking] = useState(false);
@@ -114,6 +116,7 @@ export const QuestionBox = ({
 				chunk_slug: chunkSlug,
 				page_slug: pageSlug,
 			});
+
 			if (!response.success) {
 				// API response is not in correct shape
 				console.error("API Response error", response);
@@ -204,7 +207,7 @@ export const QuestionBox = ({
 		);
 	}
 
-	if (!session.user.feedback) {
+	if (!isFeedbackEnabled) {
 		return (
 			<Card
 				className={cn(
@@ -219,10 +222,7 @@ export const QuestionBox = ({
 							</p>
 							{!isPageUnlocked && (
 								<p className="text-sm">
-									Click on the button below to continue reading. Please use the
-									thumbs-up or thumbs-down icons on the top right side of this
-									box if you have any feedback about this question that you
-									would like to provide before you continue reading.
+									Click on the button below to continue reading.
 								</p>
 							)}
 						</div>
