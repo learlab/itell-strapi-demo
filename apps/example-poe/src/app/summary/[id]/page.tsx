@@ -202,6 +202,7 @@ export default async function ({ params }: PageProps) {
 							onSubmit={onSubmit}
 							pageSlug={pageSlug}
 							pageStatus={pageStatus}
+							isFeedbackEnabled={isFeedbackEnabled}
 							initialState={initialState}
 							textareaClassName="min-h-[400px]"
 						/>

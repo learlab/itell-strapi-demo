@@ -7,7 +7,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { PageData, makePageHref } from "@/lib/utils";
 import { QuizData } from "@/lib/quiz";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useFormStatus } from "react-dom";
 
 const BackButton = () => {
 	const { currentStep, prevStep } = useQuiz();
@@ -31,12 +32,32 @@ const ForwardButton = () => {
 };
 
 const FinishButton = () => {
-	const [pending, isPending] = useState(false);
+	const { pending } = useFormStatus();
 
 	return (
 		<Button disabled={pending} type="submit">
 			{pending && <Spinner className="size-4 mr-2" />}
 			Finish
+		</Button>
+	);
+};
+
+const ContinueReadingButton = ({ nextPageSlug }: { nextPageSlug: string }) => {
+	const router = useRouter();
+	const [pending, startTransition] = useTransition();
+
+	return (
+		<Button
+			disabled={pending}
+			type="button"
+			onClick={() => {
+				startTransition(() => {
+					router.push(makePageHref(nextPageSlug));
+				});
+			}}
+		>
+			{pending && <Spinner className="size-4 mr-2" />}
+			Continue reading
 		</Button>
 	);
 };
@@ -57,11 +78,11 @@ export const QuizFooter = ({
 	data,
 	pageData,
 }: { pageData: PageData; data: QuizData }) => {
+	const [saved, setSaved] = useState(false);
 	const { currentStep, answerData } = useQuiz();
 	const [correctCount, setCorrectCount] = useState<number | undefined>(
 		undefined,
 	);
-	const router = useRouter();
 	const isLast = currentStep === data.length - 1;
 
 	const getCorrectCount = () => {
@@ -90,7 +111,7 @@ export const QuizFooter = ({
 		<footer className="mt-10 space-y-4">
 			{correctCount && (
 				<p>
-					You made {correctCount} / {data.length} correct!
+					You got {correctCount} / {data.length} correct!
 				</p>
 			)}
 			<div className="flex justify-between">
@@ -104,12 +125,12 @@ export const QuizFooter = ({
 								setCorrectCount(correctCount);
 
 								await finishQuiz(pageData.page_slug);
+								setSaved(true);
 
 								if (pageData.nextPageSlug) {
-									toast.success("Redirecting you to the next page ...");
-									setTimeout(() => {
-										router.push(makePageHref(pageData.nextPageSlug as string));
-									}, 2000);
+									toast.success(
+										"Quiz finished. You can now go to the next page",
+									);
 								} else {
 									toast.success("You have finished the entire textbook!");
 								}
@@ -120,7 +141,13 @@ export const QuizFooter = ({
 							}
 						}}
 					>
-						<FinishButton />
+						{saved ? (
+							pageData.nextPageSlug ? (
+								<ContinueReadingButton nextPageSlug={pageData.nextPageSlug} />
+							) : null
+						) : (
+							<FinishButton />
+						)}
 					</form>
 				) : (
 					<ForwardButton />

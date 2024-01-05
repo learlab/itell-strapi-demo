@@ -158,6 +158,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 							onSubmit={onSubmit}
 							initialState={initialState}
 							pageStatus={pageStatus}
+							isFeedbackEnabled={isFeedbackEnabled}
 						/>
 					</>
 				) : (

@@ -22,6 +22,7 @@ type Props = {
 	pageStatus: PageStatus;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	textareaClassName?: string;
+	isFeedbackEnabled: boolean;
 	initialState: FormState;
 	onSubmit: (prevState: FormState, formData: FormData) => Promise<FormState>;
 };
@@ -31,6 +32,7 @@ export const SummaryForm = ({
 	inputEnabled,
 	pageStatus,
 	pageSlug,
+	isFeedbackEnabled,
 	initialState,
 	onSubmit,
 	textareaClassName,
@@ -95,9 +97,11 @@ export const SummaryForm = ({
 					pageSlug={pageSlug}
 					isPassed={formState.feedback?.isPassed || false}
 					title={
-						formState.feedback?.isPassed
-							? "Good job summarizing the text 🎉"
-							: "You can now move on 👏"
+						isFeedbackEnabled
+							? formState.feedback?.isPassed
+								? "Good job summarizing the text 🎉"
+								: "You can now move on 👏"
+							: "Your summary is accepted"
 					}
 				>
 					<div className="space-y-2">
