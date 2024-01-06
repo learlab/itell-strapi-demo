@@ -9,6 +9,7 @@ import { PageData, makePageHref } from "@/lib/utils";
 import { QuizData } from "@/lib/quiz";
 import { useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
+import { createQuizAnswer } from "@/lib/server-actions";
 
 const BackButton = () => {
 	const { currentStep, prevStep } = useQuiz();
@@ -62,18 +63,6 @@ const ContinueReadingButton = ({ nextPageSlug }: { nextPageSlug: string }) => {
 	);
 };
 
-const finishQuiz = async (pageSlug: string) => {
-	return await fetch("/api/quiz", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			page_slug: pageSlug,
-		}),
-	});
-};
-
 export const QuizFooter = ({
 	data,
 	pageData,
@@ -124,7 +113,10 @@ export const QuizFooter = ({
 								const correctCount = getCorrectCount();
 								setCorrectCount(correctCount);
 
-								await finishQuiz(pageData.page_slug);
+								await createQuizAnswer({
+									pageSlug: pageData.page_slug,
+									data: answerData,
+								});
 								setSaved(true);
 
 								if (pageData.nextPageSlug) {

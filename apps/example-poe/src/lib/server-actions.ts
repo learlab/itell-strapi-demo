@@ -231,6 +231,8 @@ export const createQuizAnswer = async ({
 				},
 			},
 		});
+
+		finishQuiz(pageSlug);
 	}
 };
 
@@ -248,7 +250,7 @@ export const maybeCreateQuizCookie = (pageSlug: string) => {
 	return false;
 };
 
-export const finishPageQuiz = (pageSlug: string) => {
+export const finishQuiz = (pageSlug: string) => {
 	const key = quizCookieKey(pageSlug);
 	const c = cookies();
 	c.set(key, "true");
