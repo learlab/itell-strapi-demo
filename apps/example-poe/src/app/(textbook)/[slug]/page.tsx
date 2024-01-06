@@ -161,7 +161,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageSummary
 						pageSlug={pageSlug}
 						isFeedbackEnabled={isFeedbackEnabled}
-						chunks={chunks}
 					/>
 				)}
 			</footer>

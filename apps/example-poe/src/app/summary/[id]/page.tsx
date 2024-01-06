@@ -46,7 +46,6 @@ interface PageProps {
 }
 
 const initialState: FormState = {
-	response: null,
 	feedback: null,
 	canProceed: false,
 	error: null,
@@ -118,7 +117,6 @@ export default async function ({ params }: PageProps) {
 
 			return {
 				canProceed: !isLastPage(summary.pageSlug),
-				response: response.data,
 				feedback,
 				error: null,
 				showQuiz,
@@ -133,7 +131,6 @@ export default async function ({ params }: PageProps) {
 			await incrementUserPage(user.id, summary.pageSlug);
 			return {
 				canProceed: !isLastPage(summary.pageSlug),
-				response: response.data,
 				feedback,
 				error: null,
 				showQuiz,
@@ -142,7 +139,6 @@ export default async function ({ params }: PageProps) {
 
 		return {
 			canProceed: false,
-			response: null,
 			feedback,
 			error: null,
 			showQuiz: false,

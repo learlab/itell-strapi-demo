@@ -3,8 +3,6 @@ import { GeistSans as FontSans } from "geist/font";
 import "@/styles/globals.css";
 
 import { RootProvider } from "@/components/provider/root-provider";
-import ShowToast from "@/components/toast";
-import { Suspense } from "react";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { cn } from "@itell/core/utils";
 import { Metadata } from "next";
@@ -58,9 +56,6 @@ export default async function RootLayout({
 				)}
 			>
 				<RootProvider>
-					<Suspense fallback={null}>
-						<ShowToast />
-					</Suspense>
 					<TailwindIndicator />
 					<main> {children} </main>
 				</RootProvider>
