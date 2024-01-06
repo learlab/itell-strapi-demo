@@ -90,3 +90,9 @@ export const getPageData = (slug: string | null): PageData | null => {
 		nextPageSlug,
 	};
 };
+
+export const getChunkElement = (chunkId: string) => {
+	return document.querySelector(
+		`div[data-subsection-id='${chunkId}']`,
+	) as HTMLDivElement;
+};

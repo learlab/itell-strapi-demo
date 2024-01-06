@@ -22,8 +22,8 @@ export const usePageSlug = () => {
 	return slug;
 };
 
-export const useCurrentChunk = (pageSlug: string) => {
+export const useCurrentChunk = (pageSlug: string, defaultVal: string) => {
 	const key = `current-chunk-${pageSlug}`;
-	const [val, setVal] = useLocalStorage(key, 0);
+	const [val, setVal] = useLocalStorage<string>(key, defaultVal);
 	return [val, setVal] as const;
 };

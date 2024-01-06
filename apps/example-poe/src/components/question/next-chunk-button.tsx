@@ -20,13 +20,11 @@ export const NextChunkButton = ({
 	pageSlug,
 	...rest
 }: Props) => {
-	const { chunks, currentChunk, setCurrentChunk } = useQA();
+	const { currentChunk, goToNextChunk } = useQA();
 
 	const onSubmit = async () => {
-		if (chunks && currentChunk < chunks.length - 1) {
-			const nextChunk = currentChunk + 1;
-			setCurrentChunk(nextChunk);
-		}
+		goToNextChunk();
+
 		if (onClick) {
 			onClick();
 		}

@@ -31,6 +31,8 @@ import { ModuleSidebar } from "@/components/module-sidebar";
 import { getModuleChapters } from "@/lib/sidebar";
 import { Page } from "contentlayer/generated";
 import { isPageWithFeedback } from "@/lib/feedback";
+import { getPageChunks } from "@/lib/chunks";
+import { PageProvider } from "@/components/provider/page-provider";
 
 const AnchorLink = ({
 	text,
@@ -106,12 +108,14 @@ export default async function ({ params }: { params: { slug: string } }) {
 		? isPageWithFeedback(sessionUser, page)
 		: true;
 
+	const chunks = getPageChunks(page);
+
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
-		<Fragment>
+		<PageProvider pageSlug={pageSlug} chunks={chunks}>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
 				<LeftAside page={page} />
 
@@ -157,6 +161,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageSummary
 						pageSlug={pageSlug}
 						isFeedbackEnabled={isFeedbackEnabled}
+						chunks={chunks}
 					/>
 				)}
 			</footer>
@@ -172,6 +177,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 			)}
 
 			{user && isProduction && <EventTracker />}
-		</Fragment>
+		</PageProvider>
 	);
 }

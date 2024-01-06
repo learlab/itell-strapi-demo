@@ -6,6 +6,7 @@ const { withContentlayer }  = require("next-contentlayer")
  */
 const nextConfig = {
 	output: "standalone",
+	reactStrictMode: false,
 	images: {
 		remotePatterns:  [{
 			protocol: "https",

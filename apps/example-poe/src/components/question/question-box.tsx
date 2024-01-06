@@ -276,7 +276,11 @@ export const QuestionBox = ({
 					`${isShaking ? "shake" : ""}`,
 				)}
 			>
-				<Confetti active={answerStatus === AnswerStatus.BOTH_CORRECT} />
+				<Confetti
+					active={
+						answerStatus === AnswerStatus.BOTH_CORRECT && isFeedbackEnabled
+					}
+				/>
 
 				<CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
 					<CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">

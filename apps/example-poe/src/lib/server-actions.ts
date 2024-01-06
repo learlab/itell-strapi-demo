@@ -3,7 +3,7 @@
 import { Prisma } from "@prisma/client";
 import db from "./db";
 import { revalidatePath } from "next/cache";
-import { nextPage } from "./location";
+import { isPageAfter, nextPage } from "./location";
 import { getCurrentUser, getServerAuthSession } from "./auth";
 import { cookies } from "next/headers";
 
@@ -107,17 +107,20 @@ export const updateUserClassId = async ({
 export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	const user = await db.user.findUnique({ where: { id: userId } });
 	if (user) {
-		const slug = nextPage(pageSlug);
-		await db.user.update({
-			where: {
-				id: userId,
-			},
-			data: {
-				pageSlug: slug,
-			},
-		});
+		const nextSlug = nextPage(pageSlug);
+		// only update a slug if user's slug is not greater
+		if (isPageAfter(nextSlug, user.pageSlug)) {
+			await db.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					pageSlug: nextSlug,
+				},
+			});
 
-		revalidatePath(".");
+			revalidatePath(".");
+		}
 	}
 };
 

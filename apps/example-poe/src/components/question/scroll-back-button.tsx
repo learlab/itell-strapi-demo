@@ -3,21 +3,20 @@
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
 import { useQA } from "../context/qa-context";
+import { getChunkElement } from "@/lib/utils";
 
 export const ScrollBackButton = () => {
-	const { chunks, currentChunk } = useQA();
+	const { currentChunk, chunks } = useQA();
 
 	const scrollToCurrentChunk = () => {
-		if (chunks) {
-			const element = chunks[currentChunk];
-			if (element) {
-				element.scrollIntoView({ behavior: "smooth" });
-			}
+		const element = getChunkElement(currentChunk);
+		if (element) {
+			element.scrollIntoView({ behavior: "smooth" });
 		}
 	};
 
 	// disappear is user unlocks all chunks
-	if (chunks && currentChunk >= chunks.length - 1) {
+	if (chunks[chunks.length - 1] === currentChunk) {
 		return null;
 	}
 

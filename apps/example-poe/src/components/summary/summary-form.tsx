@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { FormState } from "./page-summary";
 import { useRouter } from "next/navigation";
 import { PageStatus } from "@/lib/page-status";
-import { getChunks } from "@/lib/chunks";
+import { isProduction } from "@/lib/constants";
 
 type Props = {
 	value?: string;
@@ -38,20 +38,19 @@ export const SummaryForm = ({
 	textareaClassName,
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
-	const [inputDisabled, setInputDisabled] = useState(
-		pageStatus.isPageUnlocked ? false : true,
-	);
-	const { currentChunk } = useQA();
 	const router = useRouter();
+	const { currentChunk, chunks } = useQA();
+	const isLastChunk = currentChunk === chunks[chunks.length - 1];
+	const [inputDisabled, setInputDisabled] = useState(() => {
+		if (pageStatus.isPageUnlocked) {
+			return false;
+		}
 
+		return !isLastChunk;
+	});
 	useEffect(() => {
-		if (!pageStatus.isPageUnlocked) {
-			const chunks = getChunks();
-			if (chunks) {
-				setInputDisabled(currentChunk < chunks.length - 1);
-			} else {
-				setInputDisabled(false);
-			}
+		if (!pageStatus.isPageUnlocked && inputDisabled) {
+			setInputDisabled(!isLastChunk);
 		}
 	}, [currentChunk]);
 
@@ -70,7 +69,9 @@ export const SummaryForm = ({
 					canProceed={formState.canProceed}
 				/>
 			)}
-			<Confetti active={formState.feedback?.isPassed || false} />
+			<Confetti
+				active={formState.feedback?.isPassed ? isFeedbackEnabled : false}
+			/>
 			<form
 				className="mt-2 space-y-4"
 				action={(payload) => {
@@ -83,13 +84,17 @@ export const SummaryForm = ({
 			>
 				<SummaryInput
 					value={value}
-					disabled={inputEnabled ? false : inputDisabled}
+					disabled={
+						isProduction ? (inputEnabled ? false : inputDisabled) : false
+					}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton disabled={inputDisabled} />
+					<SummarySubmitButton
+						disabled={isProduction ? inputDisabled : false}
+					/>
 				</div>
 			</form>
 			{formState.canProceed && !formState.showQuiz && (

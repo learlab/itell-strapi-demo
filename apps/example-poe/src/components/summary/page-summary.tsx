@@ -32,6 +32,7 @@ import { getPageStatus } from "@/lib/page-status";
 
 type Props = {
 	pageSlug: string;
+	chunks: string[];
 	isFeedbackEnabled: boolean;
 };
 
@@ -47,7 +48,11 @@ const initialState: FormState = {
 	showQuiz: false,
 };
 
-export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
+export const PageSummary = async ({
+	pageSlug,
+	isFeedbackEnabled,
+	chunks,
+}: Props) => {
 	const sessionUser = await getCurrentUser();
 	const user = await getUser(sessionUser?.id || "");
 	const page = allPagesSorted.find((p) => p.page_slug === pageSlug) as Page;

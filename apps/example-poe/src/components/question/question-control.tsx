@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { NextChunkButton } from "./next-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
 import { SelectedQuestions } from "@/lib/question";
-import { Page } from "contentlayer/generated";
+import { getChunkElement } from "@/lib/utils";
 
 type Props = {
 	isPageUnlocked: boolean;
@@ -24,13 +24,14 @@ export const QuestionControl = ({
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const { chunks, setChunks, currentChunk } = useQA();
+	const { currentChunk, chunks } = useQA();
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
 	};
 
-	const hideNextChunkButton = (el: HTMLDivElement) => {
+	const hideNextChunkButton = (chunkId: string) => {
+		const el = getChunkElement(chunkId);
 		const button = el.querySelector(
 			":scope .next-chunk-button-container",
 		) as HTMLDivElement;
@@ -88,12 +89,12 @@ export const QuestionControl = ({
 		);
 	};
 
-	const insertQuestion = (el: HTMLDivElement, chunkSlug: string) => {
+	const insertQuestion = (el: HTMLDivElement, chunkId: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
 		el.appendChild(questionContainer);
 
-		const q = selectedQuestions.get(chunkSlug);
+		const q = selectedQuestions.get(chunkId);
 
 		if (q) {
 			addNode(
@@ -101,7 +102,7 @@ export const QuestionControl = ({
 					<QuestionBox
 						question={q.question}
 						answer={q.answer}
-						chunkSlug={chunkSlug}
+						chunkSlug={chunkId}
 						pageSlug={pageSlug}
 						isPageUnlocked={isPageUnlocked}
 						isFeedbackEnabled={isFeedbackEnabled}
@@ -112,72 +113,63 @@ export const QuestionControl = ({
 		}
 	};
 
-	useEffect(() => {
-		const els = document.querySelectorAll(".content-chunk");
-		if (els.length > 0) {
-			setChunks(Array.from(els) as HTMLDivElement[]);
-		}
-	}, []);
-
-	const handleChunk = (el: HTMLDivElement, index: number) => {
-		const isChunkUnvisited = index > currentChunk;
-		const chunkSlug = el.dataset.subsectionId;
-		if (chunkSlug && selectedQuestions.has(chunkSlug)) {
-			insertQuestion(el, chunkSlug);
+	const handleChunk = (chunkId: string, chunkIndex: number) => {
+		const el = getChunkElement(chunkId);
+		const currentIndex = chunks.indexOf(currentChunk);
+		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
+		if (selectedQuestions.has(chunkId)) {
+			insertQuestion(el, chunkId);
 		}
 
 		if (!isPageUnlocked) {
-			if (index !== 0 && isChunkUnvisited) {
+			if (chunkIndex !== 0 && isChunkUnvisited) {
 				el.style.filter = "blur(4px)";
 			}
 
-			if (chunks && chunks.length > 0 && index === chunks.length - 1) {
+			if (chunkIndex === chunks.length - 1) {
 				insertScrollBackButton(el);
 			}
 		}
 	};
 
-	const handleChunkProgress = (
-		chunks: HTMLDivElement[],
-		currentChunk: number,
-	) => {
-		const currentChunkElement = chunks.at(currentChunk);
-		const prevChunkElement = chunks.at(currentChunk - 1);
+	const handleChunkProgress = (currentChunk: string) => {
+		const idx = chunks.indexOf(currentChunk);
+		console.log(currentChunk, idx);
+		if (idx === -1) {
+			return;
+		}
+		console.log(idx);
 
-		if (currentChunkElement) {
-			const currentChunkSlug = currentChunkElement.dataset
-				.subsectionId as string;
+		const currentChunkId = chunks.at(idx);
+		const prevChunkId = idx > 0 ? chunks.at(idx - 1) : undefined;
+
+		if (currentChunkId) {
+			const currentChunkElement = getChunkElement(currentChunkId);
 			currentChunkElement.style.filter = "none";
-			if (
-				!selectedQuestions.has(currentChunkSlug) &&
-				currentChunk !== chunks.length - 1
-			) {
+			if (!selectedQuestions.has(currentChunkId) && idx !== chunks.length - 1) {
 				insertNextChunkButton(currentChunkElement);
 			}
 		}
 
 		// when a fresh page is loaded,. set up ref data and prepare chunk styles
-		if (currentChunk !== 0 && prevChunkElement) {
-			hideNextChunkButton(prevChunkElement);
+		if (prevChunkId) {
+			hideNextChunkButton(prevChunkId);
 		}
 
-		if (currentChunk === chunks.length - 1) {
+		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
 		}
 	};
 
 	useEffect(() => {
-		// set up chunks
-		if (chunks) {
-			chunks.forEach(handleChunk);
-		}
-	}, [chunks]);
+		chunks.forEach(handleChunk);
+	}, []);
 
 	useEffect(() => {
-		if (chunks && !isPageUnlocked) {
-			handleChunkProgress(chunks, currentChunk);
+		if (!isPageUnlocked) {
+			handleChunkProgress(currentChunk);
 		}
-	}, [chunks, currentChunk]);
+	}, [currentChunk]);
 
 	return nodes;
 };

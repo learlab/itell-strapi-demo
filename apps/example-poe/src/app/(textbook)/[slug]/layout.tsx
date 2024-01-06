@@ -1,5 +1,4 @@
 import { allPagesSorted } from "@/lib/pages";
-import { PageProvider } from "@/components/provider/page-provider";
 
 export const generateStaticParams = async () => {
 	return allPagesSorted.map((page) => {
@@ -21,10 +20,8 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 
 export default async function ({
 	children,
-	params,
 }: {
 	children: React.ReactNode;
-	params: { slug: string };
 }) {
-	return <PageProvider pageSlug={params.slug}>{children}</PageProvider>;
+	return <>{children}</>;
 }

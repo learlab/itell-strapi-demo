@@ -37,6 +37,7 @@
     "next-contentlayer": "^0.3.4",
     "next-superjson-plugin": "^0.5.9",
     "next-themes": "^0.2.1",
+    "node-html-parser": "^6.1.12",
     "pluralize": "^8.0.0",
     "qs": "^6.11.2",
     "react": "18.2.0",

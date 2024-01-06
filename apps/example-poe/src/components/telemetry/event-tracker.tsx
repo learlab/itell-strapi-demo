@@ -9,16 +9,12 @@ import { createEvent, createFocusTime } from "@/lib/server-actions";
 import { EventTracker as Tracker } from "@itell/core/components";
 import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { useEffect, useState } from "react";
-import { getChunks } from "@/lib/chunks";
+import { getChunkElement } from "@/lib/utils";
+import { useQA } from "../context/qa-context";
 
 export const EventTracker = () => {
-	const [chunks, setChunks] = useState<HTMLDivElement[]>([]);
-
-	useEffect(() => {
-		setChunks(getChunks());
-	}, []);
-
-	if (typeof window === "undefined" || chunks.length === 0) return null;
+	const { chunks } = useQA();
+	const chunkElements = chunks.map((chunkId) => getChunkElement(chunkId));
 
 	const onClick = async (data: ClickEventData) => {
 		createEvent({
@@ -55,7 +51,7 @@ export const EventTracker = () => {
 			onClickEvent={onClick}
 			onScrollEvent={onScroll}
 			onFocusTimeEvent={onFocusTime}
-			chunks={chunks}
+			chunks={chunkElements}
 			focusTimeSaveInterval={FOCUS_TIME_SAVE_INTERVAL}
 		/>
 	);

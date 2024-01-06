@@ -19,7 +19,8 @@
                 "noEmptyInterface": "warn"
             },
             "style": {
-                "noUselessElse": "warn"
+                "noUselessElse": "warn",
+                "noParameterAssign": "warn"
             }
         }
     },
