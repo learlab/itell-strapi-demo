@@ -28,8 +28,6 @@ export const UserAccountNav = () => {
 	const { data: session, status } = useSession();
 	const user = session?.user;
 
-	console.log("user", user);
-
 	if (status === "loading") {
 		return <Spinner />;
 	}
