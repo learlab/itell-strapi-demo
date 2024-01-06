@@ -3,6 +3,7 @@ import { Session } from "next-auth";
 
 export const isPageWithFeedback = (user: Session["user"], page: Page) => {
 	const userClass = user.class;
+	console.log(user, page);
 	const module = page.location.module;
 	if (module === 1) {
 		return userClass === "one";
