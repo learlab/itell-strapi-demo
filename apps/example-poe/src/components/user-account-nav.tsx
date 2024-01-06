@@ -9,7 +9,6 @@ import {
 	DropdownMenuSeparator,
 } from "./client-components";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
 	ChevronDownIcon,
@@ -18,7 +17,6 @@ import {
 	FileBoxIcon,
 	LineChartIcon,
 	LogOutIcon,
-	PieChartIcon,
 	SettingsIcon,
 } from "lucide-react";
 import { Spinner } from "./spinner";
@@ -29,6 +27,8 @@ export const UserAccountNav = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const { data: session, status } = useSession();
 	const user = session?.user;
+
+	console.log("user", user);
 
 	if (status === "loading") {
 		return <Spinner />;
