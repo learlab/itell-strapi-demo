@@ -39,8 +39,8 @@ export const SummaryForm = ({
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
 	const router = useRouter();
-	const { currentChunk, chunks } = useQA();
-	const isLastChunk = currentChunk === chunks[chunks.length - 1];
+	const { currentChunk, chunks, finishedReading } = useQA();
+	const isLastChunk = finishedReading;
 	const [inputDisabled, setInputDisabled] = useState(() => {
 		if (pageStatus.isPageUnlocked) {
 			return false;
