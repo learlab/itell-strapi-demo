@@ -21,8 +21,8 @@ export const removeHighlights = async (id: string) => {
 export const getElementsByNoteId = (id: string) => {
 	const target = document.getElementById("page-content");
 	if (target) {
-		return target.querySelectorAll(`[data-note-id="${id}"]`);
-	} else {
-		return undefined;
+		return target.querySelectorAll(`span[data-note-id="${id}"]`);
 	}
+
+	return undefined;
 };

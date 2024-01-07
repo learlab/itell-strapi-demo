@@ -21,7 +21,7 @@
 }
 
 span.unhighlighted {
-  @apply text-foreground font-normal !important;
+  @apply font-normal !important;
 }
 
 span.highlight {
@@ -30,7 +30,7 @@ span.highlight {
 }
 
 span.emphasized {
-  @apply text-foreground font-bold !important;
+  @apply font-bold !important;
 }
 
 svg {
@@ -46,6 +46,10 @@ svg {
 
 .content-chunk {
   transition: 0.6s filter linear
+}
+
+.note {
+  color: black;
 }
 
 @media (max-width: 768px) {
