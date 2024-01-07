@@ -52,7 +52,7 @@ export const SummaryForm = ({
 		if (!pageStatus.isPageUnlocked && inputDisabled) {
 			setInputDisabled(!isLastChunk);
 		}
-	}, [currentChunk]);
+	}, [currentChunk, finishedReading]);
 
 	useEffect(() => {
 		if (formState.showQuiz) {

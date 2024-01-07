@@ -2,11 +2,13 @@
 
 import { useCurrentChunk } from "@/lib/hooks/utils";
 import React from "react";
+import { useState } from 'react';
 
 type QAContextType = {
 	currentChunk: string;
 	goToNextChunk: () => void;
 	chunks: string[];
+	finishedReading: boolean;
 };
 
 const QAContext = React.createContext<QAContextType>({} as QAContextType);
@@ -25,6 +27,7 @@ export const QAProvider = ({ children, pageSlug, chunks }: Props) => {
 
 	const goToNextChunk = () => {
 		const currentIndex = chunks.indexOf(currentChunk);
+
 		if (currentIndex + 1 < chunks.length) {
 			setCurrentChunk(chunks[currentIndex + 1]);
 		} else if (currentIndex + 1 >= chunks.length) {
@@ -39,6 +42,7 @@ export const QAProvider = ({ children, pageSlug, chunks }: Props) => {
 				currentChunk,
 				goToNextChunk,
 				chunks,
+				finishedReading,
 			}}
 		>
 			{children}

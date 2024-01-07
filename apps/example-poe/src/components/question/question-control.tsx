@@ -24,7 +24,7 @@ export const QuestionControl = ({
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const { currentChunk, chunks } = useQA();
+	const { currentChunk, chunks, finishedReading } = useQA();
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
@@ -113,6 +113,16 @@ export const QuestionControl = ({
 		);
 	};
 
+	const hideEnableSummaryButton = () => {
+		const button = document.querySelector(
+			".enable-summary-button-container",
+		) as HTMLDivElement;
+
+		if (button) {
+			button.remove();
+		}
+	};
+
 	const insertQuestion = (el: HTMLDivElement, chunkId: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
@@ -186,6 +196,7 @@ export const QuestionControl = ({
 		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
 		}
+
 	};
 
 	useEffect(() => {
@@ -197,6 +208,12 @@ export const QuestionControl = ({
 			handleChunkProgress(currentChunk);
 		}
 	}, [currentChunk]);
+
+	useEffect(() => {
+		if (finishedReading){
+			hideEnableSummaryButton();
+		}
+	}, [finishedReading]);
 
 	return nodes;
 };
