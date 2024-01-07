@@ -61,8 +61,6 @@ export const NoteCard = ({
 	color,
 	newNote = false,
 }: Props) => {
-	const [input, setInput] = useState(noteText || "");
-
 	const elementsRef = useRef<HTMLElement[]>();
 	const elements = elementsRef.current;
 	const [shouldCreate, setShouldCreate] = useState(newNote);
@@ -70,7 +68,8 @@ export const NoteCard = ({
 		newNote ? undefined : id,
 	);
 
-	const isUnsaved = !recordId || input !== noteText;
+	const isUnsaved = !recordId;
+	const [text, setText] = useState(noteText);
 
 	const [editState, dispatch] = useImmerReducer<EditState, EditDispatch>(
 		(draft, action) => {
@@ -128,6 +127,7 @@ export const NoteCard = ({
 
 	const formAction = async (data: FormData) => {
 		const input = data.get("input") as string;
+		setText(input);
 		if (shouldCreate) {
 			// create new note
 			await createNote({
@@ -209,17 +209,16 @@ export const NoteCard = ({
 						range: deserializeRange(range),
 						color,
 					});
+					// elementsRef should be set after the note elements are created
+					// in the case of new note, they are already created by the toolbar
+					elementsRef.current = Array.from(
+						getElementsByNoteId(id) || [],
+					) as HTMLElement[];
 				}, 300);
 			} catch (err) {
 				console.error("create note element", err);
 			}
 		}
-
-		// elementsRef should be set after the note elements are created
-		// in the case of new note, they are already created by the toolbar
-		elementsRef.current = Array.from(
-			getElementsByNoteId(id) || [],
-		) as HTMLElement[];
 	}, []);
 
 	const FormFooter = () => {
@@ -286,7 +285,7 @@ export const NoteCard = ({
 
 				<div className="font-light tracking-tight text-sm relative p-2">
 					{editState.collapsed ? (
-						<p className="line-clamp-3 text-sm mb-0">{input || "Note"}</p>
+						<p className="line-clamp-3 text-sm mb-0">{text || "Note"}</p>
 					) : (
 						<div className="mt-1">
 							<NoteColorPicker
@@ -311,8 +310,7 @@ export const NoteCard = ({
 										autoFocus
 										autoHeight
 										name="input"
-										value={input}
-										onValueChange={setInput}
+										defaultValue={text}
 									/>
 								) : (
 									<button
@@ -323,7 +321,7 @@ export const NoteCard = ({
 										className="flex w-full text-left px-1 py-2 rounded-md hover:bg-accent"
 									>
 										<span className="mb-0">
-											{input || <EditIcon className="size-4" />}
+											{text || <EditIcon className="size-4" />}
 										</span>
 									</button>
 								)}
