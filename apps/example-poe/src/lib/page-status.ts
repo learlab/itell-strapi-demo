@@ -14,7 +14,7 @@ export const getPageStatus = (
 	if (!userPageSlug) {
 		return {
 			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
-			isPageLatest: false,
+			isPageLatest: pageSlug === "what-is-law",
 		};
 	}
 

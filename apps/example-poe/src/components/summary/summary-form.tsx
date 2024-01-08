@@ -19,7 +19,6 @@ import { isProduction } from "@/lib/constants";
 type Props = {
 	value?: string;
 	pageSlug: string;
-	pageStatus: PageStatus;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	textareaClassName?: string;
 	isFeedbackEnabled: boolean;
@@ -30,7 +29,6 @@ type Props = {
 export const SummaryForm = ({
 	value,
 	inputEnabled,
-	pageStatus,
 	pageSlug,
 	isFeedbackEnabled,
 	initialState,
@@ -39,20 +37,7 @@ export const SummaryForm = ({
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
 	const router = useRouter();
-	const { currentChunk, chunks } = useQA();
-	const isLastChunk = currentChunk === chunks[chunks.length - 1];
-	const [inputDisabled, setInputDisabled] = useState(() => {
-		if (pageStatus.isPageUnlocked) {
-			return false;
-		}
-
-		return !isLastChunk;
-	});
-	useEffect(() => {
-		if (!pageStatus.isPageUnlocked && inputDisabled) {
-			setInputDisabled(!isLastChunk);
-		}
-	}, [currentChunk]);
+	const { isPageFinished } = useQA();
 
 	useEffect(() => {
 		if (formState.showQuiz) {
@@ -84,17 +69,13 @@ export const SummaryForm = ({
 			>
 				<SummaryInput
 					value={value}
-					disabled={
-						isProduction ? (inputEnabled ? false : inputDisabled) : false
-					}
+					disabled={inputEnabled ? false : !isPageFinished}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton
-						disabled={isProduction ? inputDisabled : false}
-					/>
+					<SummarySubmitButton disabled={!isPageFinished} />
 				</div>
 			</form>
 			{formState.canProceed && !formState.showQuiz && (

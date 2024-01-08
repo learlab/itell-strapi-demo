@@ -36,9 +36,7 @@ export const nextPage = (slug: string): string => {
 };
 
 export const isPageUnlockedWithoutUser = (slug: string) => {
-	return (
-		slug === "introduction-to-law-and-legal-systems" || slug === "what-is-law"
-	);
+	return slug === "introduction-to-law-and-legal-systems";
 };
 
 export const isPageAfter = (a: string | null, b: string | null) => {

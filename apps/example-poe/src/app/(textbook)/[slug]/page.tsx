@@ -115,7 +115,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
-		<PageProvider pageSlug={pageSlug} chunks={chunks}>
+		<PageProvider pageSlug={pageSlug} chunks={chunks} pageStatus={pageStatus}>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
 				<LeftAside page={page} />
 

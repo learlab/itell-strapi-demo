@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import { SummaryCount } from "./summary-count";
 import { SummaryDescription } from "./summary-description";
 import { getCurrentUser } from "@/lib/auth";
@@ -18,18 +18,13 @@ import {
 	isPageQuizUnfinished,
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
-import {
-	isLastPage,
-	isPageAfter,
-	isPageUnlockedWithoutUser,
-} from "@/lib/location";
+import { isLastPage } from "@/lib/location";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
 import { getUser } from "@/lib/user";
 import { allPagesSorted } from "@/lib/pages";
 import { Page } from "contentlayer/generated";
-import { getPageStatus } from "@/lib/page-status";
 
 type Props = {
 	pageSlug: string;
@@ -48,16 +43,34 @@ const initialState: FormState = {
 };
 
 export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
-	const sessionUser = await getCurrentUser();
-	const user = await getUser(sessionUser?.id || "");
+	const user = await getCurrentUser();
 	const page = allPagesSorted.find((p) => p.page_slug === pageSlug) as Page;
+
+	if (!user) {
+		return (
+			<section
+				className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
+				id="page-summary"
+			>
+				<section className="sm:basis-1/3">
+					<SummaryDescription />
+				</section>
+				<section className="sm:basis-2/3">
+					<Warning>
+						You need to be logged in to submit a summary for this page and move
+						forward
+					</Warning>
+				</section>
+			</section>
+		);
+	}
 
 	const onSubmit = async (
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
 		"use server";
-		if (!sessionUser) {
+		if (!user) {
 			return {
 				...prevState,
 				error: ErrorType.INTERNAL,
@@ -65,7 +78,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 		}
 
 		const input = formData.get("input") as string;
-		const userId = sessionUser.id as string; // this won't be null when called in summary-input
+		const userId = user.id;
 
 		const error = await validateSummary(input);
 		if (error) {
@@ -151,7 +164,6 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 		};
 	};
 
-	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	return (
 		<section
 			className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
@@ -161,27 +173,19 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 				<SummaryDescription />
 			</section>
 			<section className="sm:basis-2/3">
-				{user ? (
-					<>
-						{isFeedbackEnabled ? (
-							<Suspense fallback={<SummaryCount.Skeleton />}>
-								<SummaryCount pageSlug={pageSlug} />
-							</Suspense>
-						) : null}
-						<SummaryForm
-							pageSlug={pageSlug}
-							onSubmit={onSubmit}
-							initialState={initialState}
-							pageStatus={pageStatus}
-							isFeedbackEnabled={isFeedbackEnabled}
-						/>
-					</>
-				) : (
-					<Warning>
-						You need to be logged in to submit a summary for this page and move
-						forward
-					</Warning>
-				)}
+				<Fragment>
+					{isFeedbackEnabled ? (
+						<Suspense fallback={<SummaryCount.Skeleton />}>
+							<SummaryCount pageSlug={pageSlug} />
+						</Suspense>
+					) : null}
+					<SummaryForm
+						pageSlug={pageSlug}
+						onSubmit={onSubmit}
+						initialState={initialState}
+						isFeedbackEnabled={isFeedbackEnabled}
+					/>
+				</Fragment>
 			</section>
 		</section>
 	);
