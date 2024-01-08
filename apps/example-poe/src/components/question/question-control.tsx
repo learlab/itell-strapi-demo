@@ -24,7 +24,7 @@ export const QuestionControl = ({
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const { currentChunk, chunks } = useQA();
+	const { currentChunk, chunks, finishedReading } = useQA();
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
@@ -89,6 +89,40 @@ export const QuestionControl = ({
 		);
 	};
 
+	// separate button for enabling summaries
+	const insertEnableSummaryButton = (el: HTMLDivElement) => {
+		// insert button container
+		const buttonContainer = document.createElement("div");
+		buttonContainer.className =
+			"enable-summary-button-container flex justify-center items-center p-4 gap-2";
+		el.style.filter = "none";
+		el.appendChild(buttonContainer);
+
+		addNode(
+			createPortal(
+				<NextChunkButton
+					clickEventType="chunk reveal"
+					pageSlug={pageSlug}
+					standalone
+					className="bg-violet-400 hover:bg-violet-200 text-white m-2 p-2"
+				>
+					Click here to enable summary
+				</NextChunkButton>,
+				buttonContainer,
+			),
+		);
+	};
+
+	const hideEnableSummaryButton = () => {
+		const button = document.querySelector(
+			".enable-summary-button-container",
+		) as HTMLDivElement;
+
+		if (button) {
+			button.remove();
+		}
+	};
+
 	const insertQuestion = (el: HTMLDivElement, chunkId: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
@@ -148,6 +182,9 @@ export const QuestionControl = ({
 			currentChunkElement.style.filter = "none";
 			if (!selectedQuestions.has(currentChunkId) && idx !== chunks.length - 1) {
 				insertNextChunkButton(currentChunkElement);
+			} else if (!selectedQuestions.has(currentChunkId) && idx === chunks.length - 1) {
+				// insert enable summary button if the chunk is the final chunk and does not have an accompanying question
+				insertEnableSummaryButton(currentChunkElement);
 			}
 		}
 
@@ -159,6 +196,7 @@ export const QuestionControl = ({
 		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
 		}
+
 	};
 
 	useEffect(() => {
@@ -170,6 +208,12 @@ export const QuestionControl = ({
 			handleChunkProgress(currentChunk);
 		}
 	}, [currentChunk]);
+
+	useEffect(() => {
+		if (finishedReading){
+			hideEnableSummaryButton();
+		}
+	}, [finishedReading]);
 
 	return nodes;
 };
