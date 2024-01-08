@@ -1,5 +1,4 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import SummaryCreateButton from "@/components/dashboard/summary-create-button";
 import { SummaryList } from "@/components/dashboard/summary-list";
 import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
@@ -35,16 +34,14 @@ export default async function () {
 	if (userSummaries.length === 0) {
 		return (
 			<DashboardShell>
-				<DashboardHeader heading="Summary" text="Create and manage summaries.">
-					<SummaryCreateButton />
-				</DashboardHeader>
+				<DashboardHeader
+					heading="Summary"
+					text="Create and manage summaries."
+				/>
 				<p className="p-2">
 					You have not made any summary yet. Start with{" "}
-					<Link
-						href="/module-1/chapter-1/section-1"
-						className="underline font-medium"
-					>
-						Section 1
+					<Link href="/what-is-law" className="underline font-medium">
+						What is Law
 					</Link>
 					!
 				</p>
@@ -53,17 +50,23 @@ export default async function () {
 	}
 
 	// // convert date here since they will be passed from server components to client components
-	const summaries = userSummaries.map((s) => {
-		const page = allPagesSorted.find(
-			(section) => section.page_slug === s.pageSlug,
-		) as Page;
+	const summaries = userSummaries
+		.map((s) => {
+			const page = allPagesSorted.find(
+				(section) => section.page_slug === s.pageSlug,
+			);
 
-		return {
-			...s,
-			module: page.location.module as number,
-			pageTitle: page.title,
-		};
-	});
+			if (!page) {
+				return undefined;
+			}
+
+			return {
+				...s,
+				module: page.location.module as number,
+				pageTitle: page.title,
+			};
+		})
+		.filter(Boolean);
 
 	const summariesByModule = groupby(summaries, (summary) => summary.module);
 

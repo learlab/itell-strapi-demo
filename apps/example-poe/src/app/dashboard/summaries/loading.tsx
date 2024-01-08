@@ -1,5 +1,4 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import SummaryCreateButton from "@/components/dashboard/summary-create-button";
 import { SummaryItem } from "@/components/dashboard/summary-item";
 import { DashboardShell } from "@/components/shell";
 import { Skeleton } from "@itell/ui/server";
