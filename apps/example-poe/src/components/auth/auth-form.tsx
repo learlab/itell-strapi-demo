@@ -35,7 +35,6 @@ export const AuthForm = () => {
 				</div>
 			</div>
 			<div className="flex flex-col gap-2">
-				<GoogleLoginButton />
 				<OutlookLoginButton />
 			</div>
 			{pending && (
