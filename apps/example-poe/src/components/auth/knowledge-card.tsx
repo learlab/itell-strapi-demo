@@ -1,5 +1,5 @@
-import { Blockquote, Card, CardContent } from "@itell/ui/server";
-import { ArrowRightIcon, LinkIcon } from "lucide-react";
+import { Card, CardContent } from "@itell/ui/server";
+import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 
 type Props = {

@@ -1,19 +1,17 @@
 import { DashboardSidebar } from "@/components/nav/dashboard-sidebar";
 import { DashboardNav } from "@/components/nav/dashboard-nav";
 import { dashboardConfig } from "@/config/dashboard";
-import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+import { redirectWithSearchParams } from "@/lib/utils";
 
 export default async function DashboardLayout({
 	children,
+	searchParams,
 }: {
 	children: React.ReactNode;
+	searchParams?: Record<string, string>;
 }) {
-	const user = await getCurrentUser();
-	if (!user) {
-		return redirect("/auth");
-	}
-
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">
 			<header className="sticky top-0 z-40 border-b bg-background">

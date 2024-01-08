@@ -6,10 +6,10 @@ import { Spinner } from "@/components/spinner";
 import { getCurrentUser } from "@/lib/auth";
 import { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getUser } from "@/lib/user";
 import { UserProgress } from "@/components/dashboard/user/user-progress";
+import { redirectWithSearchParams } from "@/lib/utils";
 
 const title = "Learning Statistics";
 const description = "Understand your learning journey";
@@ -29,13 +29,13 @@ export default async function ({ searchParams }: Props) {
 	const currentUser = await getCurrentUser();
 
 	if (!currentUser) {
-		return redirect("/auth");
+		return redirectWithSearchParams("/auth", searchParams);
 	}
 
 	const user = await getUser(currentUser.id);
 
 	if (!user) {
-		return redirect("/auth");
+		return redirectWithSearchParams("/auth", searchParams);
 	}
 
 	return (

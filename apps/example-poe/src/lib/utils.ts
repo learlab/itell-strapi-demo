@@ -1,6 +1,7 @@
 import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
 import { allPagesSorted } from "./pages";
+import { redirect } from "next/navigation";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
 	const regex = /embed\/([\w-]+)\?/;
@@ -95,4 +96,12 @@ export const getChunkElement = (chunkId: string) => {
 	return document.querySelector(
 		`div[data-subsection-id='${chunkId}']`,
 	) as HTMLDivElement;
+};
+
+export const redirectWithSearchParams = (
+	path: string,
+	searchParams?: Record<string, string>,
+) => {
+	const query = new URLSearchParams(searchParams).toString();
+	return redirect(`${path}?${query}`);
 };

@@ -7,8 +7,7 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@itell/ui/server";
-import data from "./knowledge-cards.json";
+import data from "public/knowledge-cards.json";
 import { KnowledgeCard } from "./knowledge-card";
 
 export const KnowledgeCarousel = () => {

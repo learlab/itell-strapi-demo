@@ -1,14 +1,18 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { GoogleLoginButton, OutlookLoginButton } from "./login-buttons";
+import { OutlookLoginButton } from "./login-buttons";
 import { useEffect, useTransition } from "react";
 import { Spinner } from "../spinner";
+import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 
 export const AuthForm = () => {
+	const searchParams = useSearchParams();
+	const classId = searchParams?.get("join_class_code");
 	const { data: session } = useSession();
+	const lastPage = useLastVisitedPageUrl();
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
 
@@ -16,7 +20,11 @@ export const AuthForm = () => {
 		if (session?.user) {
 			startTransition(() => {
 				toast.success("You are logged in");
-				router.push("/");
+				if (!classId) {
+					router.push(lastPage ?? "/");
+				} else {
+					router.push(`/dashboard/settings?join_class_code=${classId}`);
+				}
 			});
 		}
 	}, [session]);

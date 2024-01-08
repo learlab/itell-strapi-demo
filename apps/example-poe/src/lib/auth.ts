@@ -49,15 +49,6 @@ export const authOptions: NextAuthOptions = {
 			}
 			return session;
 		},
-		redirect: async ({ url, baseUrl }) => {
-			const suffix = url.endsWith("?auth-redirect=true")
-				? ""
-				: "?auth-redirect=true";
-			// Allows relative callback URLs
-			if (url.startsWith("/")) return `${baseUrl}${url}${suffix}`;
-			if (new URL(url).origin === baseUrl) return `${url}${suffix}`;
-			return `${baseUrl}${suffix}`;
-		},
 	},
 	cookies: {
 		csrfToken: {

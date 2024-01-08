@@ -10,9 +10,7 @@ import { getSiteConfig } from "@/lib/config";
 import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
 
 type PageProps = {
-	searchParams?: {
-		error?: string;
-	};
+	searchParams?: Record<string, string>;
 };
 
 const ErrorDict: Record<string, string> = {

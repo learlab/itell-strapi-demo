@@ -5,8 +5,8 @@ import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
 import { getTeacherWithClassId } from "@/lib/class";
 import { getUser } from "@/lib/user";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 const title = "Settings";
 const description = "Manage account and website settings";
@@ -25,12 +25,12 @@ export default async function ({ searchParams }: Props) {
 	const classId = searchParams?.join_class_code;
 
 	if (!currentUser) {
-		return redirect("/auth");
+		return redirectWithSearchParams("/auth", searchParams);
 	}
 
 	const user = await getUser(currentUser.id);
 	if (!user) {
-		return redirect("/auth");
+		return redirectWithSearchParams("/auth", searchParams);
 	}
 
 	const teacher = classId ? await getTeacherWithClassId(classId) : null;
