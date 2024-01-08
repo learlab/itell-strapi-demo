@@ -5,9 +5,6 @@ const regex = /data-subsection-id\s*=\s*"(.*?)"/;
 
 export const getPageChunks = (page: Page) => {
 	const body = parse(page.body.raw);
-	// parse("<p class = 'hello'>world</p>").childNodes.forEach((el) =>
-	// 	console.log(el),
-	// );
 	const chunks: string[] = [];
 	body.childNodes.forEach((el) => {
 		if ("rawAttrs" in el && typeof el.rawAttrs === "string") {

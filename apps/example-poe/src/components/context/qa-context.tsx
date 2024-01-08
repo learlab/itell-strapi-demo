@@ -1,14 +1,16 @@
 "use client";
 
-import { useCurrentChunk } from "@/lib/hooks/utils";
+import { useCurrentChunk, useIsPageFinished } from "@/lib/hooks/utils";
 import { PageStatus } from "@/lib/page-status";
 import React, { useEffect, useState } from "react";
 
 type QAContextType = {
 	currentChunk: string;
 	goToNextChunk: () => void;
-	isPageFinished: boolean;
 	chunks: string[];
+	isPageFinished: boolean;
+	setIsPageFinished: React.Dispatch<React.SetStateAction<boolean>>;
+	isLastChunkWithQuestion: boolean;
 };
 
 const QAContext = React.createContext<QAContextType>({} as QAContextType);
@@ -19,6 +21,7 @@ type Props = {
 	children: React.ReactNode;
 	chunks: string[];
 	pageStatus: PageStatus;
+	isLastChunkWithQuestion: boolean;
 };
 
 export const QAProvider = ({
@@ -26,19 +29,14 @@ export const QAProvider = ({
 	pageSlug,
 	chunks,
 	pageStatus,
+	isLastChunkWithQuestion,
 }: Props) => {
 	const [currentChunk, setCurrentChunk] = useCurrentChunk(pageSlug, chunks[0]);
-	const [isPageFinished, setIsPageFinished] = useState(
+
+	const [isPageFinished, setIsPageFinished] = useIsPageFinished(
+		pageSlug,
 		pageStatus.isPageUnlocked,
 	);
-
-	useEffect(() => {
-		if (!isPageFinished) {
-			if (currentChunk === chunks[chunks.length - 1]) {
-				setIsPageFinished(true);
-			}
-		}
-	}, [currentChunk]);
 
 	const goToNextChunk = () => {
 		const currentIndex = chunks.indexOf(currentChunk);
@@ -54,6 +52,8 @@ export const QAProvider = ({
 				goToNextChunk,
 				isPageFinished,
 				chunks,
+				setIsPageFinished,
+				isLastChunkWithQuestion,
 			}}
 		>
 			{children}

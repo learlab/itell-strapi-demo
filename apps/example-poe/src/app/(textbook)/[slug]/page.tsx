@@ -111,11 +111,19 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const chunks = getPageChunks(page);
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
+	const isLastChunkWithQuestion = selectedQuestions.has(
+		chunks[chunks.length - 1],
+	);
 	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
-		<PageProvider pageSlug={pageSlug} chunks={chunks} pageStatus={pageStatus}>
+		<PageProvider
+			pageSlug={pageSlug}
+			chunks={chunks}
+			pageStatus={pageStatus}
+			isLastChunkWithQuestion={isLastChunkWithQuestion}
+		>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
 				<LeftAside page={page} />
 
@@ -156,14 +164,14 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</aside>
 			</div>
 
-			<footer>
-				{page.summary && (
+			{page.summary && (
+				<footer>
 					<PageSummary
 						pageSlug={pageSlug}
 						isFeedbackEnabled={isFeedbackEnabled}
 					/>
-				)}
-			</footer>
+				</footer>
+			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
 			{selectedQuestions.size > 0 && (

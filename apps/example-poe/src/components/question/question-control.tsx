@@ -24,7 +24,13 @@ export const QuestionControl = ({
 }: Props) => {
 	// Ref for current chunk
 	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const { currentChunk, chunks } = useQA();
+	const {
+		currentChunk,
+		chunks,
+		isPageFinished,
+		setIsPageFinished,
+		isLastChunkWithQuestion,
+	} = useQA();
 
 	const addNode = (node: JSX.Element) => {
 		setNodes((nodes) => [...nodes, node]);
@@ -66,7 +72,7 @@ export const QuestionControl = ({
 		}
 	};
 
-	const insertNextChunkButton = (el: HTMLDivElement) => {
+	const insertNextChunkButton = (el: HTMLDivElement, chunkSlug: string) => {
 		// insert button container
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className =
@@ -78,6 +84,7 @@ export const QuestionControl = ({
 			createPortal(
 				<NextChunkButton
 					clickEventType="chunk reveal"
+					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					standalone
 					className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
@@ -113,7 +120,7 @@ export const QuestionControl = ({
 		}
 	};
 
-	const handleChunk = (chunkId: string, chunkIndex: number) => {
+	const maskChunk = (chunkId: string, chunkIndex: number) => {
 		const el = getChunkElement(chunkId);
 		const currentIndex = chunks.indexOf(currentChunk);
 		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
@@ -121,24 +128,20 @@ export const QuestionControl = ({
 			insertQuestion(el, chunkId);
 		}
 
-		if (!isPageUnlocked) {
-			if (chunkIndex !== 0 && isChunkUnvisited) {
-				el.style.filter = "blur(4px)";
-			}
+		if (chunkIndex !== 0 && isChunkUnvisited) {
+			el.style.filter = "blur(4px)";
+		}
 
-			if (chunkIndex === chunks.length - 1) {
-				insertScrollBackButton(el);
-			}
+		if (chunkIndex === chunks.length - 1) {
+			insertScrollBackButton(el);
 		}
 	};
 
-	const handleChunkProgress = (currentChunk: string) => {
+	const revealChunk = (currentChunk: string) => {
 		const idx = chunks.indexOf(currentChunk);
-		console.log(currentChunk, idx);
 		if (idx === -1) {
 			return;
 		}
-		console.log(idx);
 
 		const currentChunkId = chunks.at(idx);
 		const prevChunkId = idx > 0 ? chunks.at(idx - 1) : undefined;
@@ -147,7 +150,7 @@ export const QuestionControl = ({
 			const currentChunkElement = getChunkElement(currentChunkId);
 			currentChunkElement.style.filter = "none";
 			if (!selectedQuestions.has(currentChunkId) && idx !== chunks.length - 1) {
-				insertNextChunkButton(currentChunkElement);
+				insertNextChunkButton(currentChunkElement, currentChunk);
 			}
 		}
 
@@ -162,12 +165,26 @@ export const QuestionControl = ({
 	};
 
 	useEffect(() => {
-		chunks.forEach(handleChunk);
+		if (!isPageUnlocked) {
+			chunks.forEach(maskChunk);
+		}
 	}, []);
 
 	useEffect(() => {
 		if (!isPageUnlocked) {
-			handleChunkProgress(currentChunk);
+			revealChunk(currentChunk);
+		}
+
+		if (!isPageFinished) {
+			// in the special case of the last chunk with a question
+			// the page is not considered finished when currentChunk === lastChunk
+			// when the last chunk contains the question
+			// page finished is controlled via the corresponding question-box -> next-chunk-button
+			if (!isLastChunkWithQuestion) {
+				if (currentChunk === chunks[chunks.length - 1]) {
+					setIsPageFinished(true);
+				}
+			}
 		}
 	}, [currentChunk]);
 

@@ -9,6 +9,7 @@ type Props = {
 	children: React.ReactNode;
 	chunks: string[];
 	pageStatus: PageStatus;
+	isLastChunkWithQuestion: boolean;
 };
 
 export const PageProvider = ({
@@ -16,11 +17,17 @@ export const PageProvider = ({
 	pageSlug,
 	chunks,
 	pageStatus,
+	isLastChunkWithQuestion,
 }: Props) => {
 	useTrackLastVisitedPage();
 
 	return (
-		<QAProvider pageSlug={pageSlug} chunks={chunks} pageStatus={pageStatus}>
+		<QAProvider
+			pageSlug={pageSlug}
+			chunks={chunks}
+			pageStatus={pageStatus}
+			isLastChunkWithQuestion={isLastChunkWithQuestion}
+		>
 			{children}
 		</QAProvider>
 	);

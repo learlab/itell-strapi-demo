@@ -29,6 +29,7 @@ import { createConstructedResponse } from "@/lib/server-actions";
 import { NextChunkButton } from "./next-chunk-button";
 import { isProduction } from "@/lib/constants";
 import { useFormState, useFormStatus } from "react-dom";
+import { useQA } from "../context/qa-context";
 
 type QuestionScore = 0 | 1 | 2;
 
@@ -83,6 +84,7 @@ export const QuestionBox = ({
 	isFeedbackEnabled,
 }: Props) => {
 	const { data: session } = useSession();
+	const { chunks } = useQA();
 	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
 		!isPageUnlocked,
@@ -199,6 +201,14 @@ export const QuestionBox = ({
 		}
 	}, [formState]);
 
+	const nextButtonText =
+		chunkSlug === chunks[chunks.length - 1]
+			? "Unlock summary"
+			: answerStatus === AnswerStatus.BOTH_CORRECT ||
+				  answerStatus === AnswerStatus.SEMI_CORRECT
+			  ? "Continue reading"
+			  : "Skip this question";
+
 	if (!session?.user) {
 		return (
 			<Warning>
@@ -253,10 +263,11 @@ export const QuestionBox = ({
 								isNextButtonDisplayed && (
 									<NextChunkButton
 										pageSlug={pageSlug}
+										chunkSlug={chunkSlug}
 										clickEventType="post-question chunk reveal"
 										onClick={() => setIsNextButtonDisplayed(false)}
 									>
-										Click Here to Continue Reading
+										{nextButtonText}
 									</NextChunkButton>
 								)
 							)}
@@ -371,8 +382,9 @@ export const QuestionBox = ({
 									pageSlug={pageSlug}
 									clickEventType="post-question chunk reveal"
 									onClick={() => setIsNextButtonDisplayed(false)}
+									chunkSlug={chunkSlug}
 								>
-									Click Here to Continue Reading
+									{nextButtonText}
 								</NextChunkButton>
 							) : (
 								<>
@@ -384,13 +396,12 @@ export const QuestionBox = ({
 										isNextButtonDisplayed && (
 											<NextChunkButton
 												pageSlug={pageSlug}
+												chunkSlug={chunkSlug}
 												clickEventType="post-question chunk reveal"
 												variant="ghost"
 												onClick={() => setIsNextButtonDisplayed(false)}
 											>
-												{answerStatus === AnswerStatus.SEMI_CORRECT
-													? "Continue Reading"
-													: "Skip this question"}
+												{nextButtonText}
 											</NextChunkButton>
 										)}
 								</>

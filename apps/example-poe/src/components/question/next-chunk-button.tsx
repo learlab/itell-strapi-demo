@@ -6,6 +6,7 @@ import { Button } from "../client-components";
 
 interface Props extends React.ComponentPropsWithRef<typeof Button> {
 	onClick?: () => void;
+	chunkSlug: string;
 	pageSlug: string;
 	clickEventType: string;
 	standalone?: boolean;
@@ -17,13 +18,18 @@ export const NextChunkButton = ({
 	clickEventType,
 	children,
 	standalone,
+	chunkSlug,
 	pageSlug,
 	...rest
 }: Props) => {
-	const { currentChunk, goToNextChunk } = useQA();
+	const { chunks, goToNextChunk, setIsPageFinished } = useQA();
 
 	const onSubmit = async () => {
 		goToNextChunk();
+
+		if (chunkSlug === chunks[chunks.length - 1]) {
+			setIsPageFinished(true);
+		}
 
 		if (onClick) {
 			onClick();
@@ -32,7 +38,7 @@ export const NextChunkButton = ({
 			eventType: clickEventType,
 			page: location.href,
 			data: {
-				currentChunk: currentChunk,
+				currentChunk: chunkSlug,
 			},
 		});
 	};
