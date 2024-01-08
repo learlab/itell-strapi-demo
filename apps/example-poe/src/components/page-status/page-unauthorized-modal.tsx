@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { GoogleLoginButton } from "../auth/login-buttons";
+import {GoogleLoginButton, OutlookLoginButton} from "../auth/login-buttons";
 import {
 	Dialog,
 	DialogContent,
@@ -31,7 +31,7 @@ export const PageUnauthorizedModal = () => {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="mt-6 flex justify-center">
-					<GoogleLoginButton />
+					<OutlookLoginButton />
 				</div>
 			</DialogContent>
 		</Dialog>
