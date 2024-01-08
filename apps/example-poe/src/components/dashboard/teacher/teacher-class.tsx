@@ -18,18 +18,31 @@ import { PageData, getPageData } from "@/lib/utils";
 export const TeacherClass = async ({ classId }: { classId: string }) => {
 	const students = await getClassStudentStats(classId);
 	const studentData: StudentData[] = students.map((s) => {
-		const page = getPageData(s.pageSlug) as PageData;
+		const page = getPageData(s.pageSlug);
+		let progress: StudentData["progress"];
+
+		if (page) {
+			progress = {
+				chapter: page.chapter,
+				section: page.section,
+				index: page.index,
+				title: page.title,
+			};
+		} else {
+			progress = {
+				chapter: 1,
+				section: 1,
+				index: 1,
+				title: "What is Law",
+			};
+		}
+
 		return {
 			id: s.id,
 			name: s.name,
 			email: s.email,
 			created_at: s.created_at,
-			progress: {
-				chapter: page.chapter,
-				section: page.section,
-				index: page.index,
-				title: page.title,
-			},
+			progress,
 			summaryCounts: s._count.summaries,
 		};
 	});
@@ -46,12 +59,10 @@ export const TeacherClass = async ({ classId }: { classId: string }) => {
 			<CardHeader>
 				<CardTitle>Your Class</CardTitle>
 				<CardDescription>
-					<p>
-						{`You have ${students.length} ${
-							students.length > 1 ? "students" : "student"
-						} under class code `}
-						<span className="font-medium">{classId}</span>
-					</p>
+					{`You have ${students.length} ${
+						students.length > 1 ? "students" : "student"
+					} under class code `}
+					<span className="font-medium">{classId}</span>
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-6">

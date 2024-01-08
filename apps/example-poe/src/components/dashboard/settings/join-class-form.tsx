@@ -14,9 +14,9 @@ type Props = {
 };
 
 type FormState =
-	| { teacher: User; error: null }
-	| { teacher: null; error: string }
-	| { teacher: null; error: null };
+	| { teacher: User; error: null; classId: string }
+	| { teacher: null; error: string; classId: string }
+	| { teacher: null; error: null; classId: string };
 
 const onSubmit = async (
 	prevState: FormState,
@@ -24,13 +24,15 @@ const onSubmit = async (
 ): Promise<FormState> => {
 	const classId = formData.get("code") as string;
 	const teacher = await getTeacherWithClassId(classId);
+
 	if (!teacher) {
-		return { teacher: null, error: "Invalid class code" };
+		return { teacher: null, error: "Invalid class code", classId };
 	}
 
 	return {
 		teacher,
 		error: null,
+		classId,
 	};
 };
 
@@ -45,11 +47,10 @@ export const SubmitButton = () => {
 
 export const JoinClassForm = ({ user }: Props) => {
 	const searchParams = useSearchParams();
-	const classIdToJoin = searchParams?.get("join_class_code");
-
 	const [formState, formAction] = useFormState(onSubmit, {
 		teacher: null,
 		error: null,
+		classId: searchParams?.get("join_class_code") || "",
 	});
 
 	return (
@@ -68,7 +69,7 @@ export const JoinClassForm = ({ user }: Props) => {
 					placeholder="Enter your class code here"
 					type="text"
 					required
-					defaultValue={classIdToJoin || ""}
+					defaultValue={formState.classId}
 				/>
 				<SubmitButton />
 			</form>
@@ -77,7 +78,7 @@ export const JoinClassForm = ({ user }: Props) => {
 				<ClassInviteModal
 					user={user}
 					teacherToJoin={formState.teacher}
-					classId={classIdToJoin as string}
+					classId={formState.classId}
 				/>
 			)}
 		</div>

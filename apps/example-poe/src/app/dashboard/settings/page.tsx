@@ -22,7 +22,7 @@ type Props = {
 
 export default async function ({ searchParams }: Props) {
 	const currentUser = await getCurrentUser();
-	const inviteClassId = searchParams?.join_class_code;
+	const classId = searchParams?.join_class_code;
 
 	if (!currentUser) {
 		return redirect("/auth");
@@ -33,19 +33,17 @@ export default async function ({ searchParams }: Props) {
 		return redirect("/auth");
 	}
 
-	const teacher = inviteClassId
-		? await getTeacherWithClassId(inviteClassId)
-		: null;
+	const teacher = classId ? await getTeacherWithClassId(classId) : null;
 
 	return (
 		<DashboardShell>
 			<DashboardHeader heading={title} text={description} />
 			<SettingsForm user={user} />
-			{inviteClassId && (
+			{classId && (
 				<ClassInviteModal
 					user={user}
 					teacherToJoin={teacher}
-					classId={inviteClassId}
+					classId={classId}
 				/>
 			)}
 		</DashboardShell>
