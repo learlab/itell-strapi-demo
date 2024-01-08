@@ -20,6 +20,7 @@ export const authOptions: NextAuthOptions = {
 			clientId: env.AZURE_CLIENT_ID,
 			clientSecret: env.AZURE_CLIENT_SECRET,
 			tenantId: "common",
+			allowDangerousEmailAccountLinking: true,
 			authorization: {
 				params: {
 					prompt: "consent",

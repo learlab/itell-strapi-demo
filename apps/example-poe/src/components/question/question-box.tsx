@@ -201,13 +201,13 @@ export const QuestionBox = ({
 		}
 	}, [formState]);
 
-	const nextButtonText =
-		chunkSlug === chunks[chunks.length - 1]
-			? "Unlock summary"
-			: answerStatus === AnswerStatus.BOTH_CORRECT ||
-				  answerStatus === AnswerStatus.SEMI_CORRECT
-			  ? "Continue reading"
-			  : "Skip this question";
+	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+	const nextButtonText = isLastQuestion
+		? "Unlock summary"
+		: answerStatus === AnswerStatus.BOTH_CORRECT ||
+			  answerStatus === AnswerStatus.SEMI_CORRECT
+		  ? "Continue reading"
+		  : "Skip this question";
 
 	if (!session?.user) {
 		return (
@@ -312,11 +312,10 @@ export const QuestionBox = ({
 								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
 								Please try again.
 							</p>
-							<p className="question-box-text">
-								<u>
-									If you believe iTELL AI has made an error, you can click on
-									the "Skip this question" button to skip this question.
-								</u>
+							<p className="question-box-text underline">
+								{isLastQuestion
+									? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
+									: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
 							</p>
 						</div>
 					)}

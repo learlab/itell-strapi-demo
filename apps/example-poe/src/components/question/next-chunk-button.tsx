@@ -23,11 +23,12 @@ export const NextChunkButton = ({
 	...rest
 }: Props) => {
 	const { chunks, goToNextChunk, setIsPageFinished } = useQA();
+	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
 
 	const onSubmit = async () => {
 		goToNextChunk();
 
-		if (chunkSlug === chunks[chunks.length - 1]) {
+		if (isLastQuestion) {
 			setIsPageFinished(true);
 		}
 
