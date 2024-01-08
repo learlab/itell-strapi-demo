@@ -14,13 +14,28 @@ export const getPagerLinks = ({
 	const userPage = getPageData(userPageSlug);
 
 	if (!userPage) {
-		const page = allPagesSorted[1];
+		const nextPage =
+			pageIndex + 1 < allPagesSorted.length - 1
+				? allPagesSorted[pageIndex + 1]
+				: null;
+		const prevPage = pageIndex > 0 ? allPagesSorted[pageIndex - 1] : null;
 
-		links.next = {
-			text: `${page.location.chapter}.${page.location.section} ${page.title}`,
-			href: page.url,
-			disabled: false,
-		};
+		links.next = nextPage
+			? {
+					text: `${nextPage.location.chapter}.${nextPage.location.section} ${nextPage.title}`,
+					href: nextPage.url,
+					disabled: false,
+			  }
+			: null;
+
+		links.prev = prevPage
+			? {
+					text: `${prevPage.location.chapter}.${prevPage.location.section} ${prevPage.title}`,
+					href: prevPage.url,
+					disabled: false,
+			  }
+			: null;
+
 		return links;
 	}
 
