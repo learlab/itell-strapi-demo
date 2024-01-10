@@ -22,7 +22,6 @@ import { isLastPage } from "@/lib/location";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { SummaryForm } from "./summary-form";
-import { getUser } from "@/lib/user";
 import { allPagesSorted } from "@/lib/pages";
 import { Page } from "contentlayer/generated";
 

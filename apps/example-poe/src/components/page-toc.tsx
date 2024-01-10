@@ -2,7 +2,7 @@ import { cn } from "@itell/core/utils";
 import { BookmarkIcon } from "lucide-react";
 
 type Heading = {
-	level: "one" | "two" | "three" | "other";
+	level: "one" | "two" | "three" | "four" | "other";
 	text: string | undefined;
 	slug: string | undefined;
 };
@@ -28,8 +28,9 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 								href={`#${heading.slug}`}
 								className={cn("hover:underline inline-flex ", {
 									"text-lg": heading.level === "two",
-									"text-sm": heading.level === "three",
-									"text-muted-foreground text-sm pl-2":
+									"text-base pl-1": heading.level === "three",
+									"text-sm pl-2": heading.level === "four",
+									"text-muted-foreground text-sm pl-4":
 										heading.level === "other",
 								})}
 							>

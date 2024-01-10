@@ -10,7 +10,6 @@ import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 
 type Props = {
-	isPageUnlocked: boolean;
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
 	isFeedbackEnabled: boolean;
@@ -18,7 +17,6 @@ type Props = {
 
 export const QuestionControl = ({
 	selectedQuestions,
-	isPageUnlocked,
 	pageSlug,
 	isFeedbackEnabled,
 }: Props) => {
@@ -111,7 +109,6 @@ export const QuestionControl = ({
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
-						isPageUnlocked={isPageUnlocked}
 						isFeedbackEnabled={isFeedbackEnabled}
 					/>,
 					questionContainer,
@@ -165,17 +162,14 @@ export const QuestionControl = ({
 	};
 
 	useEffect(() => {
-		if (!isPageUnlocked) {
+		if (!isPageFinished) {
 			chunks.forEach(maskChunk);
 		}
 	}, []);
 
 	useEffect(() => {
-		if (!isPageUnlocked) {
-			revealChunk(currentChunk);
-		}
-
 		if (!isPageFinished) {
+			revealChunk(currentChunk);
 			// in the special case of the last chunk with a question
 			// the page is not considered finished when currentChunk === lastChunk
 			// when the last chunk contains the question

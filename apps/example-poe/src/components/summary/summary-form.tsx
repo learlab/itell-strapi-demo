@@ -10,11 +10,9 @@ import { SummaryProceedModal } from "./summary-proceed-modal";
 import { makeInputKey, makePageHref } from "@/lib/utils";
 import Confetti from "react-dom-confetti";
 import { useQA } from "../context/qa-context";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FormState } from "./page-summary";
 import { useRouter } from "next/navigation";
-import { PageStatus } from "@/lib/page-status";
-import { isProduction } from "@/lib/constants";
 
 type Props = {
 	value?: string;
@@ -37,7 +35,13 @@ export const SummaryForm = ({
 }: Props) => {
 	const [formState, formAction] = useFormState(onSubmit, initialState);
 	const router = useRouter();
-	const { isPageFinished } = useQA();
+	const { isPageFinished, pageStatus } = useQA();
+
+	const editDisabled = inputEnabled
+		? false
+		: pageStatus.isPageUnlocked
+		  ? false
+		  : !isPageFinished;
 
 	useEffect(() => {
 		if (formState.showQuiz) {
@@ -69,7 +73,7 @@ export const SummaryForm = ({
 			>
 				<SummaryInput
 					value={value}
-					disabled={inputEnabled ? false : !isPageFinished}
+					disabled={editDisabled}
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>

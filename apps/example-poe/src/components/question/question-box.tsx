@@ -38,7 +38,6 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	isPageUnlocked: boolean;
 	isFeedbackEnabled: boolean;
 };
 
@@ -80,14 +79,13 @@ export const QuestionBox = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	isPageUnlocked,
 	isFeedbackEnabled,
 }: Props) => {
 	const { data: session } = useSession();
-	const { chunks } = useQA();
+	const { chunks, isPageFinished } = useQA();
 	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
-		!isPageUnlocked,
+		!isPageFinished,
 	);
 
 	// Function to trigger the shake animation
@@ -230,7 +228,7 @@ export const QuestionBox = ({
 							<p className="text-xl2 text-emerald-600 text-center">
 								Your answer was accepted
 							</p>
-							{!isPageUnlocked && (
+							{!isPageFinished && (
 								<p className="text-sm">
 									Click on the button below to continue reading.
 								</p>
@@ -333,7 +331,7 @@ export const QuestionBox = ({
 							<p className="text-xl2 text-emerald-600 text-center">
 								Your answer was Correct!
 							</p>
-							{!isPageUnlocked && (
+							{!isPageFinished && (
 								<p className="text-sm">
 									Click on the button below to continue reading. Please use the
 									thumbs-up or thumbs-down icons on the top right side of this

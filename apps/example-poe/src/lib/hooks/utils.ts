@@ -28,6 +28,14 @@ export const useCurrentChunk = (pageSlug: string, defaultVal: string) => {
 	return [val, setVal] as const;
 };
 
+export const resetPageChunk = (pageSlug: string) => {
+	const key1 = `current-chunk-${pageSlug}`;
+	localStorage.removeItem(key1);
+
+	const key2 = `finished-${pageSlug}`;
+	localStorage.setItem(key2, "false");
+};
+
 export const useIsPageFinished = (pageSlug: string, defaultVal: boolean) => {
 	const key = `finished-${pageSlug}`;
 	const [val, setVal] = useLocalStorage<boolean>(key, defaultVal);

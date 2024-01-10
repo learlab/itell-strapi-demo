@@ -11,6 +11,7 @@ type QAContextType = {
 	isPageFinished: boolean;
 	setIsPageFinished: React.Dispatch<React.SetStateAction<boolean>>;
 	isLastChunkWithQuestion: boolean;
+	pageStatus: PageStatus;
 };
 
 const QAContext = React.createContext<QAContextType>({} as QAContextType);
@@ -54,6 +55,7 @@ export const QAProvider = ({
 				chunks,
 				setIsPageFinished,
 				isLastChunkWithQuestion,
+				pageStatus,
 			}}
 		>
 			{children}

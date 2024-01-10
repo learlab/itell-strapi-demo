@@ -33,6 +33,7 @@ import { Page } from "contentlayer/generated";
 import { isPageWithFeedback } from "@/lib/feedback";
 import { getPageChunks } from "@/lib/chunks";
 import { PageProvider } from "@/components/provider/page-provider";
+import { RestartPageButton } from "@/components/page/restart-page-button";
 
 const AnchorLink = ({
 	text,
@@ -40,11 +41,10 @@ const AnchorLink = ({
 	icon,
 }: { text: string; href: string; icon: React.ReactNode }) => {
 	return (
-		<a href={href}>
+		<a href={href} className="block">
 			<Button
-				size="sm"
 				variant="ghost"
-				className="flex items-center gap-1 mb-0 py-1"
+				className="flex flex-wrap justify-start items-center gap-2 pl-0"
 			>
 				{icon}
 				{text}
@@ -66,7 +66,8 @@ export const LeftAside = ({ page }: { page: Page }) => {
 					url: page.url,
 				}}
 			/>
-			<div className="mt-12 flex flex-col gap-2">
+			<div className="mt-12 space-y-2">
+				<RestartPageButton pageSlug={page.page_slug} />
 				{page.summary && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4" />}
@@ -176,7 +177,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<PageStatusModal user={user} pageStatus={pageStatus} />
 			{selectedQuestions.size > 0 && (
 				<QuestionControl
-					isPageUnlocked={isPageUnlocked}
 					selectedQuestions={selectedQuestions}
 					pageSlug={pageSlug}
 					isFeedbackEnabled={isFeedbackEnabled}

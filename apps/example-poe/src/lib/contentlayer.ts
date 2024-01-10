@@ -33,10 +33,12 @@ export const getHeadingsFromRawBody = (doc: string) => {
 					flag?.length === 1
 						? "one"
 						: flag?.length === 2
-						? "two"
-						: flag?.length === 3
-						? "three"
-						: "other",
+						  ? "two"
+						  : flag?.length === 3
+							  ? "three"
+							  : flag?.length === 4
+								  ? "four"
+								  : "other",
 				text: content,
 				slug: content ? slugger.slug(content) : undefined,
 			};
