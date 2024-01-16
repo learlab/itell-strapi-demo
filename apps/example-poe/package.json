@@ -7,8 +7,7 @@
     "clean": "rm -rf .next .turbo .contentlayer",
     "dev": "next dev",
     "start": "next start",
-    "test": "vitest",
-    "build:quiz": "tsx src/scripts/quiz.ts"
+    "test": "vitest"
   },
   "dependencies": {
     "@hello-pangea/color-picker": "^3.2.2",
