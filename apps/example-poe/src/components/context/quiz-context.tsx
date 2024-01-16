@@ -1,8 +1,7 @@
 "use client";
 
+import { AnswerData } from "@/lib/quiz";
 import { createContext, useContext, useState } from "react";
-
-type AnswerData = Record<string, number[]>; // answerId: [choiceId]
 
 type QuizContext = {
 	currentStep: number;
@@ -40,9 +39,11 @@ export const QuizProvider = ({ children }: Props) => {
 			let data: AnswerData;
 			const choices = draft[answerId] ?? [];
 			if (choices.includes(choiceId)) {
+				const options = choices.filter((choice) => choice !== choiceId);
+
 				data = {
 					...draft,
-					[answerId]: choices.filter((choice) => choice !== choiceId),
+					[answerId]: options.length > 0 ? options : undefined,
 				};
 			} else {
 				data = {
@@ -51,9 +52,9 @@ export const QuizProvider = ({ children }: Props) => {
 				};
 			}
 
-			if (!canNext && data[answerId].length > 0) {
+			if (!canNext && data[answerId] && data[answerId].length > 0) {
 				setCanNext(true);
-			} else if (data[answerId].length === 0) {
+			} else if (!data[answerId]) {
 				setCanNext(false);
 			}
 

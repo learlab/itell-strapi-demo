@@ -7,7 +7,8 @@
     "clean": "rm -rf .next .turbo .contentlayer",
     "dev": "next dev",
     "start": "next start",
-    "test": "vitest"
+    "test": "vitest",
+    "build:quiz": "tsx src/scripts/quiz.ts"
   },
   "dependencies": {
     "@hello-pangea/color-picker": "^3.2.2",
@@ -60,6 +61,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.5.2",
     "@types/qs": "^6.9.10",
     "@types/react": "18.2.14",
     "@types/react-dom": "^18.2.14",

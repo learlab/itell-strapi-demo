@@ -1,8 +1,5 @@
 "use client";
 
-import { User } from "@prisma/client";
-import { Column, ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
 import {
 	Button,
 	DropdownMenu,
@@ -12,6 +9,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/client-components";
+import { User } from "@prisma/client";
+import { Column, ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -65,13 +65,13 @@ export const columns: ColumnDef<StudentData>[] = [
 		sortingFn: (rowA, rowB, columnId) => {
 			if (rowA.original.progress.chapter > rowB.original.progress.chapter) {
 				return 1;
-			} else if (
-				rowA.original.progress.chapter === rowB.original.progress.chapter
-			) {
-				return rowA.original.progress > rowB.original.progress ? 1 : -1;
-			} else {
-				return -1;
 			}
+
+			if (rowA.original.progress.chapter === rowB.original.progress.chapter) {
+				return rowA.original.progress > rowB.original.progress ? 1 : -1;
+			}
+
+			return -1;
 		},
 		cell: ({ row }) => {
 			const progress = row.original.progress;

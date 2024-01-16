@@ -1,11 +1,11 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
-import db from "./db";
 import { revalidatePath } from "next/cache";
-import { isPageAfter, nextPage } from "./location";
-import { getCurrentUser, getServerAuthSession } from "./auth";
 import { cookies } from "next/headers";
+import { getCurrentUser, getServerAuthSession } from "./auth";
+import db from "./db";
+import { isPageAfter, nextPage } from "./location";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -220,7 +220,7 @@ export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
 export const createQuizAnswer = async ({
 	pageSlug,
 	data,
-}: { pageSlug: string; data: Record<number, number[]> }) => {
+}: { pageSlug: string; data: Record<string, any> }) => {
 	const user = await getCurrentUser();
 	if (user) {
 		await db.quizAnswer.create({

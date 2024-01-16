@@ -1,15 +1,15 @@
 "use client";
 
+import { QuizData, getQuizCorrectCount } from "@/lib/quiz";
+import { createQuizAnswer } from "@/lib/server-actions";
+import { PageData, makePageHref } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { useFormStatus } from "react-dom";
+import { toast } from "sonner";
 import { Button } from "../client-components";
 import { useQuiz } from "../context/quiz-context";
 import { Spinner } from "../spinner";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { PageData, makePageHref } from "@/lib/utils";
-import { QuizData } from "@/lib/quiz";
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { createQuizAnswer } from "@/lib/server-actions";
 
 const BackButton = () => {
 	const { currentStep, prevStep } = useQuiz();
@@ -32,11 +32,14 @@ const ForwardButton = () => {
 	);
 };
 
-const FinishButton = () => {
+const FinishButton = ({
+	disabled,
+	...rest
+}: React.ComponentPropsWithoutRef<"button">) => {
 	const { pending } = useFormStatus();
 
 	return (
-		<Button disabled={pending} type="submit">
+		<Button disabled={disabled || pending} type="submit" {...rest}>
 			{pending && <Spinner className="size-4 mr-2" />}
 			Finish
 		</Button>
@@ -68,33 +71,11 @@ export const QuizFooter = ({
 	pageData,
 }: { pageData: PageData; data: QuizData }) => {
 	const [saved, setSaved] = useState(false);
-	const { currentStep, answerData } = useQuiz();
+	const { currentStep, answerData, canNext } = useQuiz();
 	const [correctCount, setCorrectCount] = useState<number | undefined>(
 		undefined,
 	);
 	const isLast = currentStep === data.length - 1;
-
-	const getCorrectCount = () => {
-		let correctCount = 0;
-		for (const questionId in answerData) {
-			const question = data.find((q) => q.id === Number(questionId));
-			if (question) {
-				const userAnswers = answerData[questionId];
-				const correctAnswers = question.Answers.filter((a) => a.IsCorrect).map(
-					(a) => a.id,
-				);
-
-				if (
-					userAnswers.length === correctAnswers.length &&
-					userAnswers.every((answer) => correctAnswers.includes(answer))
-				) {
-					correctCount++;
-				}
-			}
-		}
-
-		return correctCount;
-	};
 
 	return (
 		<footer className="mt-10 space-y-4">
@@ -110,12 +91,15 @@ export const QuizFooter = ({
 						action={async () => {
 							try {
 								// finishPageQuiz(pageData.page_slug);
-								const correctCount = getCorrectCount();
+								const correctCount = getQuizCorrectCount(data, answerData);
 								setCorrectCount(correctCount);
 
 								await createQuizAnswer({
 									pageSlug: pageData.page_slug,
-									data: answerData,
+									data: {
+										choices: answerData,
+										correctCount,
+									},
 								});
 								setSaved(true);
 
@@ -138,7 +122,7 @@ export const QuizFooter = ({
 								<ContinueReadingButton nextPageSlug={pageData.nextPageSlug} />
 							) : null
 						) : (
-							<FinishButton />
+							<FinishButton disabled={!canNext} />
 						)}
 					</form>
 				) : (

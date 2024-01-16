@@ -49,7 +49,9 @@
     "src/env.mjs",
     "tailwind.config.cjs",
     "tailwind.config.ts",
-    "next.export.config.js"
+    "next.export.config.js",
+    "scripts/quiz.mjs",
+    "scripts/quiz.mts"
   ],
   "exclude": [
     "node_modules",

@@ -1,7 +1,7 @@
-import { type Prisma } from "@prisma/client";
-import db from "./db";
-import { format, subDays } from "date-fns";
 import { getDatesBetween } from "@itell/core/utils";
+import { type Prisma } from "@prisma/client";
+import { format, subDays } from "date-fns";
+import db from "./db";
 import { FocusTimeData, getTotalViewTime } from "./focus-time";
 
 export const getSummaryStats = async ({
@@ -56,11 +56,20 @@ export const getClassStudentStats = async (classId: string) => {
 					summaries: true,
 				},
 			},
+			QuizAnswer: {
+				select: {
+					data: true,
+					pageSlug: true,
+					created_at: true,
+				},
+			},
 		},
 	});
 
 	return students;
 };
+
+export type StudentStats = Awaited<ReturnType<typeof getClassStudentStats>>;
 
 export const getStudentsCount = async (classId: string) => {
 	return await db.user.count({

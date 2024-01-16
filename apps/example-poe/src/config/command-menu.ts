@@ -1,5 +1,4 @@
 import { allPagesSorted } from "@/lib/pages";
-import { makePageHref } from "@/lib/utils";
 
 export const CommandMenuConfig = {
 	textbookPages: allPagesSorted.map((s) => {

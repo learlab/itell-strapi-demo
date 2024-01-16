@@ -1,5 +1,7 @@
-import { z } from "zod";
 import qs from "qs";
+import { z } from "zod";
+
+export type AnswerData = Record<string, number[]>; // answerId: [choiceId]
 
 export const QuizItemSchema = z.object({
 	id: z.number(),
@@ -58,6 +60,28 @@ export const getQuiz = async (pageSlug: string) => {
 		console.error(error);
 		return null;
 	}
+};
+
+export const getQuizCorrectCount = (quiz: QuizData, answerData: AnswerData) => {
+	let correctCount = 0;
+	for (const questionId in answerData) {
+		const question = quiz.find((q) => q.id === Number(questionId));
+		if (question) {
+			const userAnswers = answerData[questionId];
+			const correctAnswers = question.Answers.filter((a) => a.IsCorrect).map(
+				(a) => a.id,
+			);
+
+			if (
+				userAnswers.length === correctAnswers.length &&
+				userAnswers.every((answer) => correctAnswers.includes(answer))
+			) {
+				correctCount++;
+			}
+		}
+	}
+
+	return correctCount;
 };
 
 export type QuizData = z.infer<typeof QuizSchema>;

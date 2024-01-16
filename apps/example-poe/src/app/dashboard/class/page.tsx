@@ -2,10 +2,12 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { TeacherClass } from "@/components/dashboard/teacher/teacher-class";
 import { DashboardShell } from "@/components/shell";
 import { getCurrentUser } from "@/lib/auth";
+import { getUserTeacherStatus } from "@/lib/dashboard";
+import { delay } from "@/lib/utils";
+import { Errorbox } from "@itell/ui/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Errorbox } from "@itell/ui/server";
-import { getUserTeacherStatus } from "@/lib/dashboard";
+import { Suspense } from "react";
 
 const title = "Manage Your Class";
 const description = "View students' progress";
