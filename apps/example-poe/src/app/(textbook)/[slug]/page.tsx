@@ -1,18 +1,30 @@
-import { notFound } from "next/navigation";
-import { getPagerLinks } from "@/lib/pager";
+import { Button, Pager } from "@/components/client-components";
+import { ModuleSidebar } from "@/components/module-sidebar";
+import { NoteCount } from "@/components/note/note-count";
 import { NoteList } from "@/components/note/note-list";
 import { NoteToolbar } from "@/components/note/note-toolbar";
-import { Fragment, Suspense } from "react";
-import { allPagesSorted } from "@/lib/pages";
-import { Button, Pager } from "@/components/client-components";
+import { PageStatus } from "@/components/page-status/page-status";
+import { PageStatusModal } from "@/components/page-status/page-status-modal";
+import { PageTitle } from "@/components/page-title";
 import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/page/page-content";
+import { RestartPageButton } from "@/components/page/restart-page-button";
+import { PageProvider } from "@/components/provider/page-provider";
 import { QuestionControl } from "@/components/question/question-control";
+import { Spinner } from "@/components/spinner";
+import { PageSummary } from "@/components/summary/page-summary";
+import { EventTracker } from "@/components/telemetry/event-tracker";
 import { getCurrentUser } from "@/lib/auth";
+import { getPageChunks } from "@/lib/chunks";
+import { isProduction } from "@/lib/constants";
+import { isPageWithFeedback } from "@/lib/feedback";
+import { getPageStatus } from "@/lib/page-status";
+import { getPagerLinks } from "@/lib/pager";
+import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import { PageTitle } from "@/components/page-title";
+import { getModuleChapters } from "@/lib/sidebar";
 import { getUser } from "@/lib/user";
-import { PageStatusModal } from "@/components/page-status/page-status-modal";
+import { Page } from "contentlayer/generated";
 import {
 	ArrowUpIcon,
 	EyeIcon,
@@ -20,20 +32,8 @@ import {
 	PencilIcon,
 	UnlockIcon,
 } from "lucide-react";
-import { PageStatus } from "@/components/page-status/page-status";
-import { NoteCount } from "@/components/note/note-count";
-import { isProduction } from "@/lib/constants";
-import { EventTracker } from "@/components/telemetry/event-tracker";
-import { Spinner } from "@/components/spinner";
-import { getPageStatus } from "@/lib/page-status";
-import { PageSummary } from "@/components/summary/page-summary";
-import { ModuleSidebar } from "@/components/module-sidebar";
-import { getModuleChapters } from "@/lib/sidebar";
-import { Page } from "contentlayer/generated";
-import { isPageWithFeedback } from "@/lib/feedback";
-import { getPageChunks } from "@/lib/chunks";
-import { PageProvider } from "@/components/provider/page-provider";
-import { RestartPageButton } from "@/components/page/restart-page-button";
+import { notFound } from "next/navigation";
+import { Fragment, Suspense } from "react";
 
 const AnchorLink = ({
 	text,
@@ -175,14 +175,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			{selectedQuestions.size > 0 && (
-				<QuestionControl
-					selectedQuestions={selectedQuestions}
-					pageSlug={pageSlug}
-					isFeedbackEnabled={isFeedbackEnabled}
-				/>
-			)}
-
+			<QuestionControl
+				selectedQuestions={selectedQuestions}
+				pageSlug={pageSlug}
+				isFeedbackEnabled={isFeedbackEnabled}
+			/>
 			{user && isProduction && <EventTracker />}
 		</PageProvider>
 	);

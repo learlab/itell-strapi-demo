@@ -1,7 +1,7 @@
 import { env } from "@/env.mjs";
 import { QAScoreSchema } from "@itell/core/qa";
-import { z } from "zod";
 import qs from "qs";
+import { z } from "zod";
 
 export const QuestionSchema = z.object({
 	question: z.string(),
