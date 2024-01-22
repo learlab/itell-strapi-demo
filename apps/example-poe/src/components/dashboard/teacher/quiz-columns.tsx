@@ -1,6 +1,15 @@
 "use client";
 
-import { Button } from "@/components/client-components";
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/client-components";
+import { QuizRecord } from "@/components/quiz/quiz-record";
+import { AnswerData, QuizData } from "@/lib/quiz";
 import { makePageHref } from "@/lib/utils";
 import { User } from "@prisma/client";
 import { Column, ColumnDef } from "@tanstack/react-table";
@@ -11,7 +20,9 @@ import Link from "next/link";
 export type QuizTableData = Pick<User, "id" | "name"> & {
 	quizTitle: string;
 	quizPageSlug: string;
+	quizAnswers: AnswerData;
 	accuracy: number;
+
 	created_at: Date;
 };
 
@@ -55,13 +66,18 @@ export const columns: ColumnDef<QuizTableData>[] = [
 		header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
 		cell: ({ row }) => {
 			return (
-				<Link
-					href={`${makePageHref(row.original.quizPageSlug)}/quiz`}
-					className="flex justify-center gap-1 items-center hover:underline"
-				>
-					<LinkIcon className="w-2 h-2" />
-					{row.original.quizTitle}
-				</Link>
+				<Dialog>
+					<DialogTrigger>{row.original.quizTitle}</DialogTrigger>
+					<DialogContent className="sm:max-w-2xl h-4/5 overflow-y-scroll">
+						<DialogHeader>
+							<DialogTitle>{row.original.name}'s quiz choices</DialogTitle>
+						</DialogHeader>
+						<QuizRecord
+							pageSlug={row.original.quizPageSlug}
+							answerData={row.original.quizAnswers}
+						/>
+					</DialogContent>
+				</Dialog>
 			);
 		},
 	},

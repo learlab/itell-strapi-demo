@@ -1,3 +1,4 @@
+import { QuizRecord } from "@/components/quiz/quiz-record";
 import { StudentStats } from "@/lib/dashboard";
 import { allPagesSorted } from "@/lib/pages";
 import { AnswerData, QuizData, getQuizCorrectCount } from "@/lib/quiz";
@@ -46,13 +47,15 @@ export const TeacherClassQuiz = async ({ students }: Props) => {
 				quizTitle: quizPages.find((page) => page.pageSlug === entry.pageSlug)
 					?.title as string,
 				quizPageSlug: entry.pageSlug,
+				quizAnswers: parsed.success
+					? parsed.data.choices
+					: (entry.data as AnswerData),
 				created_at: entry.created_at,
 				accuracy,
 			};
 		});
 	});
 
-	// console.log(quizData);
 	return (
 		<>
 			<h3 className="mb-4 text-lg font-medium">Quiz</h3>
