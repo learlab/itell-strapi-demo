@@ -1,27 +1,28 @@
 import {
-	Info,
-	Warning,
-	Keyterm,
+	Blockquote,
 	Callout,
 	Caption,
-	Typography,
-	Blockquote,
-	Steps,
-	Columns,
 	Column,
+	Columns,
+	Info,
+	Keyterm,
+	Steps,
+	Typography,
+	Warning,
 	YoutubeVideo,
 } from "@itell/ui/server";
+
 import {
 	Accordion,
 	AccordionItem,
 	Image,
 } from "@/components/client-components";
 import {
-	Tabs,
-	TabsHeader,
 	Tab,
 	TabPanel,
+	Tabs,
 	TabsBody,
+	TabsHeader,
 } from "@/components/ui/tabs";
 import { TextOverImage } from "@/components/ui/text-over-image";
 
