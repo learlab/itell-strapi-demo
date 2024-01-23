@@ -1,8 +1,9 @@
 "use client";
 
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
-import { QAProvider } from "../context/qa-context";
 import { PageStatus } from "@/lib/page-status";
+import { ChatProvider } from "../context/chat-context";
+import { QAProvider } from "../context/qa-context";
 
 type Props = {
 	pageSlug: string;
@@ -28,7 +29,7 @@ export const PageProvider = ({
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
-			{children}
+			<ChatProvider>{children}</ChatProvider>
 		</QAProvider>
 	);
 };

@@ -45,6 +45,7 @@
     "react-dom-confetti": "^0.2.0",
     "react-hook-form": "^7.46.1",
     "react-text-selection-popover": "^2.0.2",
+    "react-textarea-autosize": "^8.5.3",
     "recharts": "^2.8.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-katex": "^6.0.3",

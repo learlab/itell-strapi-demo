@@ -1,4 +1,6 @@
+import { Chatbot } from "@/components/chat/chatbot";
 import { Button, Pager } from "@/components/client-components";
+import { ChatProvider } from "@/components/context/chat-context";
 import { ModuleSidebar } from "@/components/module-sidebar";
 import { NoteCount } from "@/components/note/note-count";
 import { NoteList } from "@/components/note/note-list";
@@ -181,6 +183,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
 			{user && isProduction && <EventTracker />}
+			<Chatbot />
 		</PageProvider>
 	);
 }
