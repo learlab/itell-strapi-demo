@@ -11,25 +11,25 @@ const defaultValue = [
 	},
 ];
 
-export const ChatContext = createContext<{
+type ChatContextType = {
 	messages: Message[];
 	isMessageUpdating: boolean;
 	addMessage: (message: Message) => void;
 	removeMessage: (id: string) => void;
 	updateMessage: (id: string, updateFn: (prevText: string) => string) => void;
 	setIsMessageUpdating: (isUpdating: boolean) => void;
-}>({
-	messages: [],
-	isMessageUpdating: false,
-	addMessage: () => {},
-	removeMessage: () => {},
-	updateMessage: () => {},
-	setIsMessageUpdating: () => {},
-});
+	activeMessageId: string | undefined;
+	setActiveMessageId: (id: string | undefined) => void;
+};
+
+export const ChatContext = createContext<ChatContextType>(
+	{} as ChatContextType,
+);
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
 	const [messages, setMessages] = useState(defaultValue);
 	const [isMessageUpdating, setIsMessageUpdating] = useState<boolean>(false);
+	const [activeMessageId, setActiveMessageId] = useState<string | undefined>();
 
 	const addMessage = (message: Message) => {
 		setMessages((prev) => [...prev, message]);
@@ -58,10 +58,12 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 			value={{
 				messages,
 				isMessageUpdating,
+				activeMessageId,
 				addMessage,
 				removeMessage,
 				updateMessage,
 				setIsMessageUpdating,
+				setActiveMessageId,
 			}}
 		>
 			{children}

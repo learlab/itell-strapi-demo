@@ -1,10 +1,18 @@
 "use client";
 
 import { cn } from "@itell/core/utils";
+import { User } from "@prisma/client";
+import { Avatar, AvatarImage } from "../client-components";
 import { useChat } from "../context/chat-context";
+import { Spinner } from "../spinner";
+import { UserAvatar } from "../user-avatar";
 
-export const ChatMessages = () => {
-	const { messages } = useChat();
+type Props = {
+	user: User;
+};
+
+export const ChatMessages = ({ user }: Props) => {
+	const { messages, activeMessageId } = useChat();
 	const inverseMessages = messages.slice().reverse();
 
 	return (
@@ -24,21 +32,30 @@ export const ChatMessages = () => {
 						>
 							<div
 								className={cn(
-									"flex flex-col space-y-2 text-sm max-w-xs mx-2 overflow-x-hidden",
-									{
-										"order-1 items-end": message.isUserMessage,
-										"order-2 items-start": !message.isUserMessage,
-									},
+									"flex flex-row items-center space-x-2 text-sm max-w-xs mx-2 overflow-x-hidden",
+									message.isUserMessage ? "justify-end" : "justify-start",
 								)}
 							>
-								<p
-									className={cn("px-4 py-2 rounded-lg", {
-										"bg-blue-600 text-white": message.isUserMessage,
-										"bg-gray-200 text-gray-900": !message.isUserMessage,
-									})}
-								>
-									{message.text}
-								</p>
+								{message.isUserMessage ? (
+									<UserAvatar user={user} className="order-last" />
+								) : (
+									<Avatar className="rounded-none w-8 h-8">
+										<AvatarImage src="/images/itell-ai.svg" />
+									</Avatar>
+								)}
+
+								{activeMessageId === message.id ? (
+									<Spinner className="size-4" />
+								) : (
+									<p
+										className={cn("px-4 py-2 rounded-lg", {
+											"bg-blue-600 text-white": message.isUserMessage,
+											"bg-gray-200 text-gray-900": !message.isUserMessage,
+										})}
+									>
+										{message.text}
+									</p>
+								)}
 							</div>
 						</div>
 					</div>

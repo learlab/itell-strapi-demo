@@ -1,16 +1,6 @@
 "use client";
 
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuTrigger,
-	DropdownMenuItem,
-	Button,
-	DropdownMenuSeparator,
-} from "./client-components";
-import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
-import {
 	ChevronDownIcon,
 	ChevronUpIcon,
 	CompassIcon,
@@ -19,9 +9,19 @@ import {
 	LogOutIcon,
 	SettingsIcon,
 } from "lucide-react";
-import { Spinner } from "./spinner";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import UserAvatar from "./user-avatar";
+import { useState } from "react";
+import {
+	Button,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "./client-components";
+import { Spinner } from "./spinner";
+import { UserAvatar } from "./user-avatar";
 
 export const UserAccountNav = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -47,9 +47,8 @@ export const UserAccountNav = () => {
 					<UserAvatar
 						className="h-8 w-8"
 						user={{
-							name: user.name || null,
-							email: user.email || null,
 							image: user.image || null,
+							name: user.name || null,
 						}}
 					/>
 					{menuOpen ? (

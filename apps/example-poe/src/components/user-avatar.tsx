@@ -1,23 +1,22 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "./client-components";
-import { User } from "@prisma/client";
+import { Avatar as BaseAvatar } from "@/components/client-components";
+import { Session, User } from "@prisma/client";
+import { Avatar } from "./ui/avatar";
 
-interface Props extends React.ComponentPropsWithoutRef<typeof Avatar> {
-	user: Pick<User, "name" | "image" | "email">;
+interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {
+	user: {
+		image: string | null;
+		name: string | null;
+	};
 }
 
-export default function UserAvatar({ user, ...rest }: Props) {
+export const UserAvatar = ({ user, ...rest }: Props) => {
 	return (
-		<Avatar {...rest}>
-			{user.image ? (
-				<AvatarImage alt="Picture" src={user.image} />
-			) : (
-				<AvatarFallback>
-					<span className="sr-only">{user.name}</span>
-					<span>{user.name?.[0]?.toUpperCase()}</span>
-				</AvatarFallback>
-			)}
-		</Avatar>
+		<Avatar
+			{...rest}
+			src={user.image || null}
+			fallback={user.name?.[0]?.toUpperCase() || "User"}
+		/>
 	);
-}
+};

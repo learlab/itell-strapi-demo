@@ -90,7 +90,6 @@ export const LeftAside = ({ page }: { page: Page }) => {
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
-
 	const pageIndex = allPagesSorted.findIndex((section) => {
 		return section.page_slug === params.slug;
 	});
@@ -183,7 +182,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
 			{user && isProduction && <EventTracker />}
-			<Chatbot />
+			<Chatbot pageSlug={pageSlug} user={user} />
 		</PageProvider>
 	);
 }
