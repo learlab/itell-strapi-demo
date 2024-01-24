@@ -1,9 +1,9 @@
+import { ModuleToc } from "@/components/module-toc";
+import { PageTitle } from "@/components/page-title";
+import { allPagesSorted } from "@/lib/pages";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
-import { PageTitle } from "@/components/page-title";
-import { LeftAside } from "./page";
-import { allPagesSorted } from "@/lib/pages";
 import { notFound } from "next/navigation";
 
 export default async function () {
@@ -26,7 +26,7 @@ export default async function () {
 	return (
 		<>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
-				<LeftAside page={page} />
+				<ModuleToc page={page} />
 
 				<section className="relative col-span-12 md:col-span-10 lg:col-span-8 space-y-4">
 					<PageTitle>{page.title}</PageTitle>

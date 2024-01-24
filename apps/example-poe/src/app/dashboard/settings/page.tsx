@@ -1,7 +1,7 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SettingsForm } from "@/components/dashboard/settings-form";
 import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
 import { getTeacherWithClassId } from "@/lib/class";
 import { getUser } from "@/lib/user";

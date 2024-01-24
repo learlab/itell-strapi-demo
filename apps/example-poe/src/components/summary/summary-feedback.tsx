@@ -1,9 +1,9 @@
-import { Info, Warning } from "@itell/ui/server";
-import { Accordion, AccordionItem } from "../client-components";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
+import { getPageData, makePageHref } from "@/lib/utils";
 import { SummaryFeedbackType } from "@itell/core/summary";
+import { Info, Warning } from "@itell/ui/server";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import { getPageData, makePageHref } from "@/lib/utils";
 
 type Props = {
 	canProceed: boolean;
