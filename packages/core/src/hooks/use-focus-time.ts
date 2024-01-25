@@ -14,7 +14,7 @@ type Props = {
 const COUNT_INTERVAL = 1000;
 
 export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
-	const entries = useRef<ChunkEntryWithLastTick[]>();
+	const entries = useRef<ChunkEntryWithLastTick[]>([]);
 	const isSaving = useRef(false);
 	const visibleChunks = new Set<string>();
 	const savedTime = useRef<Map<string, number>>(new Map());
@@ -77,13 +77,13 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 				};
 			});
 
-			await onEvent({
-				entries: updatedEntries,
-				totalViewTime: updatedEntries.reduce(
-					(a, b) => Math.max(a, b.totalViewTime),
-					0,
-				),
-			});
+			const eventData: FocusTimeEventData = {}
+			updatedEntries.forEach((entry) => {
+				eventData[entry.chunkId] = entry.totalViewTime
+			})
+
+
+			await onEvent(eventData);
 
 			isSaving.current = false;
 		}

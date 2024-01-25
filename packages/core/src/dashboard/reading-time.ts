@@ -14,7 +14,7 @@ export const PrevDaysLookup = {
 } as const;
 
 export type ReadingTimeEntry = {
-	totalViewTime: number;
+	total_view_time: number;
 	created_at: Date;
 };
 
@@ -33,7 +33,7 @@ export const getGroupedReadingTime = async (
 			const formattedDate = formatDate(thresholdDate, "yyyy-MM-dd");
 			acc.set(
 				formattedDate,
-				(acc.get(formattedDate) || 0) + entry.totalViewTime,
+				(acc.get(formattedDate) || 0) + entry.total_view_time,
 			);
 		} else {
 			// when the entry date is greater than the last date in intervalDates, group it with the last date
@@ -41,7 +41,7 @@ export const getGroupedReadingTime = async (
 			const formattedDate = formatDate(lastDate, "yyyy-MM-dd");
 			acc.set(
 				formattedDate,
-				(acc.get(formattedDate) || 0) + entry.totalViewTime,
+				(acc.get(formattedDate) || 0) + entry.total_view_time,
 			);
 		}
 

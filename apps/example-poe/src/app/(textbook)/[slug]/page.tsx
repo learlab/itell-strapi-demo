@@ -121,7 +121,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
-			{user && isProduction && <EventTracker />}
+			{user && <EventTracker pageSlug={pageSlug} />}
 			<Chatbot pageSlug={pageSlug} user={user} />
 		</PageProvider>
 	);
