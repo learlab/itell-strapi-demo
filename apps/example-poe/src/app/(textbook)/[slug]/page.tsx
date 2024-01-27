@@ -122,7 +122,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} />}
-			{/* <Chatbot pageSlug={pageSlug} user={user} /> */}
+			<Chatbot pageSlug={pageSlug} user={user} />
 		</PageProvider>
 	);
 }
