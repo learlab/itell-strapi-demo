@@ -1,3 +1,4 @@
+import { CreateErrorFallback } from "@/components/error-fallback";
 import { QuizRecord } from "@/components/quiz/quiz-record";
 import { StudentStats } from "@/lib/dashboard";
 import { allPagesSorted } from "@/lib/pages";
@@ -78,4 +79,8 @@ TeacherClassQuiz.Skeleton = () => (
 			<Skeleton className="rounded-md h-12 w-16" />
 		</div>
 	</>
+);
+
+TeacherClassQuiz.ErrorFallback = CreateErrorFallback(
+	"Failed to calculate quiz statistics",
 );

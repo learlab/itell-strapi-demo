@@ -1,7 +1,12 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
 import { Confetti } from "@/components/ui/confetti";
+import { isProduction } from "@/lib/constants";
+import { getQAScore } from "@/lib/question";
+import { createConstructedResponse } from "@/lib/server-actions";
+// import shake effect
+import "@/styles/shakescreen.css";
+import { cn } from "@itell/core/utils";
 import {
 	Card,
 	CardContent,
@@ -10,10 +15,10 @@ import {
 	Warning,
 } from "@itell/ui/server";
 import { AlertTriangle } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Spinner } from "../spinner";
-import { getQAScore } from "@/lib/question";
-import { FeedbackModal } from "./feedback-modal";
+import { useFormState, useFormStatus } from "react-dom";
+import { toast } from "sonner";
 import {
 	Button,
 	HoverCard,
@@ -21,15 +26,10 @@ import {
 	HoverCardTrigger,
 	TextArea,
 } from "../client-components";
-import { toast } from "sonner";
-// import shake effect
-import "@/styles/shakescreen.css";
-import { useSession } from "next-auth/react";
-import { createConstructedResponse } from "@/lib/server-actions";
-import { NextChunkButton } from "./next-chunk-button";
-import { isProduction } from "@/lib/constants";
-import { useFormState, useFormStatus } from "react-dom";
 import { useQA } from "../context/qa-context";
+import { Spinner } from "../spinner";
+import { FeedbackModal } from "./feedback-modal";
+import { NextChunkButton } from "./next-chunk-button";
 
 type QuestionScore = 0 | 1 | 2;
 
@@ -69,7 +69,7 @@ const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 	return (
 		<Button variant="secondary" disabled={pending}>
 			{pending && <Spinner className="inline mr-2" />}
-			{answerStatus === AnswerStatus.UNANSWERED ? "Submit" : "Resubmit"}
+			{answerStatus === AnswerStatus.UNANSWERED ? "Answer" : "Resubmit"}
 		</Button>
 	);
 };

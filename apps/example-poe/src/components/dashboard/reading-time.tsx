@@ -25,6 +25,7 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "../client-components";
+import { CreateErrorFallback } from "../error-fallback";
 import { ReadingTimeChart } from "./reading-time-chart";
 
 type Props = {
@@ -117,3 +118,6 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 };
 
 ReadingTime.Skeleton = () => <Skeleton className="w-full h-[350px]" />;
+ReadingTime.ErrorFallback = CreateErrorFallback(
+	"Failed to calculate total reading time",
+);

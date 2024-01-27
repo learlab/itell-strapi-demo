@@ -1,4 +1,5 @@
 import { Progress } from "@/components/client-components";
+import { CreateErrorFallback } from "@/components/error-fallback";
 import { StudentStats, getClassStudentStats } from "@/lib/dashboard";
 import { allPagesSorted } from "@/lib/pages";
 import { delay, getPageData } from "@/lib/utils";
@@ -79,4 +80,8 @@ TeacherClassGeneral.Skeleton = () => (
 			<Skeleton className="rounded-md h-12 w-16" />
 		</div>
 	</>
+);
+
+TeacherClassGeneral.ErrorFallback = CreateErrorFallback(
+	"Failed to list students",
 );

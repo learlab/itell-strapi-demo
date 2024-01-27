@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Summary } from "@prisma/client";
+import Link from "next/link";
 
 import { cn, relativeDate } from "@itell/core/utils";
 import { Skeleton, buttonVariants } from "@itell/ui/server";

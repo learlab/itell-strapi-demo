@@ -196,6 +196,8 @@ export const createFocusTime = async ({
 		if (record) {
 			const oldData = record.data as FocusTimeEventData;
 			const newData: FocusTimeEventData = {};
+			// if there are legacy chunk ids that's not present in the new data
+			// they will dropped during the update
 			for (const chunkId in data) {
 				if (chunkId in oldData) {
 					newData[chunkId] = oldData[chunkId] + data[chunkId];
