@@ -1,12 +1,15 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { QuizRecord } from "@/components/quiz/quiz-record";
 import { StudentStats } from "@/lib/dashboard";
+import { isPageAfter } from "@/lib/location";
 import { allPagesSorted } from "@/lib/pages";
 import { AnswerData, QuizData, getQuizCorrectCount } from "@/lib/quiz";
+import { groupby } from "@itell/core/utils";
 import { Skeleton } from "@itell/ui/server";
 import data from "public/quiz-info.json";
 import { z } from "zod";
 import { QuizTableData, columns } from "./quiz-columns";
+import { QuizTabs } from "./quiz-tabs";
 import { StudentsTable } from "./students-table";
 
 const QuizInfo = data as Record<string, QuizData>;
@@ -57,9 +60,31 @@ export const TeacherClassQuiz = async ({ students }: Props) => {
 		});
 	});
 
+	const accGrouped = groupby(
+		quizTableData,
+		(entry) => entry.quizPageSlug,
+		(entry) => entry.accuracy,
+	);
+
+	for (const pageSlug in QuizInfo) {
+		if (!accGrouped[pageSlug]) {
+			accGrouped[pageSlug] = [];
+		}
+	}
+
+	const tabsData = Object.keys(accGrouped).map((key) => ({
+		pageSlug: key,
+		accuracies: accGrouped[key],
+	}));
+
+	tabsData.sort((a, b) => {
+		return isPageAfter(a.pageSlug, b.pageSlug) ? 1 : -1;
+	});
+
 	return (
 		<>
 			<h3 className="mb-4 text-lg font-medium">Quiz</h3>
+			<QuizTabs data={tabsData} />
 			<StudentsTable columns={columns} data={quizTableData} />
 		</>
 	);
