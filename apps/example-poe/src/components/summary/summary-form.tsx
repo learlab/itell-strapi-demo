@@ -1,18 +1,18 @@
 "use client";
 
-import { Warning } from "@itell/ui/server";
-import { SummaryFeedback } from "./summary-feedback";
-import { ErrorFeedback } from "@itell/core/summary";
-import { SummaryInput } from "./summary-input";
-import { useFormState } from "react-dom";
-import { SummarySubmitButton } from "./summary-submit-button";
-import { SummaryProceedModal } from "./summary-proceed-modal";
 import { makeInputKey, makePageHref } from "@/lib/utils";
+import { ErrorFeedback } from "@itell/core/summary";
+import { Warning } from "@itell/ui/server";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useFormState } from "react-dom";
 import Confetti from "react-dom-confetti";
 import { useQA } from "../context/qa-context";
-import { useEffect } from "react";
 import { FormState } from "./page-summary";
-import { useRouter } from "next/navigation";
+import { SummaryFeedback } from "./summary-feedback";
+import { SummaryInput } from "./summary-input";
+import { SummaryProceedModal } from "./summary-proceed-modal";
+import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	value?: string;
@@ -36,7 +36,6 @@ export const SummaryForm = ({
 	const [formState, formAction] = useFormState(onSubmit, initialState);
 	const router = useRouter();
 	const { isPageFinished, pageStatus } = useQA();
-
 	const editDisabled = inputEnabled
 		? false
 		: pageStatus.isPageUnlocked
@@ -79,7 +78,10 @@ export const SummaryForm = ({
 				/>
 				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton disabled={!isPageFinished} />
+					{/* isPageUnfinished is undefine when used in summary [id] page */}
+					<SummarySubmitButton
+						disabled={isPageFinished === undefined ? false : !isPageFinished}
+					/>
 				</div>
 			</form>
 			{formState.canProceed && !formState.showQuiz && (

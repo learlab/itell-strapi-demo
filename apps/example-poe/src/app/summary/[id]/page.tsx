@@ -1,34 +1,34 @@
 import { SummaryOperations } from "@/components/dashboard/summary-operations";
-import { ScoreBadge } from "@/components/score/badge";
-import { TextbookPageModal } from "@/components/textbook-page-modal";
+import { FormState } from "@/components/summary/page-summary";
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
+import { SummaryFeedback } from "@/components/summary/summary-feedback";
+import { SummaryForm } from "@/components/summary/summary-form";
+import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { getCurrentUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD, ScoreType } from "@/lib/constants";
 import db from "@/lib/db";
+import { isPageWithFeedback } from "@/lib/feedback";
+import { isLastPage } from "@/lib/location";
+import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
-import { relativeDate } from "@itell/core/utils";
-import { Badge } from "@itell/ui/server";
-import { Summary, User } from "@prisma/client";
-import { notFound, redirect } from "next/navigation";
-import {
-	ErrorType,
-	getFeedback,
-	simpleFeedback,
-	validateSummary,
-} from "@itell/core/summary";
-import { getScore } from "@/lib/summary";
 import {
 	getUserPageSummaryCount,
 	incrementUserPage,
 	isPageQuizUnfinished,
 	updateSummary,
 } from "@/lib/server-actions";
+import { getFeedback, getSummaryResponse } from "@/lib/summary";
+import {
+	ErrorType,
+	SummaryFeedback as SummaryFeedbackType,
+	simpleFeedback,
+	validateSummary,
+} from "@itell/core/summary";
+import { relativeDate } from "@itell/core/utils";
+import { Badge } from "@itell/ui/server";
+import { Summary, User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { SummaryForm } from "@/components/summary/summary-form";
-import { isLastPage } from "@/lib/location";
-import { FormState } from "@/components/summary/page-summary";
-import { getPageStatus } from "@/lib/page-status";
-import { isPageWithFeedback } from "@/lib/feedback";
+import { notFound, redirect } from "next/navigation";
 
 async function getSummaryForUser(summaryId: Summary["id"], userId: User["id"]) {
 	return await db.summary.findFirst({
@@ -71,7 +71,6 @@ export default async function ({ params }: PageProps) {
 	}
 
 	const pageSlug = page.page_slug;
-	const pageStatus = await getPageStatus(user.id, pageSlug);
 	const isFeedbackEnabled = isPageWithFeedback(user, page);
 
 	const onSubmit = async (
@@ -85,27 +84,34 @@ export default async function ({ params }: PageProps) {
 		if (error) {
 			return { ...prevState, error };
 		}
-		const response = await getScore({ input, pageSlug });
 
-		if (!response.success) {
+		let feedback: SummaryFeedbackType | null = null;
+		const { summaryResponse } = await getSummaryResponse({
+			input,
+			pageSlug,
+			userId: user.id,
+		});
+		if (!summaryResponse) {
+			return { ...prevState, feedback: null, error: ErrorType.INTERNAL };
+		}
+
+		if (!summaryResponse.english) {
 			return {
-				// response parsing error
 				...prevState,
-				error: ErrorType.INTERNAL,
+				feedback: null,
+				error: ErrorType.LANGUAGE_NOT_EN,
 			};
 		}
 
-		const feedback = isFeedbackEnabled
-			? getFeedback(response.data)
-			: simpleFeedback();
+		feedback = getFeedback(summaryResponse);
 
 		await updateSummary(params.id, {
 			text: input,
 			isPassed: feedback.isPassed,
-			containmentScore: response.data.containment,
-			similarityScore: response.data.similarity,
-			wordingScore: response.data.wording,
-			contentScore: response.data.content,
+			containmentScore: summaryResponse.containment,
+			similarityScore: summaryResponse.similarity,
+			wordingScore: summaryResponse.wording,
+			contentScore: summaryResponse.content,
 		});
 
 		revalidatePath(`/summary/${params.id}`);
@@ -157,7 +163,7 @@ export default async function ({ params }: PageProps) {
 				<SummaryOperations summary={summary} pageUrl={page.url} />
 			</div>
 			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
-				<aside className="hidden w-[200px] flex-col md:flex space-y-4">
+				<aside className="w-[200px] space-y-4">
 					<div className="flex items-center justify-center">
 						<Badge variant={summary.isPassed ? "default" : "destructive"}>
 							{summary.isPassed ? "Passed" : "Failed"}
@@ -168,20 +174,8 @@ export default async function ({ params }: PageProps) {
 						to update the old summary.
 					</p>
 					<p className="tracking-tight text-sm text-muted-foreground">
-						Click on the title to review this section's content.
+						Click on the title to review this page's content.
 					</p>
-					<div className="flex flex-col gap-2">
-						<ScoreBadge
-							type={ScoreType.containment}
-							score={summary.containmentScore}
-						/>
-						<ScoreBadge
-							type={ScoreType.similarity}
-							score={summary.similarityScore}
-						/>
-						<ScoreBadge type={ScoreType.wording} score={summary.wordingScore} />
-						<ScoreBadge type={ScoreType.content} score={summary.contentScore} />
-					</div>
 				</aside>
 				<div className="space-y-2">
 					<div className="text-center">

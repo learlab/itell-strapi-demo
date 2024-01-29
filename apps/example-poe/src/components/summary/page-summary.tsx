@@ -9,7 +9,7 @@ import {
 	isPageQuizUnfinished,
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
-import { getSummaryResponse } from "@/lib/summary";
+import { getFeedback, getSummaryResponse } from "@/lib/summary";
 import {
 	ErrorType,
 	SummaryFeedback,
@@ -102,12 +102,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 				};
 			}
 
-			feedback = {
-				isPassed: summaryResponse.is_passed,
-				prompt: summaryResponse.prompt,
-				promptDetails: summaryResponse.prompt_details,
-				suggestedKeyphrases: summaryResponse.suggested_keyphrases,
-			};
+			feedback = getFeedback(summaryResponse);
 
 			await createSummary({
 				text: input,

@@ -17,8 +17,6 @@ export const SummaryFeedback = ({ feedback, canProceed, pageSlug }: Props) => {
 		return null;
 	}
 
-	console.log(feedback);
-
 	const FeedbackBody = (
 		<div className="font-light leading-relaxed space-y-2">
 			<header className="flex justify-between">

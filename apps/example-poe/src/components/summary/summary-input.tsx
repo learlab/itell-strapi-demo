@@ -16,8 +16,8 @@ type Props = {
 
 export const SummaryInput = ({
 	pageSlug,
-	disabled,
 	textAreaClassName,
+	disabled = true,
 	value = "",
 }: Props) => {
 	const [input, setInput] = useState(value);

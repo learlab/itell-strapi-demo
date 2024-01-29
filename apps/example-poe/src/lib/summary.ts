@@ -1,5 +1,9 @@
 import { env } from "@/env.mjs";
-import { SummaryResponse, SummaryResponseSchema } from "@itell/core/summary";
+import {
+	SummaryFeedback,
+	SummaryResponse,
+	SummaryResponseSchema,
+} from "@itell/core/summary";
 import { decodeStream } from "@itell/core/utils";
 import { parse } from "date-fns";
 import db from "./db";
@@ -39,14 +43,16 @@ export const getSummaryResponse = async ({
 	let summaryResponse: SummaryResponse | undefined;
 	try {
 		await decodeStream(response.body as ReadableStream, (data, index) => {
-			const value = data.trim().split("\u0000")[0];
-			const text =
-				value.search("request_id") === -1
-					? value
-					: value.substring(0, value.search("request_id") - 2);
-			const parsed = SummaryResponseSchema.safeParse(JSON.parse(text));
-			if (parsed.success) {
-				summaryResponse = parsed.data;
+			if (!summaryResponse) {
+				const value = data.trim().split("\u0000")[0];
+				const text =
+					value.search("request_id") === -1
+						? value
+						: value.substring(0, value.search("request_id") - 2);
+				const parsed = SummaryResponseSchema.safeParse(JSON.parse(text));
+				if (parsed.success) {
+					summaryResponse = parsed.data;
+				}
 			}
 		});
 	} catch (err) {
@@ -54,4 +60,13 @@ export const getSummaryResponse = async ({
 	}
 
 	return { summaryResponse };
+};
+
+export const getFeedback = (response: SummaryResponse): SummaryFeedback => {
+	return {
+		isPassed: response.is_passed,
+		prompt: response.prompt,
+		promptDetails: response.prompt_details,
+		suggestedKeyphrases: response.suggested_keyphrases,
+	};
 };
