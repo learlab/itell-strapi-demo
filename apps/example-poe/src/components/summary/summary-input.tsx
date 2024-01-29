@@ -1,10 +1,10 @@
 "use client";
 
 import { TextArea } from "@/components/client-components";
-import { makeInputKey } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { cn, numOfWords } from "@itell/core/utils";
 import { isProduction } from "@/lib/constants";
+import { makeInputKey } from "@/lib/utils";
+import { cn, numOfWords } from "@itell/core/utils";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
@@ -21,6 +21,7 @@ export const SummaryInput = ({
 	value = "",
 }: Props) => {
 	const [input, setInput] = useState(value);
+
 	useEffect(() => {
 		setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
 	}, []);

@@ -1,7 +1,7 @@
 "use client";
 
-import { ChunkSchema, decodeChatStream, fetchChatResponse } from "@/lib/chat";
-import { cn } from "@itell/core/utils";
+import { ChunkSchema, fetchChatResponse } from "@/lib/chat";
+import { cn, decodeStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes } from "react";
 import TextArea from "react-textarea-autosize";
@@ -38,8 +38,8 @@ export const ChatInput = ({
 		setActiveMessageId(undefined);
 
 		if (chatResponse.ok) {
-			decodeChatStream(chatResponse.data, (chunk) => {
-				const chunkValue = JSON.parse(chunk) as {
+			decodeStream(chatResponse.data, (chunk) => {
+				const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
 					request_id: string;
 					text: string;
 				};

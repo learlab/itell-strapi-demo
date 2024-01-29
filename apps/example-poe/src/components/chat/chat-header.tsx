@@ -1,4 +1,4 @@
-const ChatHeader = () => {
+export const ChatHeader = () => {
 	return (
 		<div className="w-full flex gap-3 justify-start items-center ">
 			<div className="flex flex-col items-start text-sm">
@@ -11,5 +11,3 @@ const ChatHeader = () => {
 		</div>
 	);
 };
-
-export default ChatHeader;

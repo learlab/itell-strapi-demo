@@ -2,11 +2,11 @@ export * from "./feedback";
 export * from "./validate";
 export * from "./schema";
 
-import { SummaryFeedbackType } from "./feedback";
+import { SummaryFeedback } from "./schema";
 import { ErrorType } from "./validate";
 
 export type SummaryFormState = {
-	feedback: SummaryFeedbackType | null;
 	canProceed: boolean;
 	error: ErrorType | null;
+	feedback: SummaryFeedback | null
 };

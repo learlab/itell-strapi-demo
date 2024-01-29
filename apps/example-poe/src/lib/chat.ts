@@ -51,22 +51,3 @@ export const fetchChatResponse = async ({
 		data: parsed.data.body as ReadableStream,
 	};
 };
-
-export const decodeChatStream = async (
-	stream: ReadableStream,
-	onDecode: (chunk: string) => void,
-) => {
-	const reader = stream.getReader();
-	const decoder = new TextDecoder();
-	let done = false;
-
-	while (!done) {
-		const { value, done: doneReading } = await reader.read();
-		done = doneReading;
-		const chunk = decoder.decode(value).trim().split("\u0000")[0];
-
-		if (chunk) {
-			onDecode(chunk);
-		}
-	}
-};

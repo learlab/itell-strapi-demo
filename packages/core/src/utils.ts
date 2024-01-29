@@ -88,3 +88,25 @@ export const formatDate = (
 ) => {
 	return formatInTimeZone(date, tz, format);
 };
+
+
+export const decodeStream = async (
+	stream: ReadableStream,
+	onDecode: (chunkData: string, chunkIndex: number) => void,
+) => {
+	const reader = stream.getReader();
+	const decoder = new TextDecoder();
+	let done = false;
+	let chunkIndex = 0
+
+	while (!done) {
+		const { value, done: doneReading } = await reader.read();
+		done = doneReading;
+		const chunk = decoder.decode(value)
+
+		if (chunk) {
+			onDecode(chunk, chunkIndex);
+			chunkIndex++
+		}
+	}
+};

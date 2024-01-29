@@ -1,16 +1,7 @@
-import { Fragment, Suspense } from "react";
-import { SummaryCount } from "./summary-count";
-import { SummaryDescription } from "./summary-description";
 import { getCurrentUser } from "@/lib/auth";
-import {
-	ErrorType,
-	SummaryFeedbackType,
-	SummaryFormState,
-	getFeedback,
-	simpleFeedback,
-	validateSummary,
-} from "@itell/core/summary";
-import { getScore } from "@/lib/summary";
+import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { isLastPage } from "@/lib/location";
+import { allPagesSorted } from "@/lib/pages";
 import {
 	createSummary,
 	getUserPageSummaryCount,
@@ -18,12 +9,20 @@ import {
 	isPageQuizUnfinished,
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
-import { isLastPage } from "@/lib/location";
-import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { getSummaryResponse } from "@/lib/summary";
+import {
+	ErrorType,
+	SummaryFeedback,
+	SummaryFormState,
+	simpleFeedback,
+	validateSummary,
+} from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
-import { SummaryForm } from "./summary-form";
-import { allPagesSorted } from "@/lib/pages";
 import { Page } from "contentlayer/generated";
+import { Fragment, Suspense } from "react";
+import { SummaryCount } from "./summary-count";
+import { SummaryDescription } from "./summary-description";
+import { SummaryForm } from "./summary-form";
 
 type Props = {
 	pageSlug: string;
@@ -35,10 +34,10 @@ export type FormState = SummaryFormState & {
 };
 
 const initialState: FormState = {
-	feedback: null,
 	canProceed: false,
 	error: null,
 	showQuiz: false,
+	feedback: null,
 };
 
 export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
@@ -84,24 +83,40 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 			return { ...prevState, error };
 		}
 
-		let feedback: SummaryFeedbackType;
+		let feedback: SummaryFeedback | null = null;
 		if (isFeedbackEnabled) {
-			const response = await getScore({ input, pageSlug });
-			if (!response.success) {
+			const { summaryResponse } = await getSummaryResponse({
+				input,
+				pageSlug,
+				userId,
+			});
+			if (!summaryResponse) {
+				return { ...prevState, feedback: null, error: ErrorType.INTERNAL };
+			}
+
+			if (!summaryResponse.english) {
 				return {
 					...prevState,
-					error: ErrorType.INTERNAL,
+					feedback: null,
+					error: ErrorType.LANGUAGE_NOT_EN,
 				};
 			}
-			feedback = getFeedback(response.data);
+
+			feedback = {
+				isPassed: summaryResponse.is_passed,
+				prompt: summaryResponse.prompt,
+				promptDetails: summaryResponse.prompt_details,
+				suggestedKeyphrases: summaryResponse.suggested_keyphrases,
+			};
+
 			await createSummary({
 				text: input,
 				pageSlug,
-				isPassed: feedback.isPassed,
-				containmentScore: response.data.containment,
-				similarityScore: response.data.similarity,
-				wordingScore: response.data.wording,
-				contentScore: response.data.content,
+				isPassed: summaryResponse.is_passed,
+				containmentScore: summaryResponse.containment,
+				similarityScore: summaryResponse.similarity,
+				wordingScore: summaryResponse.wording,
+				contentScore: summaryResponse.content,
 				user: {
 					connect: {
 						id: userId,
@@ -137,9 +152,9 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 
 			return {
 				canProceed: !isLastPage(pageSlug),
-				feedback,
 				error: null,
 				showQuiz,
+				feedback,
 			};
 		}
 
@@ -149,17 +164,17 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 
 			return {
 				canProceed: !isLastPage(pageSlug),
-				feedback,
 				error: null,
 				showQuiz,
+				feedback,
 			};
 		}
 
 		return {
 			canProceed: false,
-			feedback,
 			error: null,
 			showQuiz: false,
+			feedback,
 		};
 	};
 
