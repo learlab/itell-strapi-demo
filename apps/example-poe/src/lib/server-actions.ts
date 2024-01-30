@@ -1,10 +1,10 @@
 "use server";
 
-import { ChunkEntry, FocusTimeEventData } from "@itell/core/types";
+import { FocusTimeEventData } from "@itell/core/types";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { getCurrentUser, getServerAuthSession } from "./auth";
+import { getCurrentUser } from "./auth";
 import db from "./db";
 import { isPageAfter, nextPage } from "./location";
 
@@ -176,6 +176,17 @@ export const createEvent = async (
 			},
 		});
 	}
+};
+
+export const findFocusTime = async (userId: string, pageSlug: string) => {
+	return await db.focusTime.findUnique({
+		where: {
+			userId_pageSlug: {
+				userId,
+				pageSlug,
+			},
+		},
+	});
 };
 
 export const createFocusTime = async ({

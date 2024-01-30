@@ -4,6 +4,7 @@ import { TextArea } from "@/components/client-components";
 import { isProduction } from "@/lib/constants";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -20,10 +21,17 @@ export const SummaryInput = ({
 	disabled = true,
 	value = "",
 }: Props) => {
-	const [input, setInput] = useState(value);
+	const searchParams = useSearchParams();
+	const summaryToRevise = searchParams?.get("summary");
+	const text = summaryToRevise
+		? Buffer.from(summaryToRevise, "base64").toString("ascii")
+		: value;
+	const [input, setInput] = useState(text);
 
 	useEffect(() => {
-		setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
+		if (!summaryToRevise) {
+			setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
+		}
 	}, []);
 
 	return (
