@@ -86,7 +86,7 @@ model Event {
   eventType  String   @map("event_type")
   userId     String   @map("user_id")
   page       String
-  data       Json?
+  data       Json?    @db.JsonB
   created_at DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])

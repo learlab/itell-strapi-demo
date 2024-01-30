@@ -1,27 +1,23 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
-import { Button, Link } from "../client-components";
-import { useSession } from "next-auth/react";
+import { Button } from "../client-components";
 import { Spinner } from "../spinner";
 
-interface Props extends React.ComponentProps<typeof Button> {}
+interface Props extends React.ComponentProps<typeof Button> {
+	text: string;
+	pending: boolean;
+}
 
-export const SummarySubmitButton = ({ disabled, ...rest }: Props) => {
-	const { data: session } = useSession();
-	const { pending } = useFormStatus();
+export const SummarySubmitButton = ({
+	text,
+	disabled,
+	pending,
+	...rest
+}: Props) => {
 	return (
-		<Button disabled={disabled || pending} {...rest}>
+		<Button disabled={disabled || pending} {...rest} type="submit">
 			{pending && <Spinner className="mr-2" />}
-			{session?.user ? (
-				pending ? (
-					"Submitting"
-				) : (
-					"Submit"
-				)
-			) : (
-				<Link href="/auth">Log in to create a summary</Link>
-			)}
+			{text}
 		</Button>
 	);
 };
