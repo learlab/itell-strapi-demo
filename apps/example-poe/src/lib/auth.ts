@@ -2,21 +2,25 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import { getServerSession as getServerSessionNext } from "next-auth/next";
-import GoogleProvider from "next-auth/providers/google";
 import AzureADProvider from "next-auth/providers/azure-ad";
+import GoogleProvider from "next-auth/providers/google";
 
-import db from "./db";
 import { env } from "@/env.mjs";
+import db from "./db";
 
 export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(db),
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
 		GoogleProvider({
+			id: "google",
+			name: "Google",
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		}),
 		AzureADProvider({
+			id: "azure-ad",
+			name: "Azure AD",
 			clientId: env.AZURE_CLIENT_ID,
 			clientSecret: env.AZURE_CLIENT_SECRET,
 			tenantId: "common",
