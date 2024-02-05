@@ -1,12 +1,12 @@
 "use client";
 
+import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
-import { OutlookLoginButton } from "./login-buttons";
 import { useEffect, useTransition } from "react";
+import { toast } from "sonner";
 import { Spinner } from "../spinner";
-import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
+import { OutlookLoginButton } from "./login-buttons";
 
 export const AuthForm = () => {
 	const searchParams = useSearchParams();

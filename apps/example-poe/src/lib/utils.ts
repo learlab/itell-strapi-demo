@@ -1,7 +1,7 @@
 import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
-import { allPagesSorted } from "./pages";
 import { redirect } from "next/navigation";
+import { allPagesSorted } from "./pages";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
 	const regex = /embed\/([\w-]+)\?/;
@@ -64,6 +64,7 @@ export type PageData = {
 	index: number;
 	title: string;
 	page_slug: string;
+	quiz: boolean;
 	chapter: number;
 	section: number;
 	nextPageSlug: string | null;
@@ -88,6 +89,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		page_slug: page.page_slug,
 		chapter: page.location.chapter as number,
 		section: page.location.section as number,
+		quiz: page.quiz,
 		nextPageSlug,
 	};
 };

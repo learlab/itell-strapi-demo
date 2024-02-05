@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/lib/auth";
+import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
 import { Fragment, Suspense } from "react";
 import { SummaryCount } from "./summary-count";
@@ -12,6 +13,11 @@ type Props = {
 
 export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 	const user = await getCurrentUser();
+	const page = getPageData(pageSlug);
+
+	if (!page) {
+		return <p>No summary found</p>;
+	}
 
 	if (!user) {
 		return (
@@ -50,6 +56,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 					<SummaryForm
 						user={user}
 						pageSlug={pageSlug}
+						hasQuiz={page?.quiz}
 						isFeedbackEnabled={isFeedbackEnabled}
 					/>
 				</Fragment>

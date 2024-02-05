@@ -17,28 +17,33 @@ import {
 	ErrorFeedback,
 	ErrorType,
 	SummaryFeedback as SummaryFeedbackType,
-	SummaryFormState,
 	SummaryResponse,
 	SummaryResponseSchema,
 	simpleFeedback,
+	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
 import { Page } from "contentlayer/generated";
+import { driver } from "driver.js";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
+import { useImmerReducer } from "use-immer";
+import { Button } from "../client-components";
 import { useQA } from "../context/qa-context";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
 import { SummaryProceedModal } from "./summary-proceed-modal";
+import { StageItem, SummaryProgress } from "./summary-progress";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	value?: string;
 	user: Session["user"];
 	pageSlug: string;
+	hasQuiz: boolean;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	textareaClassName?: string;
 	isFeedbackEnabled: boolean;
@@ -56,48 +61,116 @@ type ChunkQuestion = {
 	question_type: string;
 };
 
+type State = {
+	pending: boolean;
+	error: ErrorType | null;
+	response: SummaryResponse | null;
+	chunkQuestion: ChunkQuestion | null;
+	canProceed: boolean;
+	showQuiz: boolean;
+};
+
+type Action =
+	| { type: "submit" }
+	| { type: "fail"; payload: ErrorType }
+	| { type: "scored"; payload: SummaryResponse }
+	| { type: "ask"; payload: ChunkQuestion }
+	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } };
+
+const initialState: State = {
+	pending: false,
+	error: null,
+	response: null,
+	chunkQuestion: null,
+	canProceed: false,
+	showQuiz: false,
+};
+
+type Stage = "Scoring" | "Saving" | "Generating";
+
 export const SummaryForm = ({
 	value,
 	user,
 	inputEnabled,
 	pageSlug,
+	hasQuiz,
 	isFeedbackEnabled,
 	textareaClassName,
 }: Props) => {
-	const page = allPagesSorted.find((p) => p.page_slug === pageSlug) as Page;
+	const driverObj = driver();
 
-	const [pending, setPending] = useState(false);
-	const [buttonText, setButtonText] = useState("Submit");
-	const [chunkQuestion, setChunkQuestion] = useState<ChunkQuestion | null>(
-		null,
-	);
-	const [feedback, setFeedback] = useState<SummaryFeedbackType | null>(null);
-	const [formState, setFormState] = useState<FormState>({
-		canProceed: false,
-		error: null,
-		showQuiz: false,
-	});
+	const [stages, setStages] = useState<StageItem[]>([]);
+	const addStage = (name: Stage) => {
+		setStages((currentStages) => {
+			const newStage: StageItem = { name, status: "active" };
+			const oldStages = currentStages.slice();
+			oldStages.push(newStage);
+			return oldStages;
+		});
+	};
+
+	const finishStage = (name: Stage) => {
+		setStages((currentStages) => {
+			const newStage: StageItem = { name, status: "complete" };
+			const oldStages = currentStages.slice();
+			const index = oldStages.findIndex((s) => s.name === name);
+			if (index !== -1) {
+				oldStages[index] = newStage;
+			}
+			return oldStages;
+		});
+	};
+
+	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
+		switch (action.type) {
+			case "submit":
+				draft.pending = true;
+				draft.error = null;
+				draft.response = null;
+				draft.chunkQuestion = null;
+				break;
+			case "fail":
+				draft.pending = false;
+				draft.error = action.payload;
+				draft.response = null;
+				break;
+			case "scored":
+				draft.response = action.payload;
+				break;
+			case "ask":
+				draft.chunkQuestion = action.payload;
+				draft.pending = false;
+				break;
+			case "finish":
+				draft.pending = false;
+				draft.canProceed = action.payload.canProceed;
+				draft.showQuiz = action.payload.showQuiz;
+				break;
+		}
+	}, initialState);
+
+	const feedback = state.response ? getFeedback(state.response) : null;
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
-		setButtonText("Submitting...");
-		setPending(true);
+		setStages([]);
 
 		const formData = new FormData(e.currentTarget);
 		const input = (formData.get("input") as string).replaceAll("\u0000", "");
 		const userId = user.id;
 		localStorage.setItem(makeInputKey(pageSlug), input);
 
-		const error = await validateSummary(input);
+		dispatch({ type: "submit" });
+
+		const error = validateSummary(input);
 		if (error) {
-			setPending(false);
-			setButtonText("Submit");
-			setFeedback(null);
-			return setFormState((state) => ({ ...state, error }));
+			dispatch({ type: "fail", payload: error });
+			return;
 		}
 
-		let feedback: SummaryFeedbackType | null = null;
+		let summaryResponse: SummaryResponse | null = null;
+
+		addStage("Scoring");
 		if (isFeedbackEnabled) {
 			const focusTime = await findFocusTime(userId, pageSlug);
 
@@ -132,38 +205,20 @@ export const SummaryForm = ({
 						const chunkData = JSON.parse(chunk.trim().replaceAll("\u0000", ""));
 						const parsed = SummaryResponseSchema.safeParse(chunkData);
 						if (parsed.success) {
-							const summaryResponse = parsed.data;
-							feedback = getFeedback(summaryResponse);
-
-							setFeedback(feedback);
-							setButtonText("Saving summary ...");
-
-							await createSummary({
-								text: input,
-								pageSlug,
-								isPassed: summaryResponse.is_passed,
-								containmentScore: summaryResponse.containment,
-								similarityScore: summaryResponse.similarity,
-								wordingScore: summaryResponse.wording,
-								contentScore: summaryResponse.content,
-								user: {
-									connect: {
-										id: userId,
-									},
-								},
-							});
+							summaryResponse = parsed.data;
+							dispatch({ type: "scored", payload: parsed.data });
+							finishStage("Scoring");
 						} else {
-							setButtonText("Submit");
-							setPending(false);
-							setFormState((state) => ({
-								...state,
-								feedback: null,
-								error: ErrorType.INTERNAL,
-							}));
+							console.log("SummaryResults parse error", parsed.error);
+							setStages([]);
+							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 							// first chunk parsing failed, return early
 							return;
 						}
 					} else {
+						if (chunkIndex === 1) {
+							addStage("Generating");
+						}
 						if (!done) {
 							chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
 						} else {
@@ -171,7 +226,8 @@ export const SummaryForm = ({
 								const chunkQuestionData = JSON.parse(
 									chunkQuestionString,
 								) as ChunkQuestion;
-								setChunkQuestion(chunkQuestionData);
+								finishStage("Generating");
+								dispatch({ type: "ask", payload: chunkQuestionData });
 							}
 						}
 					}
@@ -180,62 +236,53 @@ export const SummaryForm = ({
 				}
 			}
 		} else {
-			feedback = simpleFeedback();
+			const summaryResponse = simpleSummaryResponse();
+			dispatch({ type: "scored", payload: summaryResponse });
+			finishStage("Scoring");
+		}
 
-			setFeedback(feedback);
-			setButtonText("Saving summary ...");
-
+		if (summaryResponse) {
+			addStage("Saving");
 			await createSummary({
 				text: input,
 				pageSlug,
-				isPassed: feedback.isPassed,
-				containmentScore: -1,
-				similarityScore: -1,
-				wordingScore: -1,
-				contentScore: -1,
+				isPassed: summaryResponse.is_passed,
+				containmentScore: summaryResponse.containment,
+				similarityScore: summaryResponse.similarity,
+				wordingScore: summaryResponse.wording,
+				contentScore: summaryResponse.content,
 				user: {
 					connect: {
 						id: userId,
 					},
 				},
 			});
-		}
 
-		if (page.quiz) {
-			maybeCreateQuizCookie(pageSlug);
-		}
+			if (hasQuiz) {
+				maybeCreateQuizCookie(pageSlug);
+			}
 
-		const showQuiz = page.quiz ? isPageQuizUnfinished(pageSlug) : false;
+			const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
 
-		if (feedback) {
-			if (feedback.isPassed) {
+			if (summaryResponse.is_passed) {
 				await incrementUserPage(userId, pageSlug);
-				setFormState({
-					canProceed: !isLastPage(pageSlug),
-					error: null,
-					showQuiz,
+				dispatch({
+					type: "finish",
+					payload: { canProceed: !isLastPage(pageSlug), showQuiz },
 				});
 			} else {
 				const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
 				if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
 					await incrementUserPage(userId, pageSlug);
-					setFormState({
-						canProceed: !isLastPage(pageSlug),
-						error: null,
-						showQuiz,
+					dispatch({
+						type: "finish",
+						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
 					});
 				}
 			}
+
+			finishStage("Saving");
 		}
-
-		setPending(false);
-		setButtonText("Submit");
-
-		// setFormState({
-		// 	canProceed: false,
-		// 	error: null,
-		// 	showQuiz: false,
-		// });
 	};
 
 	const router = useRouter();
@@ -246,35 +293,50 @@ export const SummaryForm = ({
 		  ? false
 		  : !isPageFinished;
 
-	useEffect(() => {
-		if (formState.showQuiz) {
-			router.push(`${makePageHref(pageSlug)}/quiz`);
-		}
-	}, [formState]);
-
-	useEffect(() => {
-		if (chunkQuestion) {
-			console.log("chunkQuestion", chunkQuestion);
-			const el = getChunkElement(chunkQuestion.chunk);
+	const checkQuestion = () => {
+		if (state.chunkQuestion) {
+			const el = getChunkElement(state.chunkQuestion.chunk);
 			if (el) {
-				el.className = "border border-info";
 				const yOffset = -70;
 				const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
 
 				window.scrollTo({ top: y, behavior: "smooth" });
+
+				setTimeout(() => {
+					driverObj.highlight({
+						element: el,
+						popover: {
+							title: "Re-read this paragraph and answer the question below",
+							description: state.chunkQuestion?.text,
+						},
+					});
+				}, 1000);
 			}
 		}
-	}, [chunkQuestion]);
+	};
+
+	useEffect(() => {
+		if (state.showQuiz) {
+			// router.push(`${makePageHref(pageSlug)}/quiz`);
+		}
+	}, [state]);
 
 	return (
-		<section>
+		<section className="space-y-2">
+			<SummaryProgress items={stages} />
+			{state.chunkQuestion && (
+				<Button variant={"outline"} onClick={checkQuestion}>
+					Check Question
+				</Button>
+			)}
 			{feedback && (
 				<SummaryFeedback
 					pageSlug={pageSlug}
 					feedback={feedback}
-					canProceed={formState.canProceed}
+					canProceed={state.canProceed}
 				/>
 			)}
+
 			<Confetti active={feedback?.isPassed ? isFeedbackEnabled : false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
@@ -283,16 +345,15 @@ export const SummaryForm = ({
 					pageSlug={pageSlug}
 					textAreaClassName={textareaClassName}
 				/>
-				{formState.error && <Warning>{ErrorFeedback[formState.error]}</Warning>}
+				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						text={buttonText}
 						disabled={!isPageFinished}
-						pending={pending}
+						pending={state.pending}
 					/>
 				</div>
 			</form>
-			{formState.canProceed && !formState.showQuiz && (
+			{state.canProceed && !state.showQuiz && (
 				<SummaryProceedModal
 					pageSlug={pageSlug}
 					isPassed={feedback?.isPassed || false}
