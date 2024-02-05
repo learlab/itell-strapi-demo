@@ -2,7 +2,6 @@
 
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { isLastPage } from "@/lib/location";
-import { allPagesSorted } from "@/lib/pages";
 import {
 	createSummary,
 	findFocusTime,
@@ -12,19 +11,16 @@ import {
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
 import { getFeedback } from "@/lib/summary";
-import { getChunkElement, makeInputKey, makePageHref } from "@/lib/utils";
+import { getChunkElement, makeInputKey } from "@/lib/utils";
 import {
 	ErrorFeedback,
 	ErrorType,
-	SummaryFeedback as SummaryFeedbackType,
 	SummaryResponse,
 	SummaryResponseSchema,
-	simpleFeedback,
 	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
-import { Page } from "contentlayer/generated";
 import { driver } from "driver.js";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
@@ -170,118 +166,126 @@ export const SummaryForm = ({
 
 		let summaryResponse: SummaryResponse | null = null;
 
-		addStage("Scoring");
-		if (isFeedbackEnabled) {
-			const focusTime = await findFocusTime(userId, pageSlug);
+		try {
+			if (isFeedbackEnabled) {
+				addStage("Scoring");
+				const focusTime = await findFocusTime(userId, pageSlug);
 
-			const response = await fetch(
-				"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
-				{
-					method: "POST",
-					body: JSON.stringify({
-						summary: input,
-						page_slug: pageSlug,
-						focus_time: focusTime?.data,
-					}),
-					headers: {
-						"Content-Type": "application/json",
+				const response = await fetch(
+					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
+					{
+						method: "POST",
+						body: JSON.stringify({
+							summary: input,
+							page_slug: pageSlug,
+							focus_time: focusTime?.data,
+						}),
+						headers: {
+							"Content-Type": "application/json",
+						},
 					},
-				},
-			);
+				);
 
-			if (response.body) {
-				const reader = response.body.getReader();
-				const decoder = new TextDecoder();
-				let done = false;
-				let chunkIndex = 0;
-				let chunkQuestionString: string | null = null;
+				if (response.body) {
+					const reader = response.body.getReader();
+					const decoder = new TextDecoder();
+					let done = false;
+					let chunkIndex = 0;
+					let chunkQuestionString: string | null = null;
 
-				while (!done) {
-					const { value, done: doneReading } = await reader.read();
-					done = doneReading;
-					const chunk = decoder.decode(value);
+					while (!done) {
+						const { value, done: doneReading } = await reader.read();
+						done = doneReading;
+						const chunk = decoder.decode(value);
 
-					if (chunkIndex === 0) {
-						const chunkData = JSON.parse(chunk.trim().replaceAll("\u0000", ""));
-						const parsed = SummaryResponseSchema.safeParse(chunkData);
-						if (parsed.success) {
-							summaryResponse = parsed.data;
-							dispatch({ type: "scored", payload: parsed.data });
-							finishStage("Scoring");
+						if (chunkIndex === 0) {
+							const chunkData = JSON.parse(
+								chunk.trim().replaceAll("\u0000", ""),
+							);
+							const parsed = SummaryResponseSchema.safeParse(chunkData);
+							if (parsed.success) {
+								summaryResponse = parsed.data;
+								dispatch({ type: "scored", payload: parsed.data });
+								finishStage("Scoring");
+							} else {
+								console.log("SummaryResults parse error", parsed.error);
+								setStages([]);
+								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+								// first chunk parsing failed, return early
+								return;
+							}
 						} else {
-							console.log("SummaryResults parse error", parsed.error);
-							setStages([]);
-							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-							// first chunk parsing failed, return early
-							return;
-						}
-					} else {
-						if (chunkIndex === 1) {
-							addStage("Generating");
-						}
-						if (!done) {
-							chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
-						} else {
-							if (chunkQuestionString) {
-								const chunkQuestionData = JSON.parse(
-									chunkQuestionString,
-								) as ChunkQuestion;
-								finishStage("Generating");
-								dispatch({ type: "ask", payload: chunkQuestionData });
+							if (chunkIndex === 1) {
+								addStage("Generating");
+							}
+							if (!done) {
+								chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
+							} else {
+								if (chunkQuestionString) {
+									const chunkQuestionData = JSON.parse(
+										chunkQuestionString,
+									) as ChunkQuestion;
+									finishStage("Generating");
+									dispatch({ type: "ask", payload: chunkQuestionData });
+								}
 							}
 						}
+
+						chunkIndex++;
 					}
-
-					chunkIndex++;
 				}
-			}
-		} else {
-			const summaryResponse = simpleSummaryResponse();
-			dispatch({ type: "scored", payload: summaryResponse });
-			finishStage("Scoring");
-		}
-
-		if (summaryResponse) {
-			addStage("Saving");
-			await createSummary({
-				text: input,
-				pageSlug,
-				isPassed: summaryResponse.is_passed,
-				containmentScore: summaryResponse.containment,
-				similarityScore: summaryResponse.similarity,
-				wordingScore: summaryResponse.wording,
-				contentScore: summaryResponse.content,
-				user: {
-					connect: {
-						id: userId,
-					},
-				},
-			});
-
-			if (hasQuiz) {
-				maybeCreateQuizCookie(pageSlug);
-			}
-
-			const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
-
-			if (summaryResponse.is_passed) {
-				await incrementUserPage(userId, pageSlug);
-				dispatch({
-					type: "finish",
-					payload: { canProceed: !isLastPage(pageSlug), showQuiz },
-				});
 			} else {
-				const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
-				if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
+				const summaryResponse = simpleSummaryResponse();
+				dispatch({ type: "scored", payload: summaryResponse });
+				finishStage("Scoring");
+			}
+
+			if (summaryResponse) {
+				addStage("Saving");
+				await createSummary({
+					text: input,
+					pageSlug,
+					isPassed: summaryResponse.is_passed,
+					containmentScore: summaryResponse.containment,
+					similarityScore: summaryResponse.similarity,
+					wordingScore: summaryResponse.wording,
+					contentScore: summaryResponse.content,
+					user: {
+						connect: {
+							id: userId,
+						},
+					},
+				});
+
+				if (hasQuiz) {
+					maybeCreateQuizCookie(pageSlug);
+				}
+
+				const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
+
+				if (summaryResponse.is_passed) {
 					await incrementUserPage(userId, pageSlug);
 					dispatch({
 						type: "finish",
 						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
 					});
+				} else {
+					const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
+					if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
+						await incrementUserPage(userId, pageSlug);
+						dispatch({
+							type: "finish",
+							payload: { canProceed: !isLastPage(pageSlug), showQuiz },
+						});
+					}
 				}
-			}
 
-			finishStage("Saving");
+				finishStage("Saving");
+			}
+		} catch (err) {
+			console.error(err);
+			setStages([]);
+			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 		}
 	};
 
