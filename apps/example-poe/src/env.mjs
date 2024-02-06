@@ -6,8 +6,6 @@ import { z } from "zod";
  */
 const server = z.object({
 	NODE_ENV: z.enum(["development", "test", "production"]),
-	GOOGLE_CLIENT_ID: z.string(),
-	GOOGLE_CLIENT_SECRET: z.string(),
 	AZURE_CLIENT_ID: z.string(),
 	AZURE_CLIENT_SECRET: z.string(),
 	NEXTAUTH_URL: z.string(),
@@ -34,8 +32,6 @@ const client = z.object({
  */
 const processEnv = {
 	NODE_ENV: process.env.NODE_ENV,
-	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 	AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
 	AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
 	NEXTAUTH_URL: process.env.NEXTAUTH_URL,
