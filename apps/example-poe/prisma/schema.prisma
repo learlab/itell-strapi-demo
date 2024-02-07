@@ -157,34 +157,6 @@ model Note {
   @@map("notes")
 }
 
-model Section {
-  sectionId  String  @id @map("section_id")
-  pageSlug   String  @map("page_slug")
-  rawText    String  @map("raw_text")
-  cleanText  String  @map("clean_text")
-  keyphrases String?
-
-  @@map("sections")
-}
-
-model SubSection {
-  id         String   @id
-  sectionId  String   @map("section_id")
-  pageSlug   String   @map("page_slug")
-  subsection Int
-  heading    String
-  raw_text   String?
-  clean_text String?
-  slug       String
-  qa_output  String
-  question   String?
-  answer     String?
-  keyphrases String[]
-
-  @@index([sectionId])
-  @@map("subsections")
-}
-
 model ConstructedResponse {
   id String @id @default(uuid())
 
