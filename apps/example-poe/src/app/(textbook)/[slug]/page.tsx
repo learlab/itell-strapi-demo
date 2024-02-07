@@ -1,4 +1,3 @@
-import { Chatbot } from "@/components/chat/chatbot";
 import { Pager } from "@/components/client-components";
 import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
@@ -16,7 +15,6 @@ import { PageSummary } from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
 import { getCurrentUser } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { isProduction } from "@/lib/constants";
 import { isPageWithFeedback } from "@/lib/feedback";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
@@ -67,7 +65,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
-				<ModuleToc page={page} />
+				<ModuleToc page={page} user={user} />
 
 				<section className="page-content relative col-span-8">
 					<PageTitle>
@@ -122,7 +120,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} />}
-			<Chatbot pageSlug={pageSlug} user={user} />
 		</PageProvider>
 	);
 }

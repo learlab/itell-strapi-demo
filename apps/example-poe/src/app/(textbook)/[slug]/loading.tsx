@@ -26,7 +26,7 @@ export default async function () {
 	return (
 		<>
 			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
-				<ModuleToc page={page} />
+				<ModuleToc page={page} user={null} />
 
 				<section className="relative col-span-12 md:col-span-10 lg:col-span-8 space-y-4">
 					<PageTitle>{page.title}</PageTitle>

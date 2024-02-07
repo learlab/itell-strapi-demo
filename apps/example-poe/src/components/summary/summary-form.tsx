@@ -170,7 +170,13 @@ export const SummaryForm = ({
 			if (isFeedbackEnabled) {
 				addStage("Scoring");
 				const focusTime = await findFocusTime(userId, pageSlug);
-
+				console.log(
+					JSON.stringify({
+						summary: input,
+						page_slug: pageSlug,
+						focus_time: focusTime?.data,
+					}),
+				);
 				const response = await fetch(
 					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
 					{
@@ -283,7 +289,7 @@ export const SummaryForm = ({
 				finishStage("Saving");
 			}
 		} catch (err) {
-			console.error(err);
+			console.log("summary scoring error", err);
 			setStages([]);
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 		}

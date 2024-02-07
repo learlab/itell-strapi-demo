@@ -8,19 +8,20 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { createConstructedResponseFeedback } from "@/lib/server-actions";
-import { Button, Checkbox, Label, TextArea } from "../client-components";
-import { useState } from "react";
-import { Spinner } from "../spinner";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Button, Checkbox, Label, TextArea } from "../client-components";
+import { Spinner } from "../spinner";
 
 type Props = {
 	type: "positive" | "negative";
+	chunkSlug: string;
 	pageSlug: string;
 };
 
-export const FeedbackModal = ({ type, pageSlug }: Props) => {
+export const FeedbackModal = ({ type, pageSlug, chunkSlug }: Props) => {
 	const isPositive = type === "positive";
 	const allTags = isPositive
 		? ["informative", "supportive", "helpful"]
@@ -33,6 +34,7 @@ export const FeedbackModal = ({ type, pageSlug }: Props) => {
 		setIsPending(true);
 		await createConstructedResponseFeedback({
 			feedback: input,
+			chunkSlug,
 			pageSlug,
 			isPositive,
 			tags,

@@ -132,6 +132,7 @@ export const QuestionBox = ({
 				// when there is no session, question won't be displayed
 				await createConstructedResponse({
 					response: input,
+					chunkSlug,
 					pageSlug,
 					score,
 				});
@@ -299,8 +300,16 @@ export const QuestionBox = ({
 						make mistakes. Let us know how you feel about iTELL AI's performance
 						using the feedback icons to the right (thumbs up or thumbs down).{" "}
 					</CardDescription>
-					<FeedbackModal type="positive" pageSlug={pageSlug} />
-					<FeedbackModal type="negative" pageSlug={pageSlug} />
+					<FeedbackModal
+						type="positive"
+						pageSlug={pageSlug}
+						chunkSlug={chunkSlug}
+					/>
+					<FeedbackModal
+						type="negative"
+						pageSlug={pageSlug}
+						chunkSlug={chunkSlug}
+					/>
 				</CardHeader>
 
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">

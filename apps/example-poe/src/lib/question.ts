@@ -83,6 +83,7 @@ export const getQAScore = async ({
 export const getRandomPageQuestions = async (pageSlug: string) => {
 	const selectedQuestions: SelectedQuestions = new Map();
 	const questions = await getPageQuestions(pageSlug);
+
 	if (questions) {
 		const chunks = questions.data[0].attributes.Content.filter((c) =>
 			Boolean(c.QuestionAnswerResponse),
