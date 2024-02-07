@@ -16,6 +16,15 @@ export const getScore = async ({
 		},
 	});
 
+	console.log(
+		JSON.stringify({
+			summary: input,
+			page_slug: pageSlug,
+		}),
+	);
+
+	console.log(response);
+
 	const data = await response.json();
 	return SummaryResponseSchema.safeParse(data);
 };

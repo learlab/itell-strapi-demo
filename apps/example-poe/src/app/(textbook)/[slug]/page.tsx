@@ -180,7 +180,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
-			{user && isProduction && <EventTracker />}
+			{user && <EventTracker />}
 		</PageProvider>
 	);
 }
