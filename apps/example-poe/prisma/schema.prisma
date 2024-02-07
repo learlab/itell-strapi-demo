@@ -190,7 +190,7 @@ model ConstructedResponse {
 
   userId     String   @map("user_id")
   pageSlug   String   @map("page_slug")
-  chunkSlug  String   @map("chunk_slug")
+  chunkSlug  String?  @map("chunk_slug")
   score      Int
   response   String
   created_at DateTime @default(now())
@@ -205,7 +205,7 @@ model ConstructedResponseFeedback {
 
   userId     String   @map("user_id")
   pageSlug   String   @map("page_slug")
-  chunkSlug  String   @map("chunk_slug")
+  chunkSlug  String?  @map("chunk_slug")
   isPositive Boolean  @map("is_positive")
   feedback   String
   tags       String[]

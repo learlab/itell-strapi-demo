@@ -46,16 +46,18 @@ export const getPageQuestions = async (pageSlug: string) => {
 		},
 	});
 
-	const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
-	const response = await (await fetch(endpoint)).json();
+	try {
+		const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
+		const response = await (await fetch(endpoint)).json();
+		const parsed = PageQuestionsSchema.safeParse(response);
+		if (!parsed.success) {
+			return null;
+		}
 
-	const parsed = PageQuestionsSchema.safeParse(response);
-
-	if (!parsed.success) {
+		return parsed.data;
+	} catch {
 		return null;
 	}
-
-	return parsed.data;
 };
 
 // async function to get QA scores from scoring API
