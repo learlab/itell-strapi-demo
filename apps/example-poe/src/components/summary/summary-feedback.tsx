@@ -7,23 +7,22 @@ import Link from "next/link";
 
 type Props = {
 	canProceed: boolean;
-	pageSlug: string;
+	nextPageSlug: string | null;
 	feedback: SummaryFeedbackType;
 };
 
-export const SummaryFeedback = ({ feedback, canProceed, pageSlug }: Props) => {
-	const pageData = getPageData(pageSlug);
-	if (!pageData) {
-		return null;
-	}
-
+export const SummaryFeedback = ({
+	feedback,
+	canProceed,
+	nextPageSlug,
+}: Props) => {
 	const FeedbackBody = (
 		<div className="font-light leading-relaxed space-y-2">
 			<header className="flex justify-between">
 				<p>{feedback.prompt}</p>
-				{canProceed && pageData.nextPageSlug && (
+				{canProceed && nextPageSlug && (
 					<Link
-						href={makePageHref(pageData.nextPageSlug)}
+						href={makePageHref(nextPageSlug)}
 						className="inline-flex gap-1 items-center hover:underline"
 					>
 						<ChevronRightIcon className="size-4" /> Move on

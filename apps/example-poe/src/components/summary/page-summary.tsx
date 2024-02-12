@@ -55,7 +55,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 					) : null}
 					<SummaryForm
 						user={user}
-						pageSlug={pageSlug}
+						page={page}
 						hasQuiz={page?.quiz}
 						isFeedbackEnabled={isFeedbackEnabled}
 					/>

@@ -15,7 +15,7 @@ export type StageItem = {
 
 export const SummaryProgress = ({ items }: Props) => {
 	return (
-		<div className="flex rounded my-4">
+		<div className="flex rounded my-4 items-center justify-center h-full">
 			{items.map((item, index) => (
 				<div
 					className="flex flex-col gap-1 w-[calc((100%-2.5rem)/4)]"

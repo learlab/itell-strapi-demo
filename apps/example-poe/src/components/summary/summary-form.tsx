@@ -11,7 +11,13 @@ import {
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
 import { getFeedback } from "@/lib/summary";
-import { getChunkElement, makeInputKey } from "@/lib/utils";
+import {
+	PageData,
+	delay,
+	getChunkElement,
+	makeInputKey,
+	makePageHref,
+} from "@/lib/utils";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -26,22 +32,21 @@ import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
+import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button } from "../client-components";
 import { useQA } from "../context/qa-context";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
-import { SummaryProceedModal } from "./summary-proceed-modal";
 import { StageItem, SummaryProgress } from "./summary-progress";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	value?: string;
 	user: Session["user"];
-	pageSlug: string;
+	page: PageData;
 	hasQuiz: boolean;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
-	textareaClassName?: string;
 	isFeedbackEnabled: boolean;
 };
 
@@ -88,11 +93,11 @@ export const SummaryForm = ({
 	value,
 	user,
 	inputEnabled,
-	pageSlug,
+	page,
 	hasQuiz,
 	isFeedbackEnabled,
-	textareaClassName,
 }: Props) => {
+	const pageSlug = page.page_slug;
 	const driverObj = driver();
 
 	const [stages, setStages] = useState<StageItem[]>([]);
@@ -170,13 +175,7 @@ export const SummaryForm = ({
 			if (isFeedbackEnabled) {
 				addStage("Scoring");
 				const focusTime = await findFocusTime(userId, pageSlug);
-				console.log(
-					JSON.stringify({
-						summary: input,
-						page_slug: pageSlug,
-						focus_time: focusTime?.data,
-					}),
-				);
+
 				const response = await fetch(
 					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
 					{
@@ -295,7 +294,6 @@ export const SummaryForm = ({
 		}
 	};
 
-	const router = useRouter();
 	const { isPageFinished, pageStatus } = useQA();
 	const editDisabled = inputEnabled
 		? false
@@ -303,7 +301,7 @@ export const SummaryForm = ({
 		  ? false
 		  : !isPageFinished;
 
-	const checkQuestion = () => {
+	const goToQuestion = () => {
 		if (state.chunkQuestion) {
 			const el = getChunkElement(state.chunkQuestion.chunk);
 			if (el) {
@@ -325,23 +323,58 @@ export const SummaryForm = ({
 		}
 	};
 
+	const router = useRouter();
+
 	useEffect(() => {
+		if (state.chunkQuestion) {
+			goToQuestion();
+		}
+
 		if (state.showQuiz) {
-			// router.push(`${makePageHref(pageSlug)}/quiz`);
+			toast("Good job 🎉", {
+				description:
+					"Before moving on, please finish a short quiz to assess your understanding",
+				duration: Infinity,
+				action: {
+					label: "Take quiz",
+					onClick: () => {
+						router.push(`${makePageHref(page.page_slug)}/quiz`);
+					},
+				},
+			});
+		}
+
+		if (state.canProceed && !state.showQuiz) {
+			const title = isFeedbackEnabled
+				? feedback?.isPassed
+					? "Good job summarizing 🎉"
+					: "You can now move on 👏"
+				: "Your summary is accepted";
+			toast(title, {
+				description: "Move to the next page to continue reading",
+				duration: Infinity,
+				action: page.nextPageSlug
+					? {
+							label: "Proceed",
+							onClick: () => {
+								router.push(makePageHref(page.nextPageSlug as string));
+							},
+					  }
+					: undefined,
+			});
 		}
 	}, [state]);
 
 	return (
 		<section className="space-y-2">
-			<SummaryProgress items={stages} />
 			{state.chunkQuestion && (
-				<Button variant={"outline"} onClick={checkQuestion}>
-					Check Question
+				<Button variant={"outline"} onClick={goToQuestion}>
+					Go to question
 				</Button>
 			)}
 			{feedback && (
 				<SummaryFeedback
-					pageSlug={pageSlug}
+					nextPageSlug={page.nextPageSlug}
 					feedback={feedback}
 					canProceed={state.canProceed}
 				/>
@@ -351,9 +384,10 @@ export const SummaryForm = ({
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
 					value={value}
-					disabled={editDisabled}
+					disabled={editDisabled || state.pending}
 					pageSlug={pageSlug}
-					textAreaClassName={textareaClassName}
+					pending={state.pending}
+					stages={stages}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
@@ -363,29 +397,6 @@ export const SummaryForm = ({
 					/>
 				</div>
 			</form>
-			{state.canProceed && !state.showQuiz && (
-				<SummaryProceedModal
-					pageSlug={pageSlug}
-					isPassed={feedback?.isPassed || false}
-					title={
-						isFeedbackEnabled
-							? feedback?.isPassed
-								? "Good job summarizing the text 🎉"
-								: "You can now move on 👏"
-							: "Your summary is accepted"
-					}
-				>
-					<div className="space-y-2">
-						{!feedback?.isPassed && (
-							<p>You have written multiple summaries for this page.</p>
-						)}
-						<p>
-							You can now move on to the next page by clicking the page link
-							above the summary box or the left sidebar.
-						</p>
-					</div>
-				</SummaryProceedModal>
-			)}
 		</section>
 	);
 };

@@ -9,8 +9,8 @@ import {
 } from "@/components/client-components";
 import { useLocalStorage } from "@itell/core/hooks";
 import { User } from "@prisma/client";
-import { BotIcon, MessageSquareQuote } from "lucide-react";
-import { useState } from "react";
+import { MessageSquareQuote } from "lucide-react";
+import { useEffect } from "react";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
@@ -21,7 +21,11 @@ type Props = {
 };
 
 export const Chatbot = ({ pageSlug, user }: Props) => {
-	const [show, setShow] = useLocalStorage("show-chatbot", true);
+	const [show, setShow] = useLocalStorage<boolean>("show-chatbot", true);
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<>
