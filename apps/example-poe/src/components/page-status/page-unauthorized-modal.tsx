@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import {GoogleLoginButton, OutlookLoginButton} from "../auth/login-buttons";
 import {
 	Dialog,
 	DialogContent,
@@ -10,6 +8,8 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { isProduction } from "@/lib/constants";
+import { useState } from "react";
+import { OutlookLoginButton } from "../auth/login-buttons";
 
 export const PageUnauthorizedModal = () => {
 	const [open, setOpen] = useState(true);
