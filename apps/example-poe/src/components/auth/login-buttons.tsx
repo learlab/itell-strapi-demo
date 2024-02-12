@@ -1,27 +1,17 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { CreateLoginButton } from "../client-components";
 import Image from "next/image";
-
-export const GoogleLoginButton = CreateLoginButton({
-	action: async () => {
-		await signIn("google");
-	},
-	icon: (
-		<Image
-			alt="Google"
-			src="/icons/google.png"
-			width={18}
-			height={16}
-			className="mr-2"
-		/>
-	),
-	title: "Google",
-});
+import { CreateLoginButton } from "../client-components";
 
 export const OutlookLoginButton = CreateLoginButton({
-	action: () => signIn("azure-ad"),
+	action: async () => {
+		try {
+			await signIn("azure-ad");
+		} catch (error) {
+			console.log(error);
+		}
+	},
 	icon: (
 		<Image
 			alt="Google"
