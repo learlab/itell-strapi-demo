@@ -1,13 +1,11 @@
-"use client";
-
 import { Avatar as BaseAvatar } from "@/components/client-components";
-import { Session, User } from "@prisma/client";
+import { Session } from "next-auth";
 import { Avatar } from "./ui/avatar";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {
 	user: {
-		image: string | null;
-		name: string | null;
+		name: string | null | undefined;
+		image: string | null | undefined;
 	};
 }
 

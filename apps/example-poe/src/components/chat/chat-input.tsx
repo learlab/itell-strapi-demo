@@ -1,6 +1,6 @@
 "use client";
 
-import { ChunkSchema, fetchChatResponse } from "@/lib/chat";
+import { Message, fetchChatResponse } from "@itell/core/chatbot";
 import { cn, decodeStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes } from "react";
@@ -9,32 +9,42 @@ import { useChat } from "../context/chat-context";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
+	isChunkQuestion: boolean;
 }
 
 export const ChatInput = ({
 	className,
 	pageSlug,
+	isChunkQuestion,
 	...props
 }: ChatInputProps) => {
 	const { addMessage, updateMessage, setActiveMessageId } = useChat();
 
 	const onMessage = async (text: string) => {
+		// add user message
 		addMessage({
 			text,
 			id: crypto.randomUUID(),
 			isUserMessage: true,
+			isChunkQuestion,
 		});
 
 		const responseId = crypto.randomUUID();
 		setActiveMessageId(responseId);
-		const responseMessage = {
+
+		// init response message
+		addMessage({
 			id: responseId,
 			text: "",
 			isUserMessage: false,
-		};
-		addMessage(responseMessage);
+			isChunkQuestion,
+		});
 
-		const chatResponse = await fetchChatResponse({ pageSlug, text });
+		const chatResponse = await fetchChatResponse({
+			endpoint: "https://itell-api.learlab.vanderbilt.edu/chat",
+			pageSlug,
+			text,
+		});
 		setActiveMessageId(undefined);
 
 		if (chatResponse.ok) {

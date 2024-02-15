@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import "driver.js/dist/driver.css";
+
 import { GeistSans as FontSans } from "geist/font";
 import { Roboto_Slab as FontSerif } from "next/font/google";
 

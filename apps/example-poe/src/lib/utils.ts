@@ -107,3 +107,11 @@ export const redirectWithSearchParams = (
 	const query = new URLSearchParams(searchParams).toString();
 	return redirect(`${path}?${query}`);
 };
+
+export const showSiteNav = () => {
+	document.getElementById("site-nav")?.classList.remove("hidden");
+};
+
+export const hideSiteNav = () => {
+	document.getElementById("site-nav")?.classList.add("hidden");
+};

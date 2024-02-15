@@ -27,6 +27,7 @@ export const UserAccountNav = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const { data: session, status } = useSession();
 	const user = session?.user;
+	const [pending, setPending] = useState(false);
 
 	if (status === "loading") {
 		return <Spinner />;
@@ -45,11 +46,11 @@ export const UserAccountNav = () => {
 			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
 					<UserAvatar
-						className="h-8 w-8"
 						user={{
-							image: user.image || null,
-							name: user.name || null,
+							name: user.name,
+							image: user.image,
 						}}
+						className="h-8 w-8"
 					/>
 					{menuOpen ? (
 						<ChevronUpIcon className="size-4" />
@@ -94,14 +95,21 @@ export const UserAccountNav = () => {
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className="cursor-pointer"
-						onSelect={(event) => {
+						disabled={pending}
+						onSelect={async (event) => {
 							event.preventDefault();
-							signOut({
+							setPending(true);
+							await signOut({
 								callbackUrl: `${window.location.origin}/auth`,
 							});
+							setPending(false);
 						}}
 					>
-						<LogOutIcon className="size-4 mr-2" />
+						{pending ? (
+							<Spinner className="size-4 mr-2" />
+						) : (
+							<LogOutIcon className="size-4 mr-2" />
+						)}
 						Sign out
 					</DropdownMenuItem>
 				</DropdownMenuContent>

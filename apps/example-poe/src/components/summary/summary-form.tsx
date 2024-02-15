@@ -13,11 +13,13 @@ import {
 import { getFeedback } from "@/lib/summary";
 import {
 	PageData,
-	delay,
 	getChunkElement,
+	hideSiteNav,
 	makeInputKey,
 	makePageHref,
+	showSiteNav,
 } from "@/lib/utils";
+import { usePortal } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -28,17 +30,22 @@ import {
 } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactPortal, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
+import { Chatbot } from "../chat/chatbot";
+import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
+import { useChat } from "../context/chat-context";
 import { useQA } from "../context/qa-context";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
-import { StageItem, SummaryProgress } from "./summary-progress";
+import { StageItem } from "./summary-progress";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
@@ -48,12 +55,6 @@ type Props = {
 	hasQuiz: boolean;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	isFeedbackEnabled: boolean;
-};
-
-type FormState = {
-	canProceed: boolean;
-	error: ErrorType | null;
-	showQuiz: boolean;
 };
 
 type ChunkQuestion = {
@@ -89,6 +90,8 @@ const initialState: State = {
 
 type Stage = "Scoring" | "Saving" | "Generating";
 
+const driverObj = driver();
+
 export const SummaryForm = ({
 	value,
 	user,
@@ -98,8 +101,28 @@ export const SummaryForm = ({
 	isFeedbackEnabled,
 }: Props) => {
 	const pageSlug = page.page_slug;
-	const driverObj = driver();
+	const { nodes, addNode } = usePortal();
+	const { clearChunkQuestionMessages, chunkQuestionAnswered } = useChat();
 
+	driverObj.setConfig({
+		onPopoverRender: (popover) => {
+			clearChunkQuestionMessages();
+			addNode(
+				<ChatbotChunkQuestion user={user} pageSlug={pageSlug} />,
+				popover.wrapper,
+			);
+		},
+		onDestroyStarted: () => {
+			if (!chunkQuestionAnswered) {
+				return toast.warning("Please answer the question to continue");
+			}
+
+			driverObj.destroy();
+			showSiteNav();
+		},
+	});
+
+	const router = useRouter();
 	const [stages, setStages] = useState<StageItem[]>([]);
 	const addStage = (name: Stage) => {
 		setStages((currentStages) => {
@@ -250,16 +273,7 @@ export const SummaryForm = ({
 				await createSummary({
 					text: input,
 					pageSlug,
-					isPassed: summaryResponse.is_passed,
-					containmentScore: summaryResponse.containment,
-					similarityScore: summaryResponse.similarity,
-					wordingScore: summaryResponse.wording,
-					contentScore: summaryResponse.content,
-					user: {
-						connect: {
-							id: userId,
-						},
-					},
+					response: summaryResponse,
 				});
 
 				if (hasQuiz) {
@@ -305,6 +319,7 @@ export const SummaryForm = ({
 		if (state.chunkQuestion) {
 			const el = getChunkElement(state.chunkQuestion.chunk);
 			if (el) {
+				hideSiteNav();
 				const yOffset = -70;
 				const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
 
@@ -314,16 +329,16 @@ export const SummaryForm = ({
 					driverObj.highlight({
 						element: el,
 						popover: {
-							title: "Re-read this paragraph and answer the question below",
-							description: state.chunkQuestion?.text,
+							description:
+								"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
+							side: "left",
+							align: "start",
 						},
 					});
 				}, 1000);
 			}
 		}
 	};
-
-	const router = useRouter();
 
 	useEffect(() => {
 		if (state.chunkQuestion) {
@@ -367,6 +382,7 @@ export const SummaryForm = ({
 
 	return (
 		<section className="space-y-2">
+			{nodes}
 			{state.chunkQuestion && (
 				<Button variant={"outline"} onClick={goToQuestion}>
 					Go to question

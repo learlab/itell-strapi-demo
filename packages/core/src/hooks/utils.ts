@@ -1,6 +1,14 @@
-import { useState, useEffect, useRef, RefObject, useLayoutEffect } from "react";
+import {
+	ReactNode,
+	RefObject,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
+import { createPortal } from "react-dom";
 
-export const useLocalStorage = <T,>(key: string, initialValue: T) => {
+export const useLocalStorage = <T>(key: string, initialValue: T) => {
 	const [storedValue, setStoredValue] = useState<T>(() => {
 		if (typeof window === "undefined") {
 			return initialValue;
@@ -39,8 +47,10 @@ export const useClickOutside = <T extends HTMLElement>(
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (ref.current && !ref.current.contains(event.target as Node)) {
-				handler();
+			if (ref.current && event.target) {
+				if (!ref.current.contains(event.target as Node)) {
+					handler();
+				}
 			}
 		};
 
@@ -118,3 +128,13 @@ export function useDebounce<T>(value: T, delay?: number): T {
 
 	return debouncedValue;
 }
+
+export const usePortal = () => {
+	const [nodes, setNodes] = useState<JSX.Element[]>([]);
+
+	const addNode = (children: ReactNode, container: Element) => {
+		setNodes((prevNodes) => [...prevNodes, createPortal(children, container)]);
+	};
+
+	return { nodes, addNode };
+};

@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { QuestionBox } from "./question-box";
-import { useQA } from "../context/qa-context";
-import { createPortal } from "react-dom";
-import { NextChunkButton } from "./next-chunk-button";
-import { ScrollBackButton } from "./scroll-back-button";
 import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
+import { usePortal } from "@itell/core/hooks";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useQA } from "../context/qa-context";
+import { NextChunkButton } from "./next-chunk-button";
+import { QuestionBox } from "./question-box";
+import { ScrollBackButton } from "./scroll-back-button";
 
 type Props = {
 	selectedQuestions: SelectedQuestions;
@@ -21,7 +22,6 @@ export const QuestionControl = ({
 	isFeedbackEnabled,
 }: Props) => {
 	// Ref for current chunk
-	const [nodes, setNodes] = useState<JSX.Element[]>([]);
 	const {
 		currentChunk,
 		chunks,
@@ -30,9 +30,7 @@ export const QuestionControl = ({
 		isLastChunkWithQuestion,
 	} = useQA();
 
-	const addNode = (node: JSX.Element) => {
-		setNodes((nodes) => [...nodes, node]);
-	};
+	const { nodes, addNode } = usePortal();
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
@@ -56,7 +54,7 @@ export const QuestionControl = ({
 			// so it won't be blurred as a children
 			el.parentElement.insertBefore(buttonContainer, el.nextSibling);
 
-			addNode(createPortal(<ScrollBackButton />, buttonContainer));
+			addNode(<ScrollBackButton />, buttonContainer);
 		}
 	};
 
@@ -79,18 +77,16 @@ export const QuestionControl = ({
 		el.appendChild(buttonContainer);
 
 		addNode(
-			createPortal(
-				<NextChunkButton
-					clickEventType="chunk reveal"
-					chunkSlug={chunkSlug}
-					pageSlug={pageSlug}
-					standalone
-					className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
-				>
-					Click here to continue reading
-				</NextChunkButton>,
-				buttonContainer,
-			),
+			<NextChunkButton
+				clickEventType="chunk reveal"
+				chunkSlug={chunkSlug}
+				pageSlug={pageSlug}
+				standalone
+				className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
+			>
+				Click here to continue reading
+			</NextChunkButton>,
+			buttonContainer,
 		);
 	};
 
@@ -100,37 +96,38 @@ export const QuestionControl = ({
 		el.appendChild(questionContainer);
 
 		const q = selectedQuestions.get(chunkId);
-
 		if (q) {
 			addNode(
-				createPortal(
-					<QuestionBox
-						question={q.question}
-						answer={q.answer}
-						chunkSlug={chunkId}
-						pageSlug={pageSlug}
-						isFeedbackEnabled={isFeedbackEnabled}
-					/>,
-					questionContainer,
-				),
+				<QuestionBox
+					question={q.question}
+					answer={q.answer}
+					chunkSlug={chunkId}
+					pageSlug={pageSlug}
+					isFeedbackEnabled={isFeedbackEnabled}
+				/>,
+				questionContainer,
 			);
 		}
 	};
 
-	const maskChunk = (chunkId: string, chunkIndex: number) => {
+	const processChunk = (chunkId: string, chunkIndex: number) => {
 		const el = getChunkElement(chunkId);
 		const currentIndex = chunks.indexOf(currentChunk);
 		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
+
 		if (selectedQuestions.has(chunkId)) {
 			insertQuestion(el, chunkId);
 		}
 
-		if (chunkIndex !== 0 && isChunkUnvisited) {
-			el.style.filter = "blur(4px)";
-		}
+		// don't blur if the page is finished
+		if (!isPageFinished) {
+			if (chunkIndex !== 0 && isChunkUnvisited) {
+				el.style.filter = "blur(4px)";
+			}
 
-		if (chunkIndex === chunks.length - 1) {
-			insertScrollBackButton(el);
+			if (chunkIndex === chunks.length - 1) {
+				insertScrollBackButton(el);
+			}
 		}
 	};
 
@@ -162,9 +159,7 @@ export const QuestionControl = ({
 	};
 
 	useEffect(() => {
-		if (!isPageFinished) {
-			chunks.forEach(maskChunk);
-		}
+		chunks.forEach(processChunk);
 	}, []);
 
 	useEffect(() => {

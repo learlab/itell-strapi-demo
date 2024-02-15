@@ -18,7 +18,7 @@ export const SummaryProgress = ({ items }: Props) => {
 		<div className="flex rounded my-4 items-center justify-center h-full">
 			{items.map((item, index) => (
 				<div
-					className="flex flex-col gap-1 w-[calc((100%-2.5rem)/4)]"
+					className="flex flex-col gap-1 w-[calc((100%-2.5rem)/4)] justify-center"
 					key={item.name}
 				>
 					<div className="flex items-center ">

@@ -1,19 +1,27 @@
 "use client";
 
+import { Message } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
-import { User } from "@prisma/client";
+import { Session } from "next-auth";
 import { Avatar, AvatarImage } from "../client-components";
 import { useChat } from "../context/chat-context";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
 
 type Props = {
-	user: User;
+	user: {
+		name: string | null | undefined;
+		image: string | null | undefined;
+	};
+	isChunkQuestion: boolean;
 };
 
-export const ChatMessages = ({ user }: Props) => {
+export const ChatMessages = ({ user, isChunkQuestion }: Props) => {
 	const { messages, activeMessageId } = useChat();
-	const inverseMessages = messages.slice().reverse();
+	const inverseMessages = messages
+		.filter((m) => m.isChunkQuestion === isChunkQuestion)
+		.slice()
+		.reverse();
 
 	return (
 		<div
@@ -47,14 +55,20 @@ export const ChatMessages = ({ user }: Props) => {
 								{activeMessageId === message.id ? (
 									<Spinner className="size-4" />
 								) : (
-									<p
+									<div
 										className={cn("px-4 py-2 rounded-lg", {
 											"bg-blue-600 text-white": message.isUserMessage,
 											"bg-gray-200 text-gray-900": !message.isUserMessage,
 										})}
 									>
-										{message.text}
-									</p>
+										{"text" in message ? (
+											<p>{message.text}</p>
+										) : (
+											<div>
+												<message.Element />
+											</div>
+										)}
+									</div>
 								)}
 							</div>
 						</div>

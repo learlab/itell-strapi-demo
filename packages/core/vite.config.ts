@@ -1,6 +1,6 @@
 import path from "node:path";
-import dts from "vite-plugin-dts";
 import { UserConfigExport, defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 const app = async (): Promise<UserConfigExport> => {
 	return defineConfig({
@@ -28,6 +28,7 @@ const app = async (): Promise<UserConfigExport> => {
 					components: path.resolve(__dirname, "src/components/index.ts"),
 					summary: path.resolve(__dirname, "src/summary/index.ts"),
 					qa: path.resolve(__dirname, "src/qa/index.ts"),
+					chatbot: path.resolve(__dirname, "src/chatbot/index.ts"),
 				},
 				name: "core",
 				formats: ["es", "cjs"],

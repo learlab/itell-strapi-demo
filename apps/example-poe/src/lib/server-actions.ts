@@ -1,5 +1,6 @@
 "use server";
 
+import { SummaryResponse } from "@itell/core/summary";
 import { FocusTimeEventData } from "@itell/core/types";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -16,8 +17,30 @@ export const deleteSummary = async (id: string) => {
 	});
 };
 
-export const createSummary = async (input: Prisma.SummaryCreateInput) => {
-	return await db.summary.create({ data: input });
+export const createSummary = async ({
+	text,
+	pageSlug,
+	response,
+}: { text: string; pageSlug: string; response: SummaryResponse }) => {
+	const user = await getCurrentUser();
+	if (user) {
+		return await db.summary.create({
+			data: {
+				text,
+				pageSlug,
+				isPassed: response.is_passed,
+				containmentScore: response.containment,
+				similarityScore: response.similarity,
+				wordingScore: response.wording,
+				contentScore: response.content,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
+			},
+		});
+	}
 };
 
 export const updateSummary = async (

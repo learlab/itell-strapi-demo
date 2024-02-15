@@ -1,3 +1,5 @@
+import { Separator } from "@/components/client-components";
+import { getTeacherWithClassId } from "@/lib/class";
 import {
 	Card,
 	CardContent,
@@ -5,14 +7,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/server";
-import { Separator } from "@/components/client-components";
 import { User } from "@prisma/client";
-import { getTeacherWithClassId } from "@/lib/class";
 import { ClassInfo } from "./settings/class-info";
-import { Profile } from "./settings/profile";
-import { ClassRequestModal } from "./settings/class-request-modal";
-import { WebsiteSettings } from "./settings/website-settings";
 import { ClassRegister } from "./settings/class-register";
+import { ClassRequestModal } from "./settings/class-request-modal";
+import { Profile } from "./settings/profile";
+import { WebsiteSettings } from "./settings/website-settings";
 
 export const SettingsForm = async ({ user }: { user: User }) => {
 	const teacher = await getTeacherWithClassId(user.classId);
