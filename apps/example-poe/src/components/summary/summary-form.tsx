@@ -33,12 +33,10 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
-import { ReactPortal, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
-import { Chatbot } from "../chat/chatbot";
 import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
 import { useChat } from "../context/chat-context";
@@ -88,7 +86,7 @@ const initialState: State = {
 	showQuiz: false,
 };
 
-type Stage = "Scoring" | "Saving" | "Generating";
+type Stage = "Scoring" | "Saving" | "Analyzing";
 
 const driverObj = driver();
 
@@ -102,25 +100,32 @@ export const SummaryForm = ({
 }: Props) => {
 	const pageSlug = page.page_slug;
 	const { nodes, addNode } = usePortal();
-	const { clearChunkQuestionMessages, chunkQuestionAnswered } = useChat();
+	const { chunkQuestionAnswered, setChunkQuestion } = useChat();
 
-	driverObj.setConfig({
-		onPopoverRender: (popover) => {
-			clearChunkQuestionMessages();
-			addNode(
-				<ChatbotChunkQuestion user={user} pageSlug={pageSlug} />,
-				popover.wrapper,
-			);
-		},
-		onDestroyStarted: () => {
-			if (!chunkQuestionAnswered) {
-				return toast.warning("Please answer the question to continue");
-			}
+	const questionContainerRef = useRef<HTMLDivElement | null>();
 
-			driverObj.destroy();
-			showSiteNav();
-		},
-	});
+	useMemo(() => {
+		driverObj.setConfig({
+			onPopoverRender: (popover) => {
+				addNode(
+					<ChatbotChunkQuestion user={user} pageSlug={pageSlug} />,
+					popover.wrapper,
+				);
+			},
+			onDestroyStarted: () => {
+				if (!chunkQuestionAnswered) {
+					return toast.warning("Please answer the question to continue");
+				}
+
+				driverObj.destroy();
+
+				if (questionContainerRef.current) {
+					questionContainerRef.current.classList.remove("hidden");
+				}
+				showSiteNav();
+			},
+		});
+	}, [chunkQuestionAnswered]);
 
 	const router = useRouter();
 	const [stages, setStages] = useState<StageItem[]>([]);
@@ -179,12 +184,13 @@ export const SummaryForm = ({
 		e.preventDefault();
 		setStages([]);
 
+		dispatch({ type: "submit" });
+		addStage("Scoring");
+
 		const formData = new FormData(e.currentTarget);
 		const input = (formData.get("input") as string).replaceAll("\u0000", "");
 		const userId = user.id;
 		localStorage.setItem(makeInputKey(pageSlug), input);
-
-		dispatch({ type: "submit" });
 
 		const error = validateSummary(input);
 		if (error) {
@@ -192,11 +198,13 @@ export const SummaryForm = ({
 			return;
 		}
 
+		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
+		const shouldPass = summaryCount >= PAGE_SUMMARY_THRESHOLD;
+
 		let summaryResponse: SummaryResponse | null = null;
 
 		try {
 			if (isFeedbackEnabled) {
-				addStage("Scoring");
 				const focusTime = await findFocusTime(userId, pageSlug);
 
 				const response = await fetch(
@@ -243,8 +251,13 @@ export const SummaryForm = ({
 								return;
 							}
 						} else {
+							// if (shouldPass) {
+							// 	// when the amount of summaries is enough, we don't need to ask questions
+							// 	break;
+							// }
+
 							if (chunkIndex === 1) {
-								addStage("Generating");
+								addStage("Analyzing");
 							}
 							if (!done) {
 								chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
@@ -253,7 +266,7 @@ export const SummaryForm = ({
 									const chunkQuestionData = JSON.parse(
 										chunkQuestionString,
 									) as ChunkQuestion;
-									finishStage("Generating");
+									finishStage("Analyzing");
 									dispatch({ type: "ask", payload: chunkQuestionData });
 								}
 							}
@@ -288,15 +301,12 @@ export const SummaryForm = ({
 						type: "finish",
 						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
 					});
-				} else {
-					const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
-					if (summaryCount >= PAGE_SUMMARY_THRESHOLD) {
-						await incrementUserPage(userId, pageSlug);
-						dispatch({
-							type: "finish",
-							payload: { canProceed: !isLastPage(pageSlug), showQuiz },
-						});
-					}
+				} else if (shouldPass) {
+					await incrementUserPage(userId, pageSlug);
+					dispatch({
+						type: "finish",
+						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
+					});
 				}
 
 				finishStage("Saving");
@@ -315,34 +325,41 @@ export const SummaryForm = ({
 		  ? false
 		  : !isPageFinished;
 
-	const goToQuestion = () => {
-		if (state.chunkQuestion) {
-			const el = getChunkElement(state.chunkQuestion.chunk);
-			if (el) {
-				hideSiteNav();
-				const yOffset = -70;
-				const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
+		const el = getChunkElement(chunkQuestion.chunk);
+		if (el) {
+			hideSiteNav();
 
-				window.scrollTo({ top: y, behavior: "smooth" });
+			setChunkQuestion(chunkQuestion.text);
 
-				setTimeout(() => {
-					driverObj.highlight({
-						element: el,
-						popover: {
-							description:
-								"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
-							side: "left",
-							align: "start",
-						},
-					});
-				}, 1000);
+			const questionContainer = el.querySelector(".question-container");
+			if (questionContainer) {
+				questionContainerRef.current = questionContainer as HTMLDivElement;
+				questionContainerRef.current.classList.add("hidden");
 			}
+
+			const yOffset = -70;
+			const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+
+			window.scrollTo({ top: y, behavior: "smooth" });
+
+			setTimeout(() => {
+				driverObj.highlight({
+					element: el,
+					popover: {
+						description:
+							"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
+						side: "left",
+						align: "start",
+					},
+				});
+			}, 1000);
 		}
 	};
 
 	useEffect(() => {
 		if (state.chunkQuestion) {
-			goToQuestion();
+			goToQuestion(state.chunkQuestion);
 		}
 
 		if (state.showQuiz) {
@@ -384,7 +401,10 @@ export const SummaryForm = ({
 		<section className="space-y-2">
 			{nodes}
 			{state.chunkQuestion && (
-				<Button variant={"outline"} onClick={goToQuestion}>
+				<Button
+					variant={"outline"}
+					onClick={() => goToQuestion(state.chunkQuestion as ChunkQuestion)}
+				>
 					Go to question
 				</Button>
 			)}

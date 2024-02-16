@@ -2,7 +2,8 @@
 
 import { Message, Messages } from "@itell/core/chatbot";
 import { useLocalStorage } from "@itell/core/hooks";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { Button } from "../client-components";
 
 type ChatContextType = {
@@ -14,8 +15,9 @@ type ChatContextType = {
 	updateMessage: (id: string, updateFn: (prevText: string) => string) => void;
 	activeMessageId: string | undefined;
 	setActiveMessageId: (id: string | undefined) => void;
-	clearChunkQuestionMessages: () => void;
 	chunkQuestionAnswered: boolean;
+	setChunkQuestionAnswered: (value: boolean) => void;
+	setChunkQuestion: (value: string) => void;
 };
 
 export const ChatContext = createContext<ChatContextType>(
@@ -32,46 +34,47 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 		isUserMessage: false,
 		isChunkQuestion: false,
 	};
-	const message2 = {
-		id: id2,
-		isUserMessage: false,
-		isChunkQuestion: true,
-		Element: () => (
-			<div className="space-y-2">
-				<p>When you are ready for the question, click the button below.</p>
-				<Button
-					size={"sm"}
-					variant={"outline"}
-					onClick={() =>
-						addMessage({
-							id: crypto.randomUUID(),
-							isUserMessage: false,
-							isChunkQuestion: true,
-							Element: () => (
-								<div className="space-y-2">
-									<p>A fake question</p>
-									<Button
-										size="sm"
-										variant="outline"
-										onClick={() => setChunkQuestionAnswered(true)}
-									>
-										fake answer
-									</Button>
-								</div>
-							),
-						})
-					}
-				>
-					I'm ready for question
-				</Button>
-			</div>
-		),
-	};
 
 	const [chunkQuestionAnswered, setChunkQuestionAnswered] = useState(false);
 	const [show, setShow] = useLocalStorage<boolean>("show-chatbot", true);
-	const [messages, setMessages] = useState<Message[]>([message1, message2]);
+	const [messages, setMessages] = useState<Message[]>([message1]);
 	const [activeMessageId, setActiveMessageId] = useState<string | undefined>();
+
+	const [chunkQuestion, setChunkQuestion] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (chunkQuestion) {
+			clearChunkQuestionMessages();
+			addMessage({
+				id: id2,
+				isUserMessage: false,
+				isChunkQuestion: true,
+				Element: () => (
+					<div className="space-y-2">
+						<p>When you are ready for the question, click the button below.</p>
+						<Button
+							size={"sm"}
+							variant={"outline"}
+							onClick={() =>
+								addMessage({
+									id: crypto.randomUUID(),
+									isUserMessage: false,
+									isChunkQuestion: true,
+									Element: () => (
+										<div className="space-y-2">
+											<p>{chunkQuestion}</p>
+										</div>
+									),
+								})
+							}
+						>
+							I'm ready for question
+						</Button>
+					</div>
+				),
+			});
+		}
+	}, [chunkQuestion]);
 
 	const addMessage = (message: Message) => {
 		setMessages((prev) => [...prev, message]);
@@ -82,7 +85,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 	};
 
 	const clearChunkQuestionMessages = () => {
-		setMessages(messages.filter((m) => !m.isChunkQuestion || m.id === id2));
+		setMessages(messages.filter((m) => !m.isChunkQuestion));
 	};
 
 	const updateMessage = (
@@ -110,8 +113,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 				removeMessage,
 				updateMessage,
 				setActiveMessageId,
-				clearChunkQuestionMessages,
 				chunkQuestionAnswered,
+				setChunkQuestionAnswered,
+				setChunkQuestion,
 				showChatbot: show,
 				setShowChatbot: setShow,
 			}}

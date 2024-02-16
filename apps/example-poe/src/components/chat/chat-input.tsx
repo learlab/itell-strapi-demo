@@ -18,7 +18,12 @@ export const ChatInput = ({
 	isChunkQuestion,
 	...props
 }: ChatInputProps) => {
-	const { addMessage, updateMessage, setActiveMessageId } = useChat();
+	const {
+		addMessage,
+		updateMessage,
+		setActiveMessageId,
+		setChunkQuestionAnswered,
+	} = useChat();
 
 	const onMessage = async (text: string) => {
 		// add user message
@@ -28,6 +33,10 @@ export const ChatInput = ({
 			isUserMessage: true,
 			isChunkQuestion,
 		});
+
+		if (isChunkQuestion) {
+			setChunkQuestionAnswered(true);
+		}
 
 		const responseId = crypto.randomUUID();
 		setActiveMessageId(responseId);

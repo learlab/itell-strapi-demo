@@ -16,6 +16,8 @@ export const SummaryFeedback = ({
 	canProceed,
 	nextPageSlug,
 }: Props) => {
+	const keyphrases = new Set(feedback.suggestedKeyphrases);
+
 	const FeedbackBody = (
 		<div className="font-light leading-relaxed space-y-2">
 			<header className="flex justify-between">
@@ -29,11 +31,11 @@ export const SummaryFeedback = ({
 					</Link>
 				)}
 			</header>
-			{feedback.suggestedKeyphrases && (
+			{keyphrases.size > 0 && (
 				<div>
 					Try to include the following keywords:
 					<ul className="list-disc">
-						{feedback.suggestedKeyphrases.map((keyphrase) => (
+						{Array.from(keyphrases).map((keyphrase) => (
 							<li className="text-accent-foreground" key={keyphrase}>
 								{keyphrase}
 							</li>
