@@ -32,7 +32,7 @@ export const ModuleToc = ({
 	const chapters = getModuleChapters(page.location.module);
 
 	return (
-		<aside className="module-sidebar col-span-2 sticky top-20 h-fit z-20">
+		<>
 			<ModuleSidebar
 				chapters={chapters}
 				currentPage={{
@@ -58,6 +58,6 @@ export const ModuleToc = ({
 					href="#page-title"
 				/>
 			</div>
-		</aside>
+		</>
 	);
 };

@@ -9,10 +9,10 @@ type Props = {
 	feedback: SummaryFeedbackType;
 };
 
-export const SummaryFeedback = ({ feedback }: Props) => {
+const FeedbackBody = ({ feedback }: Props) => {
 	const keyphrases = new Set(feedback.suggestedKeyphrases);
 
-	const FeedbackBody = (
+	return (
 		<div className="font-light leading-relaxed space-y-2">
 			<header className="flex justify-between">
 				<p>{feedback.prompt}</p>
@@ -51,10 +51,16 @@ export const SummaryFeedback = ({ feedback }: Props) => {
 			)}
 		</div>
 	);
+};
 
+export const SummaryFeedback = ({ feedback }: Props) => {
 	return feedback.isPassed ? (
-		<Info className="animate-in fade-in-50">{FeedbackBody}</Info>
+		<Info className="animate-in fade-in-50">
+			<FeedbackBody feedback={feedback} />
+		</Info>
 	) : (
-		<Warning className="animate-in fade-in-50">{FeedbackBody}</Warning>
+		<Warning className="animate-in fade-in-50">
+			<FeedbackBody feedback={feedback} />
+		</Warning>
 	);
 };

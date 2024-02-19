@@ -64,10 +64,18 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
-			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
-				<ModuleToc page={page} user={user} />
+			<div className="flex flex-row justify-end max-w-[1440px] mx-auto gap-6 px-2">
+				<aside
+					className="module-sidebar sticky top-20 h-fit z-20 basis-0 ease-in-out duration-200"
+					style={{ flexGrow: 1 }}
+				>
+					<ModuleToc page={page} user={user} />
+				</aside>
 
-				<section className="page-content relative col-span-8">
+				<section
+					className="page-content relative max-w-[850px]"
+					style={{ flexGrow: 4 }}
+				>
 					<PageTitle>
 						{page.title}
 						{isPageLatest ? (
@@ -83,7 +91,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 				</section>
 
-				<aside className="toc-sidebar col-span-2 relative">
+				<aside
+					className="toc-sidebar relative ease-in-out duration-200"
+					style={{ flexGrow: 1 }}
+				>
 					<div className="sticky top-20">
 						<PageToc headings={page.headings} />
 						<div className="mt-8 flex flex-col gap-1">

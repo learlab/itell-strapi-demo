@@ -115,3 +115,11 @@ export const showSiteNav = () => {
 export const hideSiteNav = () => {
 	document.getElementById("site-nav")?.classList.add("hidden");
 };
+
+export const scrollToElement = (element: HTMLElement) => {
+	// offset to account for the sticky header
+	const yOffset = -70;
+	const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+
+	window.scrollTo({ top: y, behavior: "smooth" });
+};

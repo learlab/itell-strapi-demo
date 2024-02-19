@@ -52,6 +52,13 @@ svg {
   color: black;
 }
 
+.driver-active .toc-sidebar,
+.driver-active .module-sidebar,
+.driver-active #site-nav,
+.driver-active .question-box {
+  @apply hidden
+}
+
 @media (max-width: 768px) {
   .module-sidebar {
     display: none;
@@ -59,9 +66,5 @@ svg {
 
   .toc-sidebar {
     display: none;
-  }
-
-  .page-content {
-    grid-column: span 12;
   }
 }

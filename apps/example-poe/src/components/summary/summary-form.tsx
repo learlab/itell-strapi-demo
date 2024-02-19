@@ -17,6 +17,7 @@ import {
 	hideSiteNav,
 	makeInputKey,
 	makePageHref,
+	scrollToElement,
 	showSiteNav,
 } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
@@ -103,29 +104,40 @@ export const SummaryForm = ({
 	const { nodes, addNode } = usePortal();
 	const { chunkQuestionAnswered, setChunkQuestion } = useChat();
 
-	const questionContainerRef = useRef<HTMLDivElement | null>();
+	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
+		const chunkEl = getChunkElement(chunkQuestion.chunk);
+		if (chunkEl) {
+			setChunkQuestion(chunkQuestion.text);
+
+			scrollToElement(chunkEl);
+
+			setTimeout(() => {
+				driverObj.highlight({
+					element: chunkEl,
+					popover: {
+						description:
+							"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
+						side: "left",
+						align: "start",
+					},
+				});
+			}, 1000);
+		}
+	};
 
 	const exitDriver = () => {
 		const summaryEl = document.querySelector("#page-summary");
 
 		driverObj.destroy();
 
-		if (questionContainerRef.current) {
-			questionContainerRef.current.classList.remove("hidden");
-		}
-		showSiteNav();
-
 		if (summaryEl) {
-			const yOffset = -70;
-			const y =
-				summaryEl.getBoundingClientRect().top + window.scrollY + yOffset;
-
-			window.scrollTo({ top: y, behavior: "smooth" });
+			scrollToElement(summaryEl as HTMLDivElement);
 		}
 	};
 
 	useMemo(() => {
 		driverObj.setConfig({
+			smoothScroll: false,
 			onPopoverRender: (popover) => {
 				addNode(
 					<ChatbotChunkQuestion
@@ -343,38 +355,6 @@ export const SummaryForm = ({
 		: pageStatus.isPageUnlocked
 		  ? false
 		  : !isPageFinished;
-
-	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
-		const el = getChunkElement(chunkQuestion.chunk);
-		if (el) {
-			hideSiteNav();
-
-			setChunkQuestion(chunkQuestion.text);
-
-			const questionContainer = el.querySelector(".question-container");
-			if (questionContainer) {
-				questionContainerRef.current = questionContainer as HTMLDivElement;
-				questionContainerRef.current.classList.add("hidden");
-			}
-
-			const yOffset = -70;
-			const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
-
-			window.scrollTo({ top: y, behavior: "smooth" });
-
-			setTimeout(() => {
-				driverObj.highlight({
-					element: el,
-					popover: {
-						description:
-							"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
-						side: "left",
-						align: "start",
-					},
-				});
-			}, 1000);
-		}
-	};
 
 	useEffect(() => {
 		if (state.chunkQuestion) {
