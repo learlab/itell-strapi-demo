@@ -1,17 +1,12 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
 import {
 	getHeadingsFromRawBody,
 	getLocationFromFlattenedPath,
 	getSlugFromFlattenedPath,
 } from "./src/lib/contentlayer";
-
-const slugify = (str: string) =>
-	str.toLowerCase().replace(/\s/g, "-").replace(/[?.!]/g, "");
 
 const Site = defineDocumentType(() => ({
 	name: "Site",
@@ -57,14 +52,19 @@ const Page = defineDocumentType(() => ({
 	computedFields: {
 		url: {
 			type: "string",
+			description: "The URL of the page",
 			resolve: (doc) => `/${doc.page_slug}`,
 		},
 		location: {
 			type: "json",
+			description:
+				"A {module, chapter, section} object representing the location of the doc",
 			resolve: (doc) => getLocationFromFlattenedPath(doc._raw.flattenedPath),
 		},
 		headings: {
 			type: "json",
+			description:
+				"An array of {level, text, slug} objects representing the table of contents of the doc",
 			resolve: (doc) => getHeadingsFromRawBody(doc.body.raw),
 		},
 	},
