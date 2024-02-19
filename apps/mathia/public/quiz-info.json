@@ -1,0 +1,1039 @@
+{
+	"a-sample-case": [
+		{
+			"id": 17,
+			"Question": "The source of law that is foundational in the US legal system is",
+			"Answers": [
+				{
+					"id": 101,
+					"Text": "the common law",
+					"IsCorrect": false
+				},
+				{
+					"id": 102,
+					"Text": "statutory law",
+					"IsCorrect": false
+				},
+				{
+					"id": 103,
+					"Text": "constitutional law",
+					"IsCorrect": true
+				},
+				{
+					"id": 104,
+					"Text": "administrative law",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 18,
+			"Question": "“Law is the command of a sovereign” represents what school of legal thought?",
+			"Answers": [
+				{
+					"id": 105,
+					"Text": "civil law",
+					"IsCorrect": false
+				},
+				{
+					"id": 106,
+					"Text": "constitutional law",
+					"IsCorrect": false
+				},
+				{
+					"id": 107,
+					"Text": "natural law",
+					"IsCorrect": false
+				},
+				{
+					"id": 108,
+					"Text": "ecofeminist law",
+					"IsCorrect": false
+				},
+				{
+					"id": 109,
+					"Text": "positive law",
+					"IsCorrect": true
+				}
+			]
+		},
+		{
+			"id": 19,
+			"Question": "Which of the following kinds of law are most often found in state law rather than federal law?",
+			"Answers": [
+				{
+					"id": 110,
+					"Text": "torts and contracts",
+					"IsCorrect": true
+				},
+				{
+					"id": 111,
+					"Text": "bankruptcy",
+					"IsCorrect": false
+				},
+				{
+					"id": 112,
+					"Text": "maritime law",
+					"IsCorrect": false
+				},
+				{
+					"id": 113,
+					"Text": "international law",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 21,
+			"Question": "Where was natural law discovered?",
+			"Answers": [
+				{
+					"id": 114,
+					"Text": "in nature",
+					"IsCorrect": false
+				},
+				{
+					"id": 115,
+					"Text": "in constitutions and statutes",
+					"IsCorrect": false
+				},
+				{
+					"id": 116,
+					"Text": "in the exercise of human reason",
+					"IsCorrect": true
+				},
+				{
+					"id": 117,
+					"Text": "in the Wall Street Journal",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 20,
+			"Question": "Wolfe is a state court judge in California. In the case of Riddick v. Clouse, which involves a contract dispute, Wolfe must follow precedent. She establishes a logical relationship between the Riddick case and a case decided by the California Supreme Court, Zhu v. Patel Enterprises, Inc. She compares the facts of Riddick to the facts in Zhu and to the extent the facts are similar, applies the same rule to reach her decision. This is",
+			"Answers": [
+				{
+					"id": 118,
+					"Text": "deductive reasoning",
+					"IsCorrect": false
+				},
+				{
+					"id": 119,
+					"Text": "faulty reasoning",
+					"IsCorrect": false
+				},
+				{
+					"id": 120,
+					"Text": "linear reasoning",
+					"IsCorrect": false
+				},
+				{
+					"id": 121,
+					"Text": "reasoning by analogy",
+					"IsCorrect": true
+				}
+			]
+		},
+		{
+			"id": 22,
+			"Question": "Moore is a state court judge in Colorado. In the case of Cassidy v. Seawell, also a contract dispute, there is no Colorado Supreme Court or court of appeals decision that sets forth a rule that could be applied. However, the California case of Zhu v. Patel Enterprises, Inc. is “very close” on the facts and sets forth a rule of law that could be applied to the Cassidy case. What process must Moore follow in considering whether to use the Zhu case as precedent?",
+			"Answers": [
+				{
+					"id": 122,
+					"Text": "Moore is free to decide the case any way he wants, but he may not look at decisions and reasons in similar cases from other states.",
+					"IsCorrect": false
+				},
+				{
+					"id": 123,
+					"Text": "Moore must wait for the Colorado legislature and the governor to pass a law that addresses the issues raised in the Cassidy case.",
+					"IsCorrect": false
+				},
+				{
+					"id": 124,
+					"Text": "Moore must follow the California case if that is the best precedent.",
+					"IsCorrect": false
+				},
+				{
+					"id": 125,
+					"Text": "Moore may follow the California case if he believes that it offers the best reasoning for a similar case.",
+					"IsCorrect": true
+				}
+			]
+		}
+	],
+	"cases-4": [
+		{
+			"id": 59,
+			"Question": "Under what clause of the Constitution must each state court respect the final judgments of courts in other states?",
+			"Answers": [
+				{
+					"id": 273,
+					"Text": "Supremacy clause",
+					"IsCorrect": false
+				},
+				{
+					"id": 274,
+					"Text": "Full faith and credit clause",
+					"IsCorrect": true
+				},
+				{
+					"id": 276,
+					"Text": "Commerce clause",
+					"IsCorrect": false
+				},
+				{
+					"id": 275,
+					"Text": "Equal protection clause",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 58,
+			"Question": "Which of the following types of cases would typically be dealt with by state courts?",
+			"Answers": [
+				{
+					"id": 277,
+					"Text": "Cases that arise “in admiralty”",
+					"IsCorrect": false
+				},
+				{
+					"id": 278,
+					"Text": "“Federal question” cases",
+					"IsCorrect": false
+				},
+				{
+					"id": 279,
+					"Text": "Tort, contract, or property claims",
+					"IsCorrect": true
+				},
+				{
+					"id": 280,
+					"Text": "Cases that have a clear federal connection",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 60,
+			"Question": "What can a party do if they believe a discovery request is for privileged material or made to harass?",
+			"Answers": [
+				{
+					"id": 281,
+					"Text": "Ignore the request",
+					"IsCorrect": false
+				},
+				{
+					"id": 282,
+					"Text": "Respond with a counter-request",
+					"IsCorrect": false
+				},
+				{
+					"id": 283,
+					"Text": "Apply to the court for a protective order",
+					"IsCorrect": true
+				},
+				{
+					"id": 284,
+					"Text": "Request a change of venue",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 61,
+			"Question": "According to Rule 50(b) of the Federal Rules of Civil Procedure, how many days after the entry of judgment can a party who has moved for a directed verdict move to have the verdict and any judgment entered thereon set aside?",
+			"Answers": [
+				{
+					"id": 286,
+					"Text": "5 days",
+					"IsCorrect": false
+				},
+				{
+					"id": 291,
+					"Text": "10 days",
+					"IsCorrect": true
+				},
+				{
+					"id": 290,
+					"Text": "15 days",
+					"IsCorrect": false
+				},
+				{
+					"id": 294,
+					"Text": "20 days",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 62,
+			"Question": "What requirement is satisfied if the defendant has “purposefully directed” his activities at residents of the forum, and the litigation results from alleged injuries that “arise out of or relate to” those activities?",
+			"Answers": [
+				{
+					"id": 288,
+					"Text": "The “fair warning” requirement",
+					"IsCorrect": true
+				},
+				{
+					"id": 285,
+					"Text": "The “due process” requirement",
+					"IsCorrect": false
+				},
+				{
+					"id": 299,
+					"Text": "The “equal protection” requirement ",
+					"IsCorrect": false
+				},
+				{
+					"id": 292,
+					"Text": "The “jurisdiction” requirement",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 63,
+			"Question": "What does the appellate court review to try to find a legal error on a specific request of one or both of the parties?",
+			"Answers": [
+				{
+					"id": 293,
+					"Text": "The record of the case",
+					"IsCorrect": true
+				},
+				{
+					"id": 287,
+					"Text": "The original complaint",
+					"IsCorrect": false
+				},
+				{
+					"id": 297,
+					"Text": "The judge’s notes",
+					"IsCorrect": false
+				},
+				{
+					"id": 289,
+					"Text": "The jury’s notes",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 64,
+			"Question": "Under what circumstances might a single lawsuit be a more efficient way of determining liability and deciding financial responsibility than many individual lawsuits?",
+			"Answers": [
+				{
+					"id": 296,
+					"Text": "When the potential plaintiffs were all injured in the same way and their injuries were identical ",
+					"IsCorrect": true
+				},
+				{
+					"id": 295,
+					"Text": "When the potential plaintiffs have different injuries but were injured in the same accident",
+					"IsCorrect": false
+				},
+				{
+					"id": 300,
+					"Text": "hen the potential plaintiffs have the same injuries but were injured in different accidents ",
+					"IsCorrect": false
+				},
+				{
+					"id": 298,
+					"Text": "When the potential plaintiffs have different injuries and were injured in different accidents",
+					"IsCorrect": false
+				}
+			]
+		}
+	],
+	"cases-5": [
+		{
+			"id": 28,
+			"Question": "Harvey filed a suit against the state of Colorado, claiming that a Colorado state law violates the commerce clause. The court will agree if the statute\n\n",
+			"Answers": [
+				{
+					"id": 147,
+					"Text": "places an undue burden on interstate commerce\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 148,
+					"Text": "promotes the public health, safety, morals, or general welfare of Colorado\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 149,
+					"Text": "regulates economic activities within the state’s borders\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 150,
+					"Text": "a and b\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 151,
+					"Text": "b and c\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 29,
+			"Question": "The state legislature in Maine enacts a law that directly conflicts with a federal law. Mapco Industries, located in Portland, Maine, cannot comply with both the state and the federal law.\n\n",
+			"Answers": [
+				{
+					"id": 152,
+					"Text": "Because of federalism, the state law will have priority, as long as Maine is using its police powers.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 153,
+					"Text": "Because there’s a conflict, both laws are invalid; the state and the federal government will have to work out a compromise of some sort.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 154,
+					"Text": "The federal law preempts the state law.\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 155,
+					"Text": "Both laws govern concurrently.\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 30,
+			"Question": "Hannah, who lives in Ada, is the owner of Superior Enterprises, Inc. She believes that certain actions in the state of Ohio infringe on her federal constitutional rights, especially those found in the Bill of Rights. Most of these rights apply to the states under\n\n",
+			"Answers": [
+				{
+					"id": 156,
+					"Text": "the supremacy clause\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 157,
+					"Text": "the protection clause\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 158,
+					"Text": "the due process clause of the Fourteenth Amendment\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 159,
+					"Text": "the Tenth Amendment\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 31,
+			"Question": "Minnesota enacts a statute that bans all advertising that is in “bad taste,” “vulgar,” or “indecent.” In Michigan, Aaron Calloway and his brother, Clarence “Cab” Calloway, create unique beer that they decide to call Old Fart Ale. In their marketing, the brothers have a label in which an older man in a dirty T-shirt is sitting in easy chair, looking disheveled and having a three-day growth of stubble on his chin. It appears that the man is in the process of belching. He is also holding a can of Old Fart Ale. The Minnesota liquor commission orders all Minnesota restaurants, bars, and grocery stores to remove Old Fart Ale from their shelves. The state statute and the commission’s order are likely to be held by a court to be\n\n",
+			"Answers": [
+				{
+					"id": 160,
+					"Text": "a violation of the Tenth Amendment\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 161,
+					"Text": "a violation of the First Amendment\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 162,
+					"Text": "a violation of the Calloways’ right to equal protection of the laws\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 164,
+					"Text": "a violation of the commerce clause, since only the federal laws can prevent an article of commerce from entering into Minnesota’s market\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 32,
+			"Question": "Raunch Unlimited, a Virginia partnership, sells smut whenever and wherever it can. Some of its material is “obscene” (meeting the Supreme Court’s definition under Miller v. California) and includes child pornography. North Carolina has a statute that criminalizes obscenity. What are possible results if a store in Raleigh, North Carolina, carries Raunch merchandise?\n\n",
+			"Answers": [
+				{
+					"id": 163,
+					"Text": "The partners could be arrested in North Carolina and may well be convicted.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 165,
+					"Text": "The materials in Raleigh may be the basis for a criminal conviction.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 166,
+					"Text": "The materials are protected under the First Amendment’s right of free speech.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 167,
+					"Text": "The materials are protected under state law.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 168,
+					"Text": "a and b\n",
+					"IsCorrect": true
+				}
+			]
+		}
+	],
+	"cases-1": [
+		{
+			"id": 33,
+			"Question": "Catarina falsely accuses Jeff of stealing from their employer. The statement is defamatory only if\n\n",
+			"Answers": [
+				{
+					"id": 169,
+					"Text": "a third party hears it\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 170,
+					"Text": "Nick suffers severe emotional distress as a result\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 171,
+					"Text": "the statement is the actual and proximate cause of his distress\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 172,
+					"Text": "the statement is widely circulated in the local media and on Twitter\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 34,
+			"Question": "Garrett files a suit against Colossal Media Corporation for defamation. Colossal has said that Garrett is a “sleazy, corrupt public official” (and provided some evidence to back the claim). To win his case, Garrett will have to show that Colossal acted with\n\n",
+			"Answers": [
+				{
+					"id": 173,
+					"Text": "malice",
+					"IsCorrect": false
+				},
+				{
+					"id": 174,
+					"Text": "ill will\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 177,
+					"Text": "malice aforethought\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 176,
+					"Text": "actual malice\n",
+					"IsCorrect": true
+				}
+			]
+		},
+		{
+			"id": 35,
+			"Question": "Big Burger begins a rumor, using social media, that the meat in Burger World is partly composed of ground-up worms. The rumor is not true, as Big Burger well knows. Its intent is to get some customers to shift loyalty from Burger World to Big Burger. Burger World’s best cause of action would be\n\n",
+			"Answers": [
+				{
+					"id": 175,
+					"Text": "trespass on the case\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 178,
+					"Text": "nuisance\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 179,
+					"Text": "product disparagement\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 181,
+					"Text": "intentional infliction of emotional distress\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 36,
+			"Question": "Wilfred Phelps, age 65, is driving his Nissan Altima down Main Street when he suffers the first seizure of his life. He loses control of his vehicle and runs into three people on the sidewalk. Which statement is true?\n\n",
+			"Answers": [
+				{
+					"id": 180,
+					"Text": "He is liable for an intentional tort.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 182,
+					"Text": "He is liable for a negligent tort.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 183,
+					"Text": "He is not liable for a negligent tort.\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 184,
+					"Text": "He is liable under strict liability, because driving a car is abnormally dangerous.\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 37,
+			"Question": "Jonathan carelessly bumps into Amanda, knocking her to the ground. He has committed the tort of negligence\n\n",
+			"Answers": [
+				{
+					"id": 185,
+					"Text": "only if Amanda is injured\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 186,
+					"Text": "only if Amanda is not injured\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 187,
+					"Text": "whether or not Amanda is injured\n",
+					"IsCorrect": false
+				}
+			]
+		}
+	],
+	"cases": [
+		{
+			"id": 38,
+			"Question": "An implied contract\n\n",
+			"Answers": [
+				{
+					"id": 188,
+					"Text": "must be in writing\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 189,
+					"Text": "is one in which the terms are spelled out\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 190,
+					"Text": "is one inferred from the actions of the parties\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 191,
+					"Text": "is imposed by law to avoid an unjust result\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 192,
+					"Text": "may be avoided by one party\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 39,
+			"Question": "The Convention on Contracts for the International Sale of Goods is\n\n",
+			"Answers": [
+				{
+					"id": 193,
+					"Text": "an annual meeting of international commercial purchasing agents.\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 195,
+					"Text": "contract law used in overseas US federal territories\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 194,
+					"Text": "a customary format or template for drafting contracts\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 196,
+					"Text": "a kind of treaty setting out international contract law, to which the United States is a party\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 197,
+					"Text": "the organization that develops uniform international law\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 40,
+			"Question": "An unenforceable contract is\n\n",
+			"Answers": [
+				{
+					"id": 200,
+					"Text": "void, not a contract at all\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 198,
+					"Text": "one that a court will not enforce for either side because of a rule of law\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 199,
+					"Text": "unenforceable by one party but enforceable by the other\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 201,
+					"Text": "one that has been performed by one party but not the other\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 204,
+					"Text": "too indefinite to be valid\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 41,
+			"Question": "Betty Baker found a bicycle apparently abandoned near her house. She took it home and spent $150 repairing and painting it, after which Carl appeared and proved his ownership of it. Under what theory is Betty able to get reimbursed for her expenditures?\n\n",
+			"Answers": [
+				{
+					"id": 205,
+					"Text": "express contract\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 203,
+					"Text": "implied contract\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 202,
+					"Text": "apparent or quasi-contract\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 206,
+					"Text": "executory contract\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 207,
+					"Text": "none: she will not get reimbursed\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 42,
+			"Question": "Alice discusses with her neighbor Bob her plan to hire Woodsman to cut three trees on her side of their property line, mentioning that she can get a good deal because Woodsman is now between jobs. Bob says, “Oh, don’t do that. My brother is going to cut some trees on my side, and he can do yours too for free.” Alice agrees. But Bob’s brother is preoccupied and never does the job. Three weeks later Alice discovers Woodsman’s rates have risen prohibitively. Under what theory does Alice have a cause of action against Bob?\n\n",
+			"Answers": [
+				{
+					"id": 212,
+					"Text": "express contract\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 211,
+					"Text": "promissory estoppel\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 209,
+					"Text": "quasi-contract\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 208,
+					"Text": "implied contract\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 210,
+					"Text": "none: she has no cause of action against Bob\n",
+					"IsCorrect": false
+				}
+			]
+		}
+	],
+	"cases-6": [
+		{
+			"id": 43,
+			"Question": "In interpreting agreements for the purpose of establishing whether a valid contract exists, courts generally apply\n\n",
+			"Answers": [
+				{
+					"id": 213,
+					"Text": "subjective standards\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 214,
+					"Text": "objective standards\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 215,
+					"Text": "either a subjective or an objective standard\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 216,
+					"Text": "none of the above\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 44,
+			"Question": "A valid offer must be\n\n",
+			"Answers": [
+				{
+					"id": 217,
+					"Text": "written\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 218,
+					"Text": "written and intended\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 219,
+					"Text": "communicated by letter\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 220,
+					"Text": "communicated and definite\n",
+					"IsCorrect": true
+				}
+			]
+		},
+		{
+			"id": 45,
+			"Question": "An offer\n\n",
+			"Answers": [
+				{
+					"id": 221,
+					"Text": "must specify time, place, and manner of acceptance\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 222,
+					"Text": "must be accepted immediately to be valid\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 223,
+					"Text": "need not be accepted immediately\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 227,
+					"Text": "can only be accepted by the same means it was made\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 47,
+			"Question": "An offer generally\n\n",
+			"Answers": [
+				{
+					"id": 224,
+					"Text": "is rejected by a counteroffer\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 228,
+					"Text": "can be revoked if the offeror changes his or her mind\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 229,
+					"Text": "can lapse after a reasonable period of time\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 230,
+					"Text": "involves all of the above\n",
+					"IsCorrect": true
+				}
+			]
+		},
+		{
+			"id": 46,
+			"Question": "An acceptance is generally considered effective\n\n",
+			"Answers": [
+				{
+					"id": 225,
+					"Text": "when a letter is received by the offeror\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 226,
+					"Text": "when a letter is mailed\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 231,
+					"Text": "when the offeree is silent\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 232,
+					"Text": "only when the acceptance is transmitted in writing\n",
+					"IsCorrect": false
+				}
+			]
+		}
+	],
+	"cases-2": [
+		{
+			"id": 49,
+			"Question": "In a products-liability case\n\n",
+			"Answers": [
+				{
+					"id": 233,
+					"Text": "only tort theories are typically asserted\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 234,
+					"Text": "both tort and contract theories are typically asserted\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 235,
+					"Text": "strict liability is asserted only when negligence is not asserted\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 236,
+					"Text": "breach of warranty is not asserted along with strict liability\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 50,
+			"Question": "An implied warranty of merchantability\n\n",
+			"Answers": [
+				{
+					"id": 237,
+					"Text": "is created by an express warranty\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 238,
+					"Text": "is created by law\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 239,
+					"Text": "is impossible for a seller to disclaim\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 240,
+					"Text": "can be disclaimed by a seller only if the disclaimer is in writing\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 48,
+			"Question": "A possible defense to breach of warranty is\n\n",
+			"Answers": [
+				{
+					"id": 241,
+					"Text": "lack of privity\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 242,
+					"Text": "absence of an express warranty\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 243,
+					"Text": "disclaimer of implied warranties\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 244,
+					"Text": "all of the above\n",
+					"IsCorrect": true
+				}
+			]
+		},
+		{
+			"id": 51,
+			"Question": "Under the strict liability rule in Restatement, Section 402A, the seller is liable for all injuries resulting from a product\n\n",
+			"Answers": [
+				{
+					"id": 246,
+					"Text": "even though all possible care has been exercised\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 245,
+					"Text": "regardless of the lack of a contract with the user\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 247,
+					"Text": "in both of the above situations\n",
+					"IsCorrect": true
+				},
+				{
+					"id": 248,
+					"Text": "in none of the above situations\n",
+					"IsCorrect": false
+				}
+			]
+		},
+		{
+			"id": 52,
+			"Question": "An individual selling her car could be liable\n\n",
+			"Answers": [
+				{
+					"id": 249,
+					"Text": "for breaching the implied warranty of merchantability\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 251,
+					"Text": "under the strict liability theory\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 250,
+					"Text": "for breaching the implied warranty of fitness\n",
+					"IsCorrect": false
+				},
+				{
+					"id": 252,
+					"Text": "under two of the above\n",
+					"IsCorrect": true
+				}
+			]
+		}
+	]
+}
