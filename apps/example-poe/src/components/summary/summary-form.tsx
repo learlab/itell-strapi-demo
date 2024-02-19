@@ -28,10 +28,11 @@ import {
 	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning } from "@itell/ui/server";
+import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { Session } from "next-auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from "react-dom-confetti";
@@ -104,11 +105,34 @@ export const SummaryForm = ({
 
 	const questionContainerRef = useRef<HTMLDivElement | null>();
 
+	const exitDriver = () => {
+		const summaryEl = document.querySelector("#page-summary");
+
+		driverObj.destroy();
+
+		if (questionContainerRef.current) {
+			questionContainerRef.current.classList.remove("hidden");
+		}
+		showSiteNav();
+
+		if (summaryEl) {
+			const yOffset = -70;
+			const y =
+				summaryEl.getBoundingClientRect().top + window.scrollY + yOffset;
+
+			window.scrollTo({ top: y, behavior: "smooth" });
+		}
+	};
+
 	useMemo(() => {
 		driverObj.setConfig({
 			onPopoverRender: (popover) => {
 				addNode(
-					<ChatbotChunkQuestion user={user} pageSlug={pageSlug} />,
+					<ChatbotChunkQuestion
+						user={user}
+						pageSlug={pageSlug}
+						onExit={exitDriver}
+					/>,
 					popover.wrapper,
 				);
 			},
@@ -117,12 +141,7 @@ export const SummaryForm = ({
 					return toast.warning("Please answer the question to continue");
 				}
 
-				driverObj.destroy();
-
-				if (questionContainerRef.current) {
-					questionContainerRef.current.classList.remove("hidden");
-				}
-				showSiteNav();
+				exitDriver();
 			},
 		});
 	}, [chunkQuestionAnswered]);
@@ -400,21 +419,26 @@ export const SummaryForm = ({
 	return (
 		<section className="space-y-2">
 			{nodes}
-			{state.chunkQuestion && (
-				<Button
-					variant={"outline"}
-					onClick={() => goToQuestion(state.chunkQuestion as ChunkQuestion)}
-				>
-					Go to question
-				</Button>
-			)}
-			{feedback && (
-				<SummaryFeedback
-					nextPageSlug={page.nextPageSlug}
-					feedback={feedback}
-					canProceed={state.canProceed}
-				/>
-			)}
+			<div className="flex gap-2 items-center">
+				{state.canProceed && page.nextPageSlug && (
+					<Link
+						href={page.nextPageSlug}
+						className={buttonVariants({ variant: "outline" })}
+					>
+						Go to next page
+					</Link>
+				)}
+				{state.chunkQuestion && (
+					<Button
+						variant={"outline"}
+						onClick={() => goToQuestion(state.chunkQuestion as ChunkQuestion)}
+					>
+						See question
+					</Button>
+				)}
+			</div>
+
+			{feedback && <SummaryFeedback feedback={feedback} />}
 
 			<Confetti active={feedback?.isPassed ? isFeedbackEnabled : false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>

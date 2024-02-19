@@ -4,15 +4,17 @@ import {
 	AccordionItem,
 } from "@/components/client-components";
 import { Session } from "next-auth";
+import { ChatExit } from "./chat-exit";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
 	user: Session["user"];
 	pageSlug: string;
+	onExit: () => void;
 };
 
-export const ChatbotChunkQuestion = ({ user, pageSlug }: Props) => {
+export const ChatbotChunkQuestion = ({ user, pageSlug, onExit }: Props) => {
 	return (
 		<Accordion
 			type="single"
@@ -30,6 +32,7 @@ export const ChatbotChunkQuestion = ({ user, pageSlug }: Props) => {
 							isChunkQuestion={true}
 						/>
 						<ChatInput pageSlug={pageSlug} isChunkQuestion={true} />
+						<ChatExit onExit={onExit} />
 					</div>
 				</AccordionContent>
 			</AccordionItem>

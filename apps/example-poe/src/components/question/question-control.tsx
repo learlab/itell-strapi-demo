@@ -3,8 +3,7 @@
 import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect } from "react";
 import { useQA } from "../context/qa-context";
 import { NextChunkButton } from "./next-chunk-button";
 import { QuestionBox } from "./question-box";

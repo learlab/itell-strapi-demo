@@ -6,30 +6,16 @@ import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
-	canProceed: boolean;
-	nextPageSlug: string | null;
 	feedback: SummaryFeedbackType;
 };
 
-export const SummaryFeedback = ({
-	feedback,
-	canProceed,
-	nextPageSlug,
-}: Props) => {
+export const SummaryFeedback = ({ feedback }: Props) => {
 	const keyphrases = new Set(feedback.suggestedKeyphrases);
 
 	const FeedbackBody = (
 		<div className="font-light leading-relaxed space-y-2">
 			<header className="flex justify-between">
 				<p>{feedback.prompt}</p>
-				{canProceed && nextPageSlug && (
-					<Link
-						href={makePageHref(nextPageSlug)}
-						className="inline-flex gap-1 items-center hover:underline"
-					>
-						<ChevronRightIcon className="size-4" /> Move on
-					</Link>
-				)}
 			</header>
 			{keyphrases.size > 0 && (
 				<div>
