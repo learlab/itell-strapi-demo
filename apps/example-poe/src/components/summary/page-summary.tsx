@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
@@ -14,6 +15,7 @@ type Props = {
 export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 	const user = await getCurrentUser();
 	const page = getPageData(pageSlug);
+	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	if (!page) {
 		return <p>No summary found</p>;
@@ -58,6 +60,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 						page={page}
 						hasQuiz={page?.quiz}
 						isFeedbackEnabled={isFeedbackEnabled}
+						isAdmin={isAdmin}
 					/>
 				</Fragment>
 			</section>

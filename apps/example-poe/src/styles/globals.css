@@ -55,8 +55,12 @@ svg {
 .driver-active .toc-sidebar,
 .driver-active .module-sidebar,
 .driver-active #site-nav,
-.driver-active .question-box {
-  @apply hidden
+.driver-active .question-container {
+  display: none;
+}
+
+.driver-popover {
+  max-width: 350px !important;
 }
 
 @media (max-width: 768px) {

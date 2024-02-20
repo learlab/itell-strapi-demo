@@ -9,12 +9,6 @@ import { getSiteConfig } from "@/lib/config";
 import { cn } from "@itell/core/utils";
 import { Metadata } from "next";
 
-type SiteConfig = {
-	title: string;
-	description: string;
-	latex: boolean;
-};
-
 export async function generateMetadata(): Promise<Metadata> {
 	const siteConfig = await getSiteConfig();
 	return {

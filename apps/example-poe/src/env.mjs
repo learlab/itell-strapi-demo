@@ -13,9 +13,15 @@ const server = z.object({
 	NEXTAUTH_URL: z.string(),
 	NEXTAUTH_SECRET: z.string(),
 	DATABASE_URL: z.string(),
-	SUMMARY_WHITELIST: z.string().optional(),
-	CLASS_ONE_EMAILS: z.string().optional().transform(val => val ? JSON.parse(val) : []),
-	CLASS_TWO_EMAILS: z.string().optional().transform(val => val ? JSON.parse(val) : [] ),
+	ADMINS: z.string().optional(),
+	CLASS_ONE_EMAILS: z
+		.string()
+		.optional()
+		.transform((val) => (val ? JSON.parse(val) : [])),
+	CLASS_TWO_EMAILS: z
+		.string()
+		.optional()
+		.transform((val) => (val ? JSON.parse(val) : [])),
 });
 
 /**
@@ -42,9 +48,9 @@ const processEnv = {
 	NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 	SCORE_API_URL: process.env.SCORE_API_URL,
 	DATABASE_URL: process.env.DATABASE_URL,
-	SUMMARY_WHITELIST: process.env.SUMMARY_WHITELIST,
 	NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
 	NO_FEEDBACK_EMAILS: process.env.NO_FEEDBACK_EMAILS,
+	ADMINS: process.env.ADMINS,
 	CLASS_ONE_EMAILS: process.env.CLASS_ONE_EMAILS,
 	CLASS_TWO_EMAILS: process.env.CLASS_TWO_EMAILS,
 };

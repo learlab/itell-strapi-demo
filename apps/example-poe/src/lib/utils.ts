@@ -95,9 +95,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 };
 
 export const getChunkElement = (chunkId: string) => {
-	return document.querySelector(
-		`div[data-subsection-id='${chunkId}']`,
-	) as HTMLDivElement;
+	return document.querySelector(`div[data-subsection-id='${chunkId}']`);
 };
 
 export const redirectWithSearchParams = (
@@ -106,14 +104,6 @@ export const redirectWithSearchParams = (
 ) => {
 	const query = new URLSearchParams(searchParams).toString();
 	return redirect(`${path}?${query}`);
-};
-
-export const showSiteNav = () => {
-	document.getElementById("site-nav")?.classList.remove("hidden");
-};
-
-export const hideSiteNav = () => {
-	document.getElementById("site-nav")?.classList.add("hidden");
 };
 
 export const scrollToElement = (element: HTMLElement) => {

@@ -11,10 +11,11 @@ import { StageItem, SummaryProgress } from "./summary-progress";
 
 type Props = {
 	pageSlug: string;
-	value?: string;
-	disabled?: boolean;
 	stages: StageItem[];
 	pending: boolean;
+	value?: string;
+	disabled?: boolean;
+	isAdmin?: boolean;
 };
 
 export const SummaryInput = ({
@@ -23,6 +24,7 @@ export const SummaryInput = ({
 	disabled = true,
 	value = "",
 	pending,
+	isAdmin = false,
 }: Props) => {
 	const searchParams = useSearchParams();
 	const summaryToRevise = searchParams?.get("summary");
@@ -49,7 +51,7 @@ export const SummaryInput = ({
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}
 					onPaste={(e) => {
-						if (isProduction) {
+						if (isProduction || !isAdmin) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

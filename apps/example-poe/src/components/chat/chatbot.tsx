@@ -4,6 +4,7 @@ import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
+	AccordionTrigger,
 	Button,
 } from "@/components/client-components";
 import { MessageSquareQuote } from "lucide-react";
@@ -49,13 +50,15 @@ export const Chatbot = ({ pageSlug, user }: Props) => {
 			{showChatbot && (
 				<Accordion
 					type="single"
-					value="item-1"
+					defaultValue="item-1"
+					collapsible
 					className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background border border-border z-30"
 				>
 					<AccordionItem value="item-1" className="overflow-hidden">
-						<div className="border border-border px-6 py-4">
+						<AccordionTrigger className="border border-border px-6">
 							<ChatHeader />
-						</div>
+						</AccordionTrigger>
+
 						<AccordionContent className="">
 							<div className="flex flex-col h-96">
 								{user ? (

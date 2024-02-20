@@ -66,7 +66,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 		>
 			<div className="flex flex-row justify-end max-w-[1440px] mx-auto gap-6 px-2">
 				<aside
-					className="module-sidebar sticky top-20 h-fit z-20 basis-0 ease-in-out duration-200"
+					className="module-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
 					<ModuleToc page={page} user={user} />
@@ -92,7 +92,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</section>
 
 				<aside
-					className="toc-sidebar relative ease-in-out duration-200"
+					className="toc-sidebar relative animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
 					<div className="sticky top-20">

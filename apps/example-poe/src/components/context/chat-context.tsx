@@ -2,7 +2,7 @@
 
 import { Message, Messages } from "@itell/core/chatbot";
 import { useLocalStorage } from "@itell/core/hooks";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { Button } from "../client-components";
 
@@ -41,6 +41,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 	const [activeMessageId, setActiveMessageId] = useState<string | undefined>();
 
 	const [chunkQuestion, setChunkQuestion] = useState<string | null>(null);
+	const ref = useRef<HTMLButtonElement | null>(null);
 
 	useEffect(() => {
 		if (chunkQuestion) {
@@ -55,7 +56,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 						<Button
 							size={"sm"}
 							variant={"outline"}
-							onClick={() =>
+							className="animate-out duration-200 ease-out"
+							id="chunk-question-ready"
+							ref={ref}
+							onClick={() => {
 								addMessage({
 									id: crypto.randomUUID(),
 									isUserMessage: false,
@@ -65,8 +69,12 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 											<p>{chunkQuestion}</p>
 										</div>
 									),
-								})
-							}
+								});
+
+								if (ref.current) {
+									ref.current.disabled = true;
+								}
+							}}
 						>
 							I'm ready for question
 						</Button>

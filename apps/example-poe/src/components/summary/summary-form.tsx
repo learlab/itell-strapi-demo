@@ -14,11 +14,9 @@ import { getFeedback } from "@/lib/summary";
 import {
 	PageData,
 	getChunkElement,
-	hideSiteNav,
 	makeInputKey,
 	makePageHref,
 	scrollToElement,
-	showSiteNav,
 } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import {
@@ -35,7 +33,7 @@ import "driver.js/dist/driver.css";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -55,6 +53,7 @@ type Props = {
 	hasQuiz: boolean;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	isFeedbackEnabled: boolean;
+	isAdmin?: boolean;
 };
 
 type ChunkQuestion = {
@@ -99,17 +98,49 @@ export const SummaryForm = ({
 	page,
 	hasQuiz,
 	isFeedbackEnabled,
+	isAdmin,
 }: Props) => {
 	const pageSlug = page.page_slug;
-	const { nodes, addNode } = usePortal();
 	const { chunkQuestionAnswered, setChunkQuestion } = useChat();
+	const { nodes: portalNodes, addNode } = usePortal();
+
+	driverObj.setConfig({
+		smoothScroll: false,
+		onPopoverRender: (popover) => {
+			addNode(
+				<ChatbotChunkQuestion
+					user={user}
+					pageSlug={pageSlug}
+					onExit={exitQuestion}
+				/>,
+				popover.wrapper,
+			);
+		},
+		onDestroyStarted: () => {
+			if (!chunkQuestionAnswered) {
+				return toast.warning("Please answer the question to continue");
+			}
+
+			exitQuestion();
+		},
+	});
+
+	const exitQuestion = () => {
+		const summaryEl = document.querySelector("#page-summary");
+
+		driverObj.destroy();
+
+		if (summaryEl) {
+			scrollToElement(summaryEl as HTMLDivElement);
+		}
+	};
 
 	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
 		const chunkEl = getChunkElement(chunkQuestion.chunk);
 		if (chunkEl) {
 			setChunkQuestion(chunkQuestion.text);
 
-			scrollToElement(chunkEl);
+			scrollToElement(chunkEl as HTMLDivElement);
 
 			setTimeout(() => {
 				driverObj.highlight({
@@ -124,39 +155,6 @@ export const SummaryForm = ({
 			}, 1000);
 		}
 	};
-
-	const exitDriver = () => {
-		const summaryEl = document.querySelector("#page-summary");
-
-		driverObj.destroy();
-
-		if (summaryEl) {
-			scrollToElement(summaryEl as HTMLDivElement);
-		}
-	};
-
-	useMemo(() => {
-		driverObj.setConfig({
-			smoothScroll: false,
-			onPopoverRender: (popover) => {
-				addNode(
-					<ChatbotChunkQuestion
-						user={user}
-						pageSlug={pageSlug}
-						onExit={exitDriver}
-					/>,
-					popover.wrapper,
-				);
-			},
-			onDestroyStarted: () => {
-				if (!chunkQuestionAnswered) {
-					return toast.warning("Please answer the question to continue");
-				}
-
-				exitDriver();
-			},
-		});
-	}, [chunkQuestionAnswered]);
 
 	const router = useRouter();
 	const [stages, setStages] = useState<StageItem[]>([]);
@@ -233,6 +231,7 @@ export const SummaryForm = ({
 		const shouldPass = summaryCount >= PAGE_SUMMARY_THRESHOLD;
 
 		let summaryResponse: SummaryResponse | null = null;
+		let chunkQuestionData: ChunkQuestion | null = null;
 
 		try {
 			if (isFeedbackEnabled) {
@@ -266,10 +265,11 @@ export const SummaryForm = ({
 						const chunk = decoder.decode(value);
 
 						if (chunkIndex === 0) {
-							const chunkData = JSON.parse(
-								chunk.trim().replaceAll("\u0000", ""),
+							const chunkString = chunk.trim().replaceAll("\u0000", "");
+							console.log("chunkString", chunkString);
+							const parsed = SummaryResponseSchema.safeParse(
+								JSON.parse(chunkString),
 							);
-							const parsed = SummaryResponseSchema.safeParse(chunkData);
 							if (parsed.success) {
 								summaryResponse = parsed.data;
 								dispatch({ type: "scored", payload: parsed.data });
@@ -278,7 +278,7 @@ export const SummaryForm = ({
 								console.log("SummaryResults parse error", parsed.error);
 								setStages([]);
 								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-								// first chunk parsing failed, return early
+								// summaryResponse parsing failed, return early
 								return;
 							}
 						} else {
@@ -294,11 +294,10 @@ export const SummaryForm = ({
 								chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
 							} else {
 								if (chunkQuestionString) {
-									const chunkQuestionData = JSON.parse(
+									chunkQuestionData = JSON.parse(
 										chunkQuestionString,
 									) as ChunkQuestion;
 									finishStage("Analyzing");
-									dispatch({ type: "ask", payload: chunkQuestionData });
 								}
 							}
 						}
@@ -341,6 +340,10 @@ export const SummaryForm = ({
 				}
 
 				finishStage("Saving");
+
+				if (chunkQuestionData) {
+					dispatch({ type: "ask", payload: chunkQuestionData });
+				}
 			}
 		} catch (err) {
 			console.log("summary scoring error", err);
@@ -363,9 +366,10 @@ export const SummaryForm = ({
 
 		if (state.showQuiz) {
 			toast("Good job 🎉", {
+				className: "toast",
 				description:
 					"Before moving on, please finish a short quiz to assess your understanding",
-				duration: Infinity,
+				duration: 5000,
 				action: {
 					label: "Take quiz",
 					onClick: () => {
@@ -382,8 +386,9 @@ export const SummaryForm = ({
 					: "You can now move on 👏"
 				: "Your summary is accepted";
 			toast(title, {
+				className: "toast",
 				description: "Move to the next page to continue reading",
-				duration: Infinity,
+				duration: 5000,
 				action: page.nextPageSlug
 					? {
 							label: "Proceed",
@@ -398,7 +403,7 @@ export const SummaryForm = ({
 
 	return (
 		<section className="space-y-2">
-			{nodes}
+			{portalNodes}
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
 					<Link
@@ -425,6 +430,7 @@ export const SummaryForm = ({
 				<SummaryInput
 					value={value}
 					disabled={editDisabled || state.pending}
+					isAdmin={isAdmin}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
