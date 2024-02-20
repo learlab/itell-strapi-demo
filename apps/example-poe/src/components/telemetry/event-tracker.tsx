@@ -18,10 +18,12 @@ type Props = {
 
 export const EventTracker = ({ pageSlug }: Props) => {
 	const { chunks } = useQA();
-	const [els, setEls] = useState<HTMLDivElement[] | undefined>();
+	const [els, setEls] = useState<HTMLElement[] | undefined>();
 
 	useEffect(() => {
-		const chunkElements = chunks.map((chunkId) => getChunkElement(chunkId));
+		const chunkElements = chunks
+			.map((chunkId) => getChunkElement(chunkId))
+			.filter(Boolean);
 		setEls(chunkElements);
 	}, []);
 

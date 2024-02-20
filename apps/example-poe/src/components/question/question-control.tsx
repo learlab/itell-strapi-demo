@@ -33,6 +33,9 @@ export const QuestionControl = ({
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
+		if (!el) {
+			return;
+		}
 		const button = el.querySelector(
 			":scope .next-chunk-button-container",
 		) as HTMLDivElement;
@@ -42,7 +45,7 @@ export const QuestionControl = ({
 		}
 	};
 
-	const insertScrollBackButton = (el: HTMLDivElement) => {
+	const insertScrollBackButton = (el: HTMLElement) => {
 		if (el.parentElement) {
 			const buttonContainer = document.createElement("div");
 			buttonContainer.className =
@@ -67,7 +70,7 @@ export const QuestionControl = ({
 		}
 	};
 
-	const insertNextChunkButton = (el: HTMLDivElement, chunkSlug: string) => {
+	const insertNextChunkButton = (el: HTMLElement, chunkSlug: string) => {
 		// insert button container
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className =
@@ -89,7 +92,7 @@ export const QuestionControl = ({
 		);
 	};
 
-	const insertQuestion = (el: HTMLDivElement, chunkId: string) => {
+	const insertQuestion = (el: HTMLElement, chunkId: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
 		el.appendChild(questionContainer);
@@ -111,6 +114,10 @@ export const QuestionControl = ({
 
 	const processChunk = (chunkId: string, chunkIndex: number) => {
 		const el = getChunkElement(chunkId);
+		if (!el) {
+			return;
+		}
+
 		const currentIndex = chunks.indexOf(currentChunk);
 		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
 
@@ -141,6 +148,9 @@ export const QuestionControl = ({
 
 		if (currentChunkId) {
 			const currentChunkElement = getChunkElement(currentChunkId);
+			if (!currentChunkElement) {
+				return;
+			}
 			currentChunkElement.style.filter = "none";
 			if (!selectedQuestions.has(currentChunkId) && idx !== chunks.length - 1) {
 				insertNextChunkButton(currentChunkElement, currentChunk);

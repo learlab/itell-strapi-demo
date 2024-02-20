@@ -6,7 +6,7 @@ import {
 import { useEffect, useRef } from "react";
 
 type Props = {
-	chunks: HTMLDivElement[];
+	chunks: HTMLElement[];
 	onEvent: (data: FocusTimeEventData) => Promise<void>;
 	saveInterval: number;
 };
@@ -77,11 +77,10 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 				};
 			});
 
-			const eventData: FocusTimeEventData = {}
+			const eventData: FocusTimeEventData = {};
 			updatedEntries.forEach((entry) => {
-				eventData[entry.chunkId] = entry.totalViewTime
-			})
-
+				eventData[entry.chunkId] = entry.totalViewTime;
+			});
 
 			await onEvent(eventData);
 

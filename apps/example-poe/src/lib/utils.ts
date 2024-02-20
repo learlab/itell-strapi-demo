@@ -94,8 +94,13 @@ export const getPageData = (slug: string | null): PageData | null => {
 	};
 };
 
-export const getChunkElement = (chunkId: string) => {
-	return document.querySelector(`div[data-subsection-id='${chunkId}']`);
+export const getChunkElement = (chunkId: string): HTMLElement | null => {
+	const el = document.querySelector(`div[data-subsection-id='${chunkId}']`);
+	if (el instanceof HTMLElement) {
+		return el;
+	}
+
+	return null;
 };
 
 export const redirectWithSearchParams = (
