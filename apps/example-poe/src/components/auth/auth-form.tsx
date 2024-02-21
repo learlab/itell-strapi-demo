@@ -49,7 +49,7 @@ export const AuthForm = () => {
 				<div className="flex flex-row gap-1 items-center justify-center">
 					<Spinner />
 					<p className="text-muted-foreground text-sm">
-						Redirecting to home page ...
+						Redirecting to home page
 					</p>
 				</div>
 			)}
