@@ -1,8 +1,8 @@
 import { UserAvatar } from "@/components/user-avatar";
+import { SessionUser } from "@/lib/auth";
 import { Skeleton } from "@itell/ui/server";
-import { User } from "@prisma/client";
 
-export const Profile = ({ user }: { user: User }) => {
+export const Profile = ({ user }: { user: NonNullable<SessionUser> }) => {
 	return (
 		<div className="space-y-4">
 			<h3 className="mb-4 text-lg font-medium">Profile</h3>

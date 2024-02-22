@@ -106,7 +106,7 @@ model QuizAnswer {
   userId     String   @map("user_id")
   pageSlug   String   @map("page_slug")
   /// [QuizAnswerData]
-  data       Json[]   @db.JsonB
+  data       Json     @db.JsonB
   created_at DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])

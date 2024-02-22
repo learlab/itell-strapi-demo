@@ -68,11 +68,14 @@ export const columns: ColumnDef<QuizTableData>[] = [
 		cell: ({ row }) => {
 			return (
 				<Dialog>
-					<DialogTrigger>{row.original.quizTitle}</DialogTrigger>
+					<DialogTrigger className="flex justify-center gap-1 w-full items-center hover:underline">
+						<LinkIcon className="w-2 h-2" /> {row.original.quizTitle}
+					</DialogTrigger>
 					<DialogContent className="sm:max-w-2xl h-4/5 overflow-y-scroll">
 						<DialogHeader>
 							<DialogTitle>{row.original.name}'s quiz choices</DialogTitle>
 						</DialogHeader>
+
 						<QuizRecord
 							pageSlug={row.original.quizPageSlug}
 							answerData={row.original.quizAnswers}

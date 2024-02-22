@@ -11,6 +11,10 @@ declare global {
 		};
 
 		type FocusTimeData = Record<string, number>;
+		type QuizAnswerData = {
+			choices: Record<string, number[]>;
+			correctCount: number;
+		};
 	}
 }
 

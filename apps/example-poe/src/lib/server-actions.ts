@@ -3,7 +3,7 @@
 import { BotMessage, Message, UserMessage } from "@itell/core/chatbot";
 import { SummaryResponse } from "@itell/core/summary";
 import { FocusTimeEventData } from "@itell/core/types";
-import { Prisma } from "@prisma/client";
+import { Prisma, QuizAnswer } from "@prisma/client";
 import { JsonArray } from "@prisma/client/runtime/library";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -385,7 +385,13 @@ export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
 export const createQuizAnswer = async ({
 	pageSlug,
 	data,
-}: { pageSlug: string; data: Record<string, any> }) => {
+}: {
+	pageSlug: string;
+	data: {
+		choices: Record<string, number[]>;
+		correctCount: number;
+	};
+}) => {
 	const user = await getCurrentUser();
 	if (user) {
 		await db.quizAnswer.create({

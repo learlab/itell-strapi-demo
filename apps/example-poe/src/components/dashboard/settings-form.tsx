@@ -1,4 +1,5 @@
 import { Separator } from "@/components/client-components";
+import { getCurrentUser } from "@/lib/auth";
 import { getTeacherWithClassId } from "@/lib/class";
 import {
 	Card,
@@ -16,6 +17,10 @@ import { WebsiteSettings } from "./settings/website-settings";
 
 export const SettingsForm = async ({ user }: { user: User }) => {
 	const teacher = await getTeacherWithClassId(user.classId);
+	const sessionUser = await getCurrentUser();
+	if (!sessionUser) {
+		return null;
+	}
 
 	return (
 		<div>
@@ -25,7 +30,7 @@ export const SettingsForm = async ({ user }: { user: User }) => {
 					<CardDescription>configure the textbook to your need</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<Profile user={user} />
+					<Profile user={sessionUser} />
 					<Separator />
 					<WebsiteSettings user={user} />
 					<Separator />

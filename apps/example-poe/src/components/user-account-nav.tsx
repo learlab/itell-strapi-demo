@@ -45,13 +45,7 @@ export const UserAccountNav = () => {
 		<div className="ml-auto flex items-center gap-1">
 			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
-					<UserAvatar
-						user={{
-							name: user.name,
-							image: user.image,
-						}}
-						className="h-8 w-8"
-					/>
+					<UserAvatar user={user} className="h-8 w-8" />
 					{menuOpen ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
