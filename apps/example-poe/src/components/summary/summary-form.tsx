@@ -1,5 +1,6 @@
 "use client";
 
+import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { isLastPage } from "@/lib/location";
 import {
@@ -48,7 +49,7 @@ import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	value?: string;
-	user: Session["user"];
+	user: NonNullable<SessionUser>;
 	page: PageData;
 	hasQuiz: boolean;
 	inputEnabled?: boolean; // needed to force enabled input for summary edit page

@@ -1,3 +1,4 @@
+import { ChatbotLoader } from "@/components/chat/chatbot-loader";
 import { Pager } from "@/components/client-components";
 import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
@@ -69,7 +70,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="module-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ModuleToc page={page} user={user} />
+					<ModuleToc page={page} />
 				</aside>
 
 				<section
@@ -99,7 +100,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<PageToc headings={page.headings} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus status={pageStatus} />
-							{user && <NoteCount user={user} pageSlug={pageSlug} />}
+							<Suspense fallback={<NoteCount.Skeleton />}>
+								<NoteCount user={sessionUser} pageSlug={pageSlug} />
+							</Suspense>
 						</div>
 					</div>
 					<Suspense
@@ -131,6 +134,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} />}
+			<Suspense fallback={<ChatbotLoader.Skeleton />}>
+				<ChatbotLoader pageSlug={pageSlug} />
+			</Suspense>
 		</PageProvider>
 	);
 }

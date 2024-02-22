@@ -5,6 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -72,7 +77,8 @@ model User {
 model FocusTime {
   userId     String   @map("user_id")
   pageSlug   String   @map("page_slug")
-  data       Json     @db.JsonB
+  /// [FocusTimeData]
+  data       Json
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   user       User     @relation(fields: [userId], references: [id])
@@ -86,6 +92,7 @@ model Event {
   eventType  String   @map("event_type")
   userId     String   @map("user_id")
   page       String
+  /// [EventData]
   data       Json?    @db.JsonB
   created_at DateTime @default(now())
 
@@ -98,7 +105,8 @@ model QuizAnswer {
   id         String   @id @default(uuid())
   userId     String   @map("user_id")
   pageSlug   String   @map("page_slug")
-  data       Json
+  /// [QuizAnswerData]
+  data       Json[]   @db.JsonB
   created_at DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
@@ -188,4 +196,16 @@ model ConstructedResponseFeedback {
   user User @relation(fields: [userId], references: [id])
 
   @@map("constructed_responses_feedback")
+}
+
+model ChatMessage {
+  userId     String   @map("user_id")
+  pageSlug   String   @map("page_slug")
+  /// [ChatMessageData]
+  data       Json[]   @db.JsonB
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([userId, pageSlug])
+  @@map("chat_messages")
 }

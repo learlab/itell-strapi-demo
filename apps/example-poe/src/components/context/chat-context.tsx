@@ -1,18 +1,19 @@
 "use client";
 
-import { Message, Messages } from "@itell/core/chatbot";
+import { createChatMessage } from "@/lib/server-actions";
+import { BotMessage, Message, UserMessage } from "@itell/core/chatbot";
 import { useLocalStorage } from "@itell/core/hooks";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
 import { Button } from "../client-components";
 
 type ChatContextType = {
-	showChatbot: boolean;
-	setShowChatbot: (value: boolean | ((val: boolean) => boolean)) => void;
 	messages: Message[];
 	addMessage: (message: Message) => void;
-	removeMessage: (id: string) => void;
-	updateMessage: (id: string, updateFn: (prevText: string) => string) => void;
+	updateMessage: (
+		id: string,
+		updateFn: (prevText: string) => string,
+		isFinal?: boolean,
+	) => void;
 	activeMessageId: string | undefined;
 	setActiveMessageId: (id: string | undefined) => void;
 	chunkQuestionAnswered: boolean;
@@ -27,28 +28,33 @@ export const ChatContext = createContext<ChatContextType>(
 const id1 = crypto.randomUUID();
 const id2 = crypto.randomUUID();
 
-export function ChatProvider({ children }: { children: React.ReactNode }) {
-	const message1 = {
+type Props = {
+	pageSlug: string;
+	children: React.ReactNode;
+};
+
+export function ChatProvider({ children, pageSlug }: Props) {
+	const message1: BotMessage = {
 		id: id1,
 		text: "Hello, how can I help you?",
-		isUserMessage: false,
+		isUser: false,
 		isChunkQuestion: false,
 	};
 
 	const [chunkQuestionAnswered, setChunkQuestionAnswered] = useState(false);
-	const [show, setShow] = useLocalStorage<boolean>("show-chatbot", true);
 	const [messages, setMessages] = useState<Message[]>([message1]);
 	const [activeMessageId, setActiveMessageId] = useState<string | undefined>();
 
 	const [chunkQuestion, setChunkQuestion] = useState<string | null>(null);
-	const ref = useRef<HTMLButtonElement | null>(null);
+	const ref = useRef<HTMLButtonElement>(null);
+	const lastUserMessage = useRef<UserMessage | null>();
 
 	useEffect(() => {
 		if (chunkQuestion) {
 			clearChunkQuestionMessages();
 			addMessage({
 				id: id2,
-				isUserMessage: false,
+				isUser: false,
 				isChunkQuestion: true,
 				Element: () => (
 					<div className="space-y-2">
@@ -62,7 +68,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 							onClick={() => {
 								addMessage({
 									id: crypto.randomUUID(),
-									isUserMessage: false,
+									isUser: false,
 									isChunkQuestion: true,
 									Element: () => (
 										<div className="space-y-2">
@@ -86,10 +92,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
 	const addMessage = (message: Message) => {
 		setMessages((prev) => [...prev, message]);
-	};
 
-	const removeMessage = (id: string) => {
-		setMessages((prev) => prev.filter((message) => message.id !== id));
+		if (message.isUser && !message.isChunkQuestion) {
+			lastUserMessage.current = message;
+		}
 	};
 
 	const clearChunkQuestionMessages = () => {
@@ -99,17 +105,36 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 	const updateMessage = (
 		id: string,
 		updateFn: (prevText: string) => string,
+		isFinal?: boolean,
 	) => {
-		setMessages((prev) =>
-			prev.map((message) => {
-				if (message.id === id) {
-					if ("text" in message) {
-						return { ...message, text: updateFn(message.text) };
+		if (!isFinal) {
+			setMessages((prev) =>
+				prev.map((m) => {
+					if ("text" in m) {
+						if (m.id === id) {
+							return {
+								...m,
+								text: updateFn(m.text),
+							};
+						}
 					}
-				}
-				return message;
-			}),
-		);
+					return m;
+				}),
+			);
+		} else {
+			// save user-bot message pair
+			const botMessage: BotMessage = {
+				id,
+				text: updateFn(""),
+				isChunkQuestion: false,
+				isUser: false,
+			};
+			const userMessage = lastUserMessage.current;
+			if (userMessage) {
+				console.log("saving", userMessage, botMessage);
+				createChatMessage({ pageSlug, userMessage, botMessage });
+			}
+		}
 	};
 
 	return (
@@ -118,14 +143,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 				messages,
 				activeMessageId,
 				addMessage,
-				removeMessage,
 				updateMessage,
 				setActiveMessageId,
 				chunkQuestionAnswered,
 				setChunkQuestionAnswered,
 				setChunkQuestion,
-				showChatbot: show,
-				setShowChatbot: setShow,
 			}}
 		>
 			{children}

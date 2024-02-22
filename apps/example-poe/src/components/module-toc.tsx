@@ -2,6 +2,7 @@ import { getModuleChapters } from "@/lib/sidebar";
 import { User } from "@prisma/client";
 import { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon } from "lucide-react";
+import { Suspense } from "react";
 import { Chatbot } from "./chat/chatbot";
 import { Button } from "./client-components";
 import { ModuleSidebar } from "./module-sidebar";
@@ -25,10 +26,7 @@ const AnchorLink = ({
 	);
 };
 
-export const ModuleToc = ({
-	page,
-	user,
-}: { page: Page; user: User | null }) => {
+export const ModuleToc = ({ page }: { page: Page }) => {
 	const chapters = getModuleChapters(page.location.module);
 
 	return (
@@ -42,8 +40,6 @@ export const ModuleToc = ({
 				}}
 			/>
 			<div className="mt-12 space-y-2">
-				<Chatbot pageSlug={page.page_slug} user={user} />
-
 				<RestartPageButton pageSlug={page.page_slug} />
 				{page.summary && (
 					<AnchorLink

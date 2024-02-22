@@ -29,7 +29,7 @@ export const PageProvider = ({
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
-			<ChatProvider>{children}</ChatProvider>
+			<ChatProvider pageSlug={pageSlug}>{children}</ChatProvider>
 		</QAProvider>
 	);
 };

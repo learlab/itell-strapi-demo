@@ -30,7 +30,7 @@ export const ChatInput = ({
 		addMessage({
 			text,
 			id: crypto.randomUUID(),
-			isUserMessage: true,
+			isUser: true,
 			isChunkQuestion,
 		});
 
@@ -45,7 +45,7 @@ export const ChatInput = ({
 		addMessage({
 			id: responseId,
 			text: "",
-			isUserMessage: false,
+			isUser: false,
 			isChunkQuestion,
 		});
 
@@ -57,19 +57,28 @@ export const ChatInput = ({
 		setActiveMessageId(undefined);
 
 		if (chatResponse.ok) {
-			decodeStream(chatResponse.data, (chunk) => {
-				const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
-					request_id: string;
-					text: string;
-				};
-				updateMessage(responseId, () => chunkValue.text);
-			});
-			// clean up
-		} else {
-			updateMessage(
-				responseId,
-				() => "Sorry, something went wrong. I can't help you right now.",
-			);
+			const reader = chatResponse.data.getReader();
+			const decoder = new TextDecoder();
+			let done = false;
+			let text = "";
+
+			while (!done) {
+				const { value, done: doneReading } = await reader.read();
+				done = doneReading;
+				const chunk = decoder.decode(value);
+				if (chunk) {
+					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+						request_id: string;
+						text: string;
+					};
+					text = chunkValue.text;
+					updateMessage(responseId, () => text);
+				}
+			}
+
+			if (done && !isChunkQuestion) {
+				updateMessage(responseId, () => text, true);
+			}
 		}
 	};
 
@@ -89,7 +98,7 @@ export const ChatInput = ({
 					rows={2}
 					maxRows={4}
 					autoFocus
-					placeholder="Write a message..."
+					placeholder="Message ITELL AI..."
 					className="disabled:opacity-50 bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
 					onKeyDown={async (e) => {
 						if (e.key === "Enter" && !e.shiftKey) {

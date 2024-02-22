@@ -99,3 +99,4 @@ export async function getCurrentUser() {
 
 	return session?.user;
 }
+export type SessionUser = Awaited<ReturnType<typeof getCurrentUser>>;

@@ -29,7 +29,7 @@ export default async function () {
 				className="module-sidebar sticky top-20 h-fit z-20 basis-0"
 				style={{ flexGrow: 1 }}
 			>
-				<ModuleToc page={page} user={null} />
+				<ModuleToc page={page} />
 			</aside>
 
 			<section

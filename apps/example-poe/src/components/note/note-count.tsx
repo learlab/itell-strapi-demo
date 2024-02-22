@@ -4,17 +4,21 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/client-components";
-import pluralize from "pluralize";
-import { User } from "@prisma/client";
+import { SessionUser } from "@/lib/auth";
 import db from "@/lib/db";
+import { Skeleton } from "@itell/ui/server";
+import pluralize from "pluralize";
 
 type Props = {
-	user: User;
+	user: SessionUser;
 	pageSlug: string;
 };
 
 // rendered by TocSidebar
 export const NoteCount = async ({ user, pageSlug }: Props) => {
+	if (!user) {
+		return null;
+	}
 	const res = (await db.$queryRaw`
 			SELECT COUNT(*),
 					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
@@ -47,3 +51,14 @@ export const NoteCount = async ({ user, pageSlug }: Props) => {
 		</HoverCard>
 	);
 };
+
+NoteCount.Skeleton = () => (
+	<HoverCard>
+		<HoverCardTrigger>
+			<Skeleton className="w-24 h-6" />
+		</HoverCardTrigger>
+		<HoverCardContent className="w-48 text-sm">
+			<p>Leave a note or highlight by selecting the text</p>
+		</HoverCardContent>
+	</HoverCard>
+);

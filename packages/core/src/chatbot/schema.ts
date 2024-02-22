@@ -1,18 +1,26 @@
 import { z } from "zod";
 
-export type Message =
+export type UserMessage = {
+	id: string;
+	isUser: true;
+	isChunkQuestion: boolean;
+	text: string;
+};
+export type BotMessage =
 	| {
 			id: string;
-			isUserMessage: boolean;
+			isUser: false;
 			isChunkQuestion: boolean;
 			text: string;
 	  }
 	| {
 			id: string;
-			isUserMessage: boolean;
+			isUser: false;
 			isChunkQuestion: boolean;
 			Element: () => JSX.Element;
 	  };
+
+export type Message = UserMessage | BotMessage;
 
 export type Messages = Message[];
 

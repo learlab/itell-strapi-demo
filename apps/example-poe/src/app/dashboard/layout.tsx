@@ -4,10 +4,8 @@ import { dashboardConfig } from "@/config/dashboard";
 
 export default async function DashboardLayout({
 	children,
-	searchParams,
 }: {
 	children: React.ReactNode;
-	searchParams?: Record<string, string>;
 }) {
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">

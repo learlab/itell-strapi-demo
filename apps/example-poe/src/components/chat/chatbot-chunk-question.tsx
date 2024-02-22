@@ -3,13 +3,14 @@ import {
 	AccordionContent,
 	AccordionItem,
 } from "@/components/client-components";
+import { SessionUser } from "@/lib/auth";
 import { Session } from "next-auth";
 import { ChatExit } from "./chat-exit";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
-	user: Session["user"];
+	user: NonNullable<SessionUser>;
 	pageSlug: string;
 	onExit: () => void;
 };
@@ -24,13 +25,7 @@ export const ChatbotChunkQuestion = ({ user, pageSlug, onExit }: Props) => {
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionContent className="">
 					<div className="flex flex-col h-96">
-						<ChatMessages
-							user={{
-								name: user.name,
-								image: user.image,
-							}}
-							isChunkQuestion={true}
-						/>
+						<ChatMessages user={user} isChunkQuestion={true} />
 						<ChatInput pageSlug={pageSlug} isChunkQuestion={true} />
 						<ChatExit onExit={onExit} />
 					</div>

@@ -1,11 +1,14 @@
 "use server";
 
+import { BotMessage, Message, UserMessage } from "@itell/core/chatbot";
 import { SummaryResponse } from "@itell/core/summary";
 import { FocusTimeEventData } from "@itell/core/types";
 import { Prisma } from "@prisma/client";
+import { JsonArray } from "@prisma/client/runtime/library";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "./auth";
+import { isProduction } from "./constants";
 import db from "./db";
 import { isPageAfter, nextPage } from "./location";
 
@@ -99,6 +102,98 @@ export const createConstructedResponseFeedback = async (
 	}
 };
 
+export const createChatMessage = async ({
+	pageSlug,
+	userMessage,
+	botMessage,
+}: {
+	pageSlug: string;
+	userMessage: UserMessage;
+	botMessage: BotMessage;
+}) => {
+	if (!("text" in botMessage)) {
+		return;
+	}
+	const user = await getCurrentUser();
+	if (user) {
+		const record = await db.chatMessage.findUnique({
+			select: {
+				data: true,
+			},
+			where: {
+				userId_pageSlug: {
+					userId: user.id,
+					pageSlug,
+				},
+			},
+		});
+
+		if (!record) {
+			await db.chatMessage.create({
+				data: {
+					pageSlug,
+					userId: user.id,
+					data: [
+						{
+							id: userMessage.id,
+							isUser: userMessage.isUser,
+							text: userMessage.text,
+						},
+						{
+							id: botMessage.id,
+							isUser: botMessage.isUser,
+							text: botMessage.text,
+						},
+					],
+				},
+			});
+		} else {
+			const newData = [...record.data, userMessage, botMessage];
+			await db.chatMessage.update({
+				where: {
+					userId_pageSlug: {
+						userId: user.id,
+						pageSlug,
+					},
+				},
+				data: {
+					data: newData,
+				},
+			});
+		}
+	}
+};
+
+export const getChatMessages = async (pageSlug: string) => {
+	const user = await getCurrentUser();
+	if (user) {
+		const record = await db.chatMessage.findUnique({
+			select: {
+				data: true,
+				updated_at: true,
+			},
+			where: {
+				userId_pageSlug: {
+					userId: user.id,
+					pageSlug,
+				},
+			},
+		});
+
+		if (record) {
+			return {
+				updatedAt: record.updated_at,
+				data: record.data,
+			};
+		}
+	}
+
+	return {
+		updatedAt: new Date(),
+		data: [],
+	};
+};
+
 export const updateUser = async (
 	userId: string,
 	data: Prisma.UserUpdateInput,
@@ -186,6 +281,9 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 export const createEvent = async (
 	input: Omit<Prisma.EventCreateInput, "user">,
 ) => {
+	if (!isProduction) {
+		return;
+	}
 	const user = await getCurrentUser();
 	if (user) {
 		return await db.event.create({
@@ -215,7 +313,7 @@ export const findFocusTime = async (userId: string, pageSlug: string) => {
 export const createFocusTime = async ({
 	data,
 	pageSlug,
-}: { data: FocusTimeEventData; pageSlug: string }) => {
+}: { data: PrismaJson.FocusTimeData; pageSlug: string }) => {
 	const user = await getCurrentUser();
 	if (user) {
 		const record = await db.focusTime.findUnique({
@@ -228,8 +326,8 @@ export const createFocusTime = async ({
 		});
 
 		if (record) {
-			const oldData = record.data as FocusTimeEventData;
-			const newData: FocusTimeEventData = {};
+			const oldData = record.data;
+			const newData: PrismaJson.FocusTimeData = {};
 			// if there are legacy chunk ids that's not present in the new data
 			// they will dropped during the update
 			for (const chunkId in data) {

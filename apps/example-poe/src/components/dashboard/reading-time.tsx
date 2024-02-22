@@ -50,12 +50,16 @@ const getReadingTime = async (
 	startDate: Date,
 	intervalDates: Date[],
 ) => {
+	// TODO: fix this query or how we store focus time data
+	// for records created before start date, they can still be updated
+	// but this won't be reflected in the reading time
 	const records = await db.$queryRaw`
 		SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
 		FROM focus_times, jsonb_each(data) d
 		WHERE created_at >= ${startDate} and user_id = ${uid}
 		GROUP BY created_at::date
 	`;
+
 	const readingTimeGrouped = await getGroupedReadingTime(
 		records as ReadingTimeEntry[],
 		intervalDates,

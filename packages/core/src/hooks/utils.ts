@@ -1,5 +1,6 @@
 import {
 	ReactNode,
+	ReactPortal,
 	RefObject,
 	useEffect,
 	useLayoutEffect,
@@ -130,9 +131,10 @@ export function useDebounce<T>(value: T, delay?: number): T {
 }
 
 export const usePortal = () => {
-	const [nodes, setNodes] = useState<JSX.Element[]>([]);
+	const [nodes, setNodes] = useState<ReactNode[]>([]);
 
 	const addNode = (children: ReactNode, container: Element) => {
+		// @ts-ignore
 		setNodes((prevNodes) => [...prevNodes, createPortal(children, container)]);
 	};
 
