@@ -65,6 +65,7 @@ type ChunkQuestion = {
 
 type State = {
 	pending: boolean;
+	isPassed: boolean;
 	error: ErrorType | null;
 	response: SummaryResponse | null;
 	chunkQuestion: ChunkQuestion | null;
@@ -77,13 +78,15 @@ type Action =
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "ask"; payload: ChunkQuestion }
-	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } };
+	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } }
+	| { type: "set_passed"; payload: boolean };
 
 const initialState: State = {
 	pending: false,
 	error: null,
 	response: null,
 	chunkQuestion: null,
+	isPassed: false,
 	canProceed: false,
 	showQuiz: false,
 };
@@ -199,6 +202,9 @@ export const SummaryForm = ({
 			case "scored":
 				draft.response = action.payload;
 				break;
+			case "set_passed":
+				draft.isPassed = action.payload;
+				break;
 			case "ask":
 				draft.chunkQuestion = action.payload;
 				draft.pending = false;
@@ -240,21 +246,22 @@ export const SummaryForm = ({
 		try {
 			if (isFeedbackEnabled) {
 				const focusTime = await findFocusTime(userId, pageSlug);
-
+				const requestBody = JSON.stringify({
+					summary: input,
+					page_slug: pageSlug,
+					focus_time: focusTime?.data,
+				});
 				const response = await fetch(
 					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
 					{
 						method: "POST",
-						body: JSON.stringify({
-							summary: input,
-							page_slug: pageSlug,
-							focus_time: focusTime?.data,
-						}),
+						body: requestBody,
 						headers: {
 							"Content-Type": "application/json",
 						},
 					},
 				);
+				console.log("request body", requestBody);
 
 				if (response.body) {
 					const reader = response.body.getReader();
@@ -276,6 +283,10 @@ export const SummaryForm = ({
 							);
 							if (parsed.success) {
 								summaryResponse = parsed.data;
+								dispatch({
+									type: "set_passed",
+									payload: summaryResponse.is_passed || shouldPass,
+								});
 								dispatch({ type: "scored", payload: parsed.data });
 								finishStage("Scoring");
 							} else {
@@ -286,14 +297,11 @@ export const SummaryForm = ({
 								return;
 							}
 						} else {
-							// if (shouldPass) {
-							// 	// when the amount of summaries is enough, we don't need to ask questions
-							// 	break;
-							// }
-
 							if (summaryResponse?.is_passed) {
-								// if the summary is passed, we don't need to ask questions
-								console.log("break here");
+								// if the summary passed, we don't need to process later chunks
+								// note that if the user pass by summary amount
+								// question will still be generated but will not be asked
+								// they can still see the "question" button
 								break;
 							}
 
@@ -351,7 +359,7 @@ export const SummaryForm = ({
 
 				finishStage("Saving");
 
-				if (chunkQuestionData && !summaryResponse.is_passed) {
+				if (chunkQuestionData) {
 					dispatch({ type: "ask", payload: chunkQuestionData });
 				}
 			}
@@ -368,7 +376,7 @@ export const SummaryForm = ({
 	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 
 	useEffect(() => {
-		if (state.chunkQuestion) {
+		if (state.chunkQuestion && !state.isPassed) {
 			goToQuestion(state.chunkQuestion);
 		}
 

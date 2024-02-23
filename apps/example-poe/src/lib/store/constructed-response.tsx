@@ -37,11 +37,15 @@ export const createConstructedResponseStore = (
 						set({ currentChunk: chunks[nextIndex] });
 					}
 
+					// the next chunk is the last chunk, which does not have a question
+					// finish the page
 					if (!isLastChunkWithQuestion && nextIndex === chunks.length - 1) {
 						set({ isPageFinished: true });
 						return;
 					}
 
+					// user is on the last chunk, and it has a question
+					// this happens when user clicks on next-chunk-button of the question box of the last chunk
 					const isLastQuestion = slug === chunks[chunks.length - 1];
 					if (isLastQuestion) {
 						set({ isPageFinished: true });
