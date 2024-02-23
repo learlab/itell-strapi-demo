@@ -1,6 +1,6 @@
 "use client";
 
-import { useNotesStore } from "@/lib/store";
+import { useNotesStore } from "@/lib/store/note";
 import { NoteCard } from "./note-card";
 
 type Props = {

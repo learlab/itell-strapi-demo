@@ -6,7 +6,7 @@ import {
 } from "@/lib/hooks/use-note-color";
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 import { createNote } from "@/lib/server-actions";
-import { useNotesStore } from "@/lib/store";
+import { useNotesStore } from "@/lib/store/note";
 import { createNoteElements, serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";

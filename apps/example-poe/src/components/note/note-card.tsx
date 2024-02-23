@@ -1,24 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { EditIcon } from "lucide-react";
+import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
+import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/types/note";
 import { useClickOutside } from "@itell/core/hooks";
-import { NoteDelete } from "./node-delete";
-import { cn, relativeDate } from "@itell/core/utils";
-import { ForwardIcon } from "lucide-react";
-import { Spinner } from "../spinner";
-import { useImmerReducer } from "use-immer";
-import NoteColorPicker from "./note-color-picker";
-import { Button, TextArea } from "../client-components";
-import { useNotesStore } from "@/lib/store";
 import {
 	createNoteElements,
 	deserializeRange,
 	getElementsByNoteId,
 } from "@itell/core/note";
-import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
+import { cn, relativeDate } from "@itell/core/utils";
+import { EditIcon } from "lucide-react";
+import { ForwardIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { useImmerReducer } from "use-immer";
+import { Button, TextArea } from "../client-components";
+import { Spinner } from "../spinner";
+import { NoteDelete } from "./node-delete";
+import NoteColorPicker from "./note-color-picker";
 
 interface Props extends NoteCardType {
 	pageSlug: string;

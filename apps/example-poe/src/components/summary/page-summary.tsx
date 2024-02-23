@@ -24,7 +24,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 	if (!user) {
 		return (
 			<section
-				className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
+				className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4 mb-20"
 				id="page-summary"
 			>
 				<section className="sm:basis-1/3">
@@ -42,7 +42,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 
 	return (
 		<section
-			className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4"
+			className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4 mb-20"
 			id="page-summary"
 		>
 			<section className="sm:basis-1/3">
