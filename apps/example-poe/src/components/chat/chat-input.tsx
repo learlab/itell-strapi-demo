@@ -1,11 +1,16 @@
 "use client";
 
-import { Message, fetchChatResponse } from "@itell/core/chatbot";
-import { cn, decodeStream } from "@itell/core/utils";
+import { createChatMessage } from "@/lib/server-actions";
+import { useChatStore } from "@/lib/store/chat";
+import {
+	BotMessage,
+	UserMessage,
+	fetchChatResponse,
+} from "@itell/core/chatbot";
+import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
-import { useChat } from "../context/chat-context";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
@@ -19,48 +24,38 @@ export const ChatInput = ({
 	...props
 }: ChatInputProps) => {
 	const {
-		addMessage,
-		updateMessage,
-		setActiveMessageId,
+		addUserMessage,
+		addBotMessage,
+		updateBotMessage,
 		setChunkQuestionAnswered,
-	} = useChat();
+		setActiveMessageId,
+	} = useChatStore();
+	const [pending, setPending] = useState(false);
 
 	const onMessage = async (text: string) => {
-		// add user message
-		addMessage({
-			text,
-			id: crypto.randomUUID(),
-			isUser: true,
-			isChunkQuestion,
-		});
+		setPending(true);
+		const userMessageId = addUserMessage(text, isChunkQuestion);
 
 		if (isChunkQuestion) {
 			setChunkQuestionAnswered(true);
 		}
 
-		const responseId = crypto.randomUUID();
-		setActiveMessageId(responseId);
-
 		// init response message
-		addMessage({
-			id: responseId,
-			text: "",
-			isUser: false,
-			isChunkQuestion,
-		});
+		const botMessageId = addBotMessage("", isChunkQuestion);
+		setActiveMessageId(botMessageId);
 
 		const chatResponse = await fetchChatResponse({
 			endpoint: "https://itell-api.learlab.vanderbilt.edu/chat",
 			pageSlug,
 			text,
 		});
-		setActiveMessageId(undefined);
+		setActiveMessageId(null);
 
 		if (chatResponse.ok) {
 			const reader = chatResponse.data.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
-			let text = "";
+			let botText = "";
 
 			while (!done) {
 				const { value, done: doneReading } = await reader.read();
@@ -71,15 +66,33 @@ export const ChatInput = ({
 						request_id: string;
 						text: string;
 					};
-					text = chunkValue.text;
-					updateMessage(responseId, () => text);
+					botText = chunkValue.text;
+					updateBotMessage(botMessageId, botText, isChunkQuestion);
 				}
 			}
 
 			if (done && !isChunkQuestion) {
-				updateMessage(responseId, () => text, true);
+				const userMessage = {
+					id: userMessageId,
+					text,
+					isUser: true,
+				} as UserMessage;
+				const botMessage = {
+					id: botMessageId,
+					text: botText,
+					isUser: false,
+				} as BotMessage;
+
+				createChatMessage({ pageSlug, userMessage, botMessage });
 			}
+		} else {
+			addBotMessage(
+				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
+				isChunkQuestion,
+			);
 		}
+
+		setPending(false);
 	};
 
 	return (
@@ -98,6 +111,7 @@ export const ChatInput = ({
 					rows={2}
 					maxRows={4}
 					autoFocus
+					disabled={pending}
 					placeholder="Message ITELL AI..."
 					className="disabled:opacity-50 bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
 					onKeyDown={async (e) => {

@@ -3,6 +3,7 @@ import { Pager } from "@/components/client-components";
 import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
 import { NoteList } from "@/components/note/note-list";
+import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { PageStatus } from "@/components/page-status/page-status";
 import { PageStatusModal } from "@/components/page-status/page-status-modal";
@@ -109,11 +110,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 						fallback={
 							<p className="text-sm text-muted-foreground mt-8">
 								<Spinner className="inline mr-2" />
-								loading notes
+								Loading notes
 							</p>
 						}
 					>
-						<NoteList pageSlug={pageSlug} />
+						<NoteLoader pageSlug={pageSlug} />
 					</Suspense>
 				</aside>
 			</div>

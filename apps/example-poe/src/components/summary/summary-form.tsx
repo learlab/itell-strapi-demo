@@ -11,6 +11,7 @@ import {
 	isPageQuizUnfinished,
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
+import { useChatStore } from "@/lib/store/chat";
 import { getFeedback } from "@/lib/summary";
 import {
 	PageData,
@@ -31,7 +32,6 @@ import {
 import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
-import { Session } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -40,7 +40,6 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
-import { useChat } from "../context/chat-context";
 import { useQA } from "../context/qa-context";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
@@ -102,7 +101,10 @@ export const SummaryForm = ({
 	isAdmin,
 }: Props) => {
 	const pageSlug = page.page_slug;
-	const { chunkQuestionAnswered, setChunkQuestion } = useChat();
+	const { chunkQuestionAnswered, addChunkQuestion } = useChatStore((store) => ({
+		chunkQuestionAnswered: store.chunkQuestionAnswered,
+		addChunkQuestion: store.addChunkQuestion,
+	}));
 	const { nodes: portalNodes, addNode } = usePortal();
 
 	driverObj.setConfig({
@@ -139,7 +141,7 @@ export const SummaryForm = ({
 	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
 		const chunkEl = getChunkElement(chunkQuestion.chunk);
 		if (chunkEl) {
-			setChunkQuestion(chunkQuestion.text);
+			addChunkQuestion(chunkQuestion.text);
 
 			scrollToElement(chunkEl as HTMLDivElement);
 

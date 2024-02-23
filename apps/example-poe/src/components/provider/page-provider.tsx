@@ -2,7 +2,6 @@
 
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
-import { ChatProvider } from "../context/chat-context";
 import { QAProvider } from "../context/qa-context";
 
 type Props = {
@@ -29,7 +28,7 @@ export const PageProvider = ({
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
-			<ChatProvider pageSlug={pageSlug}>{children}</ChatProvider>
+			{children}
 		</QAProvider>
 	);
 };

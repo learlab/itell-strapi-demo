@@ -4,7 +4,6 @@ import {
 	AccordionItem,
 } from "@/components/client-components";
 import { SessionUser } from "@/lib/auth";
-import { Session } from "next-auth";
 import { ChatExit } from "./chat-exit";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";

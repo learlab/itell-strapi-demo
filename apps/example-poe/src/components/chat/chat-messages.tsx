@@ -1,10 +1,10 @@
 "use client";
 
 import { SessionUser } from "@/lib/auth";
+import { useChatStore } from "@/lib/store/chat";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
 import { Avatar, AvatarImage } from "../client-components";
-import { useChat } from "../context/chat-context";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
 
@@ -21,15 +21,10 @@ export const ChatMessages = ({
 	data,
 	updatedAt,
 }: Props) => {
-	const { messages } = useChat();
-
-	const oldMessages = data
-		? data.filter((m) => m.isChunkQuestion === isChunkQuestion)
-		: [];
-
-	const newMessages = messages.filter(
-		(m) => m.isChunkQuestion === isChunkQuestion,
-	);
+	const oldMessages = isChunkQuestion ? [] : data || [];
+	const newMessages = isChunkQuestion
+		? useChatStore((state) => state.chunkQuestionMessages)
+		: useChatStore((state) => state.messages);
 
 	return (
 		<div
@@ -60,7 +55,7 @@ const MessageItem = ({
 	message,
 	user,
 }: { message: Message; user: NonNullable<SessionUser> }) => {
-	const { activeMessageId } = useChat();
+	const activeMessageId = useChatStore((state) => state.activeMessageId);
 	return (
 		<div className="chat-message" key={`${message.id}-${message.id}`}>
 			<div
@@ -91,7 +86,7 @@ const MessageItem = ({
 								"bg-gray-200 text-gray-900": !message.isUser,
 							})}
 						>
-							{"text" in message ? <p>{message.text}</p> : <message.Element />}
+							{"text" in message ? <p>{message.text}</p> : message.Node}
 						</div>
 					)}
 				</div>

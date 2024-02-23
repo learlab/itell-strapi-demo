@@ -22,12 +22,7 @@ export const ChatbotLoader = async ({ pageSlug }: Props) => {
 			<Chatbot
 				pageSlug={pageSlug}
 				user={user}
-				data={
-					data.map((message) => ({
-						...message,
-						isChunkQuestion: false,
-					})) as Message[]
-				}
+				data={data as Message[]}
 				updatedAt={updatedAt}
 			/>
 		</>

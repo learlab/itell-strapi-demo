@@ -1,14 +1,16 @@
 "use client";
 
+import { useChatStore } from "@/lib/store/chat";
 import { Button } from "../client-components";
-import { useChat } from "../context/chat-context";
 
 type Props = {
 	onExit: () => void;
 };
 
 export const ChatExit = ({ onExit }: Props) => {
-	const { chunkQuestionAnswered } = useChat();
+	const chunkQuestionAnswered = useChatStore(
+		(store) => store.chunkQuestionAnswered,
+	);
 
 	if (!chunkQuestionAnswered) {
 		return null;
