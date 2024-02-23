@@ -17,12 +17,17 @@ export const ChatbotLoader = async ({ pageSlug }: Props) => {
 
 	const { data, updatedAt } = await getChatMessages(pageSlug);
 
+	const messages = data.map((d) => ({
+		...d,
+		id: crypto.randomUUID(),
+	})) as Message[];
+
 	return (
 		<>
 			<Chatbot
 				pageSlug={pageSlug}
 				user={user}
-				data={data as Message[]}
+				data={messages}
 				updatedAt={updatedAt}
 			/>
 		</>

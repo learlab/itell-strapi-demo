@@ -5,7 +5,6 @@ declare global {
 	namespace PrismaJson {
 		// you can use classes, interfaces, types, etc.
 		type ChatMessageData = {
-			id: string;
 			text: string;
 			isUser: boolean;
 		};

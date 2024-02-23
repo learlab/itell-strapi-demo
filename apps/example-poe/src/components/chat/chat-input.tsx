@@ -34,7 +34,7 @@ export const ChatInput = ({
 
 	const onMessage = async (text: string) => {
 		setPending(true);
-		const userMessageId = addUserMessage(text, isChunkQuestion);
+		addUserMessage(text, isChunkQuestion);
 
 		if (isChunkQuestion) {
 			setChunkQuestionAnswered(true);
@@ -72,18 +72,7 @@ export const ChatInput = ({
 			}
 
 			if (done && !isChunkQuestion) {
-				const userMessage = {
-					id: userMessageId,
-					text,
-					isUser: true,
-				} as UserMessage;
-				const botMessage = {
-					id: botMessageId,
-					text: botText,
-					isUser: false,
-				} as BotMessage;
-
-				createChatMessage({ pageSlug, userMessage, botMessage });
+				createChatMessage({ pageSlug, userText: text, botText: botText });
 			}
 		} else {
 			addBotMessage(
