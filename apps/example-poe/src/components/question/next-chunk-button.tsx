@@ -1,8 +1,8 @@
 "use client";
 
-import { useQA } from "../context/qa-context";
 import { createEvent } from "@/lib/server-actions";
 import { Button } from "../client-components";
+import { useConstructedResponse } from "../provider/page-provider";
 
 interface Props extends React.ComponentPropsWithRef<typeof Button> {
 	onClick?: () => void;
@@ -22,15 +22,10 @@ export const NextChunkButton = ({
 	pageSlug,
 	...rest
 }: Props) => {
-	const { chunks, goToNextChunk, setIsPageFinished } = useQA();
-	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+	const advancedChunk = useConstructedResponse((state) => state.advanceChunk);
 
 	const onSubmit = async () => {
-		goToNextChunk();
-
-		if (isLastQuestion) {
-			setIsPageFinished(true);
-		}
+		advancedChunk(chunkSlug);
 
 		if (onClick) {
 			onClick();

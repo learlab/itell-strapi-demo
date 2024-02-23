@@ -51,7 +51,7 @@ export const SummaryInput = ({
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}
 					onPaste={(e) => {
-						if (isProduction || !isAdmin) {
+						if (isProduction && !isAdmin) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

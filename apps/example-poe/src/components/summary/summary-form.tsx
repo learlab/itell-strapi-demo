@@ -3,6 +3,7 @@
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { isLastPage } from "@/lib/location";
+import { PageStatus } from "@/lib/page-status";
 import {
 	createSummary,
 	findFocusTime,
@@ -40,7 +41,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
-import { useQA } from "../context/qa-context";
+import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
 import { StageItem } from "./summary-progress";
@@ -51,8 +52,8 @@ type Props = {
 	user: NonNullable<SessionUser>;
 	page: PageData;
 	hasQuiz: boolean;
-	inputEnabled?: boolean; // needed to force enabled input for summary edit page
 	isFeedbackEnabled: boolean;
+	pageStatus: PageStatus;
 	isAdmin?: boolean;
 };
 
@@ -94,10 +95,10 @@ const driverObj = driver();
 export const SummaryForm = ({
 	value,
 	user,
-	inputEnabled,
 	page,
 	hasQuiz,
 	isFeedbackEnabled,
+	pageStatus,
 	isAdmin,
 }: Props) => {
 	const pageSlug = page.page_slug;
@@ -290,6 +291,12 @@ export const SummaryForm = ({
 							// 	break;
 							// }
 
+							if (summaryResponse?.is_passed) {
+								// if the summary is passed, we don't need to ask questions
+								console.log("break here");
+								break;
+							}
+
 							if (chunkIndex === 1) {
 								addStage("Analyzing");
 							}
@@ -344,7 +351,7 @@ export const SummaryForm = ({
 
 				finishStage("Saving");
 
-				if (chunkQuestionData) {
+				if (chunkQuestionData && !summaryResponse.is_passed) {
 					dispatch({ type: "ask", payload: chunkQuestionData });
 				}
 			}
@@ -355,12 +362,10 @@ export const SummaryForm = ({
 		}
 	};
 
-	const { isPageFinished, pageStatus } = useQA();
-	const editDisabled = inputEnabled
-		? false
-		: pageStatus.isPageUnlocked
-		  ? false
-		  : !isPageFinished;
+	const isPageFinished = useConstructedResponse(
+		(state) => state.isPageFinished,
+	);
+	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 
 	useEffect(() => {
 		if (state.chunkQuestion) {

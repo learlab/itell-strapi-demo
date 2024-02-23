@@ -2,7 +2,6 @@ import { ChatbotLoader } from "@/components/chat/chatbot-loader";
 import { Pager } from "@/components/client-components";
 import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
-import { NoteList } from "@/components/note/note-list";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { PageStatus } from "@/components/page-status/page-status";
@@ -123,6 +122,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<footer>
 					<PageSummary
 						pageSlug={pageSlug}
+						pageStatus={pageStatus}
 						isFeedbackEnabled={isFeedbackEnabled}
 					/>
 				</footer>
@@ -134,7 +134,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				isFeedbackEnabled={isFeedbackEnabled}
 			/>
-			{user && <EventTracker pageSlug={pageSlug} />}
+			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatbotLoader.Skeleton />}>
 				<ChatbotLoader pageSlug={pageSlug} />
 			</Suspense>

@@ -1,9 +1,6 @@
 import { getModuleChapters } from "@/lib/sidebar";
-import { User } from "@prisma/client";
 import { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon } from "lucide-react";
-import { Suspense } from "react";
-import { Chatbot } from "./chat/chatbot";
 import { Button } from "./client-components";
 import { ModuleSidebar } from "./module-sidebar";
 import { RestartPageButton } from "./page/restart-page-button";
@@ -40,7 +37,7 @@ export const ModuleToc = ({ page }: { page: Page }) => {
 				}}
 			/>
 			<div className="mt-12 space-y-2">
-				<RestartPageButton pageSlug={page.page_slug} />
+				<RestartPageButton />
 				{page.summary && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4" />}

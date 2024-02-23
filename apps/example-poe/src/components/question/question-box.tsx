@@ -26,7 +26,7 @@ import {
 	HoverCardTrigger,
 	TextArea,
 } from "../client-components";
-import { useQA } from "../context/qa-context";
+import { useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 import { FeedbackModal } from "./feedback-modal";
 import { NextChunkButton } from "./next-chunk-button";
@@ -82,7 +82,10 @@ export const QuestionBox = ({
 	isFeedbackEnabled,
 }: Props) => {
 	const { data: session } = useSession();
-	const { chunks, isPageFinished } = useQA();
+	const { chunks, isPageFinished } = useConstructedResponse((state) => ({
+		chunks: state.chunks,
+		isPageFinished: state.isPageFinished,
+	}));
 	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
 		!isPageFinished,

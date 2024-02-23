@@ -10,14 +10,13 @@ import {
 	ScrollEventData,
 } from "@itell/core/types";
 import { useEffect, useState } from "react";
-import { useQA } from "../context/qa-context";
 
 type Props = {
+	chunks: string[];
 	pageSlug: string;
 };
 
-export const EventTracker = ({ pageSlug }: Props) => {
-	const { chunks } = useQA();
+export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const [els, setEls] = useState<HTMLElement[] | undefined>();
 
 	useEffect(() => {

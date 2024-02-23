@@ -4,7 +4,7 @@ import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
-import { useQA } from "../context/qa-context";
+import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { QuestionBox } from "./question-box";
 import { ScrollBackButton } from "./scroll-back-button";
@@ -21,13 +21,13 @@ export const QuestionControl = ({
 	isFeedbackEnabled,
 }: Props) => {
 	// Ref for current chunk
-	const {
-		currentChunk,
-		chunks,
-		isPageFinished,
-		setIsPageFinished,
-		isLastChunkWithQuestion,
-	} = useQA();
+	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
+		(state) => ({
+			currentChunk: state.currentChunk,
+			chunks: state.chunks,
+			isPageFinished: state.isPageFinished,
+		}),
+	);
 
 	const { nodes, addNode } = usePortal();
 
@@ -172,18 +172,7 @@ export const QuestionControl = ({
 	}, []);
 
 	useEffect(() => {
-		if (!isPageFinished) {
-			revealChunk(currentChunk);
-			// in the special case of the last chunk with a question
-			// the page is not considered finished when currentChunk === lastChunk
-			// when the last chunk contains the question
-			// page finished is controlled via the corresponding question-box -> next-chunk-button
-			if (!isLastChunkWithQuestion) {
-				if (currentChunk === chunks[chunks.length - 1]) {
-					setIsPageFinished(true);
-				}
-			}
-		}
+		revealChunk(currentChunk);
 	}, [currentChunk]);
 
 	return nodes;

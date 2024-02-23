@@ -1,5 +1,6 @@
 import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
+import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
 import { Fragment, Suspense } from "react";
@@ -9,10 +10,15 @@ import { SummaryForm } from "./summary-form";
 
 type Props = {
 	pageSlug: string;
+	pageStatus: PageStatus;
 	isFeedbackEnabled: boolean;
 };
 
-export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
+export const PageSummary = async ({
+	pageSlug,
+	isFeedbackEnabled,
+	pageStatus,
+}: Props) => {
 	const user = await getCurrentUser();
 	const page = getPageData(pageSlug);
 	const isAdmin = env.ADMINS?.includes(user?.email || "");
@@ -60,6 +66,7 @@ export const PageSummary = async ({ pageSlug, isFeedbackEnabled }: Props) => {
 						page={page}
 						hasQuiz={page?.quiz}
 						isFeedbackEnabled={isFeedbackEnabled}
+						pageStatus={pageStatus}
 						isAdmin={isAdmin}
 					/>
 				</Fragment>
