@@ -35,7 +35,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -95,6 +95,16 @@ type Stage = "Scoring" | "Saving" | "Analyzing";
 
 const driverObj = driver();
 
+const exitQuestion = () => {
+	const summaryEl = document.querySelector("#page-summary");
+
+	driverObj.destroy();
+
+	if (summaryEl) {
+		scrollToElement(summaryEl as HTMLDivElement);
+	}
+};
+
 export const SummaryForm = ({
 	value,
 	user,
@@ -111,36 +121,28 @@ export const SummaryForm = ({
 	}));
 	const { nodes: portalNodes, addNode } = usePortal();
 
-	driverObj.setConfig({
-		smoothScroll: false,
-		onPopoverRender: (popover) => {
-			addNode(
-				<ChatbotChunkQuestion
-					user={user}
-					pageSlug={pageSlug}
-					onExit={exitQuestion}
-				/>,
-				popover.wrapper,
-			);
-		},
-		onDestroyStarted: () => {
-			if (!chunkQuestionAnswered) {
-				return toast.warning("Please answer the question to continue");
-			}
+	useMemo(() => {
+		driverObj.setConfig({
+			smoothScroll: false,
+			onPopoverRender: (popover) => {
+				addNode(
+					<ChatbotChunkQuestion
+						user={user}
+						pageSlug={pageSlug}
+						onExit={exitQuestion}
+					/>,
+					popover.wrapper,
+				);
+			},
+			onDestroyStarted: () => {
+				if (!chunkQuestionAnswered) {
+					return toast.warning("Please answer the question to continue");
+				}
 
-			exitQuestion();
-		},
-	});
-
-	const exitQuestion = () => {
-		const summaryEl = document.querySelector("#page-summary");
-
-		driverObj.destroy();
-
-		if (summaryEl) {
-			scrollToElement(summaryEl as HTMLDivElement);
-		}
-	};
+				exitQuestion();
+			},
+		});
+	}, [chunkQuestionAnswered]);
 
 	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
 		const chunkEl = getChunkElement(chunkQuestion.chunk);
@@ -165,6 +167,7 @@ export const SummaryForm = ({
 
 	const router = useRouter();
 	const [stages, setStages] = useState<StageItem[]>([]);
+
 	const addStage = (name: Stage) => {
 		setStages((currentStages) => {
 			const newStage: StageItem = { name, status: "active" };
@@ -238,7 +241,7 @@ export const SummaryForm = ({
 		}
 
 		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
-		const shouldPass = summaryCount >= PAGE_SUMMARY_THRESHOLD;
+		const isEnoughSummary = summaryCount >= PAGE_SUMMARY_THRESHOLD;
 
 		let summaryResponse: SummaryResponse | null = null;
 		let chunkQuestionData: ChunkQuestion | null = null;
@@ -285,7 +288,7 @@ export const SummaryForm = ({
 								summaryResponse = parsed.data;
 								dispatch({
 									type: "set_passed",
-									payload: summaryResponse.is_passed || shouldPass,
+									payload: summaryResponse.is_passed || isEnoughSummary,
 								});
 								dispatch({ type: "scored", payload: parsed.data });
 								finishStage("Scoring");
@@ -343,20 +346,13 @@ export const SummaryForm = ({
 
 				const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
 
-				if (summaryResponse.is_passed) {
-					await incrementUserPage(userId, pageSlug);
-					dispatch({
-						type: "finish",
-						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
-					});
-				} else if (shouldPass) {
+				if (summaryResponse.is_passed || isEnoughSummary) {
 					await incrementUserPage(userId, pageSlug);
 					dispatch({
 						type: "finish",
 						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
 					});
 				}
-
 				finishStage("Saving");
 
 				if (chunkQuestionData) {
