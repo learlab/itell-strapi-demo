@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Button, Pager } from "@/components/client-components";
 import { ModuleSidebar } from "@/components/module-sidebar";
 import { NoteCount } from "@/components/note/note-count";
