@@ -1,17 +1,20 @@
 "use client";
 
+import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
-import { useQA } from "../context/qa-context";
-import { getChunkElement } from "@/lib/utils";
+import { useConstructedResponse } from "../provider/page-provider";
 
 export const ScrollBackButton = () => {
-	const { currentChunk, chunks } = useQA();
+	const { currentChunk, chunks } = useConstructedResponse((state) => ({
+		currentChunk: state.currentChunk,
+		chunks: state.chunks,
+	}));
 
 	const scrollToCurrentChunk = () => {
 		const element = getChunkElement(currentChunk);
 		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
+			scrollToElement(element as HTMLDivElement);
 		}
 	};
 

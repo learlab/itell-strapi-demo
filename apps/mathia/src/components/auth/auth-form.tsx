@@ -1,12 +1,12 @@
 "use client";
 
+import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
-import { OutlookLoginButton } from "./login-buttons";
 import { useEffect, useTransition } from "react";
+import { toast } from "sonner";
 import { Spinner } from "../spinner";
-import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
+import { OutlookLoginButton } from "./login-buttons";
 
 export const AuthForm = () => {
 	const searchParams = useSearchParams();
@@ -49,7 +49,7 @@ export const AuthForm = () => {
 				<div className="flex flex-row gap-1 items-center justify-center">
 					<Spinner />
 					<p className="text-muted-foreground text-sm">
-						Redirecting to home page ...
+						Redirecting to home page
 					</p>
 				</div>
 			)}

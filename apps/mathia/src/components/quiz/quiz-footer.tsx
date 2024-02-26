@@ -79,7 +79,7 @@ export const QuizFooter = ({
 
 	return (
 		<footer className="mt-10 space-y-4">
-			{correctCount && (
+			{correctCount !== undefined && (
 				<p>
 					You got {correctCount} / {data.length} correct!
 				</p>

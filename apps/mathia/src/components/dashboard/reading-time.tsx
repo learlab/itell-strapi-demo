@@ -1,3 +1,12 @@
+import db from "@/lib/db";
+import {
+	PrevDaysLookup,
+	ReadingTimeEntry,
+	getGroupedReadingTime,
+	getReadingTimeChartData,
+} from "@itell/core/dashboard";
+import { ReadingTimeChartParams } from "@itell/core/types";
+import { getDatesBetween } from "@itell/core/utils";
 import {
 	Card,
 	CardContent,
@@ -6,26 +15,18 @@ import {
 	CardTitle,
 	Skeleton,
 } from "@itell/ui/server";
+import { format, subDays } from "date-fns";
+import { InfoIcon } from "lucide-react";
+import Link from "next/link";
+import pluralize from "pluralize";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
 } from "../client-components";
-import {
-	getGroupedReadingTime,
-	getReadingTimeChartData,
-	PrevDaysLookup,
-	ReadingTimeEntry,
-} from "@itell/core/dashboard";
+import { CreateErrorFallback } from "../error-fallback";
 import { ReadingTimeChart } from "./reading-time-chart";
-import { InfoIcon } from "lucide-react";
-import { ReadingTimeChartParams } from "@itell/core/types";
-import db from "@/lib/db";
-import { format, subDays } from "date-fns";
-import pluralize from "pluralize";
-import Link from "next/link";
-import { getDatesBetween } from "@itell/core/utils";
 
 type Props = {
 	uid: string;
@@ -49,15 +50,20 @@ const getReadingTime = async (
 	startDate: Date,
 	intervalDates: Date[],
 ) => {
-	const data = await db.focusTime.findMany({
-		where: {
-			userId: uid,
-			created_at: {
-				gte: startDate,
-			},
-		},
-	});
-	const readingTimeGrouped = await getGroupedReadingTime(data, intervalDates);
+	// TODO: fix this query or how we store focus time data
+	// for records created before start date, they can still be updated
+	// but this won't be reflected in the reading time
+	const records = await db.$queryRaw`
+		SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
+		FROM focus_times, jsonb_each(data) d
+		WHERE created_at >= ${startDate} and user_id = ${uid}
+		GROUP BY created_at::date
+	`;
+
+	const readingTimeGrouped = await getGroupedReadingTime(
+		records as ReadingTimeEntry[],
+		intervalDates,
+	);
 	return readingTimeGrouped;
 };
 
@@ -116,3 +122,6 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 };
 
 ReadingTime.Skeleton = () => <Skeleton className="w-full h-[350px]" />;
+ReadingTime.ErrorFallback = CreateErrorFallback(
+	"Failed to calculate total reading time",
+);

@@ -1,32 +1,21 @@
-import { NoteCard } from "./note-card";
-import { getCurrentUser } from "@/lib/auth";
-import db from "@/lib/db";
+"use client";
+
+import { useNotesStore } from "@/lib/store/note";
+import { Note } from "@prisma/client";
 import { Highlight } from "./highlight";
-import { NewNoteList } from "./new-note-list";
+import { NoteCard } from "./note-card";
 
 type Props = {
+	notes: Note[];
+	highlights: Note[];
 	pageSlug: string;
 };
 
-export const NoteList = async ({ pageSlug }: Props) => {
-	const user = await getCurrentUser();
-	if (!user) {
-		return null;
-	}
-
-	const notesAndHighlights = await db.note.findMany({
-		where: {
-			userId: user.id,
-			pageSlug,
-		},
-	});
-	const notes = notesAndHighlights.filter((note) => note.noteText !== null);
-	const highlights = notesAndHighlights.filter(
-		(note) => note.noteText === null,
-	);
+export const NoteList = ({ notes, highlights, pageSlug }: Props) => {
+	const newNotes = useNotesStore((store) => store.notes);
 
 	return (
-		<div>
+		<>
 			{notes.map((note) => (
 				// @ts-ignore
 				<NoteCard key={note.y} {...note} pageSlug={pageSlug} />
@@ -34,7 +23,9 @@ export const NoteList = async ({ pageSlug }: Props) => {
 			{highlights.map((highlight) => (
 				<Highlight key={highlight.y} {...highlight} />
 			))}
-			<NewNoteList pageSlug={pageSlug} />
-		</div>
+			{newNotes.map((note) => (
+				<NoteCard key={note.id} {...note} pageSlug={pageSlug} newNote={true} />
+			))}
+		</>
 	);
 };

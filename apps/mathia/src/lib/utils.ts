@@ -1,7 +1,7 @@
 import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
-import { allPagesSorted } from "./pages";
 import { redirect } from "next/navigation";
+import { allPagesSorted } from "./pages";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
 	const regex = /embed\/([\w-]+)\?/;
@@ -64,6 +64,7 @@ export type PageData = {
 	index: number;
 	title: string;
 	page_slug: string;
+	quiz: boolean;
 	chapter: number;
 	section: number;
 	nextPageSlug: string | null;
@@ -88,14 +89,18 @@ export const getPageData = (slug: string | null): PageData | null => {
 		page_slug: page.page_slug,
 		chapter: page.location.chapter as number,
 		section: page.location.section as number,
+		quiz: page.quiz,
 		nextPageSlug,
 	};
 };
 
-export const getChunkElement = (chunkId: string) => {
-	return document.querySelector(
-		`div[data-subsection-id='${chunkId}']`,
-	) as HTMLDivElement;
+export const getChunkElement = (chunkId: string): HTMLElement | null => {
+	const el = document.querySelector(`div[data-subsection-id='${chunkId}']`);
+	if (el instanceof HTMLElement) {
+		return el;
+	}
+
+	return null;
 };
 
 export const redirectWithSearchParams = (
@@ -104,4 +109,12 @@ export const redirectWithSearchParams = (
 ) => {
 	const query = new URLSearchParams(searchParams).toString();
 	return redirect(`${path}?${query}`);
+};
+
+export const scrollToElement = (element: HTMLElement) => {
+	// offset to account for the sticky header
+	const yOffset = -70;
+	const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+
+	window.scrollTo({ top: y, behavior: "smooth" });
 };

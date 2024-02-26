@@ -1,11 +1,11 @@
-import { QuizRecord } from "@/components/quiz/quiz-record";
+import { CreateErrorFallback } from "@/components/error-fallback";
 import { StudentStats } from "@/lib/dashboard";
+import { isPageAfter } from "@/lib/location";
 import { allPagesSorted } from "@/lib/pages";
-import { AnswerData, QuizData, getQuizCorrectCount } from "@/lib/quiz";
+import { QuizData } from "@/lib/quiz";
 import { groupby } from "@itell/core/utils";
 import { Skeleton } from "@itell/ui/server";
 import data from "public/quiz-info.json";
-import { z } from "zod";
 import { QuizTableData, columns } from "./quiz-columns";
 import { QuizTabs } from "./quiz-tabs";
 import { StudentsTable } from "./students-table";
@@ -15,11 +15,6 @@ const QuizInfo = data as Record<string, QuizData>;
 type Props = {
 	students: StudentStats;
 };
-
-const AnswerDataSchema = z.object({
-	choices: z.record(z.string(), z.array(z.number())),
-	correctCount: z.number(),
-});
 
 export const TeacherClassQuiz = async ({ students }: Props) => {
 	const quizPages = allPagesSorted
@@ -31,16 +26,8 @@ export const TeacherClassQuiz = async ({ students }: Props) => {
 
 	const quizTableData: QuizTableData[] = students.flatMap((student) => {
 		return student.QuizAnswer.map((entry) => {
-			const parsed = AnswerDataSchema.safeParse(entry.data);
-			const correctCount = parsed.success
-				? parsed.data.correctCount
-				: getQuizCorrectCount(
-						QuizInfo[entry.pageSlug],
-						entry.data as AnswerData,
-				  );
-			const totalCount = parsed.success
-				? Object.keys(parsed.data.choices).length
-				: Object.keys(entry.data as AnswerData).length;
+			const correctCount = entry.data.correctCount;
+			const totalCount = Object.keys(entry.data.choices).length;
 			const accuracy = (correctCount / totalCount) * 100;
 
 			return {
@@ -49,9 +36,7 @@ export const TeacherClassQuiz = async ({ students }: Props) => {
 				quizTitle: quizPages.find((page) => page.pageSlug === entry.pageSlug)
 					?.title as string,
 				quizPageSlug: entry.pageSlug,
-				quizAnswers: parsed.success
-					? parsed.data.choices
-					: (entry.data as AnswerData),
+				quizAnswers: entry.data.choices,
 				created_at: entry.created_at,
 				accuracy,
 			};
@@ -75,11 +60,14 @@ export const TeacherClassQuiz = async ({ students }: Props) => {
 		accuracies: accGrouped[key],
 	}));
 
+	tabsData.sort((a, b) => {
+		return isPageAfter(a.pageSlug, b.pageSlug) ? 1 : -1;
+	});
+
 	return (
 		<>
 			<h3 className="mb-4 text-lg font-medium">Quiz</h3>
 			<QuizTabs data={tabsData} />
-
 			<StudentsTable columns={columns} data={quizTableData} />
 		</>
 	);
@@ -99,4 +87,8 @@ TeacherClassQuiz.Skeleton = () => (
 			<Skeleton className="rounded-md h-12 w-16" />
 		</div>
 	</>
+);
+
+TeacherClassQuiz.ErrorFallback = CreateErrorFallback(
+	"Failed to calculate quiz statistics",
 );

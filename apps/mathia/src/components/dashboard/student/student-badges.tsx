@@ -1,12 +1,12 @@
+import { getClassStudents, getSummaryStats } from "@/lib/dashboard";
+import { DashboardBadge } from "@itell/ui/server";
+import { User } from "@prisma/client";
 import {
 	FileTextIcon,
 	FlagIcon,
 	PencilIcon,
 	WholeWordIcon,
 } from "lucide-react";
-import { User } from "@prisma/client";
-import { getClassStudents, getSummaryStats } from "@/lib/dashboard";
-import { DashboardBadge } from "@itell/ui/server";
 
 export const StudentBadges = async ({ user }: { user: User }) => {
 	const students = await getClassStudents(user.classId as string);

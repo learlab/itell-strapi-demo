@@ -1,14 +1,11 @@
-import { CardSkeleton } from "@/components/card-skeleton";
 import { Separator } from "@/components/client-components";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { Profile } from "@/components/dashboard/settings/profile";
-import { WebsiteSettings } from "@/components/dashboard/settings/website-settings";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 	Skeleton,

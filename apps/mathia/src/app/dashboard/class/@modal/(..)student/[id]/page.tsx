@@ -1,15 +1,9 @@
 import { ReadingTime } from "@/components/dashboard/reading-time";
 import { StudentBadges } from "@/components/dashboard/student/student-badges";
 import { StudentDetailsModal } from "@/components/dashboard/student/student-details-modal";
-import { StudentProfile } from "@/components/dashboard/student/student-profile";
-import { UserStatistics } from "@/components/dashboard/user-statistics";
-import { UserStatisticsControl } from "@/components/dashboard/user-statistics-control";
-import { getUserWithClass } from "@/lib/dashboard";
 import { getUser } from "@/lib/user";
-import {
-	ReadingTimeChartLevel,
-	ReadingTimeChartParams,
-} from "@itell/core/types";
+import { ReadingTimeChartLevel } from "@itell/core/types";
+import { ErrorBoundary } from "react-error-boundary";
 
 type Props = {
 	params: {

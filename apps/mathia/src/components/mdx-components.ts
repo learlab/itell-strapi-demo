@@ -12,11 +12,7 @@ import {
 	YoutubeVideo,
 } from "@itell/ui/server";
 
-import {
-	Accordion,
-	AccordionItem,
-	Image,
-} from "@/components/client-components";
+import { Image } from "@/components/client-components";
 import {
 	Tab,
 	TabPanel,
@@ -25,6 +21,7 @@ import {
 	TabsHeader,
 } from "@/components/ui/tabs";
 import { TextOverImage } from "@/components/ui/text-over-image";
+import { Accordion, AccordionItem } from "./ui/accordion";
 
 export const MdxComponents = {
 	YoutubeVideo,

@@ -1,6 +1,6 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { StudentProfile } from "@/components/dashboard/student/student-profile";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { getUser } from "@/lib/user";

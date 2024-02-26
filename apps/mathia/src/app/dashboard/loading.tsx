@@ -1,5 +1,5 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import { DashboardBadge, Skeleton } from "@itell/ui/server";
 
 export default function () {

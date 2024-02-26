@@ -1,16 +1,6 @@
 "use client";
 
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuTrigger,
-	DropdownMenuItem,
-	Button,
-	DropdownMenuSeparator,
-} from "./client-components";
-import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
-import {
 	ChevronDownIcon,
 	ChevronUpIcon,
 	CompassIcon,
@@ -19,14 +9,25 @@ import {
 	LogOutIcon,
 	SettingsIcon,
 } from "lucide-react";
-import { Spinner } from "./spinner";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import UserAvatar from "./user-avatar";
+import { useState } from "react";
+import {
+	Button,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "./client-components";
+import { Spinner } from "./spinner";
+import { UserAvatar } from "./user-avatar";
 
 export const UserAccountNav = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const { data: session, status } = useSession();
 	const user = session?.user;
+	const [pending, setPending] = useState(false);
 
 	if (status === "loading") {
 		return <Spinner />;
@@ -44,14 +45,7 @@ export const UserAccountNav = () => {
 		<div className="ml-auto flex items-center gap-1">
 			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
-					<UserAvatar
-						className="h-8 w-8"
-						user={{
-							name: user.name || null,
-							email: user.email || null,
-							image: user.image || null,
-						}}
-					/>
+					<UserAvatar user={user} className="h-8 w-8" />
 					{menuOpen ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
@@ -95,14 +89,21 @@ export const UserAccountNav = () => {
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className="cursor-pointer"
-						onSelect={(event) => {
+						disabled={pending}
+						onSelect={async (event) => {
 							event.preventDefault();
-							signOut({
+							setPending(true);
+							await signOut({
 								callbackUrl: `${window.location.origin}/auth`,
 							});
+							setPending(false);
 						}}
 					>
-						<LogOutIcon className="size-4 mr-2" />
+						{pending ? (
+							<Spinner className="size-4 mr-2" />
+						) : (
+							<LogOutIcon className="size-4 mr-2" />
+						)}
 						Sign out
 					</DropdownMenuItem>
 				</DropdownMenuContent>

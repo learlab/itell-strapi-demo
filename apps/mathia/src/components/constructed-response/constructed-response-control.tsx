@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { QuestionBox } from "./question-box";
-import { useQA } from "../context/qa-context";
-import { createPortal } from "react-dom";
-import { NextChunkButton } from "./next-chunk-button";
-import { ScrollBackButton } from "./scroll-back-button";
 import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
+import { usePortal } from "@itell/core/hooks";
+import { useEffect } from "react";
+import { useConstructedResponse } from "../provider/page-provider";
+import { NextChunkButton } from "./next-chunk-button";
+import { QuestionBox } from "./question-box";
+import { ScrollBackButton } from "./scroll-back-button";
 
 type Props = {
 	selectedQuestions: SelectedQuestions;
@@ -15,27 +15,27 @@ type Props = {
 	isFeedbackEnabled: boolean;
 };
 
-export const QuestionControl = ({
+export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
 	isFeedbackEnabled,
 }: Props) => {
 	// Ref for current chunk
-	const [nodes, setNodes] = useState<JSX.Element[]>([]);
-	const {
-		currentChunk,
-		chunks,
-		isPageFinished,
-		setIsPageFinished,
-		isLastChunkWithQuestion,
-	} = useQA();
+	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
+		(state) => ({
+			currentChunk: state.currentChunk,
+			chunks: state.chunks,
+			isPageFinished: state.isPageFinished,
+		}),
+	);
 
-	const addNode = (node: JSX.Element) => {
-		setNodes((nodes) => [...nodes, node]);
-	};
+	const { nodes, addNode } = usePortal();
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
+		if (!el) {
+			return;
+		}
 		const button = el.querySelector(
 			":scope .next-chunk-button-container",
 		) as HTMLDivElement;
@@ -45,7 +45,7 @@ export const QuestionControl = ({
 		}
 	};
 
-	const insertScrollBackButton = (el: HTMLDivElement) => {
+	const insertScrollBackButton = (el: HTMLElement) => {
 		if (el.parentElement) {
 			const buttonContainer = document.createElement("div");
 			buttonContainer.className =
@@ -56,7 +56,7 @@ export const QuestionControl = ({
 			// so it won't be blurred as a children
 			el.parentElement.insertBefore(buttonContainer, el.nextSibling);
 
-			addNode(createPortal(<ScrollBackButton />, buttonContainer));
+			addNode(<ScrollBackButton />, buttonContainer);
 		}
 	};
 
@@ -65,12 +65,10 @@ export const QuestionControl = ({
 			".scroll-back-button-container",
 		) as HTMLDivElement;
 
-		if (button) {
-			button.remove();
-		}
+		button?.remove();
 	};
 
-	const insertNextChunkButton = (el: HTMLDivElement, chunkSlug: string) => {
+	const insertNextChunkButton = (el: HTMLElement, chunkSlug: string) => {
 		// insert button container
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className =
@@ -79,61 +77,69 @@ export const QuestionControl = ({
 		el.appendChild(buttonContainer);
 
 		addNode(
-			createPortal(
-				<NextChunkButton
-					clickEventType="chunk reveal"
-					chunkSlug={chunkSlug}
-					pageSlug={pageSlug}
-					standalone
-					className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
-				>
-					Click here to continue reading
-				</NextChunkButton>,
-				buttonContainer,
-			),
+			<NextChunkButton
+				clickEventType="chunk reveal"
+				chunkSlug={chunkSlug}
+				pageSlug={pageSlug}
+				standalone
+				className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
+			>
+				Click here to continue reading
+			</NextChunkButton>,
+			buttonContainer,
 		);
 	};
 
-	const insertQuestion = (el: HTMLDivElement, chunkId: string) => {
+	const insertQuestion = (el: HTMLElement, chunkId: string) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
 		el.appendChild(questionContainer);
 
 		const q = selectedQuestions.get(chunkId);
-
 		if (q) {
 			addNode(
-				createPortal(
-					<QuestionBox
-						question={q.question}
-						answer={q.answer}
-						chunkSlug={chunkId}
-						pageSlug={pageSlug}
-						isFeedbackEnabled={isFeedbackEnabled}
-					/>,
-					questionContainer,
-				),
+				<QuestionBox
+					question={q.question}
+					answer={q.answer}
+					chunkSlug={chunkId}
+					pageSlug={pageSlug}
+					isFeedbackEnabled={isFeedbackEnabled}
+				/>,
+				questionContainer,
 			);
 		}
 	};
 
-	const maskChunk = (chunkId: string, chunkIndex: number) => {
+	// process chunk append "go to next" buttons to every chunk
+	// inserts questions to selected chunks
+	// and blur the chunks if the page is not finished
+	const processChunk = (chunkId: string, chunkIndex: number) => {
 		const el = getChunkElement(chunkId);
+		if (!el) {
+			return;
+		}
+
 		const currentIndex = chunks.indexOf(currentChunk);
 		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
+
 		if (selectedQuestions.has(chunkId)) {
 			insertQuestion(el, chunkId);
 		}
 
-		if (chunkIndex !== 0 && isChunkUnvisited) {
-			el.style.filter = "blur(4px)";
-		}
+		// don't blur if the page is finished
+		if (!isPageFinished) {
+			if (chunkIndex !== 0 && isChunkUnvisited) {
+				el.style.filter = "blur(4px)";
+			}
 
-		if (chunkIndex === chunks.length - 1) {
-			insertScrollBackButton(el);
+			if (chunkIndex === chunks.length - 1) {
+				insertScrollBackButton(el);
+			}
 		}
 	};
 
+	// reveal chunk unblurs a chunk when current chunk advances
+	// and controls the visibility of the "next-chunk" button
 	const revealChunk = (currentChunk: string) => {
 		const idx = chunks.indexOf(currentChunk);
 		if (idx === -1) {
@@ -145,41 +151,37 @@ export const QuestionControl = ({
 
 		if (currentChunkId) {
 			const currentChunkElement = getChunkElement(currentChunkId);
+			if (!currentChunkElement) {
+				return;
+			}
 			currentChunkElement.style.filter = "none";
-			if (!selectedQuestions.has(currentChunkId) && idx !== chunks.length - 1) {
-				insertNextChunkButton(currentChunkElement, currentChunk);
+			if (!isPageFinished) {
+				if (
+					!selectedQuestions.has(currentChunkId) &&
+					idx !== chunks.length - 1
+				) {
+					insertNextChunkButton(currentChunkElement, currentChunk);
+				}
 			}
 		}
 
-		// when a fresh page is loaded,. set up ref data and prepare chunk styles
+		// hide the "next-chunk" button of the previous chunk
 		if (prevChunkId) {
 			hideNextChunkButton(prevChunkId);
 		}
 
+		// when the last chunk is revealed, hide the scroll back button
 		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
 		}
 	};
 
 	useEffect(() => {
-		if (!isPageFinished) {
-			chunks.forEach(maskChunk);
-		}
+		chunks.forEach(processChunk);
 	}, []);
 
 	useEffect(() => {
-		if (!isPageFinished) {
-			revealChunk(currentChunk);
-			// in the special case of the last chunk with a question
-			// the page is not considered finished when currentChunk === lastChunk
-			// when the last chunk contains the question
-			// page finished is controlled via the corresponding question-box -> next-chunk-button
-			if (!isLastChunkWithQuestion) {
-				if (currentChunk === chunks[chunks.length - 1]) {
-					setIsPageFinished(true);
-				}
-			}
-		}
+		revealChunk(currentChunk);
 	}, [currentChunk]);
 
 	return nodes;

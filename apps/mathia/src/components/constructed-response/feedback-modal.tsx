@@ -17,6 +17,7 @@ import { Spinner } from "../spinner";
 
 type Props = {
 	type: "positive" | "negative";
+	chunkSlug: string;
 	pageSlug: string;
 	chunkSlug: string;
 };

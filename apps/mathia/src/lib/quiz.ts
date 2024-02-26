@@ -49,7 +49,6 @@ export const getQuiz = async (pageSlug: string) => {
 		const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
 		const response = await fetch(endpoint);
 		const json = await response.json();
-
 		const page = PageQuizSchema.safeParse(json);
 		if (!page.success) {
 			return null;

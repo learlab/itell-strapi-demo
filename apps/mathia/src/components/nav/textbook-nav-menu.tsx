@@ -1,7 +1,5 @@
 "use client";
 
-import { cn, groupby, keyof } from "@itell/core/utils";
-import Link from "next/link";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -10,13 +8,15 @@ import {
 	NavigationMenuList,
 	NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import React, { useState } from "react";
 import { allPagesSorted } from "@/lib/pages";
-import ThemeToggle from "../theme/theme-toggle";
+import { cn, groupby, keyof } from "@itell/core/utils";
 import { MenuIcon, XIcon } from "lucide-react";
-import { MobileNav } from "./mobile-nav";
+import Link from "next/link";
+import React, { useState } from "react";
 import { CommandMenu } from "../command-menu";
+import ThemeToggle from "../theme/theme-toggle";
 import { UserAccountNav } from "../user-account-nav";
+import { MobileNav } from "./mobile-nav";
 
 const moduleChapters = groupby(
 	allPagesSorted.filter((section) => section.location.section === 0),

@@ -7,6 +7,7 @@ import {
 	CardTitle,
 } from "@itell/ui/server";
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { TeacherBadges } from "./teacher-badges";
 import { TeacherClassGeneral } from "./teacher-class-general";
 import { TeacherClassQuiz } from "./teacher-class-quiz";
@@ -29,15 +30,21 @@ export const TeacherClass = async ({ classId }: { classId: string }) => {
 				<h3 className="mb-4 text-lg font-medium">Average Class Statistics</h3>
 
 				<Suspense fallback={<TeacherBadges.Skeleton />}>
-					<TeacherBadges studentIds={students.map((student) => student.id)} />
+					<ErrorBoundary fallback={<TeacherBadges.ErrorFallback />}>
+						<TeacherBadges studentIds={students.map((student) => student.id)} />
+					</ErrorBoundary>
 				</Suspense>
 
 				<Suspense fallback={<TeacherClassGeneral.Skeleton />}>
-					<TeacherClassGeneral students={students} />
+					<ErrorBoundary fallback={<TeacherClassGeneral.ErrorFallback />}>
+						<TeacherClassGeneral students={students} />
+					</ErrorBoundary>
 				</Suspense>
 
 				<Suspense fallback={<TeacherClassQuiz.Skeleton />}>
-					<TeacherClassQuiz students={students} />
+					<ErrorBoundary fallback={<TeacherClassQuiz.ErrorFallback />}>
+						<TeacherClassQuiz students={students} />
+					</ErrorBoundary>
 				</Suspense>
 			</CardContent>
 		</Card>

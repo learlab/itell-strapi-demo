@@ -1,9 +1,9 @@
+import { ModuleToc } from "@/components/module-toc";
+import { PageTitle } from "@/components/page-title";
+import { allPagesSorted } from "@/lib/pages";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
-import { PageTitle } from "@/components/page-title";
-import { LeftAside } from "./page";
-import { allPagesSorted } from "@/lib/pages";
 import { notFound } from "next/navigation";
 
 export default async function () {
@@ -24,30 +24,36 @@ export default async function () {
 	const arr = Array.from(Array(10).keys());
 
 	return (
-		<>
-			<div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-6 px-2">
-				<LeftAside page={page} />
+		<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
+			<aside
+				className="module-sidebar sticky top-20 h-fit z-20 basis-0"
+				style={{ flexGrow: 1 }}
+			>
+				<ModuleToc page={page} />
+			</aside>
 
-				<section className="relative col-span-12 md:col-span-10 lg:col-span-8 space-y-4">
-					<PageTitle>{page.title}</PageTitle>
+			<section
+				className="page-content relative space-y-4"
+				style={{ flexGrow: 4 }}
+			>
+				<PageTitle>{page.title}</PageTitle>
 
-					{arr.map((i) => (
-						<Skeleton className="w-full h-28 mb-4" key={i} />
+				{arr.map((i) => (
+					<Skeleton className="w-full h-28 mb-4" key={i} />
+				))}
+			</section>
+
+			<aside className="toc-sidebar relative" style={{ flexGrow: 1 }}>
+				<p className="font-medium text-sm flex items-center">
+					<span>ON THIS PAGE</span>
+					<BookmarkIcon className="ml-2 size-4" />
+				</p>
+				<ul className="mt-2 space-y-2">
+					{arr.slice(0, 5).map((i) => (
+						<Skeleton className="w-32 h-7" key={i} />
 					))}
-				</section>
-
-				<aside className="toc-sidebar col-span-2 relative">
-					<p className="font-medium text-sm flex items-center">
-						<span>ON THIS PAGE</span>
-						<BookmarkIcon className="ml-2 size-4" />
-					</p>
-					<ul className="mt-2 space-y-2">
-						{arr.slice(0, 5).map((i) => (
-							<Skeleton className="w-32 h-7" key={i} />
-						))}
-					</ul>
-				</aside>
-			</div>
-		</>
+				</ul>
+			</aside>
+		</div>
 	);
 }
