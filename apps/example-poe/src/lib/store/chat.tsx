@@ -1,5 +1,5 @@
 import { ChunkQuestionReady } from "@/components/chat/chunk-question-ready";
-import { BotMessage, Message } from "@itell/core/chatbot";
+import { BotMessage, ChatHistory, Message } from "@itell/core/chatbot";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -153,3 +153,10 @@ export const useChatStore = create(
 		},
 	})),
 );
+
+export const getChatHistory = (messages: Message[]): ChatHistory => {
+	return messages.map((message) => ({
+		agent: message.isUser ? "user" : "bot",
+		text: "text" in message ? message.text : "",
+	}));
+};

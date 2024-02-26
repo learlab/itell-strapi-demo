@@ -152,8 +152,13 @@ export const QuestionControl = ({
 				return;
 			}
 			currentChunkElement.style.filter = "none";
-			if (!selectedQuestions.has(currentChunkId) && idx !== chunks.length - 1) {
-				insertNextChunkButton(currentChunkElement, currentChunk);
+			if (!isPageFinished) {
+				if (
+					!selectedQuestions.has(currentChunkId) &&
+					idx !== chunks.length - 1
+				) {
+					insertNextChunkButton(currentChunkElement, currentChunk);
+				}
 			}
 		}
 

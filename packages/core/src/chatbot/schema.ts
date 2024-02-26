@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+export type ChatHistoryItem = { agent: "user" | "bot"; text: string };
+export type ChatHistory = ChatHistoryItem[];
+
 export type UserMessage = {
 	id: string;
 	isUser: true;

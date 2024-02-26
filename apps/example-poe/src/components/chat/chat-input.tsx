@@ -1,7 +1,7 @@
 "use client";
 
 import { createChatMessage } from "@/lib/server-actions";
-import { useChatStore } from "@/lib/store/chat";
+import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import {
 	BotMessage,
 	UserMessage,
@@ -29,6 +29,7 @@ export const ChatInput = ({
 		updateBotMessage,
 		setChunkQuestionAnswered,
 		setActiveMessageId,
+		messages,
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
 
@@ -44,11 +45,14 @@ export const ChatInput = ({
 		const botMessageId = addBotMessage("", isChunkQuestion);
 		setActiveMessageId(botMessageId);
 
-		const chatResponse = await fetchChatResponse({
-			endpoint: "https://itell-api.learlab.vanderbilt.edu/chat",
-			pageSlug,
-			text,
-		});
+		const chatResponse = await fetchChatResponse(
+			"https://itell-api.learlab.vanderbilt.edu/chat",
+			{
+				pageSlug,
+				text,
+				history: getChatHistory(messages),
+			},
+		);
 		setActiveMessageId(null);
 
 		if (chatResponse.ok) {
@@ -75,7 +79,8 @@ export const ChatInput = ({
 				createChatMessage({ pageSlug, userText: text, botText: botText });
 			}
 		} else {
-			addBotMessage(
+			updateBotMessage(
+				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
 				isChunkQuestion,
 			);

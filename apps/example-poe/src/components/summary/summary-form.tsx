@@ -12,7 +12,7 @@ import {
 	isPageQuizUnfinished,
 	maybeCreateQuizCookie,
 } from "@/lib/server-actions";
-import { useChatStore } from "@/lib/store/chat";
+import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { getFeedback } from "@/lib/summary";
 import {
 	PageData,
@@ -115,10 +115,16 @@ export const SummaryForm = ({
 	isAdmin,
 }: Props) => {
 	const pageSlug = page.page_slug;
-	const { chunkQuestionAnswered, addChunkQuestion } = useChatStore((store) => ({
-		chunkQuestionAnswered: store.chunkQuestionAnswered,
-		addChunkQuestion: store.addChunkQuestion,
-	}));
+	const { chunkQuestionAnswered, addChunkQuestion, messages } = useChatStore(
+		(state) => ({
+			chunkQuestionAnswered: state.chunkQuestionAnswered,
+			addChunkQuestion: state.addChunkQuestion,
+			messages: state.messages,
+		}),
+	);
+	const excludedChunks = useConstructedResponse(
+		(state) => state.excludedChunks,
+	);
 	const { nodes: portalNodes, addNode } = usePortal();
 
 	useMemo(() => {
@@ -253,6 +259,8 @@ export const SummaryForm = ({
 					summary: input,
 					page_slug: pageSlug,
 					focus_time: focusTime?.data,
+					chat_history: getChatHistory(messages),
+					excluded_chunks: excludedChunks,
 				});
 				const response = await fetch(
 					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",

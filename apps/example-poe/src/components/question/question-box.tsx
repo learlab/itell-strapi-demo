@@ -82,10 +82,13 @@ export const QuestionBox = ({
 	isFeedbackEnabled,
 }: Props) => {
 	const { data: session } = useSession();
-	const { chunks, isPageFinished } = useConstructedResponse((state) => ({
-		chunks: state.chunks,
-		isPageFinished: state.isPageFinished,
-	}));
+	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
+		(state) => ({
+			chunks: state.chunks,
+			isPageFinished: state.isPageFinished,
+			finishChunk: state.finishChunk,
+		}),
+	);
 	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
 		!isPageFinished,
@@ -142,6 +145,8 @@ export const QuestionBox = ({
 			}
 
 			if (score === 2) {
+				finishChunk(chunkSlug);
+
 				return {
 					error: null,
 					answerStatus: AnswerStatus.BOTH_CORRECT,
@@ -164,7 +169,8 @@ export const QuestionBox = ({
 
 			// for typing purposes, this should never run
 			return prevState;
-		} catch {
+		} catch (err) {
+			console.log("constructed response evaluation error", err);
 			return {
 				error: "Answer evaluation failed, please try again later",
 				answerStatus: prevState.answerStatus,

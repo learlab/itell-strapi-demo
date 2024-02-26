@@ -1,15 +1,18 @@
-import { create, createStore } from "zustand";
+import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { PageStatus } from "../page-status";
 
 interface Props {
 	currentChunk: string;
 	chunks: string[];
+	// chunks whose questions have been answered correctly
+	excludedChunks: string[];
 	isPageFinished: boolean;
 }
 
 export interface ConstructedResponseState extends Props {
 	advanceChunk: (slug: string) => void;
+	finishChunk: (slug: string) => void;
 	reset: () => void;
 }
 
@@ -28,10 +31,17 @@ export const createConstructedResponseStore = (
 			(set, get) => ({
 				currentChunk: chunks[0],
 				chunks,
+				excludedChunks: [],
 				isPageFinished: pageStatus.isPageUnlocked,
+
+				finishChunk: (slug: string) => {
+					set({ excludedChunks: [...get().excludedChunks, slug] });
+				},
+
 				advanceChunk: (slug: string) => {
 					const currentIndex = chunks.indexOf(slug);
 					let nextIndex = currentIndex;
+
 					if (currentIndex + 1 < chunks.length) {
 						nextIndex = currentIndex + 1;
 						set({ currentChunk: chunks[nextIndex] });
