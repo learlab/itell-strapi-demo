@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { createConstructedResponseFeedback } from "@/lib/server-actions";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button, Checkbox, Label, TextArea } from "../client-components";
@@ -17,7 +16,6 @@ import { Spinner } from "../spinner";
 
 type Props = {
 	type: "positive" | "negative";
-	chunkSlug: string;
 	pageSlug: string;
 	chunkSlug: string;
 };
