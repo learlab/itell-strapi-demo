@@ -27,6 +27,7 @@
   "license": "ISC",
   "dependencies": {
     "fs": "0.0.1-security",
+    "prisma-json-types-generator": "^3.0.4",
     "turbo": "^1.9.3"
   }
 }
