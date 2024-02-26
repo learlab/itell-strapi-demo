@@ -12,12 +12,6 @@ export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(db),
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
-		GoogleProvider({
-			id: "google",
-			name: "Google",
-			clientId: env.GOOGLE_CLIENT_ID,
-			clientSecret: env.GOOGLE_CLIENT_SECRET,
-		}),
 		AzureADProvider({
 			id: "azure-ad",
 			name: "Azure AD",

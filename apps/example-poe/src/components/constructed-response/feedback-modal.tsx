@@ -19,6 +19,7 @@ type Props = {
 	type: "positive" | "negative";
 	chunkSlug: string;
 	pageSlug: string;
+	chunkSlug: string;
 };
 
 export const FeedbackModal = ({ type, pageSlug, chunkSlug }: Props) => {
