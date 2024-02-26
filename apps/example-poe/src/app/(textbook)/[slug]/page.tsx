@@ -1,5 +1,6 @@
 import { ChatbotLoader } from "@/components/chat/chatbot-loader";
 import { Pager } from "@/components/client-components";
+import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
 import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
 import { NoteLoader } from "@/components/note/note-loader";
@@ -10,7 +11,6 @@ import { PageTitle } from "@/components/page-title";
 import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/page/page-content";
 import { PageProvider } from "@/components/provider/page-provider";
-import { QuestionControl } from "@/components/question/question-control";
 import { Spinner } from "@/components/spinner";
 import { PageSummary } from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
@@ -129,7 +129,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			<QuestionControl
+			<ConstructedResponseControl
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
 				isFeedbackEnabled={isFeedbackEnabled}

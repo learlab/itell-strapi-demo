@@ -15,7 +15,7 @@ type Props = {
 	isFeedbackEnabled: boolean;
 };
 
-export const QuestionControl = ({
+export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
 	isFeedbackEnabled,
@@ -65,9 +65,7 @@ export const QuestionControl = ({
 			".scroll-back-button-container",
 		) as HTMLDivElement;
 
-		if (button) {
-			button.remove();
-		}
+		button?.remove();
 	};
 
 	const insertNextChunkButton = (el: HTMLElement, chunkSlug: string) => {
@@ -112,6 +110,9 @@ export const QuestionControl = ({
 		}
 	};
 
+	// process chunk append "go to next" buttons to every chunk
+	// inserts questions to selected chunks
+	// and blur the chunks if the page is not finished
 	const processChunk = (chunkId: string, chunkIndex: number) => {
 		const el = getChunkElement(chunkId);
 		if (!el) {
@@ -137,6 +138,8 @@ export const QuestionControl = ({
 		}
 	};
 
+	// reveal chunk unblurs a chunk when current chunk advances
+	// and controls the visibility of the "next-chunk" button
 	const revealChunk = (currentChunk: string) => {
 		const idx = chunks.indexOf(currentChunk);
 		if (idx === -1) {
@@ -162,11 +165,12 @@ export const QuestionControl = ({
 			}
 		}
 
-		// when a fresh page is loaded,. set up ref data and prepare chunk styles
+		// hide the "next-chunk" button of the previous chunk
 		if (prevChunkId) {
 			hideNextChunkButton(prevChunkId);
 		}
 
+		// when the last chunk is revealed, hide the scroll back button
 		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
 		}

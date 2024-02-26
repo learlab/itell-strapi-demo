@@ -151,15 +151,15 @@ export const SummaryForm = ({
 	}, [chunkQuestionAnswered]);
 
 	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
-		const chunkEl = getChunkElement(chunkQuestion.chunk);
-		if (chunkEl) {
+		const el = getChunkElement(chunkQuestion.chunk);
+		if (el) {
 			addChunkQuestion(chunkQuestion.text);
 
-			scrollToElement(chunkEl as HTMLDivElement);
+			scrollToElement(el);
 
 			setTimeout(() => {
 				driverObj.highlight({
-					element: chunkEl,
+					element: el,
 					popover: {
 						description:
 							"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
