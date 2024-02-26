@@ -1,24 +1,21 @@
 "use client";
 
 import { RotateCcwIcon } from "lucide-react";
-import { Button } from "../client-components";
 import { useTransition } from "react";
+import { Button } from "../client-components";
+import { useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
-import { resetPageChunk } from "@/lib/hooks/utils";
 
-type Props = {
-	pageSlug: string;
-};
-
-export const RestartPageButton = ({ pageSlug }: Props) => {
+export const RestartPageButton = () => {
 	const [pending, startTransition] = useTransition();
+	const reset = useConstructedResponse((state) => state.reset);
 	return (
 		<Button
 			className="flex flex-wrap justify-start items-center gap-2 pl-0"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
-					resetPageChunk(pageSlug);
+					reset();
 					window.location.reload();
 				});
 			}}

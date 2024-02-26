@@ -17,9 +17,9 @@ export const ErrorFeedback: Record<ErrorType, string> = {
 		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com if the problem persists",
 };
 
-export const validateSummary = async (
+export const validateSummary = (
 	input: string,
-): Promise<ErrorType | null> => {
+): ErrorType | null => {
 	const wordCount = numOfWords(input);
 
 	// check word count

@@ -3,6 +3,7 @@
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
 
 import { createNoteElements, deserializeRange } from "@itell/core/note";
+import React from "react";
 import { useEffect } from "react";
 type Props = {
 	id: string;
@@ -10,7 +11,7 @@ type Props = {
 	range: string;
 };
 
-export const Highlight = ({ id, color, range }: Props) => {
+export const Highlight = React.memo(({ id, color, range }: Props) => {
 	useEffect(() => {
 		try {
 			createNoteElements({
@@ -26,4 +27,4 @@ export const Highlight = ({ id, color, range }: Props) => {
 	}, []);
 
 	return null;
-};
+});

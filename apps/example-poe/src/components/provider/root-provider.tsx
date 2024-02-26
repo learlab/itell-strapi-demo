@@ -9,7 +9,7 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
 		<SessionProvider>
 			<ThemeProvider attribute="class" defaultTheme="light">
 				{children}
-				<Toaster richColors />
+				<Toaster richColors closeButton />
 			</ThemeProvider>
 		</SessionProvider>
 	);

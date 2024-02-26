@@ -1,6 +1,6 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SummaryItem } from "@/components/dashboard/summary-item";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import { Skeleton } from "@itell/ui/server";
 
 export default function DashboardLoading() {

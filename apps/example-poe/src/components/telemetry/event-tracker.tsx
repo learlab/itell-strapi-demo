@@ -1,23 +1,28 @@
 "use client";
 
+import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
+import { createEvent, createFocusTime } from "@/lib/server-actions";
+import { getChunkElement } from "@/lib/utils";
+import { EventTracker as Tracker } from "@itell/core/components";
 import {
 	ClickEventData,
 	FocusTimeEventData,
 	ScrollEventData,
 } from "@itell/core/types";
-import { createEvent, createFocusTime } from "@/lib/server-actions";
-import { EventTracker as Tracker } from "@itell/core/components";
-import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
-import { getChunkElement } from "@/lib/utils";
-import { useQA } from "../context/qa-context";
 import { useEffect, useState } from "react";
 
-export const EventTracker = () => {
-	const { chunks } = useQA();
-	const [els, setEls] = useState<HTMLDivElement[] | undefined>();
+type Props = {
+	chunks: string[];
+	pageSlug: string;
+};
+
+export const EventTracker = ({ pageSlug, chunks }: Props) => {
+	const [els, setEls] = useState<HTMLElement[] | undefined>();
 
 	useEffect(() => {
-		const chunkElements = chunks.map((chunkId) => getChunkElement(chunkId));
+		const chunkElements = chunks
+			.map((chunkId) => getChunkElement(chunkId))
+			.filter(Boolean);
 		setEls(chunkElements);
 	}, []);
 
@@ -38,17 +43,15 @@ export const EventTracker = () => {
 	};
 
 	const onFocusTime = async (data: FocusTimeEventData) => {
-		if (data.totalViewTime !== 0) {
-			createEvent({
-				eventType: "focus-time",
-				page: location.href,
-				data,
-			});
-
-			createFocusTime({
-				totalViewTime: data.totalViewTime,
-			});
-		}
+		createEvent({
+			eventType: "focus-time",
+			page: location.href,
+			data,
+		});
+		createFocusTime({
+			pageSlug,
+			data,
+		});
 	};
 
 	if (!els) {

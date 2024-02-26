@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { TeacherBadges } from "@/components/dashboard/teacher/teacher-badges";
 import { TeacherClassGeneral } from "@/components/dashboard/teacher/teacher-class-general";
 import { TeacherClassQuiz } from "@/components/dashboard/teacher/teacher-class-quiz";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import {
 	Card,
 	CardContent,

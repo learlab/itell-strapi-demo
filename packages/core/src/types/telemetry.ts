@@ -17,8 +17,4 @@ export type ChunkEntry = {
 };
 
 export type ChunkEntryWithLastTick = ChunkEntry & { lastTick: number };
-
-export type FocusTimeEventData = {
-	entries: ChunkEntry[];
-	totalViewTime: number;
-};
+export type FocusTimeEventData = Record<string, number>

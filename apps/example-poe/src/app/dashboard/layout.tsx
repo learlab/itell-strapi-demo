@@ -4,10 +4,8 @@ import { dashboardConfig } from "@/config/dashboard";
 
 export default async function DashboardLayout({
 	children,
-	searchParams,
 }: {
 	children: React.ReactNode;
-	searchParams?: Record<string, string>;
 }) {
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">
@@ -20,7 +18,7 @@ export default async function DashboardLayout({
 				<aside className="hidden w-[200px] flex-col md:flex">
 					<DashboardSidebar items={dashboardConfig.sidebarNav} />
 				</aside>
-				<main className="flex w-full flex-1 flex-col">{children}</main>
+				<main className="flex flex-col">{children}</main>
 			</div>
 		</div>
 	);

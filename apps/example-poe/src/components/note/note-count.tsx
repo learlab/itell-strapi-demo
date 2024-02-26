@@ -4,26 +4,23 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/client-components";
-import pluralize from "pluralize";
-import { User } from "@prisma/client";
+import { SessionUser } from "@/lib/auth";
 import db from "@/lib/db";
+import { countNoteHighlight } from "@/lib/server-actions";
+import { Skeleton } from "@itell/ui/server";
+import pluralize from "pluralize";
 
 type Props = {
-	user: User;
+	user: SessionUser;
 	pageSlug: string;
 };
 
 // rendered by TocSidebar
 export const NoteCount = async ({ user, pageSlug }: Props) => {
-	const res = (await db.$queryRaw`
-			SELECT COUNT(*),
-					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
-			FROM notes
-			WHERE user_id = ${user.id} AND page_slug = ${pageSlug}
-			GROUP BY CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`) as {
-		count: number;
-		type: string;
-	}[];
+	if (!user) {
+		return null;
+	}
+	const res = await countNoteHighlight(pageSlug);
 
 	const noteCount = res.find((r) => r.type === "note")?.count || 0;
 	const highlightCount = res.find((r) => r.type === "highlight")?.count || 0;
@@ -47,3 +44,14 @@ export const NoteCount = async ({ user, pageSlug }: Props) => {
 		</HoverCard>
 	);
 };
+
+NoteCount.Skeleton = () => (
+	<HoverCard>
+		<HoverCardTrigger>
+			<Skeleton className="w-24 h-6" />
+		</HoverCardTrigger>
+		<HoverCardContent className="w-48 text-sm">
+			<p>Leave a note or highlight by selecting the text</p>
+		</HoverCardContent>
+	</HoverCard>
+);

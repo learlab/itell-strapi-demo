@@ -1,6 +1,6 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SummaryList } from "@/components/dashboard/summary-list";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";

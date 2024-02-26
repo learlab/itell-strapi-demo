@@ -1,30 +1,10 @@
-import { env } from "@/env.mjs";
-import { SummaryResponseSchema } from "@itell/core/summary";
+import { SummaryFeedback, SummaryResponse } from "@itell/core/summary";
 
-export const getScore = async ({
-	input,
-	pageSlug,
-}: { input: string; pageSlug: string }) => {
-	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/summary`, {
-		method: "POST",
-		body: JSON.stringify({
-			summary: input,
-			page_slug: pageSlug,
-		}),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-
-	console.log(
-		JSON.stringify({
-			summary: input,
-			page_slug: pageSlug,
-		}),
-	);
-
-	console.log(response);
-
-	const data = await response.json();
-	return SummaryResponseSchema.safeParse(data);
+export const getFeedback = (response: SummaryResponse): SummaryFeedback => {
+	return {
+		isPassed: response.is_passed,
+		prompt: response.prompt,
+		promptDetails: response.prompt_details,
+		suggestedKeyphrases: response.suggested_keyphrases,
+	};
 };

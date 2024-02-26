@@ -1,18 +1,13 @@
-import { Roboto_Slab as FontSerif } from "next/font/google";
-import { GeistSans as FontSans } from "geist/font";
 import "@/styles/globals.css";
+
+import { GeistSans as FontSans } from "geist/font";
+import { Roboto_Slab as FontSerif } from "next/font/google";
 
 import { RootProvider } from "@/components/provider/root-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { getSiteConfig } from "@/lib/config";
 import { cn } from "@itell/core/utils";
 import { Metadata } from "next";
-import { getSiteConfig } from "@/lib/config";
-
-type SiteConfig = {
-	title: string;
-	description: string;
-	latex: boolean;
-};
 
 export async function generateMetadata(): Promise<Metadata> {
 	const siteConfig = await getSiteConfig();

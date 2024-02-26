@@ -1,11 +1,12 @@
+import { CreateErrorFallback } from "@/components/error-fallback";
+import { getSummaryStats } from "@/lib/dashboard";
+import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,
 	FlagIcon,
 	PencilIcon,
 	WholeWordIcon,
 } from "lucide-react";
-import { getSummaryStats } from "@/lib/dashboard";
-import { DashboardBadge } from "@itell/ui/server";
 
 type Props = {
 	studentIds: string[];
@@ -57,4 +58,8 @@ TeacherBadges.Skeleton = () => (
 	<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 		<DashboardBadge.Skeletons />
 	</div>
+);
+
+TeacherBadges.ErrorFallback = CreateErrorFallback(
+	"Failed to calculate class statistics",
 );

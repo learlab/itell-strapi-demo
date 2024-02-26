@@ -1,11 +1,12 @@
+import { CreateErrorFallback } from "@/components/error-fallback";
+import { getSummaryStats } from "@/lib/dashboard";
+import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,
 	FlagIcon,
 	PencilIcon,
 	WholeWordIcon,
 } from "lucide-react";
-import { getSummaryStats } from "@/lib/dashboard";
-import { DashboardBadge } from "@itell/ui/server";
 
 export const UserBadges = async ({ uid }: { uid: string }) => {
 	const summaryStats = await getSummaryStats({
@@ -38,3 +39,7 @@ export const UserBadges = async ({ uid }: { uid: string }) => {
 		</>
 	);
 };
+
+UserBadges.ErrorFallback = CreateErrorFallback(
+	"Failed to calculate learning statistics",
+);

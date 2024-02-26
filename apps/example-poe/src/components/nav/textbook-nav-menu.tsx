@@ -66,8 +66,6 @@ export default function TextbookNavMenu() {
 		};
 	});
 
-	console.log(moduleTriggers);
-
 	return (
 		<>
 			<NavigationMenu className="hidden md:flex w-full px-8 lg:px-4 py-2">

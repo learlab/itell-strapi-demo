@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { StudentClassCount } from "@/components/dashboard/student/student-class-count";
 import { UserStatistics } from "@/components/dashboard/user-statistics";
 import { UserProgress } from "@/components/dashboard/user/user-progress";
-import { DashboardShell } from "@/components/shell";
+import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
 import { getCurrentUser } from "@/lib/auth";
 import { getUser } from "@/lib/user";

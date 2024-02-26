@@ -18,7 +18,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				<span>ON THIS PAGE</span>
 			</p>
 
-			<ol className="list-disc mt-2 space-y-2 pl-4">
+			<ol className="max-h-[60vh] overflow-y-scroll list-disc mt-2 space-y-2 pl-4">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
@@ -29,7 +29,8 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 								className={cn("hover:underline inline-flex ", {
 									"text-lg": heading.level === "two",
 									"text-base pl-1": heading.level === "three",
-									"text-sm pl-2": heading.level === "four",
+									"text-sm pl-2 text-muted-foreground":
+										heading.level === "four",
 									"text-muted-foreground text-sm pl-4":
 										heading.level === "other",
 								})}

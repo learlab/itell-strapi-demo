@@ -1,21 +1,21 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
-import { HighlighterIcon, CopyIcon, PencilIcon } from "lucide-react";
-import { Popover } from "react-text-selection-popover";
-import { toast } from "sonner";
-import { useTextSelection } from "use-text-selection";
 import {
 	defaultHighlightColor,
 	useNoteColor,
 } from "@/lib/hooks/use-note-color";
-import { Button } from "../client-components";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
-import { useNotesStore } from "@/lib/store";
-import { createNoteElements, serializeRange } from "@itell/core/note";
 import { createNote } from "@/lib/server-actions";
+import { useNotesStore } from "@/lib/store/note";
+import { createNoteElements, serializeRange } from "@itell/core/note";
+import { cn } from "@itell/core/utils";
+import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { Popover } from "react-text-selection-popover";
+import { toast } from "sonner";
+import { useTextSelection } from "use-text-selection";
+import { Button } from "../client-components";
 
 type SelectionData = ReturnType<typeof useTextSelection>;
 

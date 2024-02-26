@@ -46,16 +46,17 @@ export const getPageQuestions = async (pageSlug: string) => {
 		},
 	});
 
+	const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
 	try {
-		const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
 		const response = await (await fetch(endpoint)).json();
 		const parsed = PageQuestionsSchema.safeParse(response);
 		if (!parsed.success) {
-			return null;
+			throw new Error("Failed to parse response", parsed.error);
 		}
 
 		return parsed.data;
-	} catch {
+	} catch (e) {
+		console.error("Failed to fetch page questions", e);
 		return null;
 	}
 };
@@ -85,6 +86,7 @@ export const getQAScore = async ({
 export const getRandomPageQuestions = async (pageSlug: string) => {
 	const selectedQuestions: SelectedQuestions = new Map();
 	const questions = await getPageQuestions(pageSlug);
+
 	if (questions) {
 		const chunks = questions.data[0].attributes.Content.filter((c) =>
 			Boolean(c.QuestionAnswerResponse),
