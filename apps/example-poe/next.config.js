@@ -1,5 +1,4 @@
-const { withContentlayer }  = require("next-contentlayer")
-
+const { withContentlayer } = require("next-contentlayer");
 
 /**
  * @type {import('next').NextConfig}
@@ -8,10 +7,12 @@ const nextConfig = {
 	output: "standalone",
 	reactStrictMode: false,
 	images: {
-		remotePatterns:  [{
-			protocol: "https",
-			hostname: "nbjrajrmujlgxmcvqsge.supabase.co"
-		}],
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "nbjrajrmujlgxmcvqsge.supabase.co",
+			},
+		],
 	},
 	redirects: async () => {
 		return [
@@ -53,7 +54,7 @@ const nextConfig = {
 			},
 		];
 	},
-}
+};
 
 const securityHeaders = [
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -88,6 +89,4 @@ const securityHeaders = [
 	},
 ];
 
-
-module.exports =  withContentlayer(nextConfig);
-
+module.exports = withContentlayer(nextConfig);
