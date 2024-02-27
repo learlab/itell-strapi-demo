@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("@itell/ui/dist/style.css");
+
+.columns .column figure:first-child,
+.columns .column figure:first-child img {
+  margin-top: 0;
+}
+
+.columns .column p:first-child {
+  margin-top: 0;
+}
+
+.inset-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+span.unhighlighted {
+  @apply font-normal !important;
+}
+
+span.highlight {
+  cursor: pointer !important;
+  color: black;
+}
+
+span.emphasized {
+  @apply font-bold !important;
+}
+
+svg {
+  transition: all 0.3s;
+}
+
+#page-title,
+#page-content h2,
+#page-content h3 {
+  scroll-margin-top: 80px;
+}
+
+
+.content-chunk {
+  transition: 0.6s filter linear
+}
+
+.note {
+  color: black;
+}
+
+.driver-active .toc-sidebar,
+.driver-active .module-sidebar,
+.driver-active #site-nav,
+.driver-active .question-container {
+  display: none;
+}
+
+.driver-popover {
+  max-width: 350px !important;
+}
+
+@media (max-width: 768px) {
+  .module-sidebar {
+    display: none;
+  }
+
+  .toc-sidebar {
+    display: none;
+  }
+}
