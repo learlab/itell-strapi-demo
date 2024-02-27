@@ -1,6 +1,6 @@
 "use client";
 
-import { createChatMessage } from "@/lib/server-actions";
+import { createChatMessage, createEvent } from "@/lib/server-actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import {
 	BotMessage,
@@ -39,6 +39,12 @@ export const ChatInput = ({
 
 		if (isChunkQuestion) {
 			setChunkQuestionAnswered(true);
+
+			createEvent({
+				eventType: "stairs-reread-question",
+				pageSlug,
+				data: { answer: text },
+			});
 		}
 
 		// init response message

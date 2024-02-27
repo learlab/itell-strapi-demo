@@ -2,6 +2,7 @@
 
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { isLastPage } from "@/lib/location";
 import { PageStatus } from "@/lib/page-status";
 import {
@@ -35,7 +36,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -44,7 +45,6 @@ import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
-import { StageItem } from "./summary-progress";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
@@ -91,9 +91,26 @@ const initialState: State = {
 	showQuiz: false,
 };
 
-type Stage = "Scoring" | "Saving" | "Analyzing";
-
 const driverObj = driver();
+
+const goToQuestion = (chunkQuestion: ChunkQuestion) => {
+	const el = getChunkElement(chunkQuestion.chunk);
+	if (el) {
+		scrollToElement(el);
+
+		setTimeout(() => {
+			driverObj.highlight({
+				element: el,
+				popover: {
+					description:
+						"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
+					side: "left",
+					align: "start",
+				},
+			});
+		}, 1000);
+	}
+};
 
 const exitQuestion = () => {
 	const summaryEl = document.querySelector("#page-summary");
@@ -115,6 +132,10 @@ export const SummaryForm = ({
 	isAdmin,
 }: Props) => {
 	const pageSlug = page.page_slug;
+	const isPageFinished = useConstructedResponse(
+		(state) => state.isPageFinished,
+	);
+	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 	const { chunkQuestionAnswered, addChunkQuestion, messages } = useChatStore(
 		(state) => ({
 			chunkQuestionAnswered: state.chunkQuestionAnswered,
@@ -126,74 +147,10 @@ export const SummaryForm = ({
 		(state) => state.excludedChunks,
 	);
 	const { nodes: portalNodes, addNode } = usePortal();
-
-	useMemo(() => {
-		driverObj.setConfig({
-			smoothScroll: false,
-			onPopoverRender: (popover) => {
-				addNode(
-					<ChatbotChunkQuestion
-						user={user}
-						pageSlug={pageSlug}
-						onExit={exitQuestion}
-					/>,
-					popover.wrapper,
-				);
-			},
-			onDestroyStarted: () => {
-				if (!chunkQuestionAnswered) {
-					return toast.warning("Please answer the question to continue");
-				}
-
-				exitQuestion();
-			},
-		});
-	}, [chunkQuestionAnswered]);
-
-	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
-		const el = getChunkElement(chunkQuestion.chunk);
-		if (el) {
-			addChunkQuestion(chunkQuestion.text);
-
-			scrollToElement(el);
-
-			setTimeout(() => {
-				driverObj.highlight({
-					element: el,
-					popover: {
-						description:
-							"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
-						side: "left",
-						align: "start",
-					},
-				});
-			}, 1000);
-		}
-	};
-
 	const router = useRouter();
-	const [stages, setStages] = useState<StageItem[]>([]);
+	const { stages, addStage, finishStage, clearStages } = useSummaryStage();
 
-	const addStage = (name: Stage) => {
-		setStages((currentStages) => {
-			const newStage: StageItem = { name, status: "active" };
-			const oldStages = currentStages.slice();
-			oldStages.push(newStage);
-			return oldStages;
-		});
-	};
-
-	const finishStage = (name: Stage) => {
-		setStages((currentStages) => {
-			const newStage: StageItem = { name, status: "complete" };
-			const oldStages = currentStages.slice();
-			const index = oldStages.findIndex((s) => s.name === name);
-			if (index !== -1) {
-				oldStages[index] = newStage;
-			}
-			return oldStages;
-		});
-	};
+	const mounted = useRef(false);
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
@@ -228,9 +185,32 @@ export const SummaryForm = ({
 
 	const feedback = state.response ? getFeedback(state.response) : null;
 
+	if (mounted.current) {
+		driverObj.setConfig({
+			smoothScroll: false,
+			onPopoverRender: (popover) => {
+				addNode(
+					<ChatbotChunkQuestion
+						user={user}
+						pageSlug={pageSlug}
+						onExit={exitQuestion}
+					/>,
+					popover.wrapper,
+				);
+			},
+			onDestroyStarted: () => {
+				if (!chunkQuestionAnswered) {
+					return toast.warning("Please answer the question to continue");
+				}
+
+				exitQuestion();
+			},
+		});
+	}
+
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setStages([]);
+		clearStages();
 
 		dispatch({ type: "submit" });
 		addStage("Scoring");
@@ -302,7 +282,7 @@ export const SummaryForm = ({
 								finishStage("Scoring");
 							} else {
 								console.log("SummaryResults parse error", parsed.error);
-								setStages([]);
+								clearStages();
 								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 								// summaryResponse parsing failed, return early
 								return;
@@ -327,6 +307,7 @@ export const SummaryForm = ({
 										chunkQuestionString,
 									) as ChunkQuestion;
 									finishStage("Analyzing");
+									addChunkQuestion(chunkQuestionData.text);
 								}
 							}
 						}
@@ -372,15 +353,10 @@ export const SummaryForm = ({
 			}
 		} catch (err) {
 			console.log("summary scoring error", err);
-			setStages([]);
+			clearStages();
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 		}
 	};
-
-	const isPageFinished = useConstructedResponse(
-		(state) => state.isPageFinished,
-	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 
 	useEffect(() => {
 		if (state.chunkQuestion && !state.isPassed) {
@@ -423,6 +399,10 @@ export const SummaryForm = ({
 			});
 		}
 	}, [state]);
+
+	useEffect(() => {
+		mounted.current = true;
+	}, []);
 
 	return (
 		<section className="space-y-2">

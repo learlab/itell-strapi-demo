@@ -4,11 +4,7 @@ import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { createEvent, createFocusTime } from "@/lib/server-actions";
 import { getChunkElement } from "@/lib/utils";
 import { EventTracker as Tracker } from "@itell/core/components";
-import {
-	ClickEventData,
-	FocusTimeEventData,
-	ScrollEventData,
-} from "@itell/core/types";
+import { ClickEventData, ScrollEventData } from "@itell/core/types";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -29,7 +25,7 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const onClick = async (data: ClickEventData) => {
 		createEvent({
 			eventType: "click",
-			page: location.href,
+			pageSlug,
 			data,
 		});
 	};
@@ -37,15 +33,18 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const onScroll = async (data: ScrollEventData) => {
 		createEvent({
 			eventType: "scroll",
-			page: location.href,
+			pageSlug,
 			data,
 		});
 	};
 
-	const onFocusTime = async (data: FocusTimeEventData) => {
+	const onFocusTime = async (data: PrismaJson.FocusTimeData) => {
+		if (Object.values(data).every((v) => v === 0)) {
+			return;
+		}
 		createEvent({
 			eventType: "focus-time",
-			page: location.href,
+			pageSlug,
 			data,
 		});
 		createFocusTime({

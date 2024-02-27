@@ -32,7 +32,7 @@ export const NextChunkButton = ({
 		}
 		await createEvent({
 			eventType: clickEventType,
-			page: location.href,
+			pageSlug,
 			data: {
 				currentChunk: chunkSlug,
 			},
