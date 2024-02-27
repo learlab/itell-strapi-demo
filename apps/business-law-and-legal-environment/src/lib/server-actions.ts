@@ -1,11 +1,7 @@
 "use server";
 
-import page from "@/app/auth/page";
-import { BotMessage, Message, UserMessage } from "@itell/core/chatbot";
 import { SummaryResponse } from "@itell/core/summary";
-import { FocusTimeEventData } from "@itell/core/types";
-import { Prisma, QuizAnswer } from "@prisma/client";
-import { JsonArray } from "@prisma/client/runtime/library";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "./auth";
@@ -375,12 +371,14 @@ export const countNoteHighlight = async (pageSlug: string) => {
 		return [];
 	}
 
-	return (await db.$queryRaw`
-			SELECT COUNT(*),
-					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
-			FROM notes
-			WHERE user_id = ${user.id} AND page_slug = ${pageSlug}
-			GROUP BY CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`) as {
+	const result = await db.$queryRaw`
+	SELECT COUNT(*)::integer,
+			CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
+	FROM notes
+	WHERE user_id = ${user.id} AND page_slug = ${pageSlug}
+	GROUP BY CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`;
+
+	return result as {
 		count: number;
 		type: string;
 	}[];

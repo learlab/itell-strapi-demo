@@ -11,6 +11,7 @@ type Props = {
 
 const FeedbackBody = ({ feedback }: Props) => {
 	const keyphrases = new Set(feedback.suggestedKeyphrases);
+	console.log(feedback.promptDetails);
 
 	return (
 		<div className="font-light leading-relaxed space-y-2">
@@ -29,7 +30,7 @@ const FeedbackBody = ({ feedback }: Props) => {
 					</ul>
 				</div>
 			)}
-			{feedback.promptDetails && (
+			{feedback.promptDetails && feedback.promptDetails.length > 0 && (
 				<Accordion value="first">
 					<AccordionItem
 						value="first"

@@ -335,9 +335,8 @@ export const SummaryForm = ({
 					}
 				}
 			} else {
-				const summaryResponse = simpleSummaryResponse();
-				dispatch({ type: "scored", payload: summaryResponse });
-				finishStage("Scoring");
+				summaryResponse = simpleSummaryResponse();
+				dispatch({ type: "set_passed", payload: true });
 			}
 
 			if (summaryResponse) {
@@ -354,7 +353,11 @@ export const SummaryForm = ({
 
 				const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
 
-				if (summaryResponse.is_passed || isEnoughSummary) {
+				if (
+					summaryResponse.is_passed ||
+					isEnoughSummary ||
+					!isFeedbackEnabled
+				) {
 					await incrementUserPage(userId, pageSlug);
 					dispatch({
 						type: "finish",

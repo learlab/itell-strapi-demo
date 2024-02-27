@@ -7,22 +7,23 @@ import {
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-type State = {
-	notes: NoteCard[]; // only the newly created notes
-	highlights: Highlight[]; // only the newly created highlights
-};
+interface Props {
+	notes: NoteCard[];
+	highlightCount: number;
+}
 
-type Actions = {
+interface State extends Props {
 	createNote: (note: CreateNoteInput, theme?: string) => void;
 	updateNote: (note: UpdateNoteInput) => void;
 	deleteNote: (id: string) => void;
-	deleteHighlight: (id: string) => void;
-};
+	addHighlight: () => void;
+	removeHighlight: () => void;
+}
 
 export const useNotesStore = create(
-	immer<State & Actions>((set) => ({
+	immer<State>((set) => ({
 		notes: [],
-		highlights: [],
+		highlightCount: 0,
 		createNote: ({ id, y, highlightedText, color, range }) =>
 			set((state) => {
 				state.notes.push({
@@ -48,12 +49,13 @@ export const useNotesStore = create(
 					state.notes.splice(index, 1);
 				}
 			}),
-		deleteHighlight: (id) =>
+		addHighlight: () =>
 			set((state) => {
-				const index = state.highlights.findIndex((h) => h.id === id);
-				if (index !== -1) {
-					state.highlights.splice(index, 1);
-				}
+				state.highlightCount++;
+			}),
+		removeHighlight: () =>
+			set((state) => {
+				state.highlightCount--;
 			}),
 	})),
 );

@@ -1,7 +1,7 @@
 "use client";
 
 import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
-
+import { useNotesStore } from "@/lib/store/note";
 import { createNoteElements, deserializeRange } from "@itell/core/note";
 import React from "react";
 import { useEffect } from "react";
@@ -20,7 +20,9 @@ export const Highlight = React.memo(({ id, color, range }: Props) => {
 				color,
 				isHighlight: true,
 			});
-			createHighlightListeners(id, deleteHighlightListener);
+			createHighlightListeners(id, (event) => {
+				deleteHighlightListener(event);
+			});
 		} catch (err) {
 			console.error("create highlight error", err);
 		}

@@ -2,7 +2,7 @@ import { ChatbotLoader } from "@/components/chat/chatbot-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
 import { ModuleToc } from "@/components/module-toc";
-import { NoteCount } from "@/components/note/note-count";
+import { NoteCountLoader } from "@/components/note/note-count-loader";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { PageStatus } from "@/components/page-status/page-status";
@@ -100,9 +100,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<PageToc headings={page.headings} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus status={pageStatus} />
-							<Suspense fallback={<NoteCount.Skeleton />}>
-								<NoteCount user={sessionUser} pageSlug={pageSlug} />
-							</Suspense>
+							{sessionUser ? (
+								<Suspense fallback={<NoteCountLoader.Skeleton />}>
+									<NoteCountLoader pageSlug={pageSlug} />
+								</Suspense>
+							) : null}
 						</div>
 					</div>
 					<Suspense

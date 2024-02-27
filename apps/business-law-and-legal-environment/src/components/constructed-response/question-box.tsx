@@ -302,7 +302,7 @@ export const QuestionBox = ({
 				/>
 
 				<CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
-					<CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
+					<CardDescription className="question-box-text flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
 						{" "}
 						<AlertTriangle className="stroke-yellow-400 mr-4" /> iTELL AI is in
 						alpha testing. It will try its best to help you but it can still
@@ -324,7 +324,7 @@ export const QuestionBox = ({
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
 					{answerStatus === AnswerStatus.BOTH_INCORRECT && (
 						<div className="text-xs">
-							<p className="text-red-400 question-box-text">
+							<p className="question-box-text text-red-400">
 								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
 								Please try again.
 							</p>
@@ -360,8 +360,8 @@ export const QuestionBox = ({
 						</div>
 					) : (
 						question && (
-							<p>
-								<b>Question:</b> {question}
+							<p className="question-box-text">
+								<span className="font-semibold">Question: </span> {question}
 							</p>
 						)
 					)}

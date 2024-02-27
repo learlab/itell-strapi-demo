@@ -1,15 +1,17 @@
 import {
-	removeHighlights,
-	getHighlightId,
 	getElementsByNoteId,
+	getHighlightId,
+	removeHighlights,
 } from "@itell/core/note";
 import { deleteNote } from "./server-actions";
+import { useNotesStore } from "./store/note";
 
-export const deleteHighlightListener = (event: Event) => {
+export const deleteHighlightListener = async (event: Event) => {
 	event.preventDefault();
 	const el = event.currentTarget as HTMLSpanElement;
 	if (confirm("Delete this highlight?")) {
 		const id = getHighlightId(el);
+
 		if (id) {
 			removeHighlights(id);
 			deleteNote(id);

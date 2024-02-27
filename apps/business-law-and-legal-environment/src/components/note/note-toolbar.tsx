@@ -28,14 +28,15 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
 	const { data: session } = useSession();
-	const { createNote: createContextNote } = useNotesStore();
+	const { createContextNote, addHighlight } = useNotesStore((selector) => ({
+		createContextNote: selector.createNote,
+		addHighlight: selector.addHighlight,
+	}));
 
 	const handleClick = (event: Event) => {
 		if (event.target instanceof HTMLElement) {
 			if (
 				event.target.tagName === "SPAN" ||
-				event.target.classList.contains("cm-line") ||
-				event.target.classList.contains("cm-editor") ||
 				event.target.classList.contains("question-box-text")
 			) {
 				setShow(false);
@@ -105,6 +106,8 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						isHighlight: true,
 					});
 
+					addHighlight();
+
 					if (selection?.empty) {
 						// Chrome
 						selection?.empty();
@@ -142,12 +145,13 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 		},
 	];
 
-	if (!target || !show) return null;
+	if (!target) return null;
 
 	return (
 		<Popover
 			target={target as HTMLElement}
 			render={(data) => {
+				if (!show) return null;
 				const { clientRect, isCollapsed } = data;
 				if (clientRect == null || isCollapsed) return null;
 
