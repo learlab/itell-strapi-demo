@@ -65,18 +65,12 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
-			<div className="flex flex-row justify-end max-w-[1440px] mx-auto gap-6 px-2">
-				<aside
-					className="module-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
-					style={{ flexGrow: 1 }}
-				>
-					<ModuleToc page={page} />
+			<div className="flex flex-row justify-end max-w-[1440px] gap-6 px-2">
+				<aside className="module-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200 md:w-36 w-48">
+					<ModuleToc page={page} userPageSlug={user?.pageSlug} />
 				</aside>
 
-				<section
-					className="page-content relative max-w-[850px]"
-					style={{ flexGrow: 4 }}
-				>
+				<section className="page-content relative max-w-[850px] flex-1">
 					<PageTitle>
 						{page.title}
 						{isPageLatest ? (
@@ -92,10 +86,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 				</section>
 
-				<aside
-					className="toc-sidebar relative animate-out ease-in-out duration-200"
-					style={{ flexGrow: 1 }}
-				>
+				<aside className="toc-sidebar relative animate-out ease-in-out duration-200 md:40 w-48">
 					<div className="sticky top-20">
 						<PageToc headings={page.headings} />
 						<div className="mt-8 flex flex-col gap-1">

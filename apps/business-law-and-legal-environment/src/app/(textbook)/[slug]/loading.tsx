@@ -25,17 +25,11 @@ export default async function () {
 
 	return (
 		<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
-			<aside
-				className="module-sidebar sticky top-20 h-fit z-20 basis-0"
-				style={{ flexGrow: 1 }}
-			>
-				<ModuleToc page={page} />
+			<aside className="module-sidebar sticky top-20 h-fit z-20 basis-0 md:w-36 w-48">
+				<ModuleToc page={page} userPageSlug={page.page_slug} />
 			</aside>
 
-			<section
-				className="page-content relative space-y-4"
-				style={{ flexGrow: 4 }}
-			>
+			<section className="page-content relative space-y-4 max-w-[850px] flex-1">
 				<PageTitle>{page.title}</PageTitle>
 
 				{arr.map((i) => (
@@ -43,7 +37,7 @@ export default async function () {
 				))}
 			</section>
 
-			<aside className="toc-sidebar relative" style={{ flexGrow: 1 }}>
+			<aside className="toc-sidebar relative md:40 w-48">
 				<p className="font-medium text-sm flex items-center">
 					<span>ON THIS PAGE</span>
 					<BookmarkIcon className="ml-2 size-4" />

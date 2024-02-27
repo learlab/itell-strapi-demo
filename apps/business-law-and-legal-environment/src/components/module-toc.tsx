@@ -23,8 +23,13 @@ const AnchorLink = ({
 	);
 };
 
-export const ModuleToc = ({ page }: { page: Page }) => {
-	const chapters = getModuleChapters(page.location.module);
+type Props = {
+	page: Page;
+	userPageSlug: string | null | undefined;
+};
+
+export const ModuleToc = ({ page, userPageSlug }: Props) => {
+	const chapters = getModuleChapters(page.location.module, userPageSlug);
 
 	return (
 		<>

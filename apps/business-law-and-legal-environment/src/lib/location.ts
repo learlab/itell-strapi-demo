@@ -39,6 +39,12 @@ export const isPageUnlockedWithoutUser = (slug: string) => {
 	return slug === "introduction-to-law-and-legal-systems";
 };
 
+export const isPageVisibleWithoutUser = (slug: string) => {
+	return (
+		slug === "introduction-to-law-and-legal-systems" || slug === "what-is-law"
+	);
+};
+
 export const isPageAfter = (a: string | null, b: string | null) => {
 	const aIndex = allPagesSorted.findIndex((s) => s.page_slug === a);
 	const bIndex = allPagesSorted.findIndex((s) => s.page_slug === b);

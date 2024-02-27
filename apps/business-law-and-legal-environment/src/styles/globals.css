@@ -63,11 +63,13 @@ svg {
   max-width: 350px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .module-sidebar {
     display: none;
   }
+}
 
+@media (max-width: 768px) {
   .toc-sidebar {
     display: none;
   }

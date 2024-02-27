@@ -1,16 +1,16 @@
 "use client";
 
-import { ActivePage, Chapter, SidebarSection } from "@/types/section";
+import { ActivePage, Chapter } from "@/types/section";
 import { cn } from "@itell/core/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
+	Button,
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "./client-components";
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { makePageHref } from "@/lib/utils";
 
 type ModuleSidebarProps = {
 	chapters: Chapter[];
@@ -31,24 +31,27 @@ export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
 			{chapters.map((chapter) => (
 				<Collapsible
 					key={chapter.chapter}
-					open={chapter.chapter === activePage.chapter}
+					defaultOpen={chapter.chapter === activePage.chapter}
 					className="list-none"
 				>
-					<CollapsibleTrigger className="px-1 gap-0">
-						<div
-							className={cn("relative hover:bg-accent rounded-md mb-2", {
-								"bg-accent": chapter.chapter === activePage.chapter,
-							})}
+					<CollapsibleTrigger asChild>
+						<Button
+							variant="ghost"
+							className={cn(
+								"p-2 block w-full leading-relaxed text-pretty text-left h-fit text-[1.08rem] mb-2",
+								{
+									"bg-accent": chapter.chapter === activePage.chapter,
+								},
+							)}
+							disabled={!chapter.visible}
 						>
-							<Link href={chapter.url} className="block mb-1 p-1">
-								<h5 className="font-semibold leading-relaxed text-pretty">
-									{chapter.title}
-								</h5>
+							<Link href={chapter.url}>
+								{chapter.title} {chapter.visible ? "" : "🔒"}
 							</Link>
-						</div>
+						</Button>
 					</CollapsibleTrigger>
 
-					<CollapsibleContent>
+					<CollapsibleContent className="space-y-2">
 						{chapter.sections.map((section, index) => (
 							<li
 								className={cn(
@@ -59,8 +62,9 @@ export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
 								)}
 								key={section.url}
 							>
-								<button
-									type="button"
+								<Button
+									variant={"ghost"}
+									disabled={!section.visible}
 									onClick={() =>
 										navigatePage({
 											chapter: chapter.chapter,
@@ -68,11 +72,11 @@ export function ModuleSidebar({ chapters, currentPage }: ModuleSidebarProps) {
 											url: section.url,
 										})
 									}
+									className="p-0 block text-left font-light text-pretty h-fit"
 								>
-									<p className="text-sm font-light text-left text-pretty">
-										{`${index + 1}. ${section.title}`}
-									</p>
-								</button>
+									{`${index + 1}. ${section.title}`}{" "}
+									{section.visible ? "" : "🔒"}
+								</Button>
 							</li>
 						))}
 					</CollapsibleContent>

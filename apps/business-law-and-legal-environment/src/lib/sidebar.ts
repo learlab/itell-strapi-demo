@@ -1,9 +1,17 @@
 import { Chapter, SidebarSection } from "@/types/section";
-import { sortSections } from "./utils";
 import { groupby } from "@itell/core/utils";
+import {
+	isPageAfter,
+	isPageUnlockedWithoutUser,
+	isPageVisibleWithoutUser,
+} from "./location";
 import { allPagesSorted } from "./pages";
+import { sortSections } from "./utils";
 
-export const getModuleChapters = (module: number) => {
+export const getModuleChapters = (
+	module: number,
+	userPageSlug: string | null | undefined,
+) => {
 	const sections: SidebarSection[] = allPagesSorted
 		.filter((section) => section.location.module === module)
 		.map((section) => ({
@@ -13,6 +21,9 @@ export const getModuleChapters = (module: number) => {
 			url: section.url,
 			chapter: section.location.chapter,
 			section: section.location.section,
+			visible: userPageSlug
+				? !isPageAfter(section.page_slug, userPageSlug)
+				: isPageVisibleWithoutUser(section.page_slug),
 		}));
 
 	const sectionsSorted = sortSections(sections);
@@ -24,6 +35,7 @@ export const getModuleChapters = (module: number) => {
 			chapter: Number(key),
 			title: value[0].title,
 			url: value[0].url,
+			visible: value[0].visible,
 			sections: value.splice(1),
 		});
 	}
