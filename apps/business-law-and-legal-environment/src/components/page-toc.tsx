@@ -18,7 +18,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				<BookmarkIcon className="ml-2 size-4" />
 			</p>
 
-			<ol className="max-h-[60vh] overflow-y-scroll list-disc mt-2 space-y-2 pl-4">
+			<ol className="max-h-[60vh] mt-2 space-y-2 font-light leading-relaxed">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
@@ -28,10 +28,10 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 								href={`#${heading.slug}`}
 								className={cn("hover:underline inline-flex ", {
 									"text-base": heading.level === "two",
-									"text-sm pl-1": heading.level === "three",
-									"text-xs pl-2 text-muted-foreground":
+									"text-sm pl-2": heading.level === "three",
+									"text-xs pl-4 text-muted-foreground":
 										heading.level === "four",
-									"text-muted-foreground text-xs pl-4":
+									"text-muted-foreground text-xs pl-6":
 										heading.level === "other",
 								})}
 							>
