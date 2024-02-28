@@ -5,7 +5,7 @@ import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
 import { getCurrentUser } from "@/lib/auth";
-import { getUser } from "@/lib/user";
+import { getUser, isTeacher } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";

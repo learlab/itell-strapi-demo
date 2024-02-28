@@ -1,6 +1,7 @@
 import { DashboardNav } from "@/components/nav/dashboard-nav";
 import { DashboardSidebar } from "@/components/nav/dashboard-sidebar";
 import { dashboardConfig } from "@/config/dashboard";
+import { Suspense } from "react";
 
 export default async function DashboardLayout({
 	children,
@@ -16,7 +17,9 @@ export default async function DashboardLayout({
 			</header>
 			<div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
 				<aside className="hidden w-[200px] flex-col md:flex">
-					<DashboardSidebar items={dashboardConfig.sidebarNav} />
+					<Suspense fallback={<DashboardSidebar.Skeleton />}>
+						<DashboardSidebar />
+					</Suspense>
 				</aside>
 				<main className="flex flex-col">{children}</main>
 			</div>
