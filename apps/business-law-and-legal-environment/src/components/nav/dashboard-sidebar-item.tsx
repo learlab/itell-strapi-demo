@@ -5,7 +5,6 @@ import { cn } from "@itell/core/utils";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 type Props = {
 	item: SidebarNavItem;
 };

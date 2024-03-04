@@ -55,7 +55,8 @@ svg {
 .driver-active .toc-sidebar,
 .driver-active .module-sidebar,
 .driver-active #site-nav,
-.driver-active .question-container {
+.driver-active .question-container,
+.driver-active .chatbot {
   display: none;
 }
 
