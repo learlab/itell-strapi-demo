@@ -1,11 +1,12 @@
-import { numOfWords } from "@/utils";
 import offensiveWords from "@/assets/offensive-words.json";
+import { numOfWords } from "@/utils";
 
 export enum ErrorType {
 	LANGUAGE_NOT_EN = "LANGUAGE_NOT_EN",
 	WORD_COUNT = "WORD_COUNT",
 	OFFENSIVE = "OFFENSIVE",
 	INTERNAL = "INTERNAL",
+	DUPLICATE = "DUPLICATE",
 }
 
 export const ErrorFeedback: Record<ErrorType, string> = {
@@ -14,12 +15,11 @@ export const ErrorFeedback: Record<ErrorType, string> = {
 	[ErrorType.OFFENSIVE]:
 		"Your summary includes inoffensive language. Please remove the offensive language and resubmit.",
 	[ErrorType.INTERNAL]:
-		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com if the problem persists",
+		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com if the problem persists.",
+	[ErrorType.DUPLICATE]: "Please revise your summary before submission.",
 };
 
-export const validateSummary = (
-	input: string,
-): ErrorType | null => {
+export const validateSummary = (input: string): ErrorType | null => {
 	const wordCount = numOfWords(input);
 
 	// check word count

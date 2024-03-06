@@ -1,6 +1,5 @@
 import {
 	ReactNode,
-	ReactPortal,
 	RefObject,
 	useEffect,
 	useLayoutEffect,

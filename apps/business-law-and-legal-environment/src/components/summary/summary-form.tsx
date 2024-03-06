@@ -64,6 +64,7 @@ type ChunkQuestion = {
 };
 
 type State = {
+	prevInput: string;
 	pending: boolean;
 	isPassed: boolean;
 	error: ErrorType | null;
@@ -79,17 +80,8 @@ type Action =
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "ask"; payload: ChunkQuestion }
 	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } }
-	| { type: "set_passed"; payload: boolean };
-
-const initialState: State = {
-	pending: false,
-	error: null,
-	response: null,
-	chunkQuestion: null,
-	isPassed: false,
-	canProceed: false,
-	showQuiz: false,
-};
+	| { type: "set_passed"; payload: boolean }
+	| { type: "set_prev_input"; payload: string };
 
 const driverObj = driver();
 
@@ -131,6 +123,17 @@ export const SummaryForm = ({
 	pageStatus,
 	isAdmin,
 }: Props) => {
+	const initialState: State = {
+		prevInput: "",
+		pending: false,
+		error: null,
+		response: null,
+		chunkQuestion: null,
+		isPassed: false,
+		canProceed: false,
+		showQuiz: false,
+	};
+
 	const pageSlug = page.page_slug;
 	const isPageFinished = useConstructedResponse(
 		(state) => state.isPageFinished,
@@ -154,9 +157,11 @@ export const SummaryForm = ({
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
+			case "set_prev_input":
+				draft.prevInput = action.payload;
+				break;
 			case "submit":
 				draft.pending = true;
-				draft.error = null;
 				draft.response = null;
 				draft.chunkQuestion = null;
 				break;
@@ -167,6 +172,7 @@ export const SummaryForm = ({
 				break;
 			case "scored":
 				draft.response = action.payload;
+				draft.error = null;
 				break;
 			case "set_passed":
 				draft.isPassed = action.payload;
@@ -216,7 +222,14 @@ export const SummaryForm = ({
 		addStage("Scoring");
 
 		const formData = new FormData(e.currentTarget);
-		const input = (formData.get("input") as string).replaceAll("\u0000", "");
+		const input = String(formData.get("input")).replaceAll("\u0000", "");
+		if (input === state.prevInput) {
+			dispatch({ type: "fail", payload: ErrorType.DUPLICATE });
+			return;
+		}
+
+		dispatch({ type: "set_prev_input", payload: input });
+
 		const userId = user.id;
 		localStorage.setItem(makeInputKey(pageSlug), input);
 
@@ -378,25 +391,27 @@ export const SummaryForm = ({
 			});
 		}
 
-		if (state.canProceed && !state.showQuiz) {
-			const title = isFeedbackEnabled
-				? feedback?.isPassed
-					? "Good job summarizing 🎉"
-					: "You can now move on 👏"
-				: "Your summary is accepted";
-			toast(title, {
-				className: "toast",
-				description: "Move to the next page to continue reading",
-				duration: 5000,
-				action: page.nextPageSlug
-					? {
-							label: "Proceed",
-							onClick: () => {
-								router.push(makePageHref(page.nextPageSlug as string));
-							},
-					  }
-					: undefined,
-			});
+		if (!state.error) {
+			if (state.canProceed && !state.showQuiz) {
+				const title = isFeedbackEnabled
+					? feedback?.isPassed
+						? "Good job summarizing 🎉"
+						: "You can now move on 👏"
+					: "Your summary is accepted";
+				toast(title, {
+					className: "toast",
+					description: "Move to the next page to continue reading",
+					duration: 5000,
+					action: page.nextPageSlug
+						? {
+								label: "Proceed",
+								onClick: () => {
+									router.push(makePageHref(page.nextPageSlug as string));
+								},
+						  }
+						: undefined,
+				});
+			}
 		}
 	}, [state]);
 
