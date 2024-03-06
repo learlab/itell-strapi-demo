@@ -8,7 +8,7 @@ export const isPageWithFeedback = (user: Session["user"], page: Page) => {
 		return module === 1;
 	}
 
-	if (module === "two") {
+	if (userClass === "two") {
 		return module === 2;
 	}
 
