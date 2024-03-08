@@ -23,3 +23,23 @@ export const OutlookLoginButton = CreateLoginButton({
 	),
 	title: "Outlook",
 });
+
+export const GoogleLoginButton = CreateLoginButton({
+	action: async () => {
+		try {
+			await signIn("google");
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	icon: (
+		<Image
+			alt="Google"
+			src="/icons/google.png"
+			width={18}
+			height={16}
+			className="mr-2"
+		/>
+	),
+	title: "Google",
+});

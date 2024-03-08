@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { Spinner } from "../spinner";
-import { OutlookLoginButton } from "./login-buttons";
+import {GoogleLoginButton, OutlookLoginButton} from "./login-buttons";
 
 export const AuthForm = () => {
 	const searchParams = useSearchParams();
@@ -43,7 +43,7 @@ export const AuthForm = () => {
 				</div>
 			</div>
 			<div className="flex flex-col gap-2">
-				<OutlookLoginButton />
+				<GoogleLoginButton />
 			</div>
 			{pending && (
 				<div className="flex flex-row gap-1 items-center justify-center">
