@@ -27,7 +27,9 @@ export const OutlookLoginButton = CreateLoginButton({
 export const GoogleLoginButton = CreateLoginButton({
 	action: async () => {
 		try {
-			await signIn("google");
+			await signIn("google", {
+				callbackUrl: "/",
+			});
 		} catch (error) {
 			console.log(error);
 		}
