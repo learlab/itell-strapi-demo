@@ -30,6 +30,7 @@ export const GoogleLoginButton = CreateLoginButton({
 			await signIn("google", {
 				callbackUrl: "/",
 			});
+			console.log("Signed in");
 		} catch (error) {
 			console.log(error);
 		}

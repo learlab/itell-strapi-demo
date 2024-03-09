@@ -2,7 +2,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import { getServerSession as getServerSessionNext } from "next-auth/next";
-import AzureADProvider from "next-auth/providers/azure-ad";
 import GoogleProvider from "next-auth/providers/google";
 
 import { env } from "@/env.mjs";
@@ -13,17 +12,10 @@ export const authOptions: NextAuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
 		GoogleProvider({
-			id: "azure-ad",
-			name: "Azure AD",
+			id: "google",
+			name: "google",
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
-			authorization: {
-				params: {
-					prompt: "consent",
-					access_type: "offline",
-					response_type: "code",
-				},
-			},
 		}),
 	],
 	callbacks: {
