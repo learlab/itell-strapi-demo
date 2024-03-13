@@ -10,22 +10,20 @@ export const QuestionSchema = z.object({
 export type Question = z.infer<typeof QuestionSchema>;
 export type SelectedQuestions = Map<string, Question>;
 
-const PageQuestionsSchema = z
-	.object({
-		data: z.array(
-			z.object({
-				attributes: z.object({
-					Content: z.array(
-						z.object({
-							Slug: z.string(),
-							QuestionAnswerResponse: z.string().optional(),
-						}),
-					),
-				}),
+const PageQuestionsSchema = z.object({
+	data: z.array(
+		z.object({
+			attributes: z.object({
+				Content: z.array(
+					z.object({
+						Slug: z.string(),
+						QuestionAnswerResponse: z.string().nullable(),
+					}),
+				),
 			}),
-		),
-	})
-	.nonstrict();
+		}),
+	),
+});
 
 export const getPageQuestions = async (pageSlug: string) => {
 	const q = qs.stringify({
