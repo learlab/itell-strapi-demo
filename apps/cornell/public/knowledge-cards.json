@@ -1,12 +1,12 @@
 [
-    {
-        "text": "In a nation, the law can serve to (1) keep the peace, (2) maintain the status quo, (3) preserve individual rights, (4) protect minorities against majorities, (5) promote social justice, and (6) provide for orderly social change.",
-        "source": "What is Law",
-        "href": "/what-is-law"
-    },
-    {
-        "text": "The law does not correct (or claim to correct) every wrong that occurs in society. At a minimum, it aims to curb the worst kind of wrongs, the kinds of wrongs that violate what might be called the “moral minimums” that a community demands of its members.",
-        "source": "Basic Concepts and Categories of US Positive Law",
-        "href": "/basic-concepts-and-categories-of-us-positive-law"
-    }
+	{
+		"text": "Four descriptions of learning analytics guide the field. Siemens [14] described learning analytics as “the use of intelligent data, learner-produced data, and analysis models to discover information and social connections, and to predict and advise on learning.",
+		"source": "Learning Analytics for Self-Regulated Learning",
+		"href": "/learning-analytics-for-self-regulated-learning"
+	},
+	{
+		"text": "Emotions are conceptual or experienced entities arising from brain–body–environment interactions. However, you won’t find them by looking in the brain, body, or environment.",
+		"source": "Emotional Learning Analytics",
+		"href": "/emotional"
+	}
 ]

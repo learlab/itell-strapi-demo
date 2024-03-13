@@ -3,8 +3,9 @@ import { SummaryList } from "@/components/dashboard/summary-list";
 import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
 import db from "@/lib/db";
-import { allPagesSorted } from "@/lib/pages";
+import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUser } from "@/lib/user";
+import { makePageHref } from "@/lib/utils";
 import { groupby } from "@itell/core/utils";
 import { User } from "@prisma/client";
 import { Page } from "contentlayer/generated";
@@ -40,8 +41,11 @@ export default async function () {
 				/>
 				<p className="p-2">
 					You have not made any summary yet. Start with{" "}
-					<Link href="/what-is-law" className="underline font-medium">
-						What is Law
+					<Link
+						href={makePageHref(firstPage.page_slug)}
+						className="underline font-medium"
+					>
+						{firstPage.title}
 					</Link>
 					!
 				</p>

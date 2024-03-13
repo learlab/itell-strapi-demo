@@ -12,10 +12,7 @@ const AnchorLink = ({
 }: { text: string; href: string; icon: React.ReactNode }) => {
 	return (
 		<a href={href} className="block">
-			<Button
-				variant="ghost"
-				className="flex flex-wrap justify-start items-center gap-2 pl-0"
-			>
+			<Button variant="ghost" className="flex items-center gap-2 pl-0">
 				{icon}
 				{text}
 			</Button>

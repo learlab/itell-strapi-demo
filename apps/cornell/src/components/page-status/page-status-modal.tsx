@@ -1,8 +1,8 @@
-import { User } from "@prisma/client";
-import { PageUnauthorizedModal } from "./page-unauthorized-modal";
-import { PageLockedModal } from "./page-locked-modal";
 import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
 import { PageStatus } from "@/lib/page-status";
+import { User } from "@prisma/client";
+import { PageLockedModal } from "./page-locked-modal";
+import { PageUnauthorizedModal } from "./page-unauthorized-modal";
 
 type Props = {
 	user: User | null;

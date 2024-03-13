@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -8,10 +7,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import Link from "next/link";
-import { Button } from "../client-components";
 import { isProduction } from "@/lib/constants";
+import { firstPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "../client-components";
 
 type Props = {
 	userPageSlug: string | null;
@@ -19,7 +20,8 @@ type Props = {
 
 export const PageLockedModal = ({ userPageSlug }: Props) => {
 	const [open, setOpen] = useState(true);
-	const href = makePageHref(userPageSlug || "what-is-law");
+	const href = makePageHref(userPageSlug || firstPage.page_slug);
+	console.log(href);
 	return (
 		<Dialog
 			open={open}

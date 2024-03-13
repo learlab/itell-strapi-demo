@@ -1,4 +1,4 @@
-import { allPagesSorted } from "./pages";
+import { allPagesSorted, firstPage } from "./pages";
 
 // returns the slug for the new section
 export const nextPage = (slug: string): string => {
@@ -36,7 +36,7 @@ export const nextPage = (slug: string): string => {
 };
 
 export const isPageUnlockedWithoutUser = (slug: string) => {
-	return slug === "introduction-to-law-and-legal-systems";
+	return slug === firstPage.page_slug;
 };
 
 export const isPageAfter = (a: string | null, b: string | null) => {
