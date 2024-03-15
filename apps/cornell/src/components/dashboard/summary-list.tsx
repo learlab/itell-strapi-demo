@@ -22,11 +22,11 @@ const SelectChapter = ({
 	return (
 		<Select {...rest}>
 			<SelectTrigger className="w-[180px]">
-				<SelectValue placeholder="Module" />
+				<SelectValue placeholder="Chapter" />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
-					<SelectLabel>Select a Module</SelectLabel>
+					<SelectLabel>Select a chapter</SelectLabel>
 					{chapters.map((c) => (
 						<SelectItem key={c} value={c}>
 							Chapter {c}

@@ -26,7 +26,7 @@ export default async function () {
 	return (
 		<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
 			<aside
-				className="module-sidebar sticky top-20 h-fit z-20 basis-0"
+				className="chapter-sidebar sticky top-20 h-fit z-20 basis-0"
 				style={{ flexGrow: 1 }}
 			>
 				<ChapterToc currentPage={page} userPageSlug={firstPage.page_slug} />

@@ -1,4 +1,3 @@
-import { Location } from "@/types/location";
 import { SidebarSection } from "@/types/section";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
@@ -12,23 +11,6 @@ export const getYoutubeLinkFromEmbed = (url: string) => {
 	}
 
 	return url;
-};
-
-const getSingleLocation = (s: string | undefined) => {
-	if (!s) return undefined;
-	const [_, number] = s.split("-");
-	return number ? Number(number) : undefined;
-};
-export const getLocationFromPathname = (path: string): Location => {
-	const pathname = path.split("/");
-
-	const module = getSingleLocation(pathname[1]);
-	const chapter = getSingleLocation(pathname[2]);
-	let section = getSingleLocation(pathname[3]);
-	if (module && chapter && !section) {
-		section = 0;
-	}
-	return { module, chapter, section };
 };
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

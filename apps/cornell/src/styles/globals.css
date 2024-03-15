@@ -53,7 +53,7 @@ svg {
 }
 
 .driver-active .toc-sidebar,
-.driver-active .module-sidebar,
+.driver-active .chapter-sidebar,
 .driver-active #site-nav,
 .driver-active .question-container {
   display: none;
@@ -64,7 +64,7 @@ svg {
 }
 
 @media (max-width: 768px) {
-  .module-sidebar {
+  .chapter-sidebar {
     display: none;
   }
 

@@ -2,11 +2,7 @@ import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import {
-	getHeadingsFromRawBody,
-	getLocationFromFlattenedPath,
-	getSlugFromFlattenedPath,
-} from "./src/lib/contentlayer";
+import { getHeadingsFromRawBody } from "./src/lib/contentlayer";
 
 const Home = defineDocumentType(() => ({
 	name: "Home",

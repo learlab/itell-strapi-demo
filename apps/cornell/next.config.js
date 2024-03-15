@@ -15,33 +15,7 @@ const nextConfig = {
 		],
 	},
 	redirects: async () => {
-		return [
-			{
-				source: "/module-1",
-				destination: "/module-1/chapter-1",
-				permanent: true,
-			},
-			{
-				source: "/module-2",
-				destination: "/module-2/chapter-5",
-				permanent: true,
-			},
-			{
-				source: "/module-3",
-				destination: "/module-3/chapter-9",
-				permanent: true,
-			},
-			{
-				source: "/module-4",
-				destination: "/module-4/chapter-13",
-				permanent: true,
-			},
-			{
-				source: "/module-5",
-				destination: "/module-5/chapter-17",
-				permanent: true,
-			},
-		];
+		return [];
 	},
 	eslint: {
 		ignoreDuringBuilds: true,
