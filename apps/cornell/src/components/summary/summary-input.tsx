@@ -1,13 +1,14 @@
 "use client";
 
-import { TextArea } from "@/components/client-components";
 import { isProduction } from "@/lib/constants";
+import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { StageItem, SummaryProgress } from "./summary-progress";
+import { useConfig } from "../provider/page-provider";
+import { SummaryProgress } from "./summary-progress";
 
 type Props = {
 	pageSlug: string;
@@ -15,7 +16,6 @@ type Props = {
 	pending: boolean;
 	value?: string;
 	disabled?: boolean;
-	isAdmin?: boolean;
 };
 
 export const SummaryInput = ({
@@ -24,8 +24,8 @@ export const SummaryInput = ({
 	disabled = true,
 	value = "",
 	pending,
-	isAdmin = false,
 }: Props) => {
+	const isAdmin = useConfig((state) => state.isAdmin);
 	const searchParams = useSearchParams();
 	const summaryToRevise = searchParams?.get("summary");
 	const text = summaryToRevise

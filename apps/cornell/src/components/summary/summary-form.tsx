@@ -2,6 +2,7 @@
 
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { isLastPage } from "@/lib/location";
 import { PageStatus } from "@/lib/page-status";
 import {
@@ -35,16 +36,15 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
-import { useConstructedResponse } from "../provider/page-provider";
+import { useConfig, useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
-import { StageItem } from "./summary-progress";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
@@ -54,7 +54,6 @@ type Props = {
 	hasQuiz: boolean;
 	isFeedbackEnabled: boolean;
 	pageStatus: PageStatus;
-	isAdmin?: boolean;
 };
 
 type ChunkQuestion = {
@@ -115,89 +114,21 @@ export const SummaryForm = ({
 	hasQuiz,
 	isFeedbackEnabled,
 	pageStatus,
-	isAdmin,
 }: Props) => {
 	const pageSlug = page.page_slug;
+	const mounted = useRef(false);
+	const feedbackType = useConfig((state) => state.feedbackType);
+
 	const { chunkQuestionAnswered, addChunkQuestion, messages } = useChatStore(
 		(state) => ({
 			chunkQuestionAnswered: state.chunkQuestionAnswered,
-			addChunkQuestion: state.addChunkQuestion,
+			addChunkQuestion: state.addChunkQuestionStairs,
 			messages: state.messages,
 		}),
 	);
 	const excludedChunks = useConstructedResponse(
 		(state) => state.excludedChunks,
 	);
-	const { nodes: portalNodes, addNode } = usePortal();
-
-	useMemo(() => {
-		driverObj.setConfig({
-			smoothScroll: false,
-			onPopoverRender: (popover) => {
-				addNode(
-					<ChatbotChunkQuestion
-						user={user}
-						pageSlug={pageSlug}
-						onExit={exitQuestion}
-					/>,
-					popover.wrapper,
-				);
-			},
-			onDestroyStarted: () => {
-				if (!chunkQuestionAnswered) {
-					return toast.warning("Please answer the question to continue");
-				}
-
-				exitQuestion();
-			},
-		});
-	}, [chunkQuestionAnswered]);
-
-	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
-		const el = getChunkElement(chunkQuestion.chunk);
-		if (el) {
-			addChunkQuestion(chunkQuestion.text);
-
-			scrollToElement(el);
-
-			setTimeout(() => {
-				driverObj.highlight({
-					element: el,
-					popover: {
-						description:
-							"Please re-read and highlighted paragraph. After re-reading, you will be asked a question to assess your understanding.",
-						side: "left",
-						align: "start",
-					},
-				});
-			}, 1000);
-		}
-	};
-
-	const router = useRouter();
-	const [stages, setStages] = useState<StageItem[]>([]);
-
-	const addStage = (name: Stage) => {
-		setStages((currentStages) => {
-			const newStage: StageItem = { name, status: "active" };
-			const oldStages = currentStages.slice();
-			oldStages.push(newStage);
-			return oldStages;
-		});
-	};
-
-	const finishStage = (name: Stage) => {
-		setStages((currentStages) => {
-			const newStage: StageItem = { name, status: "complete" };
-			const oldStages = currentStages.slice();
-			const index = oldStages.findIndex((s) => s.name === name);
-			if (index !== -1) {
-				oldStages[index] = newStage;
-			}
-			return oldStages;
-		});
-	};
-
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "set_prev_input":
@@ -231,12 +162,115 @@ export const SummaryForm = ({
 				break;
 		}
 	}, initialState);
-
+	const { nodes: portalNodes, addNode } = usePortal();
+	const router = useRouter();
+	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const feedback = state.response ? getFeedback(state.response) : null;
+
+	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
+		const el = getChunkElement(chunkQuestion.chunk);
+		if (el) {
+			scrollToElement(el);
+
+			setTimeout(() => {
+				driverObj.highlight({
+					element: el,
+					popover: {
+						description:
+							feedbackType === "stairs"
+								? "Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding."
+								: "Please re-read the highlighted section. when you are finished, press the 'return to summary button.",
+						side: "left",
+						align: "start",
+					},
+				});
+			}, 1000);
+		}
+	};
+
+	useEffect(() => {
+		driverObj.setConfig({
+			smoothScroll: false,
+			onPopoverRender: (popover) => {
+				if (feedbackType === "stairs") {
+					addNode(
+						<ChatbotChunkQuestion
+							user={user}
+							pageSlug={pageSlug}
+							onExit={exitQuestion}
+						/>,
+						popover.wrapper,
+					);
+				}
+
+				if (feedbackType === "simple") {
+					addNode(
+						<Button onClick={exitQuestion} size="sm" className="mt-4">
+							Return to summary
+						</Button>,
+						popover.wrapper,
+					);
+				}
+			},
+			onDestroyStarted: () => {
+				if (!chunkQuestionAnswered) {
+					return toast.warning("Please answer the question to continue");
+				}
+
+				exitQuestion();
+			},
+		});
+	}, [feedbackType]);
+
+	useEffect(() => {
+		if (state.chunkQuestion && !state.isPassed) {
+			goToQuestion(state.chunkQuestion);
+		}
+
+		if (state.showQuiz) {
+			toast("Good job 🎉", {
+				className: "toast",
+				description:
+					"Before moving on, please finish a short quiz to assess your understanding",
+				duration: 5000,
+				action: {
+					label: "Take quiz",
+					onClick: () => {
+						router.push(`${makePageHref(page.page_slug)}/quiz`);
+					},
+				},
+			});
+		}
+
+		if (state.canProceed && !state.showQuiz) {
+			const title = isFeedbackEnabled
+				? feedback?.isPassed
+					? "Good job summarizing 🎉"
+					: "You can now move on 👏"
+				: "Your summary is accepted";
+			toast(title, {
+				className: "toast",
+				description: "Move to the next page to continue reading",
+				duration: 5000,
+				action: page.nextPageSlug
+					? {
+							label: "Proceed",
+							onClick: () => {
+								router.push(makePageHref(page.nextPageSlug as string));
+							},
+					  }
+					: undefined,
+			});
+		}
+	}, [state]);
+
+	useEffect(() => {
+		mounted.current = true;
+	}, []);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setStages([]);
+		clearStages();
 
 		dispatch({ type: "submit" });
 		addStage("Scoring");
@@ -315,7 +349,7 @@ export const SummaryForm = ({
 								finishStage("Scoring");
 							} else {
 								console.log("SummaryResults parse error", parsed.error);
-								setStages([]);
+								clearStages();
 								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 								// summaryResponse parsing failed, return early
 								return;
@@ -340,6 +374,8 @@ export const SummaryForm = ({
 										chunkQuestionString,
 									) as ChunkQuestion;
 									finishStage("Analyzing");
+
+									addChunkQuestion(chunkQuestionData.text);
 								}
 							}
 						}
@@ -382,7 +418,7 @@ export const SummaryForm = ({
 			}
 		} catch (err) {
 			console.log("summary scoring error", err);
-			setStages([]);
+			clearStages();
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 		}
 	};
@@ -391,48 +427,6 @@ export const SummaryForm = ({
 		(state) => state.isPageFinished,
 	);
 	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
-
-	useEffect(() => {
-		if (state.chunkQuestion && !state.isPassed) {
-			goToQuestion(state.chunkQuestion);
-		}
-
-		if (state.showQuiz) {
-			toast("Good job 🎉", {
-				className: "toast",
-				description:
-					"Before moving on, please finish a short quiz to assess your understanding",
-				duration: 5000,
-				action: {
-					label: "Take quiz",
-					onClick: () => {
-						router.push(`${makePageHref(page.page_slug)}/quiz`);
-					},
-				},
-			});
-		}
-
-		if (state.canProceed && !state.showQuiz) {
-			const title = isFeedbackEnabled
-				? feedback?.isPassed
-					? "Good job summarizing 🎉"
-					: "You can now move on 👏"
-				: "Your summary is accepted";
-			toast(title, {
-				className: "toast",
-				description: "Move to the next page to continue reading",
-				duration: 5000,
-				action: page.nextPageSlug
-					? {
-							label: "Proceed",
-							onClick: () => {
-								router.push(makePageHref(page.nextPageSlug as string));
-							},
-					  }
-					: undefined,
-			});
-		}
-	}, [state]);
 
 	return (
 		<section className="space-y-2">
@@ -451,7 +445,7 @@ export const SummaryForm = ({
 						variant={"outline"}
 						onClick={() => goToQuestion(state.chunkQuestion as ChunkQuestion)}
 					>
-						See question
+						{feedbackType === "stairs" ? "See question" : "See re-read section"}
 					</Button>
 				)}
 			</div>
@@ -463,7 +457,6 @@ export const SummaryForm = ({
 				<SummaryInput
 					value={value}
 					disabled={editDisabled || state.pending}
-					isAdmin={isAdmin}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}

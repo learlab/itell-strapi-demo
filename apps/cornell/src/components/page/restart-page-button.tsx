@@ -8,14 +8,14 @@ import { Spinner } from "../spinner";
 
 export const RestartPageButton = () => {
 	const [pending, startTransition] = useTransition();
-	const reset = useConstructedResponse((state) => state.reset);
+	const resetPage = useConstructedResponse((state) => state.resetPage);
 	return (
 		<Button
 			className="flex items-center gap-2 pl-0"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
-					reset();
+					resetPage();
 					window.location.reload();
 				});
 			}}

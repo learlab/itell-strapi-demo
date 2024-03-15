@@ -21,7 +21,6 @@ export const PageSummary = async ({
 }: Props) => {
 	const user = await getCurrentUser();
 	const page = getPageData(pageSlug);
-	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	if (!page) {
 		return <p>No summary found</p>;
@@ -67,7 +66,6 @@ export const PageSummary = async ({
 						hasQuiz={page?.quiz}
 						isFeedbackEnabled={isFeedbackEnabled}
 						pageStatus={pageStatus}
-						isAdmin={isAdmin}
 					/>
 				</Fragment>
 			</section>

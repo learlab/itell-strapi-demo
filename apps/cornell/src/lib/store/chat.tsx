@@ -1,4 +1,4 @@
-import { ChunkQuestionReady } from "@/components/chat/chunk-question-ready";
+import { ChunkQuestionReadyStairs } from "@/components/chat/chunk-question-button";
 import { BotMessage, ChatHistory, Message } from "@itell/core/chatbot";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
@@ -24,7 +24,7 @@ interface ChatState extends ChatProps {
 	setActiveMessageId: (id: string | null) => void;
 
 	setChunkQuestionAnswered: (value: boolean) => void;
-	addChunkQuestion: (value: string) => void;
+	addChunkQuestionStairs: (value: string) => void;
 }
 
 const welcomeMessage: BotMessage = {
@@ -129,7 +129,7 @@ export const useChatStore = create(
 				state.chunkQuestionAnswered = value;
 			});
 		},
-		addChunkQuestion: (value) => {
+		addChunkQuestionStairs: (value) => {
 			set((state) => {
 				state.chunkQuestionText = value;
 				state.chunkQuestionMessages = [
@@ -137,7 +137,7 @@ export const useChatStore = create(
 						id: crypto.randomUUID(),
 						isUser: false,
 						Node: (
-							<ChunkQuestionReady
+							<ChunkQuestionReadyStairs
 								onClick={() => {
 									get().addBotMessageElement(() => (
 										<div className="space-y-2">

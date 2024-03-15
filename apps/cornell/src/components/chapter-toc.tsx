@@ -1,4 +1,5 @@
 "use client";
+
 import { isPageAfter } from "@/lib/location";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
@@ -7,8 +8,10 @@ import { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { AdminTools } from "./admin/admin-tools";
 import { Button } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
+import { useConfig } from "./provider/page-provider";
 
 const AnchorLink = ({
 	text,
@@ -29,12 +32,15 @@ const AnchorLink = ({
 	);
 };
 
-export const ChapterToc = ({
-	currentPage,
-	userPageSlug,
-}: { currentPage: Page; userPageSlug: string | null }) => {
+type Props = {
+	currentPage: Page;
+	userPageSlug: string | null;
+};
+
+export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 	const [activePage, setActivePage] = useState(currentPage.page_slug);
 	const [pending, startTransition] = useTransition();
+	const isAdmin = useConfig((state) => state.isAdmin);
 	const router = useRouter();
 
 	const navigatePage = (pageSlug: string) => {
@@ -90,6 +96,7 @@ export const ChapterToc = ({
 					text="Back to top"
 					href="#page-title"
 				/>
+				{isAdmin && <AdminTools />}
 			</div>
 		</>
 	);

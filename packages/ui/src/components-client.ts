@@ -23,3 +23,5 @@ export * from "./components/textarea";
 export * from "./components/radio";
 export * from "./components/checkbox";
 export * from "./components/login-button";
+export * from "./components/sheet";
+export * from "./components/switch";

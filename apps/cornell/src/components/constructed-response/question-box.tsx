@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
+import { GoogleLoginButton } from "../auth/login-buttons";
 import {
 	Button,
 	HoverCard,
@@ -144,6 +145,8 @@ export const QuestionBox = ({
 				});
 			}
 
+			// if answer is correct, mark chunk as finished
+			// this will add the chunk to the list of finished chunks that gets excluded from stairs question
 			if (score === 2) {
 				finishChunk(chunkSlug);
 
@@ -220,7 +223,8 @@ export const QuestionBox = ({
 	if (!session?.user) {
 		return (
 			<Warning>
-				You need to be logged in to view this question and move forward
+				<p>You need to be logged in to view this question and move forward</p>
+				<GoogleLoginButton />
 			</Warning>
 		);
 	}

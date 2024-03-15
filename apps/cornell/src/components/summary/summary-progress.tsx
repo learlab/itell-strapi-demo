@@ -1,4 +1,5 @@
 "use client";
+import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { cn } from "@itell/core/utils";
 import { motion } from "framer-motion";
 import React, { ComponentProps } from "react";
@@ -6,11 +7,6 @@ import { Spinner } from "../spinner";
 
 type Props = {
 	items: StageItem[];
-};
-
-export type StageItem = {
-	name: string;
-	status: "active" | "inactive" | "complete";
 };
 
 export const SummaryProgress = ({ items }: Props) => {

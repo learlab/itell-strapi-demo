@@ -1,6 +1,6 @@
-import { Theme, UserThemeSchema } from "./schema";
-import { load } from "js-yaml";
 import { readFileSync } from "fs";
+import { load } from "js-yaml";
+import { Theme, UserThemeSchema } from "./schema";
 
 export const DefaultTheme: Theme = {
 	light: {
@@ -76,18 +76,18 @@ export const getSiteTheme = (themePath: string): Theme => {
 
 	if (!(themeData instanceof Object)) {
 		return DefaultTheme;
-	} else {
-		return {
-			light: {
-				...DefaultTheme.light,
-				// @ts-ignore
-				...(themeData.light || {}),
-			},
-			dark: {
-				...DefaultTheme.dark,
-				// @ts-ignore
-				...(themeData.dark || {}),
-			},
-		};
 	}
+
+	return {
+		light: {
+			...DefaultTheme.light,
+			// @ts-ignore
+			...(themeData.light || {}),
+		},
+		dark: {
+			...DefaultTheme.dark,
+			// @ts-ignore
+			...(themeData.dark || {}),
+		},
+	};
 };

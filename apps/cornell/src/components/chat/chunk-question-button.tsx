@@ -6,7 +6,7 @@ type Props = {
 	onClick: () => void;
 };
 
-export const ChunkQuestionReady = ({ onClick }: Props) => {
+export const ChunkQuestionReadyStairs = ({ onClick }: Props) => {
 	return (
 		<div className="space-y-2">
 			<p>When you are ready for the question, click the button below.</p>

@@ -13,7 +13,8 @@ interface Props {
 export interface ConstructedResponseState extends Props {
 	advanceChunk: (slug: string) => void;
 	finishChunk: (slug: string) => void;
-	reset: () => void;
+	finishPage: () => void;
+	resetPage: () => void;
 }
 
 export type ConstructedResponseStore = ReturnType<
@@ -61,7 +62,13 @@ export const createConstructedResponseStore = (
 						set({ isPageFinished: true });
 					}
 				},
-				reset: () => {
+				finishPage: () => {
+					set({
+						isPageFinished: true,
+						currentChunk: chunks[chunks.length - 1],
+					});
+				},
+				resetPage: () => {
 					set({ currentChunk: chunks[0], isPageFinished: false });
 				},
 			}),
