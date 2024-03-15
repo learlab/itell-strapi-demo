@@ -43,7 +43,7 @@ export const AdminTools = () => {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button variant="ghost" className="flex items-center gap-2 pl-0">
+				<Button variant="ghost" className="flex items-center gap-2">
 					<SettingsIcon className="size-4" /> Admin tools
 				</Button>
 			</SheetTrigger>

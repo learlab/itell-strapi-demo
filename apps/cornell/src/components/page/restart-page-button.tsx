@@ -11,7 +11,7 @@ export const RestartPageButton = () => {
 	const resetPage = useConstructedResponse((state) => state.resetPage);
 	return (
 		<Button
-			className="flex items-center gap-2 pl-0"
+			className="flex items-center gap-2"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {

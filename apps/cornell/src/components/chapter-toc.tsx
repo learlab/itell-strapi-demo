@@ -24,7 +24,7 @@ const AnchorLink = ({
 }) => {
 	return (
 		<a href={href} className="block">
-			<Button variant="ghost" className="flex items-center gap-2 pl-0">
+			<Button variant="ghost" className="flex items-center gap-2">
 				{icon}
 				{text}
 			</Button>
@@ -60,7 +60,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 					return (
 						<li
 							className={cn(
-								"px-2 py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
+								"px-4 py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
 								{
 									"bg-accent": page.page_slug === activePage,
 									"text-muted-foreground": !visible,
@@ -73,7 +73,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 								onClick={() => navigatePage(page.page_slug)}
 								disabled={pending || !visible}
 							>
-								<p className="text-sm font-light text-left text-pretty">
+								<p className="text-left text-pretty">
 									{page.chapter}. {page.title}
 									{visible ? "" : "🔒"}
 								</p>
