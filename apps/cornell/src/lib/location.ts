@@ -36,7 +36,7 @@ export const nextPage = (slug: string): string => {
 };
 
 export const isPageUnlockedWithoutUser = (slug: string) => {
-	return slug === firstPage.page_slug;
+	return false;
 };
 
 export const isPageAfter = (a: string | null, b: string | null) => {

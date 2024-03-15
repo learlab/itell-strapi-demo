@@ -3,13 +3,13 @@ import { Session } from "next-auth";
 
 export const isPageWithFeedback = (user: Session["user"], page: Page) => {
 	const userClass = user.class;
-	const module = page.location.module;
+	const chapter = page.chapter;
 	if (userClass === "one") {
-		return module === 1;
+		return chapter === 10 || chapter === 11;
 	}
 
-	if (module === "two") {
-		return module === 2;
+	if (userClass === "two") {
+		return chapter === 12 || chapter === 13;
 	}
 
 	return true;

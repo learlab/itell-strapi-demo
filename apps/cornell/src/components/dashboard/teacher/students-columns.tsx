@@ -16,7 +16,7 @@ import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type StudentData = Pick<User, "id" | "email" | "name" | "created_at"> & {
-	progress: { chapter: number; section: number; title: string; index: number };
+	progress: { chapter: number; title: string; index: number };
 	summaryCounts: number;
 };
 
@@ -75,7 +75,7 @@ export const columns: ColumnDef<StudentData>[] = [
 		},
 		cell: ({ row }) => {
 			const progress = row.original.progress;
-			return `${progress.chapter}.${progress.section} ${progress.title}`;
+			return `${progress.chapter}. ${progress.title}`;
 		},
 	},
 	{

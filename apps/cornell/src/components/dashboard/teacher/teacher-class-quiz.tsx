@@ -21,7 +21,7 @@ export const TeacherClassQuiz = async ({ students }: Props) => {
 		.filter((page) => page.quiz)
 		.map((page) => ({
 			pageSlug: page.page_slug,
-			title: `${page.location.chapter}.${page.location.section} ${page.title}`,
+			title: `${page.chapter}. ${page.title}`,
 		}));
 
 	const quizTableData: QuizTableData[] = students.flatMap((student) => {

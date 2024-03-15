@@ -3,7 +3,7 @@ import { allPagesSorted } from "@/lib/pages";
 export const CommandMenuConfig = {
 	textbookPages: allPagesSorted.map((s) => {
 		return {
-			title: `${s.location.chapter}.${s.location.section} ${s.title}`,
+			title: `${s.chapter} ${s.title}`,
 			href: s.url,
 		};
 	}),

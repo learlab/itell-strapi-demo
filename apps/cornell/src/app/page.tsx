@@ -1,12 +1,10 @@
-import TextbookNavbar from "@/components/nav/textbook-nav";
-import { Site, allSites } from "contentlayer/generated";
 import { MainMdx } from "@/components/mdx";
+import TextbookNavbar from "@/components/nav/textbook-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { StartOrContinueReading } from "@/components/start-or-continue-reading";
+import { home } from "contentlayer/generated";
 
-const home = allSites.find((doc) => doc.slug === "home") as Site;
-
-export default async function Home() {
+export default async function () {
 	return (
 		<section className="h-screen flex flex-col">
 			<TextbookNavbar />

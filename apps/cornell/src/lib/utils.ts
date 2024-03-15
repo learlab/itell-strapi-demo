@@ -31,24 +31,6 @@ export const getLocationFromPathname = (path: string): Location => {
 	return { module, chapter, section };
 };
 
-export const sortSections = (sections: SidebarSection[]) => {
-	const sectionsSorted = sections.slice(0).sort((a, b) => {
-		if (a.chapter === b.chapter) {
-			if (!a.section) {
-				return -1;
-			}
-			if (!b.section) {
-				return 1;
-			}
-
-			return a.section - b.section;
-		}
-		return a.chapter - b.chapter;
-	});
-
-	return sectionsSorted;
-};
-
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const makeInputKey = (slug: string) => {
@@ -66,7 +48,6 @@ export type PageData = {
 	page_slug: string;
 	quiz: boolean;
 	chapter: number;
-	section: number;
 	nextPageSlug: string | null;
 };
 
@@ -87,8 +68,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		index,
 		title: page.title,
 		page_slug: page.page_slug,
-		chapter: page.location.chapter as number,
-		section: page.location.section as number,
+		chapter: page.chapter,
 		quiz: page.quiz,
 		nextPageSlug,
 	};

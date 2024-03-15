@@ -1,7 +1,7 @@
+import { ChapterToc } from "@/components/chapter-toc";
 import { ChatbotLoader } from "@/components/chat/chatbot-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
-import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
@@ -70,7 +70,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="module-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ModuleToc page={page} />
+					<ChapterToc
+						currentPage={page}
+						userPageSlug={user?.pageSlug || null}
+					/>
 				</aside>
 
 				<section

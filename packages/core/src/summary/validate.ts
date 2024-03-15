@@ -16,7 +16,7 @@ export const ErrorFeedback: Record<ErrorType, string> = {
 		"Your summary includes inoffensive language. Please remove the offensive language and resubmit.",
 	[ErrorType.INTERNAL]:
 		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com if the problem persists.",
-	[ErrorType.DUPLICATE]: "Please revise your summary before submission.",
+	[ErrorType.DUPLICATE]: "Please submit a different summary.",
 };
 
 export const validateSummary = (input: string): ErrorType | null => {

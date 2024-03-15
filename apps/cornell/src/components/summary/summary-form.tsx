@@ -64,6 +64,7 @@ type ChunkQuestion = {
 };
 
 type State = {
+	prevInput: string;
 	pending: boolean;
 	isPassed: boolean;
 	error: ErrorType | null;
@@ -79,9 +80,11 @@ type Action =
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "ask"; payload: ChunkQuestion }
 	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } }
-	| { type: "set_passed"; payload: boolean };
+	| { type: "set_passed"; payload: boolean }
+	| { type: "set_prev_input"; payload: string };
 
 const initialState: State = {
+	prevInput: "",
 	pending: false,
 	error: null,
 	response: null,
@@ -197,6 +200,9 @@ export const SummaryForm = ({
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
+			case "set_prev_input":
+				draft.prevInput = action.payload;
+				break;
 			case "submit":
 				draft.pending = true;
 				draft.error = null;
@@ -236,7 +242,14 @@ export const SummaryForm = ({
 		addStage("Scoring");
 
 		const formData = new FormData(e.currentTarget);
-		const input = (formData.get("input") as string).replaceAll("\u0000", "");
+		const input = String(formData.get("input")).replaceAll("\u0000", "");
+		if (input === state.prevInput) {
+			dispatch({ type: "fail", payload: ErrorType.DUPLICATE });
+			return;
+		}
+
+		dispatch({ type: "set_prev_input", payload: input });
+
 		const userId = user.id;
 		localStorage.setItem(makeInputKey(pageSlug), input);
 
@@ -247,7 +260,7 @@ export const SummaryForm = ({
 		}
 
 		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
-		const isEnoughSummary = summaryCount >= PAGE_SUMMARY_THRESHOLD;
+		const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
 		let summaryResponse: SummaryResponse | null = null;
 		let chunkQuestionData: ChunkQuestion | null = null;

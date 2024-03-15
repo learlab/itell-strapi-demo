@@ -21,7 +21,6 @@ type Props = {
 export const PageLockedModal = ({ userPageSlug }: Props) => {
 	const [open, setOpen] = useState(true);
 	const href = makePageHref(userPageSlug || firstPage.page_slug);
-	console.log(href);
 	return (
 		<Dialog
 			open={open}

@@ -1,6 +1,6 @@
-import { ModuleToc } from "@/components/module-toc";
+import { ChapterToc } from "@/components/chapter-toc";
 import { PageTitle } from "@/components/page-title";
-import { allPagesSorted } from "@/lib/pages";
+import { allPagesSorted, firstPage } from "@/lib/pages";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
@@ -29,7 +29,7 @@ export default async function () {
 				className="module-sidebar sticky top-20 h-fit z-20 basis-0"
 				style={{ flexGrow: 1 }}
 			>
-				<ModuleToc page={page} />
+				<ChapterToc currentPage={page} userPageSlug={firstPage.page_slug} />
 			</aside>
 
 			<section

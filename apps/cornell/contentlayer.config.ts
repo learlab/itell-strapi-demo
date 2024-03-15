@@ -8,22 +8,30 @@ import {
 	getSlugFromFlattenedPath,
 } from "./src/lib/contentlayer";
 
-const Site = defineDocumentType(() => ({
-	name: "Site",
-	filePathPattern: "site/**/*.{md,mdx}",
+const Home = defineDocumentType(() => ({
+	name: "Home",
+	filePathPattern: "home.mdx",
 	contentType: "mdx",
-	computedFields: {
-		slug: {
-			type: "string",
-			resolve: (doc) =>
-				getSlugFromFlattenedPath(doc._raw.flattenedPath, "site/"),
-		},
-	},
+	isSingleton: true,
+}));
+
+const SummaryDescription = defineDocumentType(() => ({
+	name: "SummaryDescription",
+	filePathPattern: "summary-description.mdx",
+	contentType: "mdx",
+	isSingleton: true,
+}));
+
+const UserGuide = defineDocumentType(() => ({
+	name: "UserGuide",
+	filePathPattern: "userguide.mdx",
+	contentType: "mdx",
+	isSingleton: true,
 }));
 
 const Page = defineDocumentType(() => ({
 	name: "Page",
-	filePathPattern: "section/**/*.{md,mdx}",
+	filePathPattern: "textbook/*.{md,mdx}",
 	contentType: "mdx",
 	fields: {
 		title: {
@@ -45,7 +53,7 @@ const Page = defineDocumentType(() => ({
 		quiz: {
 			type: "boolean",
 			default: false,
-			description: "Whether the page has a quiz",
+			description: "Whether the page requires a quiz",
 			required: false,
 		},
 	},
@@ -55,11 +63,11 @@ const Page = defineDocumentType(() => ({
 			description: "The URL of the page",
 			resolve: (doc) => `/${doc.page_slug}`,
 		},
-		location: {
-			type: "json",
+		chapter: {
+			type: "number",
 			description:
-				"A {module, chapter, section} object representing the location of the doc",
-			resolve: (doc) => getLocationFromFlattenedPath(doc._raw.flattenedPath),
+				"The chapter index of the page, used for sorting and navigation",
+			resolve: (doc) => Number(doc._raw.flattenedPath.split("-")[1]),
 		},
 		headings: {
 			type: "json",
@@ -72,7 +80,7 @@ const Page = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Page, Site],
+	documentTypes: [Page, Home, SummaryDescription, UserGuide],
 	mdx: {
 		remarkPlugins: [remarkGfm],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],

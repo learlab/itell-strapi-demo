@@ -28,7 +28,7 @@ export default async function () {
 		}),
 	]);
 
-	if (!userSummaries) {
+	if (!user || !userSummaries) {
 		return notFound();
 	}
 
@@ -66,18 +66,18 @@ export default async function () {
 
 			return {
 				...s,
-				module: page.location.module as number,
+				chapter: page.chapter,
 				pageTitle: page.title,
 			};
 		})
 		.filter(Boolean);
 
-	const summariesByModule = groupby(summaries, (summary) => summary.module);
+	const summariesByChapter = groupby(summaries, (summary) => summary.chapter);
 
 	return (
 		<DashboardShell>
 			<DashboardHeader heading="Summary" text="Create and manage summaries." />
-			<SummaryList summariesByModule={summariesByModule} user={user as User} />
+			<SummaryList summariesByChapter={summariesByChapter} user={user} />
 		</DashboardShell>
 	);
 }
