@@ -91,7 +91,7 @@ model Event {
   id         String   @id @default(uuid())
   eventType  String   @map("event_type")
   userId     String   @map("user_id")
-  page       String
+  pageSlug   String   @map("page_slug")
   /// [EventData]
   data       Json?    @db.JsonB
   created_at DateTime @default(now())
