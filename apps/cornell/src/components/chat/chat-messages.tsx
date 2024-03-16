@@ -65,7 +65,7 @@ const MessageItem = ({
 			>
 				<div
 					className={cn(
-						"flex flex-row items-center space-x-2 text-sm max-w-xs mx-2 overflow-x-hidden",
+						"flex flex-row items-center gap-1 text-sm max-w-xs mx-2 overflow-x-hidden",
 						message.isUser ? "justify-end" : "justify-start",
 					)}
 				>

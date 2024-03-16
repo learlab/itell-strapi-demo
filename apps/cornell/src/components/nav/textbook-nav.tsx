@@ -6,6 +6,7 @@ import { buttonVariants } from "@itell/ui/server";
 import Image from "next/image";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";
+import { StartOrContinueReadingButton } from "../start-or-continue-reading";
 import ThemeToggle from "../theme/theme-toggle";
 import { UserAccountNav } from "../user-account-nav";
 import SiteNav from "./site-nav";
@@ -28,15 +29,11 @@ export default async function TextbookNavbar() {
 					<Link href="/" className="hidden items-center space-x-2 md:flex">
 						<span className="hidden font-bold sm:inline-block">{title}</span>
 					</Link>
-					<Link
-						href={makePageHref(firstPage.page_slug)}
-						className={cn(
-							buttonVariants({ variant: "outline" }),
-							"flex items-center space-x-2 text-base",
-						)}
-					>
-						<span className="font-bold sm:inline-block">Read</span>
-					</Link>
+					<StartOrContinueReadingButton
+						text="Read"
+						variant="outline"
+						size={"default"}
+					/>
 				</div>
 
 				<div className="ml-auto flex items-center gap-2">
