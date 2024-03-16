@@ -1,13 +1,11 @@
-import { cn } from "@itell/core/utils";
-import Link from "next/link";
-import { ChevronLeftIcon, CommandIcon } from "lucide-react";
-import { Button } from "@/components/client-components";
-import FlipCard from "@/components/flip-card";
 import { AuthForm } from "@/components/auth/auth-form";
-import { Warning } from "@itell/ui/server";
-import { isProduction } from "@/lib/constants";
-import { getSiteConfig } from "@/lib/config";
 import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
+import { Button } from "@/components/client-components";
+import { getSiteConfig } from "@/lib/config";
+import { isProduction } from "@/lib/constants";
+import { Warning } from "@itell/ui/server";
+import { ChevronLeftIcon, CommandIcon } from "lucide-react";
+import Link from "next/link";
 
 type PageProps = {
 	searchParams?: Record<string, string>;

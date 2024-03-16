@@ -1,4 +1,3 @@
-import { SidebarSection } from "@/types/section";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
