@@ -1,44 +1,32 @@
-"use client";
+import { dashboardConfig } from "@/config/dashboard";
+import { getCurrentUser } from "@/lib/auth";
+import { isTeacher } from "@/lib/user";
+import { Skeleton } from "@itell/ui/server";
+import { DashboardSidebarItem } from "./dashboard-sidebar-item";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-import { cn } from "@itell/core/utils";
-import { SidebarNavItem } from "@/types/nav";
-import { ArrowRightIcon } from "lucide-react";
-
-interface DashboardNavProps {
-	items: SidebarNavItem[];
-}
-
-export function DashboardSidebar({ items }: DashboardNavProps) {
-	const path = usePathname();
-
-	if (!items?.length) {
+export const DashboardSidebar = async () => {
+	const user = await getCurrentUser();
+	if (!user) {
 		return null;
 	}
+	const teacher = await isTeacher(user.id);
+	const items = teacher
+		? dashboardConfig.sidebarNav
+		: dashboardConfig.sidebarNav.filter((i) => i.title !== "Class");
 
 	return (
 		<nav className="grid items-start gap-2">
-			{items.map((item) => {
-				const Icon = item.icon || <ArrowRightIcon className="mr-2 size-4" />;
-				return (
-					item.href && (
-						<Link key={item.href} href={item.disabled ? "/" : item.href}>
-							<span
-								className={cn(
-									"group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-									path === item.href ? "bg-accent" : "transparent",
-									item.disabled && "cursor-not-allowed opacity-80",
-								)}
-							>
-								{Icon}
-								<span>{item.title}</span>
-							</span>
-						</Link>
-					)
-				);
-			})}
+			{items.map((item) => (
+				<DashboardSidebarItem key={item.title} item={item} />
+			))}
 		</nav>
 	);
-}
+};
+
+DashboardSidebar.Skeleton = () => (
+	<nav className="grid items-start gap-2">
+		{Array.from({ length: 4 }).map((_, i) => (
+			<Skeleton key={i} className="h-8" />
+		))}
+	</nav>
+);

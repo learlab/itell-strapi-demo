@@ -212,7 +212,7 @@ export const QuestionBox = ({
 		}
 	}, [formState]);
 
-	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+	const isLastQuestion = chunkSlug === chunks.at(-1);
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
 		: answerStatus === AnswerStatus.BOTH_CORRECT ||

@@ -57,7 +57,7 @@ export const createConstructedResponseStore = (
 
 					// user is on the last chunk, and it has a question
 					// this happens when user clicks on next-chunk-button of the question box of the last chunk
-					const isLastQuestion = slug === chunks[chunks.length - 1];
+					const isLastQuestion = slug === chunks.at(-1);
 					if (isLastQuestion) {
 						set({ isPageFinished: true });
 					}
@@ -65,7 +65,7 @@ export const createConstructedResponseStore = (
 				finishPage: () => {
 					set({
 						isPageFinished: true,
-						currentChunk: chunks[chunks.length - 1],
+						currentChunk: chunks.at(-1),
 					});
 				},
 				resetPage: () => {

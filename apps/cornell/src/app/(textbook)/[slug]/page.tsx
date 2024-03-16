@@ -55,9 +55,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
-	const isLastChunkWithQuestion = selectedQuestions.has(
-		chunks[chunks.length - 1],
-	);
+	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
 	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 

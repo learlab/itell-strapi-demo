@@ -15,7 +15,7 @@ export const UserProgress = ({ user }: { user: User }) => {
 			<Progress value={progress} className="w-1/3" />
 			<p className="text-muted-foreground">
 				{progress.toFixed(2)}% completed, {unlockedPages}/{validPages.length}{" "}
-				sections
+				chapters
 			</p>
 		</div>
 	);

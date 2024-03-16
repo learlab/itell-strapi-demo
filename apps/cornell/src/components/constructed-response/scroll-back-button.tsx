@@ -19,7 +19,7 @@ export const ScrollBackButton = () => {
 	};
 
 	// disappear is user unlocks all chunks
-	if (chunks[chunks.length - 1] === currentChunk) {
+	if (chunks.at(-1) === currentChunk) {
 		return null;
 	}
 
