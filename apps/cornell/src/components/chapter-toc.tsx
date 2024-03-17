@@ -83,6 +83,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 				})}
 			</ol>
 			<div className="mt-12 space-y-2">
+				{isAdmin && <AdminTools />}
 				<RestartPageButton />
 				{currentPage.summary && (
 					<AnchorLink
@@ -96,7 +97,6 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 					text="Back to top"
 					href="#page-title"
 				/>
-				{isAdmin && <AdminTools />}
 			</div>
 		</>
 	);
