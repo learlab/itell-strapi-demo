@@ -17,7 +17,7 @@ import { EventTracker } from "@/components/telemetry/event-tracker";
 import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { isPageWithFeedback } from "@/lib/feedback";
+import { isPageWithFeedback } from "@/lib/control/feedback";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";

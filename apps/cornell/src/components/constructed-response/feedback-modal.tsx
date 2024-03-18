@@ -7,9 +7,8 @@ import {
 	DialogHeader,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { createConstructedResponseFeedback } from "@/lib/server-actions";
+import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button, Checkbox, Label, TextArea } from "../client-components";

@@ -1,7 +1,9 @@
 "use client";
 
-import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
-
+import {
+	createHighlightListeners,
+	deleteHighlightListener,
+} from "@/lib/note/listener";
 import { createNoteElements, deserializeRange } from "@itell/core/note";
 import React from "react";
 import { useEffect } from "react";

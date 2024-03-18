@@ -27,7 +27,6 @@ export type PageData = {
 	index: number;
 	title: string;
 	page_slug: string;
-	quiz: boolean;
 	chapter: number;
 	nextPageSlug: string | null;
 };
@@ -50,7 +49,6 @@ export const getPageData = (slug: string | null): PageData | null => {
 		title: page.title,
 		page_slug: page.page_slug,
 		chapter: page.chapter,
-		quiz: page.quiz,
 		nextPageSlug,
 	};
 };

@@ -1,6 +1,6 @@
-"use server";
 import { Page } from "contentlayer/generated";
 import { parse } from "node-html-parser";
+import "server-only";
 const regex = /data-subsection-id\s*=\s*"(.*?)"/;
 
 export const getPageChunks = (page: Page) => {

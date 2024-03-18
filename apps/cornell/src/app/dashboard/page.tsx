@@ -1,5 +1,5 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { StudentClassCount } from "@/components/dashboard/student/student-class-count";
+import { ClassStudentCount } from "@/components/dashboard/student/class-student-count";
 import { UserStatistics } from "@/components/dashboard/user-statistics";
 import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
@@ -50,7 +50,7 @@ export default async function ({ searchParams }: Props) {
 					<p className="p-2 text-muted-foreground">
 						You are enrolled in a class with{" "}
 						<Suspense fallback={<Spinner className="inline" />}>
-							<StudentClassCount classId={user.classId} />
+							<ClassStudentCount classId={user.classId} />
 						</Suspense>{" "}
 						other students
 					</p>

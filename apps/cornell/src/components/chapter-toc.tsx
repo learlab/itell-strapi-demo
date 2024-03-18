@@ -1,7 +1,6 @@
 "use client";
 
-import { isPageAfter } from "@/lib/location";
-import { allPagesSorted, firstPage } from "@/lib/pages";
+import { allPagesSorted, firstPage, isPageAfter } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { Page } from "contentlayer/generated";

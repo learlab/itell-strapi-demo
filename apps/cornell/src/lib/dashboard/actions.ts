@@ -1,4 +1,6 @@
-import db from "./db";
+"use server";
+
+import db from "../db";
 
 export const getTeacherWithClassId = async (classId: string | null) => {
 	if (!classId) {
@@ -21,21 +23,4 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 	});
 
 	return user;
-};
-
-export const updateUserWithClassId = async ({
-	userId,
-	classId,
-}: {
-	userId: string;
-	classId: string | null;
-}) => {
-	return await db.user.update({
-		where: {
-			id: userId,
-		},
-		data: {
-			classId,
-		},
-	});
 };

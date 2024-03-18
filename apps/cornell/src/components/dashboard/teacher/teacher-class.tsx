@@ -1,4 +1,4 @@
-import { getClassStudentStats } from "@/lib/dashboard";
+import { getClassStudentStats } from "@/lib/dashboard/class";
 import {
 	Card,
 	CardContent,
@@ -10,7 +10,6 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { TeacherBadges } from "./teacher-badges";
 import { TeacherClassGeneral } from "./teacher-class-general";
-import { TeacherClassQuiz } from "./teacher-class-quiz";
 
 export const TeacherClass = async ({ classId }: { classId: string }) => {
 	const students = await getClassStudentStats(classId);
@@ -38,12 +37,6 @@ export const TeacherClass = async ({ classId }: { classId: string }) => {
 				<Suspense fallback={<TeacherClassGeneral.Skeleton />}>
 					<ErrorBoundary fallback={<TeacherClassGeneral.ErrorFallback />}>
 						<TeacherClassGeneral students={students} />
-					</ErrorBoundary>
-				</Suspense>
-
-				<Suspense fallback={<TeacherClassQuiz.Skeleton />}>
-					<ErrorBoundary fallback={<TeacherClassQuiz.ErrorFallback />}>
-						<TeacherClassQuiz students={students} />
 					</ErrorBoundary>
 				</Suspense>
 			</CardContent>

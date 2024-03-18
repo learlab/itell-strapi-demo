@@ -3,7 +3,7 @@ import { SettingsForm } from "@/components/dashboard/settings-form";
 import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
 import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
-import { getTeacherWithClassId } from "@/lib/class";
+import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { Metadata } from "next";

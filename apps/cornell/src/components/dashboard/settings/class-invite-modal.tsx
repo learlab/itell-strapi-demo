@@ -9,7 +9,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { updateUserClassId } from "@/lib/server-actions";
+import { updateUserClassId } from "@/lib/user/actions";
 import {
 	AlertDialog,
 	AlertDialogAction,

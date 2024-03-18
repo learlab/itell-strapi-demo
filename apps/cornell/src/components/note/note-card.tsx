@@ -1,6 +1,6 @@
 "use client";
 
-import { createNote, deleteNote, updateNote } from "@/lib/server-actions";
+import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/types/note";
 import { useClickOutside } from "@itell/core/hooks";

@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
@@ -63,7 +62,6 @@ export const PageSummary = async ({
 					<SummaryForm
 						user={user}
 						page={page}
-						hasQuiz={page?.quiz}
 						isFeedbackEnabled={isFeedbackEnabled}
 						pageStatus={pageStatus}
 					/>

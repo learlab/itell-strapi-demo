@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/lib/auth";
-import { getChatMessages } from "@/lib/server-actions";
+import { getChatMessages } from "@/lib/chat";
 import { Message } from "@itell/core/chatbot";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";

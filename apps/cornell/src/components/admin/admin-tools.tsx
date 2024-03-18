@@ -63,13 +63,25 @@ export const AdminTools = () => {
 							name="ai-feedback"
 							defaultValue={feedback}
 						>
-							<div className="flex items-center space-x-2">
+							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem value="stairs" id="stairs" />
-								<Label htmlFor="stairs">Stairs</Label>
+								<div>
+									<Label htmlFor="stairs">Stairs</Label>
+									<p className="text-sm text-muted-foreground">
+										ITELL AI will prompt user to answer a question and return to
+										the summary
+									</p>
+								</div>
 							</div>
-							<div className="flex items-center space-x-2">
+							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem value="simple" id="simple" />
-								<Label htmlFor="simple">Simple rereading</Label>
+								<div>
+									<Label htmlFor="simple">Simple rereading</Label>
+									<p className="text-sm text-muted-foreground">
+										ITELL AI will only tell the user to reread the selected
+										chunk.
+									</p>
+								</div>
 							</div>
 						</RadioGroup>
 					</div>

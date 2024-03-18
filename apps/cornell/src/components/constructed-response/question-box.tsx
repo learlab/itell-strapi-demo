@@ -2,8 +2,8 @@
 
 import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
+import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { getQAScore } from "@/lib/question";
-import { createConstructedResponse } from "@/lib/server-actions";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { cn } from "@itell/core/utils";

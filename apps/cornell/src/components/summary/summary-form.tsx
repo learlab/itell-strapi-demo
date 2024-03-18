@@ -3,18 +3,13 @@
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
-import { isLastPage } from "@/lib/location";
 import { PageStatus } from "@/lib/page-status";
-import {
-	createSummary,
-	findFocusTime,
-	getUserPageSummaryCount,
-	incrementUserPage,
-	isPageQuizUnfinished,
-	maybeCreateQuizCookie,
-} from "@/lib/server-actions";
+import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { getFeedback } from "@/lib/summary";
+import { getUserPageSummaryCount } from "@/lib/summary";
+import { createSummary, findFocusTime } from "@/lib/summary/actions";
+import { getFeedback } from "@/lib/summary/feedback";
+import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -36,7 +31,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -51,7 +46,6 @@ type Props = {
 	value?: string;
 	user: NonNullable<SessionUser>;
 	page: PageData;
-	hasQuiz: boolean;
 	isFeedbackEnabled: boolean;
 	pageStatus: PageStatus;
 };
@@ -70,7 +64,6 @@ type State = {
 	response: SummaryResponse | null;
 	chunkQuestion: ChunkQuestion | null;
 	canProceed: boolean;
-	showQuiz: boolean;
 };
 
 type Action =
@@ -78,7 +71,7 @@ type Action =
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "ask"; payload: ChunkQuestion }
-	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } }
+	| { type: "finish"; payload: { canProceed: boolean } }
 	| { type: "set_passed"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
 
@@ -90,10 +83,7 @@ const initialState: State = {
 	chunkQuestion: null,
 	isPassed: false,
 	canProceed: false,
-	showQuiz: false,
 };
-
-type Stage = "Scoring" | "Saving" | "Analyzing";
 
 const driverObj = driver();
 
@@ -111,7 +101,6 @@ export const SummaryForm = ({
 	value,
 	user,
 	page,
-	hasQuiz,
 	isFeedbackEnabled,
 	pageStatus,
 }: Props) => {
@@ -158,7 +147,6 @@ export const SummaryForm = ({
 			case "finish":
 				draft.pending = false;
 				draft.canProceed = action.payload.canProceed;
-				draft.showQuiz = action.payload.showQuiz;
 				break;
 		}
 	}, initialState);
@@ -227,22 +215,7 @@ export const SummaryForm = ({
 			goToQuestion(state.chunkQuestion);
 		}
 
-		if (state.showQuiz) {
-			toast("Good job 🎉", {
-				className: "toast",
-				description:
-					"Before moving on, please finish a short quiz to assess your understanding",
-				duration: 5000,
-				action: {
-					label: "Take quiz",
-					onClick: () => {
-						router.push(`${makePageHref(page.page_slug)}/quiz`);
-					},
-				},
-			});
-		}
-
-		if (state.canProceed && !state.showQuiz) {
+		if (state.canProceed) {
 			const title = isFeedbackEnabled
 				? feedback?.isPassed
 					? "Good job summarizing 🎉"
@@ -397,17 +370,11 @@ export const SummaryForm = ({
 					response: summaryResponse,
 				});
 
-				if (hasQuiz) {
-					maybeCreateQuizCookie(pageSlug);
-				}
-
-				const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
-
 				if (summaryResponse.is_passed || isEnoughSummary) {
 					await incrementUserPage(userId, pageSlug);
 					dispatch({
 						type: "finish",
-						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
+						payload: { canProceed: !isLastPage(pageSlug) },
 					});
 				}
 				finishStage("Saving");

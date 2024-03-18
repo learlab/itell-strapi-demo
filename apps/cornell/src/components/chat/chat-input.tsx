@@ -1,6 +1,6 @@
 "use client";
 
-import { createChatMessage } from "@/lib/server-actions";
+import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import {
 	BotMessage,

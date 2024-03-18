@@ -1,6 +1,6 @@
 import { Separator } from "@/components/client-components";
 import { getCurrentUser } from "@/lib/auth";
-import { getTeacherWithClassId } from "@/lib/class";
+import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import {
 	Card,
 	CardContent,

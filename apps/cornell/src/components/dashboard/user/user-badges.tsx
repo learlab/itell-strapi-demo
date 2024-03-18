@@ -1,5 +1,5 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { getSummaryStats } from "@/lib/dashboard";
+import { getSummaryStats } from "@/lib/summary";
 import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,

@@ -1,4 +1,5 @@
-import { getClassStudents, getSummaryStats } from "@/lib/dashboard";
+import { getClassStudents } from "@/lib/dashboard/class";
+import { getSummaryStats } from "@/lib/summary";
 import { DashboardBadge } from "@itell/ui/server";
 import { User } from "@prisma/client";
 import {
