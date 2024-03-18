@@ -1,3 +1,5 @@
+"use server";
+import { cookies } from "next/headers";
 import db from "./db";
 
 export const getUser = async (userId: string) => {
@@ -17,3 +19,7 @@ export const isTeacher = async (userId: string) => {
 
 	return !!teacher;
 };
+
+export const setUserPageSlug = (val: string) =>
+	cookies().set("user-page-slug", val);
+export const getUserPageSlug = () => cookies().get("user-page-slug")?.value;

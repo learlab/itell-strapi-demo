@@ -1,12 +1,14 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { PageTitle } from "@/components/page-title";
 import { allPagesSorted, firstPage } from "@/lib/pages";
+import { getUserPageSlug } from "@/lib/user";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 export default async function () {
+	const userPageSlug = getUserPageSlug();
 	const headersList = headers();
 	const pathname = headersList.get("x-pathname") as string;
 	const split = pathname.split("/");
@@ -29,7 +31,10 @@ export default async function () {
 				className="chapter-sidebar sticky top-20 h-fit z-20 basis-0"
 				style={{ flexGrow: 1 }}
 			>
-				<ChapterToc currentPage={page} userPageSlug={firstPage.page_slug} />
+				<ChapterToc
+					currentPage={page}
+					userPageSlug={userPageSlug || firstPage.page_slug}
+				/>
 			</aside>
 
 			<section

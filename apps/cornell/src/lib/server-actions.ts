@@ -12,6 +12,7 @@ import { getCurrentUser } from "./auth";
 import { isProduction } from "./constants";
 import db from "./db";
 import { isPageAfter, nextPage } from "./location";
+import { setUserPageSlug } from "./user";
 
 export const deleteSummary = async (id: string) => {
 	return await db.summary.delete({
@@ -224,6 +225,7 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 		const nextSlug = nextPage(pageSlug);
 		// only update a slug if user's slug is not greater
 		if (isPageAfter(nextSlug, user.pageSlug)) {
+			setUserPageSlug(nextSlug);
 			await db.user.update({
 				where: {
 					id: userId,
