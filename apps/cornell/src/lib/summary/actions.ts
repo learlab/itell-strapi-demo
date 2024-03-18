@@ -30,6 +30,18 @@ export const createSummary = async ({
 	}
 };
 
+export const countUserPageSummary = async (
+	userId: string,
+	pageSlug: string,
+) => {
+	return await db.summary.count({
+		where: {
+			userId,
+			pageSlug,
+		},
+	});
+};
+
 export const findFocusTime = async (userId: string, pageSlug: string) => {
 	return await db.focusTime.findUnique({
 		where: {

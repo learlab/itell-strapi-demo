@@ -2,12 +2,16 @@
 
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { getUserPageSummaryCount } from "@/lib/summary";
-import { createSummary, findFocusTime } from "@/lib/summary/actions";
+import {
+	countUserPageSummary,
+	createSummary,
+	findFocusTime,
+} from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
 import { incrementUserPage } from "@/lib/user/actions";
 import {
@@ -266,7 +270,7 @@ export const SummaryForm = ({
 			return;
 		}
 
-		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
+		const summaryCount = await countUserPageSummary(userId, pageSlug);
 		const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
 		let summaryResponse: SummaryResponse | null = null;
@@ -347,8 +351,14 @@ export const SummaryForm = ({
 										chunkQuestionString,
 									) as ChunkQuestion;
 									finishStage("Analyzing");
-
+									console.log(chunkQuestionData);
 									addChunkQuestion(chunkQuestionData.text);
+
+									createEvent({
+										eventType: "stairs-question",
+										pageSlug,
+										data: chunkQuestionData,
+									});
 								}
 							}
 						}

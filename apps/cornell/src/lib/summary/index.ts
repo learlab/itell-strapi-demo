@@ -46,15 +46,3 @@ export const getRecentSummaries = async (uid: string) => {
 	});
 	return summaries;
 };
-
-export const getUserPageSummaryCount = async (
-	userId: string,
-	pageSlug: string,
-) => {
-	return await db.summary.count({
-		where: {
-			userId,
-			pageSlug,
-		},
-	});
-};
