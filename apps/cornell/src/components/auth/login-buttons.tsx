@@ -4,35 +4,14 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { CreateLoginButton } from "../client-components";
 
-export const OutlookLoginButton = CreateLoginButton({
-	action: async () => {
-		try {
-			await signIn("azure-ad");
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	icon: (
-		<Image
-			alt="Google"
-			src="/icons/outlook.png"
-			width={32}
-			height={32}
-			className="mr-2"
-		/>
-	),
-	title: "Outlook",
-});
-
 export const GoogleLoginButton = CreateLoginButton({
 	action: async () => {
-		try {
-			await signIn("google", {
-				callbackUrl: "/",
-			});
-			console.log("Signed in");
-		} catch (error) {
-			console.log(error);
+		const response = await signIn("google", {
+			callbackUrl: "/",
+		});
+		console.log(response);
+		if (response?.error) {
+			console.log("google sign in error", response.error);
 		}
 	},
 	icon: (
