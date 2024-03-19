@@ -1,10 +1,10 @@
-import React from "react";
 import Link from "next/link";
+import React from "react";
 
-import { DashboardNavItem } from "@/types/nav";
-import { DashboardNavMenu } from "./dashboard-nav-menu";
 import { getSiteConfig } from "@/lib/config";
-import { BackToTextbook } from "./back-to-textbook";
+import { DashboardNavItem } from "@/types/nav";
+import { StartOrContinueReadingButton } from "../start-or-continue-reading";
+import { DashboardNavMenu } from "./dashboard-nav-menu";
 
 interface Props {
 	items?: DashboardNavItem[];
@@ -20,7 +20,10 @@ export async function DashboardNav(props: Props) {
 				<Link href="/" className="hidden items-center space-x-2 md:flex">
 					<span className="hidden font-bold sm:inline-block">{title}</span>
 				</Link>
-				<BackToTextbook />
+				<StartOrContinueReadingButton
+					text="Back to textbook"
+					variant="outline"
+				/>
 			</div>
 			<DashboardNavMenu {...props} />
 		</div>

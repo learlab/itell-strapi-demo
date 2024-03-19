@@ -27,6 +27,7 @@ import {
 } from "../client-components";
 import { CreateErrorFallback } from "../error-fallback";
 import { ReadingTimeChart } from "./reading-time-chart";
+import { ReadingTimeControl } from "./reading-time-control";
 
 type Props = {
 	uid: string;
@@ -85,24 +86,27 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 		<Card>
 			<CardHeader>
 				<CardTitle>
-					<HoverCard>
-						<HoverCardTrigger asChild>
-							<Button
-								variant="link"
-								size="lg"
-								className="pl-0 text-lg flex items-center gap-1"
-							>
-								Total Reading Time
-								<InfoIcon className="size-4" />
-							</Button>
-						</HoverCardTrigger>
-						<HoverCardContent>
-							<p className="text-sm font-semibold">
-								Measures how long a user has stayed in all textbook pages, in
-								minutes
-							</p>
-						</HoverCardContent>
-					</HoverCard>
+					<div className="flex items-center justify-between">
+						<HoverCard>
+							<HoverCardTrigger asChild>
+								<Button
+									variant="link"
+									size="lg"
+									className="pl-0 text-lg flex items-center gap-1"
+								>
+									Total Reading Time
+									<InfoIcon className="size-4" />
+								</Button>
+							</HoverCardTrigger>
+							<HoverCardContent>
+								<p className="text-sm font-semibold">
+									Measures how long a user has stayed in all textbook pages, in
+									minutes
+								</p>
+							</HoverCardContent>
+						</HoverCard>
+						<ReadingTimeControl />
+					</div>
 				</CardTitle>
 				<CardDescription>
 					{name ? name : "You"} spent {(totalViewTime / 60).toFixed(2)} minutes

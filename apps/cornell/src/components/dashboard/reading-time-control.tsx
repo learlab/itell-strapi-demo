@@ -2,17 +2,17 @@
 
 import {
 	Select,
-	SelectTrigger,
-	SelectValue,
 	SelectContent,
 	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "@/components/client-components";
+import { ReadingTimeChartLevel } from "@itell/core/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useTransition } from "react";
-import { ReadingTimeChartLevel } from "@itell/core/types";
 import { Spinner } from "../spinner";
 
-export const UserStatisticsControl = () => {
+export const ReadingTimeControl = () => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -51,7 +51,6 @@ export const UserStatisticsControl = () => {
 
 	return (
 		<div className="flex items-center gap-4">
-			<p className="text-sm font-semibold">Change time span</p>
 			{isPending ? (
 				<Spinner className="size-4" />
 			) : (

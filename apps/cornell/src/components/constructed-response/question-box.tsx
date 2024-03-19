@@ -135,15 +135,12 @@ export const QuestionBox = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			if (isProduction) {
-				// when there is no session, question won't be displayed
-				await createConstructedResponse({
-					response: input,
-					chunkSlug,
-					pageSlug,
-					score,
-				});
-			}
+			await createConstructedResponse({
+				response: input,
+				chunkSlug,
+				pageSlug,
+				score,
+			});
 
 			// if answer is correct, mark chunk as finished
 			// this will add the chunk to the list of finished chunks that gets excluded from stairs question

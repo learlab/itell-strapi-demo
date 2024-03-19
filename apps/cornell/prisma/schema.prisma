@@ -165,6 +165,7 @@ model ConstructedResponse {
 
   user User @relation(fields: [userId], references: [id])
 
+  @@index([userId])
   @@map("constructed_responses")
 }
 
