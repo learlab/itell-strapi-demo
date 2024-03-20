@@ -47,15 +47,9 @@ export const ConstructedResponse = async ({ uid }: Props) => {
 							className="space-y-4 border border-border p-4 rounded-md"
 						>
 							<header>
-								<Link
-									href={makePageHref(chapter.page_slug)}
-									className={cn(
-										buttonVariants({ variant: "link" }),
-										"pl-0 font-semibold text-xl",
-									)}
-								>
+								<p className={cn("font-semibold text-xl text-pretty")}>
 									{chapter.title}
-								</Link>
+								</p>
 								<p className="text-muted-foreground">
 									{pluralize("answer", answers.length, true)},{" "}
 									{excellentAnswers.length} excellent
