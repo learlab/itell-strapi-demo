@@ -1,35 +1,38 @@
+import { getBadgeStats, getClassBadgeStats } from "@/lib/dashboard";
 import { getClassStudents } from "@/lib/dashboard/class";
-import { getSummaryStats } from "@/lib/summary";
+import { cn } from "@itell/core/utils";
 import { DashboardBadge } from "@itell/ui/server";
 import { User } from "@prisma/client";
 import {
 	FileTextIcon,
 	FlagIcon,
+	LightbulbIcon,
+	MessageCircleQuestionIcon,
 	PencilIcon,
 	WholeWordIcon,
 } from "lucide-react";
 
 export const StudentBadges = async ({ user }: { user: User }) => {
 	const students = await getClassStudents(user.classId as string);
-	const studentStats = await getSummaryStats({
-		where: {
-			userId: user.id,
-		},
-	});
-	const otherStats = await getSummaryStats({
-		where: {
-			userId: {
-				in: students.map((student) => student.id),
-				not: user.id,
-			},
-		},
-	});
+	const ids = students
+		.map((student) => student.id)
+		.filter((id) => id !== user.id);
+	const [studentStats, otherStats] = await Promise.all([
+		getBadgeStats(user.id),
+		getClassBadgeStats(ids),
+	]);
 
 	const comparisons = {
 		totalCount:
 			studentStats.totalCount - otherStats.totalCount / students.length,
 		passedCount:
 			studentStats.passedCount - otherStats.passedCount / students.length,
+		constructedResponseCount:
+			studentStats.totalConstructedResponses -
+			otherStats.totalConstructedResponses,
+		passedConstructedResponseCount:
+			studentStats.passedConstructedResponses -
+			otherStats.passedConstructedResponses,
 		avgContentScore:
 			studentStats.avgContentScore && otherStats.avgContentScore
 				? studentStats.avgContentScore - otherStats.avgContentScore
@@ -43,51 +46,131 @@ export const StudentBadges = async ({ user }: { user: User }) => {
 	return (
 		<>
 			<DashboardBadge
-				className={
-					comparisons.totalCount > 0 ? "border-green-500" : "border-destructive"
-				}
 				title="Total Summaries"
-				value={studentStats.totalCount}
-				description={comparisons.totalCount}
-				comparing
-				icon={<PencilIcon className="size-4 text-muted-foreground" />}
-			/>
+				icon={<PencilIcon className="size-4" />}
+				className={cn({
+					"border-green-500": comparisons.totalCount > 0,
+					"border-destructive": comparisons.totalCount < 0,
+				})}
+			>
+				<div className="text-2xl font-bold">{studentStats.totalCount}</div>
+				<p className="text-xs text-muted-foreground">
+					{comparisons.totalCount > 0 ? "+" : ""}
+					{comparisons.totalCount} compared to class
+				</p>
+				<p className="text-xs text-muted-foreground">
+					{studentStats.totalCountLastWeek} from last week
+				</p>
+			</DashboardBadge>
 			<DashboardBadge
-				className={
-					comparisons.passedCount > 0
-						? "border-green-500"
-						: "border-destructive"
-				}
 				title="Passed Summaries"
-				value={studentStats.passedCount}
-				description={comparisons.passedCount}
-				comparing
-				icon={<FlagIcon className="size-4 text-muted-foreground" />}
-			/>
+				icon={<FlagIcon className="size-4" />}
+				className={cn({
+					"border-green-500": comparisons.passedCount > 0,
+					"border-destructive": comparisons.passedCount < 0,
+				})}
+			>
+				<div className="text-2xl font-bold">{studentStats.passedCount}</div>
+				<p className="text-xs text-muted-foreground">
+					{comparisons.passedCount > 0 ? "+" : ""}
+					{comparisons.passedCount} compared to class
+				</p>
+				<p className="text-xs text-muted-foreground">
+					{studentStats.passedCountLastWeek} from last week
+				</p>
+			</DashboardBadge>
 			<DashboardBadge
-				className={
-					comparisons.avgContentScore && comparisons.avgContentScore > 0
-						? "border-info"
-						: "border-destructive"
-				}
 				title="Average Content Score"
-				value={studentStats.avgContentScore}
-				description={comparisons.avgContentScore}
-				comparing
-				icon={<FileTextIcon className="size-4 text-muted-foreground" />}
-			/>
+				icon={<FileTextIcon className="size-4" />}
+				className={cn({
+					"border-green-500":
+						comparisons.avgContentScore && comparisons.avgContentScore > 0,
+					"border-destructive":
+						comparisons.avgContentScore && comparisons.avgContentScore < 0,
+				})}
+			>
+				<div className="text-2xl font-bold">
+					{Number.isNaN(studentStats.avgContentScore)
+						? "NA"
+						: studentStats.avgContentScore.toFixed(2)}
+				</div>
+				<p className="text-xs text-muted-foreground">
+					{comparisons.avgContentScore
+						? `
+					${
+						comparisons.avgContentScore > 0 ? "+" : ""
+					}${comparisons.avgContentScore.toFixed(2)} compared to class`
+						: "class stats unavailable"}
+				</p>
+				<p className="text-xs text-muted-foreground">
+					{studentStats.avgContentScoreLastWeek.toFixed(2)} last week
+				</p>
+			</DashboardBadge>
 			<DashboardBadge
-				className={
-					comparisons.avgWordingScore && comparisons.avgWordingScore > 0
-						? "border-info"
-						: "border-destructive"
-				}
 				title="Average Wording Score"
-				value={studentStats.avgWordingScore}
-				description={comparisons.avgWordingScore}
-				comparing
-				icon={<WholeWordIcon className="size-4 text-muted-foreground" />}
-			/>
+				icon={<WholeWordIcon className="size-4" />}
+				className={cn({
+					"border-green-500":
+						comparisons.avgWordingScore && comparisons.avgWordingScore > 0,
+					"border-destructive":
+						comparisons.avgWordingScore && comparisons.avgWordingScore < 0,
+				})}
+			>
+				<div className="text-2xl font-bold">
+					{Number.isNaN(studentStats.avgWordingScore)
+						? "NA"
+						: studentStats.avgWordingScore.toFixed(2)}
+				</div>
+				<p className="text-xs text-muted-foreground">
+					{comparisons.avgWordingScore
+						? `
+					${
+						comparisons.avgWordingScore > 0 ? "+" : ""
+					}${comparisons.avgWordingScore.toFixed(2)} compared to class`
+						: "class stats unavailable"}
+				</p>
+				<p className="text-xs text-muted-foreground">
+					{studentStats.avgWordingScoreLastWeek.toFixed(2)} last week
+				</p>
+			</DashboardBadge>
+			<DashboardBadge
+				title="Total Questions"
+				icon={<MessageCircleQuestionIcon className="size-4" />}
+				className={cn({
+					"border-green-500": comparisons.constructedResponseCount > 0,
+					"border-destructive": comparisons.constructedResponseCount < 0,
+				})}
+			>
+				<div className="text-2xl font-bold">
+					{studentStats.totalConstructedResponses}
+				</div>
+				<p className="text-xs text-muted-foreground">
+					{comparisons.constructedResponseCount > 0 ? "+" : ""}
+					{comparisons.constructedResponseCount} compared to class
+				</p>
+				<p className="text-xs text-muted-foreground">
+					{studentStats.totalConstructedResponsesLastWeek} from last week
+				</p>
+			</DashboardBadge>
+			<DashboardBadge
+				title="Passed Questions"
+				icon={<LightbulbIcon className="size-4" />}
+				className={cn({
+					"border-green-500": comparisons.passedConstructedResponseCount > 0,
+					"border-destructive": comparisons.passedConstructedResponseCount < 0,
+				})}
+			>
+				<div className="text-2xl font-bold">
+					{studentStats.passedConstructedResponses}
+				</div>
+				<p className="text-xs text-muted-foreground">
+					{comparisons.passedConstructedResponseCount > 0 ? "+" : ""}
+					{comparisons.passedConstructedResponseCount} compared to class
+				</p>
+				<p className="text-xs text-muted-foreground">
+					{studentStats.passedConstructedResponsesLastWeek} from last week
+				</p>
+			</DashboardBadge>
 		</>
 	);
 };

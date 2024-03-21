@@ -4,7 +4,6 @@ import { User } from "@prisma/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { z } from "zod";
-import { ConstructedResponse } from "./constructed-response";
 import { ReadingTime } from "./reading-time";
 import { StudentBadges } from "./student/student-badges";
 import { UserBadges } from "./user/user-badges";
@@ -47,15 +46,6 @@ export const UserStatistics = ({ user, searchParams }: Props) => {
 			>
 				<ErrorBoundary fallback={<ReadingTime.ErrorFallback />}>
 					<ReadingTime uid={user.id} params={readingTimeParams} />
-				</ErrorBoundary>
-			</Suspense>
-
-			<Suspense
-				key={readingTimeParams.level}
-				fallback={<ReadingTime.Skeleton />}
-			>
-				<ErrorBoundary fallback={<ConstructedResponse.ErrorFallback />}>
-					<ConstructedResponse uid={user.id} />
 				</ErrorBoundary>
 			</Suspense>
 		</div>
