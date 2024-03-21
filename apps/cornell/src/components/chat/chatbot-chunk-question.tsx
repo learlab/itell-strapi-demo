@@ -19,7 +19,7 @@ export const ChatbotChunkQuestion = ({ user, pageSlug, onExit }: Props) => {
 		<Accordion
 			type="single"
 			value="item-1"
-			className="rounded-md bg-background border border-border z-30"
+			className="rounded-md bg-background text-foreground border border-border z-30"
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionContent className="">

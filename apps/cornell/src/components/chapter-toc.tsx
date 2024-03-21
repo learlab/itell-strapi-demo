@@ -73,7 +73,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 								disabled={pending || !visible}
 							>
 								<p className="text-left text-pretty">
-									{page.chapter}. {page.title}
+									{page.chapter + 1}. {page.title}
 									{visible ? "" : "🔒"}
 								</p>
 							</button>

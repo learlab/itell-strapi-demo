@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { Info, Warning } from "@itell/ui/server";
+import { InfoIcon } from "lucide-react";
 
 type Props = {
 	feedback: SummaryFeedbackType;
@@ -15,16 +16,19 @@ const FeedbackBody = ({ feedback }: Props) => {
 				<p>{feedback.prompt}</p>
 			</header>
 			{keyphrases.size > 0 && (
-				<div>
-					Try to include the following keywords:
-					<ul className="list-disc">
+				<>
+					<p>Try to include the following keywords:</p>
+					<ul className="space-y-2">
 						{Array.from(keyphrases).map((keyphrase) => (
-							<li className="text-accent-foreground" key={keyphrase}>
-								{keyphrase}
+							<li
+								className="flex items-center gap-2 text-accent-foreground"
+								key={keyphrase}
+							>
+								<InfoIcon className="size-4" /> {keyphrase}
 							</li>
 						))}
 					</ul>
-				</div>
+				</>
 			)}
 			{feedback.promptDetails && (
 				<Accordion value="first">

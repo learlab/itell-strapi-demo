@@ -23,7 +23,7 @@ export const Chatbot = async ({ pageSlug, data, updatedAt, user }: Props) => {
 			type="single"
 			defaultValue={undefined}
 			collapsible
-			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background border border-border z-30"
+			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30"
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionTrigger className="border border-border px-6">
