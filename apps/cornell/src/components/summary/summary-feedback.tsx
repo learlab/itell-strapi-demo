@@ -1,9 +1,6 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { getPageData, makePageHref } from "@/lib/utils";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { Info, Warning } from "@itell/ui/server";
-import { ChevronRightIcon } from "lucide-react";
-import Link from "next/link";
 
 type Props = {
 	feedback: SummaryFeedbackType;

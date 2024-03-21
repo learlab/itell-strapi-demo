@@ -9,6 +9,7 @@ const PromptDetailsSchema = z.object({
 		"Wording",
 		"English",
 		"Relevance",
+		"Profanity",
 	]),
 	feedback: z.object({
 		// isPassed is null for content and wording when containment does not pass
