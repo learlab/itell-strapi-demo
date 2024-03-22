@@ -9,9 +9,12 @@ const server = z.object({
 	NEXTAUTH_URL: z.string(),
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
+	AZURE_CLIENT_ID: z.string(),
+	AZURE_CLIENT_SECRET: z.string(),
 	NEXTAUTH_SECRET: z.string(),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
+	STUDENTS: z.string().optional(),
 });
 
 /**
@@ -38,6 +41,9 @@ const processEnv = {
 	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 	NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
 	ADMINS: process.env.ADMINS,
+	STUDENTS: process.env.STUDENTS,
+	AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
+	AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
 };
 
 // Don't touch the part below

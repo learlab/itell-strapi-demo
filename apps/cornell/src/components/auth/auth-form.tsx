@@ -6,9 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { Spinner } from "../spinner";
-import { GoogleLoginButton } from "./login-buttons";
+import { GoogleLoginButton, OutlookLoginButton } from "./login-buttons";
 
-export const AuthForm = () => {
+export const AuthForm = ({ isAdmin }: { isAdmin: boolean }) => {
 	const searchParams = useSearchParams();
 	const classId = searchParams?.get("join_class_code");
 	const { data: session } = useSession();
@@ -43,7 +43,8 @@ export const AuthForm = () => {
 				</div>
 			</div>
 			<div className="flex flex-col gap-2">
-				<GoogleLoginButton />
+				{isAdmin && <GoogleLoginButton />}
+				<OutlookLoginButton />
 			</div>
 			{pending && (
 				<div className="flex flex-row gap-1 items-center justify-center">

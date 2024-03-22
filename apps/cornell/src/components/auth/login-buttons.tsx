@@ -9,7 +9,6 @@ export const GoogleLoginButton = CreateLoginButton({
 		const response = await signIn("google", {
 			callbackUrl: "/",
 		});
-		console.log(response);
 		if (response?.error) {
 			console.log("google sign in error", response.error);
 		}
@@ -24,4 +23,24 @@ export const GoogleLoginButton = CreateLoginButton({
 		/>
 	),
 	title: "Google",
+});
+
+export const OutlookLoginButton = CreateLoginButton({
+	action: async () => {
+		try {
+			await signIn("azure-ad");
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	icon: (
+		<Image
+			alt="outlook"
+			src="/icons/outlook.png"
+			width={32}
+			height={32}
+			className="mr-2"
+		/>
+	),
+	title: "Outlook",
 });
