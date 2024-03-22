@@ -20,7 +20,7 @@ const ErrorDict: Record<string, string> = {
 		isProduction ? "" : " Did you forgot to run prisma generate?"
 	}`,
 	InvalidEmail:
-		"The email you provided is not found on the students list, plaase tyr logging in with your @cornell.edu email.",
+		"The email you provided is not found on the students list, please try logging in with your @cornell.edu email.",
 };
 
 export default async function ({ searchParams }: PageProps) {
