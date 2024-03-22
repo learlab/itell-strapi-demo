@@ -7,6 +7,7 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { FeedbackType } from "@/lib/store/config";
 import {
 	countUserPageSummary,
 	createSummary,
@@ -30,7 +31,7 @@ import {
 	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Info, Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
@@ -41,7 +42,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
@@ -50,8 +51,8 @@ type Props = {
 	value?: string;
 	user: NonNullable<SessionUser>;
 	page: PageData;
-	isFeedbackEnabled: boolean;
 	pageStatus: PageStatus;
+	feedbackType: FeedbackType;
 };
 
 type ChunkQuestion = {
@@ -105,12 +106,11 @@ export const SummaryForm = ({
 	value,
 	user,
 	page,
-	isFeedbackEnabled,
 	pageStatus,
+	feedbackType,
 }: Props) => {
 	const pageSlug = page.page_slug;
 	const mounted = useRef(false);
-	const feedbackType = useConfig((state) => state.feedbackType);
 
 	const { chunkQuestionAnswered, addChunkQuestion, messages } = useChatStore(
 		(state) => ({
@@ -177,6 +177,10 @@ export const SummaryForm = ({
 					},
 				});
 			}, 1000);
+		} else {
+			toast.warning(
+				"No question found, please revise your summary or move on to the next page",
+			);
 		}
 	};
 
@@ -216,15 +220,14 @@ export const SummaryForm = ({
 
 	useEffect(() => {
 		if (state.chunkQuestion && !state.isPassed) {
+			console.log("go to question", state.chunkQuestion);
 			goToQuestion(state.chunkQuestion);
 		}
 
 		if (state.canProceed) {
-			const title = isFeedbackEnabled
-				? feedback?.isPassed
-					? "Good job summarizing 🎉"
-					: "You can now move on 👏"
-				: "Your summary is accepted";
+			const title = feedback?.isPassed
+				? "Good job summarizing 🎉"
+				: "You can now move on 👏";
 			toast(title, {
 				className: "toast",
 				description: "Move to the next page to continue reading",
@@ -277,99 +280,93 @@ export const SummaryForm = ({
 		let chunkQuestionData: ChunkQuestion | null = null;
 
 		try {
-			if (isFeedbackEnabled) {
-				const focusTime = await findFocusTime(userId, pageSlug);
-				const requestBody = JSON.stringify({
-					summary: input,
-					page_slug: pageSlug,
-					focus_time: focusTime?.data,
-					chat_history: getChatHistory(messages),
-					excluded_chunks: excludedChunks,
-				});
-				const response = await fetch(
-					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
-					{
-						method: "POST",
-						body: requestBody,
-						headers: {
-							"Content-Type": "application/json",
-						},
+			console.log("messages", getChatHistory(messages));
+			const focusTime = await findFocusTime(userId, pageSlug);
+			const requestBody = JSON.stringify({
+				summary: input,
+				page_slug: pageSlug,
+				focus_time: focusTime?.data,
+				chat_history: getChatHistory(messages),
+				excluded_chunks: excludedChunks,
+			});
+			const response = await fetch(
+				"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
+				{
+					method: "POST",
+					body: requestBody,
+					headers: {
+						"Content-Type": "application/json",
 					},
-				);
-				console.log("request body", requestBody);
+				},
+			);
+			console.log("request body", requestBody);
 
-				if (response.body) {
-					const reader = response.body.getReader();
-					const decoder = new TextDecoder();
-					let done = false;
-					let chunkIndex = 0;
-					let chunkQuestionString: string | null = null;
+			if (response.body) {
+				const reader = response.body.getReader();
+				const decoder = new TextDecoder();
+				let done = false;
+				let chunkIndex = 0;
+				let chunkQuestionString: string | null = null;
 
-					while (!done) {
-						const { value, done: doneReading } = await reader.read();
-						done = doneReading;
-						const chunk = decoder.decode(value);
+				while (!done) {
+					const { value, done: doneReading } = await reader.read();
+					done = doneReading;
+					const chunk = decoder.decode(value);
 
-						if (chunkIndex === 0) {
-							const chunkString = chunk.trim().replaceAll("\u0000", "");
-							console.log("chunkString", chunkString);
-							const parsed = SummaryResponseSchema.safeParse(
-								JSON.parse(chunkString),
-							);
-							if (parsed.success) {
-								summaryResponse = parsed.data;
-								dispatch({
-									type: "set_passed",
-									payload: summaryResponse.is_passed || isEnoughSummary,
-								});
-								dispatch({ type: "scored", payload: parsed.data });
-								finishStage("Scoring");
-							} else {
-								console.log("SummaryResults parse error", parsed.error);
-								clearStages();
-								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-								// summaryResponse parsing failed, return early
-								return;
-							}
+					if (chunkIndex === 0) {
+						const chunkString = chunk.trim().replaceAll("\u0000", "");
+						console.log("chunkString", chunkString);
+						const parsed = SummaryResponseSchema.safeParse(
+							JSON.parse(chunkString),
+						);
+						if (parsed.success) {
+							summaryResponse = parsed.data;
+							dispatch({
+								type: "set_passed",
+								payload: summaryResponse.is_passed || isEnoughSummary,
+							});
+							dispatch({ type: "scored", payload: parsed.data });
+							finishStage("Scoring");
 						} else {
-							if (summaryResponse?.is_passed) {
-								// if the summary passed, we don't need to process later chunks
-								// note that if the user pass by summary amount
-								// question will still be generated but will not be asked
-								// they can still see the "question" button
-								break;
-							}
-
-							if (chunkIndex === 1) {
-								addStage("Analyzing");
-							}
-							if (!done) {
-								chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
-							} else {
-								if (chunkQuestionString) {
-									chunkQuestionData = JSON.parse(
-										chunkQuestionString,
-									) as ChunkQuestion;
-									finishStage("Analyzing");
-									console.log(chunkQuestionData);
-									addChunkQuestion(chunkQuestionData.text);
-
-									createEvent({
-										eventType: "stairs-question",
-										pageSlug,
-										data: chunkQuestionData,
-									});
-								}
-							}
+							console.log("SummaryResults parse error", parsed.error);
+							clearStages();
+							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+							// summaryResponse parsing failed, return early
+							return;
+						}
+					} else {
+						if (summaryResponse?.is_passed) {
+							// if the summary passed, we don't need to process later chunks
+							// note that if the user pass by summary amount
+							// question will still be generated but will not be asked
+							// they can still see the "question" button
+							break;
 						}
 
-						chunkIndex++;
+						if (chunkIndex === 1) {
+							addStage("Analyzing");
+						}
+						if (!done) {
+							chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
+						} else {
+							if (chunkQuestionString) {
+								chunkQuestionData = JSON.parse(
+									chunkQuestionString,
+								) as ChunkQuestion;
+								finishStage("Analyzing");
+								addChunkQuestion(chunkQuestionData.text);
+
+								createEvent({
+									eventType: "stairs-question",
+									pageSlug,
+									data: chunkQuestionData,
+								});
+							}
+						}
 					}
+
+					chunkIndex++;
 				}
-			} else {
-				const summaryResponse = simpleSummaryResponse();
-				dispatch({ type: "scored", payload: summaryResponse });
-				finishStage("Scoring");
 			}
 
 			if (summaryResponse) {
@@ -429,7 +426,9 @@ export const SummaryForm = ({
 
 			{feedback && <SummaryFeedback feedback={feedback} />}
 
-			<Confetti active={feedback?.isPassed ? isFeedbackEnabled : false} />
+			<Confetti
+				active={feedback?.isPassed ? feedbackType === "stairs" : false}
+			/>
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
 					value={value}

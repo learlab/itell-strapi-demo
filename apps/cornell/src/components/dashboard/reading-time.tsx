@@ -19,6 +19,7 @@ import { format, subDays } from "date-fns";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
+import { BarChart } from "../chart/bar-chart";
 import {
 	Button,
 	HoverCard,
@@ -26,7 +27,6 @@ import {
 	HoverCardTrigger,
 } from "../client-components";
 import { CreateErrorFallback } from "../error-fallback";
-import { ReadingTimeChart } from "./reading-time-chart";
 import { ReadingTimeControl } from "./reading-time-control";
 
 type Props = {
@@ -119,7 +119,7 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="pl-2 space-y-2">
-				<ReadingTimeChart data={chartData} />
+				<BarChart data={chartData} unit="min" />
 			</CardContent>
 		</Card>
 	);

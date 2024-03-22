@@ -1,19 +1,13 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { TeacherClass } from "@/components/dashboard/teacher/teacher-class";
 import { DashboardShell } from "@/components/page/shell";
+import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { Errorbox } from "@itell/ui/server";
-import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-const title = "Manage Your Class";
-const description = "View students' progress";
-
-export const metadata: Metadata = {
-	title,
-	description,
-};
+export const metadata = Meta.class;
 
 export default async function () {
 	const user = await getCurrentUser();
@@ -26,7 +20,10 @@ export default async function () {
 
 	return (
 		<DashboardShell>
-			<DashboardHeader heading={title} text={description} />
+			<DashboardHeader
+				heading={Meta.class.title}
+				text={Meta.class.description}
+			/>
 			{teacher ? (
 				<TeacherClass classId={teacher.classId} />
 			) : (

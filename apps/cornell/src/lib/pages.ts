@@ -1,6 +1,6 @@
 import { allPages } from "contentlayer/generated";
 
-export const allPagesSorted = allPages.slice(0).sort((a, b) => {
+export const allPagesSorted = allPages.sort((a, b) => {
 	return a.chapter - b.chapter;
 });
 

@@ -10,12 +10,9 @@ import TextArea from "react-textarea-autosize";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
-	isChunkQuestion: boolean;
 }
 
-const isChunkQuestion = false;
-
-export const ChatInput = ({
+export const ChatInputChunkQuestion = ({
 	className,
 	pageSlug,
 	...props
@@ -24,17 +21,25 @@ export const ChatInput = ({
 		addUserMessage,
 		addBotMessage,
 		updateBotMessage,
+		setChunkQuestionAnswered,
+		chunkQuestionReady,
+		chunkQuestionAnswered,
 		setActiveMessageId,
-		messages,
+		chunkQuestionText,
+		chunkQuestionMessages,
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
+	const overMessageLimit = chunkQuestionMessages.length > 6;
 
 	const onMessage = async (text: string) => {
 		setPending(true);
-		addUserMessage(text, isChunkQuestion);
+		addUserMessage(text, true);
+		addBotMessage(String(chunkQuestionText), false);
+		addUserMessage(text, false);
+		setChunkQuestionAnswered(true);
 
 		// init response message
-		const botMessageId = addBotMessage("", isChunkQuestion);
+		const botMessageId = addBotMessage("", true);
 		setActiveMessageId(botMessageId);
 
 		const chatResponse = await fetchChatResponse(
@@ -42,7 +47,7 @@ export const ChatInput = ({
 			{
 				pageSlug,
 				text,
-				history: getChatHistory(messages),
+				history: getChatHistory(chunkQuestionMessages),
 			},
 		);
 		setActiveMessageId(null);
@@ -63,7 +68,7 @@ export const ChatInput = ({
 						text: string;
 					};
 					botText = chunkValue.text;
-					updateBotMessage(botMessageId, botText, isChunkQuestion);
+					updateBotMessage(botMessageId, botText, true);
 				}
 			}
 
@@ -74,7 +79,7 @@ export const ChatInput = ({
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
-				isChunkQuestion,
+				true,
 			);
 		}
 
@@ -84,7 +89,7 @@ export const ChatInput = ({
 	return (
 		<div {...props} className={cn("px-2", className)}>
 			<form
-				className="relative mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none"
+				className="mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none"
 				onSubmit={(e) => {
 					e.preventDefault();
 					if (!e.currentTarget.input.value) return;
@@ -92,36 +97,50 @@ export const ChatInput = ({
 					e.currentTarget.input.value = "";
 				}}
 			>
-				<TextArea
-					name="input"
-					rows={2}
-					maxRows={4}
-					autoFocus
-					disabled={pending}
-					placeholder="Message ITELL AI..."
-					className="disabled:opacity-50 bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
-					onKeyDown={async (e) => {
-						if (e.key === "Enter" && !e.shiftKey) {
-							e.preventDefault();
-							if (!e.currentTarget.value) return;
-							onMessage(e.currentTarget.value);
-							e.currentTarget.value = "";
-						}
-					}}
-				/>
+				{overMessageLimit ? (
+					<p className="p-2">Please return to the summary</p>
+				) : chunkQuestionReady ? (
+					<div className="relative">
+						<TextArea
+							name="input"
+							rows={2}
+							maxRows={4}
+							autoFocus
+							disabled={pending || overMessageLimit || !chunkQuestionReady}
+							placeholder={
+								overMessageLimit
+									? "Please return to the summary"
+									: "Message ITELL AI..."
+							}
+							className="disabled:opacity-50 bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
+							onKeyDown={async (e) => {
+								if (e.key === "Enter" && !e.shiftKey) {
+									e.preventDefault();
+									if (!e.currentTarget.value) return;
+									onMessage(e.currentTarget.value);
+									e.currentTarget.value = "";
+								}
+							}}
+						/>
 
-				<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-					<button type="submit">
-						<kbd className="inline-flex items-center rounded border px-1 text-xs">
-							<CornerDownLeft className="w-3 h-3" />
-						</kbd>
-					</button>
-				</div>
+						<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+							<button type="submit">
+								<kbd className="inline-flex items-center rounded border px-1 text-xs">
+									<CornerDownLeft className="w-3 h-3" />
+								</kbd>
+							</button>
+						</div>
 
-				<div
-					className="absolute inset-x-0 bottom-0 border-t border-border"
-					aria-hidden="true"
-				/>
+						<div
+							className="absolute inset-x-0 bottom-0 border-t border-border"
+							aria-hidden="true"
+						/>
+					</div>
+				) : (
+					<p className="p-2">
+						Click on the "ready for question" button to start
+					</p>
+				)}
 			</form>
 		</div>
 	);

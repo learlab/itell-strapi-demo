@@ -1,6 +1,7 @@
 "use client";
 
 import { SelectedQuestions } from "@/lib/question";
+import { FeedbackType } from "@/lib/store/config";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
@@ -12,13 +13,13 @@ import { ScrollBackButton } from "./scroll-back-button";
 type Props = {
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
-	isFeedbackEnabled: boolean;
+	feedbackType: FeedbackType;
 };
 
 export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
-	isFeedbackEnabled,
+	feedbackType,
 }: Props) => {
 	// Ref for current chunk
 	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
@@ -103,7 +104,7 @@ export const ConstructedResponseControl = ({
 					answer={q.answer}
 					chunkSlug={chunkId}
 					pageSlug={pageSlug}
-					isFeedbackEnabled={isFeedbackEnabled}
+					feedbackType={feedbackType}
 				/>,
 				questionContainer,
 			);

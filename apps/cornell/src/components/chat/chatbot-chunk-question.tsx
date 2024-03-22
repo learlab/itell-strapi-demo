@@ -6,6 +6,7 @@ import {
 import { SessionUser } from "@/lib/auth";
 import { ChatExit } from "./chat-exit";
 import { ChatInput } from "./chat-input";
+import { ChatInputChunkQuestion } from "./chat-input-chunk-question";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
@@ -22,12 +23,10 @@ export const ChatbotChunkQuestion = ({ user, pageSlug, onExit }: Props) => {
 			className="rounded-md bg-background text-foreground border border-border z-30"
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
-				<AccordionContent className="">
-					<div className="flex flex-col h-96">
-						<ChatMessages user={user} isChunkQuestion={true} />
-						<ChatInput pageSlug={pageSlug} isChunkQuestion={true} />
-						<ChatExit onExit={onExit} />
-					</div>
+				<AccordionContent className="flex flex-col h-96">
+					<ChatMessages user={user} isChunkQuestion={true} />
+					<ChatInputChunkQuestion pageSlug={pageSlug} />
+					<ChatExit onExit={onExit} />
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>

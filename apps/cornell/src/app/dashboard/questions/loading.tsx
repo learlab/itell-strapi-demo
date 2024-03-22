@@ -11,7 +11,7 @@ export default function () {
 		<DashboardShell>
 			<DashboardHeader heading={title} text={description} />
 			<div className="space-y-6">
-				<Skeleton className="h-[200px] w-full" />
+				<Skeleton className="h-[350px] w-full" />
 				<Skeleton className="h-[200px] w-full" />
 			</div>
 		</DashboardShell>
