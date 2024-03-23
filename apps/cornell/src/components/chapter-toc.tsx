@@ -1,8 +1,7 @@
 "use client";
 
-import { isPageAfter } from "@/lib/location";
-import { allPagesSorted, firstPage } from "@/lib/pages";
-import { makePageHref } from "@/lib/utils";
+import { allPagesSorted, firstPage, isPageAfter } from "@/lib/pages";
+import { delay, makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon } from "lucide-react";
@@ -12,6 +11,7 @@ import { AdminTools } from "./admin/admin-tools";
 import { Button } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
 import { useConfig } from "./provider/page-provider";
+import { Spinner } from "./spinner";
 
 const AnchorLink = ({
 	text,
@@ -44,7 +44,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 	const router = useRouter();
 
 	const navigatePage = (pageSlug: string) => {
-		startTransition(() => {
+		startTransition(async () => {
 			setActivePage(pageSlug);
 			router.push(makePageHref(pageSlug));
 		});
@@ -72,9 +72,10 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 								type="button"
 								onClick={() => navigatePage(page.page_slug)}
 								disabled={pending || !visible}
+								className={pending ? "animate-pulse" : ""}
 							>
 								<p className="text-left text-pretty">
-									{page.chapter}. {page.title}
+									{page.chapter + 1}. {page.title}
 									{visible ? "" : "🔒"}
 								</p>
 							</button>

@@ -17,7 +17,7 @@ import { EventTracker } from "@/components/telemetry/event-tracker";
 import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { isPageWithFeedback } from "@/lib/feedback";
+import { getPageFeedbackType } from "@/lib/control/feedback";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";
@@ -46,9 +46,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userPageSlug: user?.pageSlug || null,
 	});
 
-	const isFeedbackEnabled = sessionUser
-		? isPageWithFeedback(sessionUser, page)
-		: true;
+	const feedbackType = getPageFeedbackType(page);
 
 	const chunks = getPageChunks(page);
 
@@ -65,7 +63,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			chunks={chunks}
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
-			feedbackType="stairs"
+			feedbackType={feedbackType}
 			isAdmin={isAdmin}
 		>
 			<div className="flex flex-row justify-end max-w-[1440px] mx-auto gap-6 px-2">
@@ -129,7 +127,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageSummary
 						pageSlug={pageSlug}
 						pageStatus={pageStatus}
-						isFeedbackEnabled={isFeedbackEnabled}
+						feedbackType={feedbackType}
 					/>
 				</footer>
 			)}
@@ -138,7 +136,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<ConstructedResponseControl
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
-				isFeedbackEnabled={isFeedbackEnabled}
+				feedbackType={feedbackType}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatbotLoader.Skeleton />}>

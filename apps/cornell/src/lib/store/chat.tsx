@@ -6,8 +6,8 @@ import { immer } from "zustand/middleware/immer";
 interface ChatProps {
 	messages: Message[];
 	activeMessageId: string | null;
-
 	chunkQuestionAnswered: boolean;
+	chunkQuestionReady: boolean;
 	chunkQuestionText: string | null;
 	chunkQuestionMessages: Message[];
 }
@@ -22,9 +22,9 @@ interface ChatState extends ChatProps {
 		isChunkQuestion?: boolean,
 	) => void;
 	setActiveMessageId: (id: string | null) => void;
-
 	setChunkQuestionAnswered: (value: boolean) => void;
 	addChunkQuestionStairs: (value: string) => void;
+	syncMessages: () => Promise<void>;
 }
 
 const welcomeMessage: BotMessage = {
@@ -37,7 +37,7 @@ export const useChatStore = create(
 	immer<ChatState>((set, get) => ({
 		messages: [welcomeMessage],
 		activeMessageId: null,
-
+		chunkQuestionReady: false,
 		chunkQuestionMessages: [],
 		chunkQuestionAnswered: false,
 		chunkQuestionText: null,
@@ -139,11 +139,10 @@ export const useChatStore = create(
 						Node: (
 							<ChunkQuestionReadyStairs
 								onClick={() => {
-									get().addBotMessageElement(() => (
-										<div className="space-y-2">
-											<p>{value}</p>
-										</div>
-									));
+									set((state) => {
+										state.chunkQuestionReady = true;
+									});
+									get().addBotMessageElement(() => <p>{value}</p>);
 								}}
 							/>
 						),
@@ -151,12 +150,29 @@ export const useChatStore = create(
 				];
 			});
 		},
+		syncMessages: async () => {
+			const messagesChunkQuestion = get().chunkQuestionMessages;
+			const messages = get().messages;
+			const messagesToAdd: Message[] = [];
+			messagesChunkQuestion.forEach((message) => {
+				if ("text" in message && !messages.includes(message)) {
+					messagesToAdd.push(message);
+				}
+			});
+
+			set((state) => {
+				state.messages.push(...messagesToAdd);
+			});
+		},
 	})),
 );
 
 export const getChatHistory = (messages: Message[]): ChatHistory => {
-	return messages.map((message) => ({
-		agent: message.isUser ? "user" : "bot",
-		text: "text" in message ? message.text : "",
-	}));
+	return messages
+		.filter((m) => "text" in m && m.id !== welcomeMessage.id)
+		.map((m) => ({
+			agent: m.isUser ? "user" : "bot",
+			// @ts-ignore
+			text: m.text,
+		}));
 };

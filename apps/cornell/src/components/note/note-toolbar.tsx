@@ -4,8 +4,11 @@ import {
 	defaultHighlightColor,
 	useNoteColor,
 } from "@/lib/hooks/use-note-color";
-import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
-import { createNote } from "@/lib/server-actions";
+import { createNote } from "@/lib/note/actions";
+import {
+	createHighlightListeners,
+	deleteHighlightListener,
+} from "@/lib/note/listener";
 import { useNotesStore } from "@/lib/store/note";
 import { createNoteElements, serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";

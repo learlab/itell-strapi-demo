@@ -1,4 +1,3 @@
-import { isPageAfter, isPageUnlockedWithoutUser } from "@/lib/location";
 import { PageStatus } from "@/lib/page-status";
 import { User } from "@prisma/client";
 import { PageLockedModal } from "./page-locked-modal";

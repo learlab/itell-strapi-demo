@@ -2,19 +2,19 @@
 
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
-import { isLastPage } from "@/lib/location";
 import { PageStatus } from "@/lib/page-status";
+import { isLastPage } from "@/lib/pages";
+import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { FeedbackType } from "@/lib/store/config";
 import {
+	countUserPageSummary,
 	createSummary,
 	findFocusTime,
-	getUserPageSummaryCount,
-	incrementUserPage,
-	isPageQuizUnfinished,
-	maybeCreateQuizCookie,
-} from "@/lib/server-actions";
-import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { getFeedback } from "@/lib/summary";
+} from "@/lib/summary/actions";
+import { getFeedback } from "@/lib/summary/feedback";
+import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -31,18 +31,18 @@ import {
 	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Info, Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
 import { Button } from "../client-components";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
@@ -51,9 +51,8 @@ type Props = {
 	value?: string;
 	user: NonNullable<SessionUser>;
 	page: PageData;
-	hasQuiz: boolean;
-	isFeedbackEnabled: boolean;
 	pageStatus: PageStatus;
+	feedbackType: FeedbackType;
 };
 
 type ChunkQuestion = {
@@ -70,7 +69,6 @@ type State = {
 	response: SummaryResponse | null;
 	chunkQuestion: ChunkQuestion | null;
 	canProceed: boolean;
-	showQuiz: boolean;
 };
 
 type Action =
@@ -78,7 +76,7 @@ type Action =
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "ask"; payload: ChunkQuestion }
-	| { type: "finish"; payload: { canProceed: boolean; showQuiz: boolean } }
+	| { type: "finish"; payload: { canProceed: boolean } }
 	| { type: "set_passed"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
 
@@ -90,10 +88,7 @@ const initialState: State = {
 	chunkQuestion: null,
 	isPassed: false,
 	canProceed: false,
-	showQuiz: false,
 };
-
-type Stage = "Scoring" | "Saving" | "Analyzing";
 
 const driverObj = driver();
 
@@ -111,13 +106,11 @@ export const SummaryForm = ({
 	value,
 	user,
 	page,
-	hasQuiz,
-	isFeedbackEnabled,
 	pageStatus,
+	feedbackType,
 }: Props) => {
 	const pageSlug = page.page_slug;
 	const mounted = useRef(false);
-	const feedbackType = useConfig((state) => state.feedbackType);
 
 	const { chunkQuestionAnswered, addChunkQuestion, messages } = useChatStore(
 		(state) => ({
@@ -158,7 +151,6 @@ export const SummaryForm = ({
 			case "finish":
 				draft.pending = false;
 				draft.canProceed = action.payload.canProceed;
-				draft.showQuiz = action.payload.showQuiz;
 				break;
 		}
 	}, initialState);
@@ -179,12 +171,16 @@ export const SummaryForm = ({
 						description:
 							feedbackType === "stairs"
 								? "Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding."
-								: "Please re-read the highlighted section. when you are finished, press the 'return to summary button.",
+								: 'Please re-read the highlighted section. when you are finished, press the "return to summary" button.',
 						side: "left",
 						align: "start",
 					},
 				});
 			}, 1000);
+		} else {
+			toast.warning(
+				"No question found, please revise your summary or move on to the next page",
+			);
 		}
 	};
 
@@ -224,30 +220,14 @@ export const SummaryForm = ({
 
 	useEffect(() => {
 		if (state.chunkQuestion && !state.isPassed) {
+			console.log("go to question", state.chunkQuestion);
 			goToQuestion(state.chunkQuestion);
 		}
 
-		if (state.showQuiz) {
-			toast("Good job 🎉", {
-				className: "toast",
-				description:
-					"Before moving on, please finish a short quiz to assess your understanding",
-				duration: 5000,
-				action: {
-					label: "Take quiz",
-					onClick: () => {
-						router.push(`${makePageHref(page.page_slug)}/quiz`);
-					},
-				},
-			});
-		}
-
-		if (state.canProceed && !state.showQuiz) {
-			const title = isFeedbackEnabled
-				? feedback?.isPassed
-					? "Good job summarizing 🎉"
-					: "You can now move on 👏"
-				: "Your summary is accepted";
+		if (state.canProceed) {
+			const title = feedback?.isPassed
+				? "Good job summarizing 🎉"
+				: "You can now move on 👏";
 			toast(title, {
 				className: "toast",
 				description: "Move to the next page to continue reading",
@@ -293,100 +273,100 @@ export const SummaryForm = ({
 			return;
 		}
 
-		const summaryCount = await getUserPageSummaryCount(userId, pageSlug);
+		const summaryCount = await countUserPageSummary(userId, pageSlug);
 		const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
 		let summaryResponse: SummaryResponse | null = null;
 		let chunkQuestionData: ChunkQuestion | null = null;
 
 		try {
-			if (isFeedbackEnabled) {
-				const focusTime = await findFocusTime(userId, pageSlug);
-				const requestBody = JSON.stringify({
-					summary: input,
-					page_slug: pageSlug,
-					focus_time: focusTime?.data,
-					chat_history: getChatHistory(messages),
-					excluded_chunks: excludedChunks,
-				});
-				const response = await fetch(
-					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
-					{
-						method: "POST",
-						body: requestBody,
-						headers: {
-							"Content-Type": "application/json",
-						},
+			console.log("messages", getChatHistory(messages));
+			const focusTime = await findFocusTime(userId, pageSlug);
+			const requestBody = JSON.stringify({
+				summary: input,
+				page_slug: pageSlug,
+				focus_time: focusTime?.data,
+				chat_history: getChatHistory(messages),
+				excluded_chunks: excludedChunks,
+			});
+			const response = await fetch(
+				"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
+				{
+					method: "POST",
+					body: requestBody,
+					headers: {
+						"Content-Type": "application/json",
 					},
-				);
-				console.log("request body", requestBody);
+				},
+			);
+			console.log("request body", requestBody);
 
-				if (response.body) {
-					const reader = response.body.getReader();
-					const decoder = new TextDecoder();
-					let done = false;
-					let chunkIndex = 0;
-					let chunkQuestionString: string | null = null;
+			if (response.body) {
+				const reader = response.body.getReader();
+				const decoder = new TextDecoder();
+				let done = false;
+				let chunkIndex = 0;
+				let chunkQuestionString: string | null = null;
 
-					while (!done) {
-						const { value, done: doneReading } = await reader.read();
-						done = doneReading;
-						const chunk = decoder.decode(value);
+				while (!done) {
+					const { value, done: doneReading } = await reader.read();
+					done = doneReading;
+					const chunk = decoder.decode(value);
 
-						if (chunkIndex === 0) {
-							const chunkString = chunk.trim().replaceAll("\u0000", "");
-							console.log("chunkString", chunkString);
-							const parsed = SummaryResponseSchema.safeParse(
-								JSON.parse(chunkString),
-							);
-							if (parsed.success) {
-								summaryResponse = parsed.data;
-								dispatch({
-									type: "set_passed",
-									payload: summaryResponse.is_passed || isEnoughSummary,
-								});
-								dispatch({ type: "scored", payload: parsed.data });
-								finishStage("Scoring");
-							} else {
-								console.log("SummaryResults parse error", parsed.error);
-								clearStages();
-								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-								// summaryResponse parsing failed, return early
-								return;
-							}
+					if (chunkIndex === 0) {
+						const chunkString = chunk.trim().replaceAll("\u0000", "");
+						console.log("chunkString", chunkString);
+						const parsed = SummaryResponseSchema.safeParse(
+							JSON.parse(chunkString),
+						);
+						if (parsed.success) {
+							summaryResponse = parsed.data;
+							dispatch({
+								type: "set_passed",
+								payload: summaryResponse.is_passed || isEnoughSummary,
+							});
+							dispatch({ type: "scored", payload: parsed.data });
+							finishStage("Scoring");
 						} else {
-							if (summaryResponse?.is_passed) {
-								// if the summary passed, we don't need to process later chunks
-								// note that if the user pass by summary amount
-								// question will still be generated but will not be asked
-								// they can still see the "question" button
-								break;
-							}
-
-							if (chunkIndex === 1) {
-								addStage("Analyzing");
-							}
-							if (!done) {
-								chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
-							} else {
-								if (chunkQuestionString) {
-									chunkQuestionData = JSON.parse(
-										chunkQuestionString,
-									) as ChunkQuestion;
-									finishStage("Analyzing");
-
-									addChunkQuestion(chunkQuestionData.text);
-								}
-							}
+							console.log("SummaryResults parse error", parsed.error);
+							clearStages();
+							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+							// summaryResponse parsing failed, return early
+							return;
+						}
+					} else {
+						if (summaryResponse?.is_passed) {
+							// if the summary passed, we don't need to process later chunks
+							// note that if the user pass by summary amount
+							// question will still be generated but will not be asked
+							// they can still see the "question" button
+							break;
 						}
 
-						chunkIndex++;
+						if (chunkIndex === 1) {
+							addStage("Analyzing");
+						}
+						if (!done) {
+							chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
+						} else {
+							if (chunkQuestionString) {
+								chunkQuestionData = JSON.parse(
+									chunkQuestionString,
+								) as ChunkQuestion;
+								finishStage("Analyzing");
+								addChunkQuestion(chunkQuestionData.text);
+
+								createEvent({
+									eventType: "stairs-question",
+									pageSlug,
+									data: chunkQuestionData,
+								});
+							}
+						}
 					}
+
+					chunkIndex++;
 				}
-			} else {
-				const summaryResponse = simpleSummaryResponse();
-				dispatch({ type: "scored", payload: summaryResponse });
-				finishStage("Scoring");
 			}
 
 			if (summaryResponse) {
@@ -397,17 +377,11 @@ export const SummaryForm = ({
 					response: summaryResponse,
 				});
 
-				if (hasQuiz) {
-					maybeCreateQuizCookie(pageSlug);
-				}
-
-				const showQuiz = hasQuiz ? isPageQuizUnfinished(pageSlug) : false;
-
 				if (summaryResponse.is_passed || isEnoughSummary) {
 					await incrementUserPage(userId, pageSlug);
 					dispatch({
 						type: "finish",
-						payload: { canProceed: !isLastPage(pageSlug), showQuiz },
+						payload: { canProceed: !isLastPage(pageSlug) },
 					});
 				}
 				finishStage("Saving");
@@ -452,7 +426,9 @@ export const SummaryForm = ({
 
 			{feedback && <SummaryFeedback feedback={feedback} />}
 
-			<Confetti active={feedback?.isPassed ? isFeedbackEnabled : false} />
+			<Confetti
+				active={feedback?.isPassed ? feedbackType === "stairs" : false}
+			/>
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
 					value={value}

@@ -1,12 +1,8 @@
 "use client";
 
-import { createChatMessage } from "@/lib/server-actions";
+import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import {
-	BotMessage,
-	UserMessage,
-	fetchChatResponse,
-} from "@itell/core/chatbot";
+import { fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
@@ -17,17 +13,17 @@ interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	isChunkQuestion: boolean;
 }
 
+const isChunkQuestion = false;
+
 export const ChatInput = ({
 	className,
 	pageSlug,
-	isChunkQuestion,
 	...props
 }: ChatInputProps) => {
 	const {
 		addUserMessage,
 		addBotMessage,
 		updateBotMessage,
-		setChunkQuestionAnswered,
 		setActiveMessageId,
 		messages,
 	} = useChatStore();
@@ -36,10 +32,6 @@ export const ChatInput = ({
 	const onMessage = async (text: string) => {
 		setPending(true);
 		addUserMessage(text, isChunkQuestion);
-
-		if (isChunkQuestion) {
-			setChunkQuestionAnswered(true);
-		}
 
 		// init response message
 		const botMessageId = addBotMessage("", isChunkQuestion);
@@ -75,7 +67,7 @@ export const ChatInput = ({
 				}
 			}
 
-			if (done && !isChunkQuestion) {
+			if (done) {
 				createChatMessage({ pageSlug, userText: text, botText: botText });
 			}
 		} else {

@@ -13,7 +13,7 @@ export const ChunkQuestionReadyStairs = ({ onClick }: Props) => {
 			<Button
 				size={"sm"}
 				variant={"outline"}
-				className="animate-out duration-200 ease-out"
+				className="animate-out duration-200 ease-out bg-background text-foreground"
 				id="chunk-question-ready"
 				onClick={() => {
 					onClick();

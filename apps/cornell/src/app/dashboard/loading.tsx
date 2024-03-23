@@ -14,9 +14,9 @@ export default function () {
 				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<DashboardBadge.Skeletons />
 				</div>
-				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-					<Skeleton className="col-span-4 h-[350px]" />
-					<Skeleton className="col-span-3 h-[350px]" />
+				<div className="space-y-4">
+					<Skeleton className="h-[350px]" />
+					<Skeleton className="h-[350px]" />
 				</div>
 			</div>
 		</DashboardShell>

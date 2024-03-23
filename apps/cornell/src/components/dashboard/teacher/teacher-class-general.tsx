@@ -1,6 +1,6 @@
 import { Progress } from "@/components/client-components";
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { StudentStats, getClassStudentStats } from "@/lib/dashboard";
+import { StudentStats } from "@/lib/dashboard/class";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { delay, getPageData } from "@/lib/utils";
 import { Skeleton } from "@itell/ui/server";

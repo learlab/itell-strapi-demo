@@ -2,8 +2,9 @@
 
 import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
+import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { getQAScore } from "@/lib/question";
-import { createConstructedResponse } from "@/lib/server-actions";
+import { FeedbackType } from "@/lib/store/config";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { cn } from "@itell/core/utils";
@@ -39,7 +40,7 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	isFeedbackEnabled: boolean;
+	feedbackType: FeedbackType;
 };
 
 // state for answer correctness
@@ -80,7 +81,7 @@ export const QuestionBox = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	isFeedbackEnabled,
+	feedbackType,
 }: Props) => {
 	const { data: session } = useSession();
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
@@ -135,15 +136,12 @@ export const QuestionBox = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			if (isProduction) {
-				// when there is no session, question won't be displayed
-				await createConstructedResponse({
-					response: input,
-					chunkSlug,
-					pageSlug,
-					score,
-				});
-			}
+			await createConstructedResponse({
+				response: input,
+				chunkSlug,
+				pageSlug,
+				score,
+			});
 
 			// if answer is correct, mark chunk as finished
 			// this will add the chunk to the list of finished chunks that gets excluded from stairs question
@@ -229,67 +227,6 @@ export const QuestionBox = ({
 		);
 	}
 
-	if (!isFeedbackEnabled) {
-		return (
-			<Card
-				className={cn(
-					"flex justify-center items-center flex-col py-4 px-6 space-y-2",
-				)}
-			>
-				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-					{answerStatus !== AnswerStatus.UNANSWERED ? (
-						<div className="flex items-center flex-col">
-							<p className="text-xl2 text-emerald-600 text-center">
-								Your answer was accepted
-							</p>
-							{!isPageFinished && (
-								<p className="text-sm">
-									Click on the button below to continue reading.
-								</p>
-							)}
-						</div>
-					) : (
-						question && (
-							<p>
-								<b>Question:</b> {question}
-							</p>
-						)
-					)}
-
-					<form action={formAction} className="w-full space-y-2">
-						<TextArea
-							name="input"
-							rows={2}
-							className="max-w-lg mx-auto rounded-md shadow-md p-4"
-							onPaste={(e) => {
-								if (isProduction) {
-									e.preventDefault();
-									toast.warning("Copy & Paste is not allowed for question");
-								}
-							}}
-						/>
-						<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-							{answerStatus === AnswerStatus.UNANSWERED ? (
-								<SubmitButton answerStatus={answerStatus} />
-							) : (
-								isNextButtonDisplayed && (
-									<NextChunkButton
-										pageSlug={pageSlug}
-										chunkSlug={chunkSlug}
-										clickEventType="post-question chunk reveal"
-										onClick={() => setIsNextButtonDisplayed(false)}
-									>
-										{nextButtonText}
-									</NextChunkButton>
-								)
-							)}
-						</div>
-					</form>
-				</CardContent>
-			</Card>
-		);
-	}
-
 	return (
 		<>
 			<Card
@@ -301,7 +238,8 @@ export const QuestionBox = ({
 			>
 				<Confetti
 					active={
-						answerStatus === AnswerStatus.BOTH_CORRECT && isFeedbackEnabled
+						answerStatus === AnswerStatus.BOTH_CORRECT &&
+						feedbackType === "stairs"
 					}
 				/>
 
@@ -351,7 +289,7 @@ export const QuestionBox = ({
 					{answerStatus === AnswerStatus.BOTH_CORRECT ? (
 						<div className="flex items-center flex-col">
 							<p className="text-xl2 text-emerald-600 text-center">
-								Your answer was Correct!
+								Your answer is correct!
 							</p>
 							{!isPageFinished && (
 								<p className="text-sm">

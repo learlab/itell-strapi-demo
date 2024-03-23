@@ -1,23 +1,17 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { StudentClassCount } from "@/components/dashboard/student/student-class-count";
+import { ClassStudentCount } from "@/components/dashboard/student/class-student-count";
 import { UserStatistics } from "@/components/dashboard/user-statistics";
 import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
+import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-const title = "Learning Statistics";
-const description = "Understand your learning journey";
-
-export const metadata: Metadata = {
-	title,
-	description,
-};
+export const metadata = Meta.dashboard;
 
 type Props = {
 	searchParams: {
@@ -40,7 +34,10 @@ export default async function ({ searchParams }: Props) {
 
 	return (
 		<DashboardShell>
-			<DashboardHeader heading={title} text={description} />
+			<DashboardHeader
+				heading={Meta.dashboard.title}
+				text={Meta.dashboard.description}
+			/>
 
 			<div className="space-y-4">
 				<div className="px-2">
@@ -50,7 +47,7 @@ export default async function ({ searchParams }: Props) {
 					<p className="p-2 text-muted-foreground">
 						You are enrolled in a class with{" "}
 						<Suspense fallback={<Spinner className="inline" />}>
-							<StudentClassCount classId={user.classId} />
+							<ClassStudentCount classId={user.classId} />
 						</Suspense>{" "}
 						other students
 					</p>

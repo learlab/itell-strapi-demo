@@ -1,7 +1,4 @@
-import {
-	ReadingTimeChartLevel,
-	ReadingTimeChartParams,
-} from "@itell/core/types";
+import { ReadingTimeChartLevel } from "@itell/core/types";
 import { DashboardBadge } from "@itell/ui/server";
 import { User } from "@prisma/client";
 import { Suspense } from "react";
@@ -9,7 +6,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { z } from "zod";
 import { ReadingTime } from "./reading-time";
 import { StudentBadges } from "./student/student-badges";
-import { UserStatisticsControl } from "./user-statistics-control";
 import { UserBadges } from "./user/user-badges";
 
 type Props = {
@@ -43,7 +39,7 @@ export const UserStatistics = ({ user, searchParams }: Props) => {
 					</ErrorBoundary>
 				</Suspense>
 			</div>
-			<UserStatisticsControl />
+
 			<Suspense
 				key={readingTimeParams.level}
 				fallback={<ReadingTime.Skeleton />}

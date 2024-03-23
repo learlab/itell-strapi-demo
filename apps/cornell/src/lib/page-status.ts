@@ -1,5 +1,5 @@
-import { isPageAfter, isPageUnlockedWithoutUser } from "./location";
-import { firstPage } from "./pages";
+import { firstPage, isPageAfter } from "./pages";
+import { isPageUnlockedWithoutUser } from "./user/page-slug";
 
 export type PageStatus = {
 	// if user has completed the page

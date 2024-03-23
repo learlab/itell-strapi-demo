@@ -1,7 +1,6 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { TeacherBadges } from "@/components/dashboard/teacher/teacher-badges";
 import { TeacherClassGeneral } from "@/components/dashboard/teacher/teacher-class-general";
-import { TeacherClassQuiz } from "@/components/dashboard/teacher/teacher-class-quiz";
 import { DashboardShell } from "@/components/page/shell";
 import {
 	Card,
@@ -27,7 +26,6 @@ export default function DashboardSettingsLoading() {
 					<h3 className="mb-4 text-lg font-medium">Average Class Statistics</h3>
 					<TeacherBadges.Skeleton />
 					<TeacherClassGeneral.Skeleton />
-					<TeacherClassQuiz.Skeleton />
 				</CardContent>
 			</Card>
 		</DashboardShell>

@@ -1,3 +1,4 @@
+import { getPageData } from "@/lib/utils";
 import {
 	Card,
 	CardContent,
@@ -7,8 +8,8 @@ import {
 	buttonVariants,
 } from "@itell/ui/server";
 import { User } from "@prisma/client";
-import { UserStatistics } from "../user-statistics";
 import Link from "next/link";
+import { UserStatistics } from "../user-statistics";
 import { UserProgress } from "../user/user-progress";
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export const StudentProfile = ({ student, searchParams }: Props) => {
+	const page = getPageData(student.pageSlug);
 	return (
 		<Card>
 			<CardHeader>
@@ -24,8 +26,8 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 					<div className="flex items-center justify-between">
 						<p>{student.name}</p>
 						<p className="text-muted-foreground text-sm font-medium">
-							at section{" "}
-							<span className="ml-1 font-semibold">{student.pageSlug}</span>
+							at chapter{" "}
+							<span className="ml-1 font-semibold">{page?.chapter}</span>
 						</p>
 					</div>
 				</CardTitle>

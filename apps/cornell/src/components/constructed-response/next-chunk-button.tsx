@@ -1,6 +1,6 @@
 "use client";
 
-import { createEvent } from "@/lib/server-actions";
+import { createEvent } from "@/lib/event/actions";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 

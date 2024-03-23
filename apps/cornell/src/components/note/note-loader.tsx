@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/lib/auth";
-import { getNotes } from "@/lib/server-actions";
+import { getNotes } from "@/lib/note";
 import { NoteList } from "./note-list";
 
 type Props = {

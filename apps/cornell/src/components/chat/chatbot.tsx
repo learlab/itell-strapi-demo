@@ -23,7 +23,7 @@ export const Chatbot = async ({ pageSlug, data, updatedAt, user }: Props) => {
 			type="single"
 			defaultValue={undefined}
 			collapsible
-			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background border border-border z-30"
+			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30 chatbot"
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionTrigger className="border border-border px-6">
@@ -33,9 +33,9 @@ export const Chatbot = async ({ pageSlug, data, updatedAt, user }: Props) => {
 				<AccordionContent className="">
 					<div className="flex flex-col h-96">
 						<ChatMessages
+							data={data}
 							user={user}
 							isChunkQuestion={false}
-							data={data}
 							updatedAt={updatedAt}
 						/>
 						<ChatInput pageSlug={pageSlug} isChunkQuestion={false} />

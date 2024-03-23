@@ -1,7 +1,7 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { PageTitle } from "@/components/page-title";
 import { allPagesSorted, firstPage } from "@/lib/pages";
-import { getUserPageSlug } from "@/lib/user";
+import { getUserPageSlug } from "@/lib/user/page-slug";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";

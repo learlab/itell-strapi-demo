@@ -1,6 +1,6 @@
 import { dashboardConfig } from "@/config/dashboard";
 import { getCurrentUser } from "@/lib/auth";
-import { isTeacher } from "@/lib/user";
+import { isTeacher } from "@/lib/user/teacher";
 import { Skeleton } from "@itell/ui/server";
 import { DashboardSidebarItem } from "./dashboard-sidebar-item";
 
