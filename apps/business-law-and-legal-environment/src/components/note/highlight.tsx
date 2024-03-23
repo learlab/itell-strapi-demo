@@ -21,6 +21,11 @@ type Props = {
 export const Highlight = React.memo(
     ({ id, color, range, newHighlight }: Props) => {
         const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+
+        const { deleteHighlightFromLocal } = useNotesStore((store) => ({
+            deleteHighlightFromLocal: store.deleteHighlight,
+        }));
+
         useEffect(() => {
             try {
                 if (!newHighlight) {
@@ -42,6 +47,7 @@ export const Highlight = React.memo(
         const handleDelete = () => {
             removeHighlights(id);
             deleteNote(id);
+            deleteHighlightFromLocal(id);
             setOpenDeleteModal(false);
         };
 
