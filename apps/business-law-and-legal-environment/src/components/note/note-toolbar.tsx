@@ -28,10 +28,10 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
 	const { data: session } = useSession();
-	const { createContextNote, addHighlight } = useNotesStore((selector) => ({
-		createContextNote: selector.createNote,
-		addHighlight: selector.addHighlight,
-	}));
+	const { createContextNote, createHighlight } = useNotesStore((selector) => ({
+    createContextNote: selector.createNote,
+    createHighlight: selector.createHighlight,
+  }));
 
 	const handleClick = (event: Event) => {
 		if (event.target instanceof HTMLElement) {
@@ -106,7 +106,13 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						isHighlight: true,
 					});
 
-					addHighlight();
+					createHighlight({
+						id,
+						y: clientRect.y + window.scrollY,
+						highlightedText: textContent,
+						color: defaultHighlightColor,
+						range: serializedRange,
+					});
 
 					if (selection?.empty) {
 						// Chrome
@@ -125,9 +131,9 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						range: serializedRange,
 					});
 
-					createHighlightListeners(id, (event) => {
-						deleteHighlightListener(event);
-					});
+					// createHighlightListeners(id, (event) => {
+					// 	deleteHighlightListener(event);
+					// });
 				} else {
 					toast.warning("Please select some text to take a note");
 				}

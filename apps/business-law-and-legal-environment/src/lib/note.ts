@@ -6,17 +6,19 @@ import {
 import { deleteNote } from "./server-actions";
 import { useNotesStore } from "./store/note";
 
-export const deleteHighlightListener = async (event: Event) => {
+export const deleteHighlightListener = async (event: Event, setOpen: (arg0: boolean) => void) => {
 	event.preventDefault();
-	const el = event.currentTarget as HTMLSpanElement;
-	if (confirm("Delete this highlight?")) {
-		const id = getHighlightId(el);
+	// const el = event.currentTarget as HTMLSpanElement;
+	// if (confirm("Delete this highlight?")) {
+	// 	const id = getHighlightId(el);
 
-		if (id) {
-			removeHighlights(id);
-			deleteNote(id);
-		}
-	}
+	// 	if (id) {
+	// 		removeHighlights(id);
+	// 		deleteNote(id);
+	// 	}
+	// }
+	console.log(getHighlightId(event.currentTarget as HTMLSpanElement))
+	setOpen(true);
 };
 
 export const createHighlightListeners = (
