@@ -32,6 +32,7 @@ export const ChatInput = ({
 
 	const onMessage = async (text: string) => {
 		setPending(true);
+		const userTimestamp = Date.now();
 		addUserMessage(text, isStairs);
 
 		// init response message
@@ -69,10 +70,13 @@ export const ChatInput = ({
 			}
 
 			if (done) {
+				const botTimestamp = Date.now();
 				createChatMessage({
 					pageSlug,
 					userText: text,
-					botText: botText,
+					userTimestamp,
+					botText,
+					botTimestamp,
 					isStairs,
 				});
 			}

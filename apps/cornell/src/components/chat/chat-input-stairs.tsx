@@ -7,6 +7,7 @@ import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
+import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
@@ -32,6 +33,7 @@ export const ChatInputStairs = ({
 
 	const onMessage = async (text: string) => {
 		setPending(true);
+		const userTimestamp = Date.now();
 		// add messages to both normal chat and stairs chat
 		addBotMessage(String(stairsQuestion), false);
 		addUserMessage(text, true);
@@ -74,12 +76,15 @@ export const ChatInputStairs = ({
 
 			if (done) {
 				// also add the final bot message to the normal chat
+				const botTimestamp = Date.now();
 				addBotMessage(botText, false);
 
 				createChatMessage({
 					pageSlug,
 					userText: text,
+					userTimestamp,
 					botText: botText,
+					botTimestamp,
 					isStairs: true,
 				});
 			}
@@ -133,9 +138,13 @@ export const ChatInputStairs = ({
 
 						<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
 							<button type="submit">
-								<kbd className="inline-flex items-center rounded border px-1 text-xs">
-									<CornerDownLeft className="w-3 h-3" />
-								</kbd>
+								{pending ? (
+									<Spinner className="size-4" />
+								) : (
+									<kbd className="inline-flex items-center rounded border px-1 text-xs">
+										<CornerDownLeft className="size-4" />
+									</kbd>
+								)}
 							</button>
 						</div>
 

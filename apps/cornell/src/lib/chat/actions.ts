@@ -7,13 +7,17 @@ type CreateMesage = {
 	isStairs: boolean;
 	pageSlug: string;
 	userText: string;
+	userTimestamp: number;
 	botText: string;
+	botTimestamp: number;
 };
 
 export const createChatMessage = async ({
 	pageSlug,
 	userText,
+	userTimestamp,
 	botText,
+	botTimestamp,
 	isStairs,
 }: CreateMesage) => {
 	const user = await getCurrentUser();
@@ -34,13 +38,13 @@ export const createChatMessage = async ({
 			isUser: true,
 			text: userText,
 			isStairs,
-			timestamp: Date.now(),
+			timestamp: userTimestamp,
 		};
 		const botMessage: PrismaJson.ChatMessageData = {
 			isUser: false,
 			text: botText,
 			isStairs,
-			timestamp: Date.now(),
+			timestamp: botTimestamp,
 		};
 		if (!record) {
 			await db.chatMessage.create({
