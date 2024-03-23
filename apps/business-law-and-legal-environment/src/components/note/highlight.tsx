@@ -15,39 +15,43 @@ type Props = {
   id: string;
   color: string;
   range: string;
+  newHighlight: boolean;
 };
 
-export const Highlight = React.memo(({ id, color, range }: Props) => {
-  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
-  console.log(range, deserializeRange(range));
-  useEffect(() => {
-    try {
-      createNoteElements({
-        id,
-        range: deserializeRange(range),
-        color,
-        isHighlight: true,
-      });
-      createHighlightListeners(id, (event) => {
-        deleteHighlightListener(event, setOpenDeleteModal);
-      });
-    } catch (err) {
-      console.error("create highlight error", err);
-    }
-  }, []);
+export const Highlight = React.memo(
+  ({ id, color, range, newHighlight }: Props) => {
+    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+    useEffect(() => {
+      try {
+        if (!newHighlight) {
+          createNoteElements({
+            id,
+            range: deserializeRange(range),
+            color,
+            isHighlight: true,
+          });
+        }
+        createHighlightListeners(id, (event) => {
+          deleteHighlightListener(event, setOpenDeleteModal);
+        });
+      } catch (err) {
+        console.error("create highlight error", err);
+      }
+    }, []);
 
-  const handleDelete = () => {
-    removeHighlights(id);
-    deleteNote(id);
-    setOpenDeleteModal(false);
-  };
+    const handleDelete = () => {
+      removeHighlights(id);
+      deleteNote(id);
+      setOpenDeleteModal(false);
+    };
 
-  return (
-    <NoteDelete
-      open={openDeleteModal}
-      onOpenChange={(val) => setOpenDeleteModal(false)}
-      onDelete={handleDelete}
-      isNote={false}
-    />
-  );
-});
+    return (
+      <NoteDelete
+        open={openDeleteModal}
+        onOpenChange={() => setOpenDeleteModal(false)}
+        onDelete={handleDelete}
+        isNote={false}
+      />
+    );
+  }
+);
