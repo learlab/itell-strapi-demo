@@ -130,10 +130,6 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						color: defaultHighlightColor,
 						range: serializedRange,
 					});
-
-					// createHighlightListeners(id, (event) => {
-					// 	deleteHighlightListener(event);
-					// });
 				} else {
 					toast.warning("Please select some text to take a note");
 				}
