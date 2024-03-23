@@ -171,7 +171,7 @@ export const SummaryForm = ({
 						description:
 							feedbackType === "stairs"
 								? "Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding."
-								: "Please re-read the highlighted section. when you are finished, press the 'return to summary button.",
+								: 'Please re-read the highlighted section. when you are finished, press the "return to summary" button.',
 						side: "left",
 						align: "start",
 					},
