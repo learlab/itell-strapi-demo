@@ -3,15 +3,19 @@
 import { getCurrentUser } from "../auth";
 import db from "../db";
 
+type CreateMesage = {
+	isStairs: boolean;
+	pageSlug: string;
+	userText: string;
+	botText: string;
+};
+
 export const createChatMessage = async ({
 	pageSlug,
 	userText,
 	botText,
-}: {
-	pageSlug: string;
-	userText: string;
-	botText: string;
-}) => {
+	isStairs,
+}: CreateMesage) => {
 	const user = await getCurrentUser();
 	if (user) {
 		const record = await db.chatMessage.findUnique({
@@ -26,13 +30,17 @@ export const createChatMessage = async ({
 			},
 		});
 
-		const userMessage = {
+		const userMessage: PrismaJson.ChatMessageData = {
 			isUser: true,
 			text: userText,
+			isStairs,
+			timestamp: Date.now(),
 		};
-		const botMessage = {
+		const botMessage: PrismaJson.ChatMessageData = {
 			isUser: false,
 			text: botText,
+			isStairs,
+			timestamp: Date.now(),
 		};
 		if (!record) {
 			await db.chatMessage.create({

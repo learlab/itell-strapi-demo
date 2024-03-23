@@ -17,7 +17,7 @@ type Props = {
 	updatedAt: Date;
 };
 
-export const Chatbot = async ({ pageSlug, data, updatedAt, user }: Props) => {
+export const Chat = async ({ pageSlug, data, updatedAt, user }: Props) => {
 	return (
 		<Accordion
 			type="single"
@@ -35,10 +35,10 @@ export const Chatbot = async ({ pageSlug, data, updatedAt, user }: Props) => {
 						<ChatMessages
 							data={data}
 							user={user}
-							isChunkQuestion={false}
+							isStairs={false}
 							updatedAt={updatedAt}
 						/>
-						<ChatInput pageSlug={pageSlug} isChunkQuestion={false} />
+						<ChatInput pageSlug={pageSlug} isStairs={false} />
 					</div>
 				</AccordionContent>
 			</AccordionItem>

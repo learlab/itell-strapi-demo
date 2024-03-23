@@ -12,7 +12,7 @@ interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
 }
 
-export const ChatInputChunkQuestion = ({
+export const ChatInputStairs = ({
 	className,
 	pageSlug,
 	...props
@@ -21,22 +21,22 @@ export const ChatInputChunkQuestion = ({
 		addUserMessage,
 		addBotMessage,
 		updateBotMessage,
-		setChunkQuestionAnswered,
-		chunkQuestionReady,
-		chunkQuestionAnswered,
+		setStairsAnswered,
+		stairsReady,
 		setActiveMessageId,
-		chunkQuestionText,
-		chunkQuestionMessages,
+		stairsQuestion,
+		stairsMessages,
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
-	const overMessageLimit = chunkQuestionMessages.length > 6;
+	const overMessageLimit = stairsMessages.length > 6;
 
 	const onMessage = async (text: string) => {
 		setPending(true);
+		// add messages to both normal chat and stairs chat
+		addBotMessage(String(stairsQuestion), false);
 		addUserMessage(text, true);
-		addBotMessage(String(chunkQuestionText), false);
 		addUserMessage(text, false);
-		setChunkQuestionAnswered(true);
+		setStairsAnswered(true);
 
 		// init response message
 		const botMessageId = addBotMessage("", true);
@@ -47,7 +47,7 @@ export const ChatInputChunkQuestion = ({
 			{
 				pageSlug,
 				text,
-				history: getChatHistory(chunkQuestionMessages),
+				history: getChatHistory(stairsMessages),
 			},
 		);
 		setActiveMessageId(null);
@@ -73,7 +73,15 @@ export const ChatInputChunkQuestion = ({
 			}
 
 			if (done) {
-				createChatMessage({ pageSlug, userText: text, botText: botText });
+				// also add the final bot message to the normal chat
+				addBotMessage(botText, false);
+
+				createChatMessage({
+					pageSlug,
+					userText: text,
+					botText: botText,
+					isStairs: true,
+				});
 			}
 		} else {
 			updateBotMessage(
@@ -99,14 +107,14 @@ export const ChatInputChunkQuestion = ({
 			>
 				{overMessageLimit ? (
 					<p className="p-2">Please return to the summary</p>
-				) : chunkQuestionReady ? (
+				) : stairsReady ? (
 					<div className="relative">
 						<TextArea
 							name="input"
 							rows={2}
 							maxRows={4}
 							autoFocus
-							disabled={pending || overMessageLimit || !chunkQuestionReady}
+							disabled={pending || overMessageLimit || !stairsReady}
 							placeholder={
 								overMessageLimit
 									? "Please return to the summary"

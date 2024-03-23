@@ -1,5 +1,5 @@
 import { ChapterToc } from "@/components/chapter-toc";
-import { ChatbotLoader } from "@/components/chat/chatbot-loader";
+import { ChatLoader } from "@/components/chat/chat-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
 import { NoteCount } from "@/components/note/note-count";
@@ -139,8 +139,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 				feedbackType={feedbackType}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
-			<Suspense fallback={<ChatbotLoader.Skeleton />}>
-				<ChatbotLoader pageSlug={pageSlug} />
+			<Suspense fallback={<ChatLoader.Skeleton />}>
+				<ChatLoader pageSlug={pageSlug} />
 			</Suspense>
 		</PageProvider>
 	);

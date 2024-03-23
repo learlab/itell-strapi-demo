@@ -10,20 +10,15 @@ import { UserAvatar } from "../user-avatar";
 
 type Props = {
 	user: NonNullable<SessionUser>;
-	isChunkQuestion: boolean;
+	isStairs: boolean;
 	data?: Message[];
 	updatedAt?: Date;
 };
 
-export const ChatMessages = ({
-	user,
-	isChunkQuestion,
-	data,
-	updatedAt,
-}: Props) => {
-	const oldMessages = isChunkQuestion ? [] : data || [];
-	const newMessages = isChunkQuestion
-		? useChatStore((state) => state.chunkQuestionMessages)
+export const ChatMessages = ({ user, isStairs, data, updatedAt }: Props) => {
+	const oldMessages = isStairs ? [] : data || [];
+	const newMessages = isStairs
+		? useChatStore((state) => state.stairsMessages)
 		: useChatStore((state) => state.messages);
 
 	return (
