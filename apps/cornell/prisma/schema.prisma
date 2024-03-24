@@ -112,6 +112,7 @@ model VerificationToken {
 model Teacher {
   id         String  @id
   isApproved Boolean @default(false)
+  isPrimary  Boolean @default(false)
   classId    String  @map("class_id")
 
   @@map("teachers")
