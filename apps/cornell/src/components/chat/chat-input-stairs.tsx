@@ -5,7 +5,7 @@ import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
@@ -23,6 +23,8 @@ export const ChatInputStairs = ({
 		addBotMessage,
 		updateBotMessage,
 		setStairsAnswered,
+		stairsTimestamp,
+		stairsAnswered,
 		stairsReady,
 		setActiveMessageId,
 		stairsQuestion,
@@ -30,15 +32,19 @@ export const ChatInputStairs = ({
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
 	const overMessageLimit = stairsMessages.length > 6;
+	const answered = useRef(false);
 
 	const onMessage = async (text: string) => {
 		setPending(true);
 		const userTimestamp = Date.now();
 		// add messages to both normal chat and stairs chat
-		addBotMessage(String(stairsQuestion), false);
+		addBotMessage(String(stairsQuestion?.text), false);
 		addUserMessage(text, true);
 		addUserMessage(text, false);
-		setStairsAnswered(true);
+
+		if (!stairsAnswered) {
+			setStairsAnswered(true);
+		}
 
 		// init response message
 		const botMessageId = addBotMessage("", true);
@@ -75,18 +81,59 @@ export const ChatInputStairs = ({
 			}
 
 			if (done) {
-				// also add the final bot message to the normal chat
 				const botTimestamp = Date.now();
+				// also add the final bot message to the normal chat
 				addBotMessage(botText, false);
 
-				createChatMessage({
-					pageSlug,
-					userText: text,
-					userTimestamp,
-					botText: botText,
-					botTimestamp,
-					isStairs: true,
-				});
+				if (!answered.current) {
+					createChatMessage({
+						pageSlug,
+						messages: [
+							{
+								text: String(stairsQuestion?.text),
+								isUser: false,
+								timestamp: Number(stairsTimestamp),
+								isStairs: true,
+								// @ts-ignore
+								stairsData: {
+									chunk: stairsQuestion?.chunk,
+									question_type: stairsQuestion?.question_type,
+								},
+							},
+							{
+								text,
+								isUser: true,
+								timestamp: userTimestamp,
+								isStairs: true,
+							},
+							{
+								text: botText,
+								isUser: false,
+								timestamp: botTimestamp,
+								isStairs: true,
+							},
+						],
+					});
+				} else {
+					answered.current = true;
+					createChatMessage({
+						pageSlug,
+						messages: [
+							{
+								text,
+								isUser: true,
+								timestamp: userTimestamp,
+								isStairs: true,
+							},
+							{
+								text: botText,
+								isUser: false,
+								timestamp: botTimestamp,
+								isStairs: true,
+							},
+						],
+					});
+				}
 			}
 		} else {
 			updateBotMessage(

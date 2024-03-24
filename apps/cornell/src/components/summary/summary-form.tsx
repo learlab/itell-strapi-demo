@@ -352,7 +352,7 @@ export const SummaryForm = ({
 							if (stairsString) {
 								stairsData = JSON.parse(stairsString) as StairsQuestion;
 								finishStage("Analyzing");
-								addStairsQuestion(stairsData.text);
+								addStairsQuestion(stairsData);
 
 								createEvent({
 									eventType: "stairs-question",

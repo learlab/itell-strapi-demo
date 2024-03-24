@@ -73,11 +73,20 @@ export const ChatInput = ({
 				const botTimestamp = Date.now();
 				createChatMessage({
 					pageSlug,
-					userText: text,
-					userTimestamp,
-					botText,
-					botTimestamp,
-					isStairs,
+					messages: [
+						{
+							text,
+							isUser: true,
+							timestamp: userTimestamp,
+							isStairs,
+						},
+						{
+							text: botText,
+							isUser: false,
+							timestamp: botTimestamp,
+							isStairs,
+						},
+					],
 				});
 			}
 		} else {

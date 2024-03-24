@@ -3,12 +3,19 @@ import { BotMessage, ChatHistory, Message } from "@itell/core/chatbot";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
+type StairsQuestion = {
+	text: string;
+	chunk: string;
+	question_type: string;
+};
+
 interface ChatProps {
 	messages: Message[];
 	activeMessageId: string | null;
 	stairsAnswered: boolean;
 	stairsReady: boolean;
-	stairsQuestion: string | null;
+	stairsTimestamp: number | null;
+	stairsQuestion: StairsQuestion | null;
 	stairsMessages: Message[];
 }
 
@@ -19,7 +26,7 @@ interface ChatState extends ChatProps {
 	updateBotMessage: (id: string, text: string, isStairs?: boolean) => void;
 	setActiveMessageId: (id: string | null) => void;
 	setStairsAnswered: (value: boolean) => void;
-	addStairsQuestion: (value: string) => void;
+	addStairsQuestion: (value: StairsQuestion) => void;
 }
 
 const welcomeMessage: BotMessage = {
@@ -36,6 +43,7 @@ export const useChatStore = create(
 		stairsMessages: [],
 		stairsAnswered: false,
 		stairsQuestion: null,
+		stairsTimestamp: null,
 
 		setActiveMessageId: (id) => {
 			set((state) => {
@@ -136,8 +144,9 @@ export const useChatStore = create(
 								onClick={() => {
 									set((state) => {
 										state.stairsReady = true;
+										state.stairsTimestamp = Date.now();
 									});
-									get().addBotMessageElement(() => <p>{value}</p>);
+									get().addBotMessageElement(() => <p>{value.text}</p>);
 								}}
 							/>
 						),
