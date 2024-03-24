@@ -112,16 +112,20 @@ export const useChatStore = create(
 						(message) => message.id === id,
 					);
 					if (messageIndex !== -1) {
-						// @ts-ignore
-						state.stairsMessages[messageIndex].text = text;
+						const message = state.stairsMessages[messageIndex];
+						if ("text" in message) {
+							message.text = text;
+						}
 					}
 				} else {
 					const messageIndex = state.messages.findIndex(
 						(message) => message.id === id,
 					);
 					if (messageIndex !== -1) {
-						// @ts-ignore
-						state.messages[messageIndex].text = text;
+						const message = state.messages[messageIndex];
+						if ("text" in message) {
+							message.text = text;
+						}
 					}
 				}
 			});
@@ -162,6 +166,7 @@ export const getChatHistory = (messages: Message[]): ChatHistory => {
 		.filter((m) => "text" in m && m.id !== welcomeMessage.id)
 		.map((m) => ({
 			agent: m.isUser ? "user" : "bot",
+			// ignoring because filter faild to detect m.text existence
 			// @ts-ignore
 			text: m.text,
 		}));

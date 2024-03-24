@@ -94,6 +94,7 @@ export const ChatInputStairs = ({
 								isUser: false,
 								timestamp: Number(stairsTimestamp),
 								isStairs: true,
+								// ignoring for passing additional stairs data
 								// @ts-ignore
 								stairsData: {
 									chunk: stairsQuestion?.chunk,

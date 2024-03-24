@@ -17,8 +17,12 @@ export const NoteList = ({ notes, highlights, pageSlug }: Props) => {
 	return (
 		<>
 			{notes.map((note) => (
-				// @ts-ignore
-				<NoteCard key={note.y} {...note} pageSlug={pageSlug} />
+				<NoteCard
+					key={note.y}
+					{...note}
+					noteText={note.noteText || ""}
+					pageSlug={pageSlug}
+				/>
 			))}
 			{highlights.map((highlight) => (
 				<Highlight key={highlight.y} {...highlight} />

@@ -20,8 +20,7 @@ export const ReadingTimeControl = () => {
 
 	const createQueryString = useCallback(
 		(name: string, value: string) => {
-			// @ts-ignore
-			const params = new URLSearchParams(searchParams);
+			const params = new URLSearchParams(searchParams || undefined);
 			params.set(name, value);
 
 			return params.toString();
