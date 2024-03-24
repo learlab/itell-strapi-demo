@@ -280,7 +280,6 @@ export const SummaryForm = ({
 		let stairsData: StairsQuestion | null = null;
 
 		try {
-			console.log("messages", getChatHistory(messages));
 			const focusTime = await findFocusTime(userId, pageSlug);
 			const requestBody = JSON.stringify({
 				summary: input,

@@ -2,10 +2,11 @@
 
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { fetchChatResponse } from "@itell/core/chatbot";
+import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes, useRef, useState } from "react";
+import { HTMLAttributes, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
@@ -33,6 +34,12 @@ export const ChatInputStairs = ({
 	const [pending, setPending] = useState(false);
 	const overMessageLimit = stairsMessages.length > 6;
 	const answered = useRef(false);
+	const history = useRef<ChatHistory>([
+		{
+			agent: "bot",
+			text: String(stairsQuestion?.text),
+		},
+	]);
 
 	const onMessage = async (text: string) => {
 		setPending(true);
@@ -55,7 +62,7 @@ export const ChatInputStairs = ({
 			{
 				pageSlug,
 				text,
-				history: getChatHistory(stairsMessages),
+				history: history.current,
 			},
 		);
 		setActiveMessageId(null);
@@ -84,6 +91,16 @@ export const ChatInputStairs = ({
 				const botTimestamp = Date.now();
 				// also add the final bot message to the normal chat
 				addBotMessage(botText, false);
+				history.current.push(
+					{
+						agent: "user",
+						text,
+					},
+					{
+						agent: "bot",
+						text: botText,
+					},
+				);
 
 				if (!answered.current) {
 					createChatMessage({
