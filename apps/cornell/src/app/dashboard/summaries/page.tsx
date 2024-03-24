@@ -7,8 +7,6 @@ import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUser } from "@/lib/user";
 import { makePageHref } from "@/lib/utils";
 import { groupby } from "@itell/core/utils";
-import { User } from "@prisma/client";
-import { Page } from "contentlayer/generated";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 

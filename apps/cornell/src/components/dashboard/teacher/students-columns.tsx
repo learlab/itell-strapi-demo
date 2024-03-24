@@ -75,7 +75,7 @@ export const columns: ColumnDef<StudentData>[] = [
 		},
 		cell: ({ row }) => {
 			const progress = row.original.progress;
-			return `${progress.chapter}. ${progress.title}`;
+			return `${progress.chapter + 1}. ${progress.title}`;
 		},
 	},
 	{
