@@ -12,8 +12,8 @@ _Department of Computer Science, KU Leuven, Belgium_
 This chapter presents learning analytics dashboards that visualize learning traces to give users insight into the learning process. Examples are shown of what data can be visualized. In addition, guidelines on how to get started with the development of learning analytics dashboards are presented for practitioners and researchers. 
 
 <Warning title="Keywords">  
-\- Information visualization;  
-\- learning analytics dashboards;  
+\- Information visualization  
+\- learning analytics dashboards  
 </Warning>
 
 In recent years, many learning analytics dashboards have been deployed to support insight into learning data. The objectives of these dashboards include providing feedback on learning activities, supporting reflection and decision making, increasing engagement and motivation, and reducing dropout. These learning analytics dashboards apply information visualization techniques to help teachers, learners, and other stakeholders explore and understand relevant user traces collected in various (online) environments. The overall objective is to improve (human) learning. 
@@ -28,8 +28,8 @@ The goal of this chapter is to provide a guide to practitioners and researchers 
 In addition to these four questions, we elaborate on evaluation aspects that assess the usefulness and potential impact of the approach.   
 more work on this paper.
 </div>
-<div className="content-chunk" data-subsection-id = "BACKGROUND-472t">
-## BACKGROUND
+<div className="content-chunk" data-subsection-id = "Background-472t">
+## Background
 ### **To Augment the Human Intellect**
 
 There is a strong contrast between intelligent systems that try to make decisions on behalf of people, such as intelligent tutoring systems (Brusilovsky, 2000) and educational data mining systems (Santos et al., 2015), and systems that try to empower people to make better-informed decisions. For instance, visual analytics systems (Shneiderman & Bederson, 2003) provide a clear overview of the context, the decisions that can be made, and the potential implications of those decisions. 
@@ -50,8 +50,8 @@ Static visualizations (i.e., an image) typically provide answers to a limited nu
 
 Another advantage of visualization is the ability to reveal problems with the data itself; for instance, about the way the data has been collected. Especially in the case of learning analytics, where (semi-) automated trackers often capture traces of learner activities, this advantage is valuable for quality control.
 </div>
-<div className="content-chunk" data-subsection-id = "WHAT-FOR,-WHOM,-WHY,-HOW?-473t">
-## WHAT FOR, WHOM, WHY, HOW?
+<div className="content-chunk" data-subsection-id = "What-For,-Whom,-Why,-How?-473t">
+## What For, Whom, Why, How?
 What follows is a non-exhaustive overview; it is important to recognize the variety of approaches. This variety is not surprising given the wide variety of learning analytics data that can be visualized, for a wide variety of audiences and reasons, in a wide variety of ways.
 
 Verbert et al. (2014) present a survey of learning analytics dashboard applications " ranging from a small applications to learnscapes on large public displays" (p. 1499). Dashboards, they say, "typically capture and visualize traces of learning activities, in order to promote awareness, reflection, and sense-making, and to enable learners to define goals and track progress towards these goals" (p. 1499). The paper makes useful distinction between various types of dashboards:
@@ -62,7 +62,7 @@ Verbert et al. (2014) present a survey of learning analytics dashboard applicati
 
 In terms of what is being tracked, the possibilities continue to expand, as new online trackers become available, capturing more detail of what learners and teachers do. As well, new sensors proliferate that can likewise capture what people do in the analog world. This second data source is evolving especially rapidly, with mobile devices that now include sensors to report physiological, emotional, and other kinds of learner characteristics that have so far mostly eluded automated capturing. Besides tracking, self-reporting can also be a valuable source of data. Although more error-pine and difficult to sustain systematically, self-reporting offers an opportunity for awareness, reflection, and self-analysis.
 </div>
-<div className="content-chunk" data-subsection-id = "WHAT-FOR,-WHOM,-WHY,-HOW?-Chunk-2-531t">
+<div className="content-chunk" data-subsection-id = "What-For,-Whom,-Why,-How?-Chunk-2-531t">
 As for what can be incorporated into a dashboard, Verbert et al. (2014) lists the following kinds of data:
 
 1.  _Artefacts produced_ by learners, including blog posts, shared documents, software, and other artefacts that would often end up in a student project portfolio.
@@ -82,7 +82,7 @@ Figure 12.1. (Top) Navi Badgeboard - Personal Badge Overview: A student's badge 
 
 Figure 12.1 presents one of our more recent dashboards (Charleer, Klerkx, Odriozola, Luis, & Duval, 2013). The dashboard tracks social data from blogs and Twitter. Such data, categorized as _artefacts produced_, is then visualized for _students_. The goal is to support awareness about learning progress and to enable discussion in class. To support such awareness and discussion, social interactions of students are abstracted in the form of learning badges for students to earn. Students can then explore which badges they have earned (Figure 12.2, top) through the visualization of _icons_ and _colour cues._ Gray badges have not yet been earned. The bottom part of Figure 12.2 shows a visualization,  developed for collaborative use on a tabletop that uses a node _link diagram_ to enable further exploration of these badges. Among other things, students have earned specific badges as a means to compare and discuss learning progress.
 </div>
-<div className="content-chunk" data-subsection-id = "WHAT-FOR,-WHOM,-WHY,-HOW?-Chunk-3-530t">
+<div className="content-chunk" data-subsection-id = "What-For,-Whom,-Why,-How?-Chunk-3-530t">
 <Image
   style="aspect-ratio:1227/561;"
   src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/fig12.2.png-fb4ffb4fbe26a1f84f9800a93bcd7209.png"
@@ -94,8 +94,8 @@ Figure 12.2. Muva dashboard that represents the likelihood of failing a specific
 
 Figure 12.2 shows a dashboard that uses grades to predict a student’s chances of failing a particular course (Ochoa, Verbert, Chiluiza, & Duval, 2016) before she starts. The dashboard is intended to support teachers in giving advice to students on their learning trajectories. More specifically, the dashboard presents the likelihood (68%) of this particular student failing a course in which she is interested. The dashboard uses colour cues to indicate whether the risk of failure, based on past performance, is low (green), medium (yellow), or high (red). Depending on the outcome, the teacher can advise the student to take the course or to discuss alternatives, such as first taking a prerequisite course. The dashboard also supports several interaction techniques that enable the teacher to indicate which data should be taken into account to generate this prediction, including sliders at the bottom that enable the teacher to specify the range of data in terms of years. For example, if a student did poorly in Biology in Grade 10 btu worked harder and did well in Grade 12, the Grade 10 mark can be disregarded.
 </div>
-<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-474t">
-## HOW TO GET STARTED
+<div className="content-chunk" data-subsection-id = "How-to-Get-Started-474t">
+## How to Get Started
 To leverage the advanced perceptual abilities of humans to help them explore and discover patterns, a designer must create a visual representation or encoding of the data (Card et al., 1999). Several steps, outlined below, can be distinguished in this design process.
 
 ### **Understand Your Goals**
@@ -114,7 +114,7 @@ By carefully examining and understanding the data set, a variety of questions ab
 * contributions to discussion fora
 * time spent on assignments
 </div>
-<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-2-532t">
+<div className="content-chunk" data-subsection-id = "How-to-Get-Started-Chunk-2-532t">
 From these traces, we can define several relevant questions as a starting point in the design process. A teacher might ask questions like these:
 
 * When did students start looking at the course material?
@@ -152,7 +152,7 @@ Figure 12.3. Mackinlay's (1986) ranking of visual properties for data characteri
 
 Low-fidelity prototypes such as paper sketches are often helpful during the design-mapping step. Figure 12.4 depicts an exercise given to the participants of the "Bring Your Own Data: Visual Learning Analytics" tutorial organized at the Learning Analytics Summer Institute (LASI) 2014. Participants included researches with good knowledge in learning analytics, but limited knowledge about visualization. They were asked to take 15 minutes to sketch all possible ways to visualize a simple data set of two numbers {75, 37}. The exercise illustrated to participants that from the moment they start sketching, it is not difficult to brainstorm visual encodings of data. This is reflected in the number of sketches that two teams of two persons each were able to generate in 15 minutes (see Figure 12.4a and 12.4b).
 </div>
-<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-5-535t">
+<div className="content-chunk" data-subsection-id = "How-to-Get-Started-Chunk-5-535t">
 By sketching, more ideas and questions about the data set are often raised, which in turn leads to new ideas for visualization. For example:
 
 * Figure 12.4c: participants represented the difference between the numbers quite originally by relating them to age, where a person of 37 can easily lift weights, while a person of 73 might already need a walking stick.
@@ -184,7 +184,7 @@ Clearly some alternatives work better than others, depending on the contextualiz
 * 3-D graphics often do not convey any additional information and force the reader to deal with redundant and extraneous cues (Levy, Zacks, Tversky, & Schiano, 1996). 
 * Scatterplots and parallel coordinates are good representations for depicting correlations. In addition, Harrison, Yang, Franconeri, & Chang (2014) found that among the stacked chart variants, the stacked bar significantly outperformed both the stacked area and stacked line. Elliot (2016) has presented a nice overview of these studies.
 </div>
-<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-6-536t">
+<div className="content-chunk" data-subsection-id = "How-to-Get-Started-Chunk-6-536t">
 ### **Documentation**
 
 As with any design exercise, it is important to be explicit about:
@@ -193,7 +193,7 @@ As with any design exercise, it is important to be explicit about:
 2.  **Alternatives**: Which alternatives were considered and why were they not withheld?
 3.  **Evolution**: How has the design evolved from early sketches to a full-blown implementation? What was modified for conceptual reasons and what for implementation or other reasons (logistics, lack of time, other reasons)?
 </div>
-<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-7-538t">
+<div className="content-chunk" data-subsection-id = "How-to-Get-Started-Chunk-7-538t">
 ### **Add Interaction Techniques**
 
 Visual analysis typically progresses in an iterative process of view of creation, exploration, and refinement (Heer & Schneiderman, 2012). Before analyzing which interaction techniques are useful for a specific visualization application, it is useful to understand the typical analytical tasks performed by teachers who want to understand how their students are doing in class. Several task taxonomies have been described in literature for this purpose. Common tasks include:
@@ -210,8 +210,6 @@ Heer and Shneiderman (2012) is essential reading on interactive dynamics for vis
 </div>
 <div className="content-chunk" data-subsection-id = "Evaluate-Continuously-537t">
 ## Evaluate Continuously
-### **Evaluate Continuously**
-
 During the design process, the elaboration of concrete personas and scenarios can be very rewarding as it helps to focus the design, development, and evaluation of the visualization on what is relevant. It is very easy to get carried away with too much "eye candy" and lose track of the what, for whom, and why the visualization is being designed. Generally, a user-centred design (UCD) approach proceeds with iterative development that keeps the target users in the loop in continuous cycles of deign-implementation-evaluation. In this way, the development can focus on the most relevant issues for teachers or learners at all times.
 
 The evaluation of information visualization systems is essential. A plethora of techniques can be used, including controlled experiments that evaluate different visualization and interaction techniques or field studies that assess the impact of a visualization on learning (Plaisant, 2004). The latter take place in natural environments (classrooms) but are often time consuming and difficult to replicate and generalize (Nagel et al., 2014). Verbert et al. (2014) suggest the following evaluation techniques: 
@@ -222,8 +220,8 @@ The evaluation of information visualization systems is essential. A plethora of 
 
 Typical evaluation instruments include questionnaires or controlled experiments where time-to-task, errors made, time-to-learn, et cetera are evaluated (Dillenbourg et al., 2011).
 </div>
-<div className="content-chunk" data-subsection-id = "CONCLUSION-475t">
-## CONCLUSION
+<div className="content-chunk" data-subsection-id = "Conclusion-475t">
+## Conclusion
 Information visualization concepts and methodologies are key enablers for
 
 * Learners to gain insight into their learning actions and the effects these have.
@@ -234,7 +232,7 @@ As shown in this chapter, visualization has the unique potential to help shape t
 
 Designing and creating an effective information visualization system or learning analytics is an art, as the designer needs both domain expertise on learning theories and paradigms as well as techniques ranging from visual design to algorithm design (Nagel, 2015; Spence, 2001). In this chapter, we have briefly introduced the various steps in a visualization design process, from raw data analysis to effective dashboards evaluated by target users.
 </div>
-<div className="content-chunk" data-subsection-id = "REFERENCES-97pt">
+<div className="content-chunk" data-subsection-id = "References-97pt">
 <Info title="REFERENCES">  
 1 Arnold, K. E., & Pistilli, M. D. (2012). Course Signals at Purdue: Using learning analytics to increase student success. Proceedings of the 2nd International Conference on Learning Analytics and Knowledge (LAK ’12), 29 April-2 May 2012, Vancouver, BC, Canada (pp. 267-270). New York: ACM.  
 2 Bakharia, A., & Dawson, S. (2011). SNAPP: A bird's-eye view of temporal participant interaction. Proceedings of the 1st International Conference on Learning Analytics and Knowledge (LAK'11), 27 February-1 March 2011, Banff, AB, Canada (pp. 168-173). New York: ACM.  
