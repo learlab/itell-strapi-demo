@@ -6,12 +6,16 @@ quiz: false
 ---
 <div className="content-chunk" data-subsection-id = "Abstract-94pt">
 ## Abstract
+_Joris Klerkx, Katrien Verbert, and Erik Duval_  
+_Department of Computer Science, KU Leuven, Belgium_
+
 This chapter presents learning analytics dashboards that visualize learning traces to give users insight into the learning process. Examples are shown of what data can be visualized. In addition, guidelines on how to get started with the development of learning analytics dashboards are presented for practitioners and researchers. 
 
-**Keywords:** Information visualization, learning analytics dashboards  
-more work on this paper.
-</div>
-<div className="content-chunk" data-subsection-id = "Introduction-95pt">
+<Warning title="Keywords">  
+\- Information visualization;  
+\- learning analytics dashboards;  
+</Warning>
+
 In recent years, many learning analytics dashboards have been deployed to support insight into learning data. The objectives of these dashboards include providing feedback on learning activities, supporting reflection and decision making, increasing engagement and motivation, and reducing dropout. These learning analytics dashboards apply information visualization techniques to help teachers, learners, and other stakeholders explore and understand relevant user traces collected in various (online) environments. The overall objective is to improve (human) learning. 
 
 The goal of this chapter is to provide a guide to practitioners and researchers who want to get started with the development and evaluation of learning analytics dashboards. We provide guidance, and several examples, to address the following items:
@@ -21,7 +25,8 @@ The goal of this chapter is to provide a guide to practitioners and researchers 
 3.  Why: what is the goal of the visualization?
 4.  How can the data be visualized? Which interaction techniques can be applied? What tools, libraries, data formats, et cetera can be used for the technical implementations? What workflow and recipe can be used to develop the visualization?
 
-In addition to these four questions, we elaborate on evaluation aspects that assess the usefulness and potential impact of the approach.
+In addition to these four questions, we elaborate on evaluation aspects that assess the usefulness and potential impact of the approach.   
+more work on this paper.
 </div>
 <div className="content-chunk" data-subsection-id = "BACKGROUND-472t">
 ## BACKGROUND
@@ -32,9 +37,9 @@ There is a strong contrast between intelligent systems that try to make decision
 Data mining plays to the strength of computers to do number crunching, while visualization techniques play to the remarkable perceptual abilities that humans possess. The difference between the two approaches is like the difference between a self-driving car and a car with a human driver. Data mining uses automatic pattern matching for remote control while the dashboard provides visual communication to assist a human driver who remains in control of the vehicle.
 
 There is a certain philosophical or ethical side to this notion of two approaches as well: if learners are always told what to do next, how can they develop the typical 21st-century skills of collaboration, communication, critical thinking, and creativity? Or, at a more fundamental level, how can they become citizens equipped with the knowledge, skills, and attitudes to participate fully in society? In this chapter, we focus on methods that augment the human intellect, through visual approaches for learning analytics (Engelbart, 1995).
-
-### **Information Visualization**
-
+</div>
+<div className="content-chunk" data-subsection-id = "Information-Visualization-529t">
+## Information Visualization
 Information visualizations is the use of interactive visual representations to amplify cognition (Card, Mackinlay, & Shneiderman, 1999). It typically focuses on abstract data without a straightforward representation in 2-D or 3-D space. Visual analytics puts specific emphasis on building models and visualizing these in order to better understand or refine the models. A very useful goal of information visualization is to rely on human perceptual abilities for pattern discovery (trends, gaps, outliers, clusters). These patterns often become more apparent visually than numerically. As Ware (2004) explains it:
 
 The human visual system is a pattern seeker of enormous power and subtlety. The eye and the visual cortex of the brain form a massively parallel processor that provides the highest-bandwidth channel into human cognitive centers. At higher levels of processing, perception and cognition are closely interrelated, which is the reason why the words "understanding" and "seeing" are synonymous. (p. xxvi)
@@ -56,7 +61,8 @@ Verbert et al. (2014) present a survey of learning analytics dashboard applicati
 3.  Dashboards that support online or blended learning: an early famous example is Course Signals that visualizes predicted learning outcomes as a traffic light, based on grades in the course so far, time on task and past performance (Arnold & Pitstilli, 2012). More sophisticated and complex visualizations for detailed analysis of course activity by teachers are the focus of the Student Activity Meter (Goaverts, Verbert, Duval, & Pardo, 2012). SNAPP focuses on the visualization of social activity of learners (Bakharia & Dawson, 2011). 
 
 In terms of what is being tracked, the possibilities continue to expand, as new online trackers become available, capturing more detail of what learners and teachers do. As well, new sensors proliferate that can likewise capture what people do in the analog world. This second data source is evolving especially rapidly, with mobile devices that now include sensors to report physiological, emotional, and other kinds of learner characteristics that have so far mostly eluded automated capturing. Besides tracking, self-reporting can also be a valuable source of data. Although more error-pine and difficult to sustain systematically, self-reporting offers an opportunity for awareness, reflection, and self-analysis.
-
+</div>
+<div className="content-chunk" data-subsection-id = "WHAT-FOR,-WHOM,-WHY,-HOW?-Chunk-2-531t">
 As for what can be incorporated into a dashboard, Verbert et al. (2014) lists the following kinds of data:
 
 1.  _Artefacts produced_ by learners, including blog posts, shared documents, software, and other artefacts that would often end up in a student project portfolio.
@@ -75,7 +81,8 @@ Figure 12.1. (Top) Navi Badgeboard - Personal Badge Overview: A student's badge 
 </Image>
 
 Figure 12.1 presents one of our more recent dashboards (Charleer, Klerkx, Odriozola, Luis, & Duval, 2013). The dashboard tracks social data from blogs and Twitter. Such data, categorized as _artefacts produced_, is then visualized for _students_. The goal is to support awareness about learning progress and to enable discussion in class. To support such awareness and discussion, social interactions of students are abstracted in the form of learning badges for students to earn. Students can then explore which badges they have earned (Figure 12.2, top) through the visualization of _icons_ and _colour cues._ Gray badges have not yet been earned. The bottom part of Figure 12.2 shows a visualization,  developed for collaborative use on a tabletop that uses a node _link diagram_ to enable further exploration of these badges. Among other things, students have earned specific badges as a means to compare and discuss learning progress.
-
+</div>
+<div className="content-chunk" data-subsection-id = "WHAT-FOR,-WHOM,-WHY,-HOW?-Chunk-3-530t">
 <Image
   style="aspect-ratio:1227/561;"
   src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/fig12.2.png-fb4ffb4fbe26a1f84f9800a93bcd7209.png"
@@ -106,7 +113,8 @@ By carefully examining and understanding the data set, a variety of questions ab
 * time on page in digital textbooks
 * contributions to discussion fora
 * time spent on assignments
-
+</div>
+<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-2-532t">
 From these traces, we can define several relevant questions as a starting point in the design process. A teacher might ask questions like these:
 
 * When did students start looking at the course material?
@@ -120,17 +128,17 @@ A student will probably ask similar questions:
 * How much do I contribute to the discussion forum, compared to other students?
 
 In both cases, we deliberately only list questions that start with "what," "when," "how much," and "how often."  These specific, direct questions can be directly mapped in a data set. Questions like, "Why did this student have to enroll twice in this course?" the answer is more exploratory in nature. Indicators may be that he did not spend enough time on the course material, did not interact with fellow students on the discussion forum, started to study the course material too late, and so on. Another difficult question to answer would be, "Are students more eager to work on assignment 1 or assignment 2?" Even if much data is capture, it is difficult to answer questions involving human motivations based on a plurality of (un)known variables. Especially in the early phase of design, it is therefore often advisable and easier to focus on direct, specific questions.
-
-### **Acquire and (Pre-)Process Your Data**
-
+</div>
+<div className="content-chunk" data-subsection-id = "Acquire-and-Pre-Process-Your-Data-533t">
+## Acquire and (Pre-)Process Your Data
 Building a visual dashboard typically entails a data-gathering and preprocessing step. Visualization experts suggest that this step takes 80% of the time and effort versus all other steps. McDonnel and Elmqvist (2009) identify the following intermediary steps:
 
 1.  **Acquiring raw data:** It is important to have a clear idea of where the data will come from (e.g., the log files for LMS, assessment results, other), and when the data will be updated (continuously, not at all, at specific intervals ). Will the data be available through an Application Programming Interface (API), an export file, or some other source?
 2.  **Analyzing raw data:** Data me need to be cleaned if some values are missing or erroneous, or pre-processed to compute aggregate values (mean, minimum, maximum, et cetera). In data analysis, distribution can also be an issue: are there apparent outliers, clusters, et cetera?
 3.  **Preparing and filtering data:** Using the initial questions from step 1, choose the relevant data from the pool of analyzed raw data.
-
-### **Mapping Design**
-
+</div>
+<div className="content-chunk" data-subsection-id = "Mapping-Design-534t">
+## Mapping Design
 Important in the visual mapping design is to choose a representation that best answers the questions you want users to be able to answer, i.e., that serve your There exists a multitude of alternatives. One way to start is to look at the measurement or scale of each data characteristic. Nominal or qualitative scales differentiate objects based on discrete input domains, such as categories or other qualitative classifications to which they belong. Quantitative scales have continuous input domains (e.g., \[0. 100\]). Ordinal scales have discrete input domains where the order of the elements matters but the exact difference between the values does not. Depending on the scale of the data characteristic, one can choose how to encode this data visually. Figure 12.3 depicts Mackinlay's (1986) ranking of visual properties to encode quantitative, ordered, and categorical scales. For instance, the spatial position of an element is useful for encoding quantitative, ordered, and categorical differences. This is why scatterplots have been used so often to convey a variety of information. Length, on the other hand, can encode quantitative differences, but is of less value for encoding ordered and categorical differences. Shape is at the bottom of the ranking for visualizing quantitative and ordered differences, but is more often used to depict categorical data.
 
 <Image
@@ -142,7 +150,10 @@ Important in the visual mapping design is to choose a representation that best a
 Figure 12.3. Mackinlay's (1986) ranking of visual properties for data characteristics on quantitative, ordered, and categorical scales. 
 </Image>
 
-Low-fidelity prototypes such as paper sketches are often helpful during the design-mapping step. Figure 12.4 depicts an exercise given to the participants of the "Bring Your Own Data: Visual Learning Analytics" tutorial organized at the Learning Analytics Summer Institute (LASI) 2014. Participants included researches with good knowledge in learning analytics, but limited knowledge about visualization. They were asked to take 15 minutes to sketch all possible ways to visualize a simple data set of two numbers {75, 37}. The exercise illustrated to participants that from the moment they start sketching, it is not difficult to brainstorm visual encodings of data. This is reflected in the number of sketches that two teams of two persons each were able to generate in 15 minutes (see Figure 12.4a and 12.4b). By sketching, more ideas and questions about the data set are often raised, which in turn leads to new ideas for visualization. For example:
+Low-fidelity prototypes such as paper sketches are often helpful during the design-mapping step. Figure 12.4 depicts an exercise given to the participants of the "Bring Your Own Data: Visual Learning Analytics" tutorial organized at the Learning Analytics Summer Institute (LASI) 2014. Participants included researches with good knowledge in learning analytics, but limited knowledge about visualization. They were asked to take 15 minutes to sketch all possible ways to visualize a simple data set of two numbers {75, 37}. The exercise illustrated to participants that from the moment they start sketching, it is not difficult to brainstorm visual encodings of data. This is reflected in the number of sketches that two teams of two persons each were able to generate in 15 minutes (see Figure 12.4a and 12.4b).
+</div>
+<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-5-535t">
+By sketching, more ideas and questions about the data set are often raised, which in turn leads to new ideas for visualization. For example:
 
 * Figure 12.4c: participants represented the difference between the numbers quite originally by relating them to age, where a person of 37 can easily lift weights, while a person of 73 might already need a walking stick.
 * Figure 12.4d: adds muscle size.
@@ -172,7 +183,8 @@ Clearly some alternatives work better than others, depending on the contextualiz
 * Coordinated graphs enable rich exploration. 
 * 3-D graphics often do not convey any additional information and force the reader to deal with redundant and extraneous cues (Levy, Zacks, Tversky, & Schiano, 1996). 
 * Scatterplots and parallel coordinates are good representations for depicting correlations. In addition, Harrison, Yang, Franconeri, & Chang (2014) found that among the stacked chart variants, the stacked bar significantly outperformed both the stacked area and stacked line. Elliot (2016) has presented a nice overview of these studies.
-
+</div>
+<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-6-536t">
 ### **Documentation**
 
 As with any design exercise, it is important to be explicit about:
@@ -180,7 +192,8 @@ As with any design exercise, it is important to be explicit about:
 1.  **Rationale**: Why were certain decisions made, what was the intent?
 2.  **Alternatives**: Which alternatives were considered and why were they not withheld?
 3.  **Evolution**: How has the design evolved from early sketches to a full-blown implementation? What was modified for conceptual reasons and what for implementation or other reasons (logistics, lack of time, other reasons)?
-
+</div>
+<div className="content-chunk" data-subsection-id = "HOW-TO-GET-STARTED-Chunk-7-538t">
 ### **Add Interaction Techniques**
 
 Visual analysis typically progresses in an iterative process of view of creation, exploration, and refinement (Heer & Schneiderman, 2012). Before analyzing which interaction techniques are useful for a specific visualization application, it is useful to understand the typical analytical tasks performed by teachers who want to understand how their students are doing in class. Several task taxonomies have been described in literature for this purpose. Common tasks include:
@@ -194,7 +207,9 @@ Visual analysis typically progresses in an iterative process of view of creation
 * Bookmarking or recording a specific view on the data to enable effective navigation.
 
 Heer and Shneiderman (2012) is essential reading on interactive dynamics for visual analytics. The authors present a taxonomy of interactive dynamics that contribute to successful visual analytic tools. For each task category, various existing visualization systems are described with useful interaction techniques that support the task at hand, such as brushing and linking, histogram sliders, zoomable maps, dynamic query filter widgets, small multiple displays or trellis plots, multiple coordinated views, visual analysis histories, and so on.
-
+</div>
+<div className="content-chunk" data-subsection-id = "Evaluate-Continuously-537t">
+## Evaluate Continuously
 ### **Evaluate Continuously**
 
 During the design process, the elaboration of concrete personas and scenarios can be very rewarding as it helps to focus the design, development, and evaluation of the visualization on what is relevant. It is very easy to get carried away with too much "eye candy" and lose track of the what, for whom, and why the visualization is being designed. Generally, a user-centred design (UCD) approach proceeds with iterative development that keeps the target users in the loop in continuous cycles of deign-implementation-evaluation. In this way, the development can focus on the most relevant issues for teachers or learners at all times.
@@ -220,54 +235,31 @@ As shown in this chapter, visualization has the unique potential to help shape t
 Designing and creating an effective information visualization system or learning analytics is an art, as the designer needs both domain expertise on learning theories and paradigms as well as techniques ranging from visual design to algorithm design (Nagel, 2015; Spence, 2001). In this chapter, we have briefly introduced the various steps in a visualization design process, from raw data analysis to effective dashboards evaluated by target users.
 </div>
 <div className="content-chunk" data-subsection-id = "REFERENCES-97pt">
-## REFERENCES
-Arnold, K. E., & Pistilli, M. D. (2012). Course Signals at Purdue: Using learning analytics to increase student success. _Proceedings of the 2nd International Conference on Learning Analytics and Knowledge_ (LAK ’12), 29 April-2 May 2012, Vancouver, BC, Canada (pp. 267-270). New York: ACM.
-
-Bakharia, A., & Dawson, S. (2011). SNAPP: A bird's-eye view of temporal participant interaction. _Proceedings of the 1st International Conference on Learning Analytics and Knowledge_ (LAK'11), 27 February-1 March 2011, Banff, AB, Canada (pp. 168-173). New York: ACM.
-
-Brusilovsky, P. (2000). Adaptive hypermedia: From intelligent tutoring systems to web-based education. In G. Gauthier, C. Frasson, K. VanLehn (Eds.), _Proceedings of the 5th International Conference on Intelligent Tutoring Systems_ (ITS 2000), 19-23 June 2000, Montreal, QC, Canada (pp. 1-7). Springer. doi:10.1007/3-540-45108-0_1
-
-Card, S. K., Mackinlay, J., & Schneiderman, B. (Eds.). (1999). _Readings in information visualization: Using vision to think._ Burlington, MA: Morgan Kaufmann Publishers. 
-
-Charleer, S., Klerkx, J., Ordiozola, S., Luis, J., & Duval, E. (2013). Improving awareness and reflection through collaborative, interactive visualizations of badges. In M. Kracik, B. Krogstie, A. Moore, V. Pammer, L. Panese, M. Prilla, W. Reinhardt, & T. D. Ullmann (Eds.), _Proceedings of the 3rd Workshop on Awareness and Reflection in Technology Enhanced Learning_ (AR-TEL '13), 17 September 2013, Paphos, Cyprus (pp. pp. 69-81). 
-
-Dillenbourg, P., Zufferey, G., Alavi, H., Jermann, P., Do-lenh, S., Bonnard, Q., Cuendet, S., & Kaplan, F. (2011). Classroom orchestration: The third circle of usability. _Proceedings of the 9th International Conference on Computer-Supported Collaborative Learning_ (CSCL 2011), 4-8 July 2011, Hong Kong, China (vol. I, pp. 510-517). International Society of the Learning Sciences. 
-
-Elliot, K. (2016). 39 studies about human perception in 30 minutes. Presented at OepnVis 2016. [https://medium.com/@kennelliot/39-studies-about-human-perception-in-30-minutes-4728f9e31a73#.rs7z3ch6i](https://medium.com/@kennelliot/39-studies-about-human-perception-in-30-minutes-4728f9e31a73#.rs7z3ch6i)
-
-Engelbart, D. (1995). Toward augmenting the human intellect and boosting our collective IQ. _Communications of the ACM_, 38(8), 30-34. 
-
-Few, S. (2009). Now you see it: Simple visualization techniques for quantitative analysis. Berkeley, CA: Analytics Press.
-
-Govaerts, S., Verbert, K., Duval, E, & Pardo, A. (2012). The student activity meter for awareness and self reflection. _CHI Conference on Human Factors in Computing Systems: Extended Abstracts_ (CHI EA '12), 5-10 May 2012, Austin, TX, USA (pp. 869-884). New York: ACM.
-
-Harrison, L., Yang, F., Franconeri, S., & Chang, R. (2014). Ranking visualizations of correlation using Weber's law. _IEEE Transactions on Visualization and Computer Graphics_, 20(12), 1943-1952. 
-
-Heer, J., & Schneiderman, B. (2012, February). Interactive dynamics for visual analysis. _Queue – Microprocessors,_ 10(2), 30.
-
-Levy, E., Zacks, J., Tversky, B., & Schiano, D. (1996, April). Gratuitous graphics? Putting preferences in perspective. _Proceedings of the SIGCHI Conference on Human Factors in Computing Systems_ (CHI '96), 13-18 April 1996, Vancouver, BC, Canada (pp. 42-49). New York: ACM.
-
-Mackinlay, J. (1986). Automating the design of graphical presentations of relational information. _Transactions on Graphics_, 5(2), 110-141.
-
-McDonnel, B., & Elmqvist, N. (2009). Towards utilizing GPUs in information visualization: A model and implementation of image-space operations. _IEEE Transactions on Visualization and Computer Graphics_, 15(6), 1105-1112. 
-
-Nagel;, T., Maitan, M., Duval, E., Vande Moere, A., Lerkx, J., Kloeckl, K., & Ratti, C. (2014). Touching transport: A case study on visualizing metropolitan public transit on interactive tabletops. _Proceedings of the 12th International Working Conference on Advanced Visual Interfaces_ (AVI 2014), 27-29 May 2014, Como, Italy (pp. 281-288). New York: ACM.
-
-Nagel, T. (2015). _Unfolding data: Software and design approaches to support casual exploration of tempo-spatial data on interactive tabletops._ Leuven, Belgium: KU Leuven, Faculty of Engineering Science.
-
-Ochoa, X., Verbert, K. Chiluiza, K., & Duval, E. (2016). Uncertainty visualization in learning analytics. Work in progress for _IEEE Transactions on Learning Technologies._
-
-Plaisant, C. (2004). The challenge of information visualization evaluation. _Proceedings of the 2nd International Working Conference on Advanced Visual Interfaces_ (AVI '04), 25-28 May 2004, Gallipoli, Italy (pp. 109-116). New York: ACM
-
-Santos, O. C., Boticario, J. G., Romero, C., Pechenizkiy, M., Merceron, A., Mitros, P., Luna, J. M., Mihaescu, C., Moreno, P., Hershkovitz, A., Ventura, S., & Desmarais, M. (Eds.). (2015). _Proceedings of the 8th International Conference on Educational Data Mining_ (EDM2015), 26-29 June 2015, Madrid, Spain. International Educational Data Mining Society. 
-
-Shneiderman, B., & Bederson, B. B. (2003). _The craft of information visualization: Readings and reflections._ Burlington, MA: Morgan Kaufmann Publishers. 
-
-Spence, R. (2001). _Information visualization: Design for interaction_, 1st ed. Salt Lake City, UT: Addison-Wesley.
-
-Tufte, E. R. (2001). _The visual display of quantitative information_, 2nd ed. Cheshire, CT: Graphics Press LLC.
-
-Verbert, K., Govaerts, S., Duval, E., Santos, J., Assche, F., Parra, G., & Klerkx, J. (2014). Learning dashboards: An overview and future research opportunities. Personal and Ubiquitous Computing, 18(6), 1499-1514.
-
-Ware, C. (2004). Information visualization: Perception for design, 2nd ed. Burlington, MA: Morgan Kaufmann Publishers.
+<Info title="REFERENCES">  
+1 Arnold, K. E., & Pistilli, M. D. (2012). Course Signals at Purdue: Using learning analytics to increase student success. Proceedings of the 2nd International Conference on Learning Analytics and Knowledge (LAK ’12), 29 April-2 May 2012, Vancouver, BC, Canada (pp. 267-270). New York: ACM.  
+2 Bakharia, A., & Dawson, S. (2011). SNAPP: A bird's-eye view of temporal participant interaction. Proceedings of the 1st International Conference on Learning Analytics and Knowledge (LAK'11), 27 February-1 March 2011, Banff, AB, Canada (pp. 168-173). New York: ACM.  
+3 Brusilovsky, P. (2000). Adaptive hypermedia: From intelligent tutoring systems to web-based education. In G. Gauthier, C. Frasson, K. VanLehn (Eds.), Proceedings of the 5th International Conference on Intelligent Tutoring Systems (ITS 2000), 19-23 June 2000, Montreal, QC, Canada (pp. 1-7). Springer. doi:10.1007/3-540-45108-0_1  
+4 Card, S. K., Mackinlay, J., & Schneiderman, B. (Eds.). (1999). Readings in information visualization: Using vision to think. Burlington, MA: Morgan Kaufmann Publishers.  
+5 Charleer, S., Klerkx, J., Ordiozola, S., Luis, J., & Duval, E. (2013). Improving awareness and reflection through collaborative, interactive visualizations of badges. In M. Kracik, B. Krogstie, A. Moore, V. Pammer, L. Panese, M. Prilla, W. Reinhardt, & T. D. Ullmann (Eds.), Proceedings of the 3rd Workshop on Awareness and Reflection in Technology Enhanced Learning (AR-TEL '13), 17 September 2013, Paphos, Cyprus (pp. pp. 69-81).  
+6 Dillenbourg, P., Zufferey, G., Alavi, H., Jermann, P., Do-lenh, S., Bonnard, Q., Cuendet, S., & Kaplan, F. (2011). Classroom orchestration: The third circle of usability. Proceedings of the 9th International Conference on Computer-Supported Collaborative Learning (CSCL 2011), 4-8 July 2011, Hong Kong, China (vol. I, pp. 510-517). International Society of the Learning Sciences.  
+7 Elliot, K. (2016). 39 studies about human perception in 30 minutes. Presented at OepnVis 2016. https://medium.com/@kennelliot/39-studies-about-human-perception-in-30-minutes-4728f9e31a73#.rs7z3ch6i  
+8 Engelbart, D. (1995). Toward augmenting the human intellect and boosting our collective IQ. Communications of the ACM, 38(8), 30-34.  
+9 Few, S. (2009). Now you see it: Simple visualization techniques for quantitative analysis. Berkeley, CA: Analytics Press.  
+10 Govaerts, S., Verbert, K., Duval, E, & Pardo, A. (2012). The student activity meter for awareness and self reflection. CHI Conference on Human Factors in Computing Systems: Extended Abstracts (CHI EA '12), 5-10 May 2012, Austin, TX, USA (pp. 869-884). New York: ACM.  
+11 Harrison, L., Yang, F., Franconeri, S., & Chang, R. (2014). Ranking visualizations of correlation using Weber's law. IEEE Transactions on Visualization and Computer Graphics, 20(12), 1943-1952.  
+12 Heer, J., & Schneiderman, B. (2012, February). Interactive dynamics for visual analysis. Queue – Microprocessors, 10(2), 30.  
+13 Levy, E., Zacks, J., Tversky, B., & Schiano, D. (1996, April). Gratuitous graphics? Putting preferences in perspective. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '96), 13-18 April 1996, Vancouver, BC, Canada (pp. 42-49). New York: ACM.  
+14 Mackinlay, J. (1986). Automating the design of graphical presentations of relational information. Transactions on Graphics, 5(2), 110-141.  
+15 McDonnel, B., & Elmqvist, N. (2009). Towards utilizing GPUs in information visualization: A model and implementation of image-space operations. IEEE Transactions on Visualization and Computer Graphics, 15(6), 1105-1112.  
+16 Nagel;, T., Maitan, M., Duval, E., Vande Moere, A., Lerkx, J., Kloeckl, K., & Ratti, C. (2014). Touching transport: A case study on visualizing metropolitan public transit on interactive tabletops. Proceedings of the 12th International Working Conference on Advanced Visual Interfaces (AVI 2014), 27-29 May 2014, Como, Italy (pp. 281-288). New York: ACM.  
+17 Nagel, T. (2015). Unfolding data: Software and design approaches to support casual exploration of tempo-spatial data on interactive tabletops. Leuven, Belgium: KU Leuven, Faculty of Engineering Science.  
+18 Ochoa, X., Verbert, K. Chiluiza, K., & Duval, E. (2016). Uncertainty visualization in learning analytics. Work in progress for IEEE Transactions on Learning Technologies.  
+19 Plaisant, C. (2004). The challenge of information visualization evaluation. Proceedings of the 2nd International Working Conference on Advanced Visual Interfaces (AVI '04), 25-28 May 2004, Gallipoli, Italy (pp. 109-116). New York: ACM  
+20 Santos, O. C., Boticario, J. G., Romero, C., Pechenizkiy, M., Merceron, A., Mitros, P., Luna, J. M., Mihaescu, C., Moreno, P., Hershkovitz, A., Ventura, S., & Desmarais, M. (Eds.). (2015). Proceedings of the 8th International Conference on Educational Data Mining (EDM2015), 26-29 June 2015, Madrid, Spain. International Educational Data Mining Society.  
+21 Shneiderman, B., & Bederson, B. B. (2003). The craft of information visualization: Readings and reflections. Burlington, MA: Morgan Kaufmann Publishers.  
+22 Spence, R. (2001). Information visualization: Design for interaction, 1st ed. Salt Lake City, UT: Addison-Wesley.  
+23 Tufte, E. R. (2001). The visual display of quantitative information, 2nd ed. Cheshire, CT: Graphics Press LLC.  
+24 Verbert, K., Govaerts, S., Duval, E., Santos, J., Assche, F., Parra, G., & Klerkx, J. (2014). Learning dashboards: An overview and future research opportunities. Personal and Ubiquitous Computing, 18(6), 1499-1514.  
+25 Ware, C. (2004). Information visualization: Perception for design, 2nd ed. Burlington, MA: Morgan Kaufmann Publishers.  
+</Info>
 </div>
