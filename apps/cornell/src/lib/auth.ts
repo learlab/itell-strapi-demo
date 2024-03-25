@@ -35,10 +35,8 @@ export const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		signIn: async ({ user }) => {
-			if (user.email?.endsWith("@gmail.com")) {
-				if (env.ADMINS?.includes(user.email)) {
-					return true;
-				}
+			if (env.ADMINS?.includes(user.email || "")) {
+				return true;
 			}
 
 			if (env.STUDENTS?.includes(user.email || "")) {
