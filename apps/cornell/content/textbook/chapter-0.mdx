@@ -4,7 +4,7 @@ page_slug: learning-analytics-for-self-regulated-learning
 summary: true
 quiz: false
 ---
-<div className="content-chunk" data-subsection-id = "ABSTRACT-102pt">
+<div className="content-chunk" data-subsection-id = "Abstract-102pt">
 _Philip H. Winne_  
 _Faculty of Education, Simon Fraser University, Burnaby, Canada_
 
@@ -43,13 +43,13 @@ This chapter centers on self-regulated learning (SRL) in which learners are the 
 
 The next section overviews characteristics of learning analytics. Then four main classes of data are distinguished by their origin: traces, learner history, reports, and materials studied. Then computations and reporting formats for learning analytics relating to SRL are described. Together, these sections sketch an architecture for learning analytics designed to support SRL. In a final section, several challenges are raised to designing these learning analytics.
 </div>
-<div className="content-chunk" data-subsection-id = "LEARNING-ANALYTICS-497t">
-## LEARNING ANALYTICS
+<div className="content-chunk" data-subsection-id = "Learning-Analytics-497t">
+## Learning Analytics
 Four descriptions of learning analytics guide the field. Siemens \[14\] described learning analytics as “the use of intelligent data, learner-produced data, and analysis models to discover information and social connections, and to predict and advise on learning.” The website for the 1st International Conference on Learning Analytics and Knowledge posted this account: “the measurement, collection, analysis and reporting of data about learners and their contexts, for purposes of understanding and optimizing learning and the environments in which it occurs.” Educase \[8\] defined learning analytics as “the use of data and models to predict student progress and performance, and the ability to act on that information.” Building on Eckerson \[7\]’s framework, Elias \[9\] noted “learning analytics seeks \[sic\] to capitalize on the modelling capacity of analytics: to predict behaviour, act on predictions, and then feed those results back into the process in order to improve the predictions over time” (p. 5).
 
 These descriptions beg fundamental questions. What data should be gathered for input to methods used to generate learning analytics? Answering this question bounds and shapes two questions: First, what are approaches to computations underlying analytics? Second, what can analytics say about phenomena? For instance, if data are not ordinal, A cannot be described as greater than B, nor are transitive statements valid: if A > B and B > C, then A > C. Also, ordinal (rank) data preclude arithmetic operations on them, such as addition or division.
 </div>
-<div className="content-chunk" data-subsection-id = "LEARNING-ANALYTICS-461t">
+<div className="content-chunk" data-subsection-id = "Learning-Analytics-461t">
 What bearing do properties of data have on the validity of interventions based on learning analytics developed from those data \[20\]? For example, if a learner’s age, sex, or lab group predicts outcomes, intervening without other data is not warranted. None of these data classes are a direct, proximal (i.e., sufficient) cause of outcomes. Moreover, age and sex can’t be manipulated; and, changing lab group may be impractical (e.g., due to scheduling conflicts with other courses or a job). Finally, because prediction is insufficient to establish causality, it is unknown whether changing any of these characteristics will have any effect.
 
 Table 1: SMART Cognitive Operations  
@@ -63,15 +63,15 @@ Table 1: SMART Cognitive Operations  
 | Rehearse | Maintaining or re-instating information in working memory | Reviewing a note Copying, then pasting |
 | Translate | Transforming the representation of information | Paraphrasing  <br/>Describing a graph, equation, or diagram in words |
 </div>
-<div className="content-chunk" data-subsection-id = "LEARNING-ANALYTICS-498t">
+<div className="content-chunk" data-subsection-id = "Learning-Analytics-498t">
 Who generates data? Who receives learning analytics grounded in which data? Learning ecologies are populated by multiple actors. Authors of texts, videos and webpages vary cues they intend to guide learners about how to study; font styles and formats such as bullet lists and sidebars that translate text to graphics, are examples. Instructional designers and front-line instructors augment authors’ content, for example, by setting goals for learning and adding content to the author’s. Instructors also set schedules for learning and control most opportunities for feedback to learners. Learners study solo, form and disengage from online cliques or face-to-face study groups where they exchange topical information, announce beliefs about topics, and share products of learning activities (e.g., questions, notes). Their educational institution provides a multifaceted infrastructure intended to elevate motivation and promote wellness. Each category of actors adds data and may be a legitimate candidate to receive learning analytics.
 
 What are temporal attributes – onset, duration, and offset – describing data collection, data processing, and delivery of learning analytics? Will learning analytics be delivered just in time or just in case? Will learners need reminding about past context if learning analytics are temporally delayed from the activities in which the data were generated? Should temporal delimiters be elastic or rigidly fixed across the timeline? Whose model of a learning session — the analyst’s or the learner’s — overlays data and analytics \[25\]?
 
 Finally, what are learning analytics designed to do? What standards should be used to gauge uptake and benefit? Suppose after receiving learning analytics about scheduling work on assignments, a learner starts work on projects sooner, spends more time on tasks, but achievement remains unchanged. Is this a benefit?
 </div>
-<div className="content-chunk" data-subsection-id = "DATA-FOR-LEARNING-ANALYTICS-ABOUT-LEARNING-AND-SRL-460t">
-## DATA FOR LEARNING ANALYTICS ABOUT LEARNING AND SRL
+<div className="content-chunk" data-subsection-id = "Data-For-Learning-Analytics-About-Learning-And-SRL-460t">
+## Data For Learning Analytics About Learning And SRL
 ### Traces
 
 As learners work, they generate ambient data (or accretion data; \[15\]). For example, clicking a URL to open a web resource creates data about a learner’s cognition and motivation. Based on context (perhaps the title of the resource), the learner forecast this URL might contain information of sufficient value to motivate examining it. This click is a trace, an ambient datum affording relatively strong inferences about one or more cognitive, affective, metacognitive, and motivational states and processes (CAMM processes; \[2, 20\]). Following are two further examples of traces and inferences developed with an explicit caveat: inferences are probabilistic, not certain.
@@ -80,7 +80,7 @@ _Highlighting Content._ To highlight particular text amidst hundreds of sentence
 
 _Reviewing a Note._ Before reviewing a note, the learner metacognitively monitors whether information needed now can be recalled and is understood. Review is executed if what can be recalled is judged inaccurate, incomplete, or not understood. Searching for and reviewing a particular note traces motivation to repair some deficiency in knowledge. If the learner highlights information in the reviewed note, that traces which information the learner monitored and judged deficient.
 </div>
-<div className="content-chunk" data-subsection-id = "DATA-FOR-LEARNING-ANALYTICS-ABOUT-LEARNING-AND-SRL-500t">
+<div className="content-chunk" data-subsection-id = "Data-For-Learning-Analytics-About-Learning-And-SRL-500t">
 _Features of Traces_. Four features describe ideal trace data gathered for learning analytics to support SRL. First, the sampling proportion of observed traces to cognitive operations should approach unity. Ideally, but not realistically, every operation is traced throughout each learning session. Second, information operated on is identified. Third, traces are time stamped. Fourth, the product(s) of operations is (are) recorded. Data having this 4-tuple structure would permit an ideal playback machine to read trace data and output a nearly perfect rendition of every learning event and its product(s) across the timeline of the learning session. With 4-tuple trace data, raw material is available to generate rich learning analytics.
 
 In reality, every trace datum has some degree of imperfection and unreliability \[20\]. For example, a highlighting event traces a monitoring operation and generates a product: the mark plus the content marked. At a future time, the mark facilitates locating information. What is vague about this trace is standards the learner used to identify the marked content. Better designed traces can fill this gap. If learners are invited to tag content they highlight – interesting, important, unclear, project1, tellMike, etc. – the tag exposes the standard used to metacognitively monitor the highlighted information. Some tags reveal a strong signal about a plan – e.g., use this content in project1, in the next chat tellMike about this information.
@@ -134,8 +134,8 @@ Paper-based questionnaires (surveys) and oral reports recording ideas “thought
 ## Materials Studied
 Materials learners work with can be sources of data about conditions that shape SRL. Texts can be described by various analytics including readability and cohesion (e.g., Coh-Metrix). Content can be indexed for opportunity to learn it plus characteristics of what a learner learned previously. Materials a learner studies also can be indexed by rhetorical features such as examples and summaries; and media, such as a quadratic expression described in words (semantic), an equation (symbolic) and a graph (visualization).
 </div>
-<div className="content-chunk" data-subsection-id = "LEARNING-ANALYTICS-FOR-SRL-465t">
-## LEARNING ANALYTICS FOR SRL
+<div className="content-chunk" data-subsection-id = "Learning-Analytics-For-SRL-465t">
+## Learning Analytics For SRL
 Learning analytics to support SRL have three facets: calculation, delivery factors and recommendation(s). The calculation – e.g., observing presence/absence, count, proportion, duration, probability — is based on traces of operations performed during one or multiple study sessions \[13\]. Delivery factors fall into two main groups: timing and characteristics of the delivered analytic, for example, as text (“You created 3 notes on average per website.”), a table or a visualization (e.g., a radar chart with axes labeled by website titles and markers representing the number of notes at each website). Table 3 illustrates trace data that might be mirrored about a learner’s engagements.
 
 Table 3: Sample Analytics Describing COPES Facets in SRL 
@@ -151,13 +151,13 @@ Table 3: Sample Analytics Describing COPES Facets in SRL 
 
 A “simple” history of trace data mirrored back to a learner may be conditioned or contextualized by other data: features of materials such as length or a readability index, demographics describing the learner (e.g., prior achievement, hours of extracurricular work, postal code), or other characterizations such as disposition to procrastinate, degree in a social network (the number of people with whom this learner exchanged information) or context for study (MOOC vs. face-to-face course delivery, opportunity to submit drafts for peer review).
 </div>
-<div className="content-chunk" data-subsection-id = "LEARNING-ANALYTICS-FOR-SRL-527t">
+<div className="content-chunk" data-subsection-id = "Learning-Analytics-For-SRL-527t">
 The third facet of a learning analytic, the recommendation, updates conditions the agentic learner may attend to by describing what the learner might change. The recommended change may be supplemented by guidance about effecting the change and a rationale for change. Changes recommended are limited to four learner-controllable facets of COPES: some conditions, operations, triggers for making an evaluation and standards \[23\]. Products are only indirectly controllable because their characteristics are a function of (a) conditions a learner can change and then chooses to change, particularly information the learner selects to be operated on; and, (b) operation(s) the learner chooses for manipulating information. Rationale for recommendations may be grounded in “common sense,” theory, findings mined from data, and results of empirical research in learning science.
 
 When recommendations are operationally defined as how a learner uses tools in software – for example, ”highlight more selectively” (meaning highlight fewer words and more relevant content) or “open and review notes not viewed for 5 days” – the learner’s uptake and the degree of match between recommendations and the learner’s behavior can be tracked.
 </div>
-<div className="content-chunk" data-subsection-id = "CHALLENGES-FACING-LEARNING-ANALYTICS-ABOUT-SRL-528t">
-## CHALLENGES FACING LEARNING ANALYTICS ABOUT SRL
+<div className="content-chunk" data-subsection-id = "Challenges-Facing-Learning-Analytics-About-SRL-528t">
+## Challenges Facing Learning Analytics About SRL
 As software systems gathering trace data evolve, they are being distributed across widening spans of learners’ ages, subjects studied and learners’ whereabouts. Using these systems to advance research must respect learners’ preferences and legislated boundaries regarding the distribution and uses of data. Hopefully, learners will embrace a social responsibility to improve learning science, a stance that clearly depends on how learning science gathers data and uses learning analytics.
 
 ### Learning is a Multiplex of Skills
@@ -181,14 +181,14 @@ Learning science has researched how achievement co-varies with time spans betwee
 ## More Data and New Systems
 Learning analytics are accounts about how learners work and of relations between conditions, forms of learners’ work and products. Operationally defining data needed for these purposes is challenging \[20\]. Bootstrapping successively more refined and more effective learning analytics can profit from big data \[24\]. In turn, this recommends designing and widely distributing ensemble software to gather these data. As such learning systems come online, the field of learning analytics will be positioned to replicate what productively self-regulating learners do. At the same time, learners will be afforded regularly upgraded learning analytics to guide self-regulating their learning.
 </div>
-<div className="content-chunk" data-subsection-id = "ACKNOWLEDGEMENTS-93pt">
+<div className="content-chunk" data-subsection-id = "Acknowledgements-93pt">
 <Blockquote>  
 ACKNOWLEDGEMENTS  
   
 This work was supported by grants to Philip H. Winne from Simon Fraser University and the Social Sciences and Humanities Research Council of Canada, #435 2016-0379.  
 </Blockquote>
 </div>
-<div className="content-chunk" data-subsection-id = "REFERENCES-65pt">
+<div className="content-chunk" data-subsection-id = "References-65pt">
 <Info title="REFERENCES">1 Kimberly E. Arnold and Matthew D. Pistilli. “Course signals at Purdue”. In: Proceedings of the 2nd International Conference on Learning Analytics and Knowledge. ACM Press, 2012. DOI: 10.1145/ 2330601.2330666.  
 2 Roger Azevedo, Daniel C. Moos, Amy M. Johnson, and Amber D. Chauncey. “Measuring cognitive and metacognitive regulatory processes during hyper-media learning: Issues and challenges”. In: Educational psychologist 45.4 (2010), pp. 210–223.  
 3 Harris Cooper, Barbara Nye, Kelly Charlton, James Lindsay, and Scott Greathouse. “The effects of summer vacation on achievement test scores: A narrative and meta-analytic review”. In: Review of educational research 66.3 (1996), pp. 227–268.  
