@@ -30,8 +30,8 @@ import { Suspense } from "react";
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
-	const pageIndex = allPagesSorted.findIndex((section) => {
-		return section.page_slug === params.slug;
+	const pageIndex = allPagesSorted.findIndex((page) => {
+		return page.page_slug === params.slug;
 	});
 
 	if (pageIndex === -1) {

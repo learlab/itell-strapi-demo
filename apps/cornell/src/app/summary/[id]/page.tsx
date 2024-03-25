@@ -37,7 +37,7 @@ export default async function ({ params }: PageProps) {
 	}
 
 	const page = allPagesSorted.find(
-		(section) => section.page_slug === summary.pageSlug,
+		(page) => page.page_slug === summary.pageSlug,
 	);
 	if (!page) {
 		return notFound();
