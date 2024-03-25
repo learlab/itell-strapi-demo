@@ -28,10 +28,9 @@ import {
 	ErrorType,
 	SummaryResponse,
 	SummaryResponseSchema,
-	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
-import { Info, Warning, buttonVariants } from "@itell/ui/server";
+import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
@@ -44,7 +43,7 @@ import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
-import { SummaryInput } from "./summary-input";
+import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
@@ -219,12 +218,11 @@ export const SummaryForm = ({
 	}, [feedbackType]);
 
 	useEffect(() => {
-		if (state.stairsQuestion && !state.isPassed) {
-			console.log("go to question", state.stairsQuestion);
+		if (state.stairsQuestion && !state.isPassed && !state.error) {
 			goToQuestion(state.stairsQuestion);
 		}
 
-		if (state.canProceed) {
+		if (state.canProceed && !state.error) {
 			const title = feedback?.isPassed
 				? "Good job summarizing 🎉"
 				: "You can now move on 👏";
@@ -265,7 +263,7 @@ export const SummaryForm = ({
 		dispatch({ type: "set_prev_input", payload: input });
 
 		const userId = user.id;
-		localStorage.setItem(makeInputKey(pageSlug), input);
+		saveSummaryLocal(pageSlug, input);
 
 		const error = validateSummary(input);
 		if (error) {

@@ -10,6 +10,18 @@ import { toast } from "sonner";
 import { useConfig } from "../provider/page-provider";
 import { SummaryProgress } from "./summary-progress";
 
+export const saveSummaryLocal = (pageSlug: string, text: string) => {
+	localStorage.setItem(makeInputKey(pageSlug), text);
+};
+
+export const getSummaryLocal = (pageSlug: string) => {
+	return localStorage.getItem(makeInputKey(pageSlug));
+};
+
+export const clearSummaryLocal = (pageSlug: string) => {
+	localStorage.removeItem(makeInputKey(pageSlug));
+};
+
 type Props = {
 	pageSlug: string;
 	stages: StageItem[];
@@ -35,7 +47,7 @@ export const SummaryInput = ({
 
 	useEffect(() => {
 		if (!summaryToRevise) {
-			setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
+			setInput(getSummaryLocal(pageSlug) || value);
 		}
 	}, []);
 
