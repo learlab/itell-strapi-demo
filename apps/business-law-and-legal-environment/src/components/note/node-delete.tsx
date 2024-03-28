@@ -21,10 +21,11 @@ type Props = {
 	// otherwise the button becomes unclickable as useClickOutside is triggered
 	open: boolean;
 	onOpenChange: (val: boolean) => void;
-	onDelete: () => Promise<void>;
+	onDelete: (() => Promise<void>) | (() => void);
+	isNote: boolean;
 };
 
-export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
+export const NoteDelete = ({ open, onOpenChange, onDelete, isNote }: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	return (
@@ -34,15 +35,15 @@ export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
 				onOpenChange(val);
 			}}
 		>
-			<AlertDialogTrigger asChild>
+			{isNote && <AlertDialogTrigger asChild>
 				<Button variant="ghost" size="sm" type="button">
 					<TrashIcon className="size-4" />
 				</Button>
-			</AlertDialogTrigger>
+			</AlertDialogTrigger>}
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						Are you sure you want to delete this note?
+						Are you sure you want to delete this {isNote ? "note" : "highlight"}?
 					</AlertDialogTitle>
 					<AlertDialogDescription>
 						This action cannot be undone.

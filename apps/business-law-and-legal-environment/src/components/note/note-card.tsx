@@ -240,6 +240,7 @@ export const NoteCard = React.memo(
 								})
 							}
 							onDelete={handleDelete}
+							isNote={true}
 						/>
 						{editState.editing && (
 							<Button

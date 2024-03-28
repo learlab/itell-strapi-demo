@@ -17,7 +17,7 @@ type Props = {
 export const NoteCount = ({ noteCount, highlightCount }: Props) => {
 	const { notesAdded, highlightsAdded } = useNotesStore((state) => ({
 		notesAdded: state.notes.length,
-		highlightsAdded: state.highlightCount,
+		highlightsAdded: state.highlights.length,
 	}));
 
 	return (
