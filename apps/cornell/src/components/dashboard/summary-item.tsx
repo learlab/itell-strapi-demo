@@ -20,8 +20,8 @@ export function SummaryItem({ summary, timeZone }: PostItemProps) {
 				"block p-4",
 			)}
 		>
-			<header className="flex justify-between text-sm text-muted-foreground">
-				<p className="font-semibold text-lg leading-relaxed">
+			<header className="flex flex-col text-sm text-muted-foreground">
+				<p className="font-semibold text-lg leading-relaxed ">
 					{summary.pageTitle}
 				</p>
 				<p>{relativeDate(summary.created_at, timeZone)}</p>

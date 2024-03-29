@@ -2,17 +2,19 @@
 
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { fetchChatResponse } from "@itell/core/chatbot";
+import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import TextArea from "react-textarea-autosize";
+import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
 }
 
-export const ChatInputChunkQuestion = ({
+export const ChatInputStairs = ({
 	className,
 	pageSlug,
 	...props
@@ -21,22 +23,35 @@ export const ChatInputChunkQuestion = ({
 		addUserMessage,
 		addBotMessage,
 		updateBotMessage,
-		setChunkQuestionAnswered,
-		chunkQuestionReady,
-		chunkQuestionAnswered,
+		setStairsAnswered,
+		stairsTimestamp,
+		stairsAnswered,
+		stairsReady,
 		setActiveMessageId,
-		chunkQuestionText,
-		chunkQuestionMessages,
+		stairsQuestion,
+		stairsMessages,
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
-	const overMessageLimit = chunkQuestionMessages.length > 6;
+	const overMessageLimit = stairsMessages.length > 6;
+	const answered = useRef(false);
+	const history = useRef<ChatHistory>([
+		{
+			agent: "bot",
+			text: String(stairsQuestion?.text),
+		},
+	]);
 
 	const onMessage = async (text: string) => {
 		setPending(true);
+		const userTimestamp = Date.now();
+		// add messages to both normal chat and stairs chat
+		addBotMessage(String(stairsQuestion?.text), false);
 		addUserMessage(text, true);
-		addBotMessage(String(chunkQuestionText), false);
 		addUserMessage(text, false);
-		setChunkQuestionAnswered(true);
+
+		if (!stairsAnswered) {
+			setStairsAnswered(true);
+		}
 
 		// init response message
 		const botMessageId = addBotMessage("", true);
@@ -47,7 +62,7 @@ export const ChatInputChunkQuestion = ({
 			{
 				pageSlug,
 				text,
-				history: getChatHistory(chunkQuestionMessages),
+				history: history.current,
 			},
 		);
 		setActiveMessageId(null);
@@ -73,7 +88,70 @@ export const ChatInputChunkQuestion = ({
 			}
 
 			if (done) {
-				createChatMessage({ pageSlug, userText: text, botText: botText });
+				const botTimestamp = Date.now();
+				// also add the final bot message to the normal chat
+				addBotMessage(botText, false);
+				history.current.push(
+					{
+						agent: "user",
+						text,
+					},
+					{
+						agent: "bot",
+						text: botText,
+					},
+				);
+
+				if (!answered.current) {
+					createChatMessage({
+						pageSlug,
+						messages: [
+							{
+								text: String(stairsQuestion?.text),
+								isUser: false,
+								timestamp: Number(stairsTimestamp),
+								isStairs: true,
+								// ignoring for passing additional stairs data
+								// @ts-ignore
+								stairsData: {
+									chunk: stairsQuestion?.chunk,
+									question_type: stairsQuestion?.question_type,
+								},
+							},
+							{
+								text,
+								isUser: true,
+								timestamp: userTimestamp,
+								isStairs: true,
+							},
+							{
+								text: botText,
+								isUser: false,
+								timestamp: botTimestamp,
+								isStairs: true,
+							},
+						],
+					});
+				} else {
+					answered.current = true;
+					createChatMessage({
+						pageSlug,
+						messages: [
+							{
+								text,
+								isUser: true,
+								timestamp: userTimestamp,
+								isStairs: true,
+							},
+							{
+								text: botText,
+								isUser: false,
+								timestamp: botTimestamp,
+								isStairs: true,
+							},
+						],
+					});
+				}
 			}
 		} else {
 			updateBotMessage(
@@ -99,14 +177,14 @@ export const ChatInputChunkQuestion = ({
 			>
 				{overMessageLimit ? (
 					<p className="p-2">Please return to the summary</p>
-				) : chunkQuestionReady ? (
+				) : stairsReady ? (
 					<div className="relative">
 						<TextArea
 							name="input"
 							rows={2}
 							maxRows={4}
 							autoFocus
-							disabled={pending || overMessageLimit || !chunkQuestionReady}
+							disabled={pending || overMessageLimit || !stairsReady}
 							placeholder={
 								overMessageLimit
 									? "Please return to the summary"
@@ -125,9 +203,13 @@ export const ChatInputChunkQuestion = ({
 
 						<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
 							<button type="submit">
-								<kbd className="inline-flex items-center rounded border px-1 text-xs">
-									<CornerDownLeft className="w-3 h-3" />
-								</kbd>
+								{pending ? (
+									<Spinner className="size-4" />
+								) : (
+									<kbd className="inline-flex items-center rounded border px-1 text-xs">
+										<CornerDownLeft className="size-4" />
+									</kbd>
+								)}
 							</button>
 						</div>
 

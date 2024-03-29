@@ -3,13 +3,13 @@ import { getChatMessages } from "@/lib/chat";
 import { Message } from "@itell/core/chatbot";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";
-import { Chatbot } from "./chatbot";
+import { Chat } from "./chat";
 
 type Props = {
 	pageSlug: string;
 };
 
-export const ChatbotLoader = async ({ pageSlug }: Props) => {
+export const ChatLoader = async ({ pageSlug }: Props) => {
 	const user = await getCurrentUser();
 	if (!user) {
 		return null;
@@ -24,7 +24,7 @@ export const ChatbotLoader = async ({ pageSlug }: Props) => {
 
 	return (
 		<>
-			<Chatbot
+			<Chat
 				pageSlug={pageSlug}
 				user={user}
 				data={messages}
@@ -34,7 +34,7 @@ export const ChatbotLoader = async ({ pageSlug }: Props) => {
 	);
 };
 
-ChatbotLoader.Skeleton = () => (
+ChatLoader.Skeleton = () => (
 	<div className="flex items-center gap-2 fixed right-8 bottom-12 w-48 lg:w-64 rounded-lg shadow-lg bg-background border border-border z-30 p-4">
 		<Avatar className="rounded-none w-8 h-8">
 			<AvatarImage src="/images/itell-ai.svg" />

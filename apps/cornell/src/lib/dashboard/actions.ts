@@ -9,6 +9,7 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 	const teacher = await db.teacher.findFirst({
 		where: {
 			classId,
+			isPrimary: true,
 		},
 	});
 

@@ -57,7 +57,6 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 		}
 	};
 
-	// @ts-ignore
 	const [formState, formAction] = useFormState(onSubmit, { error: null });
 
 	return (

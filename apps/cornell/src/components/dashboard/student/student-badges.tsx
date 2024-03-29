@@ -56,7 +56,7 @@ export const StudentBadges = async ({ user }: { user: User }) => {
 				<div className="text-2xl font-bold">{studentStats.totalCount}</div>
 				<p className="text-xs text-muted-foreground">
 					{comparisons.totalCount > 0 ? "+" : ""}
-					{comparisons.totalCount} compared to class
+					{Math.round(comparisons.totalCount)} compared to class
 				</p>
 				<p className="text-xs text-muted-foreground">
 					{studentStats.totalCountLastWeek} from last week
@@ -73,7 +73,7 @@ export const StudentBadges = async ({ user }: { user: User }) => {
 				<div className="text-2xl font-bold">{studentStats.passedCount}</div>
 				<p className="text-xs text-muted-foreground">
 					{comparisons.passedCount > 0 ? "+" : ""}
-					{comparisons.passedCount} compared to class
+					{Math.round(comparisons.passedCount)} compared to class
 				</p>
 				<p className="text-xs text-muted-foreground">
 					{studentStats.passedCountLastWeek} from last week

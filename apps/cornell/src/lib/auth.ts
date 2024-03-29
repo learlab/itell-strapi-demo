@@ -35,12 +35,14 @@ export const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		signIn: async ({ user }) => {
-			if (
-				env.ADMINS?.includes(user.email || "") ||
-				env.STUDENTS?.includes(user.email || "")
-			) {
+			if (env.ADMINS?.includes(user.email || "")) {
 				return true;
 			}
+
+			if (env.STUDENTS?.includes(user.email || "")) {
+				return true;
+			}
+
 			return "/auth?error=InvalidEmail";
 		},
 		session({ session, user }) {

@@ -17,7 +17,7 @@ export const GoogleLoginButton = CreateLoginButton({
 		<Image
 			alt="Google"
 			src="/icons/google.png"
-			width={18}
+			width={16}
 			height={16}
 			className="mr-2"
 		/>
@@ -37,8 +37,8 @@ export const OutlookLoginButton = CreateLoginButton({
 		<Image
 			alt="outlook"
 			src="/icons/outlook.png"
-			width={32}
-			height={32}
+			width={28}
+			height={28}
 			className="mr-2"
 		/>
 	),

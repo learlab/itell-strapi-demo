@@ -7,13 +7,14 @@ import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
+import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
-	isChunkQuestion: boolean;
+	isStairs: boolean;
 }
 
-const isChunkQuestion = false;
+const isStairs = false;
 
 export const ChatInput = ({
 	className,
@@ -31,10 +32,11 @@ export const ChatInput = ({
 
 	const onMessage = async (text: string) => {
 		setPending(true);
-		addUserMessage(text, isChunkQuestion);
+		const userTimestamp = Date.now();
+		addUserMessage(text, isStairs);
 
 		// init response message
-		const botMessageId = addBotMessage("", isChunkQuestion);
+		const botMessageId = addBotMessage("", isStairs);
 		setActiveMessageId(botMessageId);
 
 		const chatResponse = await fetchChatResponse(
@@ -63,18 +65,35 @@ export const ChatInput = ({
 						text: string;
 					};
 					botText = chunkValue.text;
-					updateBotMessage(botMessageId, botText, isChunkQuestion);
+					updateBotMessage(botMessageId, botText, isStairs);
 				}
 			}
 
 			if (done) {
-				createChatMessage({ pageSlug, userText: text, botText: botText });
+				const botTimestamp = Date.now();
+				createChatMessage({
+					pageSlug,
+					messages: [
+						{
+							text,
+							isUser: true,
+							timestamp: userTimestamp,
+							isStairs,
+						},
+						{
+							text: botText,
+							isUser: false,
+							timestamp: botTimestamp,
+							isStairs,
+						},
+					],
+				});
 			}
 		} else {
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
-				isChunkQuestion,
+				isStairs,
 			);
 		}
 
@@ -112,9 +131,13 @@ export const ChatInput = ({
 
 				<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
 					<button type="submit">
-						<kbd className="inline-flex items-center rounded border px-1 text-xs">
-							<CornerDownLeft className="w-3 h-3" />
-						</kbd>
+						{pending ? (
+							<Spinner className="size-4" />
+						) : (
+							<kbd className="inline-flex items-center rounded border px-1 text-xs">
+								<CornerDownLeft className="size-4" />
+							</kbd>
+						)}
 					</button>
 				</div>
 

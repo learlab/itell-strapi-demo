@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { delay } from "@/lib/utils";
 import {
 	PrevDaysLookup,
 	ReadingTimeEntry,
@@ -83,7 +84,7 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 	);
 
 	return (
-		<Card>
+		<Card className="has-[[data-pending]]:animate-pulse">
 			<CardHeader>
 				<CardTitle>
 					<div className="flex items-center justify-between">

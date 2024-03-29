@@ -48,8 +48,7 @@ export default async function ({ searchParams }: Props) {
 						You are enrolled in a class with{" "}
 						<Suspense fallback={<Spinner className="inline" />}>
 							<ClassStudentCount classId={user.classId} />
-						</Suspense>{" "}
-						other students
+						</Suspense>
 					</p>
 				) : (
 					<p className="p-2 text-muted-foreground">

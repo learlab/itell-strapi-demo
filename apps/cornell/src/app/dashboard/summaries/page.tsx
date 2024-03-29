@@ -7,8 +7,6 @@ import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUser } from "@/lib/user";
 import { makePageHref } from "@/lib/utils";
 import { groupby } from "@itell/core/utils";
-import { User } from "@prisma/client";
-import { Page } from "contentlayer/generated";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -56,9 +54,7 @@ export default async function () {
 	// // convert date here since they will be passed from server components to client components
 	const summaries = userSummaries
 		.map((s) => {
-			const page = allPagesSorted.find(
-				(section) => section.page_slug === s.pageSlug,
-			);
+			const page = allPagesSorted.find((page) => page.page_slug === s.pageSlug);
 
 			if (!page) {
 				return undefined;

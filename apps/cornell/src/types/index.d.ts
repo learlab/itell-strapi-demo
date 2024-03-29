@@ -7,10 +7,10 @@ declare global {
 		type ChatMessageData = {
 			text: string;
 			isUser: boolean;
+			isStairs: boolean;
+			timestamp: number;
 		};
 
 		type FocusTimeData = Record<string, number>;
 	}
 }
-
-const m: ChatMessage = {};

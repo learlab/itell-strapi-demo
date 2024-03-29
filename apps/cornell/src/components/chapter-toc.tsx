@@ -85,7 +85,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 			</ol>
 			<div className="mt-12 space-y-2">
 				{isAdmin && <AdminTools />}
-				<RestartPageButton />
+				<RestartPageButton pageSlug={currentPage.page_slug} />
 				{currentPage.summary && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4" />}

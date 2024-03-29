@@ -28,10 +28,9 @@ import {
 	ErrorType,
 	SummaryResponse,
 	SummaryResponseSchema,
-	simpleSummaryResponse,
 	validateSummary,
 } from "@itell/core/summary";
-import { Info, Warning, buttonVariants } from "@itell/ui/server";
+import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import Link from "next/link";
@@ -40,11 +39,11 @@ import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
-import { ChatbotChunkQuestion } from "../chat/chatbot-chunk-question";
+import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
-import { SummaryInput } from "./summary-input";
+import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
@@ -55,7 +54,7 @@ type Props = {
 	feedbackType: FeedbackType;
 };
 
-type ChunkQuestion = {
+type StairsQuestion = {
 	text: string;
 	chunk: string;
 	question_type: string;
@@ -67,7 +66,7 @@ type State = {
 	isPassed: boolean;
 	error: ErrorType | null;
 	response: SummaryResponse | null;
-	chunkQuestion: ChunkQuestion | null;
+	stairsQuestion: StairsQuestion | null;
 	canProceed: boolean;
 };
 
@@ -75,7 +74,7 @@ type Action =
 	| { type: "submit" }
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
-	| { type: "ask"; payload: ChunkQuestion }
+	| { type: "ask"; payload: StairsQuestion }
 	| { type: "finish"; payload: { canProceed: boolean } }
 	| { type: "set_passed"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
@@ -85,7 +84,7 @@ const initialState: State = {
 	pending: false,
 	error: null,
 	response: null,
-	chunkQuestion: null,
+	stairsQuestion: null,
 	isPassed: false,
 	canProceed: false,
 };
@@ -112,10 +111,10 @@ export const SummaryForm = ({
 	const pageSlug = page.page_slug;
 	const mounted = useRef(false);
 
-	const { chunkQuestionAnswered, addChunkQuestion, messages } = useChatStore(
+	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
 		(state) => ({
-			chunkQuestionAnswered: state.chunkQuestionAnswered,
-			addChunkQuestion: state.addChunkQuestionStairs,
+			stairsAnswered: state.stairsAnswered,
+			addStairsQuestion: state.addStairsQuestion,
 			messages: state.messages,
 		}),
 	);
@@ -131,7 +130,7 @@ export const SummaryForm = ({
 				draft.pending = true;
 				draft.error = null;
 				draft.response = null;
-				draft.chunkQuestion = null;
+				draft.stairsQuestion = null;
 				break;
 			case "fail":
 				draft.pending = false;
@@ -145,7 +144,7 @@ export const SummaryForm = ({
 				draft.isPassed = action.payload;
 				break;
 			case "ask":
-				draft.chunkQuestion = action.payload;
+				draft.stairsQuestion = action.payload;
 				draft.pending = false;
 				break;
 			case "finish":
@@ -159,8 +158,8 @@ export const SummaryForm = ({
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const feedback = state.response ? getFeedback(state.response) : null;
 
-	const goToQuestion = (chunkQuestion: ChunkQuestion) => {
-		const el = getChunkElement(chunkQuestion.chunk);
+	const goToQuestion = (question: StairsQuestion) => {
+		const el = getChunkElement(question.chunk);
 		if (el) {
 			scrollToElement(el);
 
@@ -170,8 +169,8 @@ export const SummaryForm = ({
 					popover: {
 						description:
 							feedbackType === "stairs"
-								? "Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding."
-								: 'Please re-read the highlighted section. when you are finished, press the "return to summary" button.',
+								? "Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding."
+								: 'Please re-read the highlighted chunk. when you are finished, press the "return to summary" button.',
 						side: "left",
 						align: "start",
 					},
@@ -190,7 +189,7 @@ export const SummaryForm = ({
 			onPopoverRender: (popover) => {
 				if (feedbackType === "stairs") {
 					addNode(
-						<ChatbotChunkQuestion
+						<ChatStairs
 							user={user}
 							pageSlug={pageSlug}
 							onExit={exitQuestion}
@@ -209,7 +208,7 @@ export const SummaryForm = ({
 				}
 			},
 			onDestroyStarted: () => {
-				if (!chunkQuestionAnswered) {
+				if (!stairsAnswered) {
 					return toast.warning("Please answer the question to continue");
 				}
 
@@ -219,12 +218,11 @@ export const SummaryForm = ({
 	}, [feedbackType]);
 
 	useEffect(() => {
-		if (state.chunkQuestion && !state.isPassed) {
-			console.log("go to question", state.chunkQuestion);
-			goToQuestion(state.chunkQuestion);
+		if (state.stairsQuestion && !state.isPassed && !state.error) {
+			goToQuestion(state.stairsQuestion);
 		}
 
-		if (state.canProceed) {
+		if (state.canProceed && !state.error) {
 			const title = feedback?.isPassed
 				? "Good job summarizing 🎉"
 				: "You can now move on 👏";
@@ -265,7 +263,7 @@ export const SummaryForm = ({
 		dispatch({ type: "set_prev_input", payload: input });
 
 		const userId = user.id;
-		localStorage.setItem(makeInputKey(pageSlug), input);
+		saveSummaryLocal(pageSlug, input);
 
 		const error = validateSummary(input);
 		if (error) {
@@ -277,10 +275,9 @@ export const SummaryForm = ({
 		const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
 		let summaryResponse: SummaryResponse | null = null;
-		let chunkQuestionData: ChunkQuestion | null = null;
+		let stairsData: StairsQuestion | null = null;
 
 		try {
-			console.log("messages", getChatHistory(messages));
 			const focusTime = await findFocusTime(userId, pageSlug);
 			const requestBody = JSON.stringify({
 				summary: input,
@@ -306,7 +303,7 @@ export const SummaryForm = ({
 				const decoder = new TextDecoder();
 				let done = false;
 				let chunkIndex = 0;
-				let chunkQuestionString: string | null = null;
+				let stairsString: string | null = null;
 
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
@@ -347,19 +344,17 @@ export const SummaryForm = ({
 							addStage("Analyzing");
 						}
 						if (!done) {
-							chunkQuestionString = chunk.trim().replaceAll("\u0000", "");
+							stairsString = chunk.trim().replaceAll("\u0000", "");
 						} else {
-							if (chunkQuestionString) {
-								chunkQuestionData = JSON.parse(
-									chunkQuestionString,
-								) as ChunkQuestion;
+							if (stairsString) {
+								stairsData = JSON.parse(stairsString) as StairsQuestion;
 								finishStage("Analyzing");
-								addChunkQuestion(chunkQuestionData.text);
+								addStairsQuestion(stairsData);
 
 								createEvent({
 									eventType: "stairs-question",
 									pageSlug,
-									data: chunkQuestionData,
+									data: stairsData,
 								});
 							}
 						}
@@ -386,8 +381,8 @@ export const SummaryForm = ({
 				}
 				finishStage("Saving");
 
-				if (chunkQuestionData) {
-					dispatch({ type: "ask", payload: chunkQuestionData });
+				if (stairsData) {
+					dispatch({ type: "ask", payload: stairsData });
 				}
 			}
 		} catch (err) {
@@ -414,12 +409,12 @@ export const SummaryForm = ({
 						Go to next page
 					</Link>
 				)}
-				{state.chunkQuestion && (
+				{state.stairsQuestion && (
 					<Button
 						variant={"outline"}
-						onClick={() => goToQuestion(state.chunkQuestion as ChunkQuestion)}
+						onClick={() => goToQuestion(state.stairsQuestion as StairsQuestion)}
 					>
-						{feedbackType === "stairs" ? "See question" : "See re-read section"}
+						{feedbackType === "stairs" ? "See question" : "See re-read chunk"}
 					</Button>
 				)}
 			</div>

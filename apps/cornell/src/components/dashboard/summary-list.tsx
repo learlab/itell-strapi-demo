@@ -29,7 +29,7 @@ const SelectChapter = ({
 					<SelectLabel>Select a chapter</SelectLabel>
 					{chapters.map((c) => (
 						<SelectItem key={c} value={c}>
-							Chapter {c}
+							Chapter {Number(c) + 1}
 						</SelectItem>
 					))}
 				</SelectGroup>
