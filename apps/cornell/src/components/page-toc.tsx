@@ -13,12 +13,12 @@ type TocSidebarProps = {
 export const PageToc = ({ headings }: TocSidebarProps) => {
 	return (
 		<div>
-			<p className="font-medium flex items-center">
+			<p className="font-medium flex items-center pb-5">
 				<BookmarkIcon className="mr-2 size-4" />
 				<span>ON THIS PAGE</span>
 			</p>
 
-			<ol className="max-h-[60vh] overflow-y-scroll list-disc mt-2 space-y-2 pl-4">
+			<ol className="max-h-[60vh] overflow-y-scroll list-disc mt-2 space-y-2 pl-4 list-none">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
@@ -27,8 +27,8 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 								data-level={heading.level}
 								href={`#${heading.slug}`}
 								className={cn("hover:underline inline-flex ", {
-									"text-lg": heading.level === "two",
-									"text-base pl-1": heading.level === "three",
+									"text-base": heading.level === "two",
+									"text-sm pl-1": heading.level === "three",
 									"text-sm pl-2 text-muted-foreground":
 										heading.level === "four",
 									"text-muted-foreground text-sm pl-4":
