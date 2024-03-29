@@ -1,2 +1,4 @@
 .env
 scripts
+# Sentry Config File
+.sentryclirc
