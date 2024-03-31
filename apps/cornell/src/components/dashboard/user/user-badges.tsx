@@ -19,7 +19,6 @@ const roundNumber = (num: number | null) => {
 };
 
 export const UserBadges = async ({ uid }: { uid: string }) => {
-	const start = performance.now();
 	const {
 		totalCount,
 		totalCountLastWeek,
