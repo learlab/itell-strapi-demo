@@ -74,13 +74,16 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@itell/ui": "workspace:^",
 		"clsx": "^1.2.1",
 		"date-fns": "2.29.3",
 		"date-fns-tz": "^2.0.0",
 		"github-slugger": "^2.0.0",
 		"js-yaml": "^4.1.0",
+		"lucide-react": "^0.363.0",
 		"range-serializer": "^0.0.2",
 		"tailwind-merge": "^1.14.0",
+		"use-immer": "^0.9.0",
 		"zod": "^3.22.2"
 	},
 	"peerDependencies": {
