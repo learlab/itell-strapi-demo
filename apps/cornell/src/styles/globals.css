@@ -4,6 +4,10 @@
 
 @import url("@itell/ui/dist/style.css");
 
+html {
+  scroll-behavior: smooth;
+}
+
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
   margin-top: 0;
