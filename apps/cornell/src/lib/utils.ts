@@ -18,8 +18,8 @@ export const makeInputKey = (slug: string) => {
 	return `${slug}-summary`;
 };
 
-export const makePageHref = (slug: string) => {
-	return `/${slug}`;
+export const makePageHref = (slug: string, chunk?: string) => {
+	return `/${slug}${chunk ? `#${chunk}` : ""}`;
 };
 
 export type PageData = {

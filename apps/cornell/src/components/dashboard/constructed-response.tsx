@@ -15,6 +15,7 @@ import Link from "next/link";
 import pluralize from "pluralize";
 import { BarChart } from "../chart/bar-chart";
 import { CreateErrorFallback } from "../error-fallback";
+import { PageLink } from "../page/page-link";
 
 type Props = {
 	uid: string;
@@ -86,13 +87,14 @@ export const ConstructedResponse = async ({ uid }: Props) => {
 										key={a.id}
 										className="flex items-baseline justify-between gap-4"
 									>
-										<Link
-											href={`/${a.pageSlug}#${a.chunkSlug}`}
+										<PageLink
+											pageSlug={a.pageSlug}
+											chunkSlug={a.chunkSlug}
 											className="flex-1 flex items-baseline gap-2 hover:underline"
 										>
 											<LightbulbIcon className="size-4" />
 											<p className="flex-1">{a.response}</p>
-										</Link>
+										</PageLink>
 										{a.score === 0 ? (
 											<FrownIcon />
 										) : a.score === 1 ? (

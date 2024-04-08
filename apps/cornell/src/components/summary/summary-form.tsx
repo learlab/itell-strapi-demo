@@ -41,6 +41,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
+import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
@@ -402,12 +403,12 @@ export const SummaryForm = ({
 			{portalNodes}
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
-					<Link
-						href={page.nextPageSlug}
+					<PageLink
+						pageSlug={page.nextPageSlug}
 						className={buttonVariants({ variant: "outline" })}
 					>
 						Go to next page
-					</Link>
+					</PageLink>
 				)}
 				{state.stairsQuestion && (
 					<Button

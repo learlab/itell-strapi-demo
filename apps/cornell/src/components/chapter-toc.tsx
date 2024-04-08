@@ -44,8 +44,8 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 	const router = useRouter();
 
 	const navigatePage = (pageSlug: string) => {
+		setActivePage(pageSlug);
 		startTransition(async () => {
-			setActivePage(pageSlug);
 			router.push(makePageHref(pageSlug));
 		});
 	};
