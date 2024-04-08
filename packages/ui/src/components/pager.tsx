@@ -1,7 +1,7 @@
 import { cn } from "@itell/core/utils";
+import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./button";
-import { ChevronLeftIcon, ChevronRightIcon, BanIcon } from "lucide-react";
 
 export type PageLinkData = {
 	text: string;
@@ -14,7 +14,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 	next: PageLinkData | null;
 }
 
-export const PageLink = ({ text, href, icon, disabled }: PageLinkData) => {
+const PageLink = ({ text, href, icon, disabled }: PageLinkData) => {
 	return (
 		<Button variant="outline" disabled={disabled} className="max-w-sm h-fit">
 			<Link
