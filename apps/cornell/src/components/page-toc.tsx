@@ -69,10 +69,10 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 									"hover:underline inline-flex border-l-2 border-transparent",
 									{
 										"text-base pl-1": heading.level === "two",
-										"text-sm pl-2": heading.level === "three",
-										"text-sm pl-3 text-muted-foreground":
+										"text-sm pl-3": heading.level === "three",
+										"text-sm pl-5 text-muted-foreground":
 											heading.level === "four",
-										"text-muted-foreground text-sm pl-4":
+										"text-muted-foreground text-sm pl-6":
 											heading.level === "other",
 									},
 								)}
