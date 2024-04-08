@@ -4,7 +4,7 @@ import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-m
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
-import { getTeacherWithClassId } from "@/lib/dashboard/actions";
+import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
 
@@ -26,6 +26,8 @@ export default async function ({ searchParams }: Props) {
 	if (!user) {
 		return redirectWithSearchParams("/auth", searchParams);
 	}
+
+	incrementView("settings");
 
 	const teacher = classId ? await getTeacherWithClassId(classId) : null;
 

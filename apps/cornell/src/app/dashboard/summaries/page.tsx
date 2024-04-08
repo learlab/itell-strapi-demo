@@ -2,6 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SummaryList } from "@/components/dashboard/summary-list";
 import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
+import { incrementView } from "@/lib/dashboard/actions";
 import db from "@/lib/db";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUser } from "@/lib/user";
@@ -15,6 +16,8 @@ export default async function () {
 	if (!currentUser) {
 		return redirect("/auth");
 	}
+
+	incrementView("summary");
 
 	const [user, userSummaries] = await Promise.all([
 		getUser(currentUser.id),

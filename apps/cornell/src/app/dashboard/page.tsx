@@ -6,6 +6,7 @@ import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
 import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
+import { incrementView } from "@/lib/dashboard/actions";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
 import Link from "next/link";
@@ -31,6 +32,8 @@ export default async function ({ searchParams }: Props) {
 	if (!user) {
 		return redirectWithSearchParams("/auth", searchParams);
 	}
+
+	incrementView("home");
 
 	return (
 		<DashboardShell>
