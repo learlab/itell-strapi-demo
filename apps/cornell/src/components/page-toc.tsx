@@ -2,7 +2,7 @@
 
 import { cn } from "@itell/core/utils";
 import { BookmarkIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 type Heading = {
 	level: "one" | "two" | "three" | "four" | "other";
@@ -11,9 +11,42 @@ type Heading = {
 };
 type TocSidebarProps = {
 	headings: Heading[];
+	chunks: string[];
 };
 
-export const PageToc = ({ headings }: TocSidebarProps) => {
+function onlyUnique(value: string, index: number, array: string[]) {
+	return array.indexOf(value) === index;
+}
+
+export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
+	const editedHeadings = useMemo(() => {
+		let headingsList = headings.map((heading) =>
+			heading.slug?.toLocaleLowerCase(),
+		);
+		const editedChunks = chunks
+			.map((chunk) => chunk.split("-").slice(0, -1).join("-"))
+			.filter(onlyUnique);
+		const editedHeadings = headings;
+		for (let i = 0; i < editedChunks.length; i++) {
+			if (!headingsList.includes(editedChunks[i].toLocaleLowerCase())) {
+				const index =
+					headingsList.findIndex(
+						(value) => value === editedChunks[i - 1].toLocaleLowerCase(),
+					) + 1;
+				console.log(editedChunks[i - 1]);
+				editedHeadings.splice(index, 0, {
+					level: "one",
+					text: editedChunks[i].split("-").join(" "),
+					slug: editedChunks[i],
+				});
+				headingsList = editedHeadings.map((heading) =>
+					heading.slug?.toLocaleLowerCase(),
+				);
+			}
+		}
+		return editedHeadings;
+	}, [headings, chunks]);
+
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			window.addEventListener("DOMContentLoaded", () => {
@@ -40,7 +73,9 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 						if (renamedId) {
 							const lowercaseId = renamedId.toLowerCase();
 							const slicedId = lowercaseId.split("-").slice(0, -1).join("-");
-							if (headings.map((heading) => heading.slug).includes(slicedId)) {
+							if (
+								editedHeadings.map((heading) => heading.slug).includes(slicedId)
+							) {
 								section.id = slicedId;
 								observer.observe(section);
 							}
@@ -48,7 +83,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 					});
 			});
 		}
-	}, [headings]);
+	}, [editedHeadings]);
 
 	return (
 		<div className="page-toc">
@@ -58,7 +93,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 			</p>
 
 			<ol className="max-h-[60vh] overflow-y-scroll list-disc mt-2 space-y-2 list-none">
-				{headings
+				{editedHeadings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
 						<li key={heading.slug}>
