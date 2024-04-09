@@ -18,7 +18,6 @@ import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
-	makeInputKey,
 	makePageHref,
 	scrollToElement,
 } from "@/lib/utils";
@@ -33,7 +32,6 @@ import {
 import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
