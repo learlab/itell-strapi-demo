@@ -8,6 +8,7 @@ import { isProduction } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
+import * as Sentry from "@sentry/nextjs";
 
 type PageProps = {
 	searchParams?: Record<string, string>;
@@ -29,6 +30,10 @@ export default async function ({ searchParams }: PageProps) {
 	const errorMessage = error ? ErrorDict[error] : null;
 	const user = await getCurrentUser();
 	const isAdmin = env.ADMINS?.includes(user?.email || "");
+
+	if (error === "Callback") {
+		Sentry.captureException(new Error(error));
+	}
 
 	return (
 		<div className="w-screen h-screen grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
