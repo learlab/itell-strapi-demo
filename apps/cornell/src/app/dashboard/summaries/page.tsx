@@ -1,7 +1,9 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SummaryList } from "@/components/dashboard/summary-list";
+import { PageLink } from "@/components/page/page-link";
 import { DashboardShell } from "@/components/page/shell";
 import { getCurrentUser } from "@/lib/auth";
+import { incrementView } from "@/lib/dashboard/actions";
 import db from "@/lib/db";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUser } from "@/lib/user";
@@ -15,6 +17,8 @@ export default async function () {
 	if (!currentUser) {
 		return redirect("/auth");
 	}
+
+	incrementView("summary");
 
 	const [user, userSummaries] = await Promise.all([
 		getUser(currentUser.id),
@@ -39,12 +43,12 @@ export default async function () {
 				/>
 				<p className="p-2">
 					You have not made any summary yet. Start with{" "}
-					<Link
-						href={makePageHref(firstPage.page_slug)}
+					<PageLink
+						pageSlug={firstPage.page_slug}
 						className="underline font-medium"
 					>
 						{firstPage.title}
-					</Link>
+					</PageLink>
 					!
 				</p>
 			</DashboardShell>

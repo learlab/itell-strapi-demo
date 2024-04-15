@@ -2,6 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
+import { incrementView } from "@/lib/dashboard/actions";
 import { delay, redirectWithSearchParams } from "@/lib/utils";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -15,6 +16,9 @@ export default async function () {
 	if (!currentUser) {
 		return redirectWithSearchParams("/auth");
 	}
+
+	incrementView("constructed-response");
+
 	return (
 		<DashboardShell>
 			<DashboardHeader

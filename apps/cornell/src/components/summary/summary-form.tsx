@@ -18,7 +18,6 @@ import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
-	makeInputKey,
 	makePageHref,
 	scrollToElement,
 } from "@/lib/utils";
@@ -31,9 +30,9 @@ import {
 	validateSummary,
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
+import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
@@ -41,6 +40,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
+import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
@@ -276,10 +276,11 @@ export const SummaryForm = ({
 
 		let summaryResponse: SummaryResponse | null = null;
 		let stairsData: StairsQuestion | null = null;
+		let requestBody = "";
 
 		try {
 			const focusTime = await findFocusTime(userId, pageSlug);
-			const requestBody = JSON.stringify({
+			requestBody = JSON.stringify({
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
@@ -329,6 +330,13 @@ export const SummaryForm = ({
 							clearStages();
 							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
+
+							Sentry.captureMessage("SummaryResponse parse error", {
+								extra: {
+									body: requestBody,
+									chunkString,
+								},
+							});
 							return;
 						}
 					} else {
@@ -389,6 +397,14 @@ export const SummaryForm = ({
 			console.log("summary scoring error", err);
 			clearStages();
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+
+			Sentry.captureMessage("summary scoring error", {
+				extra: {
+					body: requestBody,
+					summaryResponse: summaryResponse,
+					stairsRespones: stairsData,
+				},
+			});
 		}
 	};
 
@@ -402,12 +418,12 @@ export const SummaryForm = ({
 			{portalNodes}
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
-					<Link
-						href={page.nextPageSlug}
+					<PageLink
+						pageSlug={page.nextPageSlug}
 						className={buttonVariants({ variant: "outline" })}
 					>
 						Go to next page
-					</Link>
+					</PageLink>
 				)}
 				{state.stairsQuestion && (
 					<Button

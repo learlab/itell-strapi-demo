@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { allPagesSorted } from "../pages";
 
 export const isPageUnlockedWithoutUser = (slug: string) => {
 	return false;

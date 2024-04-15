@@ -15,7 +15,7 @@ export const ErrorFeedback: Record<ErrorType, string> = {
 	[ErrorType.OFFENSIVE]:
 		"Your summary includes offensive language. Please remove the offensive language and resubmit.",
 	[ErrorType.INTERNAL]:
-		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com if the problem persists.",
+		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com with a copy of your summary if the problem persists.",
 	[ErrorType.DUPLICATE]: "Please submit a different summary.",
 };
 
