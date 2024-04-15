@@ -33,7 +33,7 @@ export default async function ({ searchParams }: Props) {
 		return redirectWithSearchParams("/auth", searchParams);
 	}
 
-	incrementView("home");
+	incrementView("home", searchParams);
 
 	return (
 		<DashboardShell>

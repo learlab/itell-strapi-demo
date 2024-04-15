@@ -18,7 +18,7 @@ export default async function () {
 		return redirect("/auth");
 	}
 
-	incrementView("summary");
+	incrementView("summaries");
 
 	const [user, userSummaries] = await Promise.all([
 		getUser(currentUser.id),

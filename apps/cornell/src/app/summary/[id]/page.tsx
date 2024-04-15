@@ -3,6 +3,7 @@ import { ReviseSummaryButton } from "@/components/summary/revise-summary-button"
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { getCurrentUser } from "@/lib/auth";
+import { incrementView } from "@/lib/dashboard/actions";
 import db from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
 import { relativeDate } from "@itell/core/utils";
@@ -42,6 +43,8 @@ export default async function ({ params }: PageProps) {
 	if (!page) {
 		return notFound();
 	}
+
+	incrementView("summary", { summaryId: summary.id });
 
 	return (
 		<div className="px-32 py-4">
