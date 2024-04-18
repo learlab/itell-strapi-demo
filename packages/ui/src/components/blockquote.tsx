@@ -32,7 +32,7 @@ export const Blockquote = ({
 				/>
 			</svg>
 			<blockquote className="border-none">
-				<p className="text-lg italic font-medium">{children}</p>
+				<div className="text-lg italic font-medium">{children}</div>
 			</blockquote>
 			<figcaption className="flex items-center justify-center mt-4 space-x-3 text-lg">
 				<div className="flex items-center divide-x-2">

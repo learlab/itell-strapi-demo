@@ -5,28 +5,29 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: "https://8d7e4645dca4ef9d1f6f329e29cd9ac5@o4506435193405440.ingest.us.sentry/4507007371182080",
+	dsn: "https://8d7e4645dca4ef9d1f6f329e29cd9ac5@o4506435193405440.ingest.us.sentry.io/4507007371182080",
 
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 1,
+	// Adjust this value in production, or use tracesSampler for greater control
+	tracesSampleRate: 1,
 
-  // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
+	// Setting this option to true will print useful information to the console while you're setting up Sentry.
+	debug: false,
 
-  replaysOnErrorSampleRate: 1.0,
+	replaysOnErrorSampleRate: 1.0,
 
-  // This sets the sample rate to be 10%. You may want this to be 100% while
-  // in development and sample at a lower rate in production
-  replaysSessionSampleRate: 0.1,
+	// This sets the sample rate to be 10%. You may want this to be 100% while
+	// in development and sample at a lower rate in production
+	replaysSessionSampleRate: 0.1,
 
-  // You can remove this option if you're not planning to use the Sentry Session Replay feature:
-  integrations: [
-    Sentry.replayIntegration({
-      // Additional Replay configuration goes in here, for example:
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
-  ],
+	// You can remove this option if you're not planning to use the Sentry Session Replay feature:
+	integrations: [
+		Sentry.replayIntegration({
+			// Additional Replay configuration goes in here, for example:
+			maskAllText: true,
+			blockAllMedia: true,
+		}),
+		// Sentry.browserTracingIntegration({ tracingOrigins: ["*"] }),
+	],
 
-  enabled: process.env.NODE_ENV !== "development",
+	enabled: process.env.NODE_ENV !== "development",
 });

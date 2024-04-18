@@ -17,7 +17,9 @@ const FeedbackBody = ({ feedback }: Props) => {
 			</header>
 			{keyphrases.size > 0 && (
 				<>
-					<p>Try to include the following keywords:</p>
+					<p>
+						Improve your summary by including some of the following keywords:
+					</p>
 					<ul className="space-y-2">
 						{Array.from(keyphrases).map((keyphrase) => (
 							<li

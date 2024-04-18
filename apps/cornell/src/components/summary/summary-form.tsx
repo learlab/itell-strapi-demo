@@ -1,5 +1,6 @@
 "use client";
 
+import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { createEvent } from "@/lib/event/actions";
@@ -288,7 +289,7 @@ export const SummaryForm = ({
 				excluded_chunks: excludedChunks,
 			});
 			const response = await fetch(
-				"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
+				`${env.NEXT_PUBLIC_API_URL}/score/summary/stairs`,
 				{
 					method: "POST",
 					body: requestBody,
@@ -337,6 +338,7 @@ export const SummaryForm = ({
 									chunkString,
 								},
 							});
+							console.log("sentry finished");
 							return;
 						}
 					} else {

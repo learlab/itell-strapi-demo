@@ -1,5 +1,6 @@
 "use client";
 
+import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
@@ -58,7 +59,7 @@ export const ChatInputStairs = ({
 		setActiveMessageId(botMessageId);
 
 		const chatResponse = await fetchChatResponse(
-			"https://itell-api.learlab.vanderbilt.edu/chat",
+			`${env.NEXT_PUBLIC_API_URL}/chat`,
 			{
 				pageSlug,
 				text,

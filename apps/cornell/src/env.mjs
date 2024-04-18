@@ -22,7 +22,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-	NEXT_PUBLIC_SCORE_API_URL: z.string(),
+	NEXT_PUBLIC_API_URL: z.string(),
 });
 
 /**
@@ -39,11 +39,11 @@ const processEnv = {
 	DATABASE_URL: process.env.DATABASE_URL,
 	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-	NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
 	ADMINS: process.env.ADMINS,
 	STUDENTS: process.env.STUDENTS,
 	AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
 	AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
+	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
 };
 
 // Don't touch the part below

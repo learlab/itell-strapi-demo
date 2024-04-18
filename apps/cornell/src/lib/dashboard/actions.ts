@@ -30,11 +30,7 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 	return user;
 };
 
-const _incrementView = async (pageSlug: string) => {
-	if (!isProduction) {
-		return;
-	}
-
+const _incrementView = async (pageSlug: string, data?: any) => {
 	noStore();
 	const user = await getCurrentUser();
 	if (user) {
@@ -43,6 +39,7 @@ const _incrementView = async (pageSlug: string) => {
 				eventType: "dashboard_page_view",
 				pageSlug,
 				userId: user.id,
+				data,
 			},
 		});
 	}
