@@ -338,7 +338,6 @@ export const SummaryForm = ({
 									chunkString,
 								},
 							});
-							console.log("sentry finished");
 							return;
 						}
 					} else {

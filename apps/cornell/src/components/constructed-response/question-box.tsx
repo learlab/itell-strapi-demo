@@ -98,8 +98,11 @@ const ExplainButton = ({
 	const [input, setInput] = useState("");
 	const [response, setResponse] = useState("");
 	const { pending, data } = useFormStatus();
+	const [loading, setLoading] = useState(false);
+	const isPending = pending || loading;
 
 	const onClick = async () => {
+		setLoading(true);
 		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
 			method: "POST",
 			body: JSON.stringify({
@@ -120,14 +123,20 @@ const ExplainButton = ({
 				const { value, done: done_ } = await reader.read();
 				done = done_;
 				const chunk = decoder.decode(value);
-				const text = chunk.trim().replaceAll("\u0000", "");
-				console.log(text);
+				if (chunk) {
+					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+						request_id: string;
+						text: string;
+					};
 
-				if (text) {
-					setResponse((prev) => prev + text);
+					if (chunkValue) {
+						setResponse(chunkValue.text);
+					}
 				}
 			}
 		}
+
+		setLoading(false);
 	};
 
 	useEffect(() => {
@@ -137,16 +146,20 @@ const ExplainButton = ({
 	}, [data]);
 
 	return (
-		<div>
-			{response && <p>{response}</p>}
+		<div className="flex flex-col items-center justify-center">
+			{response && <p className="text-sm text-muted-foreground">{response}</p>}
 			<Button
 				variant="secondary"
 				className="gap-2"
 				type="button"
-				disabled={pending}
+				disabled={isPending}
 				onClick={onClick}
 			>
-				<HelpCircleIcon className="size-4" />
+				{isPending ? (
+					<Spinner className="size-4" />
+				) : (
+					<HelpCircleIcon className="size-4" />
+				)}
 				What's wrong with my answer?
 			</Button>
 		</div>
@@ -453,12 +466,12 @@ export const QuestionBox = ({
 								</>
 							)}
 						</div>
-						{/* <div className="flex items-center justify-center mt-4">
+						<div className="flex items-center justify-center mt-4">
 							{answerStatus === AnswerStatus.SEMI_CORRECT ||
 								(answerStatus === AnswerStatus.BOTH_INCORRECT && (
 									<ExplainButton chunkSlug={chunkSlug} pageSlug={pageSlug} />
 								))}
-						</div> */}
+						</div>
 					</form>
 				</CardContent>
 			</Card>
