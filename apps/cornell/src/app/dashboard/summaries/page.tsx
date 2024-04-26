@@ -70,7 +70,7 @@ export default async function () {
 				pageTitle: page.title,
 			};
 		})
-		.filter(Boolean);
+		.filter((s) => s !== undefined);
 
 	const summariesByChapter = groupby(summaries, (summary) => summary.chapter);
 
