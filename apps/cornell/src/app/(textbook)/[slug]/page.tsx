@@ -101,7 +101,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					style={{ flexGrow: 1 }}
 				>
 					<div className="sticky top-20">
-						<PageToc headings={page.headings} />
+						<PageToc headings={page.headings} chunks={getPageChunks(page)} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus status={pageStatus} />
 							<Suspense fallback={<NoteCount.Skeleton />}>
