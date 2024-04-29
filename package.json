@@ -3,7 +3,11 @@
 	"authors": "learlab",
 	"version": "1.0.0",
 	"description": "",
-	"workspaces": ["apps/*", "packages/*", "docs"],
+	"workspaces": [
+		"apps/*",
+		"packages/*",
+		"docs"
+	],
 	"scripts": {
 		"build": "turbo run build",
 		"build:core": "turbo run build --filter @itell/core",
@@ -21,6 +25,6 @@
 	"keywords": [],
 	"license": "ISC",
 	"devDependencies": {
-		"turbo": "^1.10.15"
+		"turbo": "^1.13.3"
 	}
 }
