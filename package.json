@@ -2,12 +2,8 @@
 	"name": "itell-monorepo",
 	"authors": "learlab",
 	"version": "1.0.0",
-	"description": "",
-	"workspaces": [
-		"apps/*",
-		"packages/*",
-		"docs"
-	],
+	"description": "A framework for building intelligent digital textbooks",
+	"workspaces": ["apps/*", "packages/*", "docs"],
 	"scripts": {
 		"build": "turbo run build",
 		"build:core": "turbo run build --filter @itell/core",
