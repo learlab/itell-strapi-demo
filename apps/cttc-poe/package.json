@@ -33,7 +33,7 @@
 		"github-slugger": "^2.0.0",
 		"immer": "^9.0.21",
 		"lucide-react": "^0.298.0",
-		"next": "14.0.1",
+		"next": "14.2.3",
 		"next-auth": "^4.23.1",
 		"next-contentlayer": "^0.3.4",
 		"next-superjson-plugin": "^0.5.9",
@@ -72,7 +72,7 @@
 		"prisma": "^5.3.0",
 		"prisma-json-types-generator": "^3.0.4",
 		"tailwindcss": "^3.4.0",
-		"typescript": "5.3.3",
+		"typescript": "5.5.0-beta",
 		"vitest": "^0.31.4"
 	}
 }

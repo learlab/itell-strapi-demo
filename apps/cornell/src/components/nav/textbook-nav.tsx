@@ -1,8 +1,4 @@
-import { getSiteConfig } from "@/lib/config";
-import { firstPage } from "@/lib/pages";
-import { makePageHref } from "@/lib/utils";
-import { cn } from "@itell/core/utils";
-import { buttonVariants } from "@itell/ui/server";
+import { getSiteConfig } from "@/config/site";
 import Image from "next/image";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";

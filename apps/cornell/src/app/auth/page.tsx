@@ -1,14 +1,14 @@
 import { AuthForm } from "@/components/auth/auth-form";
 import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
 import { Button } from "@/components/client-components";
+import { getSiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
-import { getSiteConfig } from "@/lib/config";
 import { isProduction } from "@/lib/constants";
 import { Warning } from "@itell/ui/server";
+import * as Sentry from "@sentry/nextjs";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
-import * as Sentry from "@sentry/nextjs";
 
 type PageProps = {
 	searchParams?: Record<string, string>;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import { getSiteConfig } from "@/lib/config";
+import { getSiteConfig } from "@/config/site";
 import { DashboardNavItem } from "@/types/nav";
 import { StartOrContinueReadingButton } from "../start-or-continue-reading";
 import { DashboardNavMenu } from "./dashboard-nav-menu";
