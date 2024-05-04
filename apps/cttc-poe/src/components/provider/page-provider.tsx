@@ -1,11 +1,11 @@
 "use client";
 
+import { FeedbackType } from "@/lib/control/feedback";
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import {
 	ConfigState,
 	ConfigStore,
-	FeedbackType,
 	createConfigStore,
 } from "@/lib/store/config";
 import {
@@ -17,7 +17,6 @@ import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 
 type Props = {
-	feedbackType: FeedbackType;
 	pageSlug: string;
 	children: React.ReactNode;
 	chunks: string[];
@@ -33,7 +32,6 @@ const PageContext = createContext<{
 
 export const PageProvider = ({
 	children,
-	feedbackType,
 	pageSlug,
 	chunks,
 	pageStatus,
@@ -55,7 +53,7 @@ export const PageProvider = ({
 
 	if (!configStoreRef.current) {
 		configStoreRef.current = createConfigStore({
-			feedbackType,
+			pageSlug,
 			isAdmin,
 		});
 	}

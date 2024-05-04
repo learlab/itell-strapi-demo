@@ -2,7 +2,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import { getServerSession as getServerSessionNext } from "next-auth/next";
-import AzureADProvider from "next-auth/providers/azure-ad";
 import GoogleProvider from "next-auth/providers/google";
 
 import { env } from "@/env.mjs";
@@ -20,17 +19,13 @@ export const authOptions: NextAuthOptions = {
 		}),
 	],
 	callbacks: {
-		signIn: async ({ user }) => {
-			if (env.ADMINS?.includes(user.email || "")) {
-				return true;
-			}
+		// signIn: async ({ user }) => {
+		// 	if (env.ADMINS?.includes(user.email || "")) {
+		// 		return true;
+		// 	}
 
-			if (env.STUDENTS?.includes(user.email || "")) {
-				return true;
-			}
-
-			return "/auth?error=InvalidEmail";
-		},
+		// 	return "/auth?error=InvalidEmail";
+		// },
 		session({ session, user }) {
 			if (session.user) {
 				session.user.id = user.id;

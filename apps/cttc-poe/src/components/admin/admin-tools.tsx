@@ -13,7 +13,7 @@ import {
 	SheetTrigger,
 	Switch,
 } from "@/components/client-components";
-import { FeedbackType } from "@/lib/store/config";
+import { FeedbackType } from "@/lib/control/feedback";
 import { SettingsIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,9 @@ import { Spinner } from "../spinner";
 
 export const AdminTools = () => {
 	const { data: session } = useSession();
-	const { feedbackType: feedback, setFeedback } = useConfig((state) => state);
+	const { feedbackType: feedback, setFeedbackType } = useConfig(
+		(state) => state,
+	);
 	const finishPage = useConstructedResponse((state) => state.finishPage);
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
@@ -32,7 +34,7 @@ export const AdminTools = () => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const feedbackType = String(formData.get("ai-feedback")) as FeedbackType;
-		setFeedback(feedbackType);
+		setFeedbackType(feedbackType);
 		finishPage();
 
 		startTransition(() => {
@@ -43,7 +45,7 @@ export const AdminTools = () => {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button variant="ghost" className="flex items-center gap-2">
+				<Button variant="ghost" className="flex items-center gap-2 px-1 py-2">
 					<SettingsIcon className="size-4" /> Admin tools
 				</Button>
 			</SheetTrigger>
@@ -64,22 +66,60 @@ export const AdminTools = () => {
 							defaultValue={feedback}
 						>
 							<div className="flex items-baseline space-x-2">
-								<RadioGroupItem value="stairs" id="stairs" />
+								<RadioGroupItem
+									value={FeedbackType.SIMPLE}
+									id={FeedbackType.SIMPLE}
+								/>
 								<div>
-									<Label htmlFor="stairs">Stairs</Label>
+									<Label htmlFor={FeedbackType.SIMPLE}>Simple rereading</Label>
 									<p className="text-sm text-muted-foreground">
-										ITELL AI will prompt user to answer a question and return to
-										the summary
+										A digital textbook without AI-generated short questions,
+										without summary production, and without STAIRS. Workers will
+										instead read short questions and their correct answers and
+										read professional summaries of the chapter. Workers will
+										also read about strategies that can increase text
+										comprehension including self-explanations.
 									</p>
 								</div>
 							</div>
+
 							<div className="flex items-baseline space-x-2">
-								<RadioGroupItem value="simple" id="simple" />
+								<RadioGroupItem
+									value={FeedbackType.RANDOM_REREAD}
+									id={FeedbackType.RANDOM_REREAD}
+								/>
 								<div>
-									<Label htmlFor="simple">Simple rereading</Label>
+									<Label htmlFor={FeedbackType.RANDOM_REREAD}>
+										Random rereading
+									</Label>
 									<p className="text-sm text-muted-foreground">
-										ITELL AI will only tell the user to reread the selected
-										chunk.
+										A digital textbook with AI generated short questions and
+										with summary production. Workers, however, will not receive
+										feedback on their answers to short questions nor the quality
+										of their summaries. Students will be given the opportunity
+										to revise their constructed responses. After writing a
+										summary, workers will be asked to re-read a randomly
+										selected section of text and may revise their summary if
+										they choose. They will not interact with STAIRS
+									</p>
+								</div>
+							</div>
+
+							<div className="flex items-baseline space-x-2">
+								<RadioGroupItem
+									value={FeedbackType.STAIRS}
+									id={FeedbackType.STAIRS}
+								/>
+								<div>
+									<Label htmlFor={FeedbackType.STAIRS}>Stairs</Label>
+									<p className="text-sm text-muted-foreground">
+										A digital textbook with AI generated short questions and
+										summary production. Workers will also receive AI driven
+										feedback on their answers to short questions and the quality
+										of their summaries and be given the opportunity to revise
+										their responses. Critically, workers that do not pass their
+										summaries will re-read and interact with STAIRS.
+										:white_check_mark: 3
 									</p>
 								</div>
 							</div>

@@ -1,4 +1,3 @@
-import { Page } from "contentlayer/generated";
 import { cookies } from "next/headers";
 
 export const setUserPageSlug = (val: string) =>

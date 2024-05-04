@@ -8,7 +8,6 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { FeedbackType } from "@/lib/store/config";
 import {
 	countUserPageSummary,
 	createSummary,
@@ -42,17 +41,15 @@ import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
 import { PageLink } from "../page/page-link";
-import { useConstructedResponse } from "../provider/page-provider";
+import { useConfig, useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
-	value?: string;
 	user: NonNullable<SessionUser>;
 	page: PageData;
 	pageStatus: PageStatus;
-	feedbackType: FeedbackType;
 };
 
 type StairsQuestion = {
@@ -102,16 +99,11 @@ const exitQuestion = () => {
 	}
 };
 
-export const SummaryForm = ({
-	value,
-	user,
-	page,
-	pageStatus,
-	feedbackType,
-}: Props) => {
+export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const mounted = useRef(false);
 
+	const feedbackType = useConfig((selector) => selector.feedbackType);
 	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
 		(state) => ({
 			stairsAnswered: state.stairsAnswered,
@@ -169,9 +161,7 @@ export const SummaryForm = ({
 					element: el,
 					popover: {
 						description:
-							feedbackType === "stairs"
-								? "Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding."
-								: 'Please re-read the highlighted chunk. when you are finished, press the "return to summary" button.',
+							"Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
 						side: "left",
 						align: "start",
 					},
@@ -188,25 +178,10 @@ export const SummaryForm = ({
 		driverObj.setConfig({
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
-				if (feedbackType === "stairs") {
-					addNode(
-						<ChatStairs
-							user={user}
-							pageSlug={pageSlug}
-							onExit={exitQuestion}
-						/>,
-						popover.wrapper,
-					);
-				}
-
-				if (feedbackType === "simple") {
-					addNode(
-						<Button onClick={exitQuestion} size="sm" className="mt-4">
-							Return to summary
-						</Button>,
-						popover.wrapper,
-					);
-				}
+				addNode(
+					<ChatStairs user={user} pageSlug={pageSlug} onExit={exitQuestion} />,
+					popover.wrapper,
+				);
 			},
 			onDestroyStarted: () => {
 				if (!stairsAnswered) {
@@ -429,19 +404,16 @@ export const SummaryForm = ({
 						variant={"outline"}
 						onClick={() => goToQuestion(state.stairsQuestion as StairsQuestion)}
 					>
-						{feedbackType === "stairs" ? "See question" : "See re-read chunk"}
+						See question
 					</Button>
 				)}
 			</div>
 
 			{feedback && <SummaryFeedback feedback={feedback} />}
 
-			<Confetti
-				active={feedback?.isPassed ? feedbackType === "stairs" : false}
-			/>
+			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					value={value}
 					disabled={editDisabled || state.pending}
 					pageSlug={pageSlug}
 					pending={state.pending}

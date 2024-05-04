@@ -36,7 +36,7 @@ const AnchorLink = ({
 }) => {
 	return (
 		<a href={href} className="block">
-			<Button variant="ghost" className="flex items-center gap-2">
+			<Button variant="ghost" className="flex items-center gap-2 px-1 py-2">
 				{icon}
 				{text}
 			</Button>

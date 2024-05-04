@@ -1,6 +1,6 @@
 import { createStore } from "zustand";
-
-export type FeedbackType = "stairs" | "simple";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { FeedbackType } from "../control/feedback";
 
 interface ConfigProps {
 	isAdmin: boolean;
@@ -8,18 +8,26 @@ interface ConfigProps {
 }
 
 export interface ConfigState extends ConfigProps {
-	setFeedback: (value: FeedbackType) => void;
+	setFeedbackType: (value: FeedbackType) => void;
 }
 
 export const createConfigStore = ({
-	feedbackType,
 	isAdmin,
-}: { feedbackType: FeedbackType; isAdmin: boolean }) => {
-	return createStore<ConfigState>()((set) => ({
-		feedbackType: feedbackType,
-		isAdmin,
-		setFeedback: (value) => set({ feedbackType: value }),
-	}));
+	pageSlug,
+}: { pageSlug: string; isAdmin: boolean }) => {
+	return createStore<ConfigState>()(
+		persist(
+			(set) => ({
+				feedbackType: FeedbackType.STAIRS,
+				isAdmin,
+				setFeedbackType: (value) => set({ feedbackType: value }),
+			}),
+			{
+				name: `config-store-${pageSlug}`,
+				storage: createJSONStorage(() => localStorage),
+			},
+		),
+	);
 };
 
 export type ConfigStore = ReturnType<typeof createConfigStore>;

@@ -46,10 +46,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userPageSlug: user?.pageSlug || null,
 	});
 
-	const feedbackType = getPageFeedbackType(page);
-
 	const chunks = getPageChunks(page);
-
 	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
@@ -63,7 +60,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 			chunks={chunks}
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
-			feedbackType={feedbackType}
 			isAdmin={isAdmin}
 		>
 			<div className="flex flex-row justify-end max-w-[1440px] mx-auto gap-6 px-2">
@@ -124,11 +120,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 			{page.summary && (
 				<footer>
-					<PageSummary
-						pageSlug={pageSlug}
-						pageStatus={pageStatus}
-						feedbackType={feedbackType}
-					/>
+					<PageSummary pageSlug={pageSlug} pageStatus={pageStatus} />
 				</footer>
 			)}
 

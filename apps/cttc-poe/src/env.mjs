@@ -12,7 +12,6 @@ const server = z.object({
 	NEXTAUTH_SECRET: z.string(),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
-	STUDENTS: z.string().optional(),
 });
 
 /**
@@ -38,7 +37,6 @@ const processEnv = {
 	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 	ADMINS: process.env.ADMINS,
-	STUDENTS: process.env.STUDENTS,
 	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
 };
 

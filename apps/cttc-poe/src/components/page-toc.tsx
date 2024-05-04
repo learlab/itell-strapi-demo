@@ -30,7 +30,6 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 		for (let i = 0; i < editedChunks.length; i++) {
 			if (!headingsList.includes(editedChunks[i].toLocaleLowerCase())) {
 				const target = editedChunks[i - 1];
-				console.log;
 				if (target) {
 					const index =
 						headingsList.findIndex(
