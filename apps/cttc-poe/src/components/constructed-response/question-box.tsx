@@ -1,9 +1,11 @@
 "use client";
 
 import { Confetti } from "@/components/ui/confetti";
+import { env } from "@/env.mjs";
 import { isProduction } from "@/lib/constants";
+import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { getQAScore } from "@/lib/question";
-import { createConstructedResponse } from "@/lib/server-actions";
+import { FeedbackType } from "@/lib/store/config";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { cn } from "@itell/core/utils";
@@ -14,11 +16,18 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
-import { AlertTriangle } from "lucide-react";
+import * as Sentry from "@sentry/nextjs";
+import {
+	AlertTriangle,
+	HelpCircleIcon,
+	KeyRoundIcon,
+	PencilIcon,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
+import { GoogleLoginButton } from "../auth/login-buttons";
 import {
 	Button,
 	HoverCard,
@@ -38,7 +47,7 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	isFeedbackEnabled: boolean;
+	feedbackType: FeedbackType;
 };
 
 // state for answer correctness
@@ -65,12 +74,95 @@ type FormState = {
 
 const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
 	const { pending } = useFormStatus();
-
 	return (
-		<Button variant="secondary" disabled={pending}>
-			{pending && <Spinner className="inline mr-2" />}
+		<Button
+			type="submit"
+			disabled={pending}
+			className="gap-2"
+			variant={"outline"}
+		>
+			{pending ? (
+				<Spinner className="size-4" />
+			) : (
+				<PencilIcon className="size-4" />
+			)}
 			{answerStatus === AnswerStatus.UNANSWERED ? "Answer" : "Resubmit"}
 		</Button>
+	);
+};
+
+const ExplainButton = ({
+	pageSlug,
+	chunkSlug,
+}: { pageSlug: string; chunkSlug: string }) => {
+	const [input, setInput] = useState("");
+	const [response, setResponse] = useState("");
+	const { pending, data } = useFormStatus();
+	const [loading, setLoading] = useState(false);
+	const isPending = pending || loading;
+
+	const onClick = async () => {
+		setLoading(true);
+		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
+			method: "POST",
+			body: JSON.stringify({
+				page_slug: pageSlug,
+				chunk_slug: chunkSlug,
+				student_response: input,
+			}),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
+		if (response.body) {
+			const reader = response.body.getReader();
+			const decoder = new TextDecoder();
+			let done = false;
+			while (!done) {
+				const { value, done: done_ } = await reader.read();
+				done = done_;
+				const chunk = decoder.decode(value);
+				if (chunk) {
+					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+						request_id: string;
+						text: string;
+					};
+
+					if (chunkValue) {
+						setResponse(chunkValue.text);
+					}
+				}
+			}
+		}
+
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		if (data) {
+			setInput(String(data.get("input")));
+		}
+	}, [data]);
+
+	return (
+		<div className="flex flex-col items-center justify-center">
+			{response && <p className="text-sm text-muted-foreground">{response}</p>}
+			<Button
+				variant="secondary"
+				className="gap-2"
+				type="button"
+				disabled={isPending}
+				onClick={onClick}
+			>
+				{isPending ? (
+					<Spinner className="size-4" />
+				) : (
+					<HelpCircleIcon className="size-4" />
+				)}
+				What's wrong with my answer?
+			</Button>
+		</div>
 	);
 };
 
@@ -79,7 +171,7 @@ export const QuestionBox = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	isFeedbackEnabled,
+	feedbackType,
 }: Props) => {
 	const { data: session } = useSession();
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
@@ -109,6 +201,7 @@ export const QuestionBox = ({
 		formData: FormData,
 	): Promise<FormState> => {
 		const input = formData.get("input") as string;
+
 		if (input.trim() === "") {
 			return {
 				...prevState,
@@ -134,16 +227,15 @@ export const QuestionBox = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			if (isProduction) {
-				// when there is no session, question won't be displayed
-				await createConstructedResponse({
-					response: input,
-					chunkSlug,
-					pageSlug,
-					score,
-				});
-			}
+			await createConstructedResponse({
+				response: input,
+				chunkSlug,
+				pageSlug,
+				score,
+			});
 
+			// if answer is correct, mark chunk as finished
+			// this will add the chunk to the list of finished chunks that gets excluded from stairs question
 			if (score === 2) {
 				finishChunk(chunkSlug);
 
@@ -171,6 +263,13 @@ export const QuestionBox = ({
 			return prevState;
 		} catch (err) {
 			console.log("constructed response evaluation error", err);
+			Sentry.captureMessage("constructed response scoring error", {
+				extra: {
+					pageSlug,
+					chunkSlug,
+					input,
+				},
+			});
 			return {
 				error: "Answer evaluation failed, please try again later",
 				answerStatus: prevState.answerStatus,
@@ -209,7 +308,7 @@ export const QuestionBox = ({
 		}
 	}, [formState]);
 
-	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+	const isLastQuestion = chunkSlug === chunks.at(-1);
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
 		: answerStatus === AnswerStatus.BOTH_CORRECT ||
@@ -220,69 +319,9 @@ export const QuestionBox = ({
 	if (!session?.user) {
 		return (
 			<Warning>
-				You need to be logged in to view this question and move forward
+				<p>You need to be logged in to view this question and move forward</p>
+				<GoogleLoginButton />
 			</Warning>
-		);
-	}
-
-	if (!isFeedbackEnabled) {
-		return (
-			<Card
-				className={cn(
-					"flex justify-center items-center flex-col py-4 px-6 space-y-2",
-				)}
-			>
-				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-					{answerStatus !== AnswerStatus.UNANSWERED ? (
-						<div className="flex items-center flex-col">
-							<p className="text-xl2 text-emerald-600 text-center">
-								Your answer was accepted
-							</p>
-							{!isPageFinished && (
-								<p className="text-sm">
-									Click on the button below to continue reading.
-								</p>
-							)}
-						</div>
-					) : (
-						question && (
-							<p>
-								<b>Question:</b> {question}
-							</p>
-						)
-					)}
-
-					<form action={formAction} className="w-full space-y-2">
-						<TextArea
-							name="input"
-							rows={2}
-							className="max-w-lg mx-auto rounded-md shadow-md p-4"
-							onPaste={(e) => {
-								if (isProduction) {
-									e.preventDefault();
-									toast.warning("Copy & Paste is not allowed for question");
-								}
-							}}
-						/>
-						<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-							{answerStatus === AnswerStatus.UNANSWERED ? (
-								<SubmitButton answerStatus={answerStatus} />
-							) : (
-								isNextButtonDisplayed && (
-									<NextChunkButton
-										pageSlug={pageSlug}
-										chunkSlug={chunkSlug}
-										clickEventType="post-question chunk reveal"
-										onClick={() => setIsNextButtonDisplayed(false)}
-									>
-										{nextButtonText}
-									</NextChunkButton>
-								)
-							)}
-						</div>
-					</form>
-				</CardContent>
-			</Card>
 		);
 	}
 
@@ -297,7 +336,8 @@ export const QuestionBox = ({
 			>
 				<Confetti
 					active={
-						answerStatus === AnswerStatus.BOTH_CORRECT && isFeedbackEnabled
+						answerStatus === AnswerStatus.BOTH_CORRECT &&
+						feedbackType === "stairs"
 					}
 				/>
 
@@ -347,7 +387,7 @@ export const QuestionBox = ({
 					{answerStatus === AnswerStatus.BOTH_CORRECT ? (
 						<div className="flex items-center flex-col">
 							<p className="text-xl2 text-emerald-600 text-center">
-								Your answer was Correct!
+								Your answer is correct!
 							</p>
 							{!isPageFinished && (
 								<p className="text-sm">
@@ -382,7 +422,8 @@ export const QuestionBox = ({
 							{answerStatus !== AnswerStatus.UNANSWERED && (
 								<HoverCard>
 									<HoverCardTrigger asChild>
-										<Button variant="secondary" type="button">
+										<Button variant={"outline"} type="button">
+											<KeyRoundIcon className="size-4 mr-2" />
 											Reveal Answer
 										</Button>
 									</HoverCardTrigger>
@@ -391,8 +432,10 @@ export const QuestionBox = ({
 									</HoverCardContent>
 								</HoverCard>
 							)}
+
 							{answerStatus === AnswerStatus.BOTH_CORRECT &&
 							isNextButtonDisplayed ? (
+								// when answer is all correct and next button should be displayed
 								<NextChunkButton
 									pageSlug={pageSlug}
 									clickEventType="post-question chunk reveal"
@@ -402,6 +445,7 @@ export const QuestionBox = ({
 									{nextButtonText}
 								</NextChunkButton>
 							) : (
+								// when answer is not all correct
 								<>
 									{formState.answerStatus !== AnswerStatus.BOTH_CORRECT && (
 										<SubmitButton answerStatus={answerStatus} />
@@ -421,6 +465,12 @@ export const QuestionBox = ({
 										)}
 								</>
 							)}
+						</div>
+						<div className="flex items-center justify-center mt-4">
+							{answerStatus === AnswerStatus.SEMI_CORRECT ||
+								(answerStatus === AnswerStatus.BOTH_INCORRECT && (
+									<ExplainButton chunkSlug={chunkSlug} pageSlug={pageSlug} />
+								))}
 						</div>
 					</form>
 				</CardContent>

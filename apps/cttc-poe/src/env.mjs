@@ -5,21 +5,14 @@ import { z } from "zod";
  * built with invalid env vars.
  */
 const server = z.object({
+	GOOGLE_CLIENT_ID: z.string(),
+	GOOGLE_CLIENT_SECRET: z.string(),
 	NODE_ENV: z.enum(["development", "test", "production"]),
-	AZURE_CLIENT_ID: z.string(),
-	AZURE_CLIENT_SECRET: z.string(),
 	NEXTAUTH_URL: z.string(),
 	NEXTAUTH_SECRET: z.string(),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
-	CLASS_ONE_EMAILS: z
-		.string()
-		.optional()
-		.transform((val) => (val ? JSON.parse(val) : [])),
-	CLASS_TWO_EMAILS: z
-		.string()
-		.optional()
-		.transform((val) => (val ? JSON.parse(val) : [])),
+	STUDENTS: z.string().optional(),
 });
 
 /**
@@ -27,7 +20,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-	NEXT_PUBLIC_SCORE_API_URL: z.string(),
+	NEXT_PUBLIC_API_URL: z.string(),
 });
 
 /**
@@ -38,17 +31,15 @@ const client = z.object({
  */
 const processEnv = {
 	NODE_ENV: process.env.NODE_ENV,
-	AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
-	AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
 	NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 	NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 	SCORE_API_URL: process.env.SCORE_API_URL,
 	DATABASE_URL: process.env.DATABASE_URL,
-	NEXT_PUBLIC_SCORE_API_URL: process.env.NEXT_PUBLIC_SCORE_API_URL,
-	NO_FEEDBACK_EMAILS: process.env.NO_FEEDBACK_EMAILS,
+	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 	ADMINS: process.env.ADMINS,
-	CLASS_ONE_EMAILS: process.env.CLASS_ONE_EMAILS,
-	CLASS_TWO_EMAILS: process.env.CLASS_TWO_EMAILS,
+	STUDENTS: process.env.STUDENTS,
+	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
 };
 
 // Don't touch the part below

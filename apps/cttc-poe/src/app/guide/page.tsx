@@ -1,7 +1,5 @@
 import { MainMdx } from "@/components/mdx";
-import { Site, allSites } from "contentlayer/generated";
-
-const userGuide = allSites.find((doc) => doc.slug === "userguide") as Site;
+import { userGuide } from "contentlayer/generated";
 
 export default function () {
 	return (

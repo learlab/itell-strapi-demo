@@ -1,6 +1,6 @@
-import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { PageStatus } from "@/lib/page-status";
+import { FeedbackType } from "@/lib/store/config";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
 import { Fragment, Suspense } from "react";
@@ -10,18 +10,17 @@ import { SummaryForm } from "./summary-form";
 
 type Props = {
 	pageSlug: string;
+	feedbackType: FeedbackType;
 	pageStatus: PageStatus;
-	isFeedbackEnabled: boolean;
 };
 
 export const PageSummary = async ({
 	pageSlug,
-	isFeedbackEnabled,
+	feedbackType,
 	pageStatus,
 }: Props) => {
 	const user = await getCurrentUser();
 	const page = getPageData(pageSlug);
-	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	if (!page) {
 		return <p>No summary found</p>;
@@ -56,7 +55,7 @@ export const PageSummary = async ({
 			</section>
 			<section className="sm:basis-2/3">
 				<Fragment>
-					{isFeedbackEnabled ? (
+					{feedbackType === "stairs" ? (
 						<Suspense fallback={<SummaryCount.Skeleton />}>
 							<SummaryCount pageSlug={pageSlug} />
 						</Suspense>
@@ -64,10 +63,8 @@ export const PageSummary = async ({
 					<SummaryForm
 						user={user}
 						page={page}
-						hasQuiz={page?.quiz}
-						isFeedbackEnabled={isFeedbackEnabled}
 						pageStatus={pageStatus}
-						isAdmin={isAdmin}
+						feedbackType={feedbackType}
 					/>
 				</Fragment>
 			</section>

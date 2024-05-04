@@ -13,7 +13,8 @@ interface Props {
 export interface ConstructedResponseState extends Props {
 	advanceChunk: (slug: string) => void;
 	finishChunk: (slug: string) => void;
-	reset: () => void;
+	finishPage: () => void;
+	resetPage: () => void;
 }
 
 export type ConstructedResponseStore = ReturnType<
@@ -32,6 +33,7 @@ export const createConstructedResponseStore = (
 				currentChunk: chunks[0],
 				chunks,
 				excludedChunks: [],
+				// isPageFinished: true,
 				isPageFinished: pageStatus.isPageUnlocked,
 
 				finishChunk: (slug: string) => {
@@ -56,12 +58,18 @@ export const createConstructedResponseStore = (
 
 					// user is on the last chunk, and it has a question
 					// this happens when user clicks on next-chunk-button of the question box of the last chunk
-					const isLastQuestion = slug === chunks[chunks.length - 1];
+					const isLastQuestion = slug === chunks.at(-1);
 					if (isLastQuestion) {
 						set({ isPageFinished: true });
 					}
 				},
-				reset: () => {
+				finishPage: () => {
+					set({
+						isPageFinished: true,
+						currentChunk: chunks.at(-1),
+					});
+				},
+				resetPage: () => {
 					set({ currentChunk: chunks[0], isPageFinished: false });
 				},
 			}),

@@ -1,30 +1,32 @@
-import { ChunkQuestionReady } from "@/components/chat/chunk-question-ready";
+import { StairsReadyButton } from "@/components/chat/stairs-button";
 import { BotMessage, ChatHistory, Message } from "@itell/core/chatbot";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
+type StairsQuestion = {
+	text: string;
+	chunk: string;
+	question_type: string;
+};
+
 interface ChatProps {
 	messages: Message[];
 	activeMessageId: string | null;
-
-	chunkQuestionAnswered: boolean;
-	chunkQuestionText: string | null;
-	chunkQuestionMessages: Message[];
+	stairsAnswered: boolean;
+	stairsReady: boolean;
+	stairsTimestamp: number | null;
+	stairsQuestion: StairsQuestion | null;
+	stairsMessages: Message[];
 }
 
 interface ChatState extends ChatProps {
-	addUserMessage: (text: string, isChunkQuestion?: boolean) => string;
-	addBotMessage: (text: string, isChunkQuestion?: boolean) => string;
+	addUserMessage: (text: string, isStairs?: boolean) => string;
+	addBotMessage: (text: string, isStairs?: boolean) => string;
 	addBotMessageElement: (comp: () => JSX.Element) => void;
-	updateBotMessage: (
-		id: string,
-		text: string,
-		isChunkQuestion?: boolean,
-	) => void;
+	updateBotMessage: (id: string, text: string, isStairs?: boolean) => void;
 	setActiveMessageId: (id: string | null) => void;
-
-	setChunkQuestionAnswered: (value: boolean) => void;
-	addChunkQuestion: (value: string) => void;
+	setStairsAnswered: (value: boolean) => void;
+	addStairsQuestion: (value: StairsQuestion) => void;
 }
 
 const welcomeMessage: BotMessage = {
@@ -37,10 +39,11 @@ export const useChatStore = create(
 	immer<ChatState>((set, get) => ({
 		messages: [welcomeMessage],
 		activeMessageId: null,
-
-		chunkQuestionMessages: [],
-		chunkQuestionAnswered: false,
-		chunkQuestionText: null,
+		stairsReady: false,
+		stairsMessages: [],
+		stairsAnswered: false,
+		stairsQuestion: null,
+		stairsTimestamp: null,
 
 		setActiveMessageId: (id) => {
 			set((state) => {
@@ -48,11 +51,11 @@ export const useChatStore = create(
 			});
 		},
 
-		addUserMessage: (text, isChunkQuestion) => {
+		addUserMessage: (text, isStairs) => {
 			const id = crypto.randomUUID();
-			if (isChunkQuestion) {
+			if (isStairs) {
 				set((state) => {
-					state.chunkQuestionMessages.push({
+					state.stairsMessages.push({
 						id,
 						text,
 						isUser: true,
@@ -70,11 +73,11 @@ export const useChatStore = create(
 
 			return id;
 		},
-		addBotMessage: (text, isChunkQuestion) => {
+		addBotMessage: (text, isStairs) => {
 			const id = crypto.randomUUID();
-			if (isChunkQuestion) {
+			if (isStairs) {
 				set((state) => {
-					state.chunkQuestionMessages.push({
+					state.stairsMessages.push({
 						id,
 						text,
 						isUser: false,
@@ -94,7 +97,7 @@ export const useChatStore = create(
 		},
 		addBotMessageElement: (Comp) => {
 			set((state) => {
-				state.chunkQuestionMessages.push({
+				state.stairsMessages.push({
 					id: crypto.randomUUID(),
 					isUser: false,
 					Node: <Comp />,
@@ -102,48 +105,52 @@ export const useChatStore = create(
 			});
 		},
 
-		updateBotMessage: (id, text, isChunkQuestion) => {
+		updateBotMessage: (id, text, isStairs) => {
 			set((state) => {
-				if (isChunkQuestion) {
-					const messageIndex = state.chunkQuestionMessages.findIndex(
+				if (isStairs) {
+					const messageIndex = state.stairsMessages.findIndex(
 						(message) => message.id === id,
 					);
 					if (messageIndex !== -1) {
-						// @ts-ignore
-						state.chunkQuestionMessages[messageIndex].text = text;
+						const message = state.stairsMessages[messageIndex];
+						if ("text" in message) {
+							message.text = text;
+						}
 					}
 				} else {
 					const messageIndex = state.messages.findIndex(
 						(message) => message.id === id,
 					);
 					if (messageIndex !== -1) {
-						// @ts-ignore
-						state.messages[messageIndex].text = text;
+						const message = state.messages[messageIndex];
+						if ("text" in message) {
+							message.text = text;
+						}
 					}
 				}
 			});
 		},
 
-		setChunkQuestionAnswered: (value) => {
+		setStairsAnswered: (value) => {
 			set((state) => {
-				state.chunkQuestionAnswered = value;
+				state.stairsAnswered = value;
 			});
 		},
-		addChunkQuestion: (value) => {
+		addStairsQuestion: (value) => {
 			set((state) => {
-				state.chunkQuestionText = value;
-				state.chunkQuestionMessages = [
+				state.stairsQuestion = value;
+				state.stairsMessages = [
 					{
 						id: crypto.randomUUID(),
 						isUser: false,
 						Node: (
-							<ChunkQuestionReady
+							<StairsReadyButton
 								onClick={() => {
-									get().addBotMessageElement(() => (
-										<div className="space-y-2">
-											<p>{value}</p>
-										</div>
-									));
+									set((state) => {
+										state.stairsReady = true;
+										state.stairsTimestamp = Date.now();
+									});
+									get().addBotMessageElement(() => <p>{value.text}</p>);
 								}}
 							/>
 						),
@@ -155,8 +162,12 @@ export const useChatStore = create(
 );
 
 export const getChatHistory = (messages: Message[]): ChatHistory => {
-	return messages.map((message) => ({
-		agent: message.isUser ? "user" : "bot",
-		text: "text" in message ? message.text : "",
-	}));
+	return messages
+		.filter((m) => "text" in m && m.id !== welcomeMessage.id)
+		.map((m) => ({
+			agent: m.isUser ? "user" : "bot",
+			// ignoring because filter faild to detect m.text existence
+			// @ts-ignore
+			text: m.text,
+		}));
 };

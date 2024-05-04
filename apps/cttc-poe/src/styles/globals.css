@@ -4,6 +4,10 @@
 
 @import url("@itell/ui/dist/style.css");
 
+html {
+  scroll-behavior: smooth;
+}
+
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
   margin-top: 0;
@@ -52,19 +56,22 @@ svg {
   color: black;
 }
 
+
 .driver-active .toc-sidebar,
-.driver-active .module-sidebar,
+.driver-active .chapter-sidebar,
 .driver-active #site-nav,
-.driver-active .question-container {
+.driver-active .question-container,
+.driver-active .chatbot {
   display: none;
 }
 
 .driver-popover {
   max-width: 350px !important;
+  @apply bg-background text-foreground !important;
 }
 
 @media (max-width: 768px) {
-  .module-sidebar {
+  .chapter-sidebar {
     display: none;
   }
 

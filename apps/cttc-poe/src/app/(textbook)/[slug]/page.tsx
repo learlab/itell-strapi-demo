@@ -1,7 +1,7 @@
-import { ChatbotLoader } from "@/components/chat/chatbot-loader";
+import { ChapterToc } from "@/components/chapter-toc";
+import { ChatLoader } from "@/components/chat/chat-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
-import { ModuleToc } from "@/components/module-toc";
 import { NoteCount } from "@/components/note/note-count";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
@@ -14,9 +14,10 @@ import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { PageSummary } from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
+import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { isPageWithFeedback } from "@/lib/feedback";
+import { getPageFeedbackType } from "@/lib/control/feedback";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";
@@ -29,8 +30,8 @@ import { Suspense } from "react";
 export default async function ({ params }: { params: { slug: string } }) {
 	const sessionUser = await getCurrentUser();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
-	const pageIndex = allPagesSorted.findIndex((section) => {
-		return section.page_slug === params.slug;
+	const pageIndex = allPagesSorted.findIndex((page) => {
+		return page.page_slug === params.slug;
 	});
 
 	if (pageIndex === -1) {
@@ -45,16 +46,14 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userPageSlug: user?.pageSlug || null,
 	});
 
-	const isFeedbackEnabled = sessionUser
-		? isPageWithFeedback(sessionUser, page)
-		: true;
+	const feedbackType = getPageFeedbackType(page);
 
 	const chunks = getPageChunks(page);
 
+	const isAdmin = env.ADMINS?.includes(user?.email || "");
+
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
-	const isLastChunkWithQuestion = selectedQuestions.has(
-		chunks[chunks.length - 1],
-	);
+	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
 	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
@@ -64,13 +63,18 @@ export default async function ({ params }: { params: { slug: string } }) {
 			chunks={chunks}
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
+			feedbackType={feedbackType}
+			isAdmin={isAdmin}
 		>
 			<div className="flex flex-row justify-end max-w-[1440px] mx-auto gap-6 px-2">
 				<aside
-					className="module-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
+					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ModuleToc page={page} />
+					<ChapterToc
+						currentPage={page}
+						userPageSlug={user?.pageSlug || null}
+					/>
 				</aside>
 
 				<section
@@ -97,7 +101,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					style={{ flexGrow: 1 }}
 				>
 					<div className="sticky top-20">
-						<PageToc headings={page.headings} />
+						<PageToc headings={page.headings} chunks={getPageChunks(page)} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus status={pageStatus} />
 							<Suspense fallback={<NoteCount.Skeleton />}>
@@ -123,20 +127,20 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageSummary
 						pageSlug={pageSlug}
 						pageStatus={pageStatus}
-						isFeedbackEnabled={isFeedbackEnabled}
+						feedbackType={feedbackType}
 					/>
 				</footer>
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			<ConstructedResponseControl
+			{/* <ConstructedResponseControl
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
-				isFeedbackEnabled={isFeedbackEnabled}
-			/>
+				feedbackType={feedbackType}
+			/> */}
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
-			<Suspense fallback={<ChatbotLoader.Skeleton />}>
-				<ChatbotLoader pageSlug={pageSlug} />
+			<Suspense fallback={<ChatLoader.Skeleton />}>
+				<ChatLoader pageSlug={pageSlug} />
 			</Suspense>
 		</PageProvider>
 	);

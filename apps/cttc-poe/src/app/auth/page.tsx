@@ -1,13 +1,14 @@
-import { cn } from "@itell/core/utils";
-import Link from "next/link";
-import { ChevronLeftIcon, CommandIcon } from "lucide-react";
-import { Button } from "@/components/client-components";
-import FlipCard from "@/components/flip-card";
 import { AuthForm } from "@/components/auth/auth-form";
-import { Warning } from "@itell/ui/server";
-import { isProduction } from "@/lib/constants";
-import { getSiteConfig } from "@/lib/config";
 import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
+import { Button } from "@/components/client-components";
+import { getSiteConfig } from "@/config/site";
+import { env } from "@/env.mjs";
+import { getCurrentUser } from "@/lib/auth";
+import { isProduction } from "@/lib/constants";
+import { Warning } from "@itell/ui/server";
+import * as Sentry from "@sentry/nextjs";
+import { ChevronLeftIcon, CommandIcon } from "lucide-react";
+import Link from "next/link";
 
 type PageProps = {
 	searchParams?: Record<string, string>;
@@ -19,12 +20,21 @@ const ErrorDict: Record<string, string> = {
 	Callback: `An internal error occurred. Please try again later or contact lear.lab.vu@gmail.com${
 		isProduction ? "" : " Did you forgot to run prisma generate?"
 	}`,
+	InvalidEmail:
+		"The email you provided is not found on the students list, please try logging in with your @cornell.edu email.",
 };
 
 export default async function ({ searchParams }: PageProps) {
 	const config = await getSiteConfig();
 	const error = searchParams?.error;
 	const errorMessage = error ? ErrorDict[error] : null;
+	const user = await getCurrentUser();
+	const isAdmin = env.ADMINS?.includes(user?.email || "");
+
+	if (error === "Callback") {
+		Sentry.captureException(new Error(error));
+	}
+
 	return (
 		<div className="w-screen h-screen grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
 			<Link href="/" className={"absolute top-4 left-4 md:top-8 md:left-8"}>
@@ -45,7 +55,7 @@ export default async function ({ searchParams }: PageProps) {
 						<p className="text-sm text-muted-foreground">TBD</p> */}
 					</div>
 					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
-					<AuthForm />
+					<AuthForm isAdmin={isAdmin || false} />
 				</div>
 			</div>
 			<div className="hidden h-full bg-gray-100 lg:col-span-1 lg:flex lg:items-center">

@@ -94,7 +94,7 @@ export const UserAccountNav = () => {
 							event.preventDefault();
 							setPending(true);
 							await signOut({
-								callbackUrl: `${window.location.origin}/auth`,
+								callbackUrl: "/auth",
 							});
 							setPending(false);
 						}}

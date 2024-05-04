@@ -15,21 +15,21 @@ import pluralize from "pluralize";
 import { useState } from "react";
 import { SummaryItem } from "./summary-item";
 
-const SelectModule = ({
-	modules,
+const SelectChapter = ({
+	chapters,
 	...rest
-}: { modules: string[] } & React.ComponentProps<typeof Select>) => {
+}: { chapters: string[] } & React.ComponentProps<typeof Select>) => {
 	return (
 		<Select {...rest}>
 			<SelectTrigger className="w-[180px]">
-				<SelectValue placeholder="Module" />
+				<SelectValue placeholder="Chapter" />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
-					<SelectLabel>Select a Module</SelectLabel>
-					{modules.map((m) => (
-						<SelectItem key={m} value={m}>
-							Module {m}
+					<SelectLabel>Select a chapter</SelectLabel>
+					{chapters.map((c) => (
+						<SelectItem key={c} value={c}>
+							Chapter {Number(c) + 1}
 						</SelectItem>
 					))}
 				</SelectGroup>
@@ -38,31 +38,31 @@ const SelectModule = ({
 	);
 };
 
-export type SummaryData = Summary & { module: number; pageTitle: string };
+export type SummaryData = Summary & { pageTitle: string };
 
 export const SummaryList = ({
-	summariesByModule,
 	user,
-}: { summariesByModule: Record<string, SummaryData[]>; user: User }) => {
-	const modules = keyof(summariesByModule);
-	const [selectedModule, setSelectedModule] = useState(modules[0]);
-	const moduleSummaries = summariesByModule[selectedModule];
+	summariesByChapter,
+}: { summariesByChapter: Record<string, SummaryData[]>; user: User }) => {
+	const chapters = keyof(summariesByChapter);
+	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
+	const chapterSummaries = summariesByChapter[selectedChapter];
 
 	return (
 		<div className="p-4 ">
 			<div className="flex items-center justify-between">
-				<SelectModule
-					modules={modules}
-					value={selectedModule}
-					onValueChange={(val) => setSelectedModule(val)}
+				<SelectChapter
+					chapters={chapters}
+					value={selectedChapter}
+					onValueChange={(val) => setSelectedChapter(val)}
 				/>
 				<p className="text-muted-foreground text-sm">
-					{`${pluralize("summary", moduleSummaries.length, true)}`}
+					{`${pluralize("summary", chapterSummaries.length, true)}`}
 				</p>
 			</div>
 
 			<div className="divide-y divide-border rounded-md border mt-4 w-[960px]">
-				{moduleSummaries.map((summary) => (
+				{chapterSummaries.map((summary) => (
 					<SummaryItem
 						summary={summary}
 						key={summary.id}

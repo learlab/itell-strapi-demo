@@ -1,7 +1,7 @@
 import { Progress } from "@/components/client-components";
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { StudentStats, getClassStudentStats } from "@/lib/dashboard";
-import { allPagesSorted } from "@/lib/pages";
+import { StudentStats } from "@/lib/dashboard/class";
+import { allPagesSorted, firstPage } from "@/lib/pages";
 import { delay, getPageData } from "@/lib/utils";
 import { Skeleton } from "@itell/ui/server";
 import { StudentData, columns } from "./students-columns";
@@ -17,16 +17,14 @@ export const TeacherClassGeneral = async ({
 		if (page) {
 			progress = {
 				chapter: page.chapter,
-				section: page.section,
 				index: page.index,
 				title: page.title,
 			};
 		} else {
 			progress = {
-				chapter: 1,
-				section: 1,
-				index: 1,
-				title: "What is Law",
+				chapter: firstPage.chapter,
+				index: 0,
+				title: firstPage.title,
 			};
 		}
 

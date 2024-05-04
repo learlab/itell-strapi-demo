@@ -1,13 +1,26 @@
 "use client";
 
-import { TextArea } from "@/components/client-components";
 import { isProduction } from "@/lib/constants";
+import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { StageItem, SummaryProgress } from "./summary-progress";
+import { useConfig } from "../provider/page-provider";
+import { SummaryProgress } from "./summary-progress";
+
+export const saveSummaryLocal = (pageSlug: string, text: string) => {
+	localStorage.setItem(makeInputKey(pageSlug), text);
+};
+
+export const getSummaryLocal = (pageSlug: string) => {
+	return localStorage.getItem(makeInputKey(pageSlug));
+};
+
+export const clearSummaryLocal = (pageSlug: string) => {
+	localStorage.removeItem(makeInputKey(pageSlug));
+};
 
 type Props = {
 	pageSlug: string;
@@ -15,7 +28,6 @@ type Props = {
 	pending: boolean;
 	value?: string;
 	disabled?: boolean;
-	isAdmin?: boolean;
 };
 
 export const SummaryInput = ({
@@ -24,8 +36,8 @@ export const SummaryInput = ({
 	disabled = true,
 	value = "",
 	pending,
-	isAdmin = false,
 }: Props) => {
+	const isAdmin = useConfig((state) => state.isAdmin);
 	const searchParams = useSearchParams();
 	const summaryToRevise = searchParams?.get("summary");
 	const text = summaryToRevise
@@ -35,7 +47,7 @@ export const SummaryInput = ({
 
 	useEffect(() => {
 		if (!summaryToRevise) {
-			setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
+			setInput(getSummaryLocal(pageSlug) || value);
 		}
 	}, []);
 

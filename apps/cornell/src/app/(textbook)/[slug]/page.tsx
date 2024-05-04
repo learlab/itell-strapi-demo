@@ -133,11 +133,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			<ConstructedResponseControl
+			{/* <ConstructedResponseControl
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
 				feedbackType={feedbackType}
-			/>
+			/> */}
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatLoader.Skeleton />}>
 				<ChatLoader pageSlug={pageSlug} />

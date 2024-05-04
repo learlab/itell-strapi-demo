@@ -12,38 +12,28 @@ export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(db),
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
-		AzureADProvider({
-			id: "azure-ad",
-			name: "Azure AD",
-			clientId: env.AZURE_CLIENT_ID,
-			clientSecret: env.AZURE_CLIENT_SECRET,
-			tenantId: "common",
-			allowDangerousEmailAccountLinking: true,
-			authorization: {
-				params: {
-					prompt: "consent",
-					access_type: "offline",
-					response_type: "code",
-				},
-			},
+		GoogleProvider({
+			id: "google",
+			name: "google",
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		}),
 	],
 	callbacks: {
+		signIn: async ({ user }) => {
+			if (env.ADMINS?.includes(user.email || "")) {
+				return true;
+			}
+
+			if (env.STUDENTS?.includes(user.email || "")) {
+				return true;
+			}
+
+			return "/auth?error=InvalidEmail";
+		},
 		session({ session, user }) {
 			if (session.user) {
 				session.user.id = user.id;
-				if (session.user.email) {
-					const classOneEmails = (env.CLASS_ONE_EMAILS as string[]) || [];
-					const classTwoEmails = (env.CLASS_TWO_EMAILS as string[]) || [];
-
-					if (classOneEmails.includes(session.user.email)) {
-						session.user.class = "one";
-					} else if (classTwoEmails.includes(session.user.email)) {
-						session.user.class = "two";
-					} else {
-						session.user.class = undefined;
-					}
-				}
 			}
 			return session;
 		},

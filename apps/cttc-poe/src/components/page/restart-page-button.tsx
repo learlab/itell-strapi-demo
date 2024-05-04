@@ -5,17 +5,23 @@ import { useTransition } from "react";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
+import { clearSummaryLocal } from "../summary/summary-input";
 
-export const RestartPageButton = () => {
+type Props = {
+	pageSlug: string;
+};
+
+export const RestartPageButton = ({ pageSlug }: Props) => {
 	const [pending, startTransition] = useTransition();
-	const reset = useConstructedResponse((state) => state.reset);
+	const resetPage = useConstructedResponse((state) => state.resetPage);
 	return (
 		<Button
-			className="flex flex-wrap justify-start items-center gap-2 pl-0"
+			className="flex items-center gap-2"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
-					reset();
+					resetPage();
+					clearSummaryLocal(pageSlug);
 					window.location.reload();
 				});
 			}}
@@ -26,7 +32,7 @@ export const RestartPageButton = () => {
 			) : (
 				<RotateCcwIcon className="size-4" />
 			)}
-			<span>Reset blurred text</span>
+			<span>Reset page</span>
 		</Button>
 	);
 };

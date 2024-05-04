@@ -5,8 +5,7 @@ import {
 	HoverCardTrigger,
 } from "@/components/client-components";
 import { SessionUser } from "@/lib/auth";
-import db from "@/lib/db";
-import { countNoteHighlight } from "@/lib/server-actions";
+import { countNoteHighlight } from "@/lib/note";
 import { Skeleton } from "@itell/ui/server";
 import pluralize from "pluralize";
 

@@ -2,6 +2,7 @@ import { DashboardConfig } from "@/types/config";
 import {
 	BarChart4Icon,
 	FileEditIcon,
+	MessageCircleQuestion,
 	SettingsIcon,
 	UsersIcon,
 } from "lucide-react";
@@ -20,6 +21,11 @@ export const dashboardConfig: DashboardConfig = {
 			title: "Summaries",
 			href: "/dashboard/summaries",
 			icon: <FileEditIcon className={iconClasses} />,
+		},
+		{
+			title: "Questions",
+			href: "/dashboard/questions",
+			icon: <MessageCircleQuestion className={iconClasses} />,
 		},
 		{
 			title: "Settings",

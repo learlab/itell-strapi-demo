@@ -17,4 +17,3 @@ export const TEXTBOOK_NAME = "Business-Law-and-the-Legal-Environment";
 export const PAGE_SUMMARY_THRESHOLD = 2;
 export const DEFAULT_TIME_ZONE = "America/Chicago";
 export const isProduction = process.env.NODE_ENV === "production";
-export const firstPageUrl = "/introduction-to-law-and-legal-systems";

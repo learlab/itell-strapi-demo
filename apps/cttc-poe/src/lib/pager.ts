@@ -22,7 +22,7 @@ export const getPagerLinks = ({
 
 		links.next = nextPage
 			? {
-					text: `${nextPage.location.chapter}.${nextPage.location.section} ${nextPage.title}`,
+					text: `${nextPage.chapter + 1}. ${nextPage.title}`,
 					href: nextPage.url,
 					disabled: false,
 			  }
@@ -30,7 +30,7 @@ export const getPagerLinks = ({
 
 		links.prev = prevPage
 			? {
-					text: `${prevPage.location.chapter}.${prevPage.location.section} ${prevPage.title}`,
+					text: `${prevPage.chapter + 1}. ${prevPage.title}`,
 					href: prevPage.url,
 					disabled: false,
 			  }
@@ -47,7 +47,7 @@ export const getPagerLinks = ({
 			  ? false
 			  : true;
 		links.prev = {
-			text: `${page.location.chapter}.${page.location.section} ${page.title}`,
+			text: `${page.chapter + 1}. ${page.title}`,
 			href: page.url,
 			disabled,
 		};
@@ -61,7 +61,7 @@ export const getPagerLinks = ({
 			  ? false
 			  : true;
 		links.next = {
-			text: `${page.location.chapter}.${page.location.section} ${page.title}`,
+			text: `${page.chapter + 1}. ${page.title}`,
 			href: page.url,
 			disabled,
 		};

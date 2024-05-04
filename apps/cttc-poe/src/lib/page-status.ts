@@ -1,4 +1,8 @@
-import { isPageAfter, isPageUnlockedWithoutUser } from "./location";
+import { firstPage, isPageAfter } from "./pages";
+
+const isPageUnlockedWithoutUser = (pageSlug: string) => {
+	return pageSlug === "introduction-to-the-macroeconomic-perspective";
+};
 
 export type PageStatus = {
 	// if user has completed the page
@@ -14,7 +18,7 @@ export const getPageStatus = (
 	if (!userPageSlug) {
 		return {
 			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
-			isPageLatest: pageSlug === "what-is-law",
+			isPageLatest: pageSlug === firstPage.page_slug,
 		};
 	}
 

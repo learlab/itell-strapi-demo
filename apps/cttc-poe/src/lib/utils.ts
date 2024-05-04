@@ -1,5 +1,3 @@
-import { Location } from "@/types/location";
-import { SidebarSection } from "@/types/section";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
@@ -14,49 +12,14 @@ export const getYoutubeLinkFromEmbed = (url: string) => {
 	return url;
 };
 
-const getSingleLocation = (s: string | undefined) => {
-	if (!s) return undefined;
-	const [_, number] = s.split("-");
-	return number ? Number(number) : undefined;
-};
-export const getLocationFromPathname = (path: string): Location => {
-	const pathname = path.split("/");
-
-	const module = getSingleLocation(pathname[1]);
-	const chapter = getSingleLocation(pathname[2]);
-	let section = getSingleLocation(pathname[3]);
-	if (module && chapter && !section) {
-		section = 0;
-	}
-	return { module, chapter, section };
-};
-
-export const sortSections = (sections: SidebarSection[]) => {
-	const sectionsSorted = sections.slice(0).sort((a, b) => {
-		if (a.chapter === b.chapter) {
-			if (!a.section) {
-				return -1;
-			}
-			if (!b.section) {
-				return 1;
-			}
-
-			return a.section - b.section;
-		}
-		return a.chapter - b.chapter;
-	});
-
-	return sectionsSorted;
-};
-
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const makeInputKey = (slug: string) => {
 	return `${slug}-summary`;
 };
 
-export const makePageHref = (slug: string) => {
-	return `/${slug}`;
+export const makePageHref = (slug: string, chunk?: string) => {
+	return `/${slug}${chunk ? `#${chunk}` : ""}`;
 };
 
 export type PageData = {
@@ -64,9 +27,7 @@ export type PageData = {
 	index: number;
 	title: string;
 	page_slug: string;
-	quiz: boolean;
 	chapter: number;
-	section: number;
 	nextPageSlug: string | null;
 };
 
@@ -87,9 +48,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		index,
 		title: page.title,
 		page_slug: page.page_slug,
-		chapter: page.location.chapter as number,
-		section: page.location.section as number,
-		quiz: page.quiz,
+		chapter: page.chapter,
 		nextPageSlug,
 	};
 };

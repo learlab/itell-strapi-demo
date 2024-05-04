@@ -1,7 +1,7 @@
 "use client";
 
 import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
-import { createEvent, createFocusTime } from "@/lib/server-actions";
+import { createEvent, createFocusTime } from "@/lib/event/actions";
 import { getChunkElement } from "@/lib/utils";
 import { EventTracker as Tracker } from "@itell/core/components";
 import {
@@ -29,7 +29,7 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const onClick = async (data: ClickEventData) => {
 		createEvent({
 			eventType: "click",
-			page: location.href,
+			pageSlug,
 			data,
 		});
 	};
@@ -37,7 +37,7 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const onScroll = async (data: ScrollEventData) => {
 		createEvent({
 			eventType: "scroll",
-			page: location.href,
+			pageSlug,
 			data,
 		});
 	};
@@ -45,7 +45,7 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const onFocusTime = async (data: FocusTimeEventData) => {
 		createEvent({
 			eventType: "focus-time",
-			page: location.href,
+			pageSlug,
 			data,
 		});
 		createFocusTime({

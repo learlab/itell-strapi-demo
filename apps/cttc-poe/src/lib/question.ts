@@ -10,22 +10,20 @@ export const QuestionSchema = z.object({
 export type Question = z.infer<typeof QuestionSchema>;
 export type SelectedQuestions = Map<string, Question>;
 
-const PageQuestionsSchema = z
-	.object({
-		data: z.array(
-			z.object({
-				attributes: z.object({
-					Content: z.array(
-						z.object({
-							Slug: z.string(),
-							QuestionAnswerResponse: z.string().optional(),
-						}),
-					),
-				}),
+const PageQuestionsSchema = z.object({
+	data: z.array(
+		z.object({
+			attributes: z.object({
+				Content: z.array(
+					z.object({
+						Slug: z.string(),
+						QuestionAnswerResponse: z.string().nullable(),
+					}),
+				),
 			}),
-		),
-	})
-	.nonstrict();
+		}),
+	),
+});
 
 export const getPageQuestions = async (pageSlug: string) => {
 	const q = qs.stringify({
@@ -67,7 +65,7 @@ export const getQAScore = async ({
 	chunk_slug,
 	page_slug,
 }: { input: string; chunk_slug: string; page_slug: string }) => {
-	const response = await fetch(`${env.NEXT_PUBLIC_SCORE_API_URL}/answer`, {
+	const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/score/answer`, {
 		method: "POST",
 		body: JSON.stringify({
 			page_slug: page_slug,
@@ -87,7 +85,7 @@ export const getRandomPageQuestions = async (pageSlug: string) => {
 	const selectedQuestions: SelectedQuestions = new Map();
 	const questions = await getPageQuestions(pageSlug);
 
-	if (questions) {
+	if (questions && questions.data.length > 0) {
 		const chunks = questions.data[0].attributes.Content.filter((c) =>
 			Boolean(c.QuestionAnswerResponse),
 		);

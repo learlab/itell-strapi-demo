@@ -1,13 +1,13 @@
 "use client";
 
-import { Errorbox, Input } from "@itell/ui/server";
-import { useSearchParams } from "next/navigation";
-import { getTeacherWithClassId } from "@/lib/server-actions";
-import { useFormState, useFormStatus } from "react-dom";
-import { User } from "@prisma/client";
-import { ClassInviteModal } from "./class-invite-modal";
-import { Button } from "@itell/ui/client";
 import { Spinner } from "@/components/spinner";
+import { getTeacherWithClassId } from "@/lib/dashboard/actions";
+import { Button } from "@itell/ui/client";
+import { Errorbox, Input } from "@itell/ui/server";
+import { User } from "@prisma/client";
+import { useSearchParams } from "next/navigation";
+import { useFormState, useFormStatus } from "react-dom";
+import { ClassInviteModal } from "./class-invite-modal";
 
 type Props = {
 	user: User;

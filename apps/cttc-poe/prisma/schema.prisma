@@ -68,7 +68,6 @@ model User {
   ConstructedResponseFeedback ConstructedResponseFeedback[]
   Event                       Event[]
   FocusTime                   FocusTime[]
-  QuizAnswer                  QuizAnswer[]
 
   @@index([classId])
   @@map("users")
@@ -91,7 +90,7 @@ model Event {
   id         String   @id @default(uuid())
   eventType  String   @map("event_type")
   userId     String   @map("user_id")
-  page       String
+  pageSlug   String   @map("page_slug")
   /// [EventData]
   data       Json?    @db.JsonB
   created_at DateTime @default(now())
@@ -99,19 +98,6 @@ model Event {
   user User @relation(fields: [userId], references: [id])
 
   @@map("events")
-}
-
-model QuizAnswer {
-  id         String   @id @default(uuid())
-  userId     String   @map("user_id")
-  pageSlug   String   @map("page_slug")
-  /// [QuizAnswerData]
-  data       Json     @db.JsonB
-  created_at DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@map("quiz_answers")
 }
 
 model VerificationToken {
@@ -126,6 +112,7 @@ model VerificationToken {
 model Teacher {
   id         String  @id
   isApproved Boolean @default(false)
+  isPrimary  Boolean @default(false)
   classId    String  @map("class_id")
 
   @@map("teachers")
@@ -179,6 +166,7 @@ model ConstructedResponse {
 
   user User @relation(fields: [userId], references: [id])
 
+  @@index([userId])
   @@map("constructed_responses")
 }
 
