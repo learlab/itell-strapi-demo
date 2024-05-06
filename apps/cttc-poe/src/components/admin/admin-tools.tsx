@@ -71,7 +71,7 @@ export const AdminTools = () => {
 									id={FeedbackType.SIMPLE}
 								/>
 								<div>
-									<Label htmlFor={FeedbackType.SIMPLE}>Simple rereading</Label>
+									<Label htmlFor={FeedbackType.SIMPLE}>Simple</Label>
 									<p className="text-sm text-muted-foreground">
 										A digital textbook without AI-generated short questions,
 										without summary production, and without STAIRS. Workers will

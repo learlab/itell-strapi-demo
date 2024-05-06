@@ -152,6 +152,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const feedback = state.response ? getFeedback(state.response) : null;
 
 	const goToQuestion = (question: StairsQuestion) => {
+		console.log(question);
 		const el = getChunkElement(question.chunk);
 		if (el) {
 			scrollToElement(el);

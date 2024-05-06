@@ -28,9 +28,9 @@ export const SummaryResponseSchema = z.object({
 	english: z.boolean(),
 	included_keyphrases: z.array(z.string()),
 	suggested_keyphrases: z.array(z.string()),
-	is_passed: z.boolean(),
-	prompt: z.string(),
-	prompt_details: z.array(PromptDetailsSchema),
+	is_passed: z.boolean().optional(),
+	prompt: z.string().optional(),
+	prompt_details: z.array(PromptDetailsSchema).optional(),
 });
 
 export const SummaryFeedbackSchema = z.object({

@@ -31,16 +31,10 @@ export const validateSummary = (
 		return ErrorType.WORD_COUNT;
 	}
 
-	// check offensive words
-	let isOffensive = false;
 	for (const word of input.split(" ")) {
 		if (offensiveWords.includes(word.toLowerCase())) {
-			isOffensive = true;
-			break;
+			return ErrorType.OFFENSIVE;
 		}
-	}
-	if (isOffensive) {
-		return ErrorType.OFFENSIVE;
 	}
 
 	if (prevInput) {

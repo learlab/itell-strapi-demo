@@ -5,6 +5,7 @@ import { SessionUser } from "@/lib/auth";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { createSummary } from "@/lib/summary/actions";
+import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, getChunkElement, scrollToElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import {
@@ -141,7 +142,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [feedbackType]);
 
 	useEffect(() => {
-		if (state.finished) {
+		if (state.finished && !state.error) {
 			goToRandomChunk();
 		}
 	}, [state]);
@@ -169,6 +170,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		}
 
 		let requestBody = "";
+		let summaryResponse: SummaryResponse | null = null;
 
 		try {
 			requestBody = JSON.stringify({
@@ -186,33 +188,32 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			const json = await response.json();
 			const parsed = SummaryResponseSchema.safeParse(json);
 			if (!parsed.success) {
-				Sentry.captureMessage("summary parsing error", {
-					extra: {
-						body: requestBody,
-						response: json,
-					},
-				});
-				finishStage("Analyzing");
-				return dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+				throw parsed.error;
 			}
+			summaryResponse = parsed.data;
+			summaryResponse.is_passed;
 			await createSummary({
 				text: input,
 				pageSlug,
-				response: json as SummaryResponse,
+				response: summaryResponse,
 			});
+			await incrementUserPage(user.id, pageSlug);
 			finishStage("Analyzing");
 			dispatch({
 				type: "finish",
 				payload: true,
 			});
 		} catch (err) {
-			console.log("summary scoring error", err);
+			finishStage("Analyzing");
 			clearStages();
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 
-			Sentry.captureMessage("summary scoring error", {
+			console.log("summary error", err);
+			Sentry.captureMessage("summary error", {
 				extra: {
 					body: requestBody,
+					response: summaryResponse,
+					msg: JSON.stringify(err),
 				},
 			});
 		}

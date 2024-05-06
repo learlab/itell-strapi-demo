@@ -15,7 +15,7 @@ export const createSummary = async ({
 			data: {
 				text,
 				pageSlug,
-				isPassed: response.is_passed,
+				isPassed: response.is_passed || false,
 				containmentScore: response.containment,
 				similarityScore: response.similarity,
 				wordingScore: response.wording,
