@@ -4,7 +4,6 @@ import { Confetti } from "@/components/ui/confetti";
 import { env } from "@/env.mjs";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
-import { FeedbackType } from "@/lib/control/feedback";
 import { getQAScore } from "@/lib/question";
 // import shake effect
 import "@/styles/shakescreen.css";
@@ -37,141 +36,29 @@ import {
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
+import { ExplainButton } from "./explain-button";
 import { FeedbackModal } from "./feedback-modal";
 import { NextChunkButton } from "./next-chunk-button";
-
-type QuestionScore = 0 | 1 | 2;
+import { SubmitButton } from "./submit-button";
+import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
 
 type Props = {
 	question: string;
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	feedbackType: FeedbackType;
 };
 
-// state for answer correctness
-enum AnswerStatus {
-	UNANSWERED = 0,
-	BOTH_CORRECT = 1,
-	SEMI_CORRECT = 2,
-	BOTH_INCORRECT = 3,
-	PASSED = 4, // fallback when api call fails
-}
-
-// state for border color
-enum BorderColor {
-	BLUE = "border-blue-400",
-	RED = "border-red-400",
-	GREEN = "border-green-400",
-	YELLOW = "border-yellow-400",
-}
-
 type FormState = {
-	answerStatus: AnswerStatus;
+	answerStatus: AnswerStatusStairs;
 	error: string | null;
 };
 
-const SubmitButton = ({ answerStatus }: { answerStatus: AnswerStatus }) => {
-	const { pending } = useFormStatus();
-	return (
-		<Button
-			type="submit"
-			disabled={pending}
-			className="gap-2"
-			variant={"outline"}
-		>
-			{pending ? (
-				<Spinner className="size-4" />
-			) : (
-				<PencilIcon className="size-4" />
-			)}
-			{answerStatus === AnswerStatus.UNANSWERED ? "Answer" : "Resubmit"}
-		</Button>
-	);
-};
-
-const ExplainButton = ({
-	pageSlug,
-	chunkSlug,
-}: { pageSlug: string; chunkSlug: string }) => {
-	const [input, setInput] = useState("");
-	const [response, setResponse] = useState("");
-	const { pending, data } = useFormStatus();
-	const [loading, setLoading] = useState(false);
-	const isPending = pending || loading;
-
-	const onClick = async () => {
-		setLoading(true);
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
-			method: "POST",
-			body: JSON.stringify({
-				page_slug: pageSlug,
-				chunk_slug: chunkSlug,
-				student_response: input,
-			}),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-
-		if (response.body) {
-			const reader = response.body.getReader();
-			const decoder = new TextDecoder();
-			let done = false;
-			while (!done) {
-				const { value, done: done_ } = await reader.read();
-				done = done_;
-				const chunk = decoder.decode(value);
-				if (chunk) {
-					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
-						request_id: string;
-						text: string;
-					};
-
-					if (chunkValue) {
-						setResponse(chunkValue.text);
-					}
-				}
-			}
-		}
-
-		setLoading(false);
-	};
-
-	useEffect(() => {
-		if (data) {
-			setInput(String(data.get("input")));
-		}
-	}, [data]);
-
-	return (
-		<div className="flex flex-col items-center justify-center">
-			{response && <p className="text-sm text-muted-foreground">{response}</p>}
-			<Button
-				variant="secondary"
-				className="gap-2"
-				type="button"
-				disabled={isPending}
-				onClick={onClick}
-			>
-				{isPending ? (
-					<Spinner className="size-4" />
-				) : (
-					<HelpCircleIcon className="size-4" />
-				)}
-				What's wrong with my answer?
-			</Button>
-		</div>
-	);
-};
-
-export const QuestionBox = ({
+export const QuestionBoxStairs = ({
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
-	feedbackType,
 }: Props) => {
 	const { data: session } = useSession();
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
@@ -221,7 +108,7 @@ export const QuestionBox = ({
 				console.error("API Response error", response);
 				return {
 					...prevState,
-					answerStatus: AnswerStatus.PASSED,
+					answerStatus: AnswerStatusStairs.PASSED,
 					error: "Answer evaluation failed, please try again later",
 				};
 			}
@@ -241,21 +128,21 @@ export const QuestionBox = ({
 
 				return {
 					error: null,
-					answerStatus: AnswerStatus.BOTH_CORRECT,
+					answerStatus: AnswerStatusStairs.BOTH_CORRECT,
 				};
 			}
 
 			if (score === 1) {
 				return {
 					error: null,
-					answerStatus: AnswerStatus.SEMI_CORRECT,
+					answerStatus: AnswerStatusStairs.SEMI_CORRECT,
 				};
 			}
 
 			if (score === 0) {
 				return {
 					error: null,
-					answerStatus: AnswerStatus.BOTH_INCORRECT,
+					answerStatus: AnswerStatusStairs.BOTH_INCORRECT,
 				};
 			}
 
@@ -278,32 +165,28 @@ export const QuestionBox = ({
 	};
 
 	const initialFormState: FormState = {
-		answerStatus: AnswerStatus.UNANSWERED,
+		answerStatus: AnswerStatusStairs.UNANSWERED,
 		error: null,
 	};
 
 	const [formState, formAction] = useFormState(action, initialFormState);
 	const answerStatus = formState.answerStatus;
 
-	const borderColor =
-		formState.answerStatus === AnswerStatus.UNANSWERED
-			? BorderColor.BLUE
-			: formState.answerStatus === AnswerStatus.BOTH_CORRECT
-				? BorderColor.GREEN
-				: formState.answerStatus === AnswerStatus.SEMI_CORRECT
-					? BorderColor.YELLOW
-					: BorderColor.RED;
+	const borderColor = borderColors[answerStatus];
 
 	useEffect(() => {
 		if (formState.error) {
 			toast.warning(formState.error);
 		}
 
-		if (formState.answerStatus === AnswerStatus.BOTH_CORRECT) {
+		if (
+			formState.answerStatus === AnswerStatusStairs.BOTH_CORRECT ||
+			formState.answerStatus === AnswerStatusStairs.PASSED
+		) {
 			setIsNextButtonDisplayed(true);
 		}
 
-		if (formState.answerStatus === AnswerStatus.BOTH_INCORRECT) {
+		if (formState.answerStatus === AnswerStatusStairs.BOTH_INCORRECT) {
 			shakeModal();
 		}
 	}, [formState]);
@@ -311,10 +194,9 @@ export const QuestionBox = ({
 	const isLastQuestion = chunkSlug === chunks.at(-1);
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
-		: answerStatus === AnswerStatus.BOTH_CORRECT ||
-				answerStatus === AnswerStatus.SEMI_CORRECT
-			? "Continue reading"
-			: "Skip this question";
+		: answerStatus === AnswerStatusStairs.BOTH_INCORRECT
+			? "Skip this question"
+			: "Continue reading";
 
 	if (!session?.user) {
 		return (
@@ -334,12 +216,7 @@ export const QuestionBox = ({
 					`${isShaking ? "shake" : ""}`,
 				)}
 			>
-				<Confetti
-					active={
-						answerStatus === AnswerStatus.BOTH_CORRECT &&
-						feedbackType === "stairs"
-					}
-				/>
+				<Confetti active={answerStatus === AnswerStatusStairs.BOTH_CORRECT} />
 
 				<CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
 					<CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
@@ -362,7 +239,7 @@ export const QuestionBox = ({
 				</CardHeader>
 
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-					{answerStatus === AnswerStatus.BOTH_INCORRECT && (
+					{answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
 						<div className="text-xs">
 							<p className="text-red-400 question-box-text">
 								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
@@ -376,7 +253,7 @@ export const QuestionBox = ({
 						</div>
 					)}
 
-					{answerStatus === AnswerStatus.SEMI_CORRECT && (
+					{answerStatus === AnswerStatusStairs.SEMI_CORRECT && (
 						<p className="text-yellow-600 question-box-text text-xs">
 							<b>iTELL AI says:</b> You may have missed something, but you were
 							generally close. You can click on the "Continue reading" button
@@ -384,7 +261,7 @@ export const QuestionBox = ({
 						</p>
 					)}
 
-					{answerStatus === AnswerStatus.BOTH_CORRECT ? (
+					{answerStatus === AnswerStatusStairs.BOTH_CORRECT ? (
 						<div className="flex items-center flex-col">
 							<p className="text-xl2 text-emerald-600 text-center">
 								Your answer is correct!
@@ -419,7 +296,7 @@ export const QuestionBox = ({
 							}}
 						/>
 						<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-							{answerStatus !== AnswerStatus.UNANSWERED && (
+							{answerStatus !== AnswerStatusStairs.UNANSWERED && (
 								<HoverCard>
 									<HoverCardTrigger asChild>
 										<Button variant={"outline"} type="button">
@@ -433,7 +310,7 @@ export const QuestionBox = ({
 								</HoverCard>
 							)}
 
-							{answerStatus === AnswerStatus.BOTH_CORRECT &&
+							{answerStatus === AnswerStatusStairs.BOTH_CORRECT &&
 							isNextButtonDisplayed ? (
 								// when answer is all correct and next button should be displayed
 								<NextChunkButton
@@ -447,11 +324,14 @@ export const QuestionBox = ({
 							) : (
 								// when answer is not all correct
 								<>
-									{formState.answerStatus !== AnswerStatus.BOTH_CORRECT && (
-										<SubmitButton answerStatus={answerStatus} />
+									{formState.answerStatus !==
+										AnswerStatusStairs.BOTH_CORRECT && (
+										<SubmitButton
+											answered={answerStatus !== AnswerStatusStairs.UNANSWERED}
+										/>
 									)}
 
-									{answerStatus !== AnswerStatus.UNANSWERED &&
+									{answerStatus !== AnswerStatusStairs.UNANSWERED &&
 										isNextButtonDisplayed && (
 											<NextChunkButton
 												pageSlug={pageSlug}
@@ -467,8 +347,8 @@ export const QuestionBox = ({
 							)}
 						</div>
 						<div className="flex items-center justify-center mt-4">
-							{answerStatus === AnswerStatus.SEMI_CORRECT ||
-								(answerStatus === AnswerStatus.BOTH_INCORRECT && (
+							{answerStatus === AnswerStatusStairs.SEMI_CORRECT ||
+								(answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
 									<ExplainButton chunkSlug={chunkSlug} pageSlug={pageSlug} />
 								))}
 						</div>

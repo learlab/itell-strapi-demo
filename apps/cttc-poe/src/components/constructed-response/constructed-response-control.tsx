@@ -5,21 +5,20 @@ import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
-import { useConstructedResponse } from "../provider/page-provider";
+import { useConfig, useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
-import { QuestionBox } from "./question-box";
+import { QuestionBoxReread } from "./question-box-reread";
+import { QuestionBoxStairs } from "./question-box-stairs";
 import { ScrollBackButton } from "./scroll-back-button";
 
 type Props = {
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
-	feedbackType: FeedbackType;
 };
 
 export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
-	feedbackType,
 }: Props) => {
 	// Ref for current chunk
 	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
@@ -31,6 +30,7 @@ export const ConstructedResponseControl = ({
 	);
 
 	const { nodes, addNode } = usePortal();
+	const feedbackType = useConfig((state) => state.feedbackType);
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
@@ -98,16 +98,29 @@ export const ConstructedResponseControl = ({
 
 		const q = selectedQuestions.get(chunkId);
 		if (q) {
-			addNode(
-				<QuestionBox
-					question={q.question}
-					answer={q.answer}
-					chunkSlug={chunkId}
-					pageSlug={pageSlug}
-					feedbackType={feedbackType}
-				/>,
-				questionContainer,
-			);
+			if (feedbackType === FeedbackType.STAIRS) {
+				addNode(
+					<QuestionBoxStairs
+						question={q.question}
+						answer={q.answer}
+						chunkSlug={chunkId}
+						pageSlug={pageSlug}
+					/>,
+					questionContainer,
+				);
+			}
+
+			if (feedbackType === FeedbackType.RANDOM_REREAD) {
+				addNode(
+					<QuestionBoxReread
+						question={q.question}
+						answer={q.answer}
+						chunkSlug={chunkId}
+						pageSlug={pageSlug}
+					/>,
+					questionContainer,
+				);
+			}
 		}
 	};
 
@@ -178,11 +191,15 @@ export const ConstructedResponseControl = ({
 	};
 
 	useEffect(() => {
-		chunks.forEach(processChunk);
+		if (feedbackType !== FeedbackType.SIMPLE) {
+			chunks.forEach(processChunk);
+		}
 	}, []);
 
 	useEffect(() => {
-		revealChunk(currentChunk);
+		if (feedbackType !== FeedbackType.SIMPLE) {
+			revealChunk(currentChunk);
+		}
 	}, [currentChunk]);
 
 	return nodes;
