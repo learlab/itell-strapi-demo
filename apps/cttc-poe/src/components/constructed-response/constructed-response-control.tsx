@@ -1,7 +1,7 @@
 "use client";
 
+import { FeedbackType } from "@/lib/control/feedback";
 import { SelectedQuestions } from "@/lib/question";
-import { FeedbackType } from "@/lib/store/config";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";

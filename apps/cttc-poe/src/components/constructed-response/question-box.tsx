@@ -4,8 +4,8 @@ import { Confetti } from "@/components/ui/confetti";
 import { env } from "@/env.mjs";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
+import { FeedbackType } from "@/lib/control/feedback";
 import { getQAScore } from "@/lib/question";
-import { FeedbackType } from "@/lib/store/config";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { cn } from "@itell/core/utils";
@@ -289,10 +289,10 @@ export const QuestionBox = ({
 		formState.answerStatus === AnswerStatus.UNANSWERED
 			? BorderColor.BLUE
 			: formState.answerStatus === AnswerStatus.BOTH_CORRECT
-			  ? BorderColor.GREEN
-			  : formState.answerStatus === AnswerStatus.SEMI_CORRECT
-				  ? BorderColor.YELLOW
-				  : BorderColor.RED;
+				? BorderColor.GREEN
+				: formState.answerStatus === AnswerStatus.SEMI_CORRECT
+					? BorderColor.YELLOW
+					: BorderColor.RED;
 
 	useEffect(() => {
 		if (formState.error) {
@@ -312,9 +312,9 @@ export const QuestionBox = ({
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
 		: answerStatus === AnswerStatus.BOTH_CORRECT ||
-			  answerStatus === AnswerStatus.SEMI_CORRECT
-		  ? "Continue reading"
-		  : "Skip this question";
+				answerStatus === AnswerStatus.SEMI_CORRECT
+			? "Continue reading"
+			: "Skip this question";
 
 	if (!session?.user) {
 		return (

@@ -175,6 +175,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				summary: input,
 				page_slug: pageSlug,
 			});
+			console.log("requestBody", requestBody);
 			const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/score/summary`, {
 				method: "POST",
 				body: requestBody,
