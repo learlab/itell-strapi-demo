@@ -31,6 +31,7 @@ export const ConstructedResponseControl = ({
 
 	const { nodes, addNode } = usePortal();
 	const feedbackType = useConfig((state) => state.feedbackType);
+	const hasFeedback = feedbackType !== FeedbackType.SIMPLE;
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
@@ -191,13 +192,13 @@ export const ConstructedResponseControl = ({
 	};
 
 	useEffect(() => {
-		if (feedbackType !== FeedbackType.SIMPLE) {
+		if (hasFeedback) {
 			chunks.forEach(processChunk);
 		}
 	}, []);
 
 	useEffect(() => {
-		if (feedbackType !== FeedbackType.SIMPLE) {
+		if (hasFeedback) {
 			revealChunk(currentChunk);
 		}
 	}, [currentChunk]);

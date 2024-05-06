@@ -73,12 +73,10 @@ export const AdminTools = () => {
 								<div>
 									<Label htmlFor={FeedbackType.SIMPLE}>Simple</Label>
 									<p className="text-sm text-muted-foreground">
-										A digital textbook without AI-generated short questions,
-										without summary production, and without STAIRS. Workers will
-										instead read short questions and their correct answers and
-										read professional summaries of the chapter. Workers will
-										also read about strategies that can increase text
-										comprehension including self-explanations.
+										No question and summary. Workers will read short questions
+										and their correct answers and read professional summaries of
+										the chapter. Workers will also read about strategies that
+										can increase text comprehension.
 									</p>
 								</div>
 							</div>
@@ -93,14 +91,9 @@ export const AdminTools = () => {
 										Random rereading
 									</Label>
 									<p className="text-sm text-muted-foreground">
-										A digital textbook with AI generated short questions and
-										with summary production. Workers, however, will not receive
-										feedback on their answers to short questions nor the quality
-										of their summaries. Students will be given the opportunity
-										to revise their constructed responses. After writing a
-										summary, workers will be asked to re-read a randomly
-										selected section of text and may revise their summary if
-										they choose. They will not interact with STAIRS
+										With question and summary, but no feedback on correctness.
+										Can revise question answer. After writing a summary, workers
+										will receive a random chunk to reread without stairs.
 									</p>
 								</div>
 							</div>
@@ -113,13 +106,8 @@ export const AdminTools = () => {
 								<div>
 									<Label htmlFor={FeedbackType.STAIRS}>Stairs</Label>
 									<p className="text-sm text-muted-foreground">
-										A digital textbook with AI generated short questions and
-										summary production. Workers will also receive AI driven
-										feedback on their answers to short questions and the quality
-										of their summaries and be given the opportunity to revise
-										their responses. Critically, workers that do not pass their
-										summaries will re-read and interact with STAIRS.
-										:white_check_mark: 3
+										With question and summary, and feedback on correctness. User
+										will interact with stairs for failing summaries.
 									</p>
 								</div>
 							</div>

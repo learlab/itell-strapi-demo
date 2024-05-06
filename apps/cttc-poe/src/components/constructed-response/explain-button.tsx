@@ -66,7 +66,7 @@ export const ExplainButton = ({
 				variant="secondary"
 				className="gap-2"
 				type="button"
-				disabled={isPending}
+				disabled={isPending || response !== ""}
 				onClick={onClick}
 			>
 				{isPending ? (

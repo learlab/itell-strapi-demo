@@ -254,8 +254,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						// disabled={!isPageFinished}
-						disabled={false}
+						disabled={!isPageFinished}
 						pending={state.pending}
 					/>
 				</div>

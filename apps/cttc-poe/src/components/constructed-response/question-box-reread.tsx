@@ -172,6 +172,12 @@ export const QuestionBoxReread = ({
 							<b>Question:</b> {question}
 						</p>
 					)}
+					{answerStatus === AnswerStatusReread.ANSWERED && (
+						<p className="text-sm text-muted-foreground">
+							Thanks for completing this question. You can move on to the next
+							section or refine your answer.
+						</p>
+					)}
 					<form action={formAction} className="w-full space-y-2">
 						<TextArea
 							name="input"
