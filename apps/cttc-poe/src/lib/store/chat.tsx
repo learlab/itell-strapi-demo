@@ -139,6 +139,7 @@ export const useChatStore = create(
 		addStairsQuestion: (value) => {
 			set((state) => {
 				state.stairsQuestion = value;
+				state.stairsReady = false;
 				state.stairsMessages = [
 					{
 						id: crypto.randomUUID(),
