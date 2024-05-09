@@ -1,5 +1,6 @@
 "use client";
 
+import { isProduction } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import {
 	allPagesSorted,
@@ -105,7 +106,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 												<button
 													type="button"
 													onClick={() => navigatePage(item.page_slug)}
-													disabled={pending || !visible}
+													disabled={(pending || !visible) && isProduction}
 													className={pending ? "animate-pulse" : ""}
 												>
 													<p className="text-left text-pretty">

@@ -242,8 +242,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		);
 		dispatch({ type: "set_prev_input", payload: input });
 		if (error) {
-			dispatch({ type: "fail", payload: error });
-			return;
+			if (state.error !== ErrorType.INTERNAL || error !== ErrorType.SIMILAR) {
+				dispatch({ type: "fail", payload: error });
+				return;
+			}
 		}
 
 		const summaryCount = await countUserPageSummary(userId, pageSlug);
