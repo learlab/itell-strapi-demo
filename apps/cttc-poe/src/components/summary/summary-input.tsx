@@ -2,9 +2,9 @@
 
 import { isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
+import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useConfig } from "../provider/page-provider";
@@ -38,15 +38,14 @@ export const SummaryInput = ({
 	pending,
 }: Props) => {
 	const isAdmin = useConfig((state) => state.isAdmin);
-	const searchParams = useSearchParams();
-	const summaryToRevise = searchParams?.get("summary");
-	const text = summaryToRevise
-		? Buffer.from(summaryToRevise, "base64").toString("ascii")
+	const { summary } = useSafeSearchParams("textbook");
+	const text = summary
+		? Buffer.from(summary, "base64").toString("ascii")
 		: value;
 	const [input, setInput] = useState(text);
 
 	useEffect(() => {
-		if (!summaryToRevise) {
+		if (!summary) {
 			setInput(getSummaryLocal(pageSlug) || value);
 		}
 	}, []);

@@ -7,27 +7,15 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/client-components";
+import { useSafeSearchParams } from "@/lib/navigation";
 import { ReadingTimeChartLevel } from "@itell/core/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { Spinner } from "../spinner";
 
 export const ReadingTimeControl = () => {
 	const router = useRouter();
-	const searchParams = useSearchParams();
+	const { reading_time_level } = useSafeSearchParams("dashboard");
 	const [pending, startTransition] = useTransition();
-
-	let defaultValue: string;
-	if (searchParams) {
-		const level = searchParams.get("reading_time_level");
-		if (level && level in ReadingTimeChartLevel) {
-			defaultValue = level;
-		} else {
-			defaultValue = ReadingTimeChartLevel.week_1;
-		}
-	} else {
-		defaultValue = ReadingTimeChartLevel.week_1;
-	}
 
 	const handleSelect = (val: string) => {
 		const url = new URL(window.location.href);
@@ -42,7 +30,7 @@ export const ReadingTimeControl = () => {
 			className="flex items-center gap-4"
 			data-pending={pending ? "" : undefined}
 		>
-			<Select defaultValue={defaultValue} onValueChange={handleSelect}>
+			<Select defaultValue={reading_time_level} onValueChange={handleSelect}>
 				<SelectTrigger className="w-[200px]">
 					<SelectValue placeholder="Select a time span" />
 				</SelectTrigger>

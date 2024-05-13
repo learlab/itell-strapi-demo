@@ -1,4 +1,6 @@
+import { routes, useSafeSearchParams } from "@/lib/navigation";
 import { getPageData } from "@/lib/utils";
+import { ReadingTimeChartLevel } from "@itell/core/types";
 import {
 	Card,
 	CardContent,
@@ -14,11 +16,21 @@ import { UserProgress } from "../user/user-progress";
 
 type Props = {
 	student: User;
-	searchParams: Record<string, string>;
+	searchParams: unknown;
 };
 
 export const StudentProfile = ({ student, searchParams }: Props) => {
 	const page = getPageData(student.pageSlug);
+	const { reading_time_level } =
+		routes.student.$parseSearchParams(searchParams);
+	let readingTimeLevel = ReadingTimeChartLevel.week_1;
+	if (
+		Object.values(ReadingTimeChartLevel).includes(
+			reading_time_level as ReadingTimeChartLevel,
+		)
+	) {
+		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
+	}
 	return (
 		<Card>
 			<CardHeader>
@@ -31,7 +43,7 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 						</p>
 					</div>
 				</CardTitle>
-				<CardDescription className="space-y-4">
+				<div className="text-muted-foreground space-y-4">
 					<div className="flex items-center justify-between">
 						<p>{student.email}</p>
 						<p>joined at {student.created_at.toLocaleString("en-us")}</p>
@@ -46,10 +58,10 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 							Back to all students
 						</Link>
 					</div>
-				</CardDescription>
+				</div>
 			</CardHeader>
 			<CardContent>
-				<UserStatistics user={student} searchParams={searchParams} />
+				<UserStatistics user={student} readingTimeLevel={readingTimeLevel} />
 			</CardContent>
 		</Card>
 	);

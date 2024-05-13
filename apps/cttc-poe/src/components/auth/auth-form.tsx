@@ -1,16 +1,16 @@
 "use client";
 
 import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
+import { useSafeSearchParams } from "@/lib/navigation";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import { toast } from "sonner";
 import { Spinner } from "../spinner";
-import { GoogleLoginButton, OutlookLoginButton } from "./login-buttons";
+import { GoogleLoginButton } from "./login-buttons";
 
 export const AuthForm = ({ isAdmin }: { isAdmin: boolean }) => {
-	const searchParams = useSearchParams();
-	const classId = searchParams?.get("join_class_code");
+	const { join_class_code } = useSafeSearchParams("auth");
 	const { data: session } = useSession();
 	const lastPage = useLastVisitedPageUrl();
 	const [pending, startTransition] = useTransition();
@@ -20,10 +20,12 @@ export const AuthForm = ({ isAdmin }: { isAdmin: boolean }) => {
 		if (session?.user) {
 			startTransition(() => {
 				toast.success("You are logged in");
-				if (!classId) {
+				if (!join_class_code) {
 					router.push(lastPage ?? "/");
 				} else {
-					router.push(`/dashboard/settings?join_class_code=${classId}`);
+					const url = new URL("dashboard/settings", window.location.origin);
+					url.searchParams.append("join_class_code", join_class_code);
+					router.push(url.toString());
 				}
 			});
 		}
@@ -32,10 +34,6 @@ export const AuthForm = ({ isAdmin }: { isAdmin: boolean }) => {
 	return (
 		<div className="grid gap-6">
 			<div className="relative">
-				{/* <div className="absolute inset-0 flex items-center">
-					<span className="w-full border-t" />
-				</div> */}
-
 				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
 					<p>Log in via one of the options below</p>
 				</div>

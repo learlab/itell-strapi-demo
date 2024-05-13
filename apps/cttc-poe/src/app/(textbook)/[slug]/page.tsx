@@ -18,6 +18,7 @@ import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
 import { getPageFeedbackType } from "@/lib/control/feedback";
+import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";
@@ -28,10 +29,11 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function ({ params }: { params: { slug: string } }) {
+	const { slug } = routes.textbook.$parseParams(params);
 	const sessionUser = await getCurrentUser();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
 	const pageIndex = allPagesSorted.findIndex((page) => {
-		return page.page_slug === params.slug;
+		return page.page_slug === slug;
 	});
 
 	if (pageIndex === -1) {

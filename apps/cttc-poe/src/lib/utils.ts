@@ -62,12 +62,21 @@ export const getChunkElement = (chunkId: string): HTMLElement | null => {
 	return null;
 };
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== undefined;
+}
+
 export const redirectWithSearchParams = (
 	path: string,
-	searchParams?: Record<string, string>,
+	searchParams?: unknown,
 ) => {
-	const query = new URLSearchParams(searchParams).toString();
-	return redirect(`${path}?${query}`);
+	const url = new URL(path);
+	if (isRecord(searchParams)) {
+		for (const key in searchParams) {
+			url.searchParams.append(key, String(searchParams[key]));
+		}
+	}
+	return redirect(url.toString());
 };
 
 export const scrollToElement = (element: HTMLElement) => {

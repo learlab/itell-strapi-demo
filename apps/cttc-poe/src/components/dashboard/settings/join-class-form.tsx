@@ -2,10 +2,10 @@
 
 import { Spinner } from "@/components/spinner";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
+import { useSafeSearchParams } from "@/lib/navigation";
 import { Button } from "@itell/ui/client";
 import { Errorbox, Input } from "@itell/ui/server";
 import { User } from "@prisma/client";
-import { useSearchParams } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { ClassInviteModal } from "./class-invite-modal";
 
@@ -46,11 +46,11 @@ export const SubmitButton = () => {
 };
 
 export const JoinClassForm = ({ user }: Props) => {
-	const searchParams = useSearchParams();
+	const { join_class_code } = useSafeSearchParams("settings");
 	const [formState, formAction] = useFormState(onSubmit, {
 		teacher: null,
 		error: null,
-		classId: searchParams?.get("join_class_code") || "",
+		classId: join_class_code || "",
 	});
 
 	return (

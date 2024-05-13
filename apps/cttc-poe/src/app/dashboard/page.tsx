@@ -7,17 +7,17 @@ import { Spinner } from "@/components/spinner";
 import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
+import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
+import { ReadingTimeChartLevel } from "@itell/core/types";
 import Link from "next/link";
 import { Suspense } from "react";
 
 export const metadata = Meta.dashboard;
 
 type Props = {
-	searchParams: {
-		[key: string]: string;
-	};
+	searchParams?: unknown;
 };
 
 export default async function ({ searchParams }: Props) {
@@ -31,6 +31,17 @@ export default async function ({ searchParams }: Props) {
 
 	if (!user) {
 		return redirectWithSearchParams("/auth", searchParams);
+	}
+
+	const { reading_time_level } =
+		routes.dashboard.$parseSearchParams(searchParams);
+	let readingTimeLevel = ReadingTimeChartLevel.week_1;
+	if (
+		Object.values(ReadingTimeChartLevel).includes(
+			reading_time_level as ReadingTimeChartLevel,
+		)
+	) {
+		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
 	}
 
 	incrementView("home", searchParams);
@@ -63,7 +74,7 @@ export default async function ({ searchParams }: Props) {
 					</p>
 				)}
 
-				<UserStatistics user={user} searchParams={searchParams} />
+				<UserStatistics user={user} readingTimeLevel={readingTimeLevel} />
 			</div>
 		</DashboardShell>
 	);

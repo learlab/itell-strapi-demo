@@ -5,13 +5,14 @@ import { getSiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getCurrentUser } from "@/lib/auth";
 import { isProduction } from "@/lib/constants";
+import { routes } from "@/lib/navigation";
 import { Warning } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
 
 type PageProps = {
-	searchParams?: Record<string, string>;
+	searchParams?: unknown;
 };
 
 const ErrorDict: Record<string, string> = {
@@ -26,7 +27,7 @@ const ErrorDict: Record<string, string> = {
 
 export default async function ({ searchParams }: PageProps) {
 	const config = await getSiteConfig();
-	const error = searchParams?.error;
+	const { error } = routes.auth.$parseSearchParams(searchParams);
 	const errorMessage = error ? ErrorDict[error] : null;
 	const user = await getCurrentUser();
 	const isAdmin = env.ADMINS?.includes(user?.email || "");

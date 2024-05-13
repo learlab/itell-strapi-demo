@@ -4,6 +4,7 @@ import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
+import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
@@ -11,12 +12,8 @@ import { redirect } from "next/navigation";
 export const metadata = Meta.student;
 
 interface PageProps {
-	params: {
-		id: string;
-	};
-	searchParams: {
-		[key: string]: string;
-	};
+	params: unknown;
+	searchParams?: unknown;
 }
 
 export default async function ({ params, searchParams }: PageProps) {
@@ -40,7 +37,8 @@ export default async function ({ params, searchParams }: PageProps) {
 		);
 	}
 
-	const student = await getUser(params.id);
+	const { id } = routes.student.$parseParams(params);
+	const student = await getUser(id);
 	if (!student) {
 		return (
 			<DashboardShell>

@@ -24,23 +24,3 @@ export const GoogleLoginButton = CreateLoginButton({
 	),
 	title: "Google",
 });
-
-export const OutlookLoginButton = CreateLoginButton({
-	action: async () => {
-		try {
-			await signIn("azure-ad");
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	icon: (
-		<Image
-			alt="outlook"
-			src="/icons/outlook.png"
-			width={28}
-			height={28}
-			className="mr-2"
-		/>
-	),
-	title: "Outlook",
-});

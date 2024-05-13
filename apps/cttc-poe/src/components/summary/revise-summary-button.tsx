@@ -27,7 +27,7 @@ export const ReviseSummaryButton = ({ pageSlug, text }: Props) => {
 	return (
 		<Button onClick={navigate} disabled={pending}>
 			{pending && <Spinner className="size-4" />}
-			Go to textbook and revise the summary
+			Revise this summary
 		</Button>
 	);
 };

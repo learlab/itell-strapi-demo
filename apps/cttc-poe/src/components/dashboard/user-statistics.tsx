@@ -1,4 +1,8 @@
-import { ReadingTimeChartLevel } from "@itell/core/types";
+import { routes, useSafeSearchParams } from "@/lib/navigation";
+import {
+	ReadingTimeChartLevel,
+	ReadingTimeChartParams,
+} from "@itell/core/types";
 import { DashboardBadge } from "@itell/ui/server";
 import { User } from "@prisma/client";
 import { Suspense } from "react";
@@ -10,21 +14,16 @@ import { UserBadges } from "./user/user-badges";
 
 type Props = {
 	user: User;
-	searchParams?: Record<string, string>;
+	readingTimeLevel: ReadingTimeChartLevel;
 };
 
-const ParamsSchema = z.object({
-	reading_time_level: z.nativeEnum(ReadingTimeChartLevel),
-});
-
-export const UserStatistics = ({ user, searchParams }: Props) => {
+export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 	// if searchParams is not passed as prop here, readingTimeParams will always be week 1
 	// and switching levels in UserStatisticsControl won't work (although query params are set)
 	// future work is to restructure the component hierarchy
-	const params = ParamsSchema.safeParse(searchParams);
-	const readingTimeParams = params.success
-		? { level: params.data.reading_time_level }
-		: { level: ReadingTimeChartLevel.week_1 };
+	const readingTimeParams: ReadingTimeChartParams = {
+		level: readingTimeLevel,
+	};
 
 	return (
 		<div className="space-y-4">

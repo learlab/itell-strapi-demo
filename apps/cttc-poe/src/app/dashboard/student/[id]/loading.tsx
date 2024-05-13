@@ -22,12 +22,10 @@ export default function () {
 							<Skeleton className="w-40" />
 						</div>
 					</CardTitle>
-					<CardDescription>
-						<div className="flex items-center justify-between">
-							<Skeleton className="w-40" />
-							<Skeleton className="w-64" />
-						</div>
-					</CardDescription>
+					<div className="flex items-center justify-between">
+						<Skeleton className="w-40" />
+						<Skeleton className="w-64" />
+					</div>
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-4">

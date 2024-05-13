@@ -191,7 +191,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw parsed.error;
 			}
 			summaryResponse = parsed.data;
-			summaryResponse.is_passed;
 			await createSummary({
 				text: input,
 				pageSlug,
