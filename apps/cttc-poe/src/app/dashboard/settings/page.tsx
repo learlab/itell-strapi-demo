@@ -19,12 +19,12 @@ export default async function ({ searchParams }: Props) {
 	const classId = searchParams?.join_class_code;
 
 	if (!currentUser) {
-		return redirectWithSearchParams("/auth", searchParams);
+		return redirectWithSearchParams("auth", searchParams);
 	}
 
 	const user = await getUser(currentUser.id);
 	if (!user) {
-		return redirectWithSearchParams("/auth", searchParams);
+		return redirectWithSearchParams("auth", searchParams);
 	}
 
 	incrementView("settings");
