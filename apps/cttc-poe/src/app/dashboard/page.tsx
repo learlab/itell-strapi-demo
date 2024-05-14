@@ -24,13 +24,13 @@ export default async function ({ searchParams }: Props) {
 	const currentUser = await getCurrentUser();
 
 	if (!currentUser) {
-		return redirectWithSearchParams("/auth", searchParams);
+		return redirectWithSearchParams("auth", searchParams);
 	}
 
 	const user = await getUser(currentUser.id);
 
 	if (!user) {
-		return redirectWithSearchParams("/auth", searchParams);
+		return redirectWithSearchParams("auth", searchParams);
 	}
 
 	const { reading_time_level } =

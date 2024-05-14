@@ -70,7 +70,7 @@ export const redirectWithSearchParams = (
 	path: string,
 	searchParams?: unknown,
 ) => {
-	const url = new URL(path);
+	const url = new URL(path, window.location.origin);
 	if (isRecord(searchParams)) {
 		for (const key in searchParams) {
 			url.searchParams.append(key, String(searchParams[key]));
