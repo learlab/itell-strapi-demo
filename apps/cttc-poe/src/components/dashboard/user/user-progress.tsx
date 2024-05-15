@@ -7,7 +7,7 @@ export const UserProgress = ({ user }: { user: User }) => {
 	const userIndex = validPages.findIndex(
 		(page) => page.page_slug === user.pageSlug,
 	);
-	const unlockedPages = userIndex === 0 ? 0 : userIndex;
+	const unlockedPages = userIndex === 0 || userIndex !== -1 ? 0 : userIndex;
 	if (user.finished) {
 		displayProgress = "100";
 	} else if (user.pageSlug) {
