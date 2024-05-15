@@ -15,6 +15,7 @@ const server = z.object({
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
 	STUDENTS: z.string().optional(),
+	ITELL_API_KEY: z.string().optional(),
 });
 
 /**

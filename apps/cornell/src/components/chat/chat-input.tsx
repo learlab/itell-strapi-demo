@@ -6,7 +6,7 @@ import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes, useState } from "react";
+import { type HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
@@ -40,18 +40,30 @@ export const ChatInput = ({
 		const botMessageId = addBotMessage("", isStairs);
 		setActiveMessageId(botMessageId);
 
-		const chatResponse = await fetchChatResponse(
-			`${env.NEXT_PUBLIC_API_URL}/chat`,
-			{
+		// const chatResponse = await fetchChatResponse(
+		// 	`${env.NEXT_PUBLIC_API_URL}/chat`,
+		// 	{
+		// 		pageSlug,
+		// 		text,
+		// 		history: getChatHistory(messages),
+		// 	},
+		// );
+		const chatResponse = await fetch("/api/itell/chat", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
 				pageSlug,
 				text,
 				history: getChatHistory(messages),
-			},
-		);
+			}),
+		});
+
 		setActiveMessageId(null);
 
-		if (chatResponse.ok) {
-			const reader = chatResponse.data.getReader();
+		if (chatResponse.ok && chatResponse.body) {
+			const reader = chatResponse.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
 			let botText = "";
