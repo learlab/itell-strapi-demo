@@ -1,13 +1,13 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import db from "../db";
 
 export const createConstructedResponse = async (
 	input: Omit<Prisma.ConstructedResponseCreateInput, "user">,
 ) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		return await db.constructedResponse.create({
 			data: {
@@ -25,7 +25,7 @@ export const createConstructedResponse = async (
 export const createConstructedResponseFeedback = async (
 	input: Omit<Prisma.ConstructedResponseFeedbackCreateInput, "user">,
 ) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		return await db.constructedResponseFeedback.create({
 			data: {

@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import db from "@/lib/db";
 import { cn } from "@itell/core/utils";
 import { Skeleton, buttonVariants } from "@itell/ui/server";
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const SummaryCount = async ({ pageSlug }: Props) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!user) {
 		return null;
 	}

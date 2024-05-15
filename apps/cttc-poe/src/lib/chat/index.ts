@@ -1,8 +1,8 @@
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import db from "../db";
 
 export const getChatMessages = async (pageSlug: string) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		const record = await db.chatMessage.findUnique({
 			select: {

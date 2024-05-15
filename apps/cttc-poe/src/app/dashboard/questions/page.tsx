@@ -1,7 +1,7 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { delay, redirectWithSearchParams } from "@/lib/utils";
 import { Suspense } from "react";
@@ -12,7 +12,7 @@ export const metadata = Meta.questions;
 
 export default async function () {
 	await delay(3000);
-	const currentUser = await getCurrentUser();
+	const currentUser = await getSessionUser();
 	if (!currentUser) {
 		return redirectWithSearchParams("/auth");
 	}

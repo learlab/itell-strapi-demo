@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { TeacherClass } from "@/components/dashboard/teacher/teacher-class";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 export const metadata = Meta.class;
 
 export default async function () {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 
 	if (!user) {
 		return redirect("/auth");

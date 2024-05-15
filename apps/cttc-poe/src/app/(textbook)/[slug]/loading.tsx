@@ -33,7 +33,16 @@ export default async function () {
 			>
 				<ChapterToc
 					currentPage={page}
-					userPageSlug={userPageSlug || firstPage.page_slug}
+					user={{
+						id: "",
+						name: "",
+						email: "",
+						finished: false,
+						image: "",
+						page_slug: userPageSlug,
+						role: "",
+						prolific_pid: "",
+					}}
 				/>
 			</aside>
 

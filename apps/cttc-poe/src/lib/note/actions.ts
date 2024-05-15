@@ -1,7 +1,7 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import db from "../db";
 
 export const deleteNote = async (id: string) => {
@@ -15,7 +15,7 @@ export const deleteNote = async (id: string) => {
 export const createNote = async (
 	input: Omit<Prisma.NoteCreateInput, "user">,
 ) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		await db.note.create({
 			data: {

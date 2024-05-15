@@ -1,7 +1,7 @@
 "use server";
 
 import { SummaryResponse } from "@itell/core/summary";
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import db from "../db";
 
 export const createSummary = async ({
@@ -9,7 +9,7 @@ export const createSummary = async ({
 	pageSlug,
 	response,
 }: { text: string; pageSlug: string; response: SummaryResponse }) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		return await db.summary.create({
 			data: {

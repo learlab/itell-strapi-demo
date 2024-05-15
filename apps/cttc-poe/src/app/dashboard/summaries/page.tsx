@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SummaryList } from "@/components/dashboard/summary-list";
 import { PageLink } from "@/components/page/page-link";
 import { DashboardShell } from "@/components/page/shell";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import db from "@/lib/db";
 import { allPagesSorted, firstPage } from "@/lib/pages";
@@ -13,7 +13,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 export default async function () {
-	const currentUser = await getCurrentUser();
+	const currentUser = await getSessionUser();
 	if (!currentUser) {
 		return redirect("/auth");
 	}

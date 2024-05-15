@@ -1,13 +1,15 @@
 import "@/styles/globals.css";
 
-import { GeistSans as FontSans } from "geist/font";
+import { GeistSans as FontSans } from "geist/font/sans";
 import { Roboto_Slab as FontSerif } from "next/font/google";
 
 import { RootProvider } from "@/components/provider/root-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { getSiteConfig } from "@/config/site";
+import { getSession } from "@/lib/auth";
 import { cn } from "@itell/core/utils";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { LoginRefresher } from "./login-refreser";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const siteConfig = await getSiteConfig();
@@ -29,6 +31,7 @@ export default async function RootLayout({
 	children,
 }: { children: React.ReactNode }) {
 	const { latex, favicon } = await getSiteConfig();
+	const session = await getSession();
 
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -50,7 +53,8 @@ export default async function RootLayout({
 					fontSerif.variable,
 				)}
 			>
-				<RootProvider>
+				<LoginRefresher />
+				<RootProvider session={session}>
 					<TailwindIndicator />
 					<main> {children} </main>
 				</RootProvider>

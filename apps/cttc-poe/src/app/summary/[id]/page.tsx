@@ -2,7 +2,7 @@ import { SummaryOperations } from "@/components/dashboard/summary-operations";
 import { ReviseSummaryButton } from "@/components/summary/revise-summary-button";
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { TextbookPageModal } from "@/components/textbook-page-modal";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import db from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
@@ -27,7 +27,7 @@ interface PageProps {
 }
 
 export default async function ({ params }: PageProps) {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!user) {
 		return redirect("/auth");
 	}

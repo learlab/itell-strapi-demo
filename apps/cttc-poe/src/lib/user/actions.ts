@@ -3,7 +3,7 @@
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import db from "../db";
-import { isPageAfter, nextPage } from "../pages";
+import { isLastPage, isPageAfter, nextPage } from "../pages";
 import { setUserPageSlug } from "./page-slug";
 
 export const incrementUserPage = async (userId: string, pageSlug: string) => {
@@ -11,20 +11,22 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	const user = await db.user.findUnique({ where: { id: userId } });
 	if (user) {
 		const nextSlug = nextPage(pageSlug);
+		const shouldUpdateUserPageSlug = isPageAfter(nextSlug, user.pageSlug);
 		// only update a slug if user's slug is not greater
-		if (isPageAfter(nextSlug, user.pageSlug)) {
+		if (shouldUpdateUserPageSlug) {
 			setUserPageSlug(nextSlug);
-			await db.user.update({
-				where: {
-					id: userId,
-				},
-				data: {
-					pageSlug: nextSlug,
-				},
-			});
-
-			revalidatePath(".");
 		}
+		await db.user.update({
+			where: {
+				id: userId,
+			},
+			data: {
+				pageSlug: shouldUpdateUserPageSlug ? nextSlug : undefined,
+				finished: isLastPage(pageSlug),
+			},
+		});
+
+		revalidatePath(".");
 	}
 };
 
@@ -37,6 +39,16 @@ export const updateUser = async (
 			id: userId,
 		},
 		data,
+	});
+};
+
+export const maybeFinishUser = async (userId: string, pageSlug: string) => {
+	if (!userId || !isLastPage(pageSlug)) {
+		return;
+	}
+
+	return await updateUser(userId, {
+		finished: true,
 	});
 };
 
