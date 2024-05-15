@@ -65,6 +65,11 @@ svg {
   display: none;
 }
 
+.driver-active #page-content {
+  margin-left: 300px;
+  width: 100%;
+}
+
 .driver-popover {
   max-width: 350px !important;
   @apply bg-background text-foreground !important;

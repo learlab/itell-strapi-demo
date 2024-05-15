@@ -192,7 +192,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				exitQuestion();
 			},
 		});
-	}, [feedbackType]);
+	}, []);
 
 	useEffect(() => {
 		if (state.stairsQuestion && !state.isPassed && !state.error) {

@@ -135,7 +135,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				return toast.warning("Please finish rereading before moving on");
 			},
 		});
-	}, [feedbackType]);
+	}, []);
 
 	useEffect(() => {
 		if (!pageStatus.isPageUnlocked) {
