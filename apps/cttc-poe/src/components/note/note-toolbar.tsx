@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "@/lib/auth/context";
 import {
 	defaultHighlightColor,
 	useNoteColor,
@@ -13,7 +14,6 @@ import { useNotesStore } from "@/lib/store/note";
 import { createNoteElements, serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Popover } from "react-text-selection-popover";
 import { toast } from "sonner";
@@ -30,7 +30,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
-	const { data: session } = useSession();
+	const { user } = useSession();
 	const { createNote: createContextNote } = useNotesStore();
 
 	const handleClick = (event: Event) => {
@@ -172,7 +172,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 								color="blue-gray"
 								className="flex items-center gap-2 p-2"
 								onClick={() => {
-									if (!session?.user && command.label !== "Copy") {
+									if (!user && command.label !== "Copy") {
 										return toast.warning("You need to be logged in first.");
 									}
 									command.action(data);

@@ -5,7 +5,7 @@ import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
 import { Meta } from "@/config/metadata";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default async function ({ searchParams }: Props) {
-	const currentUser = await getCurrentUser();
+	const currentUser = await getSessionUser();
 
 	if (!currentUser) {
 		return redirectWithSearchParams("auth", searchParams);

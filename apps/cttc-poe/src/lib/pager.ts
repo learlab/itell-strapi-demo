@@ -22,18 +22,18 @@ export const getPagerLinks = ({
 
 		links.next = nextPage
 			? {
-					text: `${nextPage.chapter + 1}. ${nextPage.title}`,
+					text: nextPage.title,
 					href: nextPage.url,
 					disabled: false,
-			  }
+				}
 			: null;
 
 		links.prev = prevPage
 			? {
-					text: `${prevPage.chapter + 1}. ${prevPage.title}`,
+					text: prevPage.title,
 					href: prevPage.url,
 					disabled: false,
-			  }
+				}
 			: null;
 
 		return links;
@@ -43,11 +43,9 @@ export const getPagerLinks = ({
 		const page = allPagesSorted[pageIndex - 1];
 		const disabled = userPageSlug
 			? userPage.index < pageIndex - 1
-			: pageIndex < 2
-			  ? false
-			  : true;
+			: !(pageIndex < 2);
 		links.prev = {
-			text: `${page.chapter + 1}. ${page.title}`,
+			text: page.title,
 			href: page.url,
 			disabled,
 		};
@@ -57,11 +55,9 @@ export const getPagerLinks = ({
 		const page = allPagesSorted[pageIndex + 1];
 		const disabled = userPageSlug
 			? userPage.index < pageIndex + 1
-			: pageIndex === 0
-			  ? false
-			  : true;
+			: pageIndex !== 0;
 		links.next = {
-			text: `${page.chapter + 1}. ${page.title}`,
+			text: page.title,
 			href: page.url,
 			disabled,
 		};

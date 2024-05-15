@@ -2,7 +2,7 @@
 
 import { unstable_noStore as noStore } from "next/cache";
 import { cache } from "react";
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import { isProduction } from "../constants";
 import db from "../db";
 
@@ -32,7 +32,7 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 
 const _incrementView = async (pageSlug: string, data?: any) => {
 	noStore();
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		await db.event.create({
 			data: {

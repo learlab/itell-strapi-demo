@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { getQAScore } from "@/lib/question";
@@ -7,11 +8,10 @@ import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
 import { KeyRoundIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../auth/login-buttons";
+import { GoogleLoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
@@ -44,7 +44,7 @@ export const QuestionBoxReread = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { data: session } = useSession();
+	const { user } = useSession();
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
@@ -147,7 +147,7 @@ export const QuestionBoxReread = ({
 	const isLastQuestion = chunkSlug === chunks.at(-1);
 	const nextButtonText = isLastQuestion ? "Unlock summary" : "Continue reading";
 
-	if (!session?.user) {
+	if (!user) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>

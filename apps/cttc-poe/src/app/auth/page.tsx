@@ -1,40 +1,32 @@
-import { AuthForm } from "@/components/auth/auth-form";
+import { AuthForm, LogoutButton } from "@/components/auth/auth-form";
 import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
 import { Button } from "@/components/client-components";
 import { getSiteConfig } from "@/config/site";
-import { env } from "@/env.mjs";
-import { getCurrentUser } from "@/lib/auth";
-import { isProduction } from "@/lib/constants";
+import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { Warning } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 type PageProps = {
 	searchParams?: unknown;
 };
 
 const ErrorDict: Record<string, string> = {
-	OAuthAccountNotLinked:
-		"You already have an account. Please sign in using your original platform",
-	Callback: `An internal error occurred. Please try again later or contact lear.lab.vu@gmail.com${
-		isProduction ? "" : " Did you forgot to run prisma generate?"
-	}`,
-	InvalidEmail:
-		"The email you provided is not found on the students list, please try logging in with your @cornell.edu email.",
+	google_oauth:
+		"A problem occurred while logging in with Google. Please try again later.",
+	prolific_oauth:
+		"A problem occurred while logging in with Prolific. Please try again later.",
+	prolific_missing_pid: "Please enter a valid Prolific ID.",
+	prolific_wrong_pid: "Please use the same Prolific ID you used to sign up.",
 };
 
 export default async function ({ searchParams }: PageProps) {
 	const config = await getSiteConfig();
 	const { error } = routes.auth.$parseSearchParams(searchParams);
+	const { user } = await getSession();
 	const errorMessage = error ? ErrorDict[error] : null;
-	const user = await getCurrentUser();
-	const isAdmin = env.ADMINS?.includes(user?.email || "");
-
-	if (error === "Callback") {
-		Sentry.captureException(new Error(error));
-	}
 
 	return (
 		<div className="w-screen h-screen grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -50,13 +42,16 @@ export default async function ({ searchParams }: PageProps) {
 						<CommandIcon className="mx-auto size-6" />
 						<h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
 						<p className="font-light tracking-tight text-lg">{config.title}</p>
-						{/* <p className="text-sm text-muted-foreground">
-							Enter your email to sign in to your account
-						</p>
-						<p className="text-sm text-muted-foreground">TBD</p> */}
 					</div>
 					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
-					<AuthForm isAdmin={isAdmin || false} />
+					{user ? (
+						<div className="text-center space-y-2">
+							<p>You have already logged in</p>
+							<LogoutButton />
+						</div>
+					) : (
+						<AuthForm />
+					)}
 				</div>
 			</div>
 			<div className="hidden h-full bg-gray-100 lg:col-span-1 lg:flex lg:items-center">

@@ -1,7 +1,7 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import { isProduction } from "../constants";
 import db from "../db";
 
@@ -11,7 +11,7 @@ export const createEvent = async (
 	if (!isProduction) {
 		return;
 	}
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		return await db.event.create({
 			data: {
@@ -30,7 +30,7 @@ export const createFocusTime = async ({
 	data,
 	pageSlug,
 }: { data: PrismaJson.FocusTimeData; pageSlug: string }) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		const record = await db.focusTime.findUnique({
 			where: {

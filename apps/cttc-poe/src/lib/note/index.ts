@@ -1,8 +1,8 @@
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import db from "../db";
 
 export const getNotes = async (pageSlug: string) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!user) {
 		return [];
 	}
@@ -16,7 +16,7 @@ export const getNotes = async (pageSlug: string) => {
 };
 
 export const countNoteHighlight = async (pageSlug: string) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!user) {
 		return [];
 	}

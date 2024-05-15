@@ -2,6 +2,7 @@
 
 import { Confetti } from "@/components/ui/confetti";
 import { env } from "@/env.mjs";
+import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { getQAScore } from "@/lib/question";
@@ -22,11 +23,10 @@ import {
 	KeyRoundIcon,
 	PencilIcon,
 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../auth/login-buttons";
+import { GoogleLoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
@@ -60,7 +60,7 @@ export const QuestionBoxStairs = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { data: session } = useSession();
+	const { user } = useSession();
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
@@ -198,7 +198,7 @@ export const QuestionBoxStairs = ({
 			? "Skip this question"
 			: "Continue reading";
 
-	if (!session?.user) {
+	if (!user) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>

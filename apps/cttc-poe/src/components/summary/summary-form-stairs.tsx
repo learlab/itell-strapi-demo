@@ -14,7 +14,7 @@ import {
 	findFocusTime,
 } from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
-import { incrementUserPage } from "@/lib/user/actions";
+import { incrementUserPage, maybeFinishUser } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -34,7 +34,7 @@ import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -102,6 +102,7 @@ const exitQuestion = () => {
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const mounted = useRef(false);
+	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 
 	const feedbackType = useConfig((selector) => selector.feedbackType);
 	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
@@ -152,7 +153,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const feedback = state.response ? getFeedback(state.response) : null;
 
 	const goToQuestion = (question: StairsQuestion) => {
-		console.log(question);
 		const el = getChunkElement(question.chunk);
 		if (el) {
 			scrollToElement(el);
@@ -359,6 +359,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (summaryResponse.is_passed || isEnoughSummary) {
 					await incrementUserPage(userId, pageSlug);
+					if (isLastPage(pageSlug)) {
+						setIsTextbookFinished(true);
+						toast.info(
+							"You have finished the textbook! Redirecting to the outtake survey soon.",
+						);
+						setTimeout(() => {
+							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`;
+						}, 3000);
+					}
 					dispatch({
 						type: "finish",
 						payload: { canProceed: !isLastPage(pageSlug) },
@@ -379,7 +388,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				extra: {
 					body: requestBody,
 					summaryResponse: summaryResponse,
-					stairsRespones: stairsData,
+					stairsResponse: stairsData,
 				},
 			});
 		}
@@ -413,6 +422,18 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			</div>
 
 			{feedback && <SummaryFeedback feedback={feedback} />}
+
+			{isTextbookFinished && (
+				<div className="space-y-2">
+					<p>You have finished the entire textbook. Congratulations! 🎉</p>
+					<a
+						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`}
+						className={buttonVariants({ variant: "outline" })}
+					>
+						Take outtake survey and claim your progress
+					</a>
+				</div>
+			)}
 
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>

@@ -15,7 +15,7 @@ import { Spinner } from "@/components/spinner";
 import { PageSummary } from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
 import { env } from "@/env.mjs";
-import { getCurrentUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
 import { getPageFeedbackType } from "@/lib/control/feedback";
 import { routes } from "@/lib/navigation";
@@ -30,7 +30,7 @@ import { Suspense } from "react";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const { slug } = routes.textbook.$parseParams(params);
-	const sessionUser = await getCurrentUser();
+	const { user: sessionUser } = await getSession();
 	const user = sessionUser ? await getUser(sessionUser.id) : null;
 	const pageIndex = allPagesSorted.findIndex((page) => {
 		return page.page_slug === slug;
@@ -53,7 +53,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
-	const pageStatus = getPageStatus(pageSlug, user?.pageSlug);
+	const pageStatus = getPageStatus(sessionUser, pageSlug);
+	console.log(sessionUser, pageSlug);
+	console.log(pageStatus);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
@@ -69,10 +71,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ChapterToc
-						currentPage={page}
-						userPageSlug={user?.pageSlug || null}
-					/>
+					<ChapterToc currentPage={page} user={sessionUser} />
 				</aside>
 
 				<section

@@ -3,7 +3,7 @@ import { SettingsForm } from "@/components/dashboard/settings-form";
 import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default async function ({ searchParams }: Props) {
-	const currentUser = await getCurrentUser();
+	const currentUser = await getSessionUser();
 	const classId = searchParams?.join_class_code;
 
 	if (!currentUser) {

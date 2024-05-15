@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const PageSummary = async ({ pageSlug, pageStatus }: Props) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	const page = getPageData(pageSlug);
 
 	if (!page) {

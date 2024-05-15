@@ -4,6 +4,7 @@ import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
+import { isLastPage } from "@/lib/pages";
 import { createSummary } from "@/lib/summary/actions";
 import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, getChunkElement, scrollToElement } from "@/lib/utils";
@@ -19,7 +20,7 @@ import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button } from "../client-components";
@@ -32,12 +33,6 @@ type Props = {
 	user: NonNullable<SessionUser>;
 	page: PageData;
 	pageStatus: PageStatus;
-};
-
-type StairsQuestion = {
-	text: string;
-	chunk: string;
-	question_type: string;
 };
 
 type State = {
@@ -74,6 +69,7 @@ const exitChunk = () => {
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
+	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
 	}));
@@ -142,10 +138,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [feedbackType]);
 
 	useEffect(() => {
-		if (state.finished && !state.error) {
-			goToRandomChunk();
+		if (!pageStatus.isPageUnlocked) {
+			if (state.finished && !state.error) {
+				goToRandomChunk();
+			}
 		}
-	}, [state]);
+	}, [state, pageStatus]);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -197,6 +195,17 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				response: summaryResponse,
 			});
 			await incrementUserPage(user.id, pageSlug);
+
+			if (isLastPage(pageSlug)) {
+				setIsTextbookFinished(true);
+				toast.info(
+					"You have finished the textbook! Redirecting to the outtake survey soon.",
+				);
+				setTimeout(() => {
+					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`;
+				}, 3000);
+			}
+
 			finishStage("Analyzing");
 			dispatch({
 				type: "finish",
@@ -226,24 +235,34 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	return (
 		<section className="space-y-2">
 			{portalNodes}
-			<div className="flex gap-2 items-center flex-col">
-				{state.finished && page.nextPageSlug && (
-					<>
-						<p>
-							You have finished this page. You can choose to refine your summary
-							or move on to the next page.
-						</p>
-						<PageLink
-							pageSlug={page.nextPageSlug}
-							className={buttonVariants({ variant: "outline" })}
-						>
-							Go to next page
-						</PageLink>
-					</>
-				)}
-			</div>
+			{state.finished && page.nextPageSlug && (
+				<div className="space-y-2">
+					<p>
+						You have finished this page. You can choose to refine your summary
+						or move on to the next page.
+					</p>
+					<PageLink
+						pageSlug={page.nextPageSlug}
+						className={buttonVariants({ variant: "outline" })}
+					>
+						Go to next page
+					</PageLink>
+				</div>
+			)}
 
-			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
+			{isTextbookFinished && (
+				<div className="space-y-2">
+					<p>You have finished the entire textbook. Congratulations! 🎉</p>
+					<a
+						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`}
+						className={buttonVariants({ variant: "outline" })}
+					>
+						Take outtake survey and claim your progress
+					</a>
+				</div>
+			)}
+
+			<form className="space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
 					disabled={editDisabled || state.pending}
 					pageSlug={pageSlug}

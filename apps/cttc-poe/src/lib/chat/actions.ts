@@ -1,6 +1,6 @@
 "use server";
 
-import { getCurrentUser } from "../auth";
+import { getSessionUser } from "../auth";
 import db from "../db";
 
 type CreateMesage = {
@@ -12,7 +12,7 @@ export const createChatMessage = async ({
 	pageSlug,
 	messages,
 }: CreateMesage) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (user) {
 		const record = await db.chatMessage.findUnique({
 			select: {

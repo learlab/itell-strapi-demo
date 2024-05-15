@@ -1,48 +1,31 @@
 "use client";
 
+import { env } from "@/env.mjs";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { Input } from "@itell/ui/server";
-import { signIn } from "next-auth/react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
+import { FormEvent, useTransition } from "react";
 import { Button, Label } from "../client-components";
-
-const ConfirmButton = () => {
-	const { pending } = useFormStatus();
-
-	return (
-		<Button disabled={pending} variant={"outline"}>
-			{pending ? "Confirming..." : "Confirm"}
-		</Button>
-	);
-};
-
-type FormState = {
-	error: string | null;
-};
-
-const initialState: FormState = { error: null };
 
 export const ProlificForm = () => {
 	const { prolific_pid } = useSafeSearchParams("auth");
-	const [formState, formAction] = useFormState(
-		async (prevState: FormState, formData: FormData) => {
-			const pid = String(formData.get("pid"));
-			await signIn(
-				"credentials",
-				{ callbackUrl: "/", isCredentials: true },
-				{
-					pid,
-				},
-			);
-			return { error: null };
-		},
-		initialState,
-	);
+	const [pending, startTransition] = useTransition();
+	const router = useRouter();
+
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const pid = formData.get("pid") as string;
+
+		startTransition(() => {
+			router.push(`/auth/prolific?prolific_id=${pid}`);
+		});
+	};
 
 	return (
 		<form
 			className="grid w-full max-w-sm items-center gap-2"
-			action={formAction}
+			onSubmit={onSubmit}
 		>
 			<Label htmlFor="pid">Prolific ID</Label>
 			<Input
@@ -52,7 +35,9 @@ export const ProlificForm = () => {
 				placeholder="Enter your Prolific ID here"
 				defaultValue={prolific_pid}
 			/>
-			<ConfirmButton />
+			<Button disabled={pending} variant={"outline"}>
+				{pending ? "Confirming..." : "Confirm"}
+			</Button>
 		</form>
 	);
 };

@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getNotes } from "@/lib/note";
 import { NoteList } from "./note-list";
 
@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const NoteLoader = async ({ pageSlug }: Props) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!user) {
 		return null;
 	}

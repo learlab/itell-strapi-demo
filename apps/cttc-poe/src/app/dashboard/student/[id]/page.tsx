@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { StudentProfile } from "@/components/dashboard/student/student-profile";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
@@ -17,7 +17,7 @@ interface PageProps {
 }
 
 export default async function ({ params, searchParams }: PageProps) {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 
 	if (!user) {
 		return redirect("/auth");

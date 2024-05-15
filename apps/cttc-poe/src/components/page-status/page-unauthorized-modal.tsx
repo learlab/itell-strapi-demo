@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { isProduction } from "@/lib/constants";
 import { useState } from "react";
-import { GoogleLoginButton } from "../auth/login-buttons";
+import { GoogleLoginButton } from "../auth/auth-form";
 
 export const PageUnauthorizedModal = () => {
 	const [open, setOpen] = useState(true);
@@ -23,14 +23,14 @@ export const PageUnauthorizedModal = () => {
 				}
 			}}
 		>
-			<DialogContent canClose={!isProduction}>
+			<DialogContent canClose={!isProduction} className="space-y-6">
 				<DialogHeader>
 					<DialogTitle>Log in to read the textbook</DialogTitle>
 					<DialogDescription>
 						We collects anonymous data to improve learning experience
 					</DialogDescription>
 				</DialogHeader>
-				<div className="mt-6 flex justify-center">
+				<div className="flex justify-center">
 					<GoogleLoginButton />
 				</div>
 			</DialogContent>

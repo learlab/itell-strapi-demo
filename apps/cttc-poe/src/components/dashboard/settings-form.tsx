@@ -1,5 +1,5 @@
 import { Separator } from "@/components/client-components";
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import {
 	Card,
@@ -17,7 +17,7 @@ import { WebsiteSettings } from "./settings/website-settings";
 
 export const SettingsForm = async ({ user }: { user: User }) => {
 	const teacher = await getTeacherWithClassId(user.classId);
-	const sessionUser = await getCurrentUser();
+	const sessionUser = await getSessionUser();
 	if (!sessionUser) {
 		return null;
 	}

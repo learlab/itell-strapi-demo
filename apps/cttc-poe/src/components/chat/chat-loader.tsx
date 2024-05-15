@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getChatMessages } from "@/lib/chat";
 import { Message } from "@itell/core/chatbot";
 import { Avatar, AvatarImage } from "../client-components";
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const ChatLoader = async ({ pageSlug }: Props) => {
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!user) {
 		return null;
 	}

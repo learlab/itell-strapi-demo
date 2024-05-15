@@ -7,9 +7,8 @@ import { z } from "zod";
 const server = z.object({
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
-	NODE_ENV: z.enum(["development", "test", "production"]),
 	NEXTAUTH_URL: z.string(),
-	NEXTAUTH_SECRET: z.string(),
+	NODE_ENV: z.enum(["development", "test", "production"]),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
 });
@@ -31,7 +30,6 @@ const client = z.object({
 const processEnv = {
 	NODE_ENV: process.env.NODE_ENV,
 	NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-	NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 	SCORE_API_URL: process.env.SCORE_API_URL,
 	DATABASE_URL: process.env.DATABASE_URL,
 	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

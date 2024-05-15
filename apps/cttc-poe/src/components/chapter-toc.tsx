@@ -1,15 +1,11 @@
 "use client";
 
+import { SessionUser } from "@/lib/auth";
 import { isProduction } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
-import {
-	allPagesSorted,
-	firstPage,
-	isPageAfter,
-	tocChapters,
-} from "@/lib/pages";
-import { delay, makePageHref } from "@/lib/utils";
-import { cn, groupby } from "@itell/core/utils";
+import { tocChapters } from "@/lib/pages";
+import { makePageHref } from "@/lib/utils";
+import { cn } from "@itell/core/utils";
 import { Page } from "contentlayer/generated";
 import { ArrowUpIcon, ChevronsUpDown, PencilIcon } from "lucide-react";
 import Link from "next/link";
@@ -24,7 +20,6 @@ import {
 } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
 import { useConfig } from "./provider/page-provider";
-import { Spinner } from "./spinner";
 
 const AnchorLink = ({
 	text,
@@ -46,11 +41,11 @@ const AnchorLink = ({
 };
 
 type Props = {
+	user: SessionUser;
 	currentPage: Page;
-	userPageSlug: string | null;
 };
 
-export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
+export const ChapterToc = ({ currentPage, user }: Props) => {
 	const [activePage, setActivePage] = useState(currentPage.page_slug);
 	const [pending, startTransition] = useTransition();
 	const isAdmin = useConfig((state) => state.isAdmin);
@@ -88,8 +83,8 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 								<ol className="space-y-1 text-sm px-1">
 									{chapter.items.map((item) => {
 										const { isPageLatest, isPageUnlocked } = getPageStatus(
+											user,
 											item.page_slug,
-											userPageSlug,
 										);
 										const visible = isPageLatest || isPageUnlocked;
 										return (

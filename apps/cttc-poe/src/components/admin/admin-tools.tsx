@@ -13,16 +13,16 @@ import {
 	SheetTrigger,
 	Switch,
 } from "@/components/client-components";
+import { useSession } from "@/lib/auth/context";
 import { FeedbackType } from "@/lib/control/feedback";
 import { SettingsIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useConfig, useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 
 export const AdminTools = () => {
-	const { data: session } = useSession();
+	const { user } = useSession();
 	const { feedbackType: feedback, setFeedbackType } = useConfig(
 		(state) => state,
 	);
@@ -53,8 +53,7 @@ export const AdminTools = () => {
 				<SheetHeader>
 					<SheetTitle>Configure ITELL</SheetTitle>
 					<SheetDescription>
-						You can view this because {session?.user.email} is recognized as an
-						admin.
+						You can view this because {user?.email} is recognized as an admin.
 					</SheetDescription>
 				</SheetHeader>
 				<form className="grid gap-8 py-4" onSubmit={onSubmit}>
