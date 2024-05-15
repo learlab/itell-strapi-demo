@@ -10,10 +10,15 @@ type ChatRequestBody = {
 export const fetchChatResponse = async (
 	endpoint: string,
 	{ pageSlug, text, history }: ChatRequestBody,
+	apiKey: string
 ): Promise<ChatResponse> => {
+	const headers = new Headers();
+	headers.append("Content-Type", "application/json");
+	headers.append("API_Key", apiKey);
+
 	const response = await fetch(endpoint, {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: headers,
 		body: JSON.stringify({ page_slug: pageSlug, message: text, history }),
 	});
 	const parsed = ChatResponseSchema.safeParse(response);
