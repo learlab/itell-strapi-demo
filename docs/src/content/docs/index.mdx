@@ -1,0 +1,38 @@
+---
+title: ITELL
+description: The Intelligent Textbook for Enhanced Lifelong Learning
+template: splash
+hero:
+  title: ITELL
+  tagline: The <span class='hero-emphasis'>I</span>ntelligent <span class='hero-emphasis'>T</span>extbook for <span class='hero-emphasis'>E</span>nhanced <span class='hero-emphasis'>L</span>ifelong <span class='hero-emphasis'>L</span>earning
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: Writing Content
+      link: /authoring/quick-start
+      icon: right-arrow
+      variant: primary
+    - text: Development
+      link: /development/frontend/prerequisite
+	  icon: laptop
+---
+
+
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+
+<CardGrid>
+	<Card title="Update content" icon="pencil">
+		Edit `src/content/docs/index.mdx` to see this page change.
+	</Card>
+	<Card title="Add new content" icon="add-document">
+		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	</Card>
+	<Card title="Configure your site" icon="setting">
+		Edit your `sidebar` and other config in `astro.config.mjs`.
+	</Card>
+	<Card title="Read the docs" icon="open-book">
+		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	</Card>
+</CardGrid>
