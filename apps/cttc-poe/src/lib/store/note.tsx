@@ -14,6 +14,7 @@ type State = {
 
 type Actions = {
 	createNote: (note: CreateNoteInput, theme?: string) => void;
+	createHighlight: (highlight: Highlight) => void;
 	updateNote: (note: UpdateNoteInput) => void;
 	deleteNote: (id: string) => void;
 	deleteHighlight: (id: string) => void;
@@ -47,6 +48,10 @@ export const useNotesStore = create(
 				if (index !== -1) {
 					state.notes.splice(index, 1);
 				}
+			}),
+		createHighlight: (highlight) =>
+			set((state) => {
+				state.highlights.push(highlight);
 			}),
 		deleteHighlight: (id) =>
 			set((state) => {

@@ -3,6 +3,7 @@ import { ChatLoader } from "@/components/chat/chat-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
 import { NoteCount } from "@/components/note/note-count";
+import { NoteCountLoader } from "@/components/note/note-count-loader";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { PageStatus } from "@/components/page-status/page-status";
@@ -97,8 +98,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<PageToc headings={page.headings} chunks={getPageChunks(page)} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus status={pageStatus} />
-							<Suspense fallback={<NoteCount.Skeleton />}>
-								<NoteCount user={sessionUser} pageSlug={pageSlug} />
+							<Suspense fallback={<NoteCountLoader.Skeleton />}>
+								<NoteCountLoader pageSlug={pageSlug} />
 							</Suspense>
 						</div>
 					</div>

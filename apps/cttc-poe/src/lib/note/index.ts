@@ -22,7 +22,7 @@ export const countNoteHighlight = async (pageSlug: string) => {
 	}
 
 	return (await db.$queryRaw`
-			SELECT COUNT(*),
+			SELECT COUNT(*)::integer,
 					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
 			FROM notes
 			WHERE user_id = ${user.id} AND page_slug = ${pageSlug}
