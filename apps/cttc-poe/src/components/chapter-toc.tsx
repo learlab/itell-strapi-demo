@@ -105,7 +105,8 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 												>
 													<p className="text-left text-pretty">
 														{item.title}
-														{visible ? "" : "🔒"}
+														{visible ? "" : " 🔒"}
+														{isPageUnlocked ? " ✅" : ""}
 													</p>
 												</button>
 											</li>
