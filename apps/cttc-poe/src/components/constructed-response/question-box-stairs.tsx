@@ -22,7 +22,7 @@ import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../auth/auth-form";
+import { LoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
@@ -30,7 +30,7 @@ import {
 	HoverCardTrigger,
 	TextArea,
 } from "../client-components";
-import { useConstructedResponse, usePage } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { ExplainButton } from "./explain-button";
 import { FeedbackModal } from "./feedback-modal";
 import { NextChunkButton } from "./next-chunk-button";
@@ -201,7 +201,7 @@ export const QuestionBoxStairs = ({
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
-				<GoogleLoginButton />
+				<LoginButton />
 			</Warning>
 		);
 	}

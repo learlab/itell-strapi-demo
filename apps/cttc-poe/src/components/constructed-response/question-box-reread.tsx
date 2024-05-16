@@ -13,7 +13,7 @@ import { KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../auth/auth-form";
+import { LoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
@@ -145,7 +145,7 @@ export const QuestionBoxReread = ({
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
-				<GoogleLoginButton />
+				<LoginButton />
 			</Warning>
 		);
 	}
