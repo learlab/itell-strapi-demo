@@ -1,5 +1,7 @@
 "use client";
 
+import { useSession } from "@/lib/auth/context";
+import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
@@ -7,7 +9,7 @@ import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useConfig } from "../provider/page-provider";
+import { usePage } from "../provider/page-provider";
 import { SummaryProgress } from "./summary-progress";
 
 export const saveSummaryLocal = (pageSlug: string, text: string) => {
@@ -37,7 +39,9 @@ export const SummaryInput = ({
 	value = "",
 	pending,
 }: Props) => {
-	const isAdmin = useConfig((state) => state.isAdmin);
+	const { user } = useSession();
+	if (!user) return null;
+
 	const { summary } = useSafeSearchParams("textbook");
 	const text = summary
 		? Buffer.from(summary, "base64").toString("ascii")
@@ -62,7 +66,7 @@ export const SummaryInput = ({
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}
 					onPaste={(e) => {
-						if (isProduction && !isAdmin) {
+						if (isProduction && !isAdmin(user)) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

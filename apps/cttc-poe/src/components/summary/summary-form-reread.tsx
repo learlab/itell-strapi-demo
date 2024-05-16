@@ -2,6 +2,7 @@
 
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
+import { FeedbackType } from "@/lib/control/feedback";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -25,7 +26,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button } from "../client-components";
 import { PageLink } from "../page/page-link";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse, usePage } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
 
@@ -74,7 +75,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		chunks: state.chunks,
 	}));
 
-	const feedbackType = useConfig((selector) => selector.feedbackType);
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "set_prev_input":
@@ -135,7 +135,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				return toast.warning("Please finish rereading before moving on");
 			},
 		});
-	}, [feedbackType]);
+	}, []);
 
 	useEffect(() => {
 		if (!pageStatus.isPageUnlocked) {
@@ -192,7 +192,17 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			await createSummary({
 				text: input,
 				pageSlug,
-				response: summaryResponse,
+				condition: FeedbackType.RANDOM_REREAD,
+				isPassed: summaryResponse.is_passed || false,
+				containmentScore: summaryResponse.containment,
+				similarityScore: summaryResponse.similarity,
+				wordingScore: summaryResponse.wording,
+				contentScore: summaryResponse.content,
+				user: {
+					connect: {
+						id: user.id,
+					},
+				},
 			});
 			await incrementUserPage(user.id, pageSlug);
 

@@ -99,6 +99,7 @@ model Summary {
   wordingScore     Float?   @map("wording_score")
   contentScore     Float?   @map("content_score")
   text             String
+  condition        String   @map("condition")
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
 
@@ -129,7 +130,8 @@ model ConstructedResponse {
   pageSlug   String   @map("page_slug")
   chunkSlug  String   @map("chunk_slug")
   score      Int
-  response   String
+  text       String
+  condition  String
   created_at DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])

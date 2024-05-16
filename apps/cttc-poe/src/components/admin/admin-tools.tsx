@@ -18,14 +18,12 @@ import { FeedbackType } from "@/lib/control/feedback";
 import { SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse, usePage } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 
 export const AdminTools = () => {
 	const { user } = useSession();
-	const { feedbackType: feedback, setFeedbackType } = useConfig(
-		(state) => state,
-	);
+	const { feedbackType: feedback, setFeedbackType } = usePage((state) => state);
 	const finishPage = useConstructedResponse((state) => state.finishPage);
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();

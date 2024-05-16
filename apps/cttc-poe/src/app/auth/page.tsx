@@ -7,7 +7,6 @@ import { routes } from "@/lib/navigation";
 import { Warning } from "@itell/ui/server";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 type PageProps = {
 	searchParams?: unknown;
@@ -26,7 +25,15 @@ export default async function ({ searchParams }: PageProps) {
 	const config = await getSiteConfig();
 	const { error } = routes.auth.$parseSearchParams(searchParams);
 	const { user } = await getSession();
-	const errorMessage = error ? ErrorDict[error] : null;
+	let errorMessage: string | null = null;
+	if (error) {
+		if (error in ErrorDict) {
+			errorMessage = ErrorDict[error];
+		} else if (error.startsWith("prolific_existing_pid_")) {
+			const storedPid = error.replace("prolific_existing_pid_", "");
+			errorMessage = `Please use the same Prolific ID you used to sign up (${storedPid}).`;
+		}
+	}
 
 	return (
 		<div className="w-screen h-screen grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">

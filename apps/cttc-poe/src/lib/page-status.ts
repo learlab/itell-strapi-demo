@@ -2,7 +2,7 @@ import { SessionUser } from "./auth";
 import { firstPage, isLastPage, isPageAfter } from "./pages";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
-	return pageSlug === "introduction-to-the-macroeconomic-perspective";
+	return false;
 };
 
 export type PageStatus = {

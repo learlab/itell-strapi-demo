@@ -127,8 +127,8 @@ export const NoteCard = React.memo(
 			dispatch({ type: "collapse_note" });
 		});
 
-		const formAction = async (data: FormData) => {
-			const input = data.get("input") as string;
+		const formAction = async (formData: FormData) => {
+			const input = String(formData.get("input"));
 			setText(input);
 			if (shouldCreate) {
 				// create new note

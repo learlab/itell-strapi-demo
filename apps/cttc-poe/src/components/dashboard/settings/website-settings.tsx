@@ -45,7 +45,7 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 		formData: FormData,
 	): Promise<FormState> => {
 		const data = {
-			timeZone: formData.get("time_zone") as string,
+			timeZone: String(formData.get("time_zone")),
 		};
 
 		try {

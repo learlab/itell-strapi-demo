@@ -1,4 +1,6 @@
 import { env } from "@/env.mjs";
+import { useSession } from "@/lib/auth/context";
+import { createEvent } from "@/lib/event/actions";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -17,7 +19,7 @@ export const ExplainButton = ({
 
 	const onClick = async () => {
 		setLoading(true);
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
+		const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
 			method: "POST",
 			body: JSON.stringify({
 				page_slug: pageSlug,
@@ -29,8 +31,9 @@ export const ExplainButton = ({
 			},
 		});
 
-		if (response.body) {
-			const reader = response.body.getReader();
+		let chunkValue = { request_id: "", text: "" };
+		if (res.body) {
+			const reader = res.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
 			while (!done) {
@@ -38,7 +41,7 @@ export const ExplainButton = ({
 				done = done_;
 				const chunk = decoder.decode(value);
 				if (chunk) {
-					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+					chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
 						request_id: string;
 						text: string;
 					};
@@ -49,8 +52,13 @@ export const ExplainButton = ({
 				}
 			}
 		}
-
 		setLoading(false);
+
+		createEvent({
+			eventType: "explain-constructed-response",
+			pageSlug,
+			data: { chunkSlug, response: chunkValue.text },
+		});
 	};
 
 	useEffect(() => {

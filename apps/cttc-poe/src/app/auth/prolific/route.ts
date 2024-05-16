@@ -37,7 +37,7 @@ export async function GET(req: Request): Promise<Response> {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/auth?error=prolific_wrong_pid",
+				Location: `/auth?error=prolific_existing_pid_${storedPid}`,
 			},
 		});
 	}

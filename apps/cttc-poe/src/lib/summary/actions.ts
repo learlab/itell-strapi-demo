@@ -1,31 +1,15 @@
 "use server";
 
 import { SummaryResponse } from "@itell/core/summary";
+import { Prisma } from "@prisma/client";
 import { getSessionUser } from "../auth";
 import db from "../db";
 
-export const createSummary = async ({
-	text,
-	pageSlug,
-	response,
-}: { text: string; pageSlug: string; response: SummaryResponse }) => {
+export const createSummary = async (input: Prisma.SummaryCreateInput) => {
 	const user = await getSessionUser();
 	if (user) {
 		return await db.summary.create({
-			data: {
-				text,
-				pageSlug,
-				isPassed: response.is_passed || false,
-				containmentScore: response.containment,
-				similarityScore: response.similarity,
-				wordingScore: response.wording,
-				contentScore: response.content,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
-			},
+			data: input,
 		});
 	}
 };

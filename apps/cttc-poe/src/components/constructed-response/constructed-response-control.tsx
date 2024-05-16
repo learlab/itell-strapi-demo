@@ -1,11 +1,12 @@
 "use client";
 
 import { FeedbackType } from "@/lib/control/feedback";
+import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse, usePage } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
 import { QuestionBoxStairs } from "./question-box-stairs";
@@ -14,11 +15,13 @@ import { ScrollBackButton } from "./scroll-back-button";
 type Props = {
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
+	pageStatus: PageStatus;
 };
 
 export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
+	pageStatus,
 }: Props) => {
 	// Ref for current chunk
 	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
@@ -30,7 +33,7 @@ export const ConstructedResponseControl = ({
 	);
 
 	const { nodes, addNode } = usePortal();
-	const feedbackType = useConfig((state) => state.feedbackType);
+	const feedbackType = usePage((state) => state.feedbackType);
 	const hasFeedback = feedbackType !== FeedbackType.SIMPLE;
 
 	const hideNextChunkButton = (chunkId: string) => {
@@ -106,6 +109,7 @@ export const ConstructedResponseControl = ({
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
+						pageStatus={pageStatus}
 					/>,
 					questionContainer,
 				);
@@ -118,6 +122,7 @@ export const ConstructedResponseControl = ({
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
+						pageStatus={pageStatus}
 					/>,
 					questionContainer,
 				);
