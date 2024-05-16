@@ -79,7 +79,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 								<p className="text-left text-pretty">
 									{page.chapter + 1}. {page.title}
 									{visible ? "" : "🔒"}
-									{page.chapter <= index ? " ✅" : ""}
+									{page.chapter < index ? " ✅" : ""}
 								</p>
 							</button>
 						</li>
