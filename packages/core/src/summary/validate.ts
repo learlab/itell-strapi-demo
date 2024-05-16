@@ -17,7 +17,7 @@ export const ErrorFeedback: Record<ErrorType, string> = {
 	[ErrorType.INTERNAL]:
 		"Internal error occurred, please try again later. Contact lear.lab.vu@gmail.com with a copy of your summary if the problem persists.",
 	[ErrorType.SIMILAR]:
-		"Your summary is similar to the previous submission. Please try to provide a more unique summary.",
+		"Your summary is too similar to your previous summary. Please make substantial changes to your summary that may include the addition of new information at the beginning, middle, or end of summary.",
 };
 
 export const validateSummary = (
