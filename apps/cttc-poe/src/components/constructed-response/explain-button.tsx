@@ -31,6 +31,7 @@ export const ExplainButton = ({
 			},
 		});
 
+		let chunkValue = { request_id: "", text: "" };
 		if (res.body) {
 			const reader = res.body.getReader();
 			const decoder = new TextDecoder();
@@ -40,7 +41,7 @@ export const ExplainButton = ({
 				done = done_;
 				const chunk = decoder.decode(value);
 				if (chunk) {
-					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+					chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
 						request_id: string;
 						text: string;
 					};
@@ -56,7 +57,7 @@ export const ExplainButton = ({
 		createEvent({
 			eventType: "explain-constructed-response",
 			pageSlug,
-			data: { chunkSlug, response },
+			data: { chunkSlug, response: chunkValue.text },
 		});
 	};
 
