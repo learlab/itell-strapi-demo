@@ -111,8 +111,8 @@ export const NoteCard = React.memo(
 				}
 			},
 			{
-				color, // border color: ;
-				editing: newNote, // true: show textarea, false: show noteText
+				color, // border color ;
+				editing: newNote, // when editing show textarea otherwise show noteText
 				collapsed: !newNote, // if the note card is expanded
 				showDeleteModal: false, // show delete modal
 				showColorPicker: false, // show color picker
@@ -120,7 +120,7 @@ export const NoteCard = React.memo(
 			},
 		);
 		const [isHidden, setIsHidden] = useState(false);
-		const { deleteNote: deleteContextNote, updateNote: updateContextNote } =
+		const { deleteNote: deleteNoteLocal, updateNote: updateNoteLocal } =
 			useNotesStore();
 
 		const containerRef = useClickOutside<HTMLDivElement>(() => {
@@ -145,7 +145,7 @@ export const NoteCard = React.memo(
 				setShouldCreate(false);
 			} else {
 				// edit existing note
-				updateContextNote({ id, noteText: input });
+				updateNoteLocal({ id, noteText: input });
 				if (recordId) {
 					await updateNote(recordId, { noteText: input });
 				}
@@ -174,7 +174,7 @@ export const NoteCard = React.memo(
 				elements.forEach(unHighlightNote);
 			}
 			setIsHidden(true);
-			deleteContextNote(id);
+			deleteNoteLocal(id);
 			if (recordId) {
 				// delete note in database
 				await deleteNote(id);
@@ -202,24 +202,21 @@ export const NoteCard = React.memo(
 
 		useEffect(() => {
 			// if the note is loaded from the database, create the .note span elements
-			// for new note, spans are created in note-toolbar.tsx
-			if (!newNote) {
-				try {
-					setTimeout(() => {
-						createNoteElements({
-							id,
-							range: deserializeRange(range),
-							color,
-						});
-						// elementsRef should be set after the note elements are created
-						// in the case of new note, they are already created by the toolbar
-						elementsRef.current = Array.from(
-							getElementsByNoteId(id) || [],
-						) as HTMLElement[];
-					}, 300);
-				} catch (err) {
-					console.error("create note element", err);
-				}
+			try {
+				setTimeout(() => {
+					createNoteElements({
+						id,
+						range: deserializeRange(range),
+						color,
+					});
+					// elementsRef should be set after the note elements are created
+					// in the case of new note, they are already created by the toolbar
+					elementsRef.current = Array.from(
+						getElementsByNoteId(id) || [],
+					) as HTMLElement[];
+				}, 300);
+			} catch (err) {
+				console.error("create note element", err);
 			}
 		}, []);
 

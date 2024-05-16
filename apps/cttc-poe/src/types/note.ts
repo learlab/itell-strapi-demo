@@ -23,5 +23,7 @@ export type NoteCard = {
 };
 
 export type Highlight = {
-	id?: string;
+	id: string;
+	color: string;
+	range: string;
 };

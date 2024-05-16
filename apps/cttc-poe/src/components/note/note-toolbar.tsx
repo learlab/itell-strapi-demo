@@ -6,12 +6,8 @@ import {
 	useNoteColor,
 } from "@/lib/hooks/use-note-color";
 import { createNote } from "@/lib/note/actions";
-import {
-	createHighlightListeners,
-	deleteHighlightListener,
-} from "@/lib/note/listener";
 import { useNotesStore } from "@/lib/store/note";
-import { createNoteElements, serializeRange } from "@itell/core/note";
+import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,7 +27,8 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
 	const { user } = useSession();
-	const { createNote: createContextNote } = useNotesStore();
+	const { createNote: createNoteLocal, createHighlight: createHighlightLocal } =
+		useNotesStore();
 
 	const handleClick = (event: Event) => {
 		if (event.target instanceof HTMLElement) {
@@ -71,13 +68,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				const range = window.getSelection()?.getRangeAt(0);
 				if (range && clientRect && textContent) {
 					const id = crypto.randomUUID();
-					createNoteElements({
-						id,
-						range,
-						color: noteColor,
-					});
-
-					createContextNote({
+					createNoteLocal({
 						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
@@ -101,12 +92,6 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				if (range && clientRect && textContent) {
 					const id = crypto.randomUUID();
 					const serializedRange = serializeRange(range);
-					createNoteElements({
-						id,
-						range,
-						color: defaultHighlightColor,
-						isHighlight: true,
-					});
 
 					if (selection?.empty) {
 						// Chrome
@@ -116,6 +101,12 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						selection?.removeAllRanges();
 					}
 
+					createHighlightLocal({
+						id,
+						color: defaultHighlightColor,
+						range: serializedRange,
+					});
+
 					await createNote({
 						id,
 						y: clientRect.y + window.scrollY,
@@ -123,10 +114,6 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						pageSlug,
 						color: defaultHighlightColor,
 						range: serializedRange,
-					});
-
-					createHighlightListeners(id, (event) => {
-						deleteHighlightListener(event);
 					});
 				} else {
 					toast.warning("Please select some text to take a note");
