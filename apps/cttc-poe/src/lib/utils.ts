@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
@@ -31,7 +32,7 @@ export type PageData = {
 	nextPageSlug: string | null;
 };
 
-export const getPageData = (slug: string | null): PageData | null => {
+export const getPageData = (slug: string | undefined): PageData | null => {
 	const index = allPagesSorted.findIndex((s) => s.page_slug === slug);
 	if (index === -1) {
 		return null;
@@ -70,7 +71,7 @@ export const redirectWithSearchParams = (
 	path: string,
 	searchParams?: unknown,
 ) => {
-	const url = new URL(path, window.location.origin);
+	const url = new URL(path, env.NEXTAUTH_URL);
 	if (isRecord(searchParams)) {
 		for (const key in searchParams) {
 			url.searchParams.append(key, String(searchParams[key]));

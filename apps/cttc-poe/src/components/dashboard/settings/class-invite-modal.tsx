@@ -9,6 +9,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { SessionUser } from "@/lib/auth";
 import { updateUserClassId } from "@/lib/user/actions";
 import {
 	AlertDialog,
@@ -27,7 +28,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	user: User;
+	user: NonNullable<SessionUser>;
 	teacherToJoin: User | null;
 	classId: string;
 };

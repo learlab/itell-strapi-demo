@@ -5,7 +5,7 @@ import { PageData, getPageData } from "./utils";
 export const getPagerLinks = ({
 	pageIndex,
 	userPageSlug,
-}: { pageIndex: number; userPageSlug: string | null }) => {
+}: { pageIndex: number; userPageSlug: string | undefined }) => {
 	const links: { prev: PageLinkData | null; next: PageLinkData | null } = {
 		prev: null,
 		next: null,

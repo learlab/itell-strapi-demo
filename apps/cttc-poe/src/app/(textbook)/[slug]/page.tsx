@@ -31,8 +31,7 @@ import { Suspense } from "react";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const { slug } = routes.textbook.$parseParams(params);
-	const { user: sessionUser } = await getSession();
-	const user = sessionUser ? await getUser(sessionUser.id) : null;
+	const { user } = await getSession();
 	const pageIndex = allPagesSorted.findIndex((page) => {
 		return page.page_slug === slug;
 	});
@@ -46,14 +45,14 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	const pagerLinks = getPagerLinks({
 		pageIndex,
-		userPageSlug: user?.pageSlug || null,
+		userPageSlug: user?.pageSlug,
 	});
 
 	const chunks = getPageChunks(page);
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
-	const pageStatus = getPageStatus(sessionUser, pageSlug);
+	const pageStatus = getPageStatus(user, pageSlug);
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
@@ -68,7 +67,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ChapterToc currentPage={page} user={sessionUser} />
+					<ChapterToc currentPage={page} user={user} />
 				</aside>
 
 				<section

@@ -39,9 +39,9 @@ export default async function () {
 						email: "",
 						finished: false,
 						image: "",
-						page_slug: userPageSlug,
+						pageSlug: userPageSlug,
+						classId: undefined,
 						role: "",
-						prolific_pid: "",
 					}}
 				/>
 			</aside>

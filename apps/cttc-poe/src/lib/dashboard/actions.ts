@@ -3,10 +3,9 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { cache } from "react";
 import { getSessionUser } from "../auth";
-import { isProduction } from "../constants";
 import db from "../db";
 
-export const getTeacherWithClassId = async (classId: string | null) => {
+export const getTeacherWithClassId = async (classId: string | undefined) => {
 	if (!classId) {
 		return null;
 	}

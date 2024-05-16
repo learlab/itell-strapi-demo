@@ -16,7 +16,7 @@ export const getPageStatus = (
 	user: SessionUser,
 	pageSlug: string,
 ): PageStatus => {
-	if (!user?.page_slug) {
+	if (!user?.pageSlug) {
 		return {
 			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
 			isPageLatest: pageSlug === firstPage.page_slug,
@@ -27,9 +27,9 @@ export const getPageStatus = (
 		return { isPageUnlocked: true, isPageLatest: pageSlug === user?.email };
 	}
 
-	const isPageLatest = pageSlug === user.page_slug;
+	const isPageLatest = pageSlug === user.pageSlug;
 	const isPageUnlocked = isLastPage(pageSlug)
 		? user.finished
-		: isPageAfter(user.page_slug, pageSlug);
+		: isPageAfter(user.pageSlug, pageSlug);
 	return { isPageUnlocked, isPageLatest };
 };

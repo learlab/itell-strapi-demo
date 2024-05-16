@@ -16,7 +16,7 @@ export const isLastPage = (slug: string) => {
 	return lastPage.page_slug === slug;
 };
 
-export const isPageAfter = (a: string | null, b: string | null) => {
+export const isPageAfter = (a: string | undefined, b: string | null) => {
 	const aIndex = allPagesSorted.findIndex((s) => s.page_slug === a);
 	const bIndex = allPagesSorted.findIndex((s) => s.page_slug === b);
 

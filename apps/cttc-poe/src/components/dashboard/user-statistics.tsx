@@ -1,3 +1,4 @@
+import { SessionUser } from "@/lib/auth";
 import { routes, useSafeSearchParams } from "@/lib/navigation";
 import {
 	ReadingTimeChartLevel,
@@ -13,7 +14,7 @@ import { StudentBadges } from "./student/student-badges";
 import { UserBadges } from "./user/user-badges";
 
 type Props = {
-	user: User;
+	user: NonNullable<SessionUser>;
 	readingTimeLevel: ReadingTimeChartLevel;
 };
 

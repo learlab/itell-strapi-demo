@@ -1,11 +1,11 @@
+import { SessionUser } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages";
-import { User } from "@prisma/client";
 
-export const UserProgress = ({ user }: { user: User }) => {
+export const UserProgress = ({ user }: { user: NonNullable<SessionUser> }) => {
 	let displayProgress = "0";
 	const validPages = allPagesSorted.filter((page) => page.summary);
 	const userIndex = validPages.findIndex(
-		(page) => page.page_slug === user.pageSlug,
+		(page) => page.page_slug === user?.pageSlug,
 	);
 	const unlockedPages = userIndex === 0 || userIndex !== -1 ? 0 : userIndex;
 	if (user.finished) {

@@ -1,6 +1,7 @@
 import { Separator } from "@/components/client-components";
-import { getSessionUser } from "@/lib/auth";
+import { SessionUser } from "@/lib/auth";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
+import { getUser } from "@/lib/user";
 import {
 	Card,
 	CardContent,
@@ -8,17 +9,21 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import { ClassInfo } from "./settings/class-info";
 import { ClassRegister } from "./settings/class-register";
-import { ClassRequestModal } from "./settings/class-request-modal";
 import { Profile } from "./settings/profile";
 import { WebsiteSettings } from "./settings/website-settings";
 
-export const SettingsForm = async ({ user }: { user: User }) => {
-	const teacher = await getTeacherWithClassId(user.classId);
-	const sessionUser = await getSessionUser();
+export const SettingsForm = async ({
+	user: sessionUser,
+}: { user: NonNullable<SessionUser> }) => {
+	const teacher = await getTeacherWithClassId(sessionUser.classId);
 	if (!sessionUser) {
+		return null;
+	}
+
+	const user = await getUser(sessionUser.id);
+	if (!user) {
 		return null;
 	}
 

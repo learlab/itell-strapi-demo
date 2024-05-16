@@ -20,8 +20,8 @@ export const lucia = new Lucia(adapter, {
 			email: attributes.email,
 			role: attributes.role,
 			finished: attributes.finished,
-			prolific_pid: attributes.prolificId,
-			page_slug: attributes.pageSlug,
+			classId: attributes.classId,
+			pageSlug: attributes.pageSlug,
 		};
 	},
 });
@@ -41,7 +41,7 @@ interface DatabaseUserAttributes {
 	email: string | undefined;
 	role: string;
 	finished: boolean;
-	prolificId: string | undefined;
+	classId: string | undefined;
 	pageSlug: string | undefined;
 }
 
