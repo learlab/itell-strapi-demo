@@ -4,15 +4,11 @@ import { FeedbackType } from "@/lib/control/feedback";
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import {
-	ConfigState,
-	ConfigStore,
-	createConfigStore,
-} from "@/lib/store/config";
-import {
 	ConstructedResponseState,
 	ConstructedResponseStore,
 	createConstructedResponseStore,
 } from "@/lib/store/constructed-response";
+import { PageState, PageStore, createPageStore } from "@/lib/store/page";
 import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 
@@ -22,12 +18,11 @@ type Props = {
 	chunks: string[];
 	pageStatus: PageStatus;
 	isLastChunkWithQuestion: boolean;
-	isAdmin?: boolean;
 };
 
 const PageContext = createContext<{
 	constructedResponseStore: ConstructedResponseStore;
-	configStore: ConfigStore;
+	configStore: PageStore;
 } | null>(null);
 
 export const PageProvider = ({
@@ -36,12 +31,11 @@ export const PageProvider = ({
 	chunks,
 	pageStatus,
 	isLastChunkWithQuestion,
-	isAdmin = false,
 }: Props) => {
 	useTrackLastVisitedPage();
 
 	const constructedResponseStoreRef = useRef<ConstructedResponseStore>();
-	const configStoreRef = useRef<ConfigStore>();
+	const configStoreRef = useRef<PageStore>();
 	if (!constructedResponseStoreRef.current) {
 		constructedResponseStoreRef.current = createConstructedResponseStore(
 			pageSlug,
@@ -52,9 +46,8 @@ export const PageProvider = ({
 	}
 
 	if (!configStoreRef.current) {
-		configStoreRef.current = createConfigStore({
+		configStoreRef.current = createPageStore({
 			pageSlug,
-			isAdmin,
 		});
 	}
 
@@ -78,7 +71,7 @@ export function useConstructedResponse<T>(
 	return useStore(value.constructedResponseStore, selector);
 }
 
-export function useConfig<T>(selector: (state: ConfigState) => T): T {
+export function usePage<T>(selector: (state: PageState) => T): T {
 	const value = useContext(PageContext);
 	if (!value) return {} as T;
 	return useStore(value.configStore, selector);

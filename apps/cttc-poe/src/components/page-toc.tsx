@@ -99,7 +99,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 				<span>ON THIS PAGE</span>
 			</p>
 
-			<ol className="max-h-[60vh] overflow-y-scroll list-disc mt-2 space-y-2 list-none">
+			<ol className="max-h-[60vh] overflow-y-scroll mt-2 space-y-2 list-none">
 				{editedHeadings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (

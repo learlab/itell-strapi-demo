@@ -1,6 +1,7 @@
 "use client";
 
 import { SessionUser } from "@/lib/auth";
+import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { tocChapters } from "@/lib/pages";
@@ -19,7 +20,6 @@ import {
 	CollapsibleTrigger,
 } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
-import { useConfig } from "./provider/page-provider";
 
 const AnchorLink = ({
 	text,
@@ -48,7 +48,6 @@ type Props = {
 export const ChapterToc = ({ currentPage, user }: Props) => {
 	const [activePage, setActivePage] = useState(currentPage.page_slug);
 	const [pending, startTransition] = useTransition();
-	const isAdmin = useConfig((state) => state.isAdmin);
 	const router = useRouter();
 
 	const navigatePage = (pageSlug: string) => {
@@ -119,7 +118,7 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 				})}
 			</ol>
 			<div className="mt-12 space-y-2">
-				{isAdmin && <AdminTools />}
+				{isAdmin(user) && <AdminTools />}
 				<RestartPageButton pageSlug={currentPage.page_slug} />
 				{currentPage.summary && (
 					<AnchorLink

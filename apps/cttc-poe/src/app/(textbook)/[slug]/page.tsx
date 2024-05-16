@@ -49,7 +49,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	});
 
 	const chunks = getPageChunks(page);
-	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
@@ -62,7 +61,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 			chunks={chunks}
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
-			isAdmin={isAdmin}
 		>
 			<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
 				<aside
@@ -127,6 +125,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<ConstructedResponseControl
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
+				pageStatus={pageStatus}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatLoader.Skeleton />}>

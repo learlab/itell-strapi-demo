@@ -15,7 +15,7 @@ export const ProlificForm = () => {
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
-		const pid = formData.get("pid") as string;
+		const pid = String(formData.get("pid"));
 
 		startTransition(() => {
 			router.push(`/auth/prolific?prolific_id=${pid}`);

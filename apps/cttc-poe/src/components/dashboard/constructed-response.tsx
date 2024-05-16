@@ -93,7 +93,7 @@ export const ConstructedResponse = async ({ uid }: Props) => {
 											className="flex-1 flex items-baseline gap-2 hover:underline"
 										>
 											<LightbulbIcon className="size-4" />
-											<p className="flex-1">{a.response}</p>
+											<p className="flex-1">{a.text}</p>
 										</PageLink>
 										{a.score === 0 ? (
 											<FrownIcon />

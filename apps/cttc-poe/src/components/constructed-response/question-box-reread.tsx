@@ -3,6 +3,8 @@
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
+import { FeedbackType } from "@/lib/control/feedback";
+import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
 import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
@@ -31,6 +33,7 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
+	pageStatus: PageStatus;
 };
 
 type FormState = {
@@ -43,8 +46,10 @@ export const QuestionBoxReread = ({
 	answer,
 	chunkSlug,
 	pageSlug,
+	pageStatus,
 }: Props) => {
 	const { user } = useSession();
+	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
@@ -52,28 +57,16 @@ export const QuestionBoxReread = ({
 			finishChunk: state.finishChunk,
 		}),
 	);
-	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
 		!isPageFinished,
 	);
-
-	// Function to trigger the shake animation
-	const shakeModal = () => {
-		setIsShaking(true);
-
-		// Reset the shake animation after a short delay
-		setTimeout(() => {
-			setIsShaking(false);
-		}, 400);
-	};
 
 	const action = async (
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
-		const input = formData.get("input") as string;
-
-		if (input.trim() === "") {
+		const input = String(formData.get("input")).trim();
+		if (input.length === 0) {
 			return {
 				...prevState,
 				error: "Answer cannot be empty",
@@ -99,10 +92,11 @@ export const QuestionBoxReread = ({
 
 			const score = response.data.score as QuestionScore;
 			await createConstructedResponse({
-				response: input,
+				text: input,
 				chunkSlug,
 				pageSlug,
 				score,
+				condition: FeedbackType.RANDOM_REREAD,
 			});
 
 			finishChunk(chunkSlug);
@@ -156,6 +150,14 @@ export const QuestionBoxReread = ({
 		);
 	}
 
+	if (!show) {
+		return (
+			<Button variant={"outline"} onClick={() => setShow(true)}>
+				Reveal optional question
+			</Button>
+		);
+	}
+
 	return (
 		<>
 			<Card
@@ -169,7 +171,11 @@ export const QuestionBoxReread = ({
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
 					{question && (
 						<p>
-							<b>Question:</b> {question}
+							<span className="font-bold">Question </span>
+							{pageStatus.isPageUnlocked && (
+								<span className="font-bold">(Optional)</span>
+							)}
+							: {question}
 						</p>
 					)}
 					{answerStatus === AnswerStatusReread.ANSWERED && (

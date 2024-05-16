@@ -93,6 +93,5 @@ export async function getSessionUser() {
 	const { user } = await getSession();
 	return user;
 }
-export const isAdmin = (user: LuciaUser | null) => user?.role === "admin";
 export type Session = Awaited<ReturnType<typeof getSession>>;
 export type SessionUser = Awaited<ReturnType<typeof getSessionUser>>;

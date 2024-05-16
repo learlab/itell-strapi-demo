@@ -5,7 +5,7 @@ import { FeedbackType } from "@/lib/control/feedback";
 import { PageStatus } from "@/lib/page-status";
 import { PageData } from "@/lib/utils";
 import { Fragment } from "react";
-import { useConfig } from "../provider/page-provider";
+import { usePage } from "../provider/page-provider";
 import { SummaryDescription } from "./summary-description";
 import { SummaryFormReread } from "./summary-form-reread";
 import { SummaryFormSimple } from "./summary-form-simple";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export const SummaryFormSelector = ({ user, page, pageStatus }: Props) => {
-	const feedbackType = useConfig((state) => state.feedbackType);
+	const feedbackType = usePage((state) => state.feedbackType);
 
 	if (feedbackType === FeedbackType.SIMPLE) {
 		return <SummaryFormSimple />;

@@ -8,8 +8,11 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { isProduction } from "@/lib/constants";
+import { buttonVariants } from "@itell/ui/server";
+import Link from "next/link";
 import { useState } from "react";
 import { GoogleLoginButton } from "../auth/auth-form";
+import { Button } from "../client-components";
 
 export const PageUnauthorizedModal = () => {
 	const [open, setOpen] = useState(true);
@@ -31,7 +34,9 @@ export const PageUnauthorizedModal = () => {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex justify-center">
-					<GoogleLoginButton />
+					<Link className={buttonVariants({ variant: "outline" })} href="/auth">
+						Log in
+					</Link>
 				</div>
 			</DialogContent>
 		</Dialog>

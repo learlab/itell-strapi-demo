@@ -3,6 +3,7 @@
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
+import { FeedbackType } from "@/lib/control/feedback";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -41,7 +42,7 @@ import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
 import { PageLink } from "../page/page-link";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse, usePage } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
@@ -104,7 +105,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const mounted = useRef(false);
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 
-	const feedbackType = useConfig((selector) => selector.feedbackType);
 	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
 		(state) => ({
 			stairsAnswered: state.stairsAnswered,
@@ -354,7 +354,17 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				await createSummary({
 					text: input,
 					pageSlug,
-					response: summaryResponse,
+					condition: FeedbackType.STAIRS,
+					isPassed: summaryResponse.is_passed || false,
+					containmentScore: summaryResponse.containment,
+					similarityScore: summaryResponse.similarity,
+					wordingScore: summaryResponse.wording,
+					contentScore: summaryResponse.content,
+					user: {
+						connect: {
+							id: user.id,
+						},
+					},
 				});
 
 				if (summaryResponse.is_passed || isEnoughSummary) {

@@ -22,7 +22,7 @@ const onSubmit = async (
 	prevState: FormState,
 	formData: FormData,
 ): Promise<FormState> => {
-	const classId = formData.get("code") as string;
+	const classId = String(formData.get("code"));
 	const teacher = await getTeacherWithClassId(classId);
 
 	if (!teacher) {
