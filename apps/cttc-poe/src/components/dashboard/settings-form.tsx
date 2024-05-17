@@ -9,21 +9,20 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/server";
+import { User } from "@prisma/client";
 import { ClassInfo } from "./settings/class-info";
 import { ClassRegister } from "./settings/class-register";
 import { Profile } from "./settings/profile";
 import { WebsiteSettings } from "./settings/website-settings";
 
-export const SettingsForm = async ({
-	user: sessionUser,
-}: { user: NonNullable<SessionUser> }) => {
-	const teacher = await getTeacherWithClassId(sessionUser.classId);
-	if (!sessionUser) {
+export const SettingsForm = async ({ user }: { user: User }) => {
+	const teacher = await getTeacherWithClassId(user.classId);
+	if (!user) {
 		return null;
 	}
 
-	const user = await getUser(sessionUser.id);
-	if (!user) {
+	const dbUser = await getUser(user.id);
+	if (!dbUser) {
 		return null;
 	}
 
@@ -35,12 +34,12 @@ export const SettingsForm = async ({
 					<CardDescription>configure the textbook to your need</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<Profile user={sessionUser} />
+					<Profile user={user} />
 					<Separator />
-					<WebsiteSettings user={user} />
+					<WebsiteSettings user={dbUser} />
 					<Separator />
 					{teacher ? (
-						<ClassInfo teacher={teacher} user={user} />
+						<ClassInfo teacherName={teacher.name as string} user={user} />
 					) : (
 						<ClassRegister user={user} />
 					)}

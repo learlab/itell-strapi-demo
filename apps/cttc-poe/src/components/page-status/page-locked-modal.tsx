@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Button } from "../client-components";
 
 type Props = {
-	userPageSlug: string | undefined;
+	userPageSlug: string | undefined | null;
 };
 
 export const PageLockedModal = ({ userPageSlug }: Props) => {

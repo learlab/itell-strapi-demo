@@ -40,7 +40,7 @@ export default async function () {
 						finished: false,
 						image: "",
 						pageSlug: userPageSlug,
-						classId: undefined,
+						prolificId: "",
 						role: "",
 					}}
 				/>

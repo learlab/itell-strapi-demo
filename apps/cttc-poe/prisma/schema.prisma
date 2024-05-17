@@ -32,6 +32,7 @@ model User {
   email      String?
   role       String   @default("user")
   prolificId String?  @map("prolific_pid")
+  googleId   String?  @map("google_id")
   classId    String?  @map("class_id")
   finished   Boolean  @default(false)
   pageSlug   String?  @map("page_slug")

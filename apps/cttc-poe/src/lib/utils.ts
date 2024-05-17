@@ -32,7 +32,9 @@ export type PageData = {
 	nextPageSlug: string | null;
 };
 
-export const getPageData = (slug: string | undefined): PageData | null => {
+export const getPageData = (
+	slug: string | undefined | null,
+): PageData | null => {
 	const index = allPagesSorted.findIndex((s) => s.page_slug === slug);
 	if (index === -1) {
 		return null;

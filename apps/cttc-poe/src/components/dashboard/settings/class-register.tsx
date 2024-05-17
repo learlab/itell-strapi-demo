@@ -1,3 +1,4 @@
+import { SessionUser } from "@/lib/auth";
 import { User } from "@prisma/client";
 import { JoinClassForm } from "./join-class-form";
 

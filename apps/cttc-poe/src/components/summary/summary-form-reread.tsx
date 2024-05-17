@@ -212,7 +212,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					"You have finished the textbook! Redirecting to the outtake survey soon.",
 				);
 				setTimeout(() => {
-					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`;
+					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 				}, 3000);
 			}
 
@@ -264,7 +264,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
 					<a
-						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`}
+						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`}
 						className={buttonVariants({ variant: "outline" })}
 					>
 						Take outtake survey and claim your progress

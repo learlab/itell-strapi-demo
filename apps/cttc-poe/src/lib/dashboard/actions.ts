@@ -5,7 +5,7 @@ import { cache } from "react";
 import { getSessionUser } from "../auth";
 import db from "../db";
 
-export const getTeacherWithClassId = async (classId: string | undefined) => {
+export const getTeacherWithClassId = async (classId: string | null) => {
 	if (!classId) {
 		return null;
 	}

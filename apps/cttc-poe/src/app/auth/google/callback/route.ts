@@ -49,7 +49,7 @@ export async function GET(req: Request) {
 
 		let user = await db.user.findFirst({
 			where: {
-				name: googleUser.name,
+				googleId: googleUser.id,
 			},
 		});
 
@@ -59,6 +59,7 @@ export async function GET(req: Request) {
 					name: googleUser.name,
 					image: googleUser.picture,
 					email: googleUser.email,
+					googleId: googleUser.id,
 					role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
 				},
 			});

@@ -28,7 +28,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	teacherToJoin: User | null;
 	classId: string;
 };

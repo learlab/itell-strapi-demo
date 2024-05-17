@@ -1,5 +1,4 @@
 import { SessionUser } from "@/lib/auth";
-import { routes, useSafeSearchParams } from "@/lib/navigation";
 import {
 	ReadingTimeChartLevel,
 	ReadingTimeChartParams,
@@ -8,13 +7,12 @@ import { DashboardBadge } from "@itell/ui/server";
 import { User } from "@prisma/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { z } from "zod";
 import { ReadingTime } from "./reading-time";
 import { StudentBadges } from "./student/student-badges";
 import { UserBadges } from "./user/user-badges";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	readingTimeLevel: ReadingTimeChartLevel;
 };
 
