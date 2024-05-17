@@ -52,6 +52,7 @@ export const getSession = cache(
 		{ user: LuciaUser; session: LuciaSession } | { user: null; session: null }
 	> => {
 		const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+		console.log("sessionId", sessionId);
 		if (!sessionId) {
 			return {
 				user: null,

@@ -1,11 +1,26 @@
-import { PrismaClient } from "@prisma/client";
+import { env } from "@/env.mjs";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Client } from "pg";
+import * as schema from "../drizzle/schema";
 
-declare global {
-	// biome-ignore lint/style/noVar: <explanation>
-	var prisma: PrismaClient | undefined;
-}
+export const client = new Client({
+	connectionString: env.DATABASE_URL,
+});
 
-const db = globalThis.prisma || new PrismaClient();
-if (process.env.NODE_ENV !== "production") globalThis.prisma = db;
+(async () => {
+	await client.connect();
+})();
 
-export default db;
+// { schema } is used for relational queries
+export const db = drizzle(client, { schema });
+
+export const findUser = async (id: string) => {
+	const result = await db
+		.select()
+		.from(schema.users)
+		.where(eq(schema.users.id, id));
+	return result[0];
+};
+
+export const first = <T>(arr: T[]) => arr[0];
