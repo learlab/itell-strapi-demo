@@ -2,7 +2,7 @@ import { users } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth";
 import { googleProvider } from "@/lib/auth/google";
-import { db, findUser, first } from "@/lib/db";
+import { db, first } from "@/lib/db";
 import * as Sentry from "@sentry/nextjs";
 import { eq } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
@@ -84,6 +84,7 @@ export async function GET(req: Request) {
 			},
 		});
 	} catch (error) {
+		console.log("google oauth error", error);
 		Sentry.captureMessage("google oauth error", {
 			extra: {
 				msg: JSON.stringify(error),

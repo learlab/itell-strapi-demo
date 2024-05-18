@@ -5,11 +5,8 @@ import {
 	users,
 } from "@/drizzle/schema";
 import subDays from "date-fns/subDays";
-import { and, avg, eq, inArray, ne } from "drizzle-orm";
-import {
-	getConstructedResponseScore,
-	getConstructedResponses,
-} from "../constructed-response";
+import { and, avg, eq, inArray } from "drizzle-orm";
+import { getConstructedResponses } from "../constructed-response";
 import { db, first } from "../db";
 import { getUserSummaries } from "../summary";
 
