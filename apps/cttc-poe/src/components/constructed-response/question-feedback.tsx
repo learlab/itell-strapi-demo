@@ -6,7 +6,6 @@ import {
 	DialogHeader,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { SessionUser } from "@/lib/auth";
 import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
 import { delay } from "@/lib/utils";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
@@ -16,13 +15,18 @@ import { Button, Checkbox, Label, TextArea } from "../client-components";
 import { Spinner } from "../spinner";
 
 type Props = {
+	userId: string;
 	type: "positive" | "negative";
 	chunkSlug: string;
 	pageSlug: string;
-	user: NonNullable<SessionUser>;
 };
 
-export const FeedbackModal = ({ type, pageSlug, chunkSlug, user }: Props) => {
+export const QuestionFeedback = ({
+	userId,
+	type,
+	pageSlug,
+	chunkSlug,
+}: Props) => {
 	const isPositive = type === "positive";
 	const allTags = isPositive
 		? ["informative", "supportive", "helpful"]
@@ -60,7 +64,7 @@ export const FeedbackModal = ({ type, pageSlug, chunkSlug, user }: Props) => {
 							pageSlug,
 							isPositive,
 							tags,
-							userId: user.id,
+							userId,
 						});
 						setPending(false);
 						toast.success("Thanks for your feedback. We'll review it shortly.");

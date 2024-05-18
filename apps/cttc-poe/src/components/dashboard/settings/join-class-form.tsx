@@ -76,7 +76,8 @@ export const JoinClassForm = ({ user }: Props) => {
 			{/* dialog to confirm joining a class */}
 			{formState.teacher && (
 				<ClassInviteModal
-					user={user}
+					userId={user.id}
+					userClassId={user.classId}
 					teacherToJoin={formState.teacher}
 					classId={formState.classId}
 				/>

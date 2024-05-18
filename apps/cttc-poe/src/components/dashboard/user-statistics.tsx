@@ -30,9 +30,9 @@ export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 				<Suspense fallback={<DashboardBadge.Skeletons />}>
 					<ErrorBoundary fallback={<UserBadges.ErrorFallback />}>
 						{user.classId ? (
-							<StudentBadges user={user} />
+							<StudentBadges userId={user.id} classId={user.classId} />
 						) : (
-							<UserBadges uid={user.id} />
+							<UserBadges userId={user.id} />
 						)}
 					</ErrorBoundary>
 				</Suspense>
@@ -40,7 +40,7 @@ export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 
 			<Suspense fallback={<ReadingTime.Skeleton />}>
 				<ErrorBoundary fallback={<ReadingTime.ErrorFallback />}>
-					<ReadingTime uid={user.id} params={readingTimeParams} />
+					<ReadingTime userId={user.id} params={readingTimeParams} />
 				</ErrorBoundary>
 			</Suspense>
 		</div>

@@ -33,12 +33,12 @@ import { CreateErrorFallback } from "../error-fallback";
 import { ReadingTimeControl } from "./reading-time-control";
 
 type Props = {
-	uid: string;
+	userId: string;
 	params: ReadingTimeChartParams;
 	name?: string;
 };
 
-const getSummaryCounts = async (uid: string, startDate: Date) => {
+const getSummaryCounts = async (userId: string, startDate: Date) => {
 	const record = first(
 		await db
 			.select({
@@ -46,7 +46,7 @@ const getSummaryCounts = async (uid: string, startDate: Date) => {
 			})
 			.from(summaries)
 			.where(
-				and(eq(summaries.userId, uid), gte(summaries.createdAt, startDate)),
+				and(eq(summaries.userId, userId), gte(summaries.createdAt, startDate)),
 			),
 	);
 
@@ -54,7 +54,7 @@ const getSummaryCounts = async (uid: string, startDate: Date) => {
 };
 
 const getReadingTime = async (
-	uid: string,
+	userId: string,
 	startDate: Date,
 	intervalDates: Date[],
 ) => {
@@ -66,7 +66,7 @@ const getReadingTime = async (
 		FROM focus_times, jsonb_each(data) d
 		WHERE created_at >= ${
 			startDate.toISOString().split("T")[0]
-		} and user_id = ${uid}
+		} and user_id = ${userId}
 		GROUP BY created_at::date`,
 	);
 
@@ -77,15 +77,13 @@ const getReadingTime = async (
 	return readingTimeGrouped;
 };
 
-export const ReadingTime = async ({ uid, params, name }: Props) => {
+export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 	const startDate = subDays(new Date(), PrevDaysLookup[params.level]);
 	const intervalDates = getDatesBetween(startDate, new Date());
 	const [summaryCounts, readingTimeGrouped] = await Promise.all([
 		getSummaryCounts(uid, startDate),
 		getReadingTime(uid, startDate, intervalDates),
 	]);
-
-	console.log(summaryCounts, readingTimeGrouped);
 
 	const { totalViewTime, chartData } = getReadingTimeChartData(
 		readingTimeGrouped,

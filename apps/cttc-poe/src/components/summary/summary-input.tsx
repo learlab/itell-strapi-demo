@@ -9,7 +9,6 @@ import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { usePage } from "../provider/page-provider";
 import { SummaryProgress } from "./summary-progress";
 
 export const saveSummaryLocal = (pageSlug: string, text: string) => {
@@ -66,7 +65,7 @@ export const SummaryInput = ({
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}
 					onPaste={(e) => {
-						if (isProduction && !isAdmin(user)) {
+						if (isProduction && !isAdmin(user.role)) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

@@ -32,8 +32,8 @@ import {
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { ExplainButton } from "./explain-button";
-import { FeedbackModal } from "./feedback-modal";
 import { NextChunkButton } from "./next-chunk-button";
+import { QuestionFeedback } from "./question-feedback";
 import { SubmitButton } from "./submit-button";
 import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
 
@@ -253,17 +253,17 @@ export const QuestionBoxStairs = ({
 						make mistakes. Let us know how you feel about iTELL AI's performance
 						using the feedback icons to the right (thumbs up or thumbs down).{" "}
 					</CardDescription>
-					<FeedbackModal
+					<QuestionFeedback
 						type="positive"
 						pageSlug={pageSlug}
 						chunkSlug={chunkSlug}
-						user={user}
+						userId={user.id}
 					/>
-					<FeedbackModal
+					<QuestionFeedback
 						type="negative"
 						pageSlug={pageSlug}
 						chunkSlug={chunkSlug}
-						user={user}
+						userId={user.id}
 					/>
 				</CardHeader>
 

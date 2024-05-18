@@ -41,11 +41,18 @@ const AnchorLink = ({
 };
 
 type Props = {
-	user: SessionUser;
 	currentPage: Page;
+	userRole: string;
+	userFinished: boolean;
+	userPageSlug: string | null;
 };
 
-export const ChapterToc = ({ currentPage, user }: Props) => {
+export const ChapterToc = ({
+	currentPage,
+	userRole,
+	userPageSlug,
+	userFinished,
+}: Props) => {
 	const [activePage, setActivePage] = useState(currentPage.page_slug);
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
@@ -81,10 +88,11 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 							<CollapsibleContent>
 								<ol className="space-y-1 text-sm px-1">
 									{chapter.items.map((item) => {
-										const { isPageLatest, isPageUnlocked } = getPageStatus(
-											user,
-											item.page_slug,
-										);
+										const { isPageLatest, isPageUnlocked } = getPageStatus({
+											pageSlug: item.page_slug,
+											userPageSlug,
+											userFinished,
+										});
 										const visible = isPageLatest || isPageUnlocked;
 										return (
 											<li
@@ -119,7 +127,7 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 				})}
 			</ol>
 			<div className="mt-12 space-y-2">
-				{isAdmin(user) && <AdminTools />}
+				{isAdmin(userRole) && <AdminTools />}
 				<RestartPageButton pageSlug={currentPage.page_slug} />
 				{currentPage.summary && (
 					<AnchorLink

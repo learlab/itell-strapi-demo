@@ -9,10 +9,10 @@ export const getConstructedResponses = async (userId: string) => {
 		.where(eq(constructed_responses.userId, userId));
 };
 
-export const getConstructedResponseScore = async (uid: string) => {
+export const getConstructedResponseScore = async (userId: string) => {
 	return await db
 		.select({ score: constructed_responses.score, count: count() })
 		.from(constructed_responses)
-		.where(eq(constructed_responses.userId, uid))
+		.where(eq(constructed_responses.userId, userId))
 		.groupBy(constructed_responses.score);
 };

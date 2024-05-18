@@ -42,11 +42,11 @@ const SelectChapter = ({
 export type SummaryData = Summary & { pageTitle: string };
 
 export const SummaryList = ({
-	user,
+	userTimeZone,
 	summariesByChapter,
 }: {
 	summariesByChapter: Record<string, SummaryData[]>;
-	user: NonNullable<SessionUser>;
+	userTimeZone: string | null;
 }) => {
 	const chapters = keyof(summariesByChapter);
 	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
@@ -70,7 +70,7 @@ export const SummaryList = ({
 					<SummaryItem
 						summary={summary}
 						key={summary.id}
-						timeZone={user.timeZone || DEFAULT_TIME_ZONE}
+						timeZone={userTimeZone || DEFAULT_TIME_ZONE}
 					/>
 				))}
 			</div>

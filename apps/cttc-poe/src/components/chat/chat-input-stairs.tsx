@@ -1,7 +1,6 @@
 "use client";
 
 import { env } from "@/env.mjs";
-import { SessionUser } from "@/lib/auth";
 import { createChatMessage } from "@/lib/chat/actions";
 import { useChatStore } from "@/lib/store/chat";
 import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
@@ -12,12 +11,12 @@ import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
-	user: NonNullable<SessionUser>;
+	userId: string;
 	pageSlug: string;
 }
 
 export const ChatInputStairs = ({
-	user,
+	userId,
 	className,
 	pageSlug,
 	...props
@@ -138,7 +137,7 @@ export const ChatInputStairs = ({
 				} else {
 					answered.current = true;
 					createChatMessage({
-						userId: user.id,
+						userId: userId,
 						pageSlug,
 						messages: [
 							{

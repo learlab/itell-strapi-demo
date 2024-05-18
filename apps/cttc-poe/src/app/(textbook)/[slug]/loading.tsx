@@ -33,18 +33,9 @@ export default async function () {
 			>
 				<ChapterToc
 					currentPage={page}
-					user={{
-						id: "",
-						name: "",
-						email: "",
-						finished: false,
-						image: "",
-						pageSlug: userPageSlug,
-						classId: null,
-						prolificId: "",
-						role: "",
-						timeZone: null,
-					}}
+					userPageSlug={userPageSlug}
+					userFinished={false}
+					userRole="user"
 				/>
 			</aside>
 

@@ -2,7 +2,6 @@
 
 import { Spinner } from "@/components/spinner";
 import { User } from "@/drizzle/schema";
-import { SessionUser } from "@/lib/auth";
 import { updateUser } from "@/lib/user/actions";
 import {
 	AlertDialog,
@@ -19,20 +18,26 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	userId: string;
+	userClassId: string | null;
 	teacherToJoin: User;
 	classId: string;
 };
 
-export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
+export const ClassInviteModal = ({
+	userId,
+	userClassId,
+	teacherToJoin,
+	classId,
+}: Props) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const router = useRouter();
 	const [joinClassLoading, setJoinClassLoading] = useState(false);
-	const canJoinClass = !user.classId && teacherToJoin;
+	const canJoinClass = !userClassId && teacherToJoin;
 
 	const joinClass = async () => {
 		setJoinClassLoading(true);
-		await updateUser(user.id, { classId });
+		await updateUser(userId, { classId });
 
 		setJoinClassLoading(false);
 
@@ -48,7 +53,7 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 				<AlertDialogHeader>
 					<AlertDialogTitle>Join a class</AlertDialogTitle>
 					<AlertDialogDescription asChild>
-						{user.classId ? (
+						{userClassId ? (
 							<p>
 								It looks like you are trying to join a class with class code{" "}
 								<span className="font-semibold">{classId}</span>, but you are

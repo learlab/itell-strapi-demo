@@ -62,7 +62,10 @@ export default async function () {
 	return (
 		<DashboardShell>
 			<DashboardHeader heading="Summary" text="Create and manage summaries." />
-			<SummaryList summariesByChapter={summariesByChapter} user={user} />
+			<SummaryList
+				summariesByChapter={summariesByChapter}
+				userTimeZone={user.timeZone}
+			/>
 		</DashboardShell>
 	);
 }

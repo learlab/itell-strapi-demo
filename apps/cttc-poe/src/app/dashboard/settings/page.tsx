@@ -40,7 +40,8 @@ export default async function ({ searchParams }: Props) {
 			<SettingsForm user={user} />
 			{classId && teacher && (
 				<ClassInviteModal
-					user={user}
+					userId={user.id}
+					userClassId={user.classId}
 					teacherToJoin={teacher}
 					classId={classId}
 				/>

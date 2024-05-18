@@ -10,11 +10,11 @@ import { getConstructedResponses } from "../constructed-response";
 import { db, first } from "../db";
 import { getUserSummaries } from "../summary";
 
-export const getBadgeStats = async (uid: string) => {
+export const getBadgeStats = async (userId: string) => {
 	const startDate = subDays(new Date(), 7);
 	const [userSummaries, answers] = await Promise.all([
-		getUserSummaries(uid),
-		getConstructedResponses(uid),
+		getUserSummaries(userId),
+		getConstructedResponses(userId),
 	]);
 	const summariesLastWeek = [];
 	const answersLastWeek = [];
@@ -135,9 +135,9 @@ export const getClassBadgeStats = async (uids: string[]) => {
 	};
 };
 
-export const getUserTeacherStatus = async (uid: string) => {
+export const getUserTeacherStatus = async (userId: string) => {
 	const teacher = first(
-		await db.select().from(teachers).where(eq(teachers.id, uid)),
+		await db.select().from(teachers).where(eq(teachers.id, userId)),
 	);
 
 	if (!teacher || !teacher.classId) {

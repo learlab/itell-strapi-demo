@@ -2,7 +2,6 @@ import { ChapterToc } from "@/components/chapter-toc";
 import { ChatLoader } from "@/components/chat/chat-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
-import { NoteCount } from "@/components/note/note-count";
 import { NoteCountLoader } from "@/components/note/note-count-loader";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
@@ -15,16 +14,13 @@ import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { PageSummary } from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
-import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { getPageFeedbackType } from "@/lib/control/feedback";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import { getUser } from "@/lib/user";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -52,7 +48,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
-	const pageStatus = getPageStatus(user, pageSlug);
+	const pageStatus = getPageStatus({
+		pageSlug,
+		userPageSlug: user?.pageSlug || null,
+		userFinished: user?.finished || false,
+	});
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
@@ -67,7 +67,12 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ChapterToc currentPage={page} user={user} />
+					<ChapterToc
+						currentPage={page}
+						userPageSlug={user?.pageSlug || null}
+						userFinished={user?.finished || false}
+						userRole={user?.role || "user"}
+					/>
 				</aside>
 
 				<section

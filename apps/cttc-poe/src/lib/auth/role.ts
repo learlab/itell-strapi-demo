@@ -1,3 +1,1 @@
-import { User } from "lucia";
-
-export const isAdmin = (user: User | null) => user?.role === "admin";
+export const isAdmin = (role: string) => role === "admin";

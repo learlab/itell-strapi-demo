@@ -15,7 +15,7 @@ import {
 	findFocusTime,
 } from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
-import { incrementUserPage, maybeFinishUser } from "@/lib/user/actions";
+import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -42,7 +42,7 @@ import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
 import { PageLink } from "../page/page-link";
-import { useConstructedResponse, usePage } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
@@ -180,7 +180,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
 				addNode(
-					<ChatStairs user={user} pageSlug={pageSlug} onExit={exitQuestion} />,
+					<ChatStairs
+						userId={user.id}
+						userImage={user.image}
+						userName={user.name}
+						pageSlug={pageSlug}
+						onExit={exitQuestion}
+					/>,
 					popover.wrapper,
 				);
 			},

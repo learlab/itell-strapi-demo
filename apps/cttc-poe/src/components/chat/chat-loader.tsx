@@ -26,7 +26,9 @@ export const ChatLoader = async ({ pageSlug }: Props) => {
 		<>
 			<Chat
 				pageSlug={pageSlug}
-				user={user}
+				userId={user.id}
+				userName={user.name}
+				userImage={user.image}
 				data={messages}
 				updatedAt={updatedAt}
 			/>

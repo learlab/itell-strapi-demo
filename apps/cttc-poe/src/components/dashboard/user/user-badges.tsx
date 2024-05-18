@@ -18,7 +18,7 @@ const roundNumber = (num: number | null) => {
 	return Number.isInteger(num) ? num : Number(num.toFixed(2));
 };
 
-export const UserBadges = async ({ uid }: { uid: string }) => {
+export const UserBadges = async ({ userId }: { userId: string }) => {
 	const {
 		totalCount,
 		totalCountLastWeek,
@@ -32,7 +32,7 @@ export const UserBadges = async ({ uid }: { uid: string }) => {
 		avgWordingScore,
 		avgContentScoreLastWeek,
 		avgWordingScoreLastWeek,
-	} = await getBadgeStats(uid);
+	} = await getBadgeStats(userId);
 	return (
 		<>
 			<DashboardBadge

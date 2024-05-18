@@ -1,4 +1,3 @@
-import { SessionUser } from "@/lib/auth";
 import { getBadgeStats, getClassBadgeStats } from "@/lib/dashboard";
 import { getClassStudents } from "@/lib/dashboard/class";
 import { cn } from "@itell/core/utils";
@@ -13,14 +12,15 @@ import {
 } from "lucide-react";
 
 export const StudentBadges = async ({
-	user,
-}: { user: NonNullable<SessionUser> }) => {
-	const students = await getClassStudents(user.classId as string);
+	userId,
+	classId,
+}: { userId: string; classId: string }) => {
+	const students = await getClassStudents(classId);
 	const ids = students
 		.map((student) => student.id)
-		.filter((id) => id !== user.id);
+		.filter((id) => id !== userId);
 	const [studentStats, otherStats] = await Promise.all([
-		getBadgeStats(user.id),
+		getBadgeStats(userId),
 		getClassBadgeStats(ids),
 	]);
 

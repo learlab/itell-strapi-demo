@@ -1,4 +1,3 @@
-import { SessionUser } from "./auth";
 import { firstPage, isLastPage, isPageAfter } from "./pages";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
@@ -12,24 +11,29 @@ export type PageStatus = {
 	isPageLatest: boolean;
 };
 
-export const getPageStatus = (
-	user: SessionUser,
-	pageSlug: string,
-): PageStatus => {
-	if (!user?.pageSlug) {
+export const getPageStatus = ({
+	pageSlug,
+	userPageSlug,
+	userFinished,
+}: {
+	pageSlug: string;
+	userPageSlug: string | null;
+	userFinished: boolean;
+}): PageStatus => {
+	if (!userPageSlug) {
 		return {
 			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
 			isPageLatest: pageSlug === firstPage.page_slug,
 		};
 	}
 
+	const isPageLatest = pageSlug === userPageSlug;
 	if (isPageUnlockedWithoutUser(pageSlug)) {
-		return { isPageUnlocked: true, isPageLatest: pageSlug === user?.email };
+		return { isPageUnlocked: true, isPageLatest };
 	}
 
-	const isPageLatest = pageSlug === user.pageSlug;
 	const isPageUnlocked = isLastPage(pageSlug)
-		? user.finished
-		: isPageAfter(user.pageSlug, pageSlug);
+		? userFinished
+		: isPageAfter(userPageSlug, pageSlug);
 	return { isPageUnlocked, isPageLatest };
 };

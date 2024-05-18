@@ -8,7 +8,7 @@ export const Profile = ({ user }: { user: NonNullable<SessionUser> }) => {
 			<h3 className="mb-4 text-lg font-medium">Profile</h3>
 			<div className="space-y-2">
 				<p className="font-medium flex items-center gap-2">
-					<UserAvatar user={user} />
+					<UserAvatar name={user.name} image={user.image} />
 					{user.name}
 				</p>
 				<p className="text-muted-foreground text-sm">{user.email}</p>

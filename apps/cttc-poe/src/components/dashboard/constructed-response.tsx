@@ -19,10 +19,10 @@ import { CreateErrorFallback } from "../error-fallback";
 import { PageLink } from "../page/page-link";
 
 type Props = {
-	uid: string;
+	userId: string;
 };
 
-export const ConstructedResponse = async ({ uid }: Props) => {
+export const ConstructedResponse = async ({ userId: uid }: Props) => {
 	const [records, byScore] = await Promise.all([
 		getConstructedResponses(uid),
 		getConstructedResponseScore(uid),

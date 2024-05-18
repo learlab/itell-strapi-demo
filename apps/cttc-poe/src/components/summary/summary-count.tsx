@@ -8,15 +8,15 @@ import Link from "next/link";
 import pluralize from "pluralize";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	userId: string;
 	pageSlug: string;
 };
 
-export const SummaryCount = async ({ pageSlug, user }: Props) => {
+export const SummaryCount = async ({ pageSlug, userId }: Props) => {
 	const summaryByPassing = await db
 		.select({ isPassed: summaries.isPassed, count: count() })
 		.from(summaries)
-		.where(and(eq(summaries.userId, user.id), eq(summaries.pageSlug, pageSlug)))
+		.where(and(eq(summaries.userId, userId), eq(summaries.pageSlug, pageSlug)))
 		.groupBy(summaries.isPassed);
 	const passedSummaryCount =
 		summaryByPassing.find((item) => item.isPassed)?.count || 0;
