@@ -3,7 +3,6 @@ import { getBadgeStats, getClassBadgeStats } from "@/lib/dashboard";
 import { getClassStudents } from "@/lib/dashboard/class";
 import { cn } from "@itell/core/utils";
 import { DashboardBadge } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import {
 	FileTextIcon,
 	FlagIcon,
