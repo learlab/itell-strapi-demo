@@ -48,7 +48,10 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 						<p>{student.email}</p>
 						<p>joined at {student.createdAt.toLocaleString("en-us")}</p>
 					</div>
-					<UserProgress user={student} />
+					<UserProgress
+						pageSlug={student.pageSlug}
+						finished={student.finished}
+					/>
 
 					<div className="flex justify-between">
 						<p className="text-muted-foreground text-sm font-semibold">

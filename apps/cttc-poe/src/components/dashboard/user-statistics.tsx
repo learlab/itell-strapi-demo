@@ -11,7 +11,7 @@ import { StudentBadges } from "./student/student-badges";
 import { UserBadges } from "./user/user-badges";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	readingTimeLevel: ReadingTimeChartLevel;
 };
 

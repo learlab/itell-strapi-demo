@@ -21,10 +21,14 @@ type Props = {
 };
 
 export default async function ({ searchParams }: Props) {
-	const { user } = await getSession();
-
-	if (!user) {
+	const { user: sessionUser } = await getSession();
+	if (!sessionUser) {
 		return redirectWithSearchParams("auth", searchParams);
+	}
+
+	const user = await getUser(sessionUser.id);
+	if (!user) {
+		return null;
 	}
 
 	const { reading_time_level } =
@@ -49,7 +53,7 @@ export default async function ({ searchParams }: Props) {
 
 			<div className="space-y-4">
 				<div className="px-2">
-					<UserProgress user={user} />
+					<UserProgress pageSlug={user.pageSlug} finished={user.finished} />
 				</div>
 				{user.classId ? (
 					<p className="p-2 text-muted-foreground">

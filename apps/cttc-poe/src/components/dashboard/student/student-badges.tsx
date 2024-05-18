@@ -12,9 +12,7 @@ import {
 	WholeWordIcon,
 } from "lucide-react";
 
-export const StudentBadges = async ({
-	user,
-}: { user: NonNullable<SessionUser> }) => {
+export const StudentBadges = async ({ user }: { user: User }) => {
 	const students = await getClassStudents(user.classId as string);
 	const ids = students
 		.map((student) => student.id)
