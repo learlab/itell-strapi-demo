@@ -1,8 +1,8 @@
 "use server";
 
 import { users } from "@/drizzle/schema";
-import { Prisma } from "@prisma/client";
 import { eq } from "drizzle-orm";
+import { PgUpdateSetSource } from "drizzle-orm/pg-core";
 import { revalidatePath } from "next/cache";
 import { db, findUser } from "../db";
 import { isLastPage, isPageAfter, nextPage } from "../pages";
@@ -40,12 +40,9 @@ export const maybeFinishUser = async (userId: string, pageSlug: string) => {
 		.where(eq(users.id, userId));
 };
 
-export const updateUserClassId = async ({
-	userId,
-	classId,
-}: {
-	userId: string;
-	classId: string | null;
-}) => {
-	return await db.update(users).set({ classId }).where(eq(users.id, userId));
+export const updateUser = async (
+	userId: string,
+	data: PgUpdateSetSource<typeof users>,
+) => {
+	return await db.update(users).set(data).where(eq(users.id, userId));
 };

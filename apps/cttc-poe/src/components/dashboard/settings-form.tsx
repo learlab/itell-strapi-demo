@@ -46,7 +46,6 @@ export const SettingsForm = async ({
 					)}
 				</CardContent>
 			</Card>
-			{/* <ClassRequestModal user={user} /> */}
 		</div>
 	);
 };

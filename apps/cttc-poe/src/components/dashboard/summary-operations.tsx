@@ -1,9 +1,8 @@
 "use client";
 
-import { Summary } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 
+import { Summary } from "@/drizzle/schema";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -19,11 +18,6 @@ type Props = {
 };
 
 export const SummaryOperations = ({ summary, pageUrl }: Props) => {
-	const router = useRouter();
-
-	const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
-	const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
-
 	return (
 		<>
 			<DropdownMenu>
@@ -32,10 +26,7 @@ export const SummaryOperations = ({ summary, pageUrl }: Props) => {
 					<span className="sr-only">Open</span>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
-					<DropdownMenuItem
-						className="flex cursor-pointer items-center"
-						onSelect={() => setShowDeleteAlert(true)}
-					>
+					<DropdownMenuItem className="flex cursor-pointer items-center">
 						<Link href={pageUrl}>Go to page</Link>
 					</DropdownMenuItem>
 				</DropdownMenuContent>

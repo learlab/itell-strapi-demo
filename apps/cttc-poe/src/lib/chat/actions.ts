@@ -1,52 +1,48 @@
 "use server";
 
-import { getSessionUser } from "../auth";
-import db from "../db";
+import { ChatMessageData, chat_messages } from "@/drizzle/schema";
+import { and, eq } from "drizzle-orm";
+import { db, first } from "../db";
 
-type CreateMesage = {
+type CreateMessage = {
+	userId: string;
 	pageSlug: string;
-	messages: PrismaJson.ChatMessageData[];
+	messages: ChatMessageData[];
 };
 
 export const createChatMessage = async ({
+	userId,
 	pageSlug,
 	messages,
-}: CreateMesage) => {
-	const user = await getSessionUser();
-	if (user) {
-		const record = await db.chatMessage.findUnique({
-			select: {
-				data: true,
-			},
-			where: {
-				userId_pageSlug: {
-					userId: user.id,
-					pageSlug,
-				},
-			},
-		});
+}: CreateMessage) => {
+	const record = first(
+		await db
+			.select()
+			.from(chat_messages)
+			.where(
+				and(
+					eq(chat_messages.userId, userId),
+					eq(chat_messages.pageSlug, pageSlug),
+				),
+			),
+	);
 
-		if (!record) {
-			await db.chatMessage.create({
-				data: {
-					pageSlug,
-					userId: user.id,
-					data: messages,
-				},
-			});
-		} else {
-			const newData = [...record.data, ...messages];
-			await db.chatMessage.update({
-				where: {
-					userId_pageSlug: {
-						userId: user.id,
-						pageSlug,
-					},
-				},
-				data: {
-					data: newData,
-				},
-			});
-		}
+	if (!record) {
+		await db.insert(chat_messages).values({
+			pageSlug,
+			userId,
+			data: messages,
+		});
+	} else {
+		const newData = [...(record.data as ChatMessageData[]), ...messages];
+		await db
+			.update(chat_messages)
+			.set({ data: newData })
+			.where(
+				and(
+					eq(chat_messages.userId, userId),
+					eq(chat_messages.pageSlug, pageSlug),
+				),
+			);
 	}
 };

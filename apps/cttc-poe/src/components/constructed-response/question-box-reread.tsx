@@ -65,6 +65,12 @@ export const QuestionBoxReread = ({
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
+		if (!user) {
+			return {
+				...prevState,
+				error: "You need to be logged in to answer this question",
+			};
+		}
 		const input = String(formData.get("input")).trim();
 		if (input.length === 0) {
 			return {
@@ -91,12 +97,13 @@ export const QuestionBoxReread = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			await createConstructedResponse({
+			createConstructedResponse({
+				userId: user.id,
 				text: input,
+				condition: FeedbackType.RANDOM_REREAD,
 				chunkSlug,
 				pageSlug,
 				score,
-				condition: FeedbackType.RANDOM_REREAD,
 			});
 
 			finishChunk(chunkSlug);

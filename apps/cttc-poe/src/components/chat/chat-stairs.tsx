@@ -25,7 +25,7 @@ export const ChatStairs = ({ user, pageSlug, onExit }: Props) => {
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionContent className="flex flex-col h-96">
 					<ChatMessages user={user} isStairs={true} />
-					<ChatInputStairs pageSlug={pageSlug} />
+					<ChatInputStairs pageSlug={pageSlug} user={user} />
 					<ChatExit onExit={onExit} />
 				</AccordionContent>
 			</AccordionItem>

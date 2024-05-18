@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { User } from "@/drizzle/schema";
 import { QuitClass } from "./quit-class";
 
 type Props = {

@@ -8,9 +8,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/client-components";
+import { Summary, User } from "@/drizzle/schema";
+import { SessionUser } from "@/lib/auth";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { keyof } from "@itell/core/utils";
-import { Summary, User } from "@prisma/client";
 import pluralize from "pluralize";
 import { useState } from "react";
 import { SummaryItem } from "./summary-item";
@@ -43,7 +44,10 @@ export type SummaryData = Summary & { pageTitle: string };
 export const SummaryList = ({
 	user,
 	summariesByChapter,
-}: { summariesByChapter: Record<string, SummaryData[]>; user: User }) => {
+}: {
+	summariesByChapter: Record<string, SummaryData[]>;
+	user: NonNullable<SessionUser>;
+}) => {
 	const chapters = keyof(summariesByChapter);
 	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
 	const chapterSummaries = summariesByChapter[selectedChapter];

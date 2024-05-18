@@ -48,6 +48,7 @@ type Props = {
 type FormState = {
 	answerStatus: AnswerStatusStairs;
 	error: string | null;
+	prevInput: string;
 };
 
 export const QuestionBoxStairs = ({
@@ -86,11 +87,24 @@ export const QuestionBoxStairs = ({
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
+		if (!user) {
+			return {
+				...prevState,
+				error: "You need to be logged in to answer this question",
+			};
+		}
 		const input = String(formData.get("input")).trim();
 		if (input.length === 0) {
 			return {
 				...prevState,
 				error: "Answer cannot be empty",
+			};
+		}
+
+		if (input === prevState.prevInput) {
+			return {
+				...prevState,
+				error: "Please submit a different answer",
 			};
 		}
 
@@ -112,8 +126,9 @@ export const QuestionBoxStairs = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			await createConstructedResponse({
+			createConstructedResponse({
 				text: input,
+				userId: user.id,
 				chunkSlug,
 				pageSlug,
 				score,
@@ -128,6 +143,7 @@ export const QuestionBoxStairs = ({
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.BOTH_CORRECT,
+					prevInput: input,
 				};
 			}
 
@@ -135,6 +151,7 @@ export const QuestionBoxStairs = ({
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.SEMI_CORRECT,
+					prevInput: input,
 				};
 			}
 
@@ -142,6 +159,7 @@ export const QuestionBoxStairs = ({
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.BOTH_INCORRECT,
+					prevInput: input,
 				};
 			}
 
@@ -159,6 +177,7 @@ export const QuestionBoxStairs = ({
 			return {
 				error: "Answer evaluation failed, please try again later",
 				answerStatus: prevState.answerStatus,
+				prevInput: input,
 			};
 		}
 	};
@@ -166,6 +185,7 @@ export const QuestionBoxStairs = ({
 	const initialFormState: FormState = {
 		answerStatus: AnswerStatusStairs.UNANSWERED,
 		error: null,
+		prevInput: "",
 	};
 
 	const [formState, formAction] = useFormState(action, initialFormState);
@@ -237,11 +257,13 @@ export const QuestionBoxStairs = ({
 						type="positive"
 						pageSlug={pageSlug}
 						chunkSlug={chunkSlug}
+						user={user}
 					/>
 					<FeedbackModal
 						type="negative"
 						pageSlug={pageSlug}
 						chunkSlug={chunkSlug}
+						user={user}
 					/>
 				</CardHeader>
 

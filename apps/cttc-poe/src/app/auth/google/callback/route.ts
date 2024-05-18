@@ -55,7 +55,7 @@ export async function GET(req: Request) {
 		);
 
 		if (!user) {
-			user = first(
+			user = (
 				await db
 					.insert(users)
 					.values({
@@ -63,13 +63,12 @@ export async function GET(req: Request) {
 						name: googleUser.name,
 						image: googleUser.picture,
 						email: googleUser.email,
+						googleId: googleUser.id,
 						role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
 					})
-					.returning(),
-			);
+					.returning()
+			)[0];
 		}
-
-		console.log("googleUser", googleUser, "user", user);
 
 		const session = await lucia.createSession(user.id, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);

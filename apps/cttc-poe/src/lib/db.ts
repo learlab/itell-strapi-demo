@@ -1,17 +1,10 @@
 import { env } from "@/env.mjs";
 import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Client } from "pg";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import * as schema from "../drizzle/schema";
 
-export const client = new Client({
-	connectionString: env.DATABASE_URL,
-});
-
-(async () => {
-	await client.connect();
-})();
-
+export const client = postgres(env.DATABASE_URL, { prepare: false });
 // { schema } is used for relational queries
 export const db = drizzle(client, { schema });
 
@@ -23,4 +16,4 @@ export const findUser = async (id: string) => {
 	return result[0];
 };
 
-export const first = <T>(arr: T[]) => arr[0];
+export const first = <T>(res: T[]) => (res.length > 0 ? res[0] : null);

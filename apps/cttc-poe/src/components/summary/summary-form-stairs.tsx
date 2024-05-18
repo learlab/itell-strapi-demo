@@ -264,6 +264,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				chat_history: getChatHistory(messages),
 				excluded_chunks: excludedChunks,
 			});
+			console.log("request body", requestBody);
 			const response = await fetch(
 				`${env.NEXT_PUBLIC_API_URL}/score/summary/stairs`,
 				{
@@ -274,7 +275,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					},
 				},
 			);
-			console.log("request body", requestBody);
 
 			if (response.body) {
 				const reader = response.body.getReader();
@@ -337,8 +337,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 								addStairsQuestion(stairsData);
 
 								createEvent({
-									eventType: "stairs-question",
+									type: "stairs-question",
 									pageSlug,
+									userId: user.id,
 									data: stairsData,
 								});
 							}
@@ -353,6 +354,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				addStage("Saving");
 				await createSummary({
 					text: input,
+					userId: user.id,
 					pageSlug,
 					condition: FeedbackType.STAIRS,
 					isPassed: summaryResponse.is_passed || false,
@@ -360,11 +362,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					similarityScore: summaryResponse.similarity,
 					wordingScore: summaryResponse.wording,
 					contentScore: summaryResponse.content,
-					user: {
-						connect: {
-							id: user.id,
-						},
-					},
 				});
 
 				if (summaryResponse.is_passed || isEnoughSummary) {
@@ -375,7 +372,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							"You have finished the textbook! Redirecting to the outtake survey soon.",
 						);
 						setTimeout(() => {
-							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`;
+							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 						}, 3000);
 					}
 					dispatch({
@@ -437,7 +434,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
 					<a
-						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`}
+						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`}
 						className={buttonVariants({ variant: "outline" })}
 					>
 						Take outtake survey and claim your progress

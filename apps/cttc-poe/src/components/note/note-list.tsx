@@ -1,8 +1,8 @@
 "use client";
 
+import { Note, notes } from "@/drizzle/schema";
 import { useNotesStore } from "@/lib/store/note";
 import { deserializeRange } from "@itell/core/note";
-import { Note } from "@prisma/client";
 import { Highlight } from "./highlight";
 import { NoteCard } from "./note-card";
 

@@ -1,35 +1,21 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
-import { getSessionUser } from "../auth";
-import db from "../db";
+import { notes } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+import { PgInsertValue, PgUpdateSetSource } from "drizzle-orm/pg-core";
+import { db, first } from "../db";
 
-export const deleteNote = async (id: string) => {
-	await db.note.delete({
-		where: {
-			id,
-		},
-	});
+export const deleteNote = async (id: number) => {
+	await db.delete(notes).where(eq(notes.id, id));
 };
 
-export const createNote = async (
-	input: Omit<Prisma.NoteCreateInput, "user">,
+export const createNote = async (values: PgInsertValue<typeof notes>) => {
+	return first(await db.insert(notes).values(values).returning());
+};
+
+export const updateNote = async (
+	id: number,
+	data: PgUpdateSetSource<typeof notes>,
 ) => {
-	const user = await getSessionUser();
-	if (user) {
-		await db.note.create({
-			data: {
-				...input,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
-			},
-		});
-	}
-};
-
-export const updateNote = async (id: string, data: Prisma.NoteUpdateInput) => {
-	await db.note.update({ where: { id }, data });
+	await db.update(notes).set(data).where(eq(notes.id, id));
 };

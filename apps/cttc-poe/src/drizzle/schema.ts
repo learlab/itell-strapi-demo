@@ -1,5 +1,7 @@
+import { InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
+	customType,
 	doublePrecision,
 	index,
 	integer,
@@ -12,6 +14,18 @@ import {
 	timestamp,
 } from "drizzle-orm/pg-core";
 
+export const customJsonb = <TData>(name: string) =>
+	customType<{ data: TData; driverData: TData }>({
+		dataType() {
+			return "jsonb";
+		},
+		toDriver(val: TData) {
+			return sql`(((${JSON.stringify(val)})::jsonb)#>> '{}')::jsonb`;
+		},
+		fromDriver(value): TData {
+			return value as TData;
+		},
+	})(name);
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
 export const code_challenge_method = pgEnum("code_challenge_method", [
 	"s256",
@@ -66,19 +80,26 @@ export const equality_op = pgEnum("equality_op", [
 	"in",
 ]);
 
+const CreatedAt = timestamp("created_at", {
+	mode: "date",
+	withTimezone: true,
+})
+	.defaultNow()
+	.notNull();
+
+const UpdatedAt = timestamp("updated_at", {
+	mode: "date",
+	withTimezone: true,
+})
+	.defaultNow()
+	.$onUpdate(() => new Date())
+	.notNull();
+
 export const users = pgTable("users", {
-	id: text("id").primaryKey().notNull(),
+	id: text("id").primaryKey(),
 	name: text("name"),
 	image: text("image"),
-	createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
-		.defaultNow()
-		.notNull(),
-	updatedAt: timestamp("updated_at", {
-		mode: "date",
-		withTimezone: true,
-	})
-		.defaultNow()
-		.notNull(),
+
 	pageSlug: text("page_slug"),
 	timeZone: text("time_zone"),
 	googleId: text("google_id"),
@@ -87,10 +108,14 @@ export const users = pgTable("users", {
 	role: text("role").default("user").notNull(),
 	classId: text("class_id"),
 	finished: boolean("finished").default(false).notNull(),
+	createdAt: CreatedAt,
+	updatedAt: UpdatedAt,
 });
 
+export type User = InferSelectModel<typeof users>;
+
 export const sessions = pgTable("sessions", {
-	id: text("id").primaryKey().notNull(),
+	id: text("id").primaryKey(),
 	userId: text("user_id")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
@@ -98,9 +123,7 @@ export const sessions = pgTable("sessions", {
 		mode: "date",
 		withTimezone: true,
 	}).notNull(),
-	createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-		.defaultNow()
-		.notNull(),
+	createdAt: CreatedAt,
 });
 
 export const events = pgTable("events", {
@@ -111,9 +134,7 @@ export const events = pgTable("events", {
 		.references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
 	pageSlug: text("page_slug").notNull(),
 	data: jsonb("data"),
-	createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
-		.defaultNow()
-		.notNull(),
+	createdAt: CreatedAt,
 });
 
 export const teachers = pgTable("teachers", {
@@ -125,25 +146,22 @@ export const teachers = pgTable("teachers", {
 
 export const summaries = pgTable("summaries", {
 	id: serial("id").primaryKey().notNull(),
+	text: text("text").notNull(),
+	condition: text("condition").notNull(),
 	userId: text("user_id")
 		.notNull()
 		.references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
-	classId: text("class_id"),
 	pageSlug: text("page_slug").notNull(),
 	isPassed: boolean("isPassed").notNull(),
 	containmentScore: doublePrecision("containment_score").notNull(),
 	similarityScore: doublePrecision("similarity_score").notNull(),
 	wordingScore: doublePrecision("wording_score"),
 	contentScore: doublePrecision("content_score"),
-	text: text("text").notNull(),
-	createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-		.defaultNow()
-		.notNull(),
-	updatedAt: timestamp("updated_at", {
-		precision: 3,
-		mode: "string",
-	}).notNull(),
+	createdAt: CreatedAt,
+	updatedAt: UpdatedAt,
 });
+
+export type Summary = InferSelectModel<typeof summaries>;
 
 export const notes = pgTable("notes", {
 	id: serial("id").primaryKey().notNull(),
@@ -155,20 +173,20 @@ export const notes = pgTable("notes", {
 	highlightedText: text("highlighted_text").notNull(),
 	pageSlug: text("page_slug").notNull(),
 	color: text("color").default("#3730a3").notNull(),
-	createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-		.defaultNow()
-		.notNull(),
-	updatedAt: timestamp("updated_at", {
-		precision: 3,
-		mode: "string",
-	}).notNull(),
 	range: text("range").notNull(),
+	createdAt: CreatedAt,
+	updatedAt: UpdatedAt,
 });
+
+export type Note = InferSelectModel<typeof notes>;
 
 export const constructed_responses = pgTable(
 	"constructed_responses",
 	{
 		id: serial("id").primaryKey().notNull(),
+		text: text("text").notNull(),
+		score: integer("score").notNull(),
+		condition: text("condition").notNull(),
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, {
@@ -177,11 +195,7 @@ export const constructed_responses = pgTable(
 			}),
 		pageSlug: text("page_slug").notNull(),
 		chunkSlug: text("chunk_slug").notNull(),
-		score: integer("score").notNull(),
-		response: text("response").notNull(),
-		createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-			.defaultNow()
-			.notNull(),
+		createdAt: CreatedAt,
 	},
 	(table) => {
 		return {
@@ -203,18 +217,15 @@ export const constructed_responses_feedback = pgTable(
 		pageSlug: text("page_slug").notNull(),
 		chunkSlug: text("chunk_slug").notNull(),
 		isPositive: boolean("is_positive").notNull(),
-		feedback: text("feedback").notNull(),
+		text: text("text").notNull(),
 		tags: text("tags").array(),
-		createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-			.defaultNow()
-			.notNull(),
+		createdAt: CreatedAt,
 	},
 );
 
 export const focus_times = pgTable(
 	"focus_times",
 	{
-		id: serial("id").primaryKey().notNull(),
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, {
@@ -222,14 +233,9 @@ export const focus_times = pgTable(
 				onUpdate: "cascade",
 			}),
 		pageSlug: text("page_slug").notNull(),
-		data: jsonb("data").notNull(),
-		createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-			.defaultNow()
-			.notNull(),
-		updatedAt: timestamp("updated_at", {
-			precision: 3,
-			mode: "string",
-		}).notNull(),
+		data: customJsonb<FocusTimeData>("data").notNull(),
+		createdAt: CreatedAt,
+		updatedAt: UpdatedAt,
 	},
 	(table) => {
 		return {
@@ -244,18 +250,12 @@ export const focus_times = pgTable(
 export const chat_messages = pgTable(
 	"chat_messages",
 	{
-		id: serial("id").primaryKey().notNull(),
 		userId: text("user_id").notNull(),
 		pageSlug: text("page_slug").notNull(),
 		// TODO: failed to parse database type 'jsonb[]'
 		data: jsonb("data").array(),
-		createdAt: timestamp("created_at", { precision: 3, mode: "string" })
-			.defaultNow()
-			.notNull(),
-		updatedAt: timestamp("updated_at", {
-			precision: 3,
-			mode: "string",
-		}).notNull(),
+		createdAt: CreatedAt,
+		updatedAt: UpdatedAt,
 	},
 	(table) => {
 		return {
@@ -266,3 +266,12 @@ export const chat_messages = pgTable(
 		};
 	},
 );
+
+export type ChatMessageData = {
+	text: string;
+	isUser: boolean;
+	isStairs: boolean;
+	timestamp: number;
+};
+
+export type FocusTimeData = Record<string, number>;

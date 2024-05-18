@@ -6,7 +6,7 @@ import {
 	DialogTitle,
 	InterceptedDialogContent,
 } from "@/components/ui/dialog";
-import { User } from "@prisma/client";
+import { User } from "@/drizzle/schema";
 export const StudentDetailsModal = ({
 	children,
 	student,

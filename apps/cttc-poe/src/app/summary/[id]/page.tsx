@@ -2,22 +2,23 @@ import { SummaryOperations } from "@/components/dashboard/summary-operations";
 import { ReviseSummaryButton } from "@/components/summary/revise-summary-button";
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { TextbookPageModal } from "@/components/textbook-page-modal";
-import { getSessionUser } from "@/lib/auth";
+import { summaries } from "@/drizzle/schema";
+import { getSession, getSessionUser } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import db from "@/lib/db";
+import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
 import { relativeDate } from "@itell/core/utils";
 import { Badge } from "@itell/ui/server";
-import { Summary, User } from "@prisma/client";
+import { and, eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 
-async function getSummaryForUser(summaryId: Summary["id"], userId: User["id"]) {
-	return await db.summary.findFirst({
-		where: {
-			id: summaryId,
-			userId: userId,
-		},
-	});
+async function getSummaryForUser(summaryId: number, userId: string) {
+	return first(
+		await db
+			.select()
+			.from(summaries)
+			.where(and(eq(summaries.id, summaryId), eq(summaries.userId, userId))),
+	);
 }
 
 interface PageProps {
@@ -27,11 +28,11 @@ interface PageProps {
 }
 
 export default async function ({ params }: PageProps) {
-	const user = await getSessionUser();
+	const { user } = await getSession();
 	if (!user) {
 		return redirect("/auth");
 	}
-	const summary = await getSummaryForUser(params.id, user.id);
+	const summary = await getSummaryForUser(Number(params.id), user.id);
 
 	if (!summary) {
 		return notFound();
@@ -71,7 +72,7 @@ export default async function ({ params }: PageProps) {
 					</div>
 
 					<p className="text-sm text-muted-foreground text-center">
-						{`Created at ${relativeDate(summary.created_at)}`}
+						{`Created at ${relativeDate(summary.createdAt)}`}
 					</p>
 					<div className="max-w-2xl mx-auto">
 						<p>{summary.text}</p>

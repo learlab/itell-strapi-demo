@@ -13,7 +13,7 @@ export const NoteCountLoader = async ({ pageSlug }: { pageSlug: string }) => {
 	if (!user) {
 		return null;
 	}
-	const res = await countNoteHighlight(pageSlug);
+	const res = await countNoteHighlight(user.id, pageSlug);
 
 	const noteCount = res.find((r) => r.type === "note")?.count || 0;
 	const highlightCount = res.find((r) => r.type === "highlight")?.count || 0;

@@ -38,7 +38,7 @@ export default async function ({ searchParams }: Props) {
 				text={Meta.settings.description}
 			/>
 			<SettingsForm user={user} />
-			{classId && (
+			{classId && teacher && (
 				<ClassInviteModal
 					user={user}
 					teacherToJoin={teacher}

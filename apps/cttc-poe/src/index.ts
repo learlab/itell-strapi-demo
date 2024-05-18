@@ -1,7 +1,5 @@
-import { resolve } from "node:path";
 import "dotenv/config";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { client, db } from "./lib/db";
+import { client } from "./lib/db";
 
 (async () => {
 	await client.connect();

@@ -1,12 +1,13 @@
 "use client";
 
-import { useSession } from "@/lib/auth/context";
+import { SessionUser } from "@/lib/auth";
 import {
 	defaultHighlightColor,
 	useNoteColor,
 } from "@/lib/hooks/use-note-color";
 import { createNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
+import { randomNumber } from "@/lib/utils";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
@@ -19,14 +20,14 @@ import { Button } from "../client-components";
 type SelectionData = ReturnType<typeof useTextSelection>;
 
 type Props = {
+	user: SessionUser;
 	pageSlug: string;
 };
 
-export const NoteToolbar = ({ pageSlug }: Props) => {
+export const NoteToolbar = ({ pageSlug, user }: Props) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
-	const { user } = useSession();
 	const { createNote: createNoteLocal, createHighlight: createHighlightLocal } =
 		useNotesStore();
 
@@ -57,6 +58,8 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 		};
 	}, []);
 
+	if (!user) return null;
+
 	const commands = [
 		{
 			label: "Note",
@@ -67,7 +70,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				}
 				const range = window.getSelection()?.getRangeAt(0);
 				if (range && clientRect && textContent) {
-					const id = crypto.randomUUID();
+					const id = randomNumber();
 					createNoteLocal({
 						id,
 						y: clientRect.y + window.scrollY,
@@ -90,7 +93,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				const selection = window.getSelection();
 				const range = selection?.getRangeAt(0);
 				if (range && clientRect && textContent) {
-					const id = crypto.randomUUID();
+					const id = randomNumber();
 					const serializedRange = serializeRange(range);
 
 					if (selection?.empty) {
@@ -108,10 +111,10 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 					});
 
 					await createNote({
-						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
 						pageSlug,
+						userId: user.id,
 						color: defaultHighlightColor,
 						range: serializedRange,
 					});

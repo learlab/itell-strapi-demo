@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { NoteDelete } from "./node-delete";
 type Props = {
-	id: string;
+	id: number;
 	color: string;
 	range: string;
 };

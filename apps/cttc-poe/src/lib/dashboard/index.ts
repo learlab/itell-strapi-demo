@@ -1,29 +1,23 @@
+import {
+	constructed_responses,
+	summaries,
+	teachers,
+	users,
+} from "@/drizzle/schema";
 import subDays from "date-fns/subDays";
-import db from "../db";
+import { and, avg, eq, inArray, ne } from "drizzle-orm";
+import {
+	getConstructedResponseScore,
+	getConstructedResponses,
+} from "../constructed-response";
+import { db, first } from "../db";
+import { getUserSummaries } from "../summary";
 
 export const getBadgeStats = async (uid: string) => {
 	const startDate = subDays(new Date(), 7);
-	const [summaries, answers] = await Promise.all([
-		db.summary.findMany({
-			select: {
-				isPassed: true,
-				contentScore: true,
-				wordingScore: true,
-				created_at: true,
-			},
-			where: {
-				userId: uid,
-			},
-		}),
-		db.constructedResponse.findMany({
-			select: {
-				score: true,
-				created_at: true,
-			},
-			where: {
-				userId: uid,
-			},
-		}),
+	const [userSummaries, answers] = await Promise.all([
+		getUserSummaries(uid),
+		getConstructedResponses(uid),
 	]);
 	const summariesLastWeek = [];
 	const answersLastWeek = [];
@@ -36,9 +30,9 @@ export const getBadgeStats = async (uid: string) => {
 	const contentScoresLastWeek: number[] = [];
 	const wordingScoresLastWeek: number[] = [];
 
-	summaries.forEach((summary) => {
+	userSummaries.forEach((summary) => {
 		const passed = summary.isPassed;
-		const duringLastWeek = summary.created_at > startDate;
+		const duringLastWeek = summary.createdAt > startDate;
 		if (summary.contentScore) {
 			contentScores.push(summary.contentScore);
 		}
@@ -65,7 +59,7 @@ export const getBadgeStats = async (uid: string) => {
 
 	answers.forEach((answer) => {
 		const passed = answer.score === 2;
-		const duringLastWeek = answer.created_at > startDate;
+		const duringLastWeek = answer.createdAt > startDate;
 
 		if (passed) {
 			passedAnswers.push(answer);
@@ -89,7 +83,7 @@ export const getBadgeStats = async (uid: string) => {
 		avgWordingScoreLastWeek:
 			wordingScoresLastWeek.reduce((a, b) => a + b, 0) /
 			wordingScoresLastWeek.length,
-		totalCount: summaries.length,
+		totalCount: userSummaries.length,
 		totalCountLastWeek: summariesLastWeek.length,
 		passedCount: passedSummaries.length,
 		passedCountLastWeek: passedSummariesLastWeek.length,
@@ -101,53 +95,40 @@ export const getBadgeStats = async (uid: string) => {
 };
 
 export const getClassBadgeStats = async (uids: string[]) => {
-	const [avgWording, avgContent, allSummaries, allConstructedResponses] =
-		await Promise.all([
-			db.summary.aggregate({
-				_avg: {
-					wordingScore: true,
-				},
-				where: {
-					userId: {
-						in: uids,
-					},
-					wordingScore: { not: null },
-				},
-			}),
-			db.summary.aggregate({
-				_avg: {
-					contentScore: true,
-				},
-				where: {
-					userId: {
-						in: uids,
-					},
-					contentScore: { not: null },
-				},
-			}),
-			db.summary.findMany({
-				select: {
-					isPassed: true,
-				},
-				where: {
-					userId: {
-						in: uids,
-					},
-				},
-			}),
+	if (uids.length === 0) {
+		return {
+			avgContentScore: 0,
+			avgWordingScore: 0,
+			totalCount: 0,
+			passedCount: 0,
+			totalConstructedResponses: 0,
+			passedConstructedResponses: 0,
+		};
+	}
+	const [scores, allSummaries, allConstructedResponses] = await Promise.all([
+		db
+			.select({
+				wordingScore: avg(summaries.wordingScore).mapWith(Number),
+				contentScore: avg(summaries.contentScore).mapWith(Number),
+			})
+			.from(summaries)
+			.where(and(inArray(summaries.userId, uids))),
 
-			db.constructedResponse.findMany({
-				where: {
-					userId: {
-						in: uids,
-					},
-				},
-			}),
-		]);
+		db
+			.select()
+			.from(summaries)
+			.where(and(inArray(summaries.userId, uids))),
 
+		db
+			.select()
+			.from(constructed_responses)
+			.where(and(inArray(constructed_responses.userId, uids))),
+	]);
+
+	const score = first(scores);
 	return {
-		avgContentScore: avgContent._avg.contentScore,
-		avgWordingScore: avgWording._avg.wordingScore,
+		avgContentScore: score?.contentScore || 0,
+		avgWordingScore: score?.wordingScore || 0,
 		totalCount: allSummaries.length,
 		passedCount: allSummaries.filter((s) => s.isPassed).length,
 		totalConstructedResponses: allConstructedResponses.length,
@@ -158,11 +139,9 @@ export const getClassBadgeStats = async (uids: string[]) => {
 };
 
 export const getUserTeacherStatus = async (uid: string) => {
-	const teacher = await db.teacher.findUnique({
-		where: {
-			id: uid,
-		},
-	});
+	const teacher = first(
+		await db.select().from(teachers).where(eq(teachers.id, uid)),
+	);
 
 	if (!teacher || !teacher.classId) {
 		return null;
@@ -175,28 +154,16 @@ export const getUserWithClass = async ({
 	userId,
 	classId,
 }: { userId: string; classId: string }) => {
-	const user = await db.user.findFirst({
-		where: {
-			id: userId,
-			classId,
-		},
-	});
+	const user = first(
+		await db
+			.select()
+			.from(users)
+			.where(and(eq(users.id, userId), eq(users.classId, classId))),
+	);
 
 	if (!user) {
 		return null;
 	}
 
 	return user;
-};
-
-export const userIsStudent = async (uid: string) => {
-	return Boolean(
-		(
-			await db.user.findUnique({
-				where: {
-					id: uid,
-				},
-			})
-		)?.classId,
-	);
 };

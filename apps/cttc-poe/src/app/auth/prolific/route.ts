@@ -54,17 +54,16 @@ export async function GET(req: Request): Promise<Response> {
 
 		if (!user) {
 			const id = generateIdFromEntropySize(16);
-			user = first(
-				await db
-					.insert(users)
-					.values({
-						id,
-						name: username,
-						prolificId: pid,
-						role: "user",
-					})
-					.returning(),
-			);
+			const u = await db
+				.insert(users)
+				.values({
+					id,
+					name: username,
+					prolificId: pid,
+					role: "user",
+				})
+				.returning();
+			user = u[0];
 		}
 
 		const session = await lucia.createSession(user.id, {});
@@ -74,6 +73,7 @@ export async function GET(req: Request): Promise<Response> {
 			sessionCookie.value,
 			sessionCookie.attributes,
 		);
+
 		return new Response(null, {
 			status: 302,
 			headers: {

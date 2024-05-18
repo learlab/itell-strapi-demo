@@ -22,6 +22,8 @@ export const lucia = new Lucia(adapter, {
 			finished: attributes.finished,
 			classId: attributes.classId,
 			pageSlug: attributes.pageSlug,
+			prolificId: attributes.prolificId,
+			timeZone: attributes.timeZone,
 		};
 	},
 });
@@ -36,13 +38,15 @@ declare module "lucia" {
 
 interface DatabaseUserAttributes {
 	id: string;
-	name: string | undefined;
-	image: string | undefined;
-	email: string | undefined;
+	name: string | null;
+	image: string | null;
+	email: string | null;
 	role: string;
 	finished: boolean;
-	classId: string | undefined;
-	pageSlug: string | undefined;
+	classId: string | null;
+	pageSlug: string | null;
+	prolificId: string | null;
+	timeZone: string | null;
 }
 
 interface DatabaseSessionAttributes {}
@@ -52,7 +56,6 @@ export const getSession = cache(
 		{ user: LuciaUser; session: LuciaSession } | { user: null; session: null }
 	> => {
 		const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-		console.log("sessionId", sessionId);
 		if (!sessionId) {
 			return {
 				user: null,

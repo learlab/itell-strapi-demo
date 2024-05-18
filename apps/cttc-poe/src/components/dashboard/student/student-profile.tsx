@@ -1,3 +1,4 @@
+import { User } from "@/drizzle/schema";
 import { routes, useSafeSearchParams } from "@/lib/navigation";
 import { getPageData } from "@/lib/utils";
 import { ReadingTimeChartLevel } from "@itell/core/types";
@@ -9,7 +10,6 @@ import {
 	CardTitle,
 	buttonVariants,
 } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import Link from "next/link";
 import { UserStatistics } from "../user-statistics";
 import { UserProgress } from "../user/user-progress";
@@ -46,7 +46,7 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 				<div className="text-muted-foreground space-y-4">
 					<div className="flex items-center justify-between">
 						<p>{student.email}</p>
-						<p>joined at {student.created_at.toLocaleString("en-us")}</p>
+						<p>joined at {student.createdAt.toLocaleString("en-us")}</p>
 					</div>
 					<UserProgress user={student} />
 
