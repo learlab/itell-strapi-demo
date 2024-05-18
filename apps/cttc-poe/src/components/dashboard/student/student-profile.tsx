@@ -1,11 +1,10 @@
 import { User } from "@/drizzle/schema";
-import { routes, useSafeSearchParams } from "@/lib/navigation";
+import { routes } from "@/lib/navigation";
 import { getPageData } from "@/lib/utils";
 import { ReadingTimeChartLevel } from "@itell/core/types";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardHeader,
 	CardTitle,
 	buttonVariants,

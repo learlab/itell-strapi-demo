@@ -9,17 +9,16 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import { ClassInfo } from "./settings/class-info";
 import { ClassRegister } from "./settings/class-register";
 import { Profile } from "./settings/profile";
 import { WebsiteSettings } from "./settings/website-settings";
 
-export const SettingsForm = async ({ user }: { user: User }) => {
-	const teacher = await getTeacherWithClassId(user.classId);
+export const SettingsForm = async ({ user }: { user: SessionUser }) => {
 	if (!user) {
 		return null;
 	}
+	const teacher = await getTeacherWithClassId(user.classId);
 
 	const dbUser = await getUser(user.id);
 	if (!dbUser) {
@@ -39,9 +38,9 @@ export const SettingsForm = async ({ user }: { user: User }) => {
 					<WebsiteSettings user={dbUser} />
 					<Separator />
 					{teacher ? (
-						<ClassInfo teacherName={teacher.name as string} user={user} />
+						<ClassInfo teacherName={String(teacher.name)} user={dbUser} />
 					) : (
-						<ClassRegister user={user} />
+						<ClassRegister user={dbUser} />
 					)}
 				</CardContent>
 			</Card>
