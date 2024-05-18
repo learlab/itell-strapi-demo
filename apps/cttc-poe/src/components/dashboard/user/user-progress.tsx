@@ -1,16 +1,13 @@
-import { SessionUser } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages";
 
-type Props = {
-	pageSlug: string | null | undefined;
-	finished: boolean;
-};
-
-export const UserProgress = ({ pageSlug, finished }: Props) => {
+export const UserProgress = ({
+	pageSlug,
+	finished,
+}: { pageSlug: string | null; finished: boolean }) => {
 	let displayProgress = "0";
 	const validPages = allPagesSorted.filter((page) => page.summary);
 	const userIndex = validPages.findIndex((page) => page.page_slug === pageSlug);
-	const unlockedPages = userIndex === 0 || userIndex !== -1 ? 0 : userIndex;
+	const unlockedPages = userIndex === 0 || userIndex === -1 ? 0 : userIndex;
 	if (finished) {
 		displayProgress = "100";
 	} else if (pageSlug) {

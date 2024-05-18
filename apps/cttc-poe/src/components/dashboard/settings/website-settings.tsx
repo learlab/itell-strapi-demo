@@ -10,10 +10,10 @@ import {
 	SelectValue,
 } from "@/components/client-components";
 import { Spinner } from "@/components/spinner";
+import { User } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { updateUser } from "@/lib/user/actions";
 import { Errorbox } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 

@@ -3,7 +3,6 @@ import { getBadgeStats, getClassBadgeStats } from "@/lib/dashboard";
 import { getClassStudents } from "@/lib/dashboard/class";
 import { cn } from "@itell/core/utils";
 import { DashboardBadge } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import {
 	FileTextIcon,
 	FlagIcon,
@@ -13,7 +12,9 @@ import {
 	WholeWordIcon,
 } from "lucide-react";
 
-export const StudentBadges = async ({ user }: { user: User }) => {
+export const StudentBadges = async ({
+	user,
+}: { user: NonNullable<SessionUser> }) => {
 	const students = await getClassStudents(user.classId as string);
 	const ids = students
 		.map((student) => student.id)

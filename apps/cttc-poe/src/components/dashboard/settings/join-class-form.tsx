@@ -1,11 +1,11 @@
 "use client";
 
 import { Spinner } from "@/components/spinner";
+import { User } from "@/drizzle/schema";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { Button } from "@itell/ui/client";
 import { Errorbox, Input } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import { useFormState, useFormStatus } from "react-dom";
 import { ClassInviteModal } from "./class-invite-modal";
 

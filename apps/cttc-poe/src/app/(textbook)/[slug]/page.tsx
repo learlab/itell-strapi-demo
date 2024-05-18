@@ -45,7 +45,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	const pagerLinks = getPagerLinks({
 		pageIndex,
-		userPageSlug: user?.pageSlug,
+		userPageSlug: user?.pageSlug || null,
 	});
 
 	const chunks = getPageChunks(page);
@@ -85,7 +85,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						)}
 					</PageTitle>
 					<PageContent code={page.body.code} />
-					<NoteToolbar pageSlug={pageSlug} />
+					<NoteToolbar pageSlug={pageSlug} user={user} />
 					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 				</section>
 
@@ -127,7 +127,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				pageStatus={pageStatus}
 			/>
-			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
+			<EventTracker user={user} pageSlug={pageSlug} chunks={chunks} />
 			<Suspense fallback={<ChatLoader.Skeleton />}>
 				<ChatLoader pageSlug={pageSlug} />
 			</Suspense>

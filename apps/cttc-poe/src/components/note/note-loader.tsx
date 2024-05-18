@@ -12,7 +12,7 @@ export const NoteLoader = async ({ pageSlug }: Props) => {
 		return null;
 	}
 
-	const notesAndHighlights = await getNotes(pageSlug);
+	const notesAndHighlights = await getNotes(user.id, pageSlug);
 	const notes = notesAndHighlights.filter((note) => note.noteText !== null);
 	const highlights = notesAndHighlights.filter(
 		(note) => note.noteText === null,

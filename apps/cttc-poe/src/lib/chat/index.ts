@@ -1,32 +1,29 @@
-import { getSessionUser } from "../auth";
-import db from "../db";
+import { ChatMessageData, chat_messages } from "@/drizzle/schema";
+import { and, eq } from "drizzle-orm";
+import { db, first } from "../db";
 
-export const getChatMessages = async (pageSlug: string) => {
-	const user = await getSessionUser();
-	if (user) {
-		const record = await db.chatMessage.findUnique({
-			select: {
-				data: true,
-				updated_at: true,
-			},
-			where: {
-				userId_pageSlug: {
-					userId: user.id,
-					pageSlug,
-				},
-			},
-		});
+export const getChatMessages = async (userId: string, pageSlug: string) => {
+	const record = first(
+		await db
+			.select({ data: chat_messages.data, updatedAt: chat_messages.updatedAt })
+			.from(chat_messages)
+			.where(
+				and(
+					eq(chat_messages.userId, userId),
+					eq(chat_messages.pageSlug, pageSlug),
+				),
+			),
+	);
 
-		if (record) {
-			return {
-				updatedAt: record.updated_at,
-				data: record.data,
-			};
-		}
+	if (!record) {
+		return {
+			data: [],
+			updatedAt: new Date(),
+		};
 	}
 
 	return {
-		updatedAt: new Date(),
-		data: [],
+		data: record.data as ChatMessageData[],
+		updatedAt: record.updatedAt,
 	};
 };

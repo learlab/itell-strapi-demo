@@ -1,4 +1,5 @@
-import db from "@/lib/db";
+import { focus_times, summaries, users } from "@/drizzle/schema";
+import { db, first } from "@/lib/db";
 import { delay } from "@/lib/utils";
 import {
 	PrevDaysLookup,
@@ -17,6 +18,7 @@ import {
 	Skeleton,
 } from "@itell/ui/server";
 import { format, subDays } from "date-fns";
+import { and, count, eq, gte, sql } from "drizzle-orm";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
@@ -37,14 +39,18 @@ type Props = {
 };
 
 const getSummaryCounts = async (uid: string, startDate: Date) => {
-	return db.summary.count({
-		where: {
-			userId: uid,
-			created_at: {
-				gte: startDate,
-			},
-		},
-	});
+	const record = first(
+		await db
+			.select({
+				count: count(),
+			})
+			.from(summaries)
+			.where(
+				and(eq(summaries.userId, uid), gte(summaries.createdAt, startDate)),
+			),
+	);
+
+	return record?.count || 0;
 };
 
 const getReadingTime = async (
@@ -55,15 +61,17 @@ const getReadingTime = async (
 	// TODO: fix this query or how we store focus time data
 	// for records created before start date, they can still be updated
 	// but this won't be reflected in the reading time
-	const records = await db.$queryRaw`
-		SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
+	const records = await db.execute(
+		sql`SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
 		FROM focus_times, jsonb_each(data) d
-		WHERE created_at >= ${startDate} and user_id = ${uid}
-		GROUP BY created_at::date
-	`;
+		WHERE created_at >= ${
+			startDate.toISOString().split("T")[0]
+		} and user_id = ${uid}
+		GROUP BY created_at::date`,
+	);
 
 	const readingTimeGrouped = await getGroupedReadingTime(
-		records as ReadingTimeEntry[],
+		records as unknown as ReadingTimeEntry[],
 		intervalDates,
 	);
 	return readingTimeGrouped;
@@ -76,6 +84,8 @@ export const ReadingTime = async ({ uid, params, name }: Props) => {
 		getSummaryCounts(uid, startDate),
 		getReadingTime(uid, startDate, intervalDates),
 	]);
+
+	console.log(summaryCounts, readingTimeGrouped);
 
 	const { totalViewTime, chartData } = getReadingTimeChartData(
 		readingTimeGrouped,

@@ -3,7 +3,7 @@ import { SettingsForm } from "@/components/dashboard/settings-form";
 import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getSession } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth";
 import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
@@ -15,19 +15,21 @@ type Props = {
 };
 
 export default async function ({ searchParams }: Props) {
-	const { user } = await getSession();
+	const currentUser = await getSessionUser();
 	const classId = searchParams?.join_class_code;
 
+	if (!currentUser) {
+		return redirectWithSearchParams("auth", searchParams);
+	}
+
+	const user = await getUser(currentUser.id);
 	if (!user) {
 		return redirectWithSearchParams("auth", searchParams);
 	}
+
 	incrementView("settings");
 
 	const teacher = classId ? await getTeacherWithClassId(classId) : null;
-	const dbUser = await getUser(user.id);
-	if (!dbUser) {
-		return null;
-	}
 
 	return (
 		<DashboardShell>
@@ -35,10 +37,10 @@ export default async function ({ searchParams }: Props) {
 				heading={Meta.settings.title}
 				text={Meta.settings.description}
 			/>
-			<SettingsForm user={dbUser} />
-			{classId && (
+			<SettingsForm user={user} />
+			{classId && teacher && (
 				<ClassInviteModal
-					user={dbUser}
+					user={user}
 					teacherToJoin={teacher}
 					classId={classId}
 				/>

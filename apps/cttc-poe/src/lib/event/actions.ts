@@ -1,77 +1,56 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
-import { getSessionUser } from "../auth";
+import { events, FocusTimeData, focus_times } from "@/drizzle/schema";
+import { and, eq } from "drizzle-orm";
+import { PgInsertValue } from "drizzle-orm/pg-core";
 import { isProduction } from "../constants";
-import db from "../db";
+import { db, first } from "../db";
 
-export const createEvent = async (
-	input: Omit<Prisma.EventCreateInput, "user">,
-) => {
+export const createEvent = async (input: PgInsertValue<typeof events>) => {
 	if (!isProduction) {
 		return;
 	}
-	const user = await getSessionUser();
-	if (user) {
-		return await db.event.create({
-			data: {
-				...input,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
-			},
-		});
-	}
+	return await db.insert(events).values(input);
 };
 
-export const createFocusTime = async ({
-	data,
-	pageSlug,
-}: { data: PrismaJson.FocusTimeData; pageSlug: string }) => {
-	const user = await getSessionUser();
-	if (user) {
-		const record = await db.focusTime.findUnique({
-			where: {
-				userId_pageSlug: {
-					userId: user.id,
-					pageSlug,
-				},
-			},
-		});
+export const createFocusTime = async (
+	input: PgInsertValue<typeof focus_times>,
+) => {
+	const record = first(
+		await db
+			.select()
+			.from(focus_times)
+			.where(
+				and(
+					eq(focus_times.userId, input.userId),
+					eq(focus_times.pageSlug, input.pageSlug),
+				),
+			),
+	);
 
-		if (record) {
-			const oldData = record.data;
-			const newData: PrismaJson.FocusTimeData = {};
-			// if there are legacy chunk ids that's not present in the new data
-			// they will dropped during the update
-			for (const chunkId in data) {
-				if (chunkId in oldData) {
-					newData[chunkId] = oldData[chunkId] + data[chunkId];
-				} else {
-					newData[chunkId] = data[chunkId];
-				}
+	if (record) {
+		const newData: FocusTimeData = {};
+		const updateData = input.data as FocusTimeData;
+		const oldData = record.data as FocusTimeData;
+		// if there are legacy chunk ids that's not present in the new data
+		// they will dropped during the update
+		for (const chunkId in updateData) {
+			if (chunkId in oldData) {
+				newData[chunkId] = oldData[chunkId] + updateData[chunkId];
+			} else {
+				newData[chunkId] = updateData[chunkId];
 			}
-			await db.focusTime.update({
-				where: {
-					userId_pageSlug: {
-						userId: user.id,
-						pageSlug,
-					},
-				},
-				data: {
-					data: newData,
-				},
-			});
-		} else {
-			await db.focusTime.create({
-				data: {
-					userId: user.id,
-					pageSlug,
-					data,
-				},
-			});
 		}
+		await db
+			.update(focus_times)
+			.set({ data: newData })
+			.where(
+				and(
+					eq(focus_times.userId, input.userId),
+					eq(focus_times.pageSlug, input.pageSlug),
+				),
+			);
+	} else {
+		await db.insert(focus_times).values(input);
 	}
 };

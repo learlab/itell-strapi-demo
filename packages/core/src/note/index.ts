@@ -11,13 +11,13 @@ export const createNoteElements = ({
 	range,
 	color,
 	isHighlight = false,
-}: { id: string; range: Range; color: string; isHighlight?: boolean }) => {
+}: { id: number; range: Range; color: string; isHighlight?: boolean }) => {
 	const safeRanges = getSafeRanges(range);
 	safeRanges.forEach((r) => {
 		if (r.startOffset !== r.endOffset) {
 			const newNode = document.createElement("span");
 			newNode.classList.add(isHighlight ? "highlight" : "note");
-			newNode.dataset.noteId = id;
+			newNode.dataset.noteId = String(id);
 			newNode.style.backgroundColor = color;
 			r.surroundContents(newNode);
 		}

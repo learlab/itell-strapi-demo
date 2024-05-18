@@ -1,11 +1,7 @@
-import db from "../db";
+import { teachers } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+import { db, first } from "../db";
 
 export const isTeacher = async (userId: string) => {
-	const teacher = await db.teacher.findUnique({
-		where: {
-			id: userId,
-		},
-	});
-
-	return !!teacher;
+	return first(await db.select().from(teachers).where(eq(teachers.id, userId)));
 };

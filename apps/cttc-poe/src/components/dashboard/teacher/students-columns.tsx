@@ -9,13 +9,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/client-components";
-import { User } from "@prisma/client";
+import { User } from "@/drizzle/schema";
 import { Column, ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type StudentData = Pick<User, "id" | "email" | "name" | "created_at"> & {
+export type StudentData = Pick<User, "id" | "email" | "name" | "createdAt"> & {
 	progress: { chapter: number; title: string; index: number };
 	summaryCounts: number;
 };
@@ -85,14 +85,14 @@ export const columns: ColumnDef<StudentData>[] = [
 	},
 	{
 		id: "Joined Date",
-		accessorKey: "created_at",
+		accessorKey: "createdAt",
 		header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
 
 		sortingFn: (rowA, rowB, columnId) => {
-			return rowA.original.created_at > rowB.original.created_at ? 1 : -1;
+			return rowA.original.createdAt > rowB.original.createdAt ? 1 : -1;
 		},
 		cell: ({ row }) => {
-			return row.original.created_at.toLocaleDateString("en-us");
+			return row.original.createdAt.toLocaleDateString("en-us");
 		},
 	},
 	{

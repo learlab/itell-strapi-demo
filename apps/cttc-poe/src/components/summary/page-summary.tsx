@@ -1,4 +1,4 @@
-import { getSessionUser } from "@/lib/auth";
+import { getSession, getSessionUser } from "@/lib/auth";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const PageSummary = async ({ pageSlug, pageStatus }: Props) => {
-	const user = await getSessionUser();
+	const { user } = await getSession();
 	const page = getPageData(pageSlug);
 
 	if (!page) {
@@ -42,7 +42,7 @@ export const PageSummary = async ({ pageSlug, pageStatus }: Props) => {
 	return (
 		<section className="mt-10 border-t-2 py-4 mb-20 space-y-2">
 			<Suspense fallback={<SummaryCount.Skeleton />}>
-				<SummaryCount pageSlug={page.page_slug} />
+				<SummaryCount pageSlug={page.page_slug} user={user} />
 			</Suspense>
 			<SummaryFormSelector user={user} pageStatus={pageStatus} page={page} />
 		</section>

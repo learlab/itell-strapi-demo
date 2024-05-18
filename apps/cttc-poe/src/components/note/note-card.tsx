@@ -1,5 +1,7 @@
 "use client";
 
+import { useSession } from "@/lib/auth/context";
+import { db } from "@/lib/db";
 import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/types/note";
@@ -57,16 +59,21 @@ export const NoteCard = React.memo(
 		highlightedText,
 		noteText,
 		pageSlug,
-		updated_at,
-		created_at,
+		updatedAt,
+		createdAt,
 		range,
 		color,
 		newNote = false,
 	}: Props) => {
+		const { user } = useSession();
+		if (!user) {
+			return null;
+		}
+
 		const elementsRef = useRef<HTMLElement[]>();
 		const elements = elementsRef.current;
 		const [shouldCreate, setShouldCreate] = useState(newNote);
-		const [recordId, setRecordId] = useState<string | undefined>(
+		const [recordId, setRecordId] = useState<number | undefined>(
 			newNote ? undefined : id,
 		);
 
@@ -132,22 +139,27 @@ export const NoteCard = React.memo(
 			setText(input);
 			if (shouldCreate) {
 				// create new note
-				await createNote({
-					id,
+				const note = await createNote({
 					y,
+					userId: user.id,
 					noteText: input,
 					highlightedText,
 					pageSlug,
 					color: editState.color,
 					range,
 				});
-				setRecordId(id);
-				setShouldCreate(false);
+				if (note) {
+					setRecordId(note.id);
+					setShouldCreate(false);
+				}
 			} else {
 				// edit existing note
 				updateNoteLocal({ id, noteText: input });
 				if (recordId) {
-					await updateNote(recordId, { noteText: input });
+					await updateNote(recordId, {
+						noteText: input,
+						color: editState.color,
+					});
 				}
 			}
 			dispatch({ type: "finish_upsert" });
@@ -177,7 +189,7 @@ export const NoteCard = React.memo(
 			deleteNoteLocal(id);
 			if (recordId) {
 				// delete note in database
-				await deleteNote(id);
+				await deleteNote(recordId);
 			}
 			dispatch({ type: "finish_delete" });
 		};
@@ -303,9 +315,7 @@ export const NoteCard = React.memo(
 												element.style.backgroundColor = color;
 											});
 										}
-										if (id) {
-											updateNote(id, { color });
-										}
+										updateNoteLocal({ id, color });
 									}}
 								/>
 
@@ -334,10 +344,9 @@ export const NoteCard = React.memo(
 									<FormFooter />
 								</form>
 
-								{(updated_at || created_at) && (
+								{(updatedAt || createdAt) && (
 									<p className="text-xs text-right mt-2 mb-0">
-										updated at{" "}
-										{relativeDate((updated_at || created_at) as Date)}
+										updated at {relativeDate((updatedAt || createdAt) as Date)}
 									</p>
 								)}
 							</div>

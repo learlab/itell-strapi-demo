@@ -1,5 +1,7 @@
-import { getConstructedResponse } from "@/lib/constructed-response";
-import db from "@/lib/db";
+import {
+	getConstructedResponseScore,
+	getConstructedResponses,
+} from "@/lib/constructed-response";
 import { getPageData } from "@/lib/utils";
 import { cn, groupby } from "@itell/core/utils";
 import {
@@ -11,7 +13,6 @@ import {
 	Skeleton,
 } from "@itell/ui/server";
 import { FrownIcon, LaughIcon, LightbulbIcon, MehIcon } from "lucide-react";
-import Link from "next/link";
 import pluralize from "pluralize";
 import { BarChart } from "../chart/bar-chart";
 import { CreateErrorFallback } from "../error-fallback";
@@ -21,19 +22,9 @@ type Props = {
 	uid: string;
 };
 
-export const getConstructedResponseScore = async (uid: string) => {
-	return await db.constructedResponse.groupBy({
-		by: ["score"],
-		_count: true,
-		where: {
-			userId: uid,
-		},
-	});
-};
-
 export const ConstructedResponse = async ({ uid }: Props) => {
 	const [records, byScore] = await Promise.all([
-		getConstructedResponse(uid),
+		getConstructedResponses(uid),
 		getConstructedResponseScore(uid),
 	]);
 	const byChapter = groupby(records, (d) => d.pageSlug);
@@ -44,7 +35,7 @@ export const ConstructedResponse = async ({ uid }: Props) => {
 	const chartData = byScore.map((s) => ({
 		name:
 			s.score === 2 ? "Excellent" : s.score === 1 ? "Medium" : "Not passing",
-		value: s._count,
+		value: s.count,
 	}));
 
 	return (

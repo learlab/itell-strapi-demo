@@ -2,37 +2,22 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SummaryList } from "@/components/dashboard/summary-list";
 import { PageLink } from "@/components/page/page-link";
 import { DashboardShell } from "@/components/page/shell";
-import { getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import db from "@/lib/db";
 import { allPagesSorted, firstPage } from "@/lib/pages";
-import { getUser } from "@/lib/user";
-import { makePageHref } from "@/lib/utils";
+import { getUserSummaries } from "@/lib/summary";
 import { groupby } from "@itell/core/utils";
-import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default async function () {
-	const currentUser = await getSessionUser();
-	if (!currentUser) {
+	const { user } = await getSession();
+	if (!user) {
 		return redirect("/auth");
 	}
 
 	incrementView("summaries");
 
-	const [user, userSummaries] = await Promise.all([
-		getUser(currentUser.id),
-		db.summary.findMany({
-			where: {
-				userId: currentUser.id,
-			},
-			orderBy: [{ created_at: "desc" }],
-		}),
-	]);
-
-	if (!user || !userSummaries) {
-		return notFound();
-	}
+	const userSummaries = await getUserSummaries(user.id);
 
 	if (userSummaries.length === 0) {
 		return (

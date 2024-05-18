@@ -1,4 +1,4 @@
-import { getSessionUser } from "@/lib/auth";
+import { getSession, getSessionUser } from "@/lib/auth";
 import { getChatMessages } from "@/lib/chat";
 import { Message } from "@itell/core/chatbot";
 import { Avatar, AvatarImage } from "../client-components";
@@ -10,12 +10,12 @@ type Props = {
 };
 
 export const ChatLoader = async ({ pageSlug }: Props) => {
-	const user = await getSessionUser();
+	const { user } = await getSession();
 	if (!user) {
 		return null;
 	}
 
-	const { data, updatedAt } = await getChatMessages(pageSlug);
+	const { data, updatedAt } = await getChatMessages(user.id, pageSlug);
 
 	const messages = data.map((d) => ({
 		...d,

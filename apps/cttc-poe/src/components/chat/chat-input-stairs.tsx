@@ -1,21 +1,23 @@
 "use client";
 
 import { env } from "@/env.mjs";
+import { SessionUser } from "@/lib/auth";
 import { createChatMessage } from "@/lib/chat/actions";
-import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { useChatStore } from "@/lib/store/chat";
 import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes, useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
+	user: NonNullable<SessionUser>;
 	pageSlug: string;
 }
 
 export const ChatInputStairs = ({
+	user,
 	className,
 	pageSlug,
 	...props
@@ -136,6 +138,7 @@ export const ChatInputStairs = ({
 				} else {
 					answered.current = true;
 					createChatMessage({
+						userId: user.id,
 						pageSlug,
 						messages: [
 							{

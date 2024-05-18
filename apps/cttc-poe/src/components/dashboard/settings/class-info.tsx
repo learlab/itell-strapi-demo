@@ -1,8 +1,8 @@
-import { SessionUser } from "@/lib/auth";
+import { User } from "@/drizzle/schema";
 import { QuitClass } from "./quit-class";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	teacherName: string;
 };
 

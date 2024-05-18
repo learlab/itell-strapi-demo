@@ -20,8 +20,10 @@ export const lucia = new Lucia(adapter, {
 			email: attributes.email,
 			role: attributes.role,
 			finished: attributes.finished,
+			classId: attributes.classId,
 			pageSlug: attributes.pageSlug,
 			prolificId: attributes.prolificId,
+			timeZone: attributes.timeZone,
 		};
 	},
 });
@@ -36,13 +38,15 @@ declare module "lucia" {
 
 interface DatabaseUserAttributes {
 	id: string;
-	name: string | undefined | null;
-	image: string | undefined | null;
-	email: string | undefined | null;
+	name: string | null;
+	image: string | null;
+	email: string | null;
 	role: string;
 	finished: boolean;
-	pageSlug: string | undefined | null;
-	prolificId: string | undefined | null;
+	classId: string | null;
+	pageSlug: string | null;
+	prolificId: string | null;
+	timeZone: string | null;
 }
 
 interface DatabaseSessionAttributes {}

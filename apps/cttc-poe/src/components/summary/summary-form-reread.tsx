@@ -191,6 +191,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			summaryResponse = parsed.data;
 			await createSummary({
 				text: input,
+				userId: user.id,
 				pageSlug,
 				condition: FeedbackType.RANDOM_REREAD,
 				isPassed: summaryResponse.is_passed || false,
@@ -198,11 +199,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				similarityScore: summaryResponse.similarity,
 				wordingScore: summaryResponse.wording,
 				contentScore: summaryResponse.content,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
 			});
 			await incrementUserPage(user.id, pageSlug);
 

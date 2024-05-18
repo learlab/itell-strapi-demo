@@ -1,5 +1,8 @@
+import { users } from "@/drizzle/schema";
 import { lucia } from "@/lib/auth";
-import db from "@/lib/db";
+import { db, first } from "@/lib/db";
+import { eq } from "drizzle-orm";
+import { generateIdFromEntropySize } from "lucia";
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
@@ -45,20 +48,22 @@ export async function GET(req: Request): Promise<Response> {
 	try {
 		const username = `Prolific ${pid}`;
 		setProlificOAuthState(pid);
-		let user = await db.user.findFirst({
-			where: {
-				name: username,
-			},
-		});
+		let user = first(
+			await db.select().from(users).where(eq(users.name, username)),
+		);
 
 		if (!user) {
-			user = await db.user.create({
-				data: {
+			const id = generateIdFromEntropySize(16);
+			const u = await db
+				.insert(users)
+				.values({
+					id,
 					name: username,
 					prolificId: pid,
 					role: "user",
-				},
-			});
+				})
+				.returning();
+			user = u[0];
 		}
 
 		const session = await lucia.createSession(user.id, {});
@@ -68,6 +73,7 @@ export async function GET(req: Request): Promise<Response> {
 			sessionCookie.value,
 			sessionCookie.attributes,
 		);
+
 		return new Response(null, {
 			status: 302,
 			headers: {

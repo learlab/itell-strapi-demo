@@ -1,10 +1,10 @@
+import { User } from "@/drizzle/schema";
 import { SessionUser } from "@/lib/auth";
 import {
 	ReadingTimeChartLevel,
 	ReadingTimeChartParams,
 } from "@itell/core/types";
 import { DashboardBadge } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ReadingTime } from "./reading-time";

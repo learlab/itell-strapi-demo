@@ -32,9 +32,7 @@ export type PageData = {
 	nextPageSlug: string | null;
 };
 
-export const getPageData = (
-	slug: string | undefined | null,
-): PageData | null => {
+export const getPageData = (slug: string | null): PageData | null => {
 	const index = allPagesSorted.findIndex((s) => s.page_slug === slug);
 	if (index === -1) {
 		return null;
@@ -88,4 +86,10 @@ export const scrollToElement = (element: HTMLElement) => {
 	const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
 
 	window.scrollTo({ top: y, behavior: "smooth" });
+};
+
+export const randomNumber = () => {
+	const array = new Uint32Array(1);
+	window.crypto.getRandomValues(array);
+	return array[0];
 };

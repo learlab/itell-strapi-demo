@@ -11,6 +11,7 @@ export const ExplainButton = ({
 	pageSlug,
 	chunkSlug,
 }: { pageSlug: string; chunkSlug: string }) => {
+	const { user } = useSession();
 	const [input, setInput] = useState("");
 	const [response, setResponse] = useState("");
 	const { pending, data } = useFormStatus();
@@ -54,11 +55,14 @@ export const ExplainButton = ({
 		}
 		setLoading(false);
 
-		createEvent({
-			eventType: "explain-constructed-response",
-			pageSlug,
-			data: { chunkSlug, response: chunkValue.text },
-		});
+		if (user) {
+			createEvent({
+				userId: user.id,
+				type: "explain-constructed-response",
+				pageSlug,
+				data: { chunkSlug, response: chunkValue.text },
+			});
+		}
 	};
 
 	useEffect(() => {

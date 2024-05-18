@@ -1,16 +1,9 @@
 "use client";
 
 import { Spinner } from "@/components/spinner";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
+import { User } from "@/drizzle/schema";
 import { SessionUser } from "@/lib/auth";
-import { updateUserClassId } from "@/lib/user/actions";
+import { updateUser } from "@/lib/user/actions";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -20,16 +13,14 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	Button,
 } from "@itell/ui/client";
-import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	user: User;
-	teacherToJoin: User | null;
+	user: NonNullable<SessionUser>;
+	teacherToJoin: User;
 	classId: string;
 };
 
@@ -41,7 +32,7 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 
 	const joinClass = async () => {
 		setJoinClassLoading(true);
-		await updateUserClassId({ userId: user.id, classId });
+		await updateUser(user.id, { classId });
 
 		setJoinClassLoading(false);
 
