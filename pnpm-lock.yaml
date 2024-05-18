@@ -674,9 +674,6 @@ importers:
       node-html-parser:
         specifier: ^6.1.12
         version: 6.1.13
-      pg:
-        specifier: ^8.11.5
-        version: 8.11.5
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -744,9 +741,6 @@ importers:
       '@biomejs/biome':
         specifier: ^1.5.2
         version: 1.7.1
-      '@types/pg':
-        specifier: ^8.11.6
-        version: 8.11.6
       '@types/qs':
         specifier: ^6.9.10
         version: 6.9.15
@@ -10665,6 +10659,7 @@ snapshots:
       '@types/node': 20.12.7
       pg-protocol: 1.6.1
       pg-types: 4.0.2
+    optional: true
 
   '@types/pluralize@0.0.31': {}
 
@@ -13448,7 +13443,8 @@ snapshots:
       has-symbols: 1.0.3
       object-keys: 1.1.1
 
-  obuf@1.1.2: {}
+  obuf@1.1.2:
+    optional: true
 
   oidc-token-hash@5.0.3: {}
 
@@ -13618,17 +13614,22 @@ snapshots:
   pg-cloudflare@1.1.1:
     optional: true
 
-  pg-connection-string@2.6.4: {}
+  pg-connection-string@2.6.4:
+    optional: true
 
-  pg-int8@1.0.1: {}
+  pg-int8@1.0.1:
+    optional: true
 
-  pg-numeric@1.0.2: {}
+  pg-numeric@1.0.2:
+    optional: true
 
   pg-pool@3.6.2(pg@8.11.5):
     dependencies:
       pg: 8.11.5
+    optional: true
 
-  pg-protocol@1.6.1: {}
+  pg-protocol@1.6.1:
+    optional: true
 
   pg-types@2.2.0:
     dependencies:
@@ -13637,6 +13638,7 @@ snapshots:
       postgres-bytea: 1.0.0
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
+    optional: true
 
   pg-types@4.0.2:
     dependencies:
@@ -13647,6 +13649,7 @@ snapshots:
       postgres-date: 2.1.0
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
+    optional: true
 
   pg@8.11.5:
     dependencies:
@@ -13657,10 +13660,12 @@ snapshots:
       pgpass: 1.0.5
     optionalDependencies:
       pg-cloudflare: 1.1.1
+    optional: true
 
   pgpass@1.0.5:
     dependencies:
       split2: 4.2.0
+    optional: true
 
   picocolors@1.0.0: {}
 
@@ -13732,27 +13737,36 @@ snapshots:
       picocolors: 1.0.0
       source-map-js: 1.2.0
 
-  postgres-array@2.0.0: {}
+  postgres-array@2.0.0:
+    optional: true
 
-  postgres-array@3.0.2: {}
+  postgres-array@3.0.2:
+    optional: true
 
-  postgres-bytea@1.0.0: {}
+  postgres-bytea@1.0.0:
+    optional: true
 
   postgres-bytea@3.0.0:
     dependencies:
       obuf: 1.1.2
+    optional: true
 
-  postgres-date@1.0.7: {}
+  postgres-date@1.0.7:
+    optional: true
 
-  postgres-date@2.1.0: {}
+  postgres-date@2.1.0:
+    optional: true
 
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
+    optional: true
 
-  postgres-interval@3.0.0: {}
+  postgres-interval@3.0.0:
+    optional: true
 
-  postgres-range@1.1.4: {}
+  postgres-range@1.1.4:
+    optional: true
 
   postgres@3.4.4: {}
 
@@ -14287,7 +14301,8 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  split2@4.2.0: {}
+  split2@4.2.0:
+    optional: true
 
   sprintf-js@1.0.3: {}
 
