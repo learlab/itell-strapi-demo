@@ -1,18 +1,16 @@
-import { getSession } from "@/lib/auth";
 import { getNotes } from "@/lib/note";
 import { NoteList } from "./note-list";
 
 type Props = {
+	userId: string | null;
 	pageSlug: string;
 };
 
-export const NoteLoader = async ({ pageSlug }: Props) => {
-	const { user } = await getSession();
-	if (!user) {
+export const NoteLoader = async ({ userId, pageSlug }: Props) => {
+	if (!userId) {
 		return null;
 	}
-
-	const notesAndHighlights = await getNotes(user.id, pageSlug);
+	const notesAndHighlights = await getNotes(userId, pageSlug);
 	const notes = notesAndHighlights.filter((note) => note.noteText !== null);
 	const highlights = notesAndHighlights.filter(
 		(note) => note.noteText === null,

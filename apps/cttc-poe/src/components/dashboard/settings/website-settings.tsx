@@ -14,6 +14,7 @@ import { User } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { updateUser } from "@/lib/user/actions";
 import { Errorbox } from "@itell/ui/server";
+import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
@@ -40,6 +41,7 @@ const SubmitButton = () => {
 };
 
 export const WebsiteSettings = ({ user }: { user: User }) => {
+	const router = useRouter();
 	const onSubmit = async (
 		prevState: FormState,
 		formData: FormData,
@@ -51,6 +53,7 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 		try {
 			await updateUser(user.id, data);
 			toast.success("Settings saved!");
+			router.refresh();
 			return { error: null };
 		} catch (err) {
 			return { error: "Failed to save settings. Please try again later." };

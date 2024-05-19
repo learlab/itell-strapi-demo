@@ -90,7 +90,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						)}
 					</PageTitle>
 					<PageContent code={page.body.code} />
-					<NoteToolbar pageSlug={pageSlug} user={user} />
+					<NoteToolbar pageSlug={pageSlug} userId={user?.id || null} />
 					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 				</section>
 
@@ -115,7 +115,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 							</p>
 						}
 					>
-						<NoteLoader pageSlug={pageSlug} />
+						<NoteLoader userId={user?.id || null} pageSlug={pageSlug} />
 					</Suspense>
 				</aside>
 			</div>
@@ -132,7 +132,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				pageStatus={pageStatus}
 			/>
-			<EventTracker user={user} pageSlug={pageSlug} chunks={chunks} />
+			<EventTracker
+				userId={user?.id || null}
+				pageSlug={pageSlug}
+				chunks={chunks}
+			/>
 			<Suspense fallback={<ChatLoader.Skeleton />}>
 				<ChatLoader pageSlug={pageSlug} />
 			</Suspense>

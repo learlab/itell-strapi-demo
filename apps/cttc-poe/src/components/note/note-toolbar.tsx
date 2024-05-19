@@ -20,11 +20,11 @@ import { Button } from "../client-components";
 type SelectionData = ReturnType<typeof useTextSelection>;
 
 type Props = {
-	user: SessionUser;
+	userId: string | null;
 	pageSlug: string;
 };
 
-export const NoteToolbar = ({ pageSlug, user }: Props) => {
+export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
@@ -58,7 +58,7 @@ export const NoteToolbar = ({ pageSlug, user }: Props) => {
 		};
 	}, []);
 
-	if (!user) return null;
+	if (!userId) return null;
 
 	const commands = [
 		{
@@ -114,7 +114,7 @@ export const NoteToolbar = ({ pageSlug, user }: Props) => {
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
 						pageSlug,
-						userId: user.id,
+						userId,
 						color: defaultHighlightColor,
 						range: serializedRange,
 					});
@@ -162,7 +162,7 @@ export const NoteToolbar = ({ pageSlug, user }: Props) => {
 								color="blue-gray"
 								className="flex items-center gap-2 p-2"
 								onClick={() => {
-									if (!user && command.label !== "Copy") {
+									if (!userId && command.label !== "Copy") {
 										return toast.warning("You need to be logged in first.");
 									}
 									command.action(data);
