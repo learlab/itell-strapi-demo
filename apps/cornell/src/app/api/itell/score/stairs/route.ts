@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { createFetchWithBearerToken } from "@itell/core/itellFetch";
 import { env } from "@/env.mjs";
 import type { ChatHistory } from "@itell/core/dist/chatbot/schema";
 import type { FocusTime } from "@prisma/client";
@@ -12,9 +12,7 @@ interface Data {
 }
 
 export async function POST(req: Request) {
-	const headers = new Headers();
-	headers.append("Content-Type", "application/json");
-	headers.append("API_Key", env.ITELL_API_KEY || "");
+	const ifetch = createFetchWithBearerToken(env.ITELL_API_KEY || "");
 
 	const data: Data = (await req.json()) as Data;
 
@@ -25,12 +23,14 @@ export async function POST(req: Request) {
 		chat_history: data.chat_history,
 		excluded_chunks: data.excluded_chunks,
 	});
-	const response = await fetch(
+	const response = await ifetch(
 		`${env.NEXT_PUBLIC_API_URL}/score/summary/stairs`,
 		{
 			method: "POST",
 			body: requestBody,
-			headers,
+			headers: {
+				"Content-Type": "application/json",
+			},
 		},
 	);
 
