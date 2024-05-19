@@ -1,11 +1,11 @@
 import { dashboardConfig } from "@/config/dashboard";
-import { getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { isTeacher } from "@/lib/user/teacher";
 import { Skeleton } from "@itell/ui/server";
 import { DashboardSidebarItem } from "./dashboard-sidebar-item";
 
 export const DashboardSidebar = async () => {
-	const user = await getSessionUser();
+	const { user } = await getSession();
 	if (!user) {
 		return null;
 	}

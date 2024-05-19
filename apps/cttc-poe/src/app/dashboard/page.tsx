@@ -5,7 +5,7 @@ import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
 import { Meta } from "@/config/metadata";
-import { getSession, getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
@@ -42,7 +42,7 @@ export default async function ({ searchParams }: Props) {
 		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
 	}
 
-	incrementView("home", searchParams);
+	incrementView(user.id, "dashboard", searchParams);
 
 	return (
 		<DashboardShell>

@@ -1,9 +1,9 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getSession, getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import { delay, redirectWithSearchParams } from "@/lib/utils";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ConstructedResponse } from "../../../components/dashboard/constructed-response";
@@ -16,7 +16,7 @@ export default async function () {
 		return redirectWithSearchParams("/auth");
 	}
 
-	incrementView("constructed-response");
+	incrementView(user.id, "constructed-response");
 
 	return (
 		<DashboardShell>

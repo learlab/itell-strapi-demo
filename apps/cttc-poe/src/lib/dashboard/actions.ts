@@ -4,7 +4,6 @@ import { events, teachers, users } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
 import { cache } from "react";
-import { getSessionUser } from "../auth";
 import { db, first } from "../db";
 
 export const getTeacherWithClassId = async (classId: string | null) => {
@@ -29,17 +28,18 @@ export const getTeacherWithClassId = async (classId: string | null) => {
 	return user;
 };
 
-const _incrementView = async (pageSlug: string, data?: any) => {
+const _incrementView = async (
+	userId: string,
+	pageSlug: string,
+	data?: unknown,
+) => {
 	noStore();
-	const user = await getSessionUser();
-	if (user) {
-		db.insert(events).values({
-			type: "dashboard_page_view",
-			pageSlug,
-			userId: user.id,
-			data,
-		});
-	}
+	db.insert(events).values({
+		type: "dashboard_page_view",
+		pageSlug,
+		userId,
+		data,
+	});
 };
 
 export const incrementView = cache(_incrementView);

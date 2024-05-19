@@ -1,6 +1,5 @@
 import { notes } from "@/drizzle/schema";
 import { and, eq, sql } from "drizzle-orm";
-import { SessionUser, getSessionUser } from "../auth";
 import { db } from "../db";
 
 export const getNotes = async (userId: string, pageSlug: string) => {

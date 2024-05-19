@@ -34,7 +34,7 @@ export const createChatMessage = async ({
 			data: messages,
 		});
 	} else {
-		const newData = [...(record.data as ChatMessageData[]), ...messages];
+		const newData = [...record.data, ...messages];
 		await db
 			.update(chat_messages)
 			.set({ data: newData })

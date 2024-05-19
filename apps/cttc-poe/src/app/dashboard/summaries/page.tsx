@@ -15,7 +15,7 @@ export default async function () {
 		return redirect("/auth");
 	}
 
-	incrementView("summaries");
+	incrementView(user.id, "summaries");
 
 	const userSummaries = await getUserSummaries(user.id);
 

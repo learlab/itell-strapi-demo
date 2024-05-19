@@ -3,7 +3,7 @@ import { ReviseSummaryButton } from "@/components/summary/revise-summary-button"
 import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { summaries } from "@/drizzle/schema";
-import { getSession, getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
@@ -45,7 +45,7 @@ export default async function ({ params }: PageProps) {
 		return notFound();
 	}
 
-	incrementView("summary", { summaryId: summary.id });
+	incrementView(user.id, "summary", { summaryId: summary.id });
 
 	return (
 		<div className="px-32 py-4">

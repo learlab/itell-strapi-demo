@@ -252,8 +252,7 @@ export const chat_messages = pgTable(
 	{
 		userId: text("user_id").notNull(),
 		pageSlug: text("page_slug").notNull(),
-		// TODO: failed to parse database type 'jsonb[]'
-		data: jsonb("data").array(),
+		data: customJsonb<ChatMessageData>("data").array().notNull(),
 		createdAt: CreatedAt,
 		updatedAt: UpdatedAt,
 	},

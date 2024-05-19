@@ -1,4 +1,4 @@
-import { getSession, getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { getChatMessages } from "@/lib/chat";
 import { Message } from "@itell/core/chatbot";
 import { Avatar, AvatarImage } from "../client-components";
