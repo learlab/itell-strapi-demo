@@ -21,14 +21,9 @@ type Props = {
 };
 
 export default async function ({ searchParams }: Props) {
-	const { user: sessionUser } = await getSession();
-	if (!sessionUser) {
-		return redirectWithSearchParams("auth", searchParams);
-	}
-
-	const user = await getUser(sessionUser.id);
+	const { user } = await getSession();
 	if (!user) {
-		return null;
+		return redirectWithSearchParams("auth", searchParams);
 	}
 
 	const { reading_time_level } =
@@ -72,7 +67,11 @@ export default async function ({ searchParams }: Props) {
 					</p>
 				)}
 
-				<UserStatistics user={user} readingTimeLevel={readingTimeLevel} />
+				<UserStatistics
+					userId={user.id}
+					userClassId={user.classId}
+					readingTimeLevel={readingTimeLevel}
+				/>
 			</div>
 		</DashboardShell>
 	);

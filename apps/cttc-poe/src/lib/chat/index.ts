@@ -23,7 +23,7 @@ export const getChatMessages = async (userId: string, pageSlug: string) => {
 	}
 
 	return {
-		data: record.data as ChatMessageData[],
+		data: record.data,
 		updatedAt: record.updatedAt,
 	};
 };

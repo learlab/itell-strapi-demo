@@ -1,9 +1,7 @@
-import { focus_times, summaries, users } from "@/drizzle/schema";
+import { focus_times, summaries } from "@/drizzle/schema";
 import { db, first } from "@/lib/db";
-import { delay } from "@/lib/utils";
 import {
 	PrevDaysLookup,
-	ReadingTimeEntry,
 	getGroupedReadingTime,
 	getReadingTimeChartData,
 } from "@itell/core/dashboard";
@@ -61,17 +59,34 @@ const getReadingTime = async (
 	// TODO: fix this query or how we store focus time data
 	// for records created before start date, they can still be updated
 	// but this won't be reflected in the reading time
-	const records = await db.execute(
-		sql`SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
-		FROM focus_times, jsonb_each(data) d
-		WHERE created_at >= ${
-			startDate.toISOString().split("T")[0]
-		} and user_id = ${userId}
-		GROUP BY created_at::date`,
+	const dataExpanded = db.$with("expanded").as(
+		db
+			.select({
+				value: sql`(jsonb_each(${focus_times.data})).value`.as("value"),
+				createdAt: sql<Date>`${focus_times.createdAt}::date`.as("createdAt"),
+			})
+			.from(focus_times)
+			.where(
+				and(
+					eq(focus_times.userId, userId),
+					gte(focus_times.createdAt, startDate),
+				),
+			),
 	);
 
+	const records = await db
+		.with(dataExpanded)
+		.select({
+			totalViewTime: sql<number>`sum(value::integer)::integer`.as(
+				"totalViewTime",
+			),
+			createdAt: dataExpanded.createdAt,
+		})
+		.from(dataExpanded)
+		.groupBy(dataExpanded.createdAt);
+
 	const readingTimeGrouped = await getGroupedReadingTime(
-		records as unknown as ReadingTimeEntry[],
+		records,
 		intervalDates,
 	);
 	return readingTimeGrouped;

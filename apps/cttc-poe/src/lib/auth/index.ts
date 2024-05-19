@@ -93,9 +93,5 @@ export const getSession = cache(
 	},
 );
 
-export async function getSessionUser() {
-	const { user } = await getSession();
-	return user;
-}
 export type Session = Awaited<ReturnType<typeof getSession>>;
-export type SessionUser = Awaited<ReturnType<typeof getSessionUser>>;
+export type SessionUser = LuciaUser | null;

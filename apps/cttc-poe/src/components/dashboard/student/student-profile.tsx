@@ -63,7 +63,11 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 				</div>
 			</CardHeader>
 			<CardContent>
-				<UserStatistics user={student} readingTimeLevel={readingTimeLevel} />
+				<UserStatistics
+					userId={student.id}
+					userClassId={student.classId}
+					readingTimeLevel={readingTimeLevel}
+				/>
 			</CardContent>
 		</Card>
 	);

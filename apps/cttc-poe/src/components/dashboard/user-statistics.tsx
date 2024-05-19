@@ -12,11 +12,16 @@ import { StudentBadges } from "./student/student-badges";
 import { UserBadges } from "./user/user-badges";
 
 type Props = {
-	user: User;
+	userId: string;
+	userClassId: string | null;
 	readingTimeLevel: ReadingTimeChartLevel;
 };
 
-export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
+export const UserStatistics = ({
+	userId,
+	userClassId,
+	readingTimeLevel,
+}: Props) => {
 	// if searchParams is not passed as prop here, readingTimeParams will always be week 1
 	// and switching levels in UserStatisticsControl won't work (although query params are set)
 	// future work is to restructure the component hierarchy
@@ -29,10 +34,10 @@ export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 				<Suspense fallback={<DashboardBadge.Skeletons />}>
 					<ErrorBoundary fallback={<UserBadges.ErrorFallback />}>
-						{user.classId ? (
-							<StudentBadges userId={user.id} classId={user.classId} />
+						{userClassId ? (
+							<StudentBadges userId={userId} classId={userClassId} />
 						) : (
-							<UserBadges userId={user.id} />
+							<UserBadges userId={userId} />
 						)}
 					</ErrorBoundary>
 				</Suspense>
@@ -40,7 +45,7 @@ export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 
 			<Suspense fallback={<ReadingTime.Skeleton />}>
 				<ErrorBoundary fallback={<ReadingTime.ErrorFallback />}>
-					<ReadingTime userId={user.id} params={readingTimeParams} />
+					<ReadingTime userId={userId} params={readingTimeParams} />
 				</ErrorBoundary>
 			</Suspense>
 		</div>

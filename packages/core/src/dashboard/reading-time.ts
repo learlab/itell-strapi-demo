@@ -1,9 +1,9 @@
+import { format } from "date-fns";
 import {
 	ReadingTimeChartLevel,
 	ReadingTimeChartParams,
 } from "../types/reading-time";
 import { formatDate } from "../utils";
-import { format } from "date-fns";
 
 export const PrevDaysLookup = {
 	[ReadingTimeChartLevel.week_1]: 6,
@@ -14,8 +14,8 @@ export const PrevDaysLookup = {
 } as const;
 
 export type ReadingTimeEntry = {
-	total_view_time: number;
-	created_at: Date;
+	totalViewTime: number;
+	createdAt: Date;
 };
 
 export const getGroupedReadingTime = async (
@@ -25,7 +25,7 @@ export const getGroupedReadingTime = async (
 	// fetch reading time during last week
 	const readingTimeByGroup = data.reduce((acc, entry) => {
 		// for some legacy records, totalViewTime is null
-		const entryDate = new Date(entry.created_at);
+		const entryDate = new Date(entry.createdAt);
 		// find the smallest date in intervalDates that is greater than entryDate
 		const thresholdDate = intervalDates.find((date) => entryDate <= date);
 
@@ -33,7 +33,7 @@ export const getGroupedReadingTime = async (
 			const formattedDate = formatDate(thresholdDate, "yyyy-MM-dd");
 			acc.set(
 				formattedDate,
-				(acc.get(formattedDate) || 0) + entry.total_view_time,
+				(acc.get(formattedDate) || 0) + entry.totalViewTime,
 			);
 		} else {
 			// when the entry date is greater than the last date in intervalDates, group it with the last date
@@ -41,7 +41,7 @@ export const getGroupedReadingTime = async (
 			const formattedDate = formatDate(lastDate, "yyyy-MM-dd");
 			acc.set(
 				formattedDate,
-				(acc.get(formattedDate) || 0) + entry.total_view_time,
+				(acc.get(formattedDate) || 0) + entry.totalViewTime,
 			);
 		}
 
