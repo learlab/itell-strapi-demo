@@ -10,7 +10,7 @@ export const createFetchWithBearerToken = (bearerToken?: string) => {
 
     const token = optionsBearerToken || bearerToken;
     if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
+      headers.set('API-Key', token);
     }
 
     return fetch(url, {
