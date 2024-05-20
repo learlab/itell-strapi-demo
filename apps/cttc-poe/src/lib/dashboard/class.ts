@@ -3,7 +3,12 @@ import { count, eq } from "drizzle-orm";
 import { db, first } from "../db";
 
 export const getClassStudents = async (classId: string) => {
-	return await db.select().from(users).where(eq(users.classId, classId));
+	return await db
+		.select({
+			id: users.id,
+		})
+		.from(users)
+		.where(eq(users.classId, classId));
 };
 export type StudentStats = Awaited<ReturnType<typeof getClassStudentStats>>;
 export const getClassStudentStats = async (classId: string) => {

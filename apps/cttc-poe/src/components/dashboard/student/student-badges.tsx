@@ -16,12 +16,9 @@ export const StudentBadges = async ({
 	classId,
 }: { userId: string; classId: string }) => {
 	const students = await getClassStudents(classId);
-	const ids = students
-		.map((student) => student.id)
-		.filter((id) => id !== userId);
 	const [studentStats, otherStats] = await Promise.all([
 		getBadgeStats(userId),
-		getClassBadgeStats(ids),
+		getClassBadgeStats(students),
 	]);
 
 	const comparisons = {

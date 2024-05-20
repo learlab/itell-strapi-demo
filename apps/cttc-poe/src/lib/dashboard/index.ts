@@ -91,8 +91,8 @@ export const getBadgeStats = async (userId: string) => {
 	};
 };
 
-export const getClassBadgeStats = async (uids: string[]) => {
-	if (uids.length === 0) {
+export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
+	if (ids.length === 0) {
 		return {
 			avgContentScore: 0,
 			avgWordingScore: 0,
@@ -102,6 +102,7 @@ export const getClassBadgeStats = async (uids: string[]) => {
 			passedConstructedResponses: 0,
 		};
 	}
+	const students = ids.map((id) => id.id);
 	const [scores, allSummaries, allConstructedResponses] = await Promise.all([
 		db
 			.select({
@@ -109,17 +110,17 @@ export const getClassBadgeStats = async (uids: string[]) => {
 				contentScore: avg(summaries.contentScore).mapWith(Number),
 			})
 			.from(summaries)
-			.where(and(inArray(summaries.userId, uids))),
+			.where(and(inArray(summaries.userId, students))),
 
 		db
 			.select()
 			.from(summaries)
-			.where(and(inArray(summaries.userId, uids))),
+			.where(and(inArray(summaries.userId, students))),
 
 		db
 			.select()
 			.from(constructed_responses)
-			.where(and(inArray(constructed_responses.userId, uids))),
+			.where(and(inArray(constructed_responses.userId, students))),
 	]);
 
 	const score = first(scores);
