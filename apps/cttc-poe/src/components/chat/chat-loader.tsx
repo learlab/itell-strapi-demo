@@ -1,5 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { getChatMessages } from "@/lib/chat";
+import { Condition } from "@/lib/control/condition";
 import { Message } from "@itell/core/chatbot";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";
@@ -7,9 +8,14 @@ import { Chat } from "./chat";
 
 type Props = {
 	pageSlug: string;
+	condition: string;
 };
 
-export const ChatLoader = async ({ pageSlug }: Props) => {
+export const ChatLoader = async ({ pageSlug, condition }: Props) => {
+	if (condition !== Condition.STAIRS) {
+		return null;
+	}
+
 	const { user } = await getSession();
 	if (!user) {
 		return null;

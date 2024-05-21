@@ -2,6 +2,7 @@ import { users } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth";
 import { googleProvider } from "@/lib/auth/google";
+import { Condition } from "@/lib/control/condition";
 import { db, first } from "@/lib/db";
 import * as Sentry from "@sentry/nextjs";
 import { eq } from "drizzle-orm";
@@ -64,6 +65,7 @@ export async function GET(req: Request) {
 						image: googleUser.picture,
 						email: googleUser.email,
 						googleId: googleUser.id,
+						condition: Condition.STAIRS,
 						role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
 					})
 					.returning()

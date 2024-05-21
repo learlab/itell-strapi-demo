@@ -29,7 +29,9 @@ export const TeacherClass = async ({ classId }: { classId: string }) => {
 				<h3 className="mb-4 text-lg font-medium">Average Class Statistics</h3>
 				<Suspense fallback={<TeacherBadges.Skeleton />}>
 					<ErrorBoundary fallback={<TeacherBadges.ErrorFallback />}>
-						<TeacherBadges studentIds={students.map((student) => student.id)} />
+						<TeacherBadges
+							students={students.map((student) => ({ id: student.id }))}
+						/>
 					</ErrorBoundary>
 				</Suspense>
 

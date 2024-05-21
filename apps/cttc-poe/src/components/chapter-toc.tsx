@@ -3,6 +3,7 @@
 import { SessionUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
+import { Condition } from "@/lib/control/condition";
 import { getPageStatus } from "@/lib/page-status";
 import { tocChapters } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
@@ -42,16 +43,20 @@ const AnchorLink = ({
 
 type Props = {
 	currentPage: Page;
+	userId: string | null;
 	userRole: string;
 	userFinished: boolean;
 	userPageSlug: string | null;
+	condition: string;
 };
 
 export const ChapterToc = ({
 	currentPage,
+	userId,
 	userRole,
 	userPageSlug,
 	userFinished,
+	condition,
 }: Props) => {
 	const [activePage, setActivePage] = useState(currentPage.page_slug);
 	const [pending, startTransition] = useTransition();
@@ -73,18 +78,21 @@ export const ChapterToc = ({
 							key={chapter.page_slug}
 							defaultOpen={currentPage.chapter === chapter.chapter}
 						>
-							<Link
-								href={makePageHref(chapter.page_slug)}
-								className="flex px-1 py-2 items-center"
-							>
-								<p className="text-left text-pretty">{chapter.title}</p>
-								<CollapsibleTrigger asChild>
+							<CollapsibleTrigger asChild>
+								<div className="flex items-center gap-2">
+									<Link
+										href={makePageHref(chapter.page_slug)}
+										className="flex px-1 py-2 items-center"
+									>
+										<p className="text-left text-pretty">{chapter.title}</p>
+									</Link>
 									<Button variant={"ghost"} className="p-1">
 										<ChevronsUpDown className="size-4" />
 										<span className="sr-only">Toggle</span>
 									</Button>
-								</CollapsibleTrigger>
-							</Link>
+								</div>
+							</CollapsibleTrigger>
+
 							<CollapsibleContent>
 								<ol className="space-y-1 text-sm px-1">
 									{chapter.items.map((item) => {
@@ -127,9 +135,11 @@ export const ChapterToc = ({
 				})}
 			</ol>
 			<div className="mt-12 space-y-2">
-				{isAdmin(userRole) && <AdminTools />}
+				{isAdmin(userRole) && userId && (
+					<AdminTools userId={userId} condition={condition} />
+				)}
 				<RestartPageButton pageSlug={currentPage.page_slug} />
-				{currentPage.summary && (
+				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4" />}
 						text="Write a summary"

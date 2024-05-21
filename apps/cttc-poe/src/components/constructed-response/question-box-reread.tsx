@@ -3,7 +3,7 @@
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
 import { cn } from "@itell/core/utils";
@@ -100,7 +100,7 @@ export const QuestionBoxReread = ({
 			createConstructedResponse({
 				userId: user.id,
 				text: input,
-				condition: FeedbackType.RANDOM_REREAD,
+				condition: Condition.RANDOM_REREAD,
 				chunkSlug,
 				pageSlug,
 				score,

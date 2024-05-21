@@ -13,17 +13,20 @@ import {
 	SheetTrigger,
 	Switch,
 } from "@/components/client-components";
-import { useSession } from "@/lib/auth/context";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
+import { updateUser } from "@/lib/user/actions";
 import { SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { useConstructedResponse, usePage } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 
-export const AdminTools = () => {
-	const { user } = useSession();
-	const { feedbackType: feedback, setFeedbackType } = usePage((state) => state);
+type Props = {
+	userId: string;
+	condition: string;
+};
+
+export const AdminTools = ({ userId, condition }: Props) => {
 	const finishPage = useConstructedResponse((state) => state.finishPage);
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
@@ -31,11 +34,11 @@ export const AdminTools = () => {
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
-		const feedbackType = String(formData.get("ai-feedback")) as FeedbackType;
-		setFeedbackType(feedbackType);
-		finishPage();
+		const condition = String(formData.get("condition"));
 
-		startTransition(() => {
+		startTransition(async () => {
+			await updateUser(userId, { condition });
+			finishPage();
 			router.refresh();
 		});
 	};
@@ -51,24 +54,24 @@ export const AdminTools = () => {
 				<SheetHeader>
 					<SheetTitle>Configure ITELL</SheetTitle>
 					<SheetDescription>
-						You can view this because {user?.email} is recognized as an admin.
+						You can view this because you are recognized as an admin.
 					</SheetDescription>
 				</SheetHeader>
 				<form className="grid gap-8 py-4" onSubmit={onSubmit}>
 					<div className="flex flex-col gap-4">
 						<Label htmlFor="ai-feedback">AI feedback</Label>
 						<RadioGroup
-							id="ai-feedback"
-							name="ai-feedback"
-							defaultValue={feedback}
+							id="condition"
+							name="condition"
+							defaultValue={condition}
 						>
 							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem
-									value={FeedbackType.SIMPLE}
-									id={FeedbackType.SIMPLE}
+									value={Condition.SIMPLE}
+									id={Condition.SIMPLE}
 								/>
 								<div>
-									<Label htmlFor={FeedbackType.SIMPLE}>Simple</Label>
+									<Label htmlFor={Condition.SIMPLE}>Simple</Label>
 									<p className="text-sm text-muted-foreground">
 										No question and summary. Workers will read short questions
 										and their correct answers and read professional summaries of
@@ -80,11 +83,11 @@ export const AdminTools = () => {
 
 							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem
-									value={FeedbackType.RANDOM_REREAD}
-									id={FeedbackType.RANDOM_REREAD}
+									value={Condition.RANDOM_REREAD}
+									id={Condition.RANDOM_REREAD}
 								/>
 								<div>
-									<Label htmlFor={FeedbackType.RANDOM_REREAD}>
+									<Label htmlFor={Condition.RANDOM_REREAD}>
 										Random rereading
 									</Label>
 									<p className="text-sm text-muted-foreground">
@@ -97,11 +100,11 @@ export const AdminTools = () => {
 
 							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem
-									value={FeedbackType.STAIRS}
-									id={FeedbackType.STAIRS}
+									value={Condition.STAIRS}
+									id={Condition.STAIRS}
 								/>
 								<div>
-									<Label htmlFor={FeedbackType.STAIRS}>Stairs</Label>
+									<Label htmlFor={Condition.STAIRS}>Stairs</Label>
 									<p className="text-sm text-muted-foreground">
 										With question and summary, and feedback on correctness. User
 										will interact with stairs for failing summaries.

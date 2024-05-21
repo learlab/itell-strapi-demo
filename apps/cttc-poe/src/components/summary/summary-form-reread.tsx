@@ -2,7 +2,7 @@
 
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -15,7 +15,6 @@ import {
 	ErrorType,
 	SummaryResponse,
 	SummaryResponseSchema,
-	validateSummary,
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
@@ -26,7 +25,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button } from "../client-components";
 import { PageLink } from "../page/page-link";
-import { useConstructedResponse, usePage } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
 
@@ -157,15 +156,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 		saveSummaryLocal(pageSlug, input);
 
-		const error = validateSummary(
-			input,
-			state.prevInput === "" ? undefined : state.prevInput,
-		);
 		dispatch({ type: "set_prev_input", payload: input });
-		if (error) {
-			dispatch({ type: "fail", payload: error });
-			return;
-		}
 
 		let requestBody = "";
 		let summaryResponse: SummaryResponse | null = null;
@@ -193,7 +184,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				text: input,
 				userId: user.id,
 				pageSlug,
-				condition: FeedbackType.RANDOM_REREAD,
+				condition: Condition.RANDOM_REREAD,
 				isPassed: summaryResponse.is_passed || false,
 				containmentScore: summaryResponse.containment,
 				similarityScore: summaryResponse.similarity,

@@ -1,11 +1,9 @@
 "use client";
 
 import { SessionUser } from "@/lib/auth";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { PageData } from "@/lib/utils";
-import { Fragment } from "react";
-import { usePage } from "../provider/page-provider";
 import { SummaryDescription } from "./summary-description";
 import { SummaryFormReread } from "./summary-form-reread";
 import { SummaryFormSimple } from "./summary-form-simple";
@@ -15,16 +13,20 @@ type Props = {
 	user: NonNullable<SessionUser>;
 	page: PageData;
 	pageStatus: PageStatus;
+	condition: string;
 };
 
-export const SummaryFormSelector = ({ user, page, pageStatus }: Props) => {
-	const feedbackType = usePage((state) => state.feedbackType);
-
-	if (feedbackType === FeedbackType.SIMPLE) {
+export const SummaryFormSelector = ({
+	user,
+	page,
+	pageStatus,
+	condition,
+}: Props) => {
+	if (condition === Condition.SIMPLE) {
 		return <SummaryFormSimple />;
 	}
 
-	if (feedbackType === FeedbackType.RANDOM_REREAD) {
+	if (condition === Condition.RANDOM_REREAD) {
 		return (
 			<section className="flex flex-col sm:flex-row gap-8" id="page-summary">
 				<section className="sm:basis-1/3">
@@ -37,7 +39,7 @@ export const SummaryFormSelector = ({ user, page, pageStatus }: Props) => {
 		);
 	}
 
-	if (feedbackType === FeedbackType.STAIRS) {
+	if (condition === Condition.STAIRS) {
 		return (
 			<section className="flex flex-col sm:flex-row gap-8" id="page-summary">
 				<section className="sm:basis-1/3">

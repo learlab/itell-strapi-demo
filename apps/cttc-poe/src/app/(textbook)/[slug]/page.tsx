@@ -12,10 +12,14 @@ import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/page/page-content";
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { PageSummary } from "@/components/summary/page-summary";
+import {
+	PageSummary,
+	PageSummaryNoUser,
+} from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
 import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
+import { Condition } from "@/lib/control/condition";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
@@ -55,6 +59,12 @@ export default async function ({ params }: { params: { slug: string } }) {
 	});
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
+	const userRole = user?.role || "user";
+	const userId = user?.id || null;
+	const userFinished = user?.finished || false;
+	const userPageSlug = user?.pageSlug || null;
+	const userCondition = user?.condition || Condition.STAIRS;
+
 	return (
 		<PageProvider
 			pageSlug={pageSlug}
@@ -69,9 +79,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 				>
 					<ChapterToc
 						currentPage={page}
-						userPageSlug={user?.pageSlug || null}
-						userFinished={user?.finished || false}
-						userRole={user?.role || "user"}
+						userId={userId}
+						userPageSlug={userPageSlug}
+						userFinished={userFinished}
+						userRole={userRole}
+						condition={userCondition}
 					/>
 				</aside>
 
@@ -90,7 +102,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						)}
 					</PageTitle>
 					<PageContent code={page.body.code} />
-					<NoteToolbar pageSlug={pageSlug} userId={user?.id || null} />
+					<NoteToolbar pageSlug={pageSlug} userId={userId} />
 					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 				</section>
 
@@ -115,14 +127,19 @@ export default async function ({ params }: { params: { slug: string } }) {
 							</p>
 						}
 					>
-						<NoteLoader userId={user?.id || null} pageSlug={pageSlug} />
+						<NoteLoader userId={userId} pageSlug={pageSlug} />
 					</Suspense>
 				</aside>
 			</div>
 
-			{page.summary && (
+			{page.summary && user && (
 				<footer>
-					<PageSummary pageSlug={pageSlug} pageStatus={pageStatus} />
+					<PageSummary
+						pageSlug={pageSlug}
+						pageStatus={pageStatus}
+						user={user}
+						condition={userCondition}
+					/>
 				</footer>
 			)}
 
@@ -131,14 +148,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
 				pageStatus={pageStatus}
+				condition={userCondition}
 			/>
-			<EventTracker
-				userId={user?.id || null}
-				pageSlug={pageSlug}
-				chunks={chunks}
-			/>
+			<EventTracker userId={userId} pageSlug={pageSlug} chunks={chunks} />
 			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader pageSlug={pageSlug} />
+				<ChatLoader pageSlug={pageSlug} condition={userCondition} />
 			</Suspense>
 		</PageProvider>
 	);

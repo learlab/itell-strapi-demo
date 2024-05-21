@@ -1,5 +1,6 @@
 import { users } from "@/drizzle/schema";
 import { lucia } from "@/lib/auth";
+import { getUserCondition } from "@/lib/control/condition";
 import { db, first } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
@@ -60,6 +61,7 @@ export async function GET(req: Request): Promise<Response> {
 					id,
 					name: username,
 					prolificId: pid,
+					condition: getUserCondition(pid),
 					role: "user",
 				})
 				.returning();

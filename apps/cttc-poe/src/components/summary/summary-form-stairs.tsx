@@ -3,7 +3,7 @@
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -362,7 +362,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					text: input,
 					userId: user.id,
 					pageSlug,
-					condition: FeedbackType.STAIRS,
+					condition: Condition.STAIRS,
 					isPassed: summaryResponse.is_passed || false,
 					containmentScore: summaryResponse.containment,
 					similarityScore: summaryResponse.similarity,

@@ -4,7 +4,7 @@ import { Confetti } from "@/components/ui/confetti";
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
 // import shake effect
@@ -132,7 +132,7 @@ export const QuestionBoxStairs = ({
 				chunkSlug,
 				pageSlug,
 				score,
-				condition: FeedbackType.STAIRS,
+				condition: Condition.STAIRS,
 			});
 
 			// if answer is correct, mark chunk as finished
