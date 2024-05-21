@@ -1,4 +1,4 @@
-import { createFetchWithBearerToken } from "@itell/core/itellFetch";
+import { ifetch } from "@/lib/api";
 import { env } from "@/env.mjs";
 import type { ChatHistory } from "@itell/core/dist/chatbot/schema";
 import type { FocusTime } from "@prisma/client";
@@ -12,8 +12,6 @@ interface Data {
 }
 
 export async function POST(req: Request) {
-	const ifetch = createFetchWithBearerToken(env.ITELL_API_KEY || "");
-
 	const data: Data = (await req.json()) as Data;
 
 	const requestBody = JSON.stringify({
