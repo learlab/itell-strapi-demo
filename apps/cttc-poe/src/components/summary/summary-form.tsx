@@ -1,9 +1,9 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
+import type { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { isLastPage } from "@/lib/location";
-import { PageStatus } from "@/lib/page-status";
+import type { PageStatus } from "@/lib/page-status";
 import {
 	createSummary,
 	findFocusTime,
@@ -15,7 +15,7 @@ import {
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { getFeedback } from "@/lib/summary";
 import {
-	PageData,
+	type PageData,
 	getChunkElement,
 	makeInputKey,
 	makePageHref,
@@ -25,7 +25,7 @@ import { usePortal } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
-	SummaryResponse,
+	type SummaryResponse,
 	SummaryResponseSchema,
 	simpleSummaryResponse,
 	validateSummary,
@@ -44,7 +44,7 @@ import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput } from "./summary-input";
-import { StageItem } from "./summary-progress";
+import type { StageItem } from "./summary-progress";
 import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
@@ -262,19 +262,15 @@ export const SummaryForm = ({
 					chat_history: getChatHistory(messages),
 					excluded_chunks: excludedChunks,
 				});
-				const response = await fetch(
-					"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
-					{
-						method: "POST",
-						body: requestBody,
-						headers: {
-							"Content-Type": "application/json",
-						},
+				const response = await fetch("/api/itell/score/stairs", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
 					},
-				);
-				console.log("request body", requestBody);
+					body: requestBody,
+				});
 
-				if (response.body) {
+				if (response.ok && response.body) {
 					const reader = response.body.getReader();
 					const decoder = new TextDecoder();
 					let done = false;
@@ -415,7 +411,7 @@ export const SummaryForm = ({
 							onClick: () => {
 								router.push(makePageHref(page.nextPageSlug as string));
 							},
-					  }
+						}
 					: undefined,
 			});
 		}

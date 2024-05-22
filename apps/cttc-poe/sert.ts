@@ -30,18 +30,15 @@ const b3 = {
 };
 
 const main = async () => {
-	const response = await fetch(
-		"https://itell-api.learlab.vanderbilt.edu/score/summary/stairs",
-		{
-			method: "POST",
-			body: JSON.stringify(b1),
-			headers: {
-				"Content-Type": "application/json",
-			},
+	const response = await fetch("/api/itell/score/stairs", {
+		method: "POST",
+		body: JSON.stringify(b1),
+		headers: {
+			"Content-Type": "application/json",
 		},
-	);
+	});
 
-	if (response.body) {
+	if (response.ok && response.body) {
 		const reader = response.body.getReader();
 		const decoder = new TextDecoder();
 		let done = false;

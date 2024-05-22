@@ -20,6 +20,7 @@ const server = z.object({
 		.string()
 		.optional()
 		.transform((val) => (val ? JSON.parse(val) : [])),
+	ITELL_API_KEY: z.string().optional(),
 });
 
 /**
@@ -49,6 +50,7 @@ const processEnv = {
 	ADMINS: process.env.ADMINS,
 	CLASS_ONE_EMAILS: process.env.CLASS_ONE_EMAILS,
 	CLASS_TWO_EMAILS: process.env.CLASS_TWO_EMAILS,
+	ITELL_API_KEY: process.env.ITELL_API_KEY,
 };
 
 // Don't touch the part below
