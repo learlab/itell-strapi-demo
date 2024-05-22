@@ -1,13 +1,13 @@
 "use client";
 
-import { Errorbox, Input } from "@itell/ui/server";
-import { useSearchParams } from "next/navigation";
-import { getTeacherWithClassId } from "@/lib/server-actions";
-import { useFormState, useFormStatus } from "react-dom";
-import { User } from "@prisma/client";
-import { ClassInviteModal } from "./class-invite-modal";
-import { Button } from "@itell/ui/client";
 import { Spinner } from "@/components/spinner";
+import { User } from "@/drizzle/schema";
+import { getTeacherWithClassId } from "@/lib/dashboard/actions";
+import { useSafeSearchParams } from "@/lib/navigation";
+import { Button } from "@itell/ui/client";
+import { Errorbox, Input } from "@itell/ui/server";
+import { useFormState, useFormStatus } from "react-dom";
+import { ClassInviteModal } from "./class-invite-modal";
 
 type Props = {
 	user: User;
@@ -22,7 +22,7 @@ const onSubmit = async (
 	prevState: FormState,
 	formData: FormData,
 ): Promise<FormState> => {
-	const classId = formData.get("code") as string;
+	const classId = String(formData.get("code"));
 	const teacher = await getTeacherWithClassId(classId);
 
 	if (!teacher) {
@@ -46,11 +46,11 @@ export const SubmitButton = () => {
 };
 
 export const JoinClassForm = ({ user }: Props) => {
-	const searchParams = useSearchParams();
+	const { join_class_code } = useSafeSearchParams("settings");
 	const [formState, formAction] = useFormState(onSubmit, {
 		teacher: null,
 		error: null,
-		classId: searchParams?.get("join_class_code") || "",
+		classId: join_class_code || "",
 	});
 
 	return (
@@ -76,7 +76,8 @@ export const JoinClassForm = ({ user }: Props) => {
 			{/* dialog to confirm joining a class */}
 			{formState.teacher && (
 				<ClassInviteModal
-					user={user}
+					userId={user.id}
+					userClassId={user.classId}
 					teacherToJoin={formState.teacher}
 					classId={formState.classId}
 				/>

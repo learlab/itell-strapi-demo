@@ -1,5 +1,7 @@
 "use client";
 
+import { logout } from "@/lib/auth/actions";
+import { useSession } from "@/lib/auth/context";
 import {
 	ChevronDownIcon,
 	ChevronUpIcon,
@@ -9,8 +11,8 @@ import {
 	LogOutIcon,
 	SettingsIcon,
 } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
 	Button,
@@ -25,13 +27,9 @@ import { UserAvatar } from "./user-avatar";
 
 export const UserAccountNav = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
-	const { data: session, status } = useSession();
-	const user = session?.user;
+	const router = useRouter();
+	const { user } = useSession();
 	const [pending, setPending] = useState(false);
-
-	if (status === "loading") {
-		return <Spinner />;
-	}
 
 	if (!user) {
 		return (
@@ -45,7 +43,7 @@ export const UserAccountNav = () => {
 		<div className="ml-auto flex items-center gap-1">
 			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
-					<UserAvatar user={user} className="h-8 w-8" />
+					<UserAvatar image={user.image} name={user.name} className="h-8 w-8" />
 					{menuOpen ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
@@ -93,10 +91,9 @@ export const UserAccountNav = () => {
 						onSelect={async (event) => {
 							event.preventDefault();
 							setPending(true);
-							await signOut({
-								callbackUrl: `${window.location.origin}/auth`,
-							});
+							await logout();
 							setPending(false);
+							router.push("/auth");
 						}}
 					>
 						{pending ? (

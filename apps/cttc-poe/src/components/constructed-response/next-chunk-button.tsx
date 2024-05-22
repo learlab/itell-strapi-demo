@@ -1,6 +1,7 @@
 "use client";
 
-import { createEvent } from "@/lib/server-actions";
+import { useSession } from "@/lib/auth/context";
+import { createEvent } from "@/lib/event/actions";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
@@ -23,6 +24,7 @@ export const NextChunkButton = ({
 	...rest
 }: Props) => {
 	const advancedChunk = useConstructedResponse((state) => state.advanceChunk);
+	const { user } = useSession();
 
 	const onSubmit = async () => {
 		advancedChunk(chunkSlug);
@@ -30,13 +32,16 @@ export const NextChunkButton = ({
 		if (onClick) {
 			onClick();
 		}
-		await createEvent({
-			eventType: clickEventType,
-			page: location.href,
-			data: {
-				currentChunk: chunkSlug,
-			},
-		});
+		if (user) {
+			await createEvent({
+				type: clickEventType,
+				pageSlug,
+				userId: user.id,
+				data: {
+					currentChunk: chunkSlug,
+				},
+			});
+		}
 	};
 
 	return (

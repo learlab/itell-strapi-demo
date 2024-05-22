@@ -1,24 +1,29 @@
 "use client";
 
+import { Condition } from "@/lib/control/condition";
+import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
 import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
-import { QuestionBox } from "./question-box";
+import { QuestionBoxReread } from "./question-box-reread";
+import { QuestionBoxStairs } from "./question-box-stairs";
 import { ScrollBackButton } from "./scroll-back-button";
 
 type Props = {
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
-	isFeedbackEnabled: boolean;
+	pageStatus: PageStatus;
+	condition: string;
 };
 
 export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
-	isFeedbackEnabled,
+	pageStatus,
+	condition,
 }: Props) => {
 	// Ref for current chunk
 	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
@@ -30,6 +35,7 @@ export const ConstructedResponseControl = ({
 	);
 
 	const { nodes, addNode } = usePortal();
+	const hasFeedback = condition !== Condition.SIMPLE;
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
@@ -97,16 +103,31 @@ export const ConstructedResponseControl = ({
 
 		const q = selectedQuestions.get(chunkId);
 		if (q) {
-			addNode(
-				<QuestionBox
-					question={q.question}
-					answer={q.answer}
-					chunkSlug={chunkId}
-					pageSlug={pageSlug}
-					isFeedbackEnabled={isFeedbackEnabled}
-				/>,
-				questionContainer,
-			);
+			if (condition === Condition.STAIRS) {
+				addNode(
+					<QuestionBoxStairs
+						question={q.question}
+						answer={q.answer}
+						chunkSlug={chunkId}
+						pageSlug={pageSlug}
+						pageStatus={pageStatus}
+					/>,
+					questionContainer,
+				);
+			}
+
+			if (condition === Condition.RANDOM_REREAD) {
+				addNode(
+					<QuestionBoxReread
+						question={q.question}
+						answer={q.answer}
+						chunkSlug={chunkId}
+						pageSlug={pageSlug}
+						pageStatus={pageStatus}
+					/>,
+					questionContainer,
+				);
+			}
 		}
 	};
 
@@ -177,11 +198,15 @@ export const ConstructedResponseControl = ({
 	};
 
 	useEffect(() => {
-		chunks.forEach(processChunk);
+		if (hasFeedback) {
+			chunks.forEach(processChunk);
+		}
 	}, []);
 
 	useEffect(() => {
-		revealChunk(currentChunk);
+		if (hasFeedback) {
+			revealChunk(currentChunk);
+		}
 	}, [currentChunk]);
 
 	return nodes;

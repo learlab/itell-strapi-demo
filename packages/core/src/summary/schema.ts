@@ -1,19 +1,9 @@
 import { z } from "zod";
 
 const PromptDetailsSchema = z.object({
-	type: z.enum([
-		"Topic Similarity",
-		"Language Borrowing",
-		"Language Borrowing (from iTELL AI)",
-		"Content",
-		"Wording",
-		"English",
-		"Relevance",
-		"Profanity",
-	]),
+	type: z.string(),
 	feedback: z.object({
 		// isPassed is null for content and wording when containment does not pass
-
 		is_passed: z.boolean().nullable(),
 		prompt: z.string().nullable(),
 	}),
@@ -28,9 +18,9 @@ export const SummaryResponseSchema = z.object({
 	english: z.boolean(),
 	included_keyphrases: z.array(z.string()),
 	suggested_keyphrases: z.array(z.string()),
-	is_passed: z.boolean(),
-	prompt: z.string(),
-	prompt_details: z.array(PromptDetailsSchema),
+	is_passed: z.boolean().optional(),
+	prompt: z.string().optional(),
+	prompt_details: z.array(PromptDetailsSchema).optional(),
 });
 
 export const SummaryFeedbackSchema = z.object({

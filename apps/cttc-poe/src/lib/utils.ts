@@ -1,5 +1,4 @@
-import { Location } from "@/types/location";
-import { SidebarSection } from "@/types/section";
+import { env } from "@/env.mjs";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
@@ -14,49 +13,14 @@ export const getYoutubeLinkFromEmbed = (url: string) => {
 	return url;
 };
 
-const getSingleLocation = (s: string | undefined) => {
-	if (!s) return undefined;
-	const [_, number] = s.split("-");
-	return number ? Number(number) : undefined;
-};
-export const getLocationFromPathname = (path: string): Location => {
-	const pathname = path.split("/");
-
-	const module = getSingleLocation(pathname[1]);
-	const chapter = getSingleLocation(pathname[2]);
-	let section = getSingleLocation(pathname[3]);
-	if (module && chapter && !section) {
-		section = 0;
-	}
-	return { module, chapter, section };
-};
-
-export const sortSections = (sections: SidebarSection[]) => {
-	const sectionsSorted = sections.slice(0).sort((a, b) => {
-		if (a.chapter === b.chapter) {
-			if (!a.section) {
-				return -1;
-			}
-			if (!b.section) {
-				return 1;
-			}
-
-			return a.section - b.section;
-		}
-		return a.chapter - b.chapter;
-	});
-
-	return sectionsSorted;
-};
-
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const makeInputKey = (slug: string) => {
 	return `${slug}-summary`;
 };
 
-export const makePageHref = (slug: string) => {
-	return `/${slug}`;
+export const makePageHref = (slug: string, chunk?: string) => {
+	return `/${slug}${chunk ? `#${chunk}` : ""}`;
 };
 
 export type PageData = {
@@ -64,9 +28,7 @@ export type PageData = {
 	index: number;
 	title: string;
 	page_slug: string;
-	quiz: boolean;
 	chapter: number;
-	section: number;
 	nextPageSlug: string | null;
 };
 
@@ -87,9 +49,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		index,
 		title: page.title,
 		page_slug: page.page_slug,
-		chapter: page.location.chapter as number,
-		section: page.location.section as number,
-		quiz: page.quiz,
+		chapter: page.chapter,
 		nextPageSlug,
 	};
 };
@@ -103,12 +63,21 @@ export const getChunkElement = (chunkId: string): HTMLElement | null => {
 	return null;
 };
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== undefined;
+}
+
 export const redirectWithSearchParams = (
 	path: string,
-	searchParams?: Record<string, string>,
+	searchParams?: unknown,
 ) => {
-	const query = new URLSearchParams(searchParams).toString();
-	return redirect(`${path}?${query}`);
+	const url = new URL(path, env.NEXTAUTH_URL);
+	if (isRecord(searchParams)) {
+		for (const key in searchParams) {
+			url.searchParams.append(key, String(searchParams[key]));
+		}
+	}
+	return redirect(url.toString());
 };
 
 export const scrollToElement = (element: HTMLElement) => {
@@ -117,4 +86,10 @@ export const scrollToElement = (element: HTMLElement) => {
 	const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
 
 	window.scrollTo({ top: y, behavior: "smooth" });
+};
+
+export const randomNumber = () => {
+	const array = new Uint32Array(1);
+	window.crypto.getRandomValues(array);
+	return array[0];
 };

@@ -1,16 +1,16 @@
 "use client";
 
+import { SessionUser } from "@/lib/auth";
 import {
 	defaultHighlightColor,
 	useNoteColor,
 } from "@/lib/hooks/use-note-color";
-import { createHighlightListeners, deleteHighlightListener } from "@/lib/note";
-import { createNote } from "@/lib/server-actions";
+import { createNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
-import { createNoteElements, serializeRange } from "@itell/core/note";
+import { randomNumber } from "@/lib/utils";
+import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Popover } from "react-text-selection-popover";
 import { toast } from "sonner";
@@ -20,15 +20,16 @@ import { Button } from "../client-components";
 type SelectionData = ReturnType<typeof useTextSelection>;
 
 type Props = {
+	userId: string | null;
 	pageSlug: string;
 };
 
-export const NoteToolbar = ({ pageSlug }: Props) => {
+export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 	const [show, setShow] = useState(true);
 	const [target, setTarget] = useState<HTMLElement | null>(null);
 	const noteColor = useNoteColor();
-	const { data: session } = useSession();
-	const { createNote: createContextNote } = useNotesStore();
+	const { createNote: createNoteLocal, createHighlight: createHighlightLocal } =
+		useNotesStore();
 
 	const handleClick = (event: Event) => {
 		if (event.target instanceof HTMLElement) {
@@ -57,6 +58,8 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 		};
 	}, []);
 
+	if (!userId) return null;
+
 	const commands = [
 		{
 			label: "Note",
@@ -67,14 +70,8 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				}
 				const range = window.getSelection()?.getRangeAt(0);
 				if (range && clientRect && textContent) {
-					const id = crypto.randomUUID();
-					createNoteElements({
-						id,
-						range,
-						color: noteColor,
-					});
-
-					createContextNote({
+					const id = randomNumber();
+					createNoteLocal({
 						id,
 						y: clientRect.y + window.scrollY,
 						highlightedText: textContent,
@@ -96,14 +93,8 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 				const selection = window.getSelection();
 				const range = selection?.getRangeAt(0);
 				if (range && clientRect && textContent) {
-					const id = crypto.randomUUID();
+					const id = randomNumber();
 					const serializedRange = serializeRange(range);
-					createNoteElements({
-						id,
-						range,
-						color: defaultHighlightColor,
-						isHighlight: true,
-					});
 
 					if (selection?.empty) {
 						// Chrome
@@ -113,17 +104,19 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 						selection?.removeAllRanges();
 					}
 
-					await createNote({
+					createHighlightLocal({
 						id,
-						y: clientRect.y + window.scrollY,
-						highlightedText: textContent,
-						pageSlug,
 						color: defaultHighlightColor,
 						range: serializedRange,
 					});
 
-					createHighlightListeners(id, (event) => {
-						deleteHighlightListener(event);
+					await createNote({
+						y: clientRect.y + window.scrollY,
+						highlightedText: textContent,
+						pageSlug,
+						userId,
+						color: defaultHighlightColor,
+						range: serializedRange,
 					});
 				} else {
 					toast.warning("Please select some text to take a note");
@@ -169,7 +162,7 @@ export const NoteToolbar = ({ pageSlug }: Props) => {
 								color="blue-gray"
 								className="flex items-center gap-2 p-2"
 								onClick={() => {
-									if (!session?.user && command.label !== "Copy") {
+									if (!userId && command.label !== "Copy") {
 										return toast.warning("You need to be logged in first.");
 									}
 									command.action(data);

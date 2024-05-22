@@ -7,7 +7,7 @@ const unwrapElement = (el: Element) => {
 	}
 };
 
-export const removeHighlights = async (id: string) => {
+export const removeHighlights = async (id: number) => {
 	// Remove all existing tags before applying new highlighting
 	const highlights = getElementsByNoteId(id);
 	if (highlights) {
@@ -18,7 +18,7 @@ export const removeHighlights = async (id: string) => {
 	}
 };
 
-export const getElementsByNoteId = (id: string) => {
+export const getElementsByNoteId = (id: number) => {
 	const target = document.getElementById("page-content");
 	if (target) {
 		return target.querySelectorAll(`span[data-note-id="${id}"]`);

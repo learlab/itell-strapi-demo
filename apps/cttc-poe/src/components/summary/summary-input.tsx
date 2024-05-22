@@ -1,13 +1,27 @@
 "use client";
 
-import { TextArea } from "@/components/client-components";
+import { useSession } from "@/lib/auth/context";
+import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
+import { StageItem } from "@/lib/hooks/use-summary-stage";
+import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { StageItem, SummaryProgress } from "./summary-progress";
+import { SummaryProgress } from "./summary-progress";
+
+export const saveSummaryLocal = (pageSlug: string, text: string) => {
+	localStorage.setItem(makeInputKey(pageSlug), text);
+};
+
+export const getSummaryLocal = (pageSlug: string) => {
+	return localStorage.getItem(makeInputKey(pageSlug));
+};
+
+export const clearSummaryLocal = (pageSlug: string) => {
+	localStorage.removeItem(makeInputKey(pageSlug));
+};
 
 type Props = {
 	pageSlug: string;
@@ -15,7 +29,6 @@ type Props = {
 	pending: boolean;
 	value?: string;
 	disabled?: boolean;
-	isAdmin?: boolean;
 };
 
 export const SummaryInput = ({
@@ -24,18 +37,19 @@ export const SummaryInput = ({
 	disabled = true,
 	value = "",
 	pending,
-	isAdmin = false,
 }: Props) => {
-	const searchParams = useSearchParams();
-	const summaryToRevise = searchParams?.get("summary");
-	const text = summaryToRevise
-		? Buffer.from(summaryToRevise, "base64").toString("ascii")
+	const { user } = useSession();
+	if (!user) return null;
+
+	const { summary } = useSafeSearchParams("textbook");
+	const text = summary
+		? Buffer.from(summary, "base64").toString("ascii")
 		: value;
 	const [input, setInput] = useState(text);
 
 	useEffect(() => {
-		if (!summaryToRevise) {
-			setInput(localStorage.getItem(makeInputKey(pageSlug)) || value);
+		if (!summary) {
+			setInput(getSummaryLocal(pageSlug) || value);
 		}
 	}, []);
 
@@ -51,7 +65,7 @@ export const SummaryInput = ({
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}
 					onPaste={(e) => {
-						if (isProduction && !isAdmin) {
+						if (isProduction && !isAdmin(user.role)) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

@@ -1,32 +1,23 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { StudentProfile } from "@/components/dashboard/student/student-profile";
 import { DashboardShell } from "@/components/page/shell";
-import { getCurrentUser } from "@/lib/auth";
+import { Meta } from "@/config/metadata";
+import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
+import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
 import { Errorbox } from "@itell/ui/server";
-import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-const title = "Student Details";
-const description = "View student details";
-
-export const metadata: Metadata = {
-	title,
-	description,
-};
+export const metadata = Meta.student;
 
 interface PageProps {
-	params: {
-		id: string;
-	};
-	searchParams: {
-		[key: string]: string;
-	};
+	params: unknown;
+	searchParams?: unknown;
 }
 
 export default async function ({ params, searchParams }: PageProps) {
-	const user = await getCurrentUser();
+	const { user } = await getSession();
 
 	if (!user) {
 		return redirect("/auth");
@@ -37,17 +28,24 @@ export default async function ({ params, searchParams }: PageProps) {
 	if (!teacher) {
 		return (
 			<DashboardShell>
-				<DashboardHeader heading={title} />
+				<DashboardHeader
+					heading={Meta.student.title}
+					text={Meta.student.description}
+				/>
 				<Errorbox>You have to be a teacher to view this page.</Errorbox>
 			</DashboardShell>
 		);
 	}
 
-	const student = await getUser(params.id);
+	const { id } = routes.student.$parseParams(params);
+	const student = await getUser(id);
 	if (!student) {
 		return (
 			<DashboardShell>
-				<DashboardHeader heading={title} text={description} />
+				<DashboardHeader
+					heading={Meta.student.title}
+					text={Meta.student.description}
+				/>
 				<Errorbox>The student does not exist in your class</Errorbox>
 			</DashboardShell>
 		);
@@ -55,7 +53,10 @@ export default async function ({ params, searchParams }: PageProps) {
 
 	return (
 		<DashboardShell>
-			<DashboardHeader heading={title} text={description} />
+			<DashboardHeader
+				heading={Meta.student.title}
+				text={Meta.student.description}
+			/>
 			<StudentProfile student={student} searchParams={searchParams} />
 		</DashboardShell>
 	);

@@ -257,7 +257,7 @@ export const SummaryForm = ({
 		const formData = new FormData(e.currentTarget);
 		const input = String(formData.get("input")).replaceAll("\u0000", "");
 		if (input === state.prevInput) {
-			dispatch({ type: "fail", payload: ErrorType.DUPLICATE });
+			dispatch({ type: "fail", payload: ErrorType.SIMILAR });
 			return;
 		}
 

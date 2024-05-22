@@ -11,8 +11,8 @@ import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 
 type Props = {
-	pageSlug: string;
 	children: React.ReactNode;
+	pageSlug: string;
 	chunks: string[];
 	pageStatus: PageStatus;
 	isLastChunkWithQuestion: boolean;

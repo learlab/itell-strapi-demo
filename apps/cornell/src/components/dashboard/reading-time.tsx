@@ -56,7 +56,7 @@ const getReadingTime = async (
 	// for records created before start date, they can still be updated
 	// but this won't be reflected in the reading time
 	const records = await db.$queryRaw`
-		SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
+		SELECT sum(d.value::integer)::integer as totalViewTime, created_at::date as createdAt
 		FROM focus_times, jsonb_each(data) d
 		WHERE created_at >= ${startDate} and user_id = ${uid}
 		GROUP BY created_at::date

@@ -1,6 +1,7 @@
 import { Separator } from "@/components/client-components";
-import { getCurrentUser } from "@/lib/auth";
-import { getTeacherWithClassId } from "@/lib/class";
+import { SessionUser } from "@/lib/auth";
+import { getTeacherWithClassId } from "@/lib/dashboard/actions";
+import { getUser } from "@/lib/user";
 import {
 	Card,
 	CardContent,
@@ -8,17 +9,19 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import { ClassInfo } from "./settings/class-info";
 import { ClassRegister } from "./settings/class-register";
-import { ClassRequestModal } from "./settings/class-request-modal";
 import { Profile } from "./settings/profile";
 import { WebsiteSettings } from "./settings/website-settings";
 
-export const SettingsForm = async ({ user }: { user: User }) => {
+export const SettingsForm = async ({ user }: { user: SessionUser }) => {
+	if (!user) {
+		return null;
+	}
 	const teacher = await getTeacherWithClassId(user.classId);
-	const sessionUser = await getCurrentUser();
-	if (!sessionUser) {
+
+	const dbUser = await getUser(user.id);
+	if (!dbUser) {
 		return null;
 	}
 
@@ -30,18 +33,17 @@ export const SettingsForm = async ({ user }: { user: User }) => {
 					<CardDescription>configure the textbook to your need</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<Profile user={sessionUser} />
+					<Profile user={user} />
 					<Separator />
-					<WebsiteSettings user={user} />
+					<WebsiteSettings user={dbUser} />
 					<Separator />
 					{teacher ? (
-						<ClassInfo teacher={teacher} user={user} />
+						<ClassInfo teacherName={String(teacher.name)} user={dbUser} />
 					) : (
-						<ClassRegister user={user} />
+						<ClassRegister user={dbUser} />
 					)}
 				</CardContent>
 			</Card>
-			<ClassRequestModal user={user} />
 		</div>
 	);
 };

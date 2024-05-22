@@ -4,7 +4,7 @@ import { allPagesSorted, firstPage, isPageAfter } from "@/lib/pages";
 import { delay, makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { Page } from "contentlayer/generated";
-import { ArrowUpIcon, PencilIcon } from "lucide-react";
+import { ArrowUpIcon, PencilIcon, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AdminTools } from "./admin/admin-tools";
@@ -42,6 +42,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 	const [pending, startTransition] = useTransition();
 	const isAdmin = useConfig((state) => state.isAdmin);
 	const router = useRouter();
+	const index = allPagesSorted.findIndex((p) => p.page_slug === userPageSlug);
 
 	const navigatePage = (pageSlug: string) => {
 		setActivePage(pageSlug);
@@ -57,6 +58,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 					const visible = userPageSlug
 						? !isPageAfter(page.page_slug, userPageSlug)
 						: page.page_slug === firstPage.page_slug;
+
 					return (
 						<li
 							className={cn(
@@ -77,6 +79,7 @@ export const ChapterToc = ({ currentPage, userPageSlug }: Props) => {
 								<p className="text-left text-pretty">
 									{page.chapter + 1}. {page.title}
 									{visible ? "" : "🔒"}
+									{page.chapter < index ? " ✅" : ""}
 								</p>
 							</button>
 						</li>

@@ -1,17 +1,18 @@
 import { Avatar as BaseAvatar } from "@/components/client-components";
-import { SessionUser } from "@/lib/auth";
+import { useSession } from "@/lib/auth/context";
 import { Avatar } from "./ui/avatar";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {
-	user: NonNullable<SessionUser>;
+	image: string | null;
+	name: string | null;
 }
 
-export const UserAvatar = ({ user, ...rest }: Props) => {
+export const UserAvatar = ({ image, name, ...rest }: Props) => {
 	return (
 		<Avatar
 			{...rest}
-			src={user.image || null}
-			fallback={user.name?.[0]?.toUpperCase() || "User"}
+			src={image}
+			fallback={name?.[0]?.toUpperCase() || "User"}
 		/>
 	);
 };

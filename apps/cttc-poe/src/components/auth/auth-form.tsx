@@ -1,58 +1,95 @@
 "use client";
 
-import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useTransition } from "react";
-import { toast } from "sonner";
+import { logout } from "@/lib/auth/actions";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { Button } from "../client-components";
 import { Spinner } from "../spinner";
-import { OutlookLoginButton } from "./login-buttons";
+import { ProlificForm } from "./prolific-form";
 
 export const AuthForm = () => {
-	const searchParams = useSearchParams();
-	const classId = searchParams?.get("join_class_code");
-	const { data: session } = useSession();
-	const lastPage = useLastVisitedPageUrl();
-	const [pending, startTransition] = useTransition();
-	const router = useRouter();
-
-	useEffect(() => {
-		if (session?.user) {
-			startTransition(() => {
-				toast.success("You are logged in");
-				if (!classId) {
-					router.push(lastPage ?? "/");
-				} else {
-					router.push(`/dashboard/settings?join_class_code=${classId}`);
-				}
-			});
-		}
-	}, [session]);
-
 	return (
-		<div className="grid gap-6">
+		<div className="space-y-4">
+			<ProlificForm />
 			<div className="relative">
-				{/* <div className="absolute inset-0 flex items-center">
-					<span className="w-full border-t" />
-				</div> */}
-
-				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-background px-2 text-muted-foreground">
-						Log in via one of the options below
-					</span>
+				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
+					<p>Social Login</p>
 				</div>
 			</div>
 			<div className="flex flex-col gap-2">
-				<OutlookLoginButton />
+				<GoogleLoginButton />
 			</div>
-			{pending && (
-				<div className="flex flex-row gap-1 items-center justify-center">
-					<Spinner />
-					<p className="text-muted-foreground text-sm">
-						Redirecting to home page
-					</p>
-				</div>
-			)}
 		</div>
+	);
+};
+
+export const GoogleLoginButton = () => {
+	const [pending, startTransition] = useTransition();
+	const router = useRouter();
+
+	return (
+		<Button
+			onClick={() => {
+				startTransition(() => {
+					router.push("/auth/google");
+				});
+			}}
+			variant={"outline"}
+		>
+			{pending ? (
+				<Spinner className="size-4 mr-2" />
+			) : (
+				<Image
+					alt="Google Icon"
+					src="/icons/google.png"
+					width={16}
+					height={16}
+					className="mr-2"
+				/>
+			)}
+			<span>Google</span>
+		</Button>
+	);
+};
+
+export const LoginButton = () => {
+	const [pending, startTransition] = useTransition();
+	const router = useRouter();
+
+	return (
+		<Button
+			onClick={() => {
+				startTransition(() => {
+					router.push("/auth");
+				});
+			}}
+			variant={"outline"}
+			disabled={pending}
+		>
+			{pending && <Spinner className="size-4 mr-2" />}
+			<span>Log in</span>
+		</Button>
+	);
+};
+
+export const LogoutButton = () => {
+	const [pending, startTransition] = useTransition();
+	const router = useRouter();
+
+	return (
+		<Button
+			onClick={() => {
+				startTransition(async () => {
+					await logout();
+					router.push("/auth");
+				});
+			}}
+			disabled={pending}
+			variant={"outline"}
+		>
+			{pending && <Spinner className="size-4 mr-2" />}
+			<span>Log out</span>
+		</Button>
 	);
 };

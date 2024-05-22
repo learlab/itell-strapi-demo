@@ -8,8 +8,11 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { isProduction } from "@/lib/constants";
+import { buttonVariants } from "@itell/ui/server";
+import Link from "next/link";
 import { useState } from "react";
-import { OutlookLoginButton } from "../auth/login-buttons";
+import { LoginButton } from "../auth/auth-form";
+import { Button } from "../client-components";
 
 export const PageUnauthorizedModal = () => {
 	const [open, setOpen] = useState(true);
@@ -23,15 +26,15 @@ export const PageUnauthorizedModal = () => {
 				}
 			}}
 		>
-			<DialogContent canClose={!isProduction}>
+			<DialogContent canClose={!isProduction} className="space-y-6">
 				<DialogHeader>
-					<DialogTitle>Log in to view the textbook</DialogTitle>
+					<DialogTitle>Log in to read the textbook</DialogTitle>
 					<DialogDescription>
 						We collects anonymous data to improve learning experience
 					</DialogDescription>
 				</DialogHeader>
-				<div className="mt-6 flex justify-center">
-					<OutlookLoginButton />
+				<div className="flex justify-center">
+					<LoginButton />
 				</div>
 			</DialogContent>
 		</Dialog>

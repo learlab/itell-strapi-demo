@@ -1,30 +1,40 @@
-import { cn } from "@itell/core/utils";
-import Link from "next/link";
-import { ChevronLeftIcon, CommandIcon } from "lucide-react";
-import { Button } from "@/components/client-components";
-import FlipCard from "@/components/flip-card";
-import { AuthForm } from "@/components/auth/auth-form";
-import { Warning } from "@itell/ui/server";
-import { isProduction } from "@/lib/constants";
-import { getSiteConfig } from "@/lib/config";
+import { AuthForm, LogoutButton } from "@/components/auth/auth-form";
 import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
+import { Button } from "@/components/client-components";
+import { getSiteConfig } from "@/config/site";
+import { getSession } from "@/lib/auth";
+import { routes } from "@/lib/navigation";
+import { Warning } from "@itell/ui/server";
+import { ChevronLeftIcon, CommandIcon } from "lucide-react";
+import Link from "next/link";
 
 type PageProps = {
-	searchParams?: Record<string, string>;
+	searchParams?: unknown;
 };
 
 const ErrorDict: Record<string, string> = {
-	OAuthAccountNotLinked:
-		"You already have an account. Please sign in using your original platform",
-	Callback: `An internal error occurred. Please try again later or contact lear.lab.vu@gmail.com${
-		isProduction ? "" : " Did you forgot to run prisma generate?"
-	}`,
+	google_oauth:
+		"A problem occurred while logging in with Google. Please try again later.",
+	prolific_oauth:
+		"A problem occurred while logging in with Prolific. Please try again later.",
+	prolific_missing_pid: "Please enter a valid Prolific ID.",
+	prolific_wrong_pid: "Please use the same Prolific ID you used to sign up.",
 };
 
 export default async function ({ searchParams }: PageProps) {
 	const config = await getSiteConfig();
-	const error = searchParams?.error;
-	const errorMessage = error ? ErrorDict[error] : null;
+	const { error } = routes.auth.$parseSearchParams(searchParams);
+	const { user } = await getSession();
+	let errorMessage: string | null = null;
+	if (error) {
+		if (error in ErrorDict) {
+			errorMessage = ErrorDict[error];
+		} else if (error.startsWith("prolific_existing_pid_")) {
+			const storedPid = error.replace("prolific_existing_pid_", "");
+			errorMessage = `Please use the same Prolific ID you used to sign up (${storedPid}).`;
+		}
+	}
+
 	return (
 		<div className="w-screen h-screen grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
 			<Link href="/" className={"absolute top-4 left-4 md:top-8 md:left-8"}>
@@ -39,13 +49,16 @@ export default async function ({ searchParams }: PageProps) {
 						<CommandIcon className="mx-auto size-6" />
 						<h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
 						<p className="font-light tracking-tight text-lg">{config.title}</p>
-						{/* <p className="text-sm text-muted-foreground">
-							Enter your email to sign in to your account
-						</p>
-						<p className="text-sm text-muted-foreground">TBD</p> */}
 					</div>
 					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
-					<AuthForm />
+					{user ? (
+						<div className="text-center space-y-2">
+							<p>You have already logged in</p>
+							<LogoutButton />
+						</div>
+					) : (
+						<AuthForm />
+					)}
 				</div>
 			</div>
 			<div className="hidden h-full bg-gray-100 lg:col-span-1 lg:flex lg:items-center">

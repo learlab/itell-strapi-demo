@@ -1,7 +1,8 @@
 "use client";
 
+import { Note, notes } from "@/drizzle/schema";
 import { useNotesStore } from "@/lib/store/note";
-import { Note } from "@prisma/client";
+import { deserializeRange } from "@itell/core/note";
 import { Highlight } from "./highlight";
 import { NoteCard } from "./note-card";
 
@@ -12,19 +13,26 @@ type Props = {
 };
 
 export const NoteList = ({ notes, highlights, pageSlug }: Props) => {
-	const newNotes = useNotesStore((store) => store.notes);
+	const { notes: newNotes, highlights: newHighlights } = useNotesStore();
 
 	return (
 		<>
 			{notes.map((note) => (
-				// @ts-ignore
-				<NoteCard key={note.y} {...note} pageSlug={pageSlug} />
+				<NoteCard
+					key={note.y}
+					{...note}
+					noteText={note.noteText || ""}
+					pageSlug={pageSlug}
+				/>
 			))}
 			{highlights.map((highlight) => (
 				<Highlight key={highlight.y} {...highlight} />
 			))}
 			{newNotes.map((note) => (
 				<NoteCard key={note.id} {...note} pageSlug={pageSlug} newNote={true} />
+			))}
+			{newHighlights.map((highlight) => (
+				<Highlight key={highlight.id} {...highlight} />
 			))}
 		</>
 	);

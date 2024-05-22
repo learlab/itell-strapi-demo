@@ -2,46 +2,41 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { SettingsForm } from "@/components/dashboard/settings-form";
 import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
 import { DashboardShell } from "@/components/page/shell";
-import { getCurrentUser } from "@/lib/auth";
-import { getTeacherWithClassId } from "@/lib/class";
-import { getUser } from "@/lib/user";
+import { Meta } from "@/config/metadata";
+import { getSession } from "@/lib/auth";
+import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
+import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { Metadata } from "next";
 
-const title = "Settings";
-const description = "Manage account and website settings";
-
-export const metadata: Metadata = {
-	title,
-	description,
-};
+export const metadata = Meta.settings;
 
 type Props = {
 	searchParams?: Record<string, string>;
 };
 
 export default async function ({ searchParams }: Props) {
-	const currentUser = await getCurrentUser();
-	const classId = searchParams?.join_class_code;
+	const { user } = await getSession();
+	const classId =
+		routes.settings.$parseSearchParams(searchParams).join_class_code;
 
-	if (!currentUser) {
-		return redirectWithSearchParams("/auth", searchParams);
-	}
-
-	const user = await getUser(currentUser.id);
 	if (!user) {
-		return redirectWithSearchParams("/auth", searchParams);
+		return redirectWithSearchParams("auth", searchParams);
 	}
+	incrementView(user.id, "settings", searchParams);
 
 	const teacher = classId ? await getTeacherWithClassId(classId) : null;
 
 	return (
 		<DashboardShell>
-			<DashboardHeader heading={title} text={description} />
+			<DashboardHeader
+				heading={Meta.settings.title}
+				text={Meta.settings.description}
+			/>
 			<SettingsForm user={user} />
-			{classId && (
+			{classId && teacher && (
 				<ClassInviteModal
-					user={user}
+					userId={user.id}
+					userClassId={user.classId}
 					teacherToJoin={teacher}
 					classId={classId}
 				/>

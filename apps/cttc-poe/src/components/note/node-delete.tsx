@@ -1,20 +1,20 @@
 "use client";
 import { TrashIcon } from "lucide-react";
 
+import { useState } from "react";
 import {
-	Button,
 	AlertDialog,
-	AlertDialogTrigger,
-	AlertDialogContent,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogDescription,
-	AlertDialogFooter,
 	AlertDialogAction,
 	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+	Button,
 } from "../client-components";
 import { Spinner } from "../spinner";
-import { useState } from "react";
 
 type Props = {
 	// need this prop to tell note-card the modal is open
@@ -49,7 +49,7 @@ export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
 					<AlertDialogAction
 						disabled={isLoading}
 						onClick={async () => {
@@ -57,7 +57,6 @@ export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
 							await onDelete();
 							setIsLoading(false);
 						}}
-						className="bg-red-600 focus:ring-red-600"
 					>
 						{isLoading ? <Spinner /> : <span>Delete</span>}
 					</AlertDialogAction>

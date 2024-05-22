@@ -1,58 +1,61 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { StudentClassCount } from "@/components/dashboard/student/student-class-count";
+import { ClassStudentCount } from "@/components/dashboard/student/class-student-count";
 import { UserStatistics } from "@/components/dashboard/user-statistics";
 import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
-import { getCurrentUser } from "@/lib/auth";
+import { Meta } from "@/config/metadata";
+import { getSession } from "@/lib/auth";
+import { incrementView } from "@/lib/dashboard/actions";
+import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { Metadata } from "next";
+import { ReadingTimeChartLevel } from "@itell/core/types";
 import Link from "next/link";
 import { Suspense } from "react";
 
-const title = "Learning Statistics";
-const description = "Understand your learning journey";
-
-export const metadata: Metadata = {
-	title,
-	description,
-};
+export const metadata = Meta.dashboard;
 
 type Props = {
-	searchParams: {
-		[key: string]: string;
-	};
+	searchParams?: unknown;
 };
 
 export default async function ({ searchParams }: Props) {
-	const currentUser = await getCurrentUser();
-
-	if (!currentUser) {
-		return redirectWithSearchParams("/auth", searchParams);
-	}
-
-	const user = await getUser(currentUser.id);
-
+	const { user } = await getSession();
 	if (!user) {
-		return redirectWithSearchParams("/auth", searchParams);
+		return redirectWithSearchParams("auth", searchParams);
 	}
+
+	const { reading_time_level } =
+		routes.dashboard.$parseSearchParams(searchParams);
+	let readingTimeLevel = ReadingTimeChartLevel.week_1;
+	if (
+		Object.values(ReadingTimeChartLevel).includes(
+			reading_time_level as ReadingTimeChartLevel,
+		)
+	) {
+		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
+	}
+
+	incrementView(user.id, "dashboard", searchParams);
 
 	return (
 		<DashboardShell>
-			<DashboardHeader heading={title} text={description} />
+			<DashboardHeader
+				heading={Meta.dashboard.title}
+				text={Meta.dashboard.description}
+			/>
 
 			<div className="space-y-4">
 				<div className="px-2">
-					<UserProgress user={user} />
+					<UserProgress pageSlug={user.pageSlug} finished={user.finished} />
 				</div>
 				{user.classId ? (
 					<p className="p-2 text-muted-foreground">
 						You are enrolled in a class with{" "}
 						<Suspense fallback={<Spinner className="inline" />}>
-							<StudentClassCount classId={user.classId} />
-						</Suspense>{" "}
-						other students
+							<ClassStudentCount classId={user.classId} />
+						</Suspense>
 					</p>
 				) : (
 					<p className="p-2 text-muted-foreground">
@@ -64,7 +67,11 @@ export default async function ({ searchParams }: Props) {
 					</p>
 				)}
 
-				<UserStatistics user={user} searchParams={searchParams} />
+				<UserStatistics
+					userId={user.id}
+					userClassId={user.classId}
+					readingTimeLevel={readingTimeLevel}
+				/>
 			</div>
 		</DashboardShell>
 	);

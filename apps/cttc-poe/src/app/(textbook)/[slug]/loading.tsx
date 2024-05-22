@@ -1,12 +1,15 @@
-import { ModuleToc } from "@/components/module-toc";
+import { ChapterToc } from "@/components/chapter-toc";
 import { PageTitle } from "@/components/page-title";
+import { Condition } from "@/lib/control/condition";
 import { allPagesSorted } from "@/lib/pages";
+import { getUserPageSlug } from "@/lib/user/page-slug";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 export default async function () {
+	const userPageSlug = getUserPageSlug();
 	const headersList = headers();
 	const pathname = headersList.get("x-pathname") as string;
 	const split = pathname.split("/");
@@ -26,10 +29,17 @@ export default async function () {
 	return (
 		<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
 			<aside
-				className="module-sidebar sticky top-20 h-fit z-20 basis-0"
+				className="chapter-sidebar sticky top-20 h-fit z-20 basis-0"
 				style={{ flexGrow: 1 }}
 			>
-				<ModuleToc page={page} />
+				<ChapterToc
+					currentPage={page}
+					userPageSlug={userPageSlug}
+					userFinished={false}
+					userRole="user"
+					userId={null}
+					condition={Condition.STAIRS}
+				/>
 			</aside>
 
 			<section

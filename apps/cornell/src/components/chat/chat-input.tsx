@@ -140,6 +140,7 @@ export const ChatInput = ({
 							e.currentTarget.value = "";
 						}
 					}}
+					onPaste={(e)=> e.preventDefault()}
 				/>
 
 				<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">

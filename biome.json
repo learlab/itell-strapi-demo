@@ -1,32 +1,33 @@
 {
-    "organizeImports": {
-        "enabled": true
-    },
-    "linter": {
-        "rules": {
-            "complexity": {
-                "noForEach": "off"
-            },
-            "correctness": {
-                "useExhaustiveDependencies": "warn"
-            },
-            "a11y": {
-                "useButtonType": "warn"
-            },
-            "suspicious": {
-                "noArrayIndexKey": "warn",
-                "noExplicitAny": "warn",
-                "noEmptyInterface": "warn"
-            },
-            "style": {
-                "noUselessElse": "warn",
-                "noParameterAssign": "warn"
-            }
-        }
-    },
-    "json": {
-        "parser": {
-            "allowComments": true
-        }
-    }
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"rules": {
+			"complexity": {
+				"noForEach": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "warn"
+			},
+			"a11y": {
+				"useButtonType": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "warn",
+				"noExplicitAny": "warn",
+				"noEmptyInterface": "warn"
+			},
+			"style": {
+				"noUselessElse": "warn",
+				"noParameterAssign": "warn",
+				"useImportType": "warn"
+			}
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true
+		}
+	}
 }
