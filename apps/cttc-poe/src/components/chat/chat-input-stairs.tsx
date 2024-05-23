@@ -59,18 +59,21 @@ export const ChatInputStairs = ({
 		const botMessageId = addBotMessage("", true);
 		setActiveMessageId(botMessageId);
 
-		const chatResponse = await fetchChatResponse(
-			`${env.NEXT_PUBLIC_API_URL}/chat`,
-			{
+		const chatResponse = await fetch("/api/itell/chat", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
 				pageSlug,
 				text,
 				history: history.current,
-			},
-		);
+			}),
+		});
 		setActiveMessageId(null);
 
-		if (chatResponse.ok) {
-			const reader = chatResponse.data.getReader();
+		if (chatResponse.ok && chatResponse.body) {
+			const reader = chatResponse.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
 			let botText = "";

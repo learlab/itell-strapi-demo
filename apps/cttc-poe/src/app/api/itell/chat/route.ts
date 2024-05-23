@@ -15,6 +15,7 @@ export async function POST(req: Request) {
 		data,
 		env.ITELL_API_KEY || "",
 	);
+	console.log(response);
 	if (response.ok) {
 		return new Response(response.data);
 	}

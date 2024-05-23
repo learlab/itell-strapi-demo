@@ -271,18 +271,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				excluded_chunks: excludedChunks,
 			});
 			console.log("request body", requestBody);
-			const response = await fetch(
-				`${env.NEXT_PUBLIC_API_URL}/score/summary/stairs`,
-				{
-					method: "POST",
-					body: requestBody,
-					headers: {
-						"Content-Type": "application/json",
-					},
+			const response = await fetch("/api/itell/score/stairs", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
 				},
-			);
+				body: requestBody,
+			});
 
-			if (response.body) {
+			if (response.ok && response.body) {
 				const reader = response.body.getReader();
 				const decoder = new TextDecoder();
 				let done = false;
