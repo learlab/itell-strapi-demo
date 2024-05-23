@@ -1,7 +1,5 @@
 import { ifetch } from "@/lib/api";
 import { env } from "@/env.mjs";
-import type { ChatHistory } from "@itell/core/dist/chatbot/schema";
-import type { FocusTime } from "@prisma/client";
 
 interface Data {
 	summary: string;

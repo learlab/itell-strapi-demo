@@ -21,7 +21,6 @@ export async function POST(req: Request) {
 		chat_history: data.chat_history,
 		excluded_chunks: data.excluded_chunks,
 	});
-	console.log(env.NEXT_PUBLIC_API_URL);
 	const response = await ifetch(
 		`${env.NEXT_PUBLIC_API_URL}/score/summary/stairs`,
 		{
@@ -32,7 +31,6 @@ export async function POST(req: Request) {
 			},
 		},
 	);
-	console.log(response);
 
 	if (response.ok) {
 		return new Response(response.body);
