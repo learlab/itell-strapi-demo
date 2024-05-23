@@ -4,7 +4,7 @@ import { PageLink } from "@/components/page/page-link";
 import { DashboardShell } from "@/components/page/shell";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import { allPagesSorted, firstPage } from "@/lib/pages";
+import { allPagesSorted, firstPage, firstSummaryPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
 import { groupby } from "@itell/core/utils";
 import { redirect } from "next/navigation";
@@ -29,10 +29,10 @@ export default async function () {
 				<p className="p-2">
 					You have not made any summary yet. Start with{" "}
 					<PageLink
-						pageSlug={firstPage.page_slug}
+						pageSlug={firstSummaryPage.page_slug}
 						className="underline font-medium"
 					>
-						{firstPage.title}
+						{firstSummaryPage.title}
 					</PageLink>
 					!
 				</p>
