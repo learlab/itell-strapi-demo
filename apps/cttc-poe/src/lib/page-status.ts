@@ -1,7 +1,7 @@
-import { firstPage, isLastPage, isPageAfter } from "./pages";
+import { firstPage, firstSummaryPage, isLastPage, isPageAfter } from "./pages";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
-	return false;
+	return pageSlug === firstPage.page_slug;
 };
 
 export type PageStatus = {
@@ -23,7 +23,9 @@ export const getPageStatus = ({
 	if (!userPageSlug) {
 		return {
 			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
-			isPageLatest: pageSlug === firstPage.page_slug,
+			isPageLatest:
+				pageSlug === firstPage.page_slug ||
+				pageSlug === firstSummaryPage.page_slug,
 		};
 	}
 

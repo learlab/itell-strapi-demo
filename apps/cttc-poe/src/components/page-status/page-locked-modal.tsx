@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { isProduction } from "@/lib/constants";
-import { firstPage } from "@/lib/pages";
+import { firstPage, firstSummaryPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
@@ -20,7 +20,7 @@ type Props = {
 
 export const PageLockedModal = ({ userPageSlug }: Props) => {
 	const [open, setOpen] = useState(true);
-	const href = makePageHref(userPageSlug || firstPage.page_slug);
+	const href = makePageHref(userPageSlug || firstSummaryPage.page_slug);
 	return (
 		<Dialog
 			open={open}
