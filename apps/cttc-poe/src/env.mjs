@@ -11,6 +11,7 @@ const server = z.object({
 	NODE_ENV: z.enum(["development", "test", "production"]),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
+	ITELL_API_KEY: z.string(),
 });
 
 /**
@@ -36,6 +37,7 @@ const processEnv = {
 	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 	ADMINS: process.env.ADMINS,
 	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+	ITELL_API_KEY: process.env.ITELL_API_KEY,
 };
 
 // Don't touch the part below

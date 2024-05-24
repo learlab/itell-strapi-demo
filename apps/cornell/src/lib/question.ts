@@ -65,16 +65,28 @@ export const getQAScore = async ({
 	chunk_slug,
 	page_slug,
 }: { input: string; chunk_slug: string; page_slug: string }) => {
-	const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/score/answer`, {
+	// const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/score/answer`, {
+	// 	method: "POST",
+	// 	body: JSON.stringify({
+	// 		page_slug: page_slug,
+	// 		chunk_slug: chunk_slug,
+	// 		answer: input,
+	// 	}),
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// });
+
+	const response = await fetch("/api/itell/score/answer", {
 		method: "POST",
-		body: JSON.stringify({
-			page_slug: page_slug,
-			chunk_slug: chunk_slug,
-			answer: input,
-		}),
 		headers: {
 			"Content-Type": "application/json",
 		},
+		body: JSON.stringify({
+			pageSlug: page_slug,
+			chunkSlug: chunk_slug,
+			answer: input,
+		}),
 	});
 
 	const data = await response.json();

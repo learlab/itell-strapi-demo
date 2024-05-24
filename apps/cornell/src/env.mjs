@@ -15,6 +15,7 @@ const server = z.object({
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
 	STUDENTS: z.string().optional(),
+	ITELL_API_KEY: z.string().optional(),
 });
 
 /**
@@ -44,6 +45,7 @@ const processEnv = {
 	AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
 	AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
 	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+	ITELL_API_KEY: process.env.ITELL_API_KEY,
 };
 
 // Don't touch the part below

@@ -20,20 +20,20 @@ export const ExplainButton = ({
 
 	const onClick = async () => {
 		setLoading(true);
-		const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
+		const res = await fetch("/api/itell/score/explain", {
 			method: "POST",
-			body: JSON.stringify({
-				page_slug: pageSlug,
-				chunk_slug: chunkSlug,
-				student_response: input,
-			}),
 			headers: {
 				"Content-Type": "application/json",
 			},
+			body: JSON.stringify({
+				pageSlug: pageSlug,
+				chunkSlug: chunkSlug,
+				studentResponse: input,
+			}),
 		});
 
 		let chunkValue = { request_id: "", text: "" };
-		if (res.body) {
+		if (res.ok && res.body) {
 			const reader = res.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;

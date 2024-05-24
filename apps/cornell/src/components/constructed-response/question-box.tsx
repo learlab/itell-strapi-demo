@@ -103,19 +103,30 @@ const ExplainButton = ({
 
 	const onClick = async () => {
 		setLoading(true);
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
+		// const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
+		// 	method: "POST",
+		// 	body: JSON.stringify({
+		// 		page_slug: pageSlug,
+		// 		chunk_slug: chunkSlug,
+		// 		student_response: input,
+		// 	}),
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+		// });
+		const response = await fetch("/api/itell/score/explain", {
 			method: "POST",
-			body: JSON.stringify({
-				page_slug: pageSlug,
-				chunk_slug: chunkSlug,
-				student_response: input,
-			}),
 			headers: {
 				"Content-Type": "application/json",
 			},
+			body: JSON.stringify({
+				pageSlug: pageSlug,
+				chunkSlug: chunkSlug,
+				studentResponse: input,
+			}),
 		});
 
-		if (response.body) {
+		if (response.ok && response.body) {
 			const reader = response.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
@@ -289,10 +300,10 @@ export const QuestionBox = ({
 		formState.answerStatus === AnswerStatus.UNANSWERED
 			? BorderColor.BLUE
 			: formState.answerStatus === AnswerStatus.BOTH_CORRECT
-			  ? BorderColor.GREEN
-			  : formState.answerStatus === AnswerStatus.SEMI_CORRECT
-				  ? BorderColor.YELLOW
-				  : BorderColor.RED;
+				? BorderColor.GREEN
+				: formState.answerStatus === AnswerStatus.SEMI_CORRECT
+					? BorderColor.YELLOW
+					: BorderColor.RED;
 
 	useEffect(() => {
 		if (formState.error) {
@@ -312,9 +323,9 @@ export const QuestionBox = ({
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
 		: answerStatus === AnswerStatus.BOTH_CORRECT ||
-			  answerStatus === AnswerStatus.SEMI_CORRECT
-		  ? "Continue reading"
-		  : "Skip this question";
+				answerStatus === AnswerStatus.SEMI_CORRECT
+			? "Continue reading"
+			: "Skip this question";
 
 	if (!session?.user) {
 		return (

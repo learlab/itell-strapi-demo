@@ -29,6 +29,7 @@ const app = async (): Promise<UserConfigExport> => {
 					summary: path.resolve(__dirname, "src/summary/index.ts"),
 					qa: path.resolve(__dirname, "src/qa/index.ts"),
 					chatbot: path.resolve(__dirname, "src/chatbot/index.ts"),
+					itellFetch: path.resolve(__dirname, "src/itellFetch.ts"),
 				},
 				name: "core",
 				formats: ["es", "cjs"],

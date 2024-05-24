@@ -53,6 +53,10 @@
 		"./types": {
 			"require": "./dist/types.cjs.js",
 			"import": "./dist/types.es.js"
+		},
+		"./itellFetch": {
+			"require": "./dist/itellFetch.cjs.js",
+			"import": "./dist/itellFetch.es.js"
 		}
 	},
 	"typings": "./index.d.ts",
@@ -64,7 +68,8 @@
 		"config.d.ts",
 		"components.d.ts",
 		"summary.d.ts",
-		"contentlayer.d.ts"
+		"contentlayer.d.ts",
+		"itellFetch.d.ts"
 	],
 	"scripts": {
 		"build": "vite build",

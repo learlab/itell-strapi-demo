@@ -1,5 +1,6 @@
 import { ChatHistory, ChatResponse, ChatResponseSchema } from "./schema";
 export * from "./schema";
+import { createFetchWithBearerToken } from "@/itellFetch";
 
 type ChatRequestBody = {
 	pageSlug: string;
@@ -10,10 +11,15 @@ type ChatRequestBody = {
 export const fetchChatResponse = async (
 	endpoint: string,
 	{ pageSlug, text, history }: ChatRequestBody,
+	apiKey: string
 ): Promise<ChatResponse> => {
-	const response = await fetch(endpoint, {
+	const ifetch = createFetchWithBearerToken(apiKey);
+
+	const response = await ifetch(endpoint, {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: {
+			"Content-Type": "application/json",
+		},
 		body: JSON.stringify({ page_slug: pageSlug, message: text, history }),
 	});
 	const parsed = ChatResponseSchema.safeParse(response);

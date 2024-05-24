@@ -167,12 +167,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				page_slug: pageSlug,
 			});
 			console.log("requestBody", requestBody);
-			const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/score/summary`, {
+			const response = await fetch("/api/itell/score/stairs", {
 				method: "POST",
-				body: requestBody,
 				headers: {
 					"Content-Type": "application/json",
 				},
+				body: requestBody,
 			});
 			const json = await response.json();
 			const parsed = SummaryResponseSchema.safeParse(json);

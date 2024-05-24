@@ -1,14 +1,14 @@
 "use client";
 
 import { env } from "@/env.mjs";
-import { SessionUser } from "@/lib/auth";
+import type { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
-import { PageStatus } from "@/lib/page-status";
+import type { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { FeedbackType } from "@/lib/store/config";
+import type { FeedbackType } from "@/lib/store/config";
 import {
 	countUserPageSummary,
 	createSummary,
@@ -17,7 +17,7 @@ import {
 import { getFeedback } from "@/lib/summary/feedback";
 import { incrementUserPage } from "@/lib/user/actions";
 import {
-	PageData,
+	type PageData,
 	getChunkElement,
 	makePageHref,
 	scrollToElement,
@@ -26,7 +26,7 @@ import { usePortal } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
-	SummaryResponse,
+	type SummaryResponse,
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
@@ -288,19 +288,16 @@ export const SummaryForm = ({
 				chat_history: getChatHistory(messages),
 				excluded_chunks: excludedChunks,
 			});
-			const response = await fetch(
-				`${env.NEXT_PUBLIC_API_URL}/score/summary/stairs`,
-				{
-					method: "POST",
-					body: requestBody,
-					headers: {
-						"Content-Type": "application/json",
-					},
-				},
-			);
-			console.log("request body", requestBody);
 
-			if (response.body) {
+			const response = await fetch("/api/itell/score/stairs", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: requestBody,
+			});
+
+			if (response.ok && response.body) {
 				const reader = response.body.getReader();
 				const decoder = new TextDecoder();
 				let done = false;
@@ -356,7 +353,9 @@ export const SummaryForm = ({
 							stairsString = chunk.trim().replaceAll("\u0000", "");
 						} else {
 							if (stairsString) {
-								stairsData = JSON.parse(stairsString) as StairsQuestion;
+								stairsData = JSON.parse(
+									JSON.stringify(stairsString),
+								) as StairsQuestion;
 								finishStage("Analyzing");
 								addStairsQuestion(stairsData);
 
