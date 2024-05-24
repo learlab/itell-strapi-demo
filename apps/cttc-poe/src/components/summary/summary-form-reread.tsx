@@ -265,6 +265,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
+					userRole={user.role}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">

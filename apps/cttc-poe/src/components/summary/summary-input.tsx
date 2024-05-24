@@ -27,6 +27,7 @@ type Props = {
 	pageSlug: string;
 	stages: StageItem[];
 	pending: boolean;
+	userRole: string;
 	value?: string;
 	disabled?: boolean;
 };
@@ -37,10 +38,8 @@ export const SummaryInput = ({
 	disabled = true,
 	value = "",
 	pending,
+	userRole,
 }: Props) => {
-	const { user } = useSession();
-	if (!user) return null;
-
 	const { summary } = useSafeSearchParams("textbook");
 	const text = summary
 		? Buffer.from(summary, "base64").toString("ascii")
@@ -65,7 +64,7 @@ export const SummaryInput = ({
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}
 					onPaste={(e) => {
-						if (isProduction && !isAdmin(user.role)) {
+						if (isProduction && !isAdmin(userRole)) {
 							e.preventDefault();
 							toast.warning("Copy & Paste is not allowed");
 						}

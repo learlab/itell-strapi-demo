@@ -78,16 +78,6 @@ type Action =
 	| { type: "set_passed"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
 
-const initialState: State = {
-	prevInput: "",
-	pending: false,
-	error: null,
-	response: null,
-	stairsQuestion: null,
-	isPassed: false,
-	canProceed: false,
-};
-
 const driverObj = driver();
 
 const exitQuestion = () => {
@@ -101,8 +91,17 @@ const exitQuestion = () => {
 };
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
+	const initialState: State = {
+		prevInput: "",
+		pending: false,
+		error: null,
+		response: null,
+		stairsQuestion: null,
+		isPassed: false,
+		canProceed: pageStatus.isPageUnlocked,
+	};
+
 	const pageSlug = page.page_slug;
-	const mounted = useRef(false);
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 
 	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
@@ -117,9 +116,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	);
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
-			case "set_prev_input":
-				draft.prevInput = action.payload;
-				break;
 			case "submit":
 				draft.pending = true;
 				draft.error = null;
@@ -140,6 +136,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			case "ask":
 				draft.stairsQuestion = action.payload;
 				draft.pending = false;
+				break;
+			case "set_prev_input":
+				draft.prevInput = action.payload;
 				break;
 			case "finish":
 				draft.pending = false;
@@ -201,33 +200,12 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		if (state.stairsQuestion && !state.isPassed && !state.error) {
-			goToQuestion(state.stairsQuestion);
-		}
-
-		if (state.canProceed && !state.error) {
-			const title = feedback?.isPassed
-				? "Good job summarizing 🎉"
-				: "You can now move on 👏";
-			toast(title, {
-				className: "toast",
-				description: "Move to the next page to continue reading",
-				duration: 5000,
-				action: page.nextPageSlug
-					? {
-							label: "Proceed",
-							onClick: () => {
-								router.push(makePageHref(page.nextPageSlug as string));
-							},
-						}
-					: undefined,
-			});
+		if (!state.error) {
+			if (state.stairsQuestion && !state.isPassed) {
+				goToQuestion(state.stairsQuestion);
+			}
 		}
 	}, [state]);
-
-	useEffect(() => {
-		mounted.current = true;
-	}, []);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -246,14 +224,14 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			input,
 			state.prevInput === "" ? undefined : state.prevInput,
 		);
-		dispatch({ type: "set_prev_input", payload: input });
+
 		if (error) {
-			if (state.error !== ErrorType.INTERNAL || error !== ErrorType.SIMILAR) {
-				dispatch({ type: "fail", payload: error });
-				return;
-			}
+			dispatch({ type: "fail", payload: error });
+			return;
 		}
 
+		// set prev input here so we are not comparing consecutive error summaries
+		dispatch({ type: "set_prev_input", payload: input });
 		const summaryCount = await countUserPageSummary(userId, pageSlug);
 		const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
@@ -377,6 +355,26 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						setTimeout(() => {
 							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 						}, 3000);
+					} else {
+						console.log("not last page", state.canProceed);
+						if (!state.canProceed) {
+							const title = feedback?.isPassed
+								? "Good job summarizing 🎉"
+								: "You can now move on 👏";
+							toast(title, {
+								className: "toast",
+								description: "Move to the next page to continue reading",
+								duration: 5000,
+								action: page.nextPageSlug
+									? {
+											label: "Proceed",
+											onClick: () => {
+												router.push(makePageHref(page.nextPageSlug as string));
+											},
+										}
+									: undefined,
+							});
+						}
 					}
 					dispatch({
 						type: "finish",
@@ -412,6 +410,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	return (
 		<section className="space-y-2">
 			{portalNodes}
+
+			<SummaryFeedback feedback={feedback} canProceed={state.canProceed} />
+
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
 					<PageLink
@@ -430,8 +431,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					</Button>
 				)}
 			</div>
-
-			{feedback && <SummaryFeedback feedback={feedback} />}
 
 			{isTextbookFinished && (
 				<div className="space-y-2">
@@ -452,6 +451,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
+					userRole={user.role}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
