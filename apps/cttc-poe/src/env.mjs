@@ -11,7 +11,7 @@ const server = z.object({
 	NODE_ENV: z.enum(["development", "test", "production"]),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
-	ITELL_API_KEY: z.string().optional(),
+	ITELL_API_KEY: z.string(),
 });
 
 /**

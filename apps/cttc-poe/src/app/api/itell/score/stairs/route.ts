@@ -1,12 +1,12 @@
-import { ifetch } from "@/lib/api";
+import { FocusTimeData } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
+import { ifetch } from "@/lib/api";
 import type { ChatHistory } from "@itell/core/dist/chatbot/schema";
-import type { FocusTime } from "@prisma/client";
 
 interface Data {
 	summary: string;
 	page_slug: string;
-	focus_time: FocusTime["data"]; // not sure about this
+	focus_time: FocusTimeData;
 	chat_history: ChatHistory;
 	excluded_chunks: string[];
 }
