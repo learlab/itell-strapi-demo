@@ -2,6 +2,7 @@
 
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
+import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -73,6 +74,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
 	}));
+	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
@@ -97,8 +99,14 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
 	const goToRandomChunk = () => {
-		const chunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
-		const el = getChunkElement(chunkSlug);
+		// in production, only highlight 25% of the time
+		if (isProduction) {
+			if (Math.random() > 0.25) {
+				return;
+			}
+		}
+		const el = getChunkElement(randomChunkSlug);
+		console.log(randomChunkSlug, el);
 		if (el) {
 			scrollToElement(el);
 			setTimeout(() => {
@@ -107,15 +115,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					popover: {
 						description:
 							'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
-						side: "top",
+						side: "right",
 						align: "start",
 					},
 				});
 			}, 1000);
-		} else {
-			toast.warning(
-				"No question found, please revise your summary or move on to the next page",
-			);
 		}
 	};
 
@@ -135,14 +139,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			},
 		});
 	}, []);
-
-	useEffect(() => {
-		if (!pageStatus.isPageUnlocked) {
-			if (state.finished && !state.error) {
-				goToRandomChunk();
-			}
-		}
-	}, [state, pageStatus]);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -193,6 +189,16 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			});
 			await incrementUserPage(user.id, pageSlug);
 
+			finishStage("Analyzing");
+			dispatch({
+				type: "finish",
+				payload: true,
+			});
+
+			if (!pageStatus.isPageUnlocked) {
+				goToRandomChunk();
+			}
+
 			if (isLastPage(pageSlug)) {
 				setIsTextbookFinished(true);
 				toast.info(
@@ -202,12 +208,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 				}, 3000);
 			}
-
-			finishStage("Analyzing");
-			dispatch({
-				type: "finish",
-				payload: true,
-			});
 		} catch (err) {
 			finishStage("Analyzing");
 			clearStages();
@@ -233,7 +233,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		<section className="space-y-2">
 			{portalNodes}
 			{state.finished && page.nextPageSlug && (
-				<div className="space-y-2">
+				<div className="space-y-2 space-x-2">
 					<p>
 						You have finished this page. You can choose to refine your summary
 						or move on to the next page.
@@ -244,6 +244,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					>
 						Go to next page
 					</PageLink>
+
+					{!isProduction && (
+						<Button variant={"outline"} onClick={goToRandomChunk}>
+							go to random chunk (dev)
+						</Button>
+					)}
 				</div>
 			)}
 

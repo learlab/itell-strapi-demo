@@ -1,6 +1,5 @@
 "use client";
 
-import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -35,7 +34,7 @@ import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -73,7 +72,7 @@ type Action =
 	| { type: "submit" }
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
-	| { type: "ask"; payload: StairsQuestion }
+	| { type: "stairs"; payload: StairsQuestion }
 	| { type: "finish"; payload: { canProceed: boolean } }
 	| { type: "set_passed"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
@@ -133,7 +132,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			case "set_passed":
 				draft.isPassed = action.payload;
 				break;
-			case "ask":
+			case "stairs":
 				draft.stairsQuestion = action.payload;
 				draft.pending = false;
 				break;
@@ -162,8 +161,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					popover: {
 						description:
 							"Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
-						side: "right",
-						align: "start",
 					},
 				});
 			}, 1000);
@@ -198,14 +195,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			},
 		});
 	}, []);
-
-	useEffect(() => {
-		if (!state.error) {
-			if (state.stairsQuestion && !state.isPassed) {
-				goToQuestion(state.stairsQuestion);
-			}
-		}
-	}, [state]);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -384,7 +373,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				finishStage("Saving");
 
 				if (stairsData) {
-					dispatch({ type: "ask", payload: stairsData });
+					dispatch({ type: "stairs", payload: stairsData });
+					if (!summaryResponse.is_passed && !isEnoughSummary) {
+						goToQuestion(stairsData);
+					}
 				}
 			}
 		} catch (err) {

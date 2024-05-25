@@ -34,9 +34,9 @@ export const SummaryFormSelector = ({
 			<section className="lg:col-span-2">
 				{condition === Condition.RANDOM_REREAD ? (
 					<SummaryFormReread user={user} page={page} pageStatus={pageStatus} />
-				) : (
-					<SummaryFormReread user={user} page={page} pageStatus={pageStatus} />
-				)}
+				) : condition === Condition.STAIRS ? (
+					<SummaryFormStairs user={user} page={page} pageStatus={pageStatus} />
+				) : null}
 			</section>
 		</section>
 	);

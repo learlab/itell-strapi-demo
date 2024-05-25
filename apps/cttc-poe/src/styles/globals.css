@@ -65,7 +65,10 @@ svg {
   display: none;
 }
 
-.driver-active #page-content-wrapper {}
+/* make space for question popup */
+.driver-active #page-content-wrapper {
+  max-width: 60%;
+}
 
 /* .driver-active #textbook-page-wrapper {
   justify-content: end;
