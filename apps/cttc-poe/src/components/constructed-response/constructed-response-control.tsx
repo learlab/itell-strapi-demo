@@ -148,7 +148,9 @@ export const ConstructedResponseControl = ({
 		}
 
 		// don't blur if the page is finished
-		if (!isPageFinished) {
+		// there were cases when isPageFinished is not in sync with isPageUnlocked due to localStorage
+		// checking them both in make sure
+		if (!pageStatus.isPageUnlocked && !isPageFinished) {
 			if (chunkIndex !== 0 && isChunkUnvisited) {
 				el.style.filter = "blur(4px)";
 			}
