@@ -174,6 +174,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	useEffect(() => {
 		driverObj.setConfig({
 			smoothScroll: false,
+			animate: false,
 			onPopoverRender: (popover) => {
 				addNode(
 					<ChatStairs
@@ -345,7 +346,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 						}, 3000);
 					} else {
-						console.log("not last page", state.canProceed);
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
 								? "Good job summarizing 🎉"

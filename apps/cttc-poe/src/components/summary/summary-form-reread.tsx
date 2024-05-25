@@ -125,6 +125,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 	useEffect(() => {
 		driverObj.setConfig({
+			animate: false,
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
 				addNode(
