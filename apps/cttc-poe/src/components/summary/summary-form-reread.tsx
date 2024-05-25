@@ -100,11 +100,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 	const goToRandomChunk = () => {
 		// in production, only highlight 25% of the time
-		if (isProduction) {
-			if (Math.random() > 0.25) {
-				return;
-			}
-		}
+		// if (isProduction) {
+		// 	if (Math.random() > 0.25) {
+		// 		return;
+		// 	}
+		// }
 		const el = getChunkElement(randomChunkSlug);
 		console.log(randomChunkSlug, el);
 		if (el) {
