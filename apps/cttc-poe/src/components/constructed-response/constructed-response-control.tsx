@@ -36,6 +36,9 @@ export const ConstructedResponseControl = ({
 
 	const { nodes, addNode } = usePortal();
 	const hasFeedback = condition !== Condition.SIMPLE;
+	// there were cases when isPageFinished is not in sync with isPageUnlocked due to localStorage
+	// checking them both in make sure
+	const shouldBlur = !pageStatus.isPageUnlocked && !isPageFinished;
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
@@ -147,10 +150,7 @@ export const ConstructedResponseControl = ({
 			insertQuestion(el, chunkId);
 		}
 
-		// don't blur if the page is finished
-		// there were cases when isPageFinished is not in sync with isPageUnlocked due to localStorage
-		// checking them both in make sure
-		if (!pageStatus.isPageUnlocked && !isPageFinished) {
+		if (shouldBlur) {
 			if (chunkIndex !== 0 && isChunkUnvisited) {
 				el.style.filter = "blur(4px)";
 			}
@@ -178,7 +178,7 @@ export const ConstructedResponseControl = ({
 				return;
 			}
 			currentChunkElement.style.filter = "none";
-			if (!isPageFinished) {
+			if (shouldBlur) {
 				if (
 					!selectedQuestions.has(currentChunkId) &&
 					idx !== chunks.length - 1

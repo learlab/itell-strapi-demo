@@ -52,18 +52,19 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
-	const pageStatus = getPageStatus({
-		pageSlug,
-		userPageSlug: user?.pageSlug || null,
-		userFinished: user?.finished || false,
-	});
-	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	const userRole = user?.role || "user";
 	const userId = user?.id || null;
 	const userFinished = user?.finished || false;
 	const userPageSlug = user?.pageSlug || null;
 	const userCondition = user?.condition || Condition.STAIRS;
+
+	const pageStatus = getPageStatus({
+		pageSlug,
+		userPageSlug,
+		userFinished,
+	});
+	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
 		<PageProvider
@@ -72,7 +73,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
-			<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
+			<div
+				id="textbook-page-wrapper"
+				className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2"
+			>
 				<aside
 					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
@@ -88,7 +92,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</aside>
 
 				<section
-					className="page-content relative max-w-[850px]"
+					id="page-content-wrapper"
+					className="relative lg:max-w-4xl md:max-w-3xl max-w-2xl"
 					style={{ flexGrow: 4 }}
 				>
 					<PageTitle>

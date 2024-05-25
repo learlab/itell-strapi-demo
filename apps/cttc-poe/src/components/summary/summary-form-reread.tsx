@@ -107,7 +107,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					popover: {
 						description:
 							'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
-						side: "left",
+						side: "top",
 						align: "start",
 					},
 				});
@@ -167,7 +167,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				page_slug: pageSlug,
 			});
 			console.log("requestBody", requestBody);
-			const response = await fetch("/api/itell/score/stairs", {
+			const response = await fetch("/api/itell/score/summary", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

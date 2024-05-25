@@ -162,7 +162,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					popover: {
 						description:
 							"Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
-						side: "left",
+						side: "right",
 						align: "start",
 					},
 				});

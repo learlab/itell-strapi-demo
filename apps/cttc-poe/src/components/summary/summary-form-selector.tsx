@@ -26,29 +26,18 @@ export const SummaryFormSelector = ({
 		return <SummaryFormSimple />;
 	}
 
-	if (condition === Condition.RANDOM_REREAD) {
-		return (
-			<section className="flex flex-col sm:flex-row gap-8" id="page-summary">
-				<section className="sm:basis-1/3">
-					<SummaryDescription />
-				</section>
-				<section className="sm:basis-2/3">
+	return (
+		<section className="grid lg:grid-cols-3 gap-8" id="page-summary">
+			<section className="lg:col-span-1">
+				<SummaryDescription />
+			</section>
+			<section className="lg:col-span-2">
+				{condition === Condition.RANDOM_REREAD ? (
 					<SummaryFormReread user={user} page={page} pageStatus={pageStatus} />
-				</section>
+				) : (
+					<SummaryFormReread user={user} page={page} pageStatus={pageStatus} />
+				)}
 			</section>
-		);
-	}
-
-	if (condition === Condition.STAIRS) {
-		return (
-			<section className="flex flex-col sm:flex-row gap-8" id="page-summary">
-				<section className="sm:basis-1/3">
-					<SummaryDescription />
-				</section>
-				<section className="sm:basis-2/3">
-					<SummaryFormStairs user={user} page={page} pageStatus={pageStatus} />
-				</section>
-			</section>
-		);
-	}
+		</section>
+	);
 };
