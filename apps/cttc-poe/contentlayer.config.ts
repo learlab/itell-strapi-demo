@@ -82,6 +82,11 @@ const Page = defineDocumentType(() => ({
 			description: "Whether the page requires a quiz",
 			required: false,
 		},
+		reference_summary: {
+			type: "string",
+			description: "The reference summary for the page",
+			required: false,
+		},
 	},
 	computedFields: {
 		url: {

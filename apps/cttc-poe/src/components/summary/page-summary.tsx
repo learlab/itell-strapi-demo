@@ -1,4 +1,5 @@
 import { SessionUser, getSession } from "@/lib/auth";
+import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
@@ -27,9 +28,11 @@ export const PageSummary = async ({
 
 	return (
 		<section className="mt-10 border-t-2 py-4 mb-20 space-y-2">
-			<Suspense fallback={<SummaryCount.Skeleton />}>
-				<SummaryCount pageSlug={page.page_slug} userId={user.id} />
-			</Suspense>
+			{condition !== Condition.SIMPLE && (
+				<Suspense fallback={<SummaryCount.Skeleton />}>
+					<SummaryCount pageSlug={page.page_slug} userId={user.id} />
+				</Suspense>
+			)}
 			<SummaryFormSelector
 				user={user}
 				pageStatus={pageStatus}

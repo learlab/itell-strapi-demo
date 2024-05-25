@@ -29,6 +29,7 @@ export type PageData = {
 	title: string;
 	page_slug: string;
 	chapter: number;
+	referenceSummary: string | undefined;
 	nextPageSlug: string | null;
 };
 
@@ -50,6 +51,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		title: page.title,
 		page_slug: page.page_slug,
 		chapter: page.chapter,
+		referenceSummary: page.reference_summary,
 		nextPageSlug,
 	};
 };

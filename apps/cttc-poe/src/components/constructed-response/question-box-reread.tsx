@@ -24,7 +24,7 @@ import {
 import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { SubmitButton } from "./submit-button";
-import { AnswerStatusReread } from "./types";
+import { AnswerStatusReread, AnswerStatusStairs } from "./types";
 
 type QuestionScore = 0 | 1 | 2;
 
@@ -222,16 +222,17 @@ export const QuestionBoxReread = ({
 								answered={answerStatus === AnswerStatusReread.ANSWERED}
 							/>
 
-							{isNextButtonDisplayed && (
-								<NextChunkButton
-									pageSlug={pageSlug}
-									clickEventType="post-question chunk reveal"
-									onClick={() => setIsNextButtonDisplayed(false)}
-									chunkSlug={chunkSlug}
-								>
-									{nextButtonText}
-								</NextChunkButton>
-							)}
+							{answerStatus !== AnswerStatusReread.UNANSWERED &&
+								isNextButtonDisplayed && (
+									<NextChunkButton
+										pageSlug={pageSlug}
+										clickEventType="post-question chunk reveal"
+										onClick={() => setIsNextButtonDisplayed(false)}
+										chunkSlug={chunkSlug}
+									>
+										{nextButtonText}
+									</NextChunkButton>
+								)}
 						</div>
 					</form>
 				</CardContent>

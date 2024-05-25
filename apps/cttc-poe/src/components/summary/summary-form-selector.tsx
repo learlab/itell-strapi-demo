@@ -23,7 +23,7 @@ export const SummaryFormSelector = ({
 	condition,
 }: Props) => {
 	if (condition === Condition.SIMPLE) {
-		return <SummaryFormSimple />;
+		return <SummaryFormSimple page={page} />;
 	}
 
 	return (
