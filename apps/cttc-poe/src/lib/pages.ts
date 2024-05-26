@@ -11,6 +11,9 @@ export const allPagesSorted = allPages.sort((a, b) => {
 
 export const firstPage = allPagesSorted[0];
 export const firstSummaryPage = allPagesSorted[1];
+export const allSummaryPagesSorted = allPagesSorted.filter(
+	(page) => page.summary,
+);
 
 export const isLastPage = (slug: string) => {
 	const lastPage = allPagesSorted[allPagesSorted.length - 1];

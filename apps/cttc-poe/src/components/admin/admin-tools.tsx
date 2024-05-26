@@ -4,6 +4,13 @@ import {
 	Label,
 	RadioGroup,
 	RadioGroupItem,
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
 	Sheet,
 	SheetClose,
 	SheetContent,
@@ -14,7 +21,10 @@ import {
 	Switch,
 } from "@/components/client-components";
 import { Condition } from "@/lib/control/condition";
+import { allPagesSorted, allSummaryPagesSorted } from "@/lib/pages";
 import { updateUser } from "@/lib/user/actions";
+import { setUserPageSlug } from "@/lib/user/page-slug";
+import { makePageHref } from "@/lib/utils";
 import { SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -35,11 +45,28 @@ export const AdminTools = ({ userId, condition }: Props) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const condition = String(formData.get("condition"));
+		const pageSlug =
+			formData.get("page-progress") !== ""
+				? String(formData.get("page-progress"))
+				: undefined;
 
 		startTransition(async () => {
-			await updateUser(userId, { condition });
-			finishPage();
-			router.refresh();
+			console.log(formData.get("page-unblur"));
+			if (formData.get("page-unblur") === "on") {
+				finishPage();
+			}
+
+			await updateUser(userId, {
+				condition,
+				pageSlug,
+			});
+
+			if (pageSlug) {
+				setUserPageSlug(pageSlug);
+				router.push(makePageHref(pageSlug));
+			} else {
+				router.refresh();
+			}
 		});
 	};
 
@@ -54,12 +81,14 @@ export const AdminTools = ({ userId, condition }: Props) => {
 				<SheetHeader>
 					<SheetTitle>Configure ITELL</SheetTitle>
 					<SheetDescription>
-						You can view this because you are recognized as an admin.
+						You can view this because you are recognized as an admin. Apply the
+						configuration by clicking "Save Changes". Unsaved changes will be
+						lost.
 					</SheetDescription>
 				</SheetHeader>
 				<form className="grid gap-8 py-4" onSubmit={onSubmit}>
 					<div className="flex flex-col gap-4">
-						<Label htmlFor="ai-feedback">AI feedback</Label>
+						<Label htmlFor="condition">AI feedback</Label>
 						<RadioGroup
 							id="condition"
 							name="condition"
@@ -113,10 +142,28 @@ export const AdminTools = ({ userId, condition }: Props) => {
 							</div>
 						</RadioGroup>
 					</div>
+					<div className="flex flex-col gap-4">
+						<Label htmlFor="page-progress">Set your progress to a page</Label>
+						<Select name="page-progress">
+							<SelectTrigger className="text-left h-fit">
+								<SelectValue placeholder="Set progress" />
+							</SelectTrigger>
+							<SelectContent id="page-progress">
+								<SelectGroup>
+									<SelectLabel>Page</SelectLabel>
+									{allSummaryPagesSorted.map((page) => (
+										<SelectItem key={page.page_slug} value={page.page_slug}>
+											{page.title}
+										</SelectItem>
+									))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</div>
 					<div className="flex flex-col gap-2">
 						<div className="flex flex-row items-center justify-between">
-							<Label htmlFor="unblur-page">Unblur current page</Label>
-							<Switch />
+							<Label htmlFor="page-unblur">Unblur current page</Label>
+							<Switch id="page-unblur" name="page-unblur" />
 						</div>
 						<p className="text-muted-foreground text-sm">
 							Unblur all chunks from the current page and unlock summary
