@@ -106,20 +106,16 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		// 	}
 		// }
 		const el = getChunkElement(randomChunkSlug);
-		console.log(randomChunkSlug, el);
 		if (el) {
-			scrollToElement(el);
-			setTimeout(() => {
-				driverObj.highlight({
-					element: el,
-					popover: {
-						description:
-							'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
-						side: "right",
-						align: "start",
-					},
-				});
-			}, 1000);
+			driverObj.highlight({
+				element: el,
+				popover: {
+					description:
+						'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
+					side: "right",
+					align: "start",
+				},
+			});
 		}
 	};
 
@@ -245,13 +241,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					>
 						Go to next page
 					</PageLink>
-
-					{!isProduction && (
-						<Button variant={"outline"} onClick={goToRandomChunk}>
-							go to random chunk (dev)
-						</Button>
-					)}
 				</div>
+			)}
+
+			{!isProduction && (
+				<Button variant={"outline"} onClick={goToRandomChunk}>
+					go to random chunk (dev)
+				</Button>
 			)}
 
 			{isTextbookFinished && (

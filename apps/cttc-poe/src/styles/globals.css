@@ -75,7 +75,8 @@ svg {
 } */
 
 .driver-popover {
-  max-width: 350px !important;
+  width: 240px !important;
+  /* max-width: 350px !important; */
   @apply bg-background text-foreground !important;
 }
 

@@ -154,16 +154,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		const el = getChunkElement(question.chunk);
 		if (el) {
 			scrollToElement(el);
-
-			setTimeout(() => {
-				driverObj.highlight({
-					element: el,
-					popover: {
-						description:
-							"Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
-					},
-				});
-			}, 1000);
+			driverObj.highlight({
+				element: el,
+				popover: {
+					description:
+						"Please re-read the highlighted chunk. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
+				},
+			});
 		} else {
 			toast.warning(
 				"No question found, please revise your summary or move on to the next page",
