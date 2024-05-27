@@ -1,4 +1,3 @@
-import { groupby } from "@itell/core/utils";
 import { allPages } from "contentlayer/generated";
 
 export const allPagesSorted = allPages.sort((a, b) => {
@@ -56,30 +55,3 @@ export const nextPage = (slug: string): string => {
 
 	return slug;
 };
-
-type TocItem = {
-	title: string;
-	chapter: number;
-	page_slug: string;
-};
-const byChapter = groupby(allPagesSorted, (page) => page.chapter);
-export const tocChapters: Array<{
-	title: string;
-	chapter: number;
-	page_slug: string;
-	items: Array<TocItem>;
-}> = [];
-for (const chapter of Object.keys(byChapter)) {
-	const pages = byChapter[chapter];
-	const firstPage = pages[0];
-	tocChapters.push({
-		title: firstPage.title,
-		chapter: firstPage.chapter,
-		page_slug: firstPage.page_slug,
-		items: pages.slice(1).map((page) => ({
-			title: page.title,
-			chapter: page.chapter,
-			page_slug: page.page_slug,
-		})),
-	});
-}

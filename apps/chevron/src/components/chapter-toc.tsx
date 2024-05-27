@@ -1,25 +1,18 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getPageStatus } from "@/lib/page-status";
-import { tocChapters } from "@/lib/pages";
+import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
-import { Page } from "contentlayer/generated";
-import { ArrowUpIcon, ChevronsUpDown, PencilIcon } from "lucide-react";
-import Link from "next/link";
+import type { Page } from "contentlayer/generated";
+import { ArrowUpIcon, PencilIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AdminTools } from "./admin/admin-tools";
-import {
-	Button,
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "./client-components";
+import { Button } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
 
 const AnchorLink = ({
@@ -72,65 +65,39 @@ export const ChapterToc = ({
 	return (
 		<>
 			<ol className="space-y-2">
-				{tocChapters.map((chapter) => {
-					return (
-						<Collapsible
-							key={chapter.page_slug}
-							defaultOpen={currentPage.chapter === chapter.chapter}
-						>
-							<CollapsibleTrigger asChild>
-								<div className="flex items-center gap-2">
-									<Link
-										href={makePageHref(chapter.page_slug)}
-										className="flex px-1 py-2 items-center"
-									>
-										<p className="text-left text-pretty">{chapter.title}</p>
-									</Link>
-									<Button variant={"ghost"} className="p-1">
-										<ChevronsUpDown className="size-4" />
-										<span className="sr-only">Toggle</span>
-									</Button>
-								</div>
-							</CollapsibleTrigger>
+				{allPagesSorted.map((p) => {
+					const { isPageLatest, isPageUnlocked } = getPageStatus({
+						pageSlug: p.page_slug,
+						userPageSlug,
+						userFinished,
+					});
 
-							<CollapsibleContent>
-								<ol className="space-y-1 text-sm px-1">
-									{chapter.items.map((item) => {
-										const { isPageLatest, isPageUnlocked } = getPageStatus({
-											pageSlug: item.page_slug,
-											userPageSlug,
-											userFinished,
-										});
-										const visible = isPageLatest || isPageUnlocked;
-										return (
-											<li
-												className={cn(
-													"py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
-													{
-														"bg-accent": item.page_slug === activePage,
-														"text-muted-foreground": !visible,
-													},
-												)}
-												key={item.page_slug}
-											>
-												<button
-													type="button"
-													onClick={() => navigatePage(item.page_slug)}
-													disabled={(pending || !visible) && isProduction}
-													className={pending ? "animate-pulse" : ""}
-												>
-													<p className="text-left text-pretty">
-														{item.title}
-														{visible ? "" : " 🔒"}
-														{isPageUnlocked ? " ✅" : ""}
-													</p>
-												</button>
-											</li>
-										);
-									})}
-								</ol>
-							</CollapsibleContent>
-						</Collapsible>
+					const visible = isPageLatest || isPageUnlocked;
+
+					return (
+						<li
+							className={cn(
+								"py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
+								{
+									"bg-accent": p.page_slug === activePage,
+									"text-muted-foreground": !visible,
+								},
+							)}
+							key={p.page_slug}
+						>
+							<button
+								type="button"
+								onClick={() => navigatePage(p.page_slug)}
+								disabled={(pending || !visible) && isProduction}
+								className={pending ? "animate-pulse" : ""}
+							>
+								<p className="text-left text-pretty">
+									{p.title}
+									{visible ? "" : " 🔒"}
+									{isPageUnlocked ? " ✅" : ""}
+								</p>
+							</button>
+						</li>
 					);
 				})}
 			</ol>
