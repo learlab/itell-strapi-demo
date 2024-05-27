@@ -1,9 +1,9 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
-import { getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import { delay, redirectWithSearchParams } from "@/lib/utils";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ConstructedResponse } from "../../../components/dashboard/constructed-response";
@@ -11,13 +11,12 @@ import { ConstructedResponse } from "../../../components/dashboard/constructed-r
 export const metadata = Meta.questions;
 
 export default async function () {
-	await delay(3000);
-	const currentUser = await getSessionUser();
-	if (!currentUser) {
+	const { user } = await getSession();
+	if (!user) {
 		return redirectWithSearchParams("/auth");
 	}
 
-	incrementView("constructed-response");
+	incrementView(user.id, "constructed-response");
 
 	return (
 		<DashboardShell>
@@ -27,7 +26,7 @@ export default async function () {
 			/>
 			<Suspense fallback={<ConstructedResponse.Skeleton />}>
 				<ErrorBoundary fallback={<ConstructedResponse.ErrorFallback />}>
-					<ConstructedResponse uid={currentUser.id} />
+					<ConstructedResponse userId={user.id} />
 				</ErrorBoundary>
 			</Suspense>
 		</DashboardShell>

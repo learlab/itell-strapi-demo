@@ -1,6 +1,7 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { PageTitle } from "@/components/page-title";
-import { allPagesSorted, firstPage } from "@/lib/pages";
+import { Condition } from "@/lib/control/condition";
+import { allPagesSorted } from "@/lib/pages";
 import { getUserPageSlug } from "@/lib/user/page-slug";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
@@ -33,16 +34,11 @@ export default async function () {
 			>
 				<ChapterToc
 					currentPage={page}
-					user={{
-						id: "",
-						name: "",
-						email: "",
-						finished: false,
-						image: "",
-						page_slug: userPageSlug,
-						role: "",
-						prolific_pid: "",
-					}}
+					userPageSlug={userPageSlug}
+					userFinished={false}
+					userRole="user"
+					userId={null}
+					condition={Condition.STAIRS}
 				/>
 			</aside>
 

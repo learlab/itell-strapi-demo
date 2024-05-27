@@ -1,9 +1,7 @@
-import db from "@/lib/db";
+import { users } from "@/drizzle/schema";
+import { db, first } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 export const getUser = async (userId: string) => {
-	return await db.user.findUnique({
-		where: {
-			id: userId,
-		},
-	});
+	return first(await db.select().from(users).where(eq(users.id, userId)));
 };

@@ -43,14 +43,14 @@ export const UserAccountNav = () => {
 		<div className="ml-auto flex items-center gap-1">
 			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
-					<UserAvatar user={user} className="h-8 w-8" />
+					<UserAvatar image={user.image} name={user.name} className="h-8 w-8" />
 					{menuOpen ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
 						<ChevronDownIcon className="size-4" />
 					)}
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
+				<DropdownMenuContent align="end" className="min-w-40">
 					{/* user name and email */}
 					<div className="flex items-center justify-start gap-2 p-2">
 						<div className="flex flex-col space-y-1 leading-none">

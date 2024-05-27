@@ -57,7 +57,7 @@ const UserGuide = defineDocumentType(() => ({
 
 const Page = defineDocumentType(() => ({
 	name: "Page",
-	filePathPattern: "textbook/**/*.{md,mdx}",
+	filePathPattern: "textbook/*.{md,mdx}",
 	contentType: "mdx",
 	fields: {
 		title: {
@@ -82,6 +82,11 @@ const Page = defineDocumentType(() => ({
 			description: "Whether the page requires a quiz",
 			required: false,
 		},
+		reference_summary: {
+			type: "string",
+			description: "The reference summary for the page",
+			required: false,
+		},
 	},
 	computedFields: {
 		url: {
@@ -93,20 +98,8 @@ const Page = defineDocumentType(() => ({
 			type: "number",
 			description: "The chapter index of the page",
 			resolve: (doc) => {
-				return Number(doc._raw.sourceFileDir.split("-")[1]);
-			},
-		},
-		section: {
-			type: "number",
-			description: "The section index of the page",
-			resolve: (doc) => {
-				const sectionName = doc._raw.sourceFileName;
-				if (sectionName === "index.mdx") {
-					return 0;
-				}
-
 				return Number(
-					doc._raw.sourceFileName.split("-")[1].replace(".mdx", ""),
+					doc._raw.sourceFileName.replace(".mdx", "").split("-")[1],
 				);
 			},
 		},

@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { User } from "@/drizzle/schema";
 import { JoinClassForm } from "./join-class-form";
 
 type Props = {

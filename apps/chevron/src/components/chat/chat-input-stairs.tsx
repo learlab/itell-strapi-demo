@@ -2,20 +2,21 @@
 
 import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
-import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { useChatStore } from "@/lib/store/chat";
 import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
-import { HTMLAttributes, useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
+	userId: string;
 	pageSlug: string;
 }
 
 export const ChatInputStairs = ({
+	userId,
 	className,
 	pageSlug,
 	...props
@@ -58,18 +59,21 @@ export const ChatInputStairs = ({
 		const botMessageId = addBotMessage("", true);
 		setActiveMessageId(botMessageId);
 
-		const chatResponse = await fetchChatResponse(
-			`${env.NEXT_PUBLIC_API_URL}/chat`,
-			{
+		const chatResponse = await fetch("/api/itell/chat", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
 				pageSlug,
 				text,
 				history: history.current,
-			},
-		);
+			}),
+		});
 		setActiveMessageId(null);
 
-		if (chatResponse.ok) {
-			const reader = chatResponse.data.getReader();
+		if (chatResponse.ok && chatResponse.body) {
+			const reader = chatResponse.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
 			let botText = "";
@@ -136,6 +140,7 @@ export const ChatInputStairs = ({
 				} else {
 					answered.current = true;
 					createChatMessage({
+						userId: userId,
 						pageSlug,
 						messages: [
 							{

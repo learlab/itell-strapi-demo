@@ -1,33 +1,23 @@
-import { getSessionUser } from "../auth";
-import db from "../db";
+import { notes } from "@/drizzle/schema";
+import { and, eq, sql } from "drizzle-orm";
+import { db } from "../db";
 
-export const getNotes = async (pageSlug: string) => {
-	const user = await getSessionUser();
-	if (!user) {
-		return [];
-	}
-
-	return await db.note.findMany({
-		where: {
-			userId: user.id,
-			pageSlug,
-		},
-	});
+export const getNotes = async (userId: string, pageSlug: string) => {
+	return await db
+		.select()
+		.from(notes)
+		.where(and(eq(notes.userId, userId), eq(notes.pageSlug, pageSlug)));
 };
 
-export const countNoteHighlight = async (pageSlug: string) => {
-	const user = await getSessionUser();
-	if (!user) {
-		return [];
-	}
-
-	return (await db.$queryRaw`
-			SELECT COUNT(*),
-					CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END as type
-			FROM notes
-			WHERE user_id = ${user.id} AND page_slug = ${pageSlug}
-			GROUP BY CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`) as {
-		count: number;
-		type: string;
-	}[];
+export const countNoteHighlight = async (userId: string, pageSlug: string) => {
+	return await db
+		.select({
+			type: sql<string>`CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`,
+			count: sql<number>`COUNT(*)::integer`,
+		})
+		.from(notes)
+		.where(and(eq(notes.userId, userId), eq(notes.pageSlug, pageSlug)))
+		.groupBy(
+			sql<string>`CASE WHEN note_text IS NULL THEN 'highlight' ELSE 'note' END`,
+		);
 };

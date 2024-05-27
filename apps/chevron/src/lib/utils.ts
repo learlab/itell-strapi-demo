@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
@@ -28,6 +29,7 @@ export type PageData = {
 	title: string;
 	page_slug: string;
 	chapter: number;
+	referenceSummary: string | undefined;
 	nextPageSlug: string | null;
 };
 
@@ -49,6 +51,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		title: page.title,
 		page_slug: page.page_slug,
 		chapter: page.chapter,
+		referenceSummary: page.reference_summary,
 		nextPageSlug,
 	};
 };
@@ -70,7 +73,7 @@ export const redirectWithSearchParams = (
 	path: string,
 	searchParams?: unknown,
 ) => {
-	const url = new URL(path, window.location.origin);
+	const url = new URL(path, env.NEXTAUTH_URL);
 	if (isRecord(searchParams)) {
 		for (const key in searchParams) {
 			url.searchParams.append(key, String(searchParams[key]));
@@ -85,4 +88,10 @@ export const scrollToElement = (element: HTMLElement) => {
 	const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
 
 	window.scrollTo({ top: y, behavior: "smooth" });
+};
+
+export const randomNumber = () => {
+	const array = new Uint32Array(1);
+	window.crypto.getRandomValues(array);
+	return array[0];
 };

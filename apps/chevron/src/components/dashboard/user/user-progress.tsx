@@ -1,16 +1,16 @@
 import { allPagesSorted } from "@/lib/pages";
-import { User } from "@prisma/client";
 
-export const UserProgress = ({ user }: { user: User }) => {
+export const UserProgress = ({
+	pageSlug,
+	finished,
+}: { pageSlug: string | null; finished: boolean }) => {
 	let displayProgress = "0";
 	const validPages = allPagesSorted.filter((page) => page.summary);
-	const userIndex = validPages.findIndex(
-		(page) => page.page_slug === user.pageSlug,
-	);
-	const unlockedPages = userIndex === 0 || userIndex !== -1 ? 0 : userIndex;
-	if (user.finished) {
+	const userIndex = validPages.findIndex((page) => page.page_slug === pageSlug);
+	const unlockedPages = userIndex === 0 || userIndex === -1 ? 0 : userIndex;
+	if (finished) {
 		displayProgress = "100";
-	} else if (user.pageSlug) {
+	} else if (pageSlug) {
 		displayProgress = ((unlockedPages / validPages.length) * 100).toFixed(0);
 	} else {
 		displayProgress = "0";

@@ -1,8 +1,7 @@
-import { SessionUser } from "./auth";
-import { firstPage, isLastPage, isPageAfter } from "./pages";
+import { firstPage, firstSummaryPage, isLastPage, isPageAfter } from "./pages";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
-	return pageSlug === "introduction-to-the-macroeconomic-perspective";
+	return pageSlug === firstPage.page_slug;
 };
 
 export type PageStatus = {
@@ -12,24 +11,31 @@ export type PageStatus = {
 	isPageLatest: boolean;
 };
 
-export const getPageStatus = (
-	user: SessionUser,
-	pageSlug: string,
-): PageStatus => {
-	if (!user?.page_slug) {
+export const getPageStatus = ({
+	pageSlug,
+	userPageSlug,
+	userFinished,
+}: {
+	pageSlug: string;
+	userPageSlug: string | null;
+	userFinished: boolean;
+}): PageStatus => {
+	if (!userPageSlug) {
 		return {
 			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
-			isPageLatest: pageSlug === firstPage.page_slug,
+			isPageLatest:
+				pageSlug === firstPage.page_slug ||
+				pageSlug === firstSummaryPage.page_slug,
 		};
 	}
 
+	const isPageLatest = pageSlug === userPageSlug;
 	if (isPageUnlockedWithoutUser(pageSlug)) {
-		return { isPageUnlocked: true, isPageLatest: pageSlug === user?.email };
+		return { isPageUnlocked: true, isPageLatest };
 	}
 
-	const isPageLatest = pageSlug === user.page_slug;
 	const isPageUnlocked = isLastPage(pageSlug)
-		? user.finished
-		: isPageAfter(user.page_slug, pageSlug);
+		? userFinished
+		: isPageAfter(userPageSlug, pageSlug);
 	return { isPageUnlocked, isPageLatest };
 };

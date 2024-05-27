@@ -65,13 +65,18 @@ svg {
   display: none;
 }
 
-.driver-active #page-content {
-  margin-left: 300px;
-  width: 100%;
+/* make space for question popup */
+.driver-active #page-content-wrapper {
+  max-width: 60%;
 }
 
+/* .driver-active #textbook-page-wrapper {
+  justify-content: end;
+} */
+
 .driver-popover {
-  max-width: 350px !important;
+  width: 240px !important;
+  /* max-width: 350px !important; */
   @apply bg-background text-foreground !important;
 }
 

@@ -1,8 +1,12 @@
+import { users } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth";
 import { googleProvider } from "@/lib/auth/google";
-import db from "@/lib/db";
+import { Condition } from "@/lib/control/condition";
+import { db, first } from "@/lib/db";
 import * as Sentry from "@sentry/nextjs";
+import { eq } from "drizzle-orm";
+import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { readGoogleOAuthState } from "../state";
@@ -47,21 +51,25 @@ export async function GET(req: Request) {
 		);
 		const googleUser = (await googleUserResponse.json()) as GoogleUser;
 
-		let user = await db.user.findFirst({
-			where: {
-				name: googleUser.name,
-			},
-		});
+		let user = first(
+			await db.select().from(users).where(eq(users.googleId, googleUser.id)),
+		);
 
 		if (!user) {
-			user = await db.user.create({
-				data: {
-					name: googleUser.name,
-					image: googleUser.picture,
-					email: googleUser.email,
-					role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
-				},
-			});
+			user = (
+				await db
+					.insert(users)
+					.values({
+						id: generateIdFromEntropySize(16),
+						name: googleUser.name,
+						image: googleUser.picture,
+						email: googleUser.email,
+						googleId: googleUser.id,
+						condition: Condition.STAIRS,
+						role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
+					})
+					.returning()
+			)[0];
 		}
 
 		const session = await lucia.createSession(user.id, {});
@@ -78,6 +86,7 @@ export async function GET(req: Request) {
 			},
 		});
 	} catch (error) {
+		console.log("google oauth error", error);
 		Sentry.captureMessage("google oauth error", {
 			extra: {
 				msg: JSON.stringify(error),

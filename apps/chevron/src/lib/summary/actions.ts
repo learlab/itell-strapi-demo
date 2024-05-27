@@ -1,54 +1,36 @@
 "use server";
 
-import { SummaryResponse } from "@itell/core/summary";
-import { getSessionUser } from "../auth";
-import db from "../db";
+import { focus_times, summaries } from "@/drizzle/schema";
+import { and, count, eq } from "drizzle-orm";
+import { PgInsertValue } from "drizzle-orm/pg-core";
+import { db, first } from "../db";
 
-export const createSummary = async ({
-	text,
-	pageSlug,
-	response,
-}: { text: string; pageSlug: string; response: SummaryResponse }) => {
-	const user = await getSessionUser();
-	if (user) {
-		return await db.summary.create({
-			data: {
-				text,
-				pageSlug,
-				isPassed: response.is_passed || false,
-				containmentScore: response.containment,
-				similarityScore: response.similarity,
-				wordingScore: response.wording,
-				contentScore: response.content,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
-			},
-		});
-	}
+export const createSummary = async (input: PgInsertValue<typeof summaries>) => {
+	return await db.insert(summaries).values(input);
 };
 
 export const countUserPageSummary = async (
 	userId: string,
 	pageSlug: string,
 ) => {
-	return await db.summary.count({
-		where: {
-			userId,
-			pageSlug,
-		},
-	});
+	const record = first(
+		await db
+			.select({ count: count() })
+			.from(summaries)
+			.where(
+				and(eq(summaries.userId, userId), eq(summaries.pageSlug, pageSlug)),
+			),
+	);
+	return record ? record.count : 0;
 };
 
 export const findFocusTime = async (userId: string, pageSlug: string) => {
-	return await db.focusTime.findUnique({
-		where: {
-			userId_pageSlug: {
-				userId,
-				pageSlug,
-			},
-		},
-	});
+	return first(
+		await db
+			.select()
+			.from(focus_times)
+			.where(
+				and(eq(focus_times.userId, userId), eq(focus_times.pageSlug, pageSlug)),
+			),
+	);
 };

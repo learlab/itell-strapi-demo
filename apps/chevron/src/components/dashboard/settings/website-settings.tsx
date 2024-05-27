@@ -10,10 +10,11 @@ import {
 	SelectValue,
 } from "@/components/client-components";
 import { Spinner } from "@/components/spinner";
+import { User } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { updateUser } from "@/lib/user/actions";
 import { Errorbox } from "@itell/ui/server";
-import { User } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
@@ -40,17 +41,19 @@ const SubmitButton = () => {
 };
 
 export const WebsiteSettings = ({ user }: { user: User }) => {
+	const router = useRouter();
 	const onSubmit = async (
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
 		const data = {
-			timeZone: formData.get("time_zone") as string,
+			timeZone: String(formData.get("time_zone")),
 		};
 
 		try {
 			await updateUser(user.id, data);
 			toast.success("Settings saved!");
+			router.refresh();
 			return { error: null };
 		} catch (err) {
 			return { error: "Failed to save settings. Please try again later." };

@@ -2,21 +2,21 @@ import { groupby } from "@itell/core/utils";
 import { allPages } from "contentlayer/generated";
 
 export const allPagesSorted = allPages.sort((a, b) => {
-	if (a.chapter !== b.chapter) {
-		return a.chapter - b.chapter;
-	}
-
-	return a.section - b.section;
+	return a.chapter - b.chapter;
 });
 
 export const firstPage = allPagesSorted[0];
+export const firstSummaryPage = allPagesSorted[1];
+export const allSummaryPagesSorted = allPagesSorted.filter(
+	(page) => page.summary,
+);
 
 export const isLastPage = (slug: string) => {
 	const lastPage = allPagesSorted[allPagesSorted.length - 1];
 	return lastPage.page_slug === slug;
 };
 
-export const isPageAfter = (a: string | null, b: string | null) => {
+export const isPageAfter = (a: string | undefined, b: string | null) => {
 	const aIndex = allPagesSorted.findIndex((s) => s.page_slug === a);
 	const bIndex = allPagesSorted.findIndex((s) => s.page_slug === b);
 
@@ -60,7 +60,6 @@ export const nextPage = (slug: string): string => {
 type TocItem = {
 	title: string;
 	chapter: number;
-	section: number;
 	page_slug: string;
 };
 const byChapter = groupby(allPagesSorted, (page) => page.chapter);
@@ -80,7 +79,6 @@ for (const chapter of Object.keys(byChapter)) {
 		items: pages.slice(1).map((page) => ({
 			title: page.title,
 			chapter: page.chapter,
-			section: page.section,
 			page_slug: page.page_slug,
 		})),
 	});

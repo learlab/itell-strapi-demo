@@ -1,7 +1,9 @@
 "use client";
 
 import { SessionUser } from "@/lib/auth";
+import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
+import { Condition } from "@/lib/control/condition";
 import { getPageStatus } from "@/lib/page-status";
 import { tocChapters } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
@@ -19,7 +21,6 @@ import {
 	CollapsibleTrigger,
 } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
-import { useConfig } from "./provider/page-provider";
 
 const AnchorLink = ({
 	text,
@@ -41,14 +42,24 @@ const AnchorLink = ({
 };
 
 type Props = {
-	user: SessionUser;
 	currentPage: Page;
+	userId: string | null;
+	userRole: string;
+	userFinished: boolean;
+	userPageSlug: string | null;
+	condition: string;
 };
 
-export const ChapterToc = ({ currentPage, user }: Props) => {
+export const ChapterToc = ({
+	currentPage,
+	userId,
+	userRole,
+	userPageSlug,
+	userFinished,
+	condition,
+}: Props) => {
 	const [activePage, setActivePage] = useState(currentPage.page_slug);
 	const [pending, startTransition] = useTransition();
-	const isAdmin = useConfig((state) => state.isAdmin);
 	const router = useRouter();
 
 	const navigatePage = (pageSlug: string) => {
@@ -67,25 +78,29 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 							key={chapter.page_slug}
 							defaultOpen={currentPage.chapter === chapter.chapter}
 						>
-							<Link
-								href={makePageHref(chapter.page_slug)}
-								className="flex px-1 py-2 items-center"
-							>
-								<p className="text-left text-pretty">{chapter.title}</p>
-								<CollapsibleTrigger asChild>
+							<CollapsibleTrigger asChild>
+								<div className="flex items-center gap-2">
+									<Link
+										href={makePageHref(chapter.page_slug)}
+										className="flex px-1 py-2 items-center"
+									>
+										<p className="text-left text-pretty">{chapter.title}</p>
+									</Link>
 									<Button variant={"ghost"} className="p-1">
 										<ChevronsUpDown className="size-4" />
 										<span className="sr-only">Toggle</span>
 									</Button>
-								</CollapsibleTrigger>
-							</Link>
+								</div>
+							</CollapsibleTrigger>
+
 							<CollapsibleContent>
 								<ol className="space-y-1 text-sm px-1">
 									{chapter.items.map((item) => {
-										const { isPageLatest, isPageUnlocked } = getPageStatus(
-											user,
-											item.page_slug,
-										);
+										const { isPageLatest, isPageUnlocked } = getPageStatus({
+											pageSlug: item.page_slug,
+											userPageSlug,
+											userFinished,
+										});
 										const visible = isPageLatest || isPageUnlocked;
 										return (
 											<li
@@ -106,7 +121,8 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 												>
 													<p className="text-left text-pretty">
 														{item.title}
-														{visible ? "" : "🔒"}
+														{visible ? "" : " 🔒"}
+														{isPageUnlocked ? " ✅" : ""}
 													</p>
 												</button>
 											</li>
@@ -119,9 +135,11 @@ export const ChapterToc = ({ currentPage, user }: Props) => {
 				})}
 			</ol>
 			<div className="mt-12 space-y-2">
-				{isAdmin && <AdminTools />}
+				{isAdmin(userRole) && userId && (
+					<AdminTools userId={userId} condition={condition} />
+				)}
 				<RestartPageButton pageSlug={currentPage.page_slug} />
-				{currentPage.summary && (
+				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4" />}
 						text="Write a summary"

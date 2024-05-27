@@ -2,7 +2,7 @@ import { ChapterToc } from "@/components/chapter-toc";
 import { ChatLoader } from "@/components/chat/chat-loader";
 import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
-import { NoteCount } from "@/components/note/note-count";
+import { NoteCountLoader } from "@/components/note/note-count-loader";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { PageStatus } from "@/components/page-status/page-status";
@@ -12,26 +12,26 @@ import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/page/page-content";
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { PageSummary } from "@/components/summary/page-summary";
+import {
+	PageSummary,
+	PageSummaryNoUser,
+} from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
-import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { getPageFeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import { getUser } from "@/lib/user";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const { slug } = routes.textbook.$parseParams(params);
-	const { user: sessionUser } = await getSession();
-	const user = sessionUser ? await getUser(sessionUser.id) : null;
+	const { user } = await getSession();
 	const pageIndex = allPagesSorted.findIndex((page) => {
 		return page.page_slug === slug;
 	});
@@ -49,11 +49,21 @@ export default async function ({ params }: { params: { slug: string } }) {
 	});
 
 	const chunks = getPageChunks(page);
-	const isAdmin = env.ADMINS?.includes(user?.email || "");
 
 	const selectedQuestions = await getRandomPageQuestions(pageSlug);
 	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
-	const pageStatus = getPageStatus(sessionUser, pageSlug);
+
+	const userRole = user?.role || "user";
+	const userId = user?.id || null;
+	const userFinished = user?.finished || false;
+	const userPageSlug = user?.pageSlug || null;
+	const userCondition = user?.condition || Condition.STAIRS;
+
+	const pageStatus = getPageStatus({
+		pageSlug,
+		userPageSlug,
+		userFinished,
+	});
 	const { isPageLatest, isPageUnlocked } = pageStatus;
 
 	return (
@@ -62,18 +72,28 @@ export default async function ({ params }: { params: { slug: string } }) {
 			chunks={chunks}
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}
-			isAdmin={isAdmin}
 		>
-			<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
+			<div
+				id="textbook-page-wrapper"
+				className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2"
+			>
 				<aside
 					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
-					<ChapterToc currentPage={page} user={sessionUser} />
+					<ChapterToc
+						currentPage={page}
+						userId={userId}
+						userPageSlug={userPageSlug}
+						userFinished={userFinished}
+						userRole={userRole}
+						condition={userCondition}
+					/>
 				</aside>
 
 				<section
-					className="page-content relative max-w-[850px]"
+					id="page-content-wrapper"
+					className="relative lg:max-w-4xl md:max-w-3xl max-w-2xl"
 					style={{ flexGrow: 4 }}
 				>
 					<PageTitle>
@@ -87,7 +107,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						)}
 					</PageTitle>
 					<PageContent code={page.body.code} />
-					<NoteToolbar pageSlug={pageSlug} />
+					<NoteToolbar pageSlug={pageSlug} userId={userId} />
 					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
 				</section>
 
@@ -99,8 +119,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<PageToc headings={page.headings} chunks={getPageChunks(page)} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus status={pageStatus} />
-							<Suspense fallback={<NoteCount.Skeleton />}>
-								<NoteCount user={sessionUser} pageSlug={pageSlug} />
+							<Suspense fallback={<NoteCountLoader.Skeleton />}>
+								<NoteCountLoader pageSlug={pageSlug} />
 							</Suspense>
 						</div>
 					</div>
@@ -112,14 +132,19 @@ export default async function ({ params }: { params: { slug: string } }) {
 							</p>
 						}
 					>
-						<NoteLoader pageSlug={pageSlug} />
+						<NoteLoader userId={userId} pageSlug={pageSlug} />
 					</Suspense>
 				</aside>
 			</div>
 
-			{page.summary && (
+			{page.summary && user && (
 				<footer>
-					<PageSummary pageSlug={pageSlug} pageStatus={pageStatus} />
+					<PageSummary
+						pageSlug={pageSlug}
+						pageStatus={pageStatus}
+						user={user}
+						condition={userCondition}
+					/>
 				</footer>
 			)}
 
@@ -127,10 +152,12 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<ConstructedResponseControl
 				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
+				pageStatus={pageStatus}
+				condition={userCondition}
 			/>
-			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
+			<EventTracker userId={userId} pageSlug={pageSlug} chunks={chunks} />
 			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader pageSlug={pageSlug} />
+				<ChatLoader pageSlug={pageSlug} condition={userCondition} />
 			</Suspense>
 		</PageProvider>
 	);

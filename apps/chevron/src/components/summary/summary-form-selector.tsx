@@ -1,11 +1,9 @@
 "use client";
 
 import { SessionUser } from "@/lib/auth";
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { PageData } from "@/lib/utils";
-import { Fragment } from "react";
-import { useConfig } from "../provider/page-provider";
 import { SummaryDescription } from "./summary-description";
 import { SummaryFormReread } from "./summary-form-reread";
 import { SummaryFormSimple } from "./summary-form-simple";
@@ -15,38 +13,31 @@ type Props = {
 	user: NonNullable<SessionUser>;
 	page: PageData;
 	pageStatus: PageStatus;
+	condition: string;
 };
 
-export const SummaryFormSelector = ({ user, page, pageStatus }: Props) => {
-	const feedbackType = useConfig((state) => state.feedbackType);
-
-	if (feedbackType === FeedbackType.SIMPLE) {
-		return <SummaryFormSimple />;
+export const SummaryFormSelector = ({
+	user,
+	page,
+	pageStatus,
+	condition,
+}: Props) => {
+	if (condition === Condition.SIMPLE) {
+		return <SummaryFormSimple page={page} />;
 	}
 
-	if (feedbackType === FeedbackType.RANDOM_REREAD) {
-		return (
-			<section className="flex flex-col sm:flex-row gap-8" id="page-summary">
-				<section className="sm:basis-1/3">
-					<SummaryDescription />
-				</section>
-				<section className="sm:basis-2/3">
+	return (
+		<section className="grid lg:grid-cols-3 gap-8" id="page-summary">
+			<section className="lg:col-span-1">
+				<SummaryDescription />
+			</section>
+			<section className="lg:col-span-2">
+				{condition === Condition.RANDOM_REREAD ? (
 					<SummaryFormReread user={user} page={page} pageStatus={pageStatus} />
-				</section>
-			</section>
-		);
-	}
-
-	if (feedbackType === FeedbackType.STAIRS) {
-		return (
-			<section className="flex flex-col sm:flex-row gap-8" id="page-summary">
-				<section className="sm:basis-1/3">
-					<SummaryDescription />
-				</section>
-				<section className="sm:basis-2/3">
+				) : condition === Condition.STAIRS ? (
 					<SummaryFormStairs user={user} page={page} pageStatus={pageStatus} />
-				</section>
+				) : null}
 			</section>
-		);
-	}
+		</section>
+	);
 };

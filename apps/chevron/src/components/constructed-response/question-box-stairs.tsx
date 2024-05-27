@@ -1,10 +1,11 @@
 "use client";
 
 import { Confetti } from "@/components/ui/confetti";
-import { env } from "@/env.mjs";
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
+import { Condition } from "@/lib/control/condition";
+import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
 // import shake effect
 import "@/styles/shakescreen.css";
@@ -17,16 +18,11 @@ import {
 	Warning,
 } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
-import {
-	AlertTriangle,
-	HelpCircleIcon,
-	KeyRoundIcon,
-	PencilIcon,
-} from "lucide-react";
+import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../auth/auth-form";
+import { LoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
@@ -35,10 +31,9 @@ import {
 	TextArea,
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
-import { Spinner } from "../spinner";
 import { ExplainButton } from "./explain-button";
-import { FeedbackModal } from "./feedback-modal";
 import { NextChunkButton } from "./next-chunk-button";
+import { QuestionFeedback } from "./question-feedback";
 import { SubmitButton } from "./submit-button";
 import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
 
@@ -47,11 +42,13 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
+	pageStatus: PageStatus;
 };
 
 type FormState = {
 	answerStatus: AnswerStatusStairs;
 	error: string | null;
+	prevInput: string;
 };
 
 export const QuestionBoxStairs = ({
@@ -59,8 +56,10 @@ export const QuestionBoxStairs = ({
 	answer,
 	chunkSlug,
 	pageSlug,
+	pageStatus,
 }: Props) => {
 	const { user } = useSession();
+	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
@@ -68,6 +67,7 @@ export const QuestionBoxStairs = ({
 			finishChunk: state.finishChunk,
 		}),
 	);
+
 	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
 		!isPageFinished,
@@ -87,12 +87,24 @@ export const QuestionBoxStairs = ({
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
-		const input = formData.get("input") as string;
-
-		if (input.trim() === "") {
+		if (!user) {
+			return {
+				...prevState,
+				error: "You need to be logged in to answer this question",
+			};
+		}
+		const input = String(formData.get("input")).trim();
+		if (input.length === 0) {
 			return {
 				...prevState,
 				error: "Answer cannot be empty",
+			};
+		}
+
+		if (input === prevState.prevInput) {
+			return {
+				...prevState,
+				error: "Please submit a different answer",
 			};
 		}
 
@@ -114,11 +126,13 @@ export const QuestionBoxStairs = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			await createConstructedResponse({
-				response: input,
+			createConstructedResponse({
+				text: input,
+				userId: user.id,
 				chunkSlug,
 				pageSlug,
 				score,
+				condition: Condition.STAIRS,
 			});
 
 			// if answer is correct, mark chunk as finished
@@ -129,6 +143,7 @@ export const QuestionBoxStairs = ({
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.BOTH_CORRECT,
+					prevInput: input,
 				};
 			}
 
@@ -136,6 +151,7 @@ export const QuestionBoxStairs = ({
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.SEMI_CORRECT,
+					prevInput: input,
 				};
 			}
 
@@ -143,6 +159,7 @@ export const QuestionBoxStairs = ({
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.BOTH_INCORRECT,
+					prevInput: input,
 				};
 			}
 
@@ -160,6 +177,7 @@ export const QuestionBoxStairs = ({
 			return {
 				error: "Answer evaluation failed, please try again later",
 				answerStatus: prevState.answerStatus,
+				prevInput: input,
 			};
 		}
 	};
@@ -167,6 +185,7 @@ export const QuestionBoxStairs = ({
 	const initialFormState: FormState = {
 		answerStatus: AnswerStatusStairs.UNANSWERED,
 		error: null,
+		prevInput: "",
 	};
 
 	const [formState, formAction] = useFormState(action, initialFormState);
@@ -202,8 +221,16 @@ export const QuestionBoxStairs = ({
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
-				<GoogleLoginButton />
+				<LoginButton />
 			</Warning>
+		);
+	}
+
+	if (!show) {
+		return (
+			<Button variant={"outline"} onClick={() => setShow(true)}>
+				Reveal optional question
+			</Button>
 		);
 	}
 
@@ -226,15 +253,17 @@ export const QuestionBoxStairs = ({
 						make mistakes. Let us know how you feel about iTELL AI's performance
 						using the feedback icons to the right (thumbs up or thumbs down).{" "}
 					</CardDescription>
-					<FeedbackModal
+					<QuestionFeedback
 						type="positive"
 						pageSlug={pageSlug}
 						chunkSlug={chunkSlug}
+						userId={user.id}
 					/>
-					<FeedbackModal
+					<QuestionFeedback
 						type="negative"
 						pageSlug={pageSlug}
 						chunkSlug={chunkSlug}
+						userId={user.id}
 					/>
 				</CardHeader>
 
@@ -278,7 +307,11 @@ export const QuestionBoxStairs = ({
 					) : (
 						question && (
 							<p>
-								<b>Question:</b> {question}
+								<span className="font-bold">Question </span>
+								{pageStatus.isPageUnlocked && (
+									<span className="font-bold">(Optional)</span>
+								)}
+								: {question}
 							</p>
 						)
 					)}

@@ -1,11 +1,12 @@
 "use client";
 
-import { FeedbackType } from "@/lib/control/feedback";
+import { Condition } from "@/lib/control/condition";
+import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
 import { QuestionBoxStairs } from "./question-box-stairs";
@@ -14,11 +15,15 @@ import { ScrollBackButton } from "./scroll-back-button";
 type Props = {
 	selectedQuestions: SelectedQuestions;
 	pageSlug: string;
+	pageStatus: PageStatus;
+	condition: string;
 };
 
 export const ConstructedResponseControl = ({
 	selectedQuestions,
 	pageSlug,
+	pageStatus,
+	condition,
 }: Props) => {
 	// Ref for current chunk
 	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
@@ -30,8 +35,10 @@ export const ConstructedResponseControl = ({
 	);
 
 	const { nodes, addNode } = usePortal();
-	const feedbackType = useConfig((state) => state.feedbackType);
-	const hasFeedback = feedbackType !== FeedbackType.SIMPLE;
+	const hasFeedback = condition !== Condition.SIMPLE;
+	// there were cases when isPageFinished is not in sync with isPageUnlocked due to localStorage
+	// checking them both in make sure
+	const shouldBlur = !pageStatus.isPageUnlocked && !isPageFinished;
 
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
@@ -99,25 +106,27 @@ export const ConstructedResponseControl = ({
 
 		const q = selectedQuestions.get(chunkId);
 		if (q) {
-			if (feedbackType === FeedbackType.STAIRS) {
+			if (condition === Condition.STAIRS) {
 				addNode(
 					<QuestionBoxStairs
 						question={q.question}
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
+						pageStatus={pageStatus}
 					/>,
 					questionContainer,
 				);
 			}
 
-			if (feedbackType === FeedbackType.RANDOM_REREAD) {
+			if (condition === Condition.RANDOM_REREAD) {
 				addNode(
 					<QuestionBoxReread
 						question={q.question}
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
+						pageStatus={pageStatus}
 					/>,
 					questionContainer,
 				);
@@ -141,8 +150,7 @@ export const ConstructedResponseControl = ({
 			insertQuestion(el, chunkId);
 		}
 
-		// don't blur if the page is finished
-		if (!isPageFinished) {
+		if (shouldBlur) {
 			if (chunkIndex !== 0 && isChunkUnvisited) {
 				el.style.filter = "blur(4px)";
 			}
@@ -170,7 +178,7 @@ export const ConstructedResponseControl = ({
 				return;
 			}
 			currentChunkElement.style.filter = "none";
-			if (!isPageFinished) {
+			if (shouldBlur) {
 				if (
 					!selectedQuestions.has(currentChunkId) &&
 					idx !== chunks.length - 1

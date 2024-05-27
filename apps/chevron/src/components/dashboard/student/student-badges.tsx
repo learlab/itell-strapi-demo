@@ -2,7 +2,6 @@ import { getBadgeStats, getClassBadgeStats } from "@/lib/dashboard";
 import { getClassStudents } from "@/lib/dashboard/class";
 import { cn } from "@itell/core/utils";
 import { DashboardBadge } from "@itell/ui/server";
-import { User } from "@prisma/client";
 import {
 	FileTextIcon,
 	FlagIcon,
@@ -12,14 +11,14 @@ import {
 	WholeWordIcon,
 } from "lucide-react";
 
-export const StudentBadges = async ({ user }: { user: User }) => {
-	const students = await getClassStudents(user.classId as string);
-	const ids = students
-		.map((student) => student.id)
-		.filter((id) => id !== user.id);
+export const StudentBadges = async ({
+	userId,
+	classId,
+}: { userId: string; classId: string }) => {
+	const students = await getClassStudents(classId);
 	const [studentStats, otherStats] = await Promise.all([
-		getBadgeStats(user.id),
-		getClassBadgeStats(ids),
+		getBadgeStats(userId),
+		getClassBadgeStats(students),
 	]);
 
 	const comparisons = {

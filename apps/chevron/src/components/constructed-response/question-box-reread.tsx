@@ -3,6 +3,8 @@
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
+import { Condition } from "@/lib/control/condition";
+import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
 import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
@@ -11,7 +13,7 @@ import { KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../auth/auth-form";
+import { LoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
@@ -22,7 +24,7 @@ import {
 import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { SubmitButton } from "./submit-button";
-import { AnswerStatusReread } from "./types";
+import { AnswerStatusReread, AnswerStatusStairs } from "./types";
 
 type QuestionScore = 0 | 1 | 2;
 
@@ -31,6 +33,7 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
+	pageStatus: PageStatus;
 };
 
 type FormState = {
@@ -43,8 +46,10 @@ export const QuestionBoxReread = ({
 	answer,
 	chunkSlug,
 	pageSlug,
+	pageStatus,
 }: Props) => {
 	const { user } = useSession();
+	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
@@ -52,28 +57,22 @@ export const QuestionBoxReread = ({
 			finishChunk: state.finishChunk,
 		}),
 	);
-	const [isShaking, setIsShaking] = useState(false);
 	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
 		!isPageFinished,
 	);
-
-	// Function to trigger the shake animation
-	const shakeModal = () => {
-		setIsShaking(true);
-
-		// Reset the shake animation after a short delay
-		setTimeout(() => {
-			setIsShaking(false);
-		}, 400);
-	};
 
 	const action = async (
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
-		const input = formData.get("input") as string;
-
-		if (input.trim() === "") {
+		if (!user) {
+			return {
+				...prevState,
+				error: "You need to be logged in to answer this question",
+			};
+		}
+		const input = String(formData.get("input")).trim();
+		if (input.length === 0) {
 			return {
 				...prevState,
 				error: "Answer cannot be empty",
@@ -98,8 +97,10 @@ export const QuestionBoxReread = ({
 			}
 
 			const score = response.data.score as QuestionScore;
-			await createConstructedResponse({
-				response: input,
+			createConstructedResponse({
+				userId: user.id,
+				text: input,
+				condition: Condition.RANDOM_REREAD,
 				chunkSlug,
 				pageSlug,
 				score,
@@ -151,8 +152,16 @@ export const QuestionBoxReread = ({
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
-				<GoogleLoginButton />
+				<LoginButton />
 			</Warning>
+		);
+	}
+
+	if (!show) {
+		return (
+			<Button variant={"outline"} onClick={() => setShow(true)}>
+				Reveal optional question
+			</Button>
 		);
 	}
 
@@ -169,7 +178,11 @@ export const QuestionBoxReread = ({
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
 					{question && (
 						<p>
-							<b>Question:</b> {question}
+							<span className="font-bold">Question </span>
+							{pageStatus.isPageUnlocked && (
+								<span className="font-bold">(Optional)</span>
+							)}
+							: {question}
 						</p>
 					)}
 					{answerStatus === AnswerStatusReread.ANSWERED && (
@@ -209,16 +222,17 @@ export const QuestionBoxReread = ({
 								answered={answerStatus === AnswerStatusReread.ANSWERED}
 							/>
 
-							{isNextButtonDisplayed && (
-								<NextChunkButton
-									pageSlug={pageSlug}
-									clickEventType="post-question chunk reveal"
-									onClick={() => setIsNextButtonDisplayed(false)}
-									chunkSlug={chunkSlug}
-								>
-									{nextButtonText}
-								</NextChunkButton>
-							)}
+							{answerStatus !== AnswerStatusReread.UNANSWERED &&
+								isNextButtonDisplayed && (
+									<NextChunkButton
+										pageSlug={pageSlug}
+										clickEventType="post-question chunk reveal"
+										onClick={() => setIsNextButtonDisplayed(false)}
+										chunkSlug={chunkSlug}
+									>
+										{nextButtonText}
+									</NextChunkButton>
+								)}
 						</div>
 					</form>
 				</CardContent>

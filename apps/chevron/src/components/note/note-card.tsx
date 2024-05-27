@@ -1,5 +1,7 @@
 "use client";
 
+import { useSession } from "@/lib/auth/context";
+import { db } from "@/lib/db";
 import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/types/note";
@@ -57,16 +59,21 @@ export const NoteCard = React.memo(
 		highlightedText,
 		noteText,
 		pageSlug,
-		updated_at,
-		created_at,
+		updatedAt,
+		createdAt,
 		range,
 		color,
 		newNote = false,
 	}: Props) => {
+		const { user } = useSession();
+		if (!user) {
+			return null;
+		}
+
 		const elementsRef = useRef<HTMLElement[]>();
 		const elements = elementsRef.current;
 		const [shouldCreate, setShouldCreate] = useState(newNote);
-		const [recordId, setRecordId] = useState<string | undefined>(
+		const [recordId, setRecordId] = useState<number | undefined>(
 			newNote ? undefined : id,
 		);
 
@@ -111,8 +118,8 @@ export const NoteCard = React.memo(
 				}
 			},
 			{
-				color, // border color: ;
-				editing: newNote, // true: show textarea, false: show noteText
+				color, // border color ;
+				editing: newNote, // when editing show textarea otherwise show noteText
 				collapsed: !newNote, // if the note card is expanded
 				showDeleteModal: false, // show delete modal
 				showColorPicker: false, // show color picker
@@ -120,34 +127,39 @@ export const NoteCard = React.memo(
 			},
 		);
 		const [isHidden, setIsHidden] = useState(false);
-		const { deleteNote: deleteContextNote, updateNote: updateContextNote } =
+		const { deleteNote: deleteNoteLocal, updateNote: updateNoteLocal } =
 			useNotesStore();
 
 		const containerRef = useClickOutside<HTMLDivElement>(() => {
 			dispatch({ type: "collapse_note" });
 		});
 
-		const formAction = async (data: FormData) => {
-			const input = data.get("input") as string;
+		const formAction = async (formData: FormData) => {
+			const input = String(formData.get("input"));
 			setText(input);
 			if (shouldCreate) {
 				// create new note
-				await createNote({
-					id,
+				const note = await createNote({
 					y,
+					userId: user.id,
 					noteText: input,
 					highlightedText,
 					pageSlug,
 					color: editState.color,
 					range,
 				});
-				setRecordId(id);
-				setShouldCreate(false);
+				if (note) {
+					setRecordId(note.id);
+					setShouldCreate(false);
+				}
 			} else {
 				// edit existing note
-				updateContextNote({ id, noteText: input });
+				updateNoteLocal({ id, noteText: input });
 				if (recordId) {
-					await updateNote(recordId, { noteText: input });
+					await updateNote(recordId, {
+						noteText: input,
+						color: editState.color,
+					});
 				}
 			}
 			dispatch({ type: "finish_upsert" });
@@ -174,10 +186,10 @@ export const NoteCard = React.memo(
 				elements.forEach(unHighlightNote);
 			}
 			setIsHidden(true);
-			deleteContextNote(id);
+			deleteNoteLocal(id);
 			if (recordId) {
 				// delete note in database
-				await deleteNote(id);
+				await deleteNote(recordId);
 			}
 			dispatch({ type: "finish_delete" });
 		};
@@ -202,24 +214,21 @@ export const NoteCard = React.memo(
 
 		useEffect(() => {
 			// if the note is loaded from the database, create the .note span elements
-			// for new note, spans are created in note-toolbar.tsx
-			if (!newNote) {
-				try {
-					setTimeout(() => {
-						createNoteElements({
-							id,
-							range: deserializeRange(range),
-							color,
-						});
-						// elementsRef should be set after the note elements are created
-						// in the case of new note, they are already created by the toolbar
-						elementsRef.current = Array.from(
-							getElementsByNoteId(id) || [],
-						) as HTMLElement[];
-					}, 300);
-				} catch (err) {
-					console.error("create note element", err);
-				}
+			try {
+				setTimeout(() => {
+					createNoteElements({
+						id,
+						range: deserializeRange(range),
+						color,
+					});
+					// elementsRef should be set after the note elements are created
+					// in the case of new note, they are already created by the toolbar
+					elementsRef.current = Array.from(
+						getElementsByNoteId(id) || [],
+					) as HTMLElement[];
+				}, 300);
+			} catch (err) {
+				console.error("create note element", err);
 			}
 		}, []);
 
@@ -306,9 +315,7 @@ export const NoteCard = React.memo(
 												element.style.backgroundColor = color;
 											});
 										}
-										if (id) {
-											updateNote(id, { color });
-										}
+										updateNoteLocal({ id, color });
 									}}
 								/>
 
@@ -337,10 +344,9 @@ export const NoteCard = React.memo(
 									<FormFooter />
 								</form>
 
-								{(updated_at || created_at) && (
+								{(updatedAt || createdAt) && (
 									<p className="text-xs text-right mt-2 mb-0">
-										updated at{" "}
-										{relativeDate((updated_at || created_at) as Date)}
+										updated at {relativeDate((updatedAt || createdAt) as Date)}
 									</p>
 								)}
 							</div>

@@ -7,7 +7,6 @@ import { routes } from "@/lib/navigation";
 import { Warning } from "@itell/ui/server";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 type PageProps = {
 	searchParams?: unknown;
@@ -16,17 +15,18 @@ type PageProps = {
 const ErrorDict: Record<string, string> = {
 	google_oauth:
 		"A problem occurred while logging in with Google. Please try again later.",
-	prolific_oauth:
-		"A problem occurred while logging in with Prolific. Please try again later.",
-	prolific_missing_pid: "Please enter a valid Prolific ID.",
-	prolific_wrong_pid: "Please use the same Prolific ID you used to sign up.",
 };
 
 export default async function ({ searchParams }: PageProps) {
 	const config = await getSiteConfig();
 	const { error } = routes.auth.$parseSearchParams(searchParams);
 	const { user } = await getSession();
-	const errorMessage = error ? ErrorDict[error] : null;
+	let errorMessage: string | null = null;
+	if (error) {
+		if (error in ErrorDict) {
+			errorMessage = ErrorDict[error];
+		}
+	}
 
 	return (
 		<div className="w-screen h-screen grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">

@@ -1,8 +1,7 @@
-import db from "@/lib/db";
-import { delay } from "@/lib/utils";
+import { focus_times, summaries } from "@/drizzle/schema";
+import { db, first } from "@/lib/db";
 import {
 	PrevDaysLookup,
-	ReadingTimeEntry,
 	getGroupedReadingTime,
 	getReadingTimeChartData,
 } from "@itell/core/dashboard";
@@ -17,6 +16,7 @@ import {
 	Skeleton,
 } from "@itell/ui/server";
 import { format, subDays } from "date-fns";
+import { and, count, eq, gte, sql } from "drizzle-orm";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
@@ -31,45 +31,68 @@ import { CreateErrorFallback } from "../error-fallback";
 import { ReadingTimeControl } from "./reading-time-control";
 
 type Props = {
-	uid: string;
+	userId: string;
 	params: ReadingTimeChartParams;
 	name?: string;
 };
 
-const getSummaryCounts = async (uid: string, startDate: Date) => {
-	return db.summary.count({
-		where: {
-			userId: uid,
-			created_at: {
-				gte: startDate,
-			},
-		},
-	});
+const getSummaryCounts = async (userId: string, startDate: Date) => {
+	const record = first(
+		await db
+			.select({
+				count: count(),
+			})
+			.from(summaries)
+			.where(
+				and(eq(summaries.userId, userId), gte(summaries.createdAt, startDate)),
+			),
+	);
+
+	return record?.count || 0;
 };
 
 const getReadingTime = async (
-	uid: string,
+	userId: string,
 	startDate: Date,
 	intervalDates: Date[],
 ) => {
 	// TODO: fix this query or how we store focus time data
 	// for records created before start date, they can still be updated
 	// but this won't be reflected in the reading time
-	const records = await db.$queryRaw`
-		SELECT sum(d.value::integer)::integer as total_view_time, created_at::date
-		FROM focus_times, jsonb_each(data) d
-		WHERE created_at >= ${startDate} and user_id = ${uid}
-		GROUP BY created_at::date
-	`;
+	const dataExpanded = db.$with("expanded").as(
+		db
+			.select({
+				value: sql`(jsonb_each(${focus_times.data})).value`.as("value"),
+				createdAt: sql<Date>`${focus_times.createdAt}::date`.as("createdAt"),
+			})
+			.from(focus_times)
+			.where(
+				and(
+					eq(focus_times.userId, userId),
+					gte(focus_times.createdAt, startDate),
+				),
+			),
+	);
+
+	const records = await db
+		.with(dataExpanded)
+		.select({
+			totalViewTime: sql<number>`sum(value::integer)::integer`.as(
+				"totalViewTime",
+			),
+			createdAt: dataExpanded.createdAt,
+		})
+		.from(dataExpanded)
+		.groupBy(dataExpanded.createdAt);
 
 	const readingTimeGrouped = await getGroupedReadingTime(
-		records as ReadingTimeEntry[],
+		records,
 		intervalDates,
 	);
 	return readingTimeGrouped;
 };
 
-export const ReadingTime = async ({ uid, params, name }: Props) => {
+export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 	const startDate = subDays(new Date(), PrevDaysLookup[params.level]);
 	const intervalDates = getDatesBetween(startDate, new Date());
 	const [summaryCounts, readingTimeGrouped] = await Promise.all([

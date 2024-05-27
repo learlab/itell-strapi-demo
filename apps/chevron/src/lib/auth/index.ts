@@ -19,9 +19,11 @@ export const lucia = new Lucia(adapter, {
 			image: attributes.image,
 			email: attributes.email,
 			role: attributes.role,
+			condition: attributes.condition,
 			finished: attributes.finished,
-			prolific_pid: attributes.prolificId,
-			page_slug: attributes.pageSlug,
+			classId: attributes.classId,
+			pageSlug: attributes.pageSlug,
+			timeZone: attributes.timeZone,
 		};
 	},
 });
@@ -36,13 +38,15 @@ declare module "lucia" {
 
 interface DatabaseUserAttributes {
 	id: string;
-	name: string | undefined;
-	image: string | undefined;
-	email: string | undefined;
+	name: string | null;
+	image: string | null;
+	email: string | null;
 	role: string;
+	condition: string;
 	finished: boolean;
-	prolificId: string | undefined;
-	pageSlug: string | undefined;
+	classId: string | null;
+	pageSlug: string | null;
+	timeZone: string | null;
 }
 
 interface DatabaseSessionAttributes {}
@@ -89,10 +93,5 @@ export const getSession = cache(
 	},
 );
 
-export async function getSessionUser() {
-	const { user } = await getSession();
-	return user;
-}
-export const isAdmin = (user: LuciaUser | null) => user?.role === "admin";
 export type Session = Awaited<ReturnType<typeof getSession>>;
-export type SessionUser = Awaited<ReturnType<typeof getSessionUser>>;
+export type SessionUser = LuciaUser | null;

@@ -11,7 +11,7 @@ import {
 } from "@/components/client-components";
 import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
-import { updateUserClassId } from "@/lib/user/actions";
+import { updateUser } from "@/lib/user/actions";
 import { AlertDialogDescription, Button } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -47,10 +47,7 @@ export const QuitClass = ({ userId }: Props) => {
 						<Button
 							onClick={async () => {
 								setIsLoading(true);
-								await updateUserClassId({
-									userId,
-									classId: null,
-								});
+								await updateUser(userId, { classId: null });
 
 								setIsLoading(false);
 								router.refresh();

@@ -1,4 +1,6 @@
 import { env } from "@/env.mjs";
+import { useSession } from "@/lib/auth/context";
+import { createEvent } from "@/lib/event/actions";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -9,6 +11,7 @@ export const ExplainButton = ({
 	pageSlug,
 	chunkSlug,
 }: { pageSlug: string; chunkSlug: string }) => {
+	const { user } = useSession();
 	const [input, setInput] = useState("");
 	const [response, setResponse] = useState("");
 	const { pending, data } = useFormStatus();
@@ -17,20 +20,21 @@ export const ExplainButton = ({
 
 	const onClick = async () => {
 		setLoading(true);
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/chat/CRI`, {
+		const res = await fetch("/api/itell/score/explain", {
 			method: "POST",
-			body: JSON.stringify({
-				page_slug: pageSlug,
-				chunk_slug: chunkSlug,
-				student_response: input,
-			}),
 			headers: {
 				"Content-Type": "application/json",
 			},
+			body: JSON.stringify({
+				pageSlug: pageSlug,
+				chunkSlug: chunkSlug,
+				studentResponse: input,
+			}),
 		});
 
-		if (response.body) {
-			const reader = response.body.getReader();
+		let chunkValue = { request_id: "", text: "" };
+		if (res.ok && res.body) {
+			const reader = res.body.getReader();
 			const decoder = new TextDecoder();
 			let done = false;
 			while (!done) {
@@ -38,7 +42,7 @@ export const ExplainButton = ({
 				done = done_;
 				const chunk = decoder.decode(value);
 				if (chunk) {
-					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+					chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
 						request_id: string;
 						text: string;
 					};
@@ -49,8 +53,16 @@ export const ExplainButton = ({
 				}
 			}
 		}
-
 		setLoading(false);
+
+		if (user) {
+			createEvent({
+				userId: user.id,
+				type: "explain-constructed-response",
+				pageSlug,
+				data: { chunkSlug, response: chunkValue.text },
+			});
+		}
 	};
 
 	useEffect(() => {

@@ -1,41 +1,20 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
-import { getSessionUser } from "../auth";
-import db from "../db";
+import {
+	constructed_responses,
+	constructed_responses_feedback,
+} from "@/drizzle/schema";
+import { PgInsertValue } from "drizzle-orm/pg-core";
+import { db } from "../db";
 
 export const createConstructedResponse = async (
-	input: Omit<Prisma.ConstructedResponseCreateInput, "user">,
+	input: PgInsertValue<typeof constructed_responses>,
 ) => {
-	const user = await getSessionUser();
-	if (user) {
-		return await db.constructedResponse.create({
-			data: {
-				...input,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
-			},
-		});
-	}
+	return await db.insert(constructed_responses).values(input);
 };
 
 export const createConstructedResponseFeedback = async (
-	input: Omit<Prisma.ConstructedResponseFeedbackCreateInput, "user">,
+	input: PgInsertValue<typeof constructed_responses_feedback>,
 ) => {
-	const user = await getSessionUser();
-	if (user) {
-		return await db.constructedResponseFeedback.create({
-			data: {
-				...input,
-				user: {
-					connect: {
-						id: user.id,
-					},
-				},
-			},
-		});
-	}
+	return await db.insert(constructed_responses_feedback).values(input);
 };

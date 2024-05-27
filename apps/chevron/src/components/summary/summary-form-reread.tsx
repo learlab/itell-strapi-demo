@@ -2,6 +2,8 @@
 
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
+import { isProduction } from "@/lib/constants";
+import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -14,7 +16,6 @@ import {
 	ErrorType,
 	SummaryResponse,
 	SummaryResponseSchema,
-	validateSummary,
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
@@ -25,7 +26,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button } from "../client-components";
 import { PageLink } from "../page/page-link";
-import { useConfig, useConstructedResponse } from "../provider/page-provider";
+import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 import { SummarySubmitButton } from "./summary-submit-button";
 
@@ -73,8 +74,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
 	}));
+	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
 
-	const feedbackType = useConfig((selector) => selector.feedbackType);
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "set_prev_input":
@@ -98,30 +99,29 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
 	const goToRandomChunk = () => {
-		const chunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
-		const el = getChunkElement(chunkSlug);
+		// in production, only highlight 25% of the time
+		// if (isProduction) {
+		// 	if (Math.random() > 0.25) {
+		// 		return;
+		// 	}
+		// }
+		const el = getChunkElement(randomChunkSlug);
 		if (el) {
-			scrollToElement(el);
-			setTimeout(() => {
-				driverObj.highlight({
-					element: el,
-					popover: {
-						description:
-							'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
-						side: "left",
-						align: "start",
-					},
-				});
-			}, 1000);
-		} else {
-			toast.warning(
-				"No question found, please revise your summary or move on to the next page",
-			);
+			driverObj.highlight({
+				element: el,
+				popover: {
+					description:
+						'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
+					side: "right",
+					align: "start",
+				},
+			});
 		}
 	};
 
 	useEffect(() => {
 		driverObj.setConfig({
+			animate: false,
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
 				addNode(
@@ -137,14 +137,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		});
 	}, []);
 
-	useEffect(() => {
-		if (!pageStatus.isPageUnlocked) {
-			if (state.finished && !state.error) {
-				goToRandomChunk();
-			}
-		}
-	}, [state, pageStatus]);
-
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		clearStages();
@@ -157,15 +149,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 		saveSummaryLocal(pageSlug, input);
 
-		const error = validateSummary(
-			input,
-			state.prevInput === "" ? undefined : state.prevInput,
-		);
 		dispatch({ type: "set_prev_input", payload: input });
-		if (error) {
-			dispatch({ type: "fail", payload: error });
-			return;
-		}
 
 		let requestBody = "";
 		let summaryResponse: SummaryResponse | null = null;
@@ -176,12 +160,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				page_slug: pageSlug,
 			});
 			console.log("requestBody", requestBody);
-			const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/score/summary`, {
+			const response = await fetch("/api/itell/score/summary", {
 				method: "POST",
-				body: requestBody,
 				headers: {
 					"Content-Type": "application/json",
 				},
+				body: requestBody,
 			});
 			const json = await response.json();
 			const parsed = SummaryResponseSchema.safeParse(json);
@@ -191,26 +175,31 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			summaryResponse = parsed.data;
 			await createSummary({
 				text: input,
+				userId: user.id,
 				pageSlug,
-				response: summaryResponse,
+				condition: Condition.RANDOM_REREAD,
+				isPassed: summaryResponse.is_passed || false,
+				containmentScore: summaryResponse.containment,
+				similarityScore: summaryResponse.similarity,
+				wordingScore: summaryResponse.wording,
+				contentScore: summaryResponse.content,
 			});
 			await incrementUserPage(user.id, pageSlug);
-
-			if (isLastPage(pageSlug)) {
-				setIsTextbookFinished(true);
-				toast.info(
-					"You have finished the textbook! Redirecting to the outtake survey soon.",
-				);
-				setTimeout(() => {
-					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`;
-				}, 3000);
-			}
 
 			finishStage("Analyzing");
 			dispatch({
 				type: "finish",
 				payload: true,
 			});
+
+			if (!pageStatus.isPageUnlocked) {
+				goToRandomChunk();
+			}
+
+			if (isLastPage(pageSlug)) {
+				setIsTextbookFinished(true);
+				toast.info("You have finished the textbook!");
+			}
 		} catch (err) {
 			finishStage("Analyzing");
 			clearStages();
@@ -236,7 +225,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		<section className="space-y-2">
 			{portalNodes}
 			{state.finished && page.nextPageSlug && (
-				<div className="space-y-2">
+				<div className="space-y-2 space-x-2">
 					<p>
 						You have finished this page. You can choose to refine your summary
 						or move on to the next page.
@@ -250,15 +239,15 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 
+			{!isProduction && (
+				<Button variant={"outline"} onClick={goToRandomChunk}>
+					go to random chunk (dev)
+				</Button>
+			)}
+
 			{isTextbookFinished && (
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
-					<a
-						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolific_pid}`}
-						className={buttonVariants({ variant: "outline" })}
-					>
-						Take outtake survey and claim your progress
-					</a>
 				</div>
 			)}
 
@@ -268,6 +257,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
+					userRole={user.role}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">

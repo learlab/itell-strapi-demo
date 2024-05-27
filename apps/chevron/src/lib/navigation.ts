@@ -16,12 +16,10 @@ export const { routes, useSafeParams, useSafeSearchParams } =
 				.object({
 					error: z.string().optional(),
 					join_class_code: z.string().optional(),
-					prolific_pid: z.string().optional(),
 				})
 				.default({
 					error: undefined,
 					join_class_code: undefined,
-					prolific_pid: undefined,
 				}),
 		}),
 		textbook: defineRoute("/[slug]", {

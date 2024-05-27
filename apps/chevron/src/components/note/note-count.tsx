@@ -1,56 +1,31 @@
+"use client";
+
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/client-components";
-import { SessionUser } from "@/lib/auth";
-import { countNoteHighlight } from "@/lib/note";
-import { Skeleton } from "@itell/ui/server";
+import { useNotesStore } from "@/lib/store/note";
 import pluralize from "pluralize";
 
 type Props = {
-	user: SessionUser;
-	pageSlug: string;
+	noteCount: number;
+	highlightCount: number;
 };
 
-// rendered by TocSidebar
-export const NoteCount = async ({ user, pageSlug }: Props) => {
-	if (!user) {
-		return null;
-	}
-	const res = await countNoteHighlight(pageSlug);
-
-	const noteCount = res.find((r) => r.type === "note")?.count || 0;
-	const highlightCount = res.find((r) => r.type === "highlight")?.count || 0;
+export const NoteCount = ({ noteCount, highlightCount }: Props) => {
+	const { highlights, notes } = useNotesStore();
 
 	return (
-		<HoverCard>
-			<HoverCardTrigger>
-				<Button variant={"link"} className="text-sm px-0 text-left">
-					<span>
-						{`${pluralize("note", noteCount, true)}, ${pluralize(
-							"highlight",
-							highlightCount,
-							true,
-						)}`}
-					</span>
-				</Button>
-			</HoverCardTrigger>
-			<HoverCardContent className="w-48 text-sm">
-				<p>Leave a note or highlight by selecting the text</p>
-			</HoverCardContent>
-		</HoverCard>
+		<Button variant={"link"} className="text-sm px-0 text-left">
+			<span>
+				{`${pluralize("note", noteCount + notes.length, true)}, ${pluralize(
+					"highlight",
+					highlightCount + highlights.length,
+					true,
+				)}`}
+			</span>
+		</Button>
 	);
 };
-
-NoteCount.Skeleton = () => (
-	<HoverCard>
-		<HoverCardTrigger>
-			<Skeleton className="w-24 h-6" />
-		</HoverCardTrigger>
-		<HoverCardContent className="w-48 text-sm">
-			<p>Leave a note or highlight by selecting the text</p>
-		</HoverCardContent>
-	</HoverCard>
-);

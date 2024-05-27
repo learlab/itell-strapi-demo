@@ -2,7 +2,7 @@ import { Progress } from "@/components/client-components";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { StudentStats } from "@/lib/dashboard/class";
 import { allPagesSorted, firstPage } from "@/lib/pages";
-import { delay, getPageData } from "@/lib/utils";
+import { getPageData } from "@/lib/utils";
 import { Skeleton } from "@itell/ui/server";
 import { StudentData, columns } from "./students-columns";
 import { StudentsTable } from "./students-table";
@@ -32,9 +32,9 @@ export const TeacherClassGeneral = async ({
 			id: s.id,
 			name: s.name,
 			email: s.email,
-			created_at: s.created_at,
+			createdAt: s.createdAt,
 			progress,
-			summaryCounts: s._count.summaries,
+			summaryCounts: s.summaryCount,
 		};
 	});
 

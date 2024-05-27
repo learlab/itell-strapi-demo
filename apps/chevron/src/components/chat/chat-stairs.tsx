@@ -3,19 +3,25 @@ import {
 	AccordionContent,
 	AccordionItem,
 } from "@/components/client-components";
-import { SessionUser } from "@/lib/auth";
 import { ChatExit } from "./chat-exit";
-import { ChatInput } from "./chat-input";
 import { ChatInputStairs } from "./chat-input-stairs";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	userId: string;
+	userName: string | null;
+	userImage: string | null;
 	pageSlug: string;
 	onExit: () => void;
 };
 
-export const ChatStairs = ({ user, pageSlug, onExit }: Props) => {
+export const ChatStairs = ({
+	userId,
+	userName,
+	userImage,
+	pageSlug,
+	onExit,
+}: Props) => {
 	return (
 		<Accordion
 			type="single"
@@ -24,8 +30,12 @@ export const ChatStairs = ({ user, pageSlug, onExit }: Props) => {
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionContent className="flex flex-col h-96">
-					<ChatMessages user={user} isStairs={true} />
-					<ChatInputStairs pageSlug={pageSlug} />
+					<ChatMessages
+						userImage={userImage}
+						userName={userName}
+						isStairs={true}
+					/>
+					<ChatInputStairs pageSlug={pageSlug} userId={userId} />
 					<ChatExit onExit={onExit} />
 				</AccordionContent>
 			</AccordionItem>

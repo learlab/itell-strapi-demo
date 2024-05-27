@@ -9,21 +9,21 @@ import {
 } from "lucide-react";
 
 type Props = {
-	studentIds: string[];
+	students: Array<{ id: string }>;
 };
 
-export const TeacherBadges = async ({ studentIds }: Props) => {
-	const classSummaryStats = await getClassBadgeStats(studentIds);
+export const TeacherBadges = async ({ students }: Props) => {
+	const classSummaryStats = await getClassBadgeStats(students);
 
 	const classStats = {
-		avgTotalCount: classSummaryStats.totalCount / studentIds.length,
-		avgPassedCount: classSummaryStats.passedCount / studentIds.length,
+		avgTotalCount: classSummaryStats.totalCount / students.length,
+		avgPassedCount: classSummaryStats.passedCount / students.length,
 		avgWordingScore: classSummaryStats.avgWordingScore,
 		avgContentScore: classSummaryStats.avgContentScore,
 		constructedResponseCount:
-			classSummaryStats.totalConstructedResponses / studentIds.length,
+			classSummaryStats.totalConstructedResponses / students.length,
 		passedConstructedResponseCount:
-			classSummaryStats.passedConstructedResponses / studentIds.length,
+			classSummaryStats.passedConstructedResponses / students.length,
 	};
 
 	return (

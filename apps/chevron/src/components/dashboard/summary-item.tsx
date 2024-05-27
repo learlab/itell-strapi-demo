@@ -1,4 +1,3 @@
-import { Summary } from "@prisma/client";
 import Link from "next/link";
 
 import { cn, relativeDate } from "@itell/core/utils";
@@ -24,7 +23,8 @@ export function SummaryItem({ summary, timeZone }: PostItemProps) {
 				<p className="font-semibold text-lg leading-relaxed ">
 					{summary.pageTitle}
 				</p>
-				<p>{relativeDate(summary.created_at, timeZone)}</p>
+
+				<p>{relativeDate(summary.createdAt, timeZone)}</p>
 			</header>
 			<div className="flex items-center justify-between">
 				<p className="line-clamp-2">{summary.text}</p>

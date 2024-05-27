@@ -5,7 +5,7 @@ import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
 import { Spinner } from "@/components/spinner";
 import { Meta } from "@/config/metadata";
-import { getSessionUser } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user";
@@ -21,14 +21,7 @@ type Props = {
 };
 
 export default async function ({ searchParams }: Props) {
-	const currentUser = await getSessionUser();
-
-	if (!currentUser) {
-		return redirectWithSearchParams("auth", searchParams);
-	}
-
-	const user = await getUser(currentUser.id);
-
+	const { user } = await getSession();
 	if (!user) {
 		return redirectWithSearchParams("auth", searchParams);
 	}
@@ -44,7 +37,7 @@ export default async function ({ searchParams }: Props) {
 		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
 	}
 
-	incrementView("home", searchParams);
+	incrementView(user.id, "dashboard", searchParams);
 
 	return (
 		<DashboardShell>
@@ -55,7 +48,7 @@ export default async function ({ searchParams }: Props) {
 
 			<div className="space-y-4">
 				<div className="px-2">
-					<UserProgress user={user} />
+					<UserProgress pageSlug={user.pageSlug} finished={user.finished} />
 				</div>
 				{user.classId ? (
 					<p className="p-2 text-muted-foreground">
@@ -74,7 +67,11 @@ export default async function ({ searchParams }: Props) {
 					</p>
 				)}
 
-				<UserStatistics user={user} readingTimeLevel={readingTimeLevel} />
+				<UserStatistics
+					userId={user.id}
+					userClassId={user.classId}
+					readingTimeLevel={readingTimeLevel}
+				/>
 			</div>
 		</DashboardShell>
 	);

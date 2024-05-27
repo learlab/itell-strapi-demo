@@ -11,13 +11,22 @@ import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	userId: string;
+	userName: string | null;
+	userImage: string | null;
 	pageSlug: string;
 	data: Message[];
 	updatedAt: Date;
 };
 
-export const Chat = async ({ pageSlug, data, updatedAt, user }: Props) => {
+export const Chat = async ({
+	userId,
+	userName,
+	userImage,
+	pageSlug,
+	data,
+	updatedAt,
+}: Props) => {
 	return (
 		<Accordion
 			type="single"
@@ -34,11 +43,12 @@ export const Chat = async ({ pageSlug, data, updatedAt, user }: Props) => {
 					<div className="flex flex-col h-96">
 						<ChatMessages
 							data={data}
-							user={user}
+							userImage={userImage}
+							userName={userName}
 							isStairs={false}
 							updatedAt={updatedAt}
 						/>
-						<ChatInput pageSlug={pageSlug} isStairs={false} />
+						<ChatInput pageSlug={pageSlug} isStairs={false} userId={userId} />
 					</div>
 				</AccordionContent>
 			</AccordionItem>

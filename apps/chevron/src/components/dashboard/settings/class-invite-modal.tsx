@@ -1,15 +1,8 @@
 "use client";
 
 import { Spinner } from "@/components/spinner";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
-import { updateUserClassId } from "@/lib/user/actions";
+import { User } from "@/drizzle/schema";
+import { updateUser } from "@/lib/user/actions";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -19,28 +12,32 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	Button,
 } from "@itell/ui/client";
-import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	user: User;
-	teacherToJoin: User | null;
+	userId: string;
+	userClassId: string | null;
+	teacherToJoin: User;
 	classId: string;
 };
 
-export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
+export const ClassInviteModal = ({
+	userId,
+	userClassId,
+	teacherToJoin,
+	classId,
+}: Props) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const router = useRouter();
 	const [joinClassLoading, setJoinClassLoading] = useState(false);
-	const canJoinClass = !user.classId && teacherToJoin;
+	const canJoinClass = !userClassId && teacherToJoin;
 
 	const joinClass = async () => {
 		setJoinClassLoading(true);
-		await updateUserClassId({ userId: user.id, classId });
+		await updateUser(userId, { classId });
 
 		setJoinClassLoading(false);
 
@@ -56,7 +53,7 @@ export const ClassInviteModal = ({ user, teacherToJoin, classId }: Props) => {
 				<AlertDialogHeader>
 					<AlertDialogTitle>Join a class</AlertDialogTitle>
 					<AlertDialogDescription asChild>
-						{user.classId ? (
+						{userClassId ? (
 							<p>
 								It looks like you are trying to join a class with class code{" "}
 								<span className="font-semibold">{classId}</span>, but you are

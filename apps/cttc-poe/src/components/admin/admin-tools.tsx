@@ -51,7 +51,6 @@ export const AdminTools = ({ userId, condition }: Props) => {
 				: undefined;
 
 		startTransition(async () => {
-			console.log(formData.get("page-unblur"));
 			if (formData.get("page-unblur") === "on") {
 				finishPage();
 			}
