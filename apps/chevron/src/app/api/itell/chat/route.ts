@@ -1,6 +1,6 @@
+import { env } from "@/env.mjs";
 import { fetchChatResponse } from "@itell/core/chatbot";
 import type { ChatHistory } from "@itell/core/dist/chatbot/schema";
-import { env } from "@/env.mjs";
 
 interface Data {
 	pageSlug: string;
@@ -15,7 +15,6 @@ export async function POST(req: Request) {
 		data,
 		env.ITELL_API_KEY || "",
 	);
-	console.log(response);
 	if (response.ok) {
 		return new Response(response.data);
 	}

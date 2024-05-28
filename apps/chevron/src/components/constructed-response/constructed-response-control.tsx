@@ -91,7 +91,6 @@ export const ConstructedResponseControl = ({
 				chunkSlug={chunkSlug}
 				pageSlug={pageSlug}
 				standalone
-				className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
 			>
 				Click here to continue reading
 			</NextChunkButton>,

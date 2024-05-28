@@ -370,7 +370,6 @@ export const QuestionBoxStairs = ({
 												pageSlug={pageSlug}
 												chunkSlug={chunkSlug}
 												clickEventType="post-question chunk reveal"
-												variant="ghost"
 												onClick={() => setIsNextButtonDisplayed(false)}
 											>
 												{nextButtonText}

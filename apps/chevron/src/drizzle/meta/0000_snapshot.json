@@ -1,5 +1,5 @@
 {
-  "id": "d72d4e0a-d6a4-45e4-a723-0f30291e8194",
+  "id": "94174cef-f7c5-483f-b708-b9e9c1afb943",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -24,7 +24,7 @@
           "name": "data",
           "type": "jsonb[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -643,12 +643,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "prolific_pid": {
-          "name": "prolific_pid",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "email": {
           "name": "email",
           "type": "text",
@@ -661,6 +655,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'user'"
+        },
+        "condition": {
+          "name": "condition",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
         "class_id": {
           "name": "class_id",

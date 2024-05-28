@@ -55,7 +55,7 @@ END $$;
 CREATE TABLE IF NOT EXISTS "chat_messages" (
 	"user_id" text NOT NULL,
 	"page_slug" text NOT NULL,
-	"data" jsonb[],
+	"data" jsonb[] NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "chat_messages_pkey" PRIMARY KEY("user_id","page_slug")
@@ -150,9 +150,9 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"page_slug" text,
 	"time_zone" text,
 	"google_id" text,
-	"prolific_pid" text,
 	"email" text,
 	"role" text DEFAULT 'user' NOT NULL,
+	"condition" text NOT NULL,
 	"class_id" text,
 	"finished" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,

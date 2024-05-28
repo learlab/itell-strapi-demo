@@ -1,6 +1,7 @@
-import { env } from "@/env.mjs";
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
+import { parseEventStream } from "@itell/core/utils";
+import * as Sentry from "@sentry/nextjs";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -20,49 +21,53 @@ export const ExplainButton = ({
 
 	const onClick = async () => {
 		setLoading(true);
-		const res = await fetch("/api/itell/score/explain", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				pageSlug: pageSlug,
-				chunkSlug: chunkSlug,
-				studentResponse: input,
-			}),
-		});
+		try {
+			const res = await fetch("/api/itell/score/explain", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					pageSlug: pageSlug,
+					chunkSlug: chunkSlug,
+					studentResponse: input,
+				}),
+			});
 
-		let chunkValue = { request_id: "", text: "" };
-		if (res.ok && res.body) {
-			const reader = res.body.getReader();
-			const decoder = new TextDecoder();
-			let done = false;
-			while (!done) {
-				const { value, done: done_ } = await reader.read();
-				done = done_;
-				const chunk = decoder.decode(value);
-				if (chunk) {
-					chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
-						request_id: string;
-						text: string;
-					};
-
-					if (chunkValue) {
-						setResponse(chunkValue.text);
+			let response = "";
+			if (res.ok && res.body) {
+				await parseEventStream(res.body, (data, done) => {
+					if (!done) {
+						const { text } = JSON.parse(data) as {
+							request_id: string;
+							text: string;
+						};
+						response = text;
+						setResponse(response);
 					}
-				}
+				});
 			}
-		}
-		setLoading(false);
 
-		if (user) {
-			createEvent({
-				userId: user.id,
-				type: "explain-constructed-response",
-				pageSlug,
-				data: { chunkSlug, response: chunkValue.text },
+			if (user) {
+				createEvent({
+					userId: user.id,
+					type: "explain-constructed-response",
+					pageSlug,
+					data: { chunkSlug, response },
+				});
+			}
+		} catch (err) {
+			Sentry.captureMessage("explain constructed response error", {
+				extra: {
+					pageSlug,
+					chunkSlug,
+					studentResponse: input,
+					msg: err,
+				},
 			});
 		}
+
+		setLoading(false);
 	};
 
 	useEffect(() => {

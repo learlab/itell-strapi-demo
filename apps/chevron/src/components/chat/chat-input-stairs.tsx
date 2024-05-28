@@ -4,7 +4,7 @@ import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
 import { useChatStore } from "@/lib/store/chat";
 import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
-import { cn } from "@itell/core/utils";
+import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
@@ -59,7 +59,7 @@ export const ChatInputStairs = ({
 		const botMessageId = addBotMessage("", true);
 		setActiveMessageId(botMessageId);
 
-		const chatResponse = await fetch("/api/itell/chat", {
+		const response = await fetch("/api/itell/chat", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -72,92 +72,82 @@ export const ChatInputStairs = ({
 		});
 		setActiveMessageId(null);
 
-		if (chatResponse.ok && chatResponse.body) {
-			const reader = chatResponse.body.getReader();
-			const decoder = new TextDecoder();
-			let done = false;
+		if (response.ok && response.body) {
 			let botText = "";
-
-			while (!done) {
-				const { value, done: doneReading } = await reader.read();
-				done = doneReading;
-				const chunk = decoder.decode(value);
-				if (chunk) {
-					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+			await parseEventStream(response.body, (data, done) => {
+				if (!done) {
+					const { text } = JSON.parse(data) as {
 						request_id: string;
 						text: string;
 					};
-					botText = chunkValue.text;
+					botText = text;
 					updateBotMessage(botMessageId, botText, true);
 				}
-			}
+			});
 
-			if (done) {
-				const botTimestamp = Date.now();
-				// also add the final bot message to the normal chat
-				addBotMessage(botText, false);
-				history.current.push(
-					{
-						agent: "user",
-						text,
-					},
-					{
-						agent: "bot",
-						text: botText,
-					},
-				);
+			const botTimestamp = Date.now();
+			// also add the final bot message to the normal chat
+			addBotMessage(botText, false);
+			history.current.push(
+				{
+					agent: "user",
+					text,
+				},
+				{
+					agent: "bot",
+					text: botText,
+				},
+			);
 
-				if (!answered.current) {
-					createChatMessage({
-						pageSlug,
-						messages: [
-							{
-								text: String(stairsQuestion?.text),
-								isUser: false,
-								timestamp: Number(stairsTimestamp),
-								isStairs: true,
-								// ignoring for passing additional stairs data
-								// @ts-ignore
-								stairsData: {
-									chunk: stairsQuestion?.chunk,
-									question_type: stairsQuestion?.question_type,
-								},
+			if (!answered.current) {
+				createChatMessage({
+					userId,
+					pageSlug,
+					messages: [
+						{
+							text: String(stairsQuestion?.text),
+							isUser: false,
+							timestamp: Number(stairsTimestamp),
+							isStairs: true,
+							stairsData: {
+								chunk: String(stairsQuestion?.chunk),
+								question_type: String(stairsQuestion?.question_type),
 							},
-							{
-								text,
-								isUser: true,
-								timestamp: userTimestamp,
-								isStairs: true,
-							},
-							{
-								text: botText,
-								isUser: false,
-								timestamp: botTimestamp,
-								isStairs: true,
-							},
-						],
-					});
-				} else {
-					answered.current = true;
-					createChatMessage({
-						userId: userId,
-						pageSlug,
-						messages: [
-							{
-								text,
-								isUser: true,
-								timestamp: userTimestamp,
-								isStairs: true,
-							},
-							{
-								text: botText,
-								isUser: false,
-								timestamp: botTimestamp,
-								isStairs: true,
-							},
-						],
-					});
-				}
+						},
+						{
+							text,
+							isUser: true,
+							timestamp: userTimestamp,
+							isStairs: true,
+						},
+						{
+							text: botText,
+							isUser: false,
+							timestamp: botTimestamp,
+							isStairs: true,
+						},
+					],
+				});
+			} else {
+				answered.current = true;
+				createChatMessage({
+					userId,
+					pageSlug,
+					messages: [
+						{
+							text,
+							isUser: true,
+							timestamp: userTimestamp,
+							isStairs: true,
+						},
+						{
+							text: botText,
+							isUser: false,
+							timestamp: botTimestamp,
+							isStairs: true,
+						},
+					],
+				});
 			}
 		} else {
 			updateBotMessage(
