@@ -1,7 +1,6 @@
 import { InferSelectModel, Param, sql } from "drizzle-orm";
 import {
 	boolean,
-	customType,
 	doublePrecision,
 	index,
 	integer,
@@ -117,7 +116,7 @@ export const events = pgTable("events", {
 	type: text("event_type").notNull(),
 	userId: text("user_id")
 		.notNull()
-		.references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 	pageSlug: text("page_slug").notNull(),
 	data: jsonb("data"),
 	createdAt: CreatedAt,
@@ -136,7 +135,7 @@ export const summaries = pgTable("summaries", {
 	condition: text("condition").notNull(),
 	userId: text("user_id")
 		.notNull()
-		.references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 	pageSlug: text("page_slug").notNull(),
 	isPassed: boolean("isPassed").notNull(),
 	containmentScore: doublePrecision("containment_score").notNull(),
@@ -153,7 +152,7 @@ export const notes = pgTable("notes", {
 	id: serial("id").primaryKey().notNull(),
 	userId: text("user_id")
 		.notNull()
-		.references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 	y: doublePrecision("y").notNull(),
 	noteText: text("note_text"),
 	highlightedText: text("highlighted_text").notNull(),
@@ -176,7 +175,7 @@ export const constructed_responses = pgTable(
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, {
-				onDelete: "restrict",
+				onDelete: "cascade",
 				onUpdate: "cascade",
 			}),
 		pageSlug: text("page_slug").notNull(),
@@ -197,7 +196,7 @@ export const constructed_responses_feedback = pgTable(
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, {
-				onDelete: "restrict",
+				onDelete: "cascade",
 				onUpdate: "cascade",
 			}),
 		pageSlug: text("page_slug").notNull(),
@@ -215,7 +214,7 @@ export const focus_times = pgTable(
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, {
-				onDelete: "restrict",
+				onDelete: "cascade",
 				onUpdate: "cascade",
 			}),
 		pageSlug: text("page_slug").notNull(),
