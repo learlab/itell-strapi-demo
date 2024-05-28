@@ -46,7 +46,6 @@ export const SummaryInput = ({
 		: value;
 	const [input, setInput] = useState(text);
 
-	console.log(disabled);
 
 	useEffect(() => {
 		if (!summary) {
