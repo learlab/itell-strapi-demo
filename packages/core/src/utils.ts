@@ -87,9 +87,10 @@ export const formatDate = (
 	return formatInTimeZone(date, tz, format);
 };
 
-export const decodeStream = async (
+// parse a stream following the server-sent event format
+export const parseEventStream = async (
 	stream: ReadableStream,
-	onDecode: (chunkData: string, chunkIndex: number, isFinal: boolean) => void,
+	onData?: (chunkData: string, done: boolean, chunkIndex: number) => void,
 ) => {
 	const reader = stream.getReader();
 	const decoder = new TextDecoder();
@@ -99,10 +100,20 @@ export const decodeStream = async (
 	while (!done) {
 		const { value, done: doneReading } = await reader.read();
 		done = doneReading;
-		const chunk = decoder.decode(value);
+		if (done) {
+			onData?.("", done, chunkIndex);
+		} else {
+			const chunk = decoder.decode(value);
+			// chunk is in the format
+			// event: <event-name>\ndata: <data>\n\n
 
-		if (chunk) {
-			onDecode(chunk, chunkIndex, doneReading);
+			const data = chunk
+				.split("\n")
+				.at(1)
+				?.replace(/data:\s+/, "");
+			if (data) {
+				onData?.(data, done, chunkIndex);
+			}
 			chunkIndex++;
 		}
 	}

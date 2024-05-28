@@ -1,0 +1,75 @@
+diff --git a/postgres-js/driver.js b/postgres-js/driver.js
+index 7e48e8c19fb5c75ecbedd41fc6d81b8dccf23354..2f8f4b4fc85f547e7fdfcb7166f0e00a48365943 100644
+--- a/postgres-js/driver.js
++++ b/postgres-js/driver.js
+@@ -2,39 +2,39 @@ import { DefaultLogger } from "../logger.js";
+ import { PgDatabase } from "../pg-core/db.js";
+ import { PgDialect } from "../pg-core/dialect.js";
+ import {
+-  createTableRelationsHelpers,
+-  extractTablesRelationalConfig
++	createTableRelationsHelpers,
++	extractTablesRelationalConfig,
+ } from "../relations.js";
+ import { PostgresJsSession } from "./session.js";
+ function drizzle(client, config = {}) {
+-  const transparentParser = (val) => val;
+-  for (const type of ["1184", "1082", "1083", "1114"]) {
+-    client.options.parsers[type] = transparentParser;
+-    client.options.serializers[type] = transparentParser;
+-  }
+-  const dialect = new PgDialect();
+-  let logger;
+-  if (config.logger === true) {
+-    logger = new DefaultLogger();
+-  } else if (config.logger !== false) {
+-    logger = config.logger;
+-  }
+-  let schema;
+-  if (config.schema) {
+-    const tablesConfig = extractTablesRelationalConfig(
+-      config.schema,
+-      createTableRelationsHelpers
+-    );
+-    schema = {
+-      fullSchema: config.schema,
+-      schema: tablesConfig.tables,
+-      tableNamesMap: tablesConfig.tableNamesMap
+-    };
+-  }
+-  const session = new PostgresJsSession(client, dialect, schema, { logger });
+-  return new PgDatabase(dialect, session, schema);
++	const transparentParser = (val) => val;
++	for (const type of ["1184", "1082", "1083", "1114"]) {
++		client.options.parsers[type] = transparentParser;
++		client.options.serializers[type] = transparentParser;
++	}
++	client.options.serializers["114"] = transparentParser;
++	client.options.serializers["3802"] = transparentParser;
++	const dialect = new PgDialect();
++	let logger;
++	if (config.logger === true) {
++		logger = new DefaultLogger();
++	} else if (config.logger !== false) {
++		logger = config.logger;
++	}
++	let schema;
++	if (config.schema) {
++		const tablesConfig = extractTablesRelationalConfig(
++			config.schema,
++			createTableRelationsHelpers,
++		);
++		schema = {
++			fullSchema: config.schema,
++			schema: tablesConfig.tables,
++			tableNamesMap: tablesConfig.tableNamesMap,
++		};
++	}
++	const session = new PostgresJsSession(client, dialect, schema, { logger });
++	return new PgDatabase(dialect, session, schema);
+ }
+-export {
+-  drizzle
+-};
++export { drizzle };
+ //# sourceMappingURL=driver.js.map

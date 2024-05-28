@@ -3,7 +3,7 @@
 import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { cn } from "@itell/core/utils";
+import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { type HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
@@ -55,46 +55,37 @@ export const ChatInput = ({
 		setActiveMessageId(null);
 
 		if (chatResponse.ok && chatResponse.body) {
-			const reader = chatResponse.body.getReader();
-			const decoder = new TextDecoder();
-			let done = false;
 			let botText = "";
-
-			while (!done) {
-				const { value, done: doneReading } = await reader.read();
-				done = doneReading;
-				const chunk = decoder.decode(value);
-				if (chunk) {
-					const chunkValue = JSON.parse(chunk.trim().split("\u0000")[0]) as {
+			await parseEventStream(chatResponse.body, (data, done) => {
+				if (!done) {
+					const { text } = JSON.parse(data) as {
 						request_id: string;
 						text: string;
 					};
-					botText = chunkValue.text;
+					botText = text;
 					updateBotMessage(botMessageId, botText, isStairs);
 				}
-			}
+			});
 
-			if (done) {
-				const botTimestamp = Date.now();
-				createChatMessage({
-					userId: userId,
-					pageSlug,
-					messages: [
-						{
-							text,
-							isUser: true,
-							timestamp: userTimestamp,
-							isStairs,
-						},
-						{
-							text: botText,
-							isUser: false,
-							timestamp: botTimestamp,
-							isStairs,
-						},
-					],
-				});
-			}
+			const botTimestamp = Date.now();
+			createChatMessage({
+				userId,
+				pageSlug,
+				messages: [
+					{
+						text,
+						isUser: true,
+						timestamp: userTimestamp,
+						isStairs,
+					},
+					{
+						text: botText,
+						isUser: false,
+						timestamp: botTimestamp,
+						isStairs,
+					},
+				],
+			});
 		} else {
 			updateBotMessage(
 				botMessageId,

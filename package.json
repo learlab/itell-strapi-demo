@@ -3,7 +3,11 @@
 	"authors": "learlab",
 	"version": "1.0.0",
 	"description": "A framework for building intelligent digital textbooks",
-	"workspaces": ["apps/*", "packages/*", "docs"],
+	"workspaces": [
+		"apps/*",
+		"packages/*",
+		"docs"
+	],
 	"scripts": {
 		"build": "turbo run build",
 		"build:core": "turbo run build --filter @itell/core",
@@ -22,5 +26,10 @@
 	"license": "ISC",
 	"devDependencies": {
 		"turbo": "^1.13.3"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"drizzle-orm@0.30.10": "patches/drizzle-orm@0.30.10.patch"
+		}
 	}
 }

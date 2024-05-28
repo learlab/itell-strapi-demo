@@ -255,62 +255,61 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
 					const chunk = decoder.decode(value);
+					const data = chunk
+						.split("\n")
+						.at(1)
+						?.replace(/data:\s+/, "");
 
-					if (chunkIndex === 0) {
-						const chunkString = chunk.trim().replaceAll("\u0000", "");
-						console.log("chunkString", chunkString);
-						const parsed = SummaryResponseSchema.safeParse(
-							JSON.parse(chunkString),
-						);
-						if (parsed.success) {
-							summaryResponse = parsed.data;
-							dispatch({
-								type: "set_passed",
-								payload: summaryResponse.is_passed || isEnoughSummary,
-							});
-							dispatch({ type: "scored", payload: parsed.data });
-							finishStage("Scoring");
-						} else {
-							console.log("SummaryResults parse error", parsed.error);
-							clearStages();
-							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-							// summaryResponse parsing failed, return early
-
-							Sentry.captureMessage("SummaryResponse parse error", {
-								extra: {
-									body: requestBody,
-									chunkString,
-								},
-							});
-							return;
-						}
-					} else {
-						if (summaryResponse?.is_passed) {
-							// if the summary passed, we don't need to process later chunks
-							// note that if the user pass by summary amount
-							// question will still be generated but will not be asked
-							// they can still see the "question" button
-							break;
-						}
-
-						if (chunkIndex === 1) {
-							addStage("Analyzing");
-						}
-						if (!done) {
-							stairsString = chunk.trim().replaceAll("\u0000", "");
-						} else {
-							if (stairsString) {
-								stairsData = JSON.parse(stairsString) as StairsQuestion;
-								finishStage("Analyzing");
-								addStairsQuestion(stairsData);
-
-								createEvent({
-									type: "stairs-question",
-									pageSlug,
-									userId: user.id,
-									data: stairsData,
+					if (data) {
+						if (chunkIndex === 0) {
+							console.log("chunk", data);
+							const parsed = SummaryResponseSchema.safeParse(JSON.parse(data));
+							if (parsed.success) {
+								summaryResponse = parsed.data;
+								dispatch({
+									type: "set_passed",
+									payload: summaryResponse.is_passed || isEnoughSummary,
 								});
+								dispatch({ type: "scored", payload: parsed.data });
+								finishStage("Scoring");
+							} else {
+								console.log("SummaryResults parse error", parsed.error);
+								clearStages();
+								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+								// summaryResponse parsing failed, return early
+
+								Sentry.captureMessage("SummaryResponse parse error", {
+									extra: {
+										body: requestBody,
+										chunk: data,
+									},
+								});
+								return;
 							}
+						} else {
+							if (summaryResponse?.is_passed) {
+								// if the summary passed, we don't need to process later chunks
+								// note that if the user pass by summary amount
+								// question will still be generated but will not be asked
+								// they can still see the "question" button
+								break;
+							}
+
+							if (chunkIndex === 1) {
+								addStage("Analyzing");
+							}
+
+							stairsString = data;
+							stairsData = JSON.parse(stairsString) as StairsQuestion;
+							finishStage("Analyzing");
+							addStairsQuestion(stairsData);
+
+							createEvent({
+								type: "stairs-question",
+								pageSlug,
+								userId: user.id,
+								data: stairsData,
+							});
 						}
 					}
 
@@ -395,7 +394,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		(state) => state.isPageFinished,
 	);
 	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
-
 	return (
 		<section className="space-y-2">
 			{portalNodes}
@@ -445,7 +443,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						disabled={!isPageFinished}
+						disabled={!pageStatus.isPageUnlocked && !isPageFinished}
 						pending={state.pending}
 					/>
 				</div>

@@ -1,4 +1,4 @@
-import { InferSelectModel, sql } from "drizzle-orm";
+import { InferSelectModel, Param, sql } from "drizzle-orm";
 import {
 	boolean,
 	customType,
@@ -13,19 +13,6 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-
-export const customJsonb = <TData>(name: string) =>
-	customType<{ data: TData; driverData: TData }>({
-		dataType() {
-			return "jsonb";
-		},
-		toDriver(val: TData) {
-			return sql`(((${JSON.stringify(val)})::jsonb)#>> '{}')::jsonb`;
-		},
-		fromDriver(value): TData {
-			return value as TData;
-		},
-	})(name);
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
 export const code_challenge_method = pgEnum("code_challenge_method", [
 	"s256",
@@ -233,7 +220,7 @@ export const focus_times = pgTable(
 				onUpdate: "cascade",
 			}),
 		pageSlug: text("page_slug").notNull(),
-		data: customJsonb<FocusTimeData>("data").notNull(),
+		data: jsonb("data").notNull().$type<FocusTimeData>(),
 		createdAt: CreatedAt,
 		updatedAt: UpdatedAt,
 	},
@@ -252,7 +239,7 @@ export const chat_messages = pgTable(
 	{
 		userId: text("user_id").notNull(),
 		pageSlug: text("page_slug").notNull(),
-		data: customJsonb<ChatMessageData>("data").array().notNull(),
+		data: jsonb("data").array().notNull().$type<ChatMessageData[]>(),
 		createdAt: CreatedAt,
 		updatedAt: UpdatedAt,
 	},
@@ -271,6 +258,10 @@ export type ChatMessageData = {
 	isUser: boolean;
 	isStairs: boolean;
 	timestamp: number;
+	stairsData?: {
+		chunk: string;
+		question_type: string;
+	};
 };
 
 export type FocusTimeData = Record<string, number>;
