@@ -14,7 +14,9 @@ const components = {
 };
 
 export const SummaryFeedback = ({ feedback, canProceed }: Props) => {
-	const terms = feedback?.suggestedKeyphrases || [];
+	const terms = feedback?.suggestedKeyphrases
+		? Array.from(new Set(feedback.suggestedKeyphrases))
+		: [];
 	const Component = components[feedback?.isPassed ? "true" : "false"];
 	return (
 		<section className="font-light leading-relaxed space-y-2 animate-in fade-in-50">

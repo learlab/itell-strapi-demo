@@ -262,7 +262,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 					if (data) {
 						if (chunkIndex === 0) {
-							console.log("chunk", data);
+							console.log("summary response chunk", data);
 							const parsed = SummaryResponseSchema.safeParse(JSON.parse(data));
 							if (parsed.success) {
 								summaryResponse = parsed.data;
@@ -300,20 +300,24 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							}
 
 							stairsString = data;
-							stairsData = JSON.parse(stairsString) as StairsQuestion;
-							finishStage("Analyzing");
-							addStairsQuestion(stairsData);
-
-							createEvent({
-								type: "stairs-question",
-								pageSlug,
-								userId: user.id,
-								data: stairsData,
-							});
 						}
 					}
 
 					chunkIndex++;
+				}
+
+				if (stairsString) {
+					console.log("final stairs chunk", stairsString);
+					stairsData = JSON.parse(stairsString) as StairsQuestion;
+					finishStage("Analyzing");
+					addStairsQuestion(stairsData);
+
+					createEvent({
+						type: "stairs-question",
+						pageSlug,
+						userId: user.id,
+						data: stairsData,
+					});
 				}
 			}
 
