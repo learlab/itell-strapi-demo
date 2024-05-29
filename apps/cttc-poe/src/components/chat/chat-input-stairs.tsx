@@ -5,6 +5,7 @@ import { createChatMessage } from "@/lib/chat/actions";
 import { useChatStore } from "@/lib/store/chat";
 import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
 import { cn, parseEventStream } from "@itell/core/utils";
+import * as Sentry from "@sentry/nextjs";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
@@ -19,7 +20,6 @@ export const ChatInputStairs = ({
 	userId,
 	className,
 	pageSlug,
-	...props
 }: ChatInputProps) => {
 	const {
 		addUserMessage,
@@ -59,97 +59,111 @@ export const ChatInputStairs = ({
 		const botMessageId = addBotMessage("", true);
 		setActiveMessageId(botMessageId);
 
-		const response = await fetch("/api/itell/chat", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				pageSlug,
-				text,
-				history: history.current,
-			}),
-		});
-		setActiveMessageId(null);
-
-		if (response.ok && response.body) {
-			let botText = "";
-			await parseEventStream(response.body, (data, done) => {
-				if (!done) {
-					const { text } = JSON.parse(data) as {
-						request_id: string;
-						text: string;
-					};
-					botText = text;
-					updateBotMessage(botMessageId, botText, true);
-				}
-			});
-
-			const botTimestamp = Date.now();
-			// also add the final bot message to the normal chat
-			addBotMessage(botText, false);
-			history.current.push(
-				{
-					agent: "user",
+		try {
+			const response = await fetch("/api/itell/chat", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					pageSlug,
 					text,
-				},
-				{
-					agent: "bot",
-					text: botText,
-				},
-			);
+					history: history.current,
+				}),
+			});
+			setActiveMessageId(null);
 
-			if (!answered.current) {
-				createChatMessage({
-					userId,
-					pageSlug,
-					messages: [
-						{
-							text: String(stairsQuestion?.text),
-							isUser: false,
-							timestamp: Number(stairsTimestamp),
-							isStairs: true,
-							stairsData: {
-								chunk: String(stairsQuestion?.chunk),
-								question_type: String(stairsQuestion?.question_type),
+			if (response.ok && response.body) {
+				let botText = "";
+				await parseEventStream(response.body, (data, done) => {
+					if (!done) {
+						try {
+							const { text } = JSON.parse(data) as {
+								request_id: string;
+								text: string;
+							};
+							botText = text;
+							updateBotMessage(botMessageId, botText, true);
+						} catch (err) {
+							console.log("invalid json", data);
+						}
+					}
+				});
+
+				const botTimestamp = Date.now();
+				// also add the final bot message to the normal chat
+				addBotMessage(botText, false);
+				history.current.push(
+					{
+						agent: "user",
+						text,
+					},
+					{
+						agent: "bot",
+						text: botText,
+					},
+				);
+
+				if (!answered.current) {
+					createChatMessage({
+						userId,
+						pageSlug,
+						messages: [
+							{
+								text: String(stairsQuestion?.text),
+								isUser: false,
+								timestamp: Number(stairsTimestamp),
+								isStairs: true,
+								stairsData: {
+									chunk: String(stairsQuestion?.chunk),
+									question_type: String(stairsQuestion?.question_type),
+								},
 							},
-						},
-						{
-							text,
-							isUser: true,
-							timestamp: userTimestamp,
-							isStairs: true,
-						},
-						{
-							text: botText,
-							isUser: false,
-							timestamp: botTimestamp,
-							isStairs: true,
-						},
-					],
-				});
+							{
+								text,
+								isUser: true,
+								timestamp: userTimestamp,
+								isStairs: true,
+							},
+							{
+								text: botText,
+								isUser: false,
+								timestamp: botTimestamp,
+								isStairs: true,
+							},
+						],
+					});
+				} else {
+					answered.current = true;
+					createChatMessage({
+						userId,
+						pageSlug,
+						messages: [
+							{
+								text,
+								isUser: true,
+								timestamp: userTimestamp,
+								isStairs: true,
+							},
+							{
+								text: botText,
+								isUser: false,
+								timestamp: botTimestamp,
+								isStairs: true,
+							},
+						],
+					});
+				}
 			} else {
-				answered.current = true;
-				createChatMessage({
-					userId,
-					pageSlug,
-					messages: [
-						{
-							text,
-							isUser: true,
-							timestamp: userTimestamp,
-							isStairs: true,
-						},
-						{
-							text: botText,
-							isUser: false,
-							timestamp: botTimestamp,
-							isStairs: true,
-						},
-					],
-				});
+				console.log("invalid response", response);
+				throw new Error("invalid response");
 			}
-		} else {
+		} catch (err) {
+			Sentry.captureMessage("chat input error", {
+				extra: {
+					msg: err,
+				},
+			});
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
@@ -161,7 +175,7 @@ export const ChatInputStairs = ({
 	};
 
 	return (
-		<div {...props} className={cn("px-2", className)}>
+		<div className={cn("px-2", className)}>
 			<form
 				className="mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none"
 				onSubmit={(e) => {

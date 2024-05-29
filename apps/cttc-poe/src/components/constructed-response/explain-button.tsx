@@ -38,12 +38,16 @@ export const ExplainButton = ({
 			if (res.ok && res.body) {
 				await parseEventStream(res.body, (data, done) => {
 					if (!done) {
-						const { text } = JSON.parse(data) as {
-							request_id: string;
-							text: string;
-						};
-						response = text;
-						setResponse(response);
+						try {
+							const { text } = JSON.parse(data) as {
+								request_id: string;
+								text: string;
+							};
+							response = text;
+							setResponse(response);
+						} catch {
+							console.log("invalid json", data);
+						}
 					}
 				});
 			}

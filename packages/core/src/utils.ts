@@ -103,9 +103,9 @@ export const parseEventStream = async (
 		if (done) {
 			onData?.("", done, chunkIndex);
 		} else {
-			const chunk = decoder.decode(value);
+			const chunk = decoder.decode(value).trim();
 			// chunk is in the format
-			// event: <event-name>\ndata: <data>\n\n
+			// event: <event-name>\ndata: <data>
 
 			const data = chunk
 				.split("\n")

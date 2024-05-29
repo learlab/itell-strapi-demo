@@ -1,18 +1,17 @@
 "use client";
 
-import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { cn, parseEventStream } from "@itell/core/utils";
+import * as Sentry from "@sentry/nextjs";
 import { CornerDownLeft } from "lucide-react";
-import { type HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	userId: string;
 	pageSlug: string;
-	isStairs: boolean;
 }
 
 const isStairs = false;
@@ -41,53 +40,66 @@ export const ChatInput = ({
 		const botMessageId = addBotMessage("", isStairs);
 		setActiveMessageId(botMessageId);
 
-		const chatResponse = await fetch("/api/itell/chat", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				pageSlug,
-				text,
-				history: getChatHistory(messages),
-			}),
-		});
-		setActiveMessageId(null);
-
-		if (chatResponse.ok && chatResponse.body) {
-			let botText = "";
-			await parseEventStream(chatResponse.body, (data, done) => {
-				if (!done) {
-					console.log(data);
-					const { text } = JSON.parse(data) as {
-						request_id: string;
-						text: string;
-					};
-					botText = text;
-					updateBotMessage(botMessageId, botText, isStairs);
-				}
+		try {
+			const chatResponse = await fetch("/api/itell/chat", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					pageSlug,
+					text,
+					history: getChatHistory(messages),
+				}),
 			});
+			setActiveMessageId(null);
 
-			const botTimestamp = Date.now();
-			createChatMessage({
-				userId,
-				pageSlug,
-				messages: [
-					{
-						text,
-						isUser: true,
-						timestamp: userTimestamp,
-						isStairs,
-					},
-					{
-						text: botText,
-						isUser: false,
-						timestamp: botTimestamp,
-						isStairs,
-					},
-				],
+			if (chatResponse.ok && chatResponse.body) {
+				let botText = "";
+				await parseEventStream(chatResponse.body, (data, done) => {
+					if (!done) {
+						try {
+							const { text } = JSON.parse(data) as {
+								request_id: string;
+								text: string;
+							};
+							botText = text;
+							updateBotMessage(botMessageId, botText, isStairs);
+						} catch (err) {
+							console.log("invalid json", data);
+						}
+					}
+				});
+
+				const botTimestamp = Date.now();
+				createChatMessage({
+					userId,
+					pageSlug,
+					messages: [
+						{
+							text,
+							isUser: true,
+							timestamp: userTimestamp,
+							isStairs,
+						},
+						{
+							text: botText,
+							isUser: false,
+							timestamp: botTimestamp,
+							isStairs,
+						},
+					],
+				});
+			} else {
+				console.log("invalid response", chatResponse);
+				throw new Error("invalid response");
+			}
+		} catch (err) {
+			Sentry.captureMessage("chat input error", {
+				extra: {
+					msg: err,
+				},
 			});
-		} else {
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",

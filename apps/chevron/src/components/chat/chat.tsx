@@ -48,7 +48,7 @@ export const Chat = async ({
 							isStairs={false}
 							updatedAt={updatedAt}
 						/>
-						<ChatInput pageSlug={pageSlug} isStairs={false} userId={userId} />
+						<ChatInput pageSlug={pageSlug} userId={userId} />
 					</div>
 				</AccordionContent>
 			</AccordionItem>
