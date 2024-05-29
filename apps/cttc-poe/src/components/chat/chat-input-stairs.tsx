@@ -1,9 +1,8 @@
 "use client";
 
-import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
 import { useChatStore } from "@/lib/store/chat";
-import { ChatHistory, fetchChatResponse } from "@itell/core/chatbot";
+import { ChatHistory } from "@itell/core/chatbot";
 import { cn, parseEventStream } from "@itell/core/utils";
 import * as Sentry from "@sentry/nextjs";
 import { CornerDownLeft } from "lucide-react";
@@ -66,8 +65,8 @@ export const ChatInputStairs = ({
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					pageSlug,
-					text,
+					page_slug: pageSlug,
+					message: text,
 					history: history.current,
 				}),
 			});

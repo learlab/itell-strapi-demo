@@ -47,11 +47,12 @@ export const ChatInput = ({
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					pageSlug,
-					text,
+					page_slug: pageSlug,
+					message: text,
 					history: getChatHistory(messages),
 				}),
 			});
+
 			setActiveMessageId(null);
 
 			if (chatResponse.ok && chatResponse.body) {
