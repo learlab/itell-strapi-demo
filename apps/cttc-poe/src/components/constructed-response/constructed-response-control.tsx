@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
+import { QuestionBoxSimple } from "./question-box-simple";
 import { QuestionBoxStairs } from "./question-box-stairs";
 import { ScrollBackButton } from "./scroll-back-button";
 
@@ -105,9 +106,21 @@ export const ConstructedResponseControl = ({
 
 		const q = selectedQuestions.get(chunkId);
 		if (q) {
-			if (condition === Condition.STAIRS) {
+			if (condition === Condition.SIMPLE) {
 				addNode(
-					<QuestionBoxStairs
+					<QuestionBoxSimple
+						question={q.question}
+						answer={q.answer}
+						chunkSlug={chunkId}
+						pageStatus={pageStatus}
+					/>,
+					questionContainer,
+				);
+			}
+
+			if (condition === Condition.RANDOM_REREAD) {
+				addNode(
+					<QuestionBoxReread
 						question={q.question}
 						answer={q.answer}
 						chunkSlug={chunkId}
@@ -118,9 +131,9 @@ export const ConstructedResponseControl = ({
 				);
 			}
 
-			if (condition === Condition.RANDOM_REREAD) {
+			if (condition === Condition.STAIRS) {
 				addNode(
-					<QuestionBoxReread
+					<QuestionBoxStairs
 						question={q.question}
 						answer={q.answer}
 						chunkSlug={chunkId}
@@ -199,15 +212,11 @@ export const ConstructedResponseControl = ({
 	};
 
 	useEffect(() => {
-		if (hasFeedback) {
-			chunks.forEach(processChunk);
-		}
+		chunks.forEach(processChunk);
 	}, []);
 
 	useEffect(() => {
-		if (hasFeedback) {
-			revealChunk(currentChunk);
-		}
+		revealChunk(currentChunk);
 	}, [currentChunk]);
 
 	return nodes;
