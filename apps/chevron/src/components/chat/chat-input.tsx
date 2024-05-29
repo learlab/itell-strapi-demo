@@ -58,6 +58,7 @@ export const ChatInput = ({
 			let botText = "";
 			await parseEventStream(chatResponse.body, (data, done) => {
 				if (!done) {
+					console.log(data);
 					const { text } = JSON.parse(data) as {
 						request_id: string;
 						text: string;
