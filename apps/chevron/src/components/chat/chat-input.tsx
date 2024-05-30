@@ -77,10 +77,6 @@ export const ChatInput = ({
 					}
 				});
 
-				if (contextArr) {
-					addBotMessageElement(() => <p>Hello</p>);
-				}
-
 				const botTimestamp = Date.now();
 				createChatMessage({
 					userId,
@@ -97,6 +93,7 @@ export const ChatInput = ({
 							isUser: false,
 							timestamp: botTimestamp,
 							isStairs,
+							context: contextArr[0],
 						},
 					],
 				});

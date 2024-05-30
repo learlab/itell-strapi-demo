@@ -6,6 +6,7 @@ import { cn, relativeDate } from "@itell/core/utils";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
+import { Button } from "@/components/client-components";
 
 type Props = {
 	userName: string | null;
@@ -72,7 +73,15 @@ const MessageItem = ({
 	message,
 }: { userName: string | null; userImage: string | null; message: Message }) => {
 	const activeMessageId = useChatStore((state) => state.activeMessageId);
-	console.log(message);
+	// Get div where data-subsection-id is message.context
+	if (message.context) {
+		const div = document.querySelector(
+			`div[data-subsection-id="${message.context}"]`,
+		);
+		if (div) {
+			div.id = message.context;
+		}
+	}
 	return (
 		<div className="chat-message" key={`${message.id}-${message.id}`}>
 			<div
@@ -110,7 +119,9 @@ const MessageItem = ({
 							{"text" in message ? <p>{message.text}</p> : message.Node}
 							{message.context && (
 								<a href={`#${message.context}`}>
-									<p>See context</p>
+									<Button variant={"outline"} size={"sm"} className="mt-1">
+										See context
+									</Button>
 								</a>
 							)}
 						</div>

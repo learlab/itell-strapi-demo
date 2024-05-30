@@ -83,7 +83,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 							if (
 								editedHeadings.map((heading) => heading.slug).includes(slicedId)
 							) {
-								section.id = slicedId;
+								section.id = renamedId;
 								observer.observe(section);
 							}
 						}
