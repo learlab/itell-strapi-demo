@@ -2,6 +2,7 @@
 
 import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
+import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -244,9 +245,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 
-			{!isProduction && (
+			{isAdmin(user.role) && (
 				<Button variant={"outline"} onClick={goToRandomChunk}>
-					go to random chunk (dev)
+					go to random chunk (admin)
 				</Button>
 			)}
 
