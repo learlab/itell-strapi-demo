@@ -3,19 +3,21 @@ import { createEvent } from "@/lib/event/actions";
 import { parseEventStream } from "@itell/core/utils";
 import * as Sentry from "@sentry/nextjs";
 import { HelpCircleIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button } from "../client-components";
 import { Spinner } from "../spinner";
 
-export const ExplainButton = ({
-	pageSlug,
-	chunkSlug,
-}: { pageSlug: string; chunkSlug: string }) => {
+type Props = {
+	pageSlug: string;
+	chunkSlug: string;
+	input: string;
+};
+
+export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 	const { user } = useSession();
-	const [input, setInput] = useState("");
 	const [response, setResponse] = useState("");
-	const { pending, data } = useFormStatus();
+	const { pending } = useFormStatus();
 	const [loading, setLoading] = useState(false);
 	const isPending = pending || loading;
 
@@ -74,12 +76,6 @@ export const ExplainButton = ({
 		setLoading(false);
 	};
 
-	useEffect(() => {
-		if (data) {
-			setInput(String(data.get("input")));
-		}
-	}, [data]);
-
 	return (
 		<div className="flex flex-col items-center justify-center">
 			{response && <p className="text-sm text-muted-foreground">{response}</p>}
@@ -87,7 +83,7 @@ export const ExplainButton = ({
 				variant="secondary"
 				className="gap-2"
 				type="button"
-				disabled={isPending || response !== ""}
+				disabled={isPending}
 				onClick={onClick}
 			>
 				{isPending ? (
