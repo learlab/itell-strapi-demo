@@ -21,9 +21,14 @@ interface ChatProps {
 
 interface ChatState extends ChatProps {
 	addUserMessage: (text: string, isStairs?: boolean) => string;
-	addBotMessage: (text: string, isStairs?: boolean) => string;
+	addBotMessage: (text: string, isStairs?: boolean, context?: string) => string;
 	addBotMessageElement: (comp: () => JSX.Element) => void;
-	updateBotMessage: (id: string, text: string, isStairs?: boolean) => void;
+	updateBotMessage: (
+		id: string,
+		text: string,
+		isStairs?: boolean,
+		context?: string,
+	) => void;
 	setActiveMessageId: (id: string | null) => void;
 	setStairsAnswered: (value: boolean) => void;
 	addStairsQuestion: (value: StairsQuestion) => void;
@@ -73,7 +78,7 @@ export const useChatStore = create(
 
 			return id;
 		},
-		addBotMessage: (text, isStairs) => {
+		addBotMessage: (text, isStairs, context) => {
 			const id = crypto.randomUUID();
 			if (isStairs) {
 				set((state) => {
@@ -81,6 +86,7 @@ export const useChatStore = create(
 						id,
 						text,
 						isUser: false,
+						context,
 					});
 				});
 			} else {
@@ -89,6 +95,7 @@ export const useChatStore = create(
 						id,
 						text,
 						isUser: false,
+						context,
 					});
 				});
 			}
@@ -105,7 +112,7 @@ export const useChatStore = create(
 			});
 		},
 
-		updateBotMessage: (id, text, isStairs) => {
+		updateBotMessage: (id, text, isStairs, context) => {
 			set((state) => {
 				if (isStairs) {
 					const messageIndex = state.stairsMessages.findIndex(
@@ -116,6 +123,7 @@ export const useChatStore = create(
 						if ("text" in message) {
 							message.text = text;
 						}
+						message.context = context;
 					}
 				} else {
 					const messageIndex = state.messages.findIndex(
@@ -126,6 +134,7 @@ export const useChatStore = create(
 						if ("text" in message) {
 							message.text = text;
 						}
+						message.context = context;
 					}
 				}
 			});

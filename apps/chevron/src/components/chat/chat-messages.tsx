@@ -72,6 +72,7 @@ const MessageItem = ({
 	message,
 }: { userName: string | null; userImage: string | null; message: Message }) => {
 	const activeMessageId = useChatStore((state) => state.activeMessageId);
+	console.log(message);
 	return (
 		<div className="chat-message" key={`${message.id}-${message.id}`}>
 			<div
@@ -107,6 +108,11 @@ const MessageItem = ({
 							})}
 						>
 							{"text" in message ? <p>{message.text}</p> : message.Node}
+							{message.context && (
+								<a href={`#${message.context}`}>
+									<p>See context</p>
+								</a>
+							)}
 						</div>
 					)}
 				</div>
