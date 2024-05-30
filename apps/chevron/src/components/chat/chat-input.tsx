@@ -62,7 +62,6 @@ export const ChatInput = ({
 				await parseEventStream(chatResponse.body, (data, done) => {
 					if (!done) {
 						try {
-							console.log(data);
 							const { text, context } = JSON.parse(data) as {
 								request_id: string;
 								text: string;
