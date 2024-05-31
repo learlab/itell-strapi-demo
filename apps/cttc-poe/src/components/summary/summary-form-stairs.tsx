@@ -394,10 +394,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isPageFinished = useConstructedResponse(
-		(state) => state.isPageFinished,
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
 	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 	return (
 		<section className="space-y-2">
 			{portalNodes}
@@ -438,7 +437,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={editDisabled || state.pending}
+					disabled={!isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
@@ -447,7 +446,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						disabled={!pageStatus.isPageUnlocked && !isPageFinished}
+						disabled={!pageStatus.isPageUnlocked && !isSummaryReady}
 						pending={state.pending}
 					/>
 				</div>

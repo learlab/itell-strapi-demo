@@ -108,7 +108,6 @@ export const ConstructedResponseControl = ({
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
-						pageStatus={pageStatus}
 					/>,
 					questionContainer,
 				);
@@ -121,7 +120,6 @@ export const ConstructedResponseControl = ({
 						answer={q.answer}
 						chunkSlug={chunkId}
 						pageSlug={pageSlug}
-						pageStatus={pageStatus}
 					/>,
 					questionContainer,
 				);

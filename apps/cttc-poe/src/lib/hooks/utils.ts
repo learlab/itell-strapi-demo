@@ -1,6 +1,5 @@
 "use client";
 
-import { useLocalStorage } from "@itell/core/hooks";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -20,16 +19,4 @@ export const usePageSlug = () => {
 	}, [pathname]);
 
 	return slug;
-};
-
-export const useCurrentChunk = (pageSlug: string, defaultVal: string) => {
-	const key = `current-chunk-${pageSlug}`;
-	const [val, setVal] = useLocalStorage<string>(key, defaultVal);
-	return [val, setVal] as const;
-};
-
-export const useIsPageFinished = (pageSlug: string, defaultVal: boolean) => {
-	const key = `finished-${pageSlug}`;
-	const [val, setVal] = useLocalStorage<boolean>(key, defaultVal);
-	return [val, setVal] as const;
 };

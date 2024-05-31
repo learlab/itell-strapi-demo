@@ -10,8 +10,6 @@ import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { AnswerStatusReread } from "./types";
 
-type QuestionScore = 0 | 1 | 2;
-
 type Props = {
 	question: string;
 	answer: string;

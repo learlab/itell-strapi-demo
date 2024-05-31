@@ -5,9 +5,9 @@ import { PageStatus } from "../page-status";
 interface Props {
 	currentChunk: string;
 	chunks: string[];
-	// chunks whose questions have been answered correctly
 	excludedChunks: string[];
-	isPageFinished: boolean;
+	isSummaryReady: boolean;
+	shouldBlur: boolean;
 }
 
 export interface ConstructedResponseState extends Props {
@@ -33,8 +33,8 @@ export const createConstructedResponseStore = (
 				currentChunk: chunks[0],
 				chunks,
 				excludedChunks: [],
-				// isPageFinished: true,
-				isPageFinished: pageStatus.isPageUnlocked,
+				isSummaryReady: pageStatus.isPageUnlocked,
+				shouldBlur: !pageStatus.isPageUnlocked,
 
 				finishChunk: (slug: string) => {
 					set({ excludedChunks: [...get().excludedChunks, slug] });
@@ -52,7 +52,7 @@ export const createConstructedResponseStore = (
 					// the next chunk is the last chunk, which does not have a question
 					// finish the page
 					if (!isLastChunkWithQuestion && nextIndex === chunks.length - 1) {
-						set({ isPageFinished: true });
+						set({ isSummaryReady: true });
 						return;
 					}
 
@@ -60,17 +60,22 @@ export const createConstructedResponseStore = (
 					// this happens when user clicks on next-chunk-button of the question box of the last chunk
 					const isLastQuestion = slug === chunks.at(-1);
 					if (isLastQuestion) {
-						set({ isPageFinished: true });
+						set({ isSummaryReady: true });
 					}
 				},
 				finishPage: () => {
 					set({
-						isPageFinished: true,
+						isSummaryReady: true,
+						shouldBlur: false,
 						currentChunk: chunks.at(-1),
 					});
 				},
 				resetPage: () => {
-					set({ currentChunk: chunks[0], isPageFinished: false });
+					set({
+						currentChunk: chunks[0],
+						isSummaryReady: false,
+						shouldBlur: true,
+					});
 				},
 			}),
 			{

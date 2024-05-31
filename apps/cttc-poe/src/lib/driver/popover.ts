@@ -112,7 +112,6 @@ export function renderPopover(element: Element, step: DriveStep) {
 		? "block"
 		: "none";
 
-	console.log("showFooter", showFooter);
 	if (showFooter) {
 		popover.footer.style.display = "flex";
 

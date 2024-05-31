@@ -222,10 +222,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isPageFinished = useConstructedResponse(
-		(state) => state.isPageFinished,
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
 	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 
 	return (
 		<section className="space-y-2">
@@ -265,7 +264,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			<form className="space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={editDisabled || state.pending}
+					disabled={state.pending || !isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
@@ -274,7 +273,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						disabled={!isPageFinished}
+						disabled={!isSummaryReady}
 						pending={state.pending}
 					/>
 				</div>
