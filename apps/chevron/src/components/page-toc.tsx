@@ -18,6 +18,8 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			window.addEventListener("DOMContentLoaded", () => {
+				let mostRecentHeading: string | null = null;
+				let isUsingMostRecentHeading = false;
 				const observer = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						const id = entry.target.id;
@@ -25,12 +27,32 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 							document
 								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
 								?.classList.remove("border-transparent");
+							if (isUsingMostRecentHeading) {
+								document
+									.querySelector(
+										`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+									)
+									?.classList.add("border-transparent");
+							}
+							mostRecentHeading = id;
 						} else {
 							document
 								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
 								?.classList.add("border-transparent");
 						}
 					});
+					if (
+						entries
+							.map((entry) => entry.intersectionRatio)
+							.reduce((partialSum, a) => partialSum + a, 0) === 0
+					) {
+						isUsingMostRecentHeading = true;
+						document
+							.querySelector(
+								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+							)
+							?.classList.remove("border-transparent");
+					}
 				});
 
 				// Track all sections that have an `id` applied
