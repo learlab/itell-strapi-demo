@@ -1,10 +1,10 @@
 "use client";
 
-import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
+import { driver } from "@/lib/driver/driver";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -20,8 +20,8 @@ import {
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
+// import { driver } from "driver.js";
+// import "driver.js/dist/driver.css";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";

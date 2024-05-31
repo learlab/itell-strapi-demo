@@ -3,6 +3,7 @@
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
+import { driver } from "@/lib/driver/driver";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -31,8 +32,7 @@ import {
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
+// import "driver.js/dist/driver.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
@@ -254,7 +254,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
-					const chunk = decoder.decode(value);
+					const chunk = decoder.decode(value, { stream: true });
 					const data = chunk
 						.split("\n")
 						.at(1)
