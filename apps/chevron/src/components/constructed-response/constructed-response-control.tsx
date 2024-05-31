@@ -26,20 +26,16 @@ export const ConstructedResponseControl = ({
 	condition,
 }: Props) => {
 	// Ref for current chunk
-	const { currentChunk, chunks, isPageFinished } = useConstructedResponse(
+	const { currentChunk, chunks, shouldBlur } = useConstructedResponse(
 		(state) => ({
 			currentChunk: state.currentChunk,
 			chunks: state.chunks,
-			isPageFinished: state.isPageFinished,
+			shouldBlur: state.shouldBlur,
 		}),
 	);
 
 	const { nodes, addNode } = usePortal();
 	const hasFeedback = condition !== Condition.SIMPLE;
-	// there were cases when isPageFinished is not in sync with isPageUnlocked due to localStorage
-	// checking them both in make sure
-	const shouldBlur = !pageStatus.isPageUnlocked && !isPageFinished;
-
 	const hideNextChunkButton = (chunkId: string) => {
 		const el = getChunkElement(chunkId);
 		if (!el) {

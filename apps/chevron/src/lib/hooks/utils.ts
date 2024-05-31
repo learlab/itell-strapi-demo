@@ -27,9 +27,3 @@ export const useCurrentChunk = (pageSlug: string, defaultVal: string) => {
 	const [val, setVal] = useLocalStorage<string>(key, defaultVal);
 	return [val, setVal] as const;
 };
-
-export const useIsPageFinished = (pageSlug: string, defaultVal: boolean) => {
-	const key = `finished-${pageSlug}`;
-	const [val, setVal] = useLocalStorage<boolean>(key, defaultVal);
-	return [val, setVal] as const;
-};

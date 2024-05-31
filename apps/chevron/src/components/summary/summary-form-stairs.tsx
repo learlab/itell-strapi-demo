@@ -253,6 +253,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
+					console.log("value", value);
 					done = doneReading;
 					const chunk = decoder.decode(value, { stream: true });
 					const data = chunk
@@ -389,10 +390,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isPageFinished = useConstructedResponse(
-		(state) => state.isPageFinished,
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
 	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
+	const editDisabled = pageStatus.isPageUnlocked ? false : !isSummaryReady;
 	return (
 		<section className="space-y-2">
 			{portalNodes}
@@ -434,7 +435,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						disabled={!pageStatus.isPageUnlocked && !isPageFinished}
+						disabled={!isSummaryReady}
 						pending={state.pending}
 					/>
 				</div>

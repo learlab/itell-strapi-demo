@@ -50,16 +50,15 @@ export const QuestionBoxReread = ({
 }: Props) => {
 	const { user } = useSession();
 	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
-	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
+	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
-			isPageFinished: state.isPageFinished,
+			shouldBlur: state.shouldBlur,
 			finishChunk: state.finishChunk,
 		}),
 	);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
-		!isPageFinished,
-	);
+	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
+		useState(shouldBlur);
 
 	const action = async (
 		prevState: FormState,
