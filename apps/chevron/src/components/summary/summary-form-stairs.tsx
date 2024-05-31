@@ -254,7 +254,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
-					const chunk = decoder.decode(value);
+					const chunk = decoder.decode(value, { stream: true });
 					const data = chunk
 						.split("\n")
 						.at(1)
