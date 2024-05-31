@@ -258,6 +258,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const chunk = decoder.decode(value, { stream: true });
 					console.log("chunk", chunk);
 					const data = chunk
+						.trim()
 						.split("\n")
 						.at(1)
 						?.replace(/data:\s+/, "");
