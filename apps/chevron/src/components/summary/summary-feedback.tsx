@@ -24,7 +24,7 @@ export const SummaryFeedback = ({ feedback, canProceed }: Props) => {
 						? "You have completed all the assessments onthis page, but you are still welcome to summarize the text."
 						: feedback?.prompt}
 				</p>
-				{!feedback?.isPassed && (
+				{feedback && !feedback.isPassed && (
 					<p>
 						When revising your summary, please make substantial changes to the
 						entire summary. If only small changes are made, you will be asked to

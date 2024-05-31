@@ -60,6 +60,7 @@ export const QuestionBoxStairs = ({
 }: Props) => {
 	const { user } = useSession();
 	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
+	const [input, setInput] = useState("");
 	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
@@ -94,6 +95,7 @@ export const QuestionBoxStairs = ({
 			};
 		}
 		const input = String(formData.get("input")).trim();
+		setInput(input);
 		if (input.length === 0) {
 			return {
 				...prevState,
@@ -379,10 +381,14 @@ export const QuestionBoxStairs = ({
 							)}
 						</div>
 						<div className="flex items-center justify-center mt-4">
-							{answerStatus === AnswerStatusStairs.SEMI_CORRECT ||
-								(answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
-									<ExplainButton chunkSlug={chunkSlug} pageSlug={pageSlug} />
-								))}
+							{(answerStatus === AnswerStatusStairs.SEMI_CORRECT ||
+								answerStatus === AnswerStatusStairs.BOTH_INCORRECT) && (
+								<ExplainButton
+									chunkSlug={chunkSlug}
+									pageSlug={pageSlug}
+									input={input}
+								/>
+							)}
 						</div>
 					</form>
 				</CardContent>

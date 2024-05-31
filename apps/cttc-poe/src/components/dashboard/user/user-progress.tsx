@@ -1,4 +1,5 @@
 import { allPagesSorted } from "@/lib/pages";
+import pluralize from "pluralize";
 
 export const UserProgress = ({
 	pageSlug,
@@ -20,7 +21,7 @@ export const UserProgress = ({
 		<div className="flex items-center gap-4">
 			<p className="text-muted-foreground">
 				{displayProgress}% completed, {unlockedPages}/{validPages.length}{" "}
-				chapters
+				{pluralize("page", unlockedPages)}
 			</p>
 		</div>
 	);
