@@ -250,76 +250,87 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				const decoder = new TextDecoder();
 				let done = false;
 				let chunkIndex = 0;
-				let stairsString: string | null = null;
+				let stairsChunk: string | null = null;
 
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
 					const chunk = decoder.decode(value, { stream: true });
-					const data = chunk
-						.trim()
-						.split("\n")
-						.at(1)
-						?.replace(/data:\s+/, "");
 
-					if (data) {
-						if (chunkIndex === 0) {
-							console.log("summary response chunk", data);
-							const parsed = SummaryResponseSchema.safeParse(JSON.parse(data));
-							if (parsed.success) {
-								summaryResponse = parsed.data;
-								dispatch({
-									type: "set_passed",
-									payload: summaryResponse.is_passed || isEnoughSummary,
-								});
-								dispatch({ type: "scored", payload: parsed.data });
-								finishStage("Scoring");
-							} else {
-								console.log("SummaryResults parse error", parsed.error);
-								clearStages();
-								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-								// summaryResponse parsing failed, return early
+					if (chunkIndex === 0) {
+						const data = chunk
+							.trim()
+							.split("\n")
+							.at(1)
+							?.replace(/data:\s+/, "");
 
-								Sentry.captureMessage("SummaryResponse parse error", {
-									extra: {
-										body: requestBody,
-										chunk: data,
-									},
-								});
-								return;
-							}
+						console.log("summary response chunk", data);
+
+						const parsed = SummaryResponseSchema.safeParse(
+							JSON.parse(String(data)),
+						);
+						if (parsed.success) {
+							summaryResponse = parsed.data;
+							dispatch({
+								type: "set_passed",
+								payload: summaryResponse.is_passed || isEnoughSummary,
+							});
+							dispatch({ type: "scored", payload: parsed.data });
+							finishStage("Scoring");
 						} else {
-							if (summaryResponse?.is_passed) {
-								// if the summary passed, we don't need to process later chunks
-								// note that if the user pass by summary amount
-								// question will still be generated but will not be asked
-								// they can still see the "question" button
-								break;
-							}
+							console.log("SummaryResults parse error", parsed.error);
+							clearStages();
+							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+							// summaryResponse parsing failed, return early
 
-							if (chunkIndex === 1) {
-								addStage("Analyzing");
-							}
+							Sentry.captureMessage("SummaryResponse parse error", {
+								extra: {
+									body: requestBody,
+									chunk: data,
+								},
+							});
+							return;
+						}
+					} else {
+						if (summaryResponse?.is_passed) {
+							// if the summary passed, we don't need to process later chunks
+							// note that if the user pass by summary amount
+							// question will still be generated but will not be asked
+							// they can still see the "question" button
+							break;
+						}
 
-							stairsString = data;
+						if (chunkIndex === 1) {
+							addStage("Analyzing");
+						}
+						if (chunk) {
+							stairsChunk = chunk;
 						}
 					}
 
 					chunkIndex++;
 				}
 
-				if (stairsString) {
-					console.log("final stairs chunk", stairsString);
-					stairsData = JSON.parse(stairsString) as StairsQuestion;
-					finishStage("Analyzing");
-					addStairsQuestion(stairsData);
+				if (stairsChunk) {
+					const regex = /data: ({"request_id":.*?})\n*/;
+					const match = stairsChunk.trim().match(regex);
+					console.log("final stairs chunk\n", stairsChunk);
+					if (match?.[1]) {
+						const stairsString = match[1];
+						console.log("parsed as", stairsString);
+						stairsData = JSON.parse(stairsString) as StairsQuestion;
+						finishStage("Analyzing");
+						addStairsQuestion(stairsData);
 
-					createEvent({
-						type: "stairs-question",
-						pageSlug,
-						userId: user.id,
-						data: stairsData,
-					});
+						createEvent({
+							type: "stairs-question",
+							pageSlug,
+							userId: user.id,
+							data: stairsData,
+						});
+					} else {
+						throw new Error("invalid stairs chunk");
+					}
 				}
 			}
 
