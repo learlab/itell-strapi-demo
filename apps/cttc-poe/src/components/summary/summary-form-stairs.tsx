@@ -111,9 +111,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			messages: state.messages,
 		}),
 	);
-	const excludedChunks = useConstructedResponse(
-		(state) => state.excludedChunks,
-	);
+	const { excludedChunks, finishPage } = useConstructedResponse((state) => ({
+		excludedChunks: state.excludedChunks,
+		finishPage: state.finishPage,
+	}));
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "submit":
@@ -337,6 +338,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (summaryResponse.is_passed || isEnoughSummary) {
 					await incrementUserPage(userId, pageSlug);
+					finishPage();
 					if (isLastPage(pageSlug)) {
 						setIsTextbookFinished(true);
 						toast.info(

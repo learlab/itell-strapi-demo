@@ -71,8 +71,9 @@ const exitChunk = () => {
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
-	const { chunks } = useConstructedResponse((state) => ({
+	const { chunks, finishPage } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
+		finishPage: state.finishPage,
 	}));
 	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
 
@@ -186,6 +187,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			});
 			await incrementUserPage(user.id, pageSlug);
 
+			finishPage();
+
 			finishStage("Analyzing");
 			dispatch({
 				type: "finish",
@@ -219,7 +222,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const isSummaryReady = useConstructedResponse(
 		(state) => state.isSummaryReady,
 	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isSummaryReady;
 
 	return (
 		<section className="space-y-2">
@@ -253,7 +255,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			<form className="space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={editDisabled || state.pending}
+					disabled={state.pending || !isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}

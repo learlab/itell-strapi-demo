@@ -2,7 +2,6 @@
 
 import { SessionUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth/role";
-import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { driver } from "@/lib/driver/driver";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -72,8 +71,9 @@ const exitChunk = () => {
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
-	const { chunks } = useConstructedResponse((state) => ({
+	const { chunks, finishPage } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
+		finishPage: state.finishPage,
 	}));
 	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
 
@@ -187,6 +187,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			});
 			await incrementUserPage(user.id, pageSlug);
 
+			finishPage();
 			finishStage("Analyzing");
 			dispatch({
 				type: "finish",

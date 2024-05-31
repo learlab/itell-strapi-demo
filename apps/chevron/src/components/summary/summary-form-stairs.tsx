@@ -110,9 +110,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			messages: state.messages,
 		}),
 	);
-	const excludedChunks = useConstructedResponse(
-		(state) => state.excludedChunks,
-	);
+	const { excludedChunks, finishPage } = useConstructedResponse((state) => ({
+		excludedChunks: state.excludedChunks,
+		finishPage: state.finishPage,
+	}));
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "submit":
@@ -253,9 +254,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
-					console.log("value", value);
 					done = doneReading;
 					const chunk = decoder.decode(value, { stream: true });
+					console.log("chunk", chunk);
 					const data = chunk
 						.split("\n")
 						.at(1)
@@ -338,6 +339,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (summaryResponse.is_passed || isEnoughSummary) {
 					await incrementUserPage(userId, pageSlug);
+					finishPage();
 					if (isLastPage(pageSlug)) {
 						setIsTextbookFinished(true);
 						toast.info("You have finished the textbook!");
@@ -393,7 +395,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const isSummaryReady = useConstructedResponse(
 		(state) => state.isSummaryReady,
 	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isSummaryReady;
 	return (
 		<section className="space-y-2">
 			{portalNodes}
@@ -426,7 +427,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={editDisabled || state.pending}
+					disabled={state.pending || !isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
