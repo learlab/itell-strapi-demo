@@ -14,46 +14,7 @@ type TocSidebarProps = {
 	chunks: string[];
 };
 
-function onlyUnique(value: string, index: number, array: string[]) {
-	return array.indexOf(value) === index;
-}
-
 export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
-	// const editedHeadings = useMemo(() => {
-	// 	let headingsList = headings.map((heading) =>
-	// 		heading.slug?.toLocaleLowerCase(),
-	// 	);
-	// 	const editedChunks = chunks
-	// 		.map((chunk) => chunk.split("-").slice(0, -1).join("-"))
-	// 		.filter(onlyUnique);
-	// 	const editedHeadings = headings;
-	// 	for (let i = 0; i < editedChunks.length; i++) {
-	// 		if (!headingsList.includes(editedChunks[i].toLocaleLowerCase())) {
-	// 			const target = editedChunks[i - 1];
-	// 			if (target) {
-	// 				const index =
-	// 					headingsList.findIndex(
-	// 						(value) => value === target.toLocaleLowerCase(),
-	// 					) + 1;
-	// 				editedHeadings.splice(index, 0, {
-	// 					level:
-	// 						index === 0
-	// 							? "one"
-	// 							: headings.find(
-	// 									(value) => value.slug === target.toLocaleLowerCase(),
-	// 								)?.level ?? "one",
-	// 					text: editedChunks[i].split("-").join(" "),
-	// 					slug: editedChunks[i].toLocaleLowerCase(),
-	// 				});
-	// 				headingsList = editedHeadings.map((heading) =>
-	// 					heading.slug?.toLocaleLowerCase(),
-	// 				);
-	// 			}
-	// 		}
-	// 	}
-	// 	return editedHeadings;
-	// }, [headings, chunks]);
-
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			window.addEventListener("DOMContentLoaded", () => {
@@ -73,18 +34,12 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 				});
 
 				// Track all sections that have an `id` applied
-				document
-					.querySelectorAll("div[data-subsection-id]")
-					.forEach((section) => {
-						const renamedId = section.getAttribute("data-subsection-id");
-						if (renamedId) {
-							const lowercaseId = renamedId.toLowerCase();
-							const slicedId = lowercaseId.split("-").slice(0, -1).join("-");
-							if (headings.map((heading) => heading.slug).includes(slicedId)) {
-								observer.observe(section);
-							}
-						}
-					});
+				for (const heading of headings) {
+					const element = document.getElementById(heading.slug || "");
+					if (element) {
+						observer.observe(element);
+					}
+				}
 			});
 		}
 	}, [headings]);
