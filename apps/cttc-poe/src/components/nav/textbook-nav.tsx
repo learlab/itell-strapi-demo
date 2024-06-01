@@ -8,7 +8,7 @@ import { UserAccountNav } from "../user-account-nav";
 import SiteNav from "./site-nav";
 import { ScrollProgress } from "./textbook-scroll-progress";
 
-export default async function TextbookNavbar() {
+export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
 	const { title } = await getSiteConfig();
 
 	return (
@@ -39,7 +39,7 @@ export default async function TextbookNavbar() {
 				</div>
 			</div>
 
-			<ScrollProgress />
+			{scroll && <ScrollProgress />}
 		</SiteNav>
 	);
 }
