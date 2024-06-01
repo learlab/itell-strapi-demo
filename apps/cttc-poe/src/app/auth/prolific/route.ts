@@ -1,8 +1,8 @@
 import { users } from "@/drizzle/schema";
 import { lucia } from "@/lib/auth";
-import { getUserCondition } from "@/lib/control/condition";
+import { Condition, getUserCondition } from "@/lib/control/condition";
 import { db, first } from "@/lib/db";
-import { eq } from "drizzle-orm";
+import { desc, eq, isNotNull, not } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
@@ -55,13 +55,39 @@ export async function GET(req: Request): Promise<Response> {
 
 		if (!user) {
 			const id = generateIdFromEntropySize(16);
+
+			let condition = Condition.STAIRS;
+			const lastUser = first(
+				await db
+					.select()
+					.from(users)
+					.where(isNotNull(users.prolificId))
+					.orderBy(desc(users.createdAt)),
+			);
+
+			if (!lastUser) {
+				condition = Condition.STAIRS;
+			} else {
+				if (lastUser.condition === Condition.STAIRS) {
+					condition = Condition.RANDOM_REREAD;
+				}
+
+				if (lastUser.condition === Condition.RANDOM_REREAD) {
+					condition = Condition.SIMPLE;
+				}
+
+				if (lastUser.condition === Condition.SIMPLE) {
+					condition = Condition.STAIRS;
+				}
+			}
+
 			const u = await db
 				.insert(users)
 				.values({
 					id,
+					condition,
 					name: username,
 					prolificId: pid,
-					condition: getUserCondition(pid),
 					role: "user",
 				})
 				.returning();
