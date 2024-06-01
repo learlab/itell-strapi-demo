@@ -37,6 +37,9 @@ export const ChatStairs = ({
 					/>
 					<ChatInputStairs pageSlug={pageSlug} userId={userId} />
 					<ChatExit onExit={onExit} />
+					<footer className="px-4 py-2 text-xs text-muted-foreground">
+						This content has been AI-generated and may contain errors.{" "}
+					</footer>
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>
