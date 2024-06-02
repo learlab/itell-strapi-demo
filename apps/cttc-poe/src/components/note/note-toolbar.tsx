@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import {
 	defaultHighlightColor,
 	useNoteColor,

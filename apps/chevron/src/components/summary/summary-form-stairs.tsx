@@ -1,5 +1,6 @@
 "use client";
 
+import { NewSummaryInput } from "@/app/api/summary/route";
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -8,13 +9,8 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import {
-	countUserPageSummary,
-	createSummary,
-	findFocusTime,
-} from "@/lib/summary/actions";
+import { countUserPageSummary, findFocusTime } from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
-import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -146,7 +142,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				break;
 		}
 	}, initialState);
+
 	const { nodes: portalNodes, addNode } = usePortal();
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
+	);
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const feedback = state.response ? getFeedback(state.response) : null;
@@ -154,7 +154,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const goToQuestion = (question: StairsQuestion) => {
 		const el = getChunkElement(question.chunk);
 		if (el) {
-			scrollToElement(el);
 			driverObj.highlight({
 				element: el,
 				popover: {
@@ -336,7 +335,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 			if (summaryResponse) {
 				addStage("Saving");
-				await createSummary({
+				const shouldUpdateUser = summaryResponse.is_passed || isEnoughSummary;
+				const body: NewSummaryInput = {
 					text: input,
 					userId: user.id,
 					pageSlug,
@@ -346,11 +346,22 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					similarityScore: summaryResponse.similarity,
 					wordingScore: summaryResponse.wording,
 					contentScore: summaryResponse.content,
+					shouldUpdateUser,
+				};
+				const createSummaryResponse = await fetch("/api/summary", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(body),
 				});
+				if (!createSummaryResponse.ok) {
+					throw new Error(await createSummaryResponse.text());
+				}
 
-				if (summaryResponse.is_passed || isEnoughSummary) {
-					await incrementUserPage(userId, pageSlug);
-					finishPage();
+				finishStage("Saving");
+
+				if (shouldUpdateUser) {
 					if (isLastPage(pageSlug)) {
 						setIsTextbookFinished(true);
 						toast.info("You have finished the textbook!");
@@ -379,7 +390,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						payload: { canProceed: !isLastPage(pageSlug) },
 					});
 				}
-				finishStage("Saving");
 
 				if (stairsData) {
 					dispatch({ type: "stairs", payload: stairsData });
@@ -403,9 +413,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isSummaryReady = useConstructedResponse(
-		(state) => state.isSummaryReady,
-	);
 	return (
 		<section className="space-y-2">
 			{portalNodes}
@@ -432,13 +439,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			</div>
 
 			{isTextbookFinished && (
-				<p>You have finished the entire textbook. Congratulations! 🎉</p>
+				<div className="space-y-2">
+					<p>You have finished the entire textbook. Congratulations! 🎉</p>
+				</div>
 			)}
 
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={state.pending || !isSummaryReady}
+					disabled={!isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}

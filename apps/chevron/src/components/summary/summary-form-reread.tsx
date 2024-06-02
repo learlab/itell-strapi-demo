@@ -1,14 +1,10 @@
 "use client";
 
-import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
-import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { createSummary } from "@/lib/summary/actions";
-import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, getChunkElement, scrollToElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import {
@@ -21,6 +17,9 @@ import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+
+import { NewSummaryInput } from "@/app/api/summary/route";
+import { isProduction } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -71,9 +70,8 @@ const exitChunk = () => {
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
-	const { chunks, finishPage } = useConstructedResponse((state) => ({
+	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
-		finishPage: state.finishPage,
 	}));
 	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
 
@@ -108,6 +106,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		// }
 		const el = getChunkElement(randomChunkSlug);
 		if (el) {
+			scrollToElement(el);
 			driverObj.highlight({
 				element: el,
 				popover: {
@@ -174,7 +173,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw parsed.error;
 			}
 			summaryResponse = parsed.data;
-			await createSummary({
+			const body: NewSummaryInput = {
 				text: input,
 				userId: user.id,
 				pageSlug,
@@ -184,10 +183,18 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				similarityScore: summaryResponse.similarity,
 				wordingScore: summaryResponse.wording,
 				contentScore: summaryResponse.content,
+				shouldUpdateUser: true,
+			};
+			const createSummaryResponse = await fetch("/api/summary", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body),
 			});
-			await incrementUserPage(user.id, pageSlug);
-
-			finishPage();
+			if (!createSummaryResponse.ok) {
+				throw new Error(await createSummaryResponse.text());
+			}
 
 			finishStage("Saving");
 			dispatch({
@@ -195,13 +202,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				payload: true,
 			});
 
-			if (!pageStatus.isPageUnlocked) {
-				goToRandomChunk();
-			}
-
 			if (isLastPage(pageSlug)) {
 				setIsTextbookFinished(true);
 				toast.info("You have finished the textbook!");
+			} else {
+				if (!isProduction || !pageStatus.isPageUnlocked) {
+					goToRandomChunk();
+				}
 			}
 		} catch (err) {
 			finishStage("Analyzing");
@@ -243,7 +250,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			{!isProduction && (
 				<Button variant={"outline"} onClick={goToRandomChunk}>
-					go to random chunk (dev)
+					go to random chunk
 				</Button>
 			)}
 

@@ -58,6 +58,7 @@ export const AdminTools = ({ userId, condition }: Props) => {
 			await updateUser(userId, {
 				condition,
 				pageSlug,
+				finished: false,
 			});
 
 			if (pageSlug) {

@@ -14,14 +14,16 @@ const components = {
 };
 
 export const SummaryFeedback = ({ feedback, canProceed }: Props) => {
-	const terms = feedback?.suggestedKeyphrases || [];
+	const terms = feedback?.suggestedKeyphrases
+		? Array.from(new Set(feedback.suggestedKeyphrases))
+		: [];
 	const Component = components[feedback?.isPassed ? "true" : "false"];
 	return (
 		<section className="font-light leading-relaxed space-y-2 animate-in fade-in-50">
 			<header className="space-y-2">
 				<p>
 					{canProceed
-						? "You have completed all the assessments onthis page, but you are still welcome to summarize the text."
+						? "You have completed all the assessments on this page, but you are still welcome to summarize the text."
 						: feedback?.prompt}
 				</p>
 				{feedback && !feedback.isPassed && (
