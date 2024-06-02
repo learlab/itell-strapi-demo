@@ -2,26 +2,38 @@
 
 import { SessionUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth/role";
+import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
-import { driver } from "@/lib/driver/driver";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { createSummary } from "@/lib/summary/actions";
 import { incrementUserPage } from "@/lib/user/actions";
-import { PageData, getChunkElement, scrollToElement } from "@/lib/utils";
-import { usePortal } from "@itell/core/hooks";
+import {
+	PageData,
+	focusElement,
+	getChunkElement,
+	removeHighlight,
+	scrollToElement,
+} from "@/lib/utils";
+import {
+	FloatingArrow,
+	FloatingOverlay,
+	FloatingPortal,
+	arrow,
+	autoUpdate,
+	offset,
+	useFloating,
+} from "@floating-ui/react";
 import {
 	ErrorFeedback,
 	ErrorType,
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Card, CardContent, Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
-// import { driver } from "driver.js";
-// import "driver.js/dist/driver.css";
-import { useEffect, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button } from "../client-components";
@@ -56,20 +68,65 @@ const initialState: State = {
 	finished: false,
 };
 
-const driverObj = driver();
+interface PopoverProps extends React.ComponentPropsWithoutRef<"div"> {
+	onExit: () => void;
+}
 
-const exitChunk = () => {
-	const summaryEl = document.querySelector("#page-summary");
-
-	driverObj.destroy();
-
-	if (summaryEl) {
-		scrollToElement(summaryEl as HTMLDivElement);
-	}
-};
+const Popover = forwardRef<HTMLDivElement, PopoverProps>(
+	({ onExit, children, ...rest }, ref) => {
+		return (
+			<FloatingPortal>
+				<Card className="focused-active-popover" ref={ref} {...rest}>
+					<CardContent>
+						<p>
+							Please re-read the highlighted chunk. when you are finished, press
+							the "I finished rereading" button.
+						</p>
+						<Button onClick={onExit} size="sm" className="mt-4">
+							I finished rereading
+						</Button>
+					</CardContent>
+					{children}
+				</Card>
+			</FloatingPortal>
+		);
+	},
+);
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
+	const arrowRef = useRef<SVGSVGElement | null>(null);
+	const [chunkRef, setChunkRef] = useState<HTMLElement | null>(null);
+	const [showPopover, setShowPopover] = useState(false);
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
+	);
+
+	const onExit = () => {
+		if (chunkRef) {
+			setShowPopover(false);
+			removeHighlight(chunkRef);
+			const summaryEl = document.getElementById("page-summary");
+			if (summaryEl) {
+				scrollToElement(summaryEl);
+			}
+		}
+	};
+
+	const { refs, floatingStyles, context } = useFloating({
+		// open: showPopover,
+		// onOpenChange: () => {
+		// 	console.log("what?>>");
+		// 	setShowPopover(false);
+		// },
+		elements: {
+			reference: chunkRef,
+		},
+		placement: "right",
+		middleware: [offset(40), arrow({ element: arrowRef, padding: 10 })],
+		whileElementsMounted: autoUpdate,
+	});
+
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks, finishPage } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
@@ -96,7 +153,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				break;
 		}
 	}, initialState);
-	const { nodes: portalNodes, addNode } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
 	const goToRandomChunk = () => {
@@ -108,35 +164,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		// }
 		const el = getChunkElement(randomChunkSlug);
 		if (el) {
-			driverObj.highlight({
-				element: el,
-				popover: {
-					description:
-						'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
-					side: "right",
-					align: "start",
-				},
-			});
+			setShowPopover(true);
+			setChunkRef(el);
+			scrollToElement(el);
+			focusElement(el);
 		}
 	};
-
-	useEffect(() => {
-		driverObj.setConfig({
-			animate: false,
-			smoothScroll: false,
-			onPopoverRender: (popover) => {
-				addNode(
-					<Button onClick={exitChunk} size="sm" className="mt-4">
-						I finished rereading
-					</Button>,
-					popover.wrapper,
-				);
-			},
-			onDestroyStarted: () => {
-				return toast.warning("Please finish rereading before moving on");
-			},
-		});
-	}, []);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -146,7 +179,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		addStage("Analyzing");
 
 		const formData = new FormData(e.currentTarget);
-		const input = String(formData.get("input")).replaceAll("\u0000", "");
+		const input = String(formData.get("input")).trim();
 
 		saveSummaryLocal(pageSlug, input);
 
@@ -194,10 +227,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				payload: true,
 			});
 
-			if (!pageStatus.isPageUnlocked) {
-				goToRandomChunk();
-			}
-
 			if (isLastPage(pageSlug)) {
 				setIsTextbookFinished(true);
 				toast.info(
@@ -206,6 +235,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setTimeout(() => {
 					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 				}, 3000);
+			}
+
+			if (!isProduction || !pageStatus.unlocked) {
+				goToRandomChunk();
 			}
 		} catch (err) {
 			finishStage("Analyzing");
@@ -223,13 +256,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isSummaryReady = useConstructedResponse(
-		(state) => state.isSummaryReady,
-	);
-
 	return (
 		<section className="space-y-2">
-			{portalNodes}
 			{state.finished && page.nextPageSlug && (
 				<div className="space-y-2 space-x-2">
 					<p>
@@ -279,6 +307,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					/>
 				</div>
 			</form>
+			{showPopover && (
+				<Popover ref={refs.setFloating} onExit={onExit} style={floatingStyles}>
+					<FloatingArrow ref={arrowRef} context={context} />
+				</Popover>
+			)}
 		</section>
 	);
 };

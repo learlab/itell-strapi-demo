@@ -57,27 +57,54 @@ svg {
 }
 
 
-.driver-active .toc-sidebar,
-.driver-active .chapter-sidebar,
-.driver-active #site-nav,
-.driver-active .question-container,
-.driver-active .chatbot {
+.blurred {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.focused-active-element::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(255, 255, 255, 0.8);
+}
+
+
+.focused-active-element {
+  filter: none !important;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1000;
+}
+
+.focused-active-popover {
+  filter: none !important;
+  pointer-events: auto;
+  width: 300px;
+  z-index: 1000;
+}
+
+.focused-active {
+  pointer-events: none;
+}
+
+.focused-active .toc-sidebar,
+.focused-active .chapter-sidebar,
+.focused-active #site-nav,
+.focused-active .question-container,
+.focused-active .chatbot {
   display: none;
 }
 
+
 /* make space for question popup */
-.driver-active #page-content-wrapper {
+.focused-active #page-content-wrapper {
   max-width: 60%;
-}
-
-/* .driver-active #textbook-page-wrapper {
-  justify-content: end;
-} */
-
-.driver-popover {
-  /* width: 300px !important; */
-  max-width: 350px !important;
-  @apply bg-background text-foreground !important;
 }
 
 @media (max-width: 768px) {

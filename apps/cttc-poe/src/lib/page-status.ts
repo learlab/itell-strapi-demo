@@ -6,9 +6,9 @@ const isPageUnlockedWithoutUser = (pageSlug: string) => {
 
 export type PageStatus = {
 	// if user has completed the page
-	isPageUnlocked: boolean;
+	unlocked: boolean;
 	// if page is user's current one
-	isPageLatest: boolean;
+	latest: boolean;
 };
 
 export const getPageStatus = ({
@@ -22,8 +22,8 @@ export const getPageStatus = ({
 }): PageStatus => {
 	if (!userPageSlug) {
 		return {
-			isPageUnlocked: isPageUnlockedWithoutUser(pageSlug),
-			isPageLatest:
+			unlocked: isPageUnlockedWithoutUser(pageSlug),
+			latest:
 				pageSlug === firstPage.page_slug ||
 				pageSlug === firstSummaryPage.page_slug,
 		};
@@ -31,11 +31,11 @@ export const getPageStatus = ({
 
 	const isPageLatest = pageSlug === userPageSlug;
 	if (isPageUnlockedWithoutUser(pageSlug)) {
-		return { isPageUnlocked: true, isPageLatest };
+		return { unlocked: true, latest: isPageLatest };
 	}
 
 	const isPageUnlocked = isLastPage(pageSlug)
 		? userFinished
 		: isPageAfter(userPageSlug, pageSlug);
-	return { isPageUnlocked, isPageLatest };
+	return { unlocked: isPageUnlocked, latest: isPageLatest };
 };

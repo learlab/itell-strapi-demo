@@ -98,7 +98,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		response: null,
 		stairsQuestion: null,
 		isPassed: false,
-		canProceed: pageStatus.isPageUnlocked,
+		canProceed: pageStatus.unlocked,
 	};
 
 	const pageSlug = page.page_slug;
@@ -460,7 +460,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						disabled={!pageStatus.isPageUnlocked && !isSummaryReady}
+						disabled={!isSummaryReady}
 						pending={state.pending}
 					/>
 				</div>

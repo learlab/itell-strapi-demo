@@ -78,7 +78,7 @@ export const ConstructedResponseControl = ({
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className =
 			"next-chunk-button-container flex justify-center items-center p-4 gap-2";
-		el.style.filter = "none";
+		el.classList.remove("blurred");
 		el.appendChild(buttonContainer);
 
 		addNode(
@@ -157,7 +157,7 @@ export const ConstructedResponseControl = ({
 
 		if (shouldBlur) {
 			if (chunkIndex !== 0 && isChunkUnvisited) {
-				el.style.filter = "blur(4px)";
+				el.classList.add("blurred");
 			}
 
 			if (chunkIndex === chunks.length - 1) {
@@ -182,7 +182,7 @@ export const ConstructedResponseControl = ({
 			if (!currentChunkElement) {
 				return;
 			}
-			currentChunkElement.style.filter = "none";
+			currentChunkElement.classList.remove("blurred");
 			if (shouldBlur) {
 				if (
 					!selectedQuestions.has(currentChunkId) &&

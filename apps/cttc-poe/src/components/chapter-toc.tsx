@@ -96,11 +96,12 @@ export const ChapterToc = ({
 							<CollapsibleContent>
 								<ol className="space-y-1 text-sm px-1">
 									{chapter.items.map((item) => {
-										const { isPageLatest, isPageUnlocked } = getPageStatus({
-											pageSlug: item.page_slug,
-											userPageSlug,
-											userFinished,
-										});
+										const { latest: isPageLatest, unlocked: isPageUnlocked } =
+											getPageStatus({
+												pageSlug: item.page_slug,
+												userPageSlug,
+												userFinished,
+											});
 										const visible = isPageLatest || isPageUnlocked;
 										return (
 											<li

@@ -19,7 +19,7 @@ export const createPageStatusStore = (
 	return createStore<PageStatusState>()(
 		persist(
 			(set) => ({
-				isFinished: pageStatus.isPageUnlocked,
+				isFinished: pageStatus.unlocked,
 				finish: () => {
 					set({ isFinished: true });
 				},

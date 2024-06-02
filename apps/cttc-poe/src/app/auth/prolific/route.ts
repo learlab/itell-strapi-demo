@@ -59,7 +59,7 @@ export async function GET(req: Request): Promise<Response> {
 			let condition = Condition.STAIRS;
 			const lastUser = first(
 				await db
-					.select()
+					.select({ condition: users.condition })
 					.from(users)
 					.where(isNotNull(users.prolificId))
 					.orderBy(desc(users.createdAt)),
@@ -68,16 +68,19 @@ export async function GET(req: Request): Promise<Response> {
 			if (!lastUser) {
 				condition = Condition.STAIRS;
 			} else {
-				if (lastUser.condition === Condition.STAIRS) {
-					condition = Condition.RANDOM_REREAD;
-				}
-
-				if (lastUser.condition === Condition.RANDOM_REREAD) {
-					condition = Condition.SIMPLE;
-				}
-
-				if (lastUser.condition === Condition.SIMPLE) {
-					condition = Condition.STAIRS;
+				switch (lastUser.condition) {
+					case Condition.STAIRS:
+						condition = Condition.RANDOM_REREAD;
+						break;
+					case Condition.RANDOM_REREAD:
+						condition = Condition.SIMPLE;
+						break;
+					case Condition.SIMPLE:
+						condition = Condition.STAIRS;
+						break;
+					default:
+						condition = Condition.STAIRS;
+						break;
 				}
 			}
 

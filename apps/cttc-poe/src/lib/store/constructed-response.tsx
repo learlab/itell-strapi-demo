@@ -33,8 +33,8 @@ export const createConstructedResponseStore = (
 				currentChunk: chunks[0],
 				chunks,
 				excludedChunks: [],
-				isSummaryReady: pageStatus.isPageUnlocked,
-				shouldBlur: !pageStatus.isPageUnlocked,
+				isSummaryReady: pageStatus.unlocked,
+				shouldBlur: !pageStatus.unlocked,
 
 				finishChunk: (slug: string) => {
 					set({ excludedChunks: [...get().excludedChunks, slug] });

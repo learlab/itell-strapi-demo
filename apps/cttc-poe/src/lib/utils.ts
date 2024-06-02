@@ -65,6 +65,16 @@ export const getChunkElement = (chunkId: string): HTMLElement | null => {
 	return null;
 };
 
+export const focusElement = (el: HTMLElement) => {
+	document.body.classList.add("focused-active");
+	el.classList.add("focused-active-element");
+};
+
+export const removeHighlight = (el: HTMLElement) => {
+	document.body.classList.remove("focused-active");
+	el.classList.remove("focused-active-element");
+};
+
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== undefined;
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import {
 	defaultHighlightColor,
 	useNoteColor,
@@ -32,7 +31,14 @@ export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 		useNotesStore();
 
 	const handleClick = (event: Event) => {
-		if (event.target instanceof HTMLElement) {
+		if (document.body.classList.contains("focused-active")) {
+			setShow(false);
+			return;
+		}
+		if (
+			!document.body.classList.contains("focused-active") &&
+			event.target instanceof HTMLElement
+		) {
 			if (
 				event.target.tagName === "SPAN" ||
 				event.target.classList.contains("cm-line") ||

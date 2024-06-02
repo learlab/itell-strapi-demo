@@ -10,6 +10,7 @@
 		"test": "vitest"
 	},
 	"dependencies": {
+		"@floating-ui/react": "^0.26.16",
 		"@hello-pangea/color-picker": "^3.2.2",
 		"@itell/core": "workspace:^",
 		"@itell/tailwind": "workspace:^",
