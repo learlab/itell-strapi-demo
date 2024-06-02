@@ -1,7 +1,6 @@
 "use client";
 
 import { SessionUser } from "@/lib/auth";
-import { isAdmin } from "@/lib/auth/role";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -143,7 +142,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		clearStages();
 
 		dispatch({ type: "submit" });
-		addStage("Analyzing");
+		addStage("Saving");
 
 		const formData = new FormData(e.currentTarget);
 		const input = String(formData.get("input")).replaceAll("\u0000", "");
@@ -197,7 +196,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw new Error(await createSummaryResponse.text());
 			}
 
-			finishStage("Analyzing");
+			finishStage("Saving");
 			dispatch({
 				type: "finish",
 				payload: true,

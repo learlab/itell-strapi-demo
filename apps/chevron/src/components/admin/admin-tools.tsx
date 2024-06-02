@@ -62,9 +62,9 @@ export const AdminTools = ({ userId, condition }: Props) => {
 
 			if (pageSlug) {
 				setUserPageSlug(pageSlug);
-				router.push(makePageHref(pageSlug));
+				window.location.href = makePageHref(pageSlug);
 			} else {
-				router.refresh();
+				window.location.reload();
 			}
 		});
 	};

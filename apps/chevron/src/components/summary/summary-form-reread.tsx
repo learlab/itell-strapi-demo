@@ -143,7 +143,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		clearStages();
 
 		dispatch({ type: "submit" });
-		addStage("Analyzing");
+		addStage("Saving");
 
 		const formData = new FormData(e.currentTarget);
 		const input = String(formData.get("input")).replaceAll("\u0000", "");
@@ -189,7 +189,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			finishPage();
 
-			finishStage("Analyzing");
+			finishStage("Saving");
 			dispatch({
 				type: "finish",
 				payload: true,
