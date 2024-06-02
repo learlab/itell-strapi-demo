@@ -73,8 +73,10 @@ const MessageItem = ({
 	message,
 }: { userName: string | null; userImage: string | null; message: Message }) => {
 	const activeMessageId = useChatStore((state) => state.activeMessageId);
+	let formattedSlug = "";
 	// Get div where data-subsection-id is message.context
 	if (message.context) {
+		formattedSlug = message.context.split("-").slice(0, -1).join(" ");
 		const div = document.querySelector(
 			`div[data-subsection-id="${message.context}"]`,
 		);
@@ -120,7 +122,10 @@ const MessageItem = ({
 							{message.context && (
 								<a href={`#${message.context}`}>
 									<Button variant={"outline"} size={"sm"} className="mt-1">
-										See context
+										Source:{" "}
+										{formattedSlug.length > 25
+											? `${formattedSlug.slice(0, 22)}...`
+											: formattedSlug}
 									</Button>
 								</a>
 							)}
