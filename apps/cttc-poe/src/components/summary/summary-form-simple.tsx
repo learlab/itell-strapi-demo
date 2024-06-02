@@ -30,7 +30,7 @@ const SubmitButton = () => {
 export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 	const [state, action] = useFormState(
 		async () => {
-			if (!pageStatus.isPageUnlocked) {
+			if (!pageStatus.unlocked) {
 				await incrementUserPage(user.id, page.page_slug);
 			}
 			if (isLastPage(page.page_slug)) {
@@ -44,7 +44,7 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 
 			return { finished: true };
 		},
-		{ finished: pageStatus.isPageUnlocked },
+		{ finished: pageStatus.unlocked },
 	);
 	return (
 		<section className="max-w-2xl mx-auto space-y-4">

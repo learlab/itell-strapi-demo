@@ -96,12 +96,12 @@ export const ChapterToc = ({
 							<CollapsibleContent>
 								<ol className="space-y-1 text-sm px-1">
 									{chapter.items.map((item) => {
-										const { isPageLatest, isPageUnlocked } = getPageStatus({
+										const { latest, unlocked } = getPageStatus({
 											pageSlug: item.page_slug,
 											userPageSlug,
 											userFinished,
 										});
-										const visible = isPageLatest || isPageUnlocked;
+										const visible = latest || unlocked;
 										return (
 											<li
 												className={cn(
@@ -122,7 +122,7 @@ export const ChapterToc = ({
 													<p className="text-left text-pretty">
 														{item.title}
 														{visible ? "" : " 🔒"}
-														{isPageUnlocked ? " ✅" : ""}
+														{unlocked ? " ✅" : ""}
 													</p>
 												</button>
 											</li>

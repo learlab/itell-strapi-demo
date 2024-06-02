@@ -24,7 +24,7 @@ export const QuestionBoxSimple = ({
 	pageStatus,
 }: Props) => {
 	const { user } = useSession();
-	const [finished, setFinished] = useState(pageStatus.isPageUnlocked);
+	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const advanceChunk = useConstructedResponse((state) => state.advanceChunk);
 
 	if (!user) {

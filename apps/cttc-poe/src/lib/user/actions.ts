@@ -25,7 +25,7 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 			})
 			.where(eq(users.id, userId));
 
-		revalidatePath(".");
+		// revalidatePath(".");
 	}
 };
 

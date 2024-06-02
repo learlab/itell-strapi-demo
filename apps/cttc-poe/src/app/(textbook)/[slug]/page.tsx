@@ -65,7 +65,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userPageSlug,
 		userFinished,
 	});
-	const { isPageLatest, isPageUnlocked } = pageStatus;
+	const { latest, unlocked } = pageStatus;
 
 	return (
 		<PageProvider
@@ -99,13 +99,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				>
 					<PageTitle>
 						{page.title}
-						{isPageLatest ? (
-							<EyeIcon />
-						) : isPageUnlocked ? (
-							<UnlockIcon />
-						) : (
-							<LockIcon />
-						)}
+						{latest ? <EyeIcon /> : unlocked ? <UnlockIcon /> : <LockIcon />}
 					</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}

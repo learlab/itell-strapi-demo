@@ -16,12 +16,12 @@ export const PageStatus = ({ status }: Props) => {
 		<HoverCard>
 			<HoverCardTrigger>
 				<Button className="text-left text-sm px-0 " variant="link">
-					{status.isPageUnlocked ? (
+					{status.unlocked ? (
 						<span>
 							<UnlockIcon className="size-4 mr-1 inline" />
 							Unlocked
 						</span>
-					) : status.isPageLatest ? (
+					) : status.latest ? (
 						<span>
 							<EyeIcon className="size-4 mr-1 inline" />
 							In progress
@@ -35,9 +35,9 @@ export const PageStatus = ({ status }: Props) => {
 				</Button>
 			</HoverCardTrigger>
 			<HoverCardContent className="w-48 text-sm">
-				{status.isPageLatest
+				{status.latest
 					? "Answer questions and summarize this chapter to move forward"
-					: status.isPageUnlocked
+					: status.unlocked
 						? "You have completed this page. You can now view all its content"
 						: "You haven't got access to this page yet"}
 			</HoverCardContent>

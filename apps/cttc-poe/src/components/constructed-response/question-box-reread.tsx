@@ -176,7 +176,7 @@ export const QuestionBoxReread = ({
 					{question && (
 						<p>
 							<span className="font-bold">Question </span>
-							{shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
+							{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
 							{question}
 						</p>
 					)}

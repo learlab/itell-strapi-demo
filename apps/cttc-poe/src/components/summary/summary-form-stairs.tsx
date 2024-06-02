@@ -1,5 +1,6 @@
 "use client";
 
+import { NewSummaryInput } from "@/app/api/summary/route";
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -8,13 +9,8 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import {
-	countUserPageSummary,
-	createSummary,
-	findFocusTime,
-} from "@/lib/summary/actions";
+import { countUserPageSummary, findFocusTime } from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
-import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -32,7 +28,7 @@ import {
 import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
-// import "driver.js/dist/driver.css";
+import "driver.js/dist/driver.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
@@ -40,7 +36,6 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button } from "../client-components";
-import { MainMdx } from "../mdx";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
@@ -98,7 +93,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		response: null,
 		stairsQuestion: null,
 		isPassed: false,
-		canProceed: pageStatus.isPageUnlocked,
+		canProceed: pageStatus.unlocked,
 	};
 
 	const pageSlug = page.page_slug;
@@ -147,7 +142,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				break;
 		}
 	}, initialState);
+
 	const { nodes: portalNodes, addNode } = usePortal();
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
+	);
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const feedback = state.response ? getFeedback(state.response) : null;
@@ -336,7 +335,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 			if (summaryResponse) {
 				addStage("Saving");
-				await createSummary({
+				const shouldUpdateUser = summaryResponse.is_passed || isEnoughSummary;
+				const body: NewSummaryInput = {
 					text: input,
 					userId: user.id,
 					pageSlug,
@@ -346,11 +346,22 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					similarityScore: summaryResponse.similarity,
 					wordingScore: summaryResponse.wording,
 					contentScore: summaryResponse.content,
+					shouldUpdateUser,
+				};
+				const createSummaryResponse = await fetch("/api/summary", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(body),
 				});
+				if (!createSummaryResponse.ok) {
+					throw new Error(await createSummaryResponse.text());
+				}
 
-				if (summaryResponse.is_passed || isEnoughSummary) {
-					await incrementUserPage(userId, pageSlug);
-					finishPage();
+				finishStage("Saving");
+
+				if (shouldUpdateUser) {
 					if (isLastPage(pageSlug)) {
 						setIsTextbookFinished(true);
 						toast.info(
@@ -384,7 +395,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						payload: { canProceed: !isLastPage(pageSlug) },
 					});
 				}
-				finishStage("Saving");
 
 				if (stairsData) {
 					dispatch({ type: "stairs", payload: stairsData });
@@ -408,9 +418,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isSummaryReady = useConstructedResponse(
-		(state) => state.isSummaryReady,
-	);
 	return (
 		<section className="space-y-2">
 			{portalNodes}
@@ -460,7 +467,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<SummarySubmitButton
-						disabled={!pageStatus.isPageUnlocked && !isSummaryReady}
+						disabled={!isSummaryReady}
 						pending={state.pending}
 					/>
 				</div>
