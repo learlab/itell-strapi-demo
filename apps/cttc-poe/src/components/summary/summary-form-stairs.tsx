@@ -3,7 +3,6 @@
 import { SessionUser } from "@/lib/auth";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
-import { driver } from "@/lib/driver/driver";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -32,6 +31,7 @@ import {
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
+import { driver } from "driver.js";
 // import "driver.js/dist/driver.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
