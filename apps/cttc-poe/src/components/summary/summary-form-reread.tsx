@@ -208,7 +208,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setUser({ ...user, finished: true });
 				setIsTextbookFinished(true);
 				toast.info(
-					"You have finished the textbook! Redirecting to the outtake survey soon.",
+					"You have finished the entire textbook! Redirecting to the outtake survey soon.",
 				);
 				setTimeout(() => {
 					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;

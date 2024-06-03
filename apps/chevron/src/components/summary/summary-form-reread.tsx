@@ -19,6 +19,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
 import { NewSummaryInput } from "@/app/api/summary/route";
+import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -74,6 +75,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		chunks: state.chunks,
 	}));
 	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
+	const { setUser } = useSession();
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
@@ -203,10 +205,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			});
 
 			if (isLastPage(pageSlug)) {
+				setUser({ ...user, finished: true });
 				setIsTextbookFinished(true);
-				toast.info("You have finished the textbook!");
+				toast.info("You have finished the entire textbook!");
 			} else {
-				if (!isProduction || !pageStatus.isPageUnlocked) {
+				setUser({ ...user, pageSlug: page.nextPageSlug });
+				if (!isProduction || !pageStatus.unlocked) {
 					goToRandomChunk();
 				}
 			}

@@ -93,6 +93,7 @@ export const UserAccountNav = () => {
 						onSelect={async (event) => {
 							event.preventDefault();
 							setPending(true);
+							localStorage.clear();
 							await logout();
 							setPending(false);
 							router.push("/auth");

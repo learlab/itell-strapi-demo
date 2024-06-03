@@ -80,6 +80,7 @@ export const LogoutButton = () => {
 			onClick={() => {
 				startTransition(async () => {
 					await logout();
+					localStorage.clear();
 					router.push("/auth");
 				});
 			}}

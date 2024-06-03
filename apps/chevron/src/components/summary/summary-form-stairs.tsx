@@ -2,6 +2,7 @@
 
 import { NewSummaryInput } from "@/app/api/summary/route";
 import { SessionUser } from "@/lib/auth";
+import { useSession } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -93,8 +94,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		response: null,
 		stairsQuestion: null,
 		isPassed: false,
-		canProceed: pageStatus.isPageUnlocked,
+		canProceed: pageStatus.unlocked,
 	};
+	const { setUser } = useSession();
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
@@ -363,9 +365,12 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (shouldUpdateUser) {
 					if (isLastPage(pageSlug)) {
+						setUser({ ...user, finished: true });
 						setIsTextbookFinished(true);
-						toast.info("You have finished the textbook!");
+						toast.info("You have finished the entire textbook!");
 					} else {
+						setUser({ ...user, pageSlug: page.nextPageSlug });
+						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
 								? "Good job summarizing 🎉"
@@ -393,7 +398,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (stairsData) {
 					dispatch({ type: "stairs", payload: stairsData });
-					if (!summaryResponse.is_passed && !isEnoughSummary) {
+					if (!shouldUpdateUser) {
 						goToQuestion(stairsData);
 					}
 				}
@@ -417,7 +422,12 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		<section className="space-y-2">
 			{portalNodes}
 
-			<SummaryFeedback feedback={feedback} canProceed={state.canProceed} />
+			<SummaryFeedback
+				feedback={feedback}
+				needRevision={
+					isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
+				}
+			/>
 
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
