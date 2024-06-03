@@ -1,6 +1,5 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { ChatLoader } from "@/components/chat/chat-loader";
-import { Pager } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
 import { NoteCountLoader } from "@/components/note/note-count-loader";
 import { NoteLoader } from "@/components/note/note-loader";
@@ -10,19 +9,16 @@ import { PageStatusModal } from "@/components/page-status/page-status-modal";
 import { PageTitle } from "@/components/page-title";
 import { PageToc } from "@/components/page-toc";
 import { PageContent } from "@/components/page/page-content";
+import { Pager } from "@/components/page/pager";
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import {
-	PageSummary,
-	PageSummaryNoUser,
-} from "@/components/summary/page-summary";
+import { PageSummary } from "@/components/summary/page-summary";
 import { EventTracker } from "@/components/telemetry/event-tracker";
 import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
 import { Condition } from "@/lib/control/condition";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
-import { getPagerLinks } from "@/lib/pager";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
 import { Info } from "@itell/ui/server";
@@ -43,11 +39,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.page_slug;
-
-	const pagerLinks = getPagerLinks({
-		pageIndex,
-		userPageSlug: user?.pageSlug || null,
-	});
 
 	const chunks = getPageChunks(page);
 
@@ -105,7 +96,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
 					<PageContent code={page.body.code} />
 					<NoteToolbar pageSlug={pageSlug} userId={userId} />
-					<Pager prev={pagerLinks.prev} next={pagerLinks.next} />
+					<Pager pageIndex={pageIndex} />
 				</section>
 
 				<aside
@@ -115,7 +106,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<div className="sticky top-20">
 						<PageToc headings={page.headings} chunks={getPageChunks(page)} />
 						<div className="mt-8 flex flex-col gap-1">
-							<PageStatus status={pageStatus} />
+							<PageStatus pageSlug={pageSlug} />
 							<Suspense fallback={<NoteCountLoader.Skeleton />}>
 								<NoteCountLoader pageSlug={pageSlug} />
 							</Suspense>

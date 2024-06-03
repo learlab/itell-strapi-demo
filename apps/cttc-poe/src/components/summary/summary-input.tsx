@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "@/lib/auth/context";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
@@ -45,7 +44,6 @@ export const SummaryInput = ({
 		? Buffer.from(summary, "base64").toString("ascii")
 		: value;
 	const [input, setInput] = useState(text);
-
 
 	useEffect(() => {
 		if (!summary) {

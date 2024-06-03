@@ -1,5 +1,9 @@
-import { PageStatus as Status } from "@/lib/page-status";
+"use client";
+
+import { useSession } from "@/lib/auth/context";
+import { getPageStatus } from "@/lib/page-status";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
+import React from "react";
 import {
 	Button,
 	HoverCard,
@@ -8,10 +12,19 @@ import {
 } from "../client-components";
 
 type Props = {
-	status: Status;
+	pageSlug: string;
 };
 
-export const PageStatus = ({ status }: Props) => {
+export const PageStatus = ({ pageSlug }: Props) => {
+	const {
+		session: { user },
+	} = useSession();
+	const status = getPageStatus({
+		pageSlug,
+		userPageSlug: user?.pageSlug || null,
+		userFinished: user?.finished || false,
+	});
+
 	return (
 		<HoverCard>
 			<HoverCardTrigger>

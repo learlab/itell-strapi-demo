@@ -56,7 +56,9 @@ export const QuestionBoxStairs = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { user } = useSession();
+	const {
+		session: { user },
+	} = useSession();
 	const [input, setInput] = useState("");
 	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({

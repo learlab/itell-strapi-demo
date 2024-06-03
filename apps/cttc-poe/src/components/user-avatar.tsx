@@ -1,5 +1,4 @@
 import { Avatar as BaseAvatar } from "@/components/client-components";
-import { useSession } from "@/lib/auth/context";
 import { Avatar } from "./ui/avatar";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {

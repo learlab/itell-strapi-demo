@@ -28,7 +28,9 @@ import { UserAvatar } from "./user-avatar";
 export const UserAccountNav = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const router = useRouter();
-	const { user } = useSession();
+	const {
+		session: { user },
+	} = useSession();
 	const [pending, setPending] = useState(false);
 
 	if (!user) {

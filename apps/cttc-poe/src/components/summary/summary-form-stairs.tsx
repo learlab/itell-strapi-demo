@@ -2,6 +2,7 @@
 
 import { NewSummaryInput } from "@/app/api/summary/route";
 import { SessionUser } from "@/lib/auth";
+import { useSession } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -95,6 +96,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		isPassed: false,
 		canProceed: pageStatus.unlocked,
 	};
+	const { setUser } = useSession();
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
@@ -363,6 +365,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (shouldUpdateUser) {
 					if (isLastPage(pageSlug)) {
+						setUser({ ...user, finished: true });
 						setIsTextbookFinished(true);
 						toast.info(
 							"You have finished the textbook! Redirecting to the outtake survey soon.",
@@ -371,6 +374,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 						}, 3000);
 					} else {
+						setUser({ ...user, pageSlug: page.nextPageSlug });
+						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
 								? "Good job summarizing 🎉"
@@ -398,7 +403,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (stairsData) {
 					dispatch({ type: "stairs", payload: stairsData });
-					if (!summaryResponse.is_passed && !isEnoughSummary) {
+					if (!shouldUpdateUser) {
 						goToQuestion(stairsData);
 					}
 				}
