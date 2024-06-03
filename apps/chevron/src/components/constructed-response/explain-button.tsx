@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
-	const { user } = useSession();
+	const { user } = ();
 	const [response, setResponse] = useState("");
 	const { pending } = useFormStatus();
 	const [loading, setLoading] = useState(false);
