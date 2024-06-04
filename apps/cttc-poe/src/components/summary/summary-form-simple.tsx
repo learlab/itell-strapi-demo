@@ -6,6 +6,7 @@ import { isLastPage } from "@/lib/pages";
 import { PageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
+import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useFormStatus } from "react-dom";
@@ -27,7 +28,7 @@ const SubmitButton = ({
 	const { pending } = useFormStatus();
 
 	return (
-		<StatusButton pending={pending} disabled={disabled} className="w-36">
+		<StatusButton pending={pending} disabled={disabled} className="w-44">
 			{children}
 		</StatusButton>
 	);
@@ -61,6 +62,7 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 					if (!res.ok) {
 						throw new Error(await res.text());
 					}
+					const { nextSlug } = (await res.json()) as { nextSlug: string };
 					if (isLastPage(page.page_slug)) {
 						setUser({ ...user, finished: true });
 						toast.info(
@@ -70,7 +72,7 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 						}, 3000);
 					} else {
-						setUser({ ...user, pageSlug: page.nextPageSlug });
+						setUser({ ...user, pageSlug: nextSlug });
 					}
 				}
 				return { finished: true, error: null };
@@ -109,11 +111,17 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 							An internal error occurred. Please try again later.
 						</Warning>
 					)}
-					{!state.finished
-						? "Finish"
-						: page.nextPageSlug
-							? "Go to next page"
-							: "Textbook finished"}
+					{!state.finished ? (
+						<span className="inline-flex gap-1 items-center">
+							<CheckSquare2Icon className="size-4" /> Mark as completed
+						</span>
+					) : page.nextPageSlug ? (
+						<span className="inline-flex gap-1 items-center">
+							<ArrowRightIcon className="size-4" /> Go to next page
+						</span>
+					) : (
+						<span>Textbook finished</span>
+					)}
 				</SubmitButton>
 			</form>
 		</section>

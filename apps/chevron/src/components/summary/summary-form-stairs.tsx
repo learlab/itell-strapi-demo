@@ -41,6 +41,7 @@ import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
+import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	user: NonNullable<SessionUser>;
@@ -357,6 +358,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (!createSummaryResponse.ok) {
 					throw new Error(await createSummaryResponse.text());
 				}
+				const nextSlug =
+					((await createSummaryResponse.json()) as { nextSlug: string | null })
+						.nextSlug || page.nextPageSlug;
 
 				finishStage("Saving");
 
@@ -366,7 +370,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						setIsTextbookFinished(true);
 						toast.info("You have finished the entire textbook!");
 					} else {
-						setUser({ ...user, pageSlug: page.nextPageSlug });
+						setUser({ ...user, pageSlug: nextSlug });
 						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
@@ -418,6 +422,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	return (
 		<section className="space-y-2">
 			{portalNodes}
+
 			<SummaryFeedback
 				className={state.pending ? "opacity-70" : ""}
 				feedback={feedback}
@@ -430,7 +435,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.canProceed && page.nextPageSlug && (
 					<PageLink
 						pageSlug={page.nextPageSlug}
-						className={buttonVariants({ variant: "outline" })}
+						className={buttonVariants({ variant: "secondary" })}
 					>
 						Go to next page
 					</PageLink>
@@ -461,7 +466,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					userRole={user.role}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
-
 				<div className="flex justify-end">
 					<StatusButton disabled={!isSummaryReady} pending={state.pending}>
 						{state.prevInput === "" ? "Submit" : "Resubmit"}

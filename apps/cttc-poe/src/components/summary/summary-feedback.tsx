@@ -7,7 +7,7 @@ import { InfoIcon } from "lucide-react";
 type Props = {
 	className?: string;
 	feedback: SummaryFeedbackType | null;
-	canProceed: boolean;
+	needRevision: boolean;
 };
 
 const components = {
@@ -15,7 +15,11 @@ const components = {
 	false: Warning,
 };
 
-export const SummaryFeedback = ({ feedback, canProceed, className }: Props) => {
+export const SummaryFeedback = ({
+	feedback,
+	needRevision,
+	className,
+}: Props) => {
 	const terms = feedback?.suggestedKeyphrases
 		? Array.from(new Set(feedback.suggestedKeyphrases))
 		: [];
@@ -23,13 +27,13 @@ export const SummaryFeedback = ({ feedback, canProceed, className }: Props) => {
 	return (
 		<section
 			className={cn(
-				"font-light leading-relaxed space-y-2 animate-in fade-in-50",
+				"font-light leading-relaxed space-y-2 animate-in fade-in",
 				className,
 			)}
 		>
 			<header className="space-y-2">
 				<p>
-					{canProceed
+					{needRevision
 						? "You have completed all the assessments on this page, but you are still welcome to summarize the text."
 						: feedback?.prompt}
 				</p>

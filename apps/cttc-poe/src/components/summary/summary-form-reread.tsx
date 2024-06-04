@@ -200,6 +200,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw new Error(await createSummaryResponse.text());
 			}
 
+			const nextSlug =
+				((await createSummaryResponse.json()) as { nextSlug: string | null })
+					.nextSlug || page.nextPageSlug;
+
 			finishStage("Saving");
 			dispatch({
 				type: "finish",
@@ -216,7 +220,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 				}, 3000);
 			} else {
-				setUser({ ...user, pageSlug: page.nextPageSlug });
+				setUser({ ...user, pageSlug: nextSlug });
 				if (!isProduction || !pageStatus.unlocked) {
 					goToRandomChunk();
 				}
@@ -252,7 +256,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					</p>
 					<PageLink
 						pageSlug={page.nextPageSlug}
-						className={buttonVariants({ variant: "outline" })}
+						className={buttonVariants({ variant: "secondary" })}
 					>
 						Go to next page
 					</PageLink>

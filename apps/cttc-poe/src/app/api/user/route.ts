@@ -9,8 +9,8 @@ type Input = {
 export const POST = async (req: Request) => {
 	const input = (await req.json()) as Input;
 	try {
-		await incrementUserPage(input.userId, input.pageSlug);
-		return new Response("user updated", { status: 200 });
+		const nextSlug = await incrementUserPage(input.userId, input.pageSlug);
+		return Response.json({ nextSlug });
 	} catch (err) {
 		return new Response(String(err), { status: 500 });
 	}

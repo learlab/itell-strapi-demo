@@ -9,10 +9,11 @@ export const POST = async (req: Request) => {
 
 	try {
 		await db.insert(summaries).values(input);
+		let nextSlug: string | null = null;
 		if (input.shouldUpdateUser) {
-			await incrementUserPage(input.userId, input.pageSlug);
+			nextSlug = await incrementUserPage(input.userId, input.pageSlug);
 		}
-		return new Response("summary created", { status: 200 });
+		return Response.json({ nextSlug }, { status: 200 });
 	} catch (err) {
 		return new Response(String(err), { status: 500 });
 	}

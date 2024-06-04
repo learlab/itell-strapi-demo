@@ -28,7 +28,6 @@ import { Button, StatusButton } from "../client-components";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
-import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	user: NonNullable<SessionUser>;
@@ -201,6 +200,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw new Error(await createSummaryResponse.text());
 			}
 
+			const nextSlug =
+				((await createSummaryResponse.json()) as { nextSlug: string | null })
+					.nextSlug || page.nextPageSlug;
+
 			finishStage("Saving");
 			dispatch({
 				type: "finish",
@@ -212,7 +215,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setIsTextbookFinished(true);
 				toast.info("You have finished the entire textbook!");
 			} else {
-				setUser({ ...user, pageSlug: page.nextPageSlug });
+				setUser({ ...user, pageSlug: nextSlug });
 				if (!isProduction || !pageStatus.unlocked) {
 					goToRandomChunk();
 				}
@@ -248,17 +251,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					</p>
 					<PageLink
 						pageSlug={page.nextPageSlug}
-						className={buttonVariants({ variant: "outline" })}
+						className={buttonVariants({ variant: "secondary" })}
 					>
 						Go to next page
 					</PageLink>
 				</div>
-			)}
-
-			{!isProduction && (
-				<Button variant={"outline"} onClick={goToRandomChunk}>
-					go to random chunk
-				</Button>
 			)}
 
 			{isTextbookFinished && (

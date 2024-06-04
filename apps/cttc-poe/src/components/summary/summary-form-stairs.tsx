@@ -358,6 +358,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (!createSummaryResponse.ok) {
 					throw new Error(await createSummaryResponse.text());
 				}
+				const nextSlug =
+					((await createSummaryResponse.json()) as { nextSlug: string | null })
+						.nextSlug || page.nextPageSlug;
 
 				finishStage("Saving");
 
@@ -372,7 +375,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 						}, 3000);
 					} else {
-						setUser({ ...user, pageSlug: page.nextPageSlug });
+						setUser({ ...user, pageSlug: nextSlug });
 						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
@@ -428,14 +431,16 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			<SummaryFeedback
 				className={state.pending ? "opacity-70" : ""}
 				feedback={feedback}
-				canProceed={state.canProceed}
+				needRevision={
+					isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
+				}
 			/>
 
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
 					<PageLink
 						pageSlug={page.nextPageSlug}
-						className={buttonVariants({ variant: "outline" })}
+						className={buttonVariants({ variant: "secondary" })}
 					>
 						Go to next page
 					</PageLink>

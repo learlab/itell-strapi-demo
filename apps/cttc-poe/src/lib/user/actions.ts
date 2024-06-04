@@ -9,8 +9,8 @@ import { setUserPageSlug } from "./page-slug";
 
 export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	const user = await findUser(userId);
+	const nextSlug = nextPage(pageSlug);
 	if (user) {
-		const nextSlug = nextPage(pageSlug);
 		const shouldUpdateUserPageSlug = isPageAfter(nextSlug, user.pageSlug);
 		// only update a slug if user's slug is not greater
 		if (shouldUpdateUserPageSlug) {
@@ -26,6 +26,7 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 
 		// revalidatePath(".");
 	}
+	return nextSlug;
 };
 
 export const maybeFinishUser = async (userId: string, pageSlug: string) => {
