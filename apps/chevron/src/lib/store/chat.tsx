@@ -123,7 +123,9 @@ export const useChatStore = create(
 						if ("text" in message) {
 							message.text = text;
 						}
-						message.context = context;
+						if (!message.isUser) {
+							message.context = context;
+						}
 					}
 				} else {
 					const messageIndex = state.messages.findIndex(
@@ -134,7 +136,9 @@ export const useChatStore = create(
 						if ("text" in message) {
 							message.text = text;
 						}
-						message.context = context;
+						if (!message.isUser && context) {
+							message.context = context;
+						}
 					}
 				}
 			});

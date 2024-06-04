@@ -13,10 +13,12 @@ export type BotMessage =
 			id: string;
 			isUser: false;
 			text: string;
+			context?: string;
 	  }
 	| {
 			id: string;
 			isUser: false;
+			context?: string;
 			Node: React.ReactNode;
 	  };
 

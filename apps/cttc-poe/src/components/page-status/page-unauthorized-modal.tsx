@@ -30,7 +30,7 @@ export const PageUnauthorizedModal = () => {
 				<DialogHeader>
 					<DialogTitle>Log in to read the textbook</DialogTitle>
 					<DialogDescription>
-						We collects anonymous data to improve learning experience
+						We collects anonymous data to improve learning experience.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex justify-center">

@@ -1,12 +1,13 @@
 "use client";
 
+import { Button } from "@/components/client-components";
 import { useChatStore } from "@/lib/store/chat";
+import { getChunkElement } from "@/lib/utils";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
-import { Button } from "@/components/client-components";
 
 type Props = {
 	userName: string | null;
@@ -34,7 +35,7 @@ export const ChatMessages = ({
 				"flex flex-col-reverse gap-3 px-2 py-3 flex-1 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch",
 			)}
 		>
-			<div className="flex-1 flex-grow space-y-1">
+			<div className="flex-1 flex-grow space-y-2">
 				{oldMessages.map((message) => {
 					return (
 						<MessageItem
@@ -73,65 +74,65 @@ const MessageItem = ({
 	message,
 }: { userName: string | null; userImage: string | null; message: Message }) => {
 	const activeMessageId = useChatStore((state) => state.activeMessageId);
+	let chunk: HTMLElement | null = null;
 	let formattedSlug = "";
 	// Get div where data-subsection-id is message.context
-	if (message.context) {
-		formattedSlug = message.context.split("-").slice(0, -1).join(" ");
-		const div = document.querySelector(
-			`div[data-subsection-id="${message.context}"]`,
-		);
-		if (div) {
-			div.id = message.context;
+	if (!message.isUser) {
+		if (message.context) {
+			formattedSlug = message.context.split("-").slice(0, -1).join(" ");
+			chunk = getChunkElement(message.context);
+			if (chunk) {
+				chunk.id = message.context;
+			}
 		}
 	}
-	return (
-		<div className="chat-message" key={`${message.id}-${message.id}`}>
-			<div
-				className={cn("flex items-end", {
-					"justify-end": message.isUser,
-				})}
-			>
-				<div
-					className={cn(
-						"flex flex-row items-center gap-1 text-sm max-w-xs mx-2 overflow-x-hidden",
-						message.isUser ? "justify-end" : "justify-start",
-					)}
-				>
-					{message.isUser ? (
-						<UserAvatar
-							image={userImage}
-							name={userName}
-							className="order-last"
-						/>
-					) : (
-						<Avatar className="rounded-none w-8 h-8">
-							<AvatarImage src="/images/itell-ai.svg" />
-						</Avatar>
-					)}
 
-					{activeMessageId === message.id ? (
-						<Spinner className="size-4" />
-					) : (
-						<div
-							className={cn("px-4 py-2 rounded-lg", {
-								"bg-blue-600 text-white": message.isUser,
-								"bg-gray-200 text-gray-900": !message.isUser,
-							})}
-						>
-							{"text" in message ? <p>{message.text}</p> : message.Node}
-							{message.context && (
-								<a href={`#${message.context}`}>
-									<Button variant={"outline"} size={"sm"} className="mt-1">
-										Source:{" "}
-										{formattedSlug.length > 25
-											? `${formattedSlug.slice(0, 22)}...`
-											: formattedSlug}
-									</Button>
-								</a>
-							)}
-						</div>
-					)}
-				</div>
+	return (
+		<div
+			className={cn("chat-message flex items-end", {
+				"justify-end": message.isUser,
+			})}
+		>
+			<div
+				className={cn(
+					"flex flex-row items-center gap-1 text-sm max-w-xs mx-2 overflow-x-hidden",
+					message.isUser ? "justify-end" : "justify-start",
+				)}
+			>
+				{message.isUser ? (
+					<UserAvatar
+						image={userImage}
+						name={userName}
+						className="order-last"
+					/>
+				) : (
+					<Avatar className="rounded-none w-8 h-8">
+						<AvatarImage src="/images/itell-ai.svg" />
+					</Avatar>
+				)}
+
+				{activeMessageId === message.id ? (
+					<Spinner className="size-4" />
+				) : (
+					<div
+						className={cn("px-4 py-2 rounded-lg", {
+							"bg-secondary-foreground text-background": message.isUser,
+							"bg-accent text-foreground/80": !message.isUser,
+						})}
+					>
+						{"text" in message ? <p>{message.text}</p> : message.Node}
+						{chunk && (
+							<a href={`#${chunk.id}`}>
+								<Button variant={"outline"} size={"sm"} className="mt-1">
+									Source:{" "}
+									{formattedSlug.length > 25
+										? `${formattedSlug.slice(0, 22)}...`
+										: formattedSlug}
+								</Button>
+							</a>
+						)}
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -9,6 +9,7 @@ type Heading = {
 	text: string | undefined;
 	slug: string | undefined;
 };
+
 type TocSidebarProps = {
 	headings: Heading[];
 	chunks: string[];
@@ -18,6 +19,42 @@ function onlyUnique(value: string, index: number, array: string[]) {
 	return array.indexOf(value) === index;
 }
 
+const useIntersectionObserver = (headings: Heading[]) => {
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					const id = entry.target.id;
+					if (entry.isIntersecting) {
+						document
+							.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+							?.classList.add("bg-accent");
+					} else {
+						document
+							.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+							?.classList.remove("bg-accent");
+					}
+				});
+			});
+
+			const sections = document.querySelectorAll("div[data-subsection-id]");
+			sections.forEach((section) => {
+				const renamedId = section.getAttribute("data-subsection-id");
+				if (renamedId) {
+					const lowercaseId = renamedId.toLowerCase();
+					const slicedId = lowercaseId.split("-").slice(0, -1).join("-");
+					if (headings.some((heading) => heading.slug === slicedId)) {
+						section.id = slicedId;
+						observer.observe(section);
+					}
+				}
+			});
+
+			return () => observer.disconnect();
+		}
+	}, [headings]);
+};
+
 export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 	const editedHeadings = useMemo(() => {
 		let headingsList = headings.map((heading) =>
@@ -26,7 +63,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 		const editedChunks = chunks
 			.map((chunk) => chunk.split("-").slice(0, -1).join("-"))
 			.filter(onlyUnique);
-		const editedHeadings = headings;
+		const updatedHeadings = [...headings];
 		for (let i = 0; i < editedChunks.length; i++) {
 			if (!headingsList.includes(editedChunks[i].toLocaleLowerCase())) {
 				const target = editedChunks[i - 1];
@@ -35,7 +72,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 						headingsList.findIndex(
 							(value) => value === target.toLocaleLowerCase(),
 						) + 1;
-					editedHeadings.splice(index, 0, {
+					updatedHeadings.splice(index, 0, {
 						level:
 							index === 0
 								? "one"
@@ -45,52 +82,16 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 						text: editedChunks[i].split("-").join(" "),
 						slug: editedChunks[i].toLocaleLowerCase(),
 					});
-					headingsList = editedHeadings.map((heading) =>
+					headingsList = updatedHeadings.map((heading) =>
 						heading.slug?.toLocaleLowerCase(),
 					);
 				}
 			}
 		}
-		return editedHeadings;
+		return updatedHeadings;
 	}, [headings, chunks]);
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.addEventListener("DOMContentLoaded", () => {
-				const observer = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						const id = entry.target.id;
-						if (entry.intersectionRatio > 0) {
-							document
-								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-								?.classList.remove("border-transparent");
-						} else {
-							document
-								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-								?.classList.add("border-transparent");
-						}
-					});
-				});
-
-				// Track all sections that have an `id` applied
-				document
-					.querySelectorAll("div[data-subsection-id]")
-					.forEach((section) => {
-						const renamedId = section.getAttribute("data-subsection-id");
-						if (renamedId) {
-							const lowercaseId = renamedId.toLowerCase();
-							const slicedId = lowercaseId.split("-").slice(0, -1).join("-");
-							if (
-								editedHeadings.map((heading) => heading.slug).includes(slicedId)
-							) {
-								section.id = slicedId;
-								observer.observe(section);
-							}
-						}
-					});
-			});
-		}
-	}, [editedHeadings]);
+	useIntersectionObserver(editedHeadings);
 
 	return (
 		<div className="page-toc">
@@ -108,7 +109,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 								data-level={heading.level}
 								href={`#${heading.slug}`}
 								className={cn(
-									"hover:underline inline-flex border-l-2 border-transparent",
+									"hover:underline inline-flex px-1 rounded-md transition-colors ease-in-out delay-150 text-balance",
 									{
 										"text-base pl-1": heading.level === "two",
 										"text-sm pl-3": heading.level === "three",

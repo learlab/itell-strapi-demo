@@ -28,10 +28,8 @@ export const ChatInput = ({
 		updateBotMessage,
 		setActiveMessageId,
 		messages,
-		addBotMessageElement,
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
-	let contextArr: string[];
 
 	const onMessage = async (text: string) => {
 		setPending(true);
@@ -57,24 +55,26 @@ export const ChatInput = ({
 
 			setActiveMessageId(null);
 
+			let data = {} as { text: string; context?: string[] };
+
 			if (chatResponse.ok && chatResponse.body) {
-				let botText = "";
-				await parseEventStream(chatResponse.body, (data, done) => {
+				await parseEventStream(chatResponse.body, (d, done) => {
 					if (!done) {
 						try {
-							const { text, context } = JSON.parse(data) as {
-								request_id: string;
-								text: string;
-								context: string[];
-							};
-							contextArr = context;
-							botText = text;
-							updateBotMessage(botMessageId, botText, isStairs, contextArr[0]);
+							data = JSON.parse(d) as typeof data;
+							updateBotMessage(botMessageId, data.text, isStairs);
 						} catch (err) {
 							console.log("invalid json", data);
 						}
 					}
 				});
+
+				updateBotMessage(
+					botMessageId,
+					data.text,
+					isStairs,
+					data.context?.at(0),
+				);
 
 				const botTimestamp = Date.now();
 				createChatMessage({
@@ -88,11 +88,11 @@ export const ChatInput = ({
 							isStairs,
 						},
 						{
-							text: botText,
+							text: data.text,
 							isUser: false,
 							timestamp: botTimestamp,
 							isStairs,
-							context: contextArr[0],
+							context: data.context?.at(0),
 						},
 					],
 				});
@@ -101,6 +101,7 @@ export const ChatInput = ({
 				throw new Error("invalid response");
 			}
 		} catch (err) {
+			console.log("chat input error", err);
 			Sentry.captureMessage("chat input error", {
 				extra: {
 					msg: err,

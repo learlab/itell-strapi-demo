@@ -262,6 +262,7 @@ export type ChatMessageData = {
 		chunk: string;
 		question_type: string;
 	};
+	context?: string;
 };
 
 export type FocusTimeData = Record<string, number>;

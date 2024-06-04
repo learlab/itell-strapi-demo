@@ -72,26 +72,24 @@ export const ChatInputStairs = ({
 			});
 			setActiveMessageId(null);
 
+			let data = {} as { request_id: string; text: string; context?: string[] };
 			if (response.ok && response.body) {
-				let botText = "";
-				await parseEventStream(response.body, (data, done) => {
+				await parseEventStream(response.body, (d, done) => {
 					if (!done) {
 						try {
-							const { text } = JSON.parse(data) as {
-								request_id: string;
-								text: string;
-							};
-							botText = text;
-							updateBotMessage(botMessageId, botText, true);
+							data = JSON.parse(d) as typeof data;
+							updateBotMessage(botMessageId, data.text, true);
 						} catch (err) {
 							console.log("invalid json", data);
 						}
 					}
 				});
 
-				const botTimestamp = Date.now();
+				updateBotMessage(botMessageId, data.text, true, data.context?.at(0));
 				// also add the final bot message to the normal chat
-				addBotMessage(botText, false);
+				addBotMessage(data.text, false, data.context?.at(0));
+
+				const botTimestamp = Date.now();
 				history.current.push(
 					{
 						agent: "user",
@@ -99,7 +97,7 @@ export const ChatInputStairs = ({
 					},
 					{
 						agent: "bot",
-						text: botText,
+						text: data.text,
 					},
 				);
 
@@ -125,10 +123,11 @@ export const ChatInputStairs = ({
 								isStairs: true,
 							},
 							{
-								text: botText,
+								text: data.text,
 								isUser: false,
 								timestamp: botTimestamp,
 								isStairs: true,
+								context: data.context?.at(0),
 							},
 						],
 					});
@@ -145,10 +144,11 @@ export const ChatInputStairs = ({
 								isStairs: true,
 							},
 							{
-								text: botText,
+								text: data.text,
 								isUser: false,
 								timestamp: botTimestamp,
 								isStairs: true,
+								context: data.context?.at(0),
 							},
 						],
 					});
