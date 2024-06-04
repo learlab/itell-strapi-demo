@@ -28,8 +28,10 @@ export const ChatInput = ({
 		updateBotMessage,
 		setActiveMessageId,
 		messages,
+		addBotMessageElement,
 	} = useChatStore();
 	const [pending, setPending] = useState(false);
+	let contextArr: string[];
 
 	const onMessage = async (text: string) => {
 		setPending(true);
@@ -60,12 +62,14 @@ export const ChatInput = ({
 				await parseEventStream(chatResponse.body, (data, done) => {
 					if (!done) {
 						try {
-							const { text } = JSON.parse(data) as {
+							const { text, context } = JSON.parse(data) as {
 								request_id: string;
 								text: string;
+								context: string[];
 							};
+							contextArr = context;
 							botText = text;
-							updateBotMessage(botMessageId, botText, isStairs);
+							updateBotMessage(botMessageId, botText, isStairs, contextArr[0]);
 						} catch (err) {
 							console.log("invalid json", data);
 						}
@@ -88,6 +92,7 @@ export const ChatInput = ({
 							isUser: false,
 							timestamp: botTimestamp,
 							isStairs,
+							context: contextArr[0],
 						},
 					],
 				});

@@ -56,12 +56,21 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 				});
 
 				// Track all sections that have an `id` applied
-				for (const heading of headings) {
-					const element = document.getElementById(heading.slug || "");
-					if (element) {
-						observer.observe(element);
-					}
-				}
+				document
+					.querySelectorAll("div[data-subsection-id]")
+					.forEach((section) => {
+						const renamedId = section.getAttribute("data-subsection-id");
+						if (renamedId) {
+							const lowercaseId = renamedId.toLowerCase();
+							const slicedId = lowercaseId.split("-").slice(0, -1).join("-");
+							if (
+								editedHeadings.map((heading) => heading.slug).includes(slicedId)
+							) {
+								section.id = renamedId;
+								observer.observe(section);
+							}
+						}
+					});
 			});
 		}
 	}, [headings]);
