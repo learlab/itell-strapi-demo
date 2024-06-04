@@ -36,12 +36,11 @@ import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
-import { Button } from "../client-components";
+import { Button, StatusButton } from "../client-components";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
-import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	user: NonNullable<SessionUser>;
@@ -117,8 +116,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			case "submit":
 				draft.pending = true;
 				draft.error = null;
-				draft.response = null;
-				draft.stairsQuestion = null;
 				break;
 			case "fail":
 				draft.pending = false;
@@ -421,8 +418,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	return (
 		<section className="space-y-2">
 			{portalNodes}
-
 			<SummaryFeedback
+				className={state.pending ? "opacity-70" : ""}
 				feedback={feedback}
 				needRevision={
 					isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
@@ -464,11 +461,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					userRole={user.role}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
+
 				<div className="flex justify-end">
-					<SummarySubmitButton
-						disabled={!isSummaryReady}
-						pending={state.pending}
-					/>
+					<StatusButton disabled={!isSummaryReady} pending={state.pending}>
+						{state.prevInput === "" ? "Submit" : "Resubmit"}
+					</StatusButton>
 				</div>
 			</form>
 		</section>

@@ -2,7 +2,7 @@ import { getSiteConfig } from "@/config/site";
 import Image from "next/image";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";
-import { StartOrContinueReadingButton } from "../start-or-continue-reading";
+import { ContinueReading } from "../continue-reading";
 import ThemeToggle from "../theme/theme-toggle";
 import { UserAccountNav } from "../user-account-nav";
 import SiteNav from "./site-nav";
@@ -25,11 +25,7 @@ export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
 					<Link href="/" className="hidden items-center space-x-2 md:flex">
 						<span className="hidden font-bold sm:inline-block">{title}</span>
 					</Link>
-					<StartOrContinueReadingButton
-						text="Read"
-						variant="outline"
-						size={"default"}
-					/>
+					<ContinueReading text="Read" variant="outline" size={"default"} />
 				</div>
 
 				<div className="ml-auto flex items-center gap-2">

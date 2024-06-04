@@ -3,7 +3,7 @@ import React from "react";
 
 import { getSiteConfig } from "@/config/site";
 import { DashboardNavItem } from "@/types/nav";
-import { StartOrContinueReadingButton } from "../start-or-continue-reading";
+import { ContinueReading } from "../continue-reading";
 import { DashboardNavMenu } from "./dashboard-nav-menu";
 
 interface Props {
@@ -20,10 +20,7 @@ export async function DashboardNav(props: Props) {
 				<Link href="/" className="hidden items-center space-x-2 md:flex">
 					<span className="hidden font-bold sm:inline-block">{title}</span>
 				</Link>
-				<StartOrContinueReadingButton
-					text="Back to textbook"
-					variant="outline"
-				/>
+				<ContinueReading text="Back to textbook" variant="outline" />
 			</div>
 			<DashboardNavMenu {...props} />
 		</div>

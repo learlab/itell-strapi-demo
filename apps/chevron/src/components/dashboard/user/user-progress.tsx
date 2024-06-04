@@ -20,7 +20,7 @@ export const UserProgress = ({
 		<div className="flex items-center gap-4">
 			<p className="text-muted-foreground">
 				{displayProgress}% completed, {unlockedPages}/{validPages.length}{" "}
-				{pluralize("page", unlockedPages)}
+				{pluralize("page", validPages.length)}
 			</p>
 		</div>
 	);

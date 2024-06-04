@@ -24,11 +24,10 @@ import { isProduction } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
-import { Button } from "../client-components";
+import { Button, StatusButton } from "../client-components";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
-import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	user: NonNullable<SessionUser>;
@@ -257,12 +256,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 
-			{!isProduction && (
-				<Button variant={"outline"} onClick={goToRandomChunk}>
-					go to random chunk
-				</Button>
-			)}
-
 			{isTextbookFinished && (
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
@@ -285,10 +278,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton
-						disabled={!isSummaryReady}
-						pending={state.pending}
-					/>
+					<StatusButton disabled={!isSummaryReady} pending={state.pending}>
+						{state.prevInput === "" ? "Submit" : "Resubmit"}
+					</StatusButton>
 				</div>
 			</form>
 		</section>
