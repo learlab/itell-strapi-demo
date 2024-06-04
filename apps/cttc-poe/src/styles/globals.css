@@ -41,11 +41,16 @@ svg {
   transition: all 0.3s;
 }
 
+
 #page-title,
-#page-content h2,
-#page-content h3 {
-  scroll-margin-top: 80px;
+h2,
+h3,
+h4,
+h5,
+.content-chunk {
+  scroll-margin-top: 5rem;
 }
+
 
 
 .content-chunk {

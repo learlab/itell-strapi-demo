@@ -73,7 +73,10 @@ export const AdminTools = ({ userId, condition }: Props) => {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button variant="ghost" className="flex items-center gap-2 px-1 py-2">
+				<Button
+					variant="ghost"
+					className="flex justify-start items-center gap-2 w-full px-1 py-2"
+				>
 					<SettingsIcon className="size-4" /> Admin tools
 				</Button>
 			</SheetTrigger>

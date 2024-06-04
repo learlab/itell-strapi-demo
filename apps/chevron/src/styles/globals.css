@@ -41,12 +41,6 @@ svg {
   transition: all 0.3s;
 }
 
-#page-title,
-#page-content h2,
-#page-content h3 {
-  scroll-margin-top: 80px;
-}
-
 
 .content-chunk {
   transition: 0.6s filter linear
@@ -54,6 +48,16 @@ svg {
 
 .note {
   color: black;
+}
+
+
+#page-title,
+h2,
+h3,
+h4,
+h5,
+.content-chunk {
+  scroll-margin-top: 5rem;
 }
 
 

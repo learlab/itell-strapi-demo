@@ -34,6 +34,7 @@ export const GoogleLoginButton = () => {
 				});
 			}}
 			variant={"outline"}
+			disabled={pending}
 		>
 			{pending ? (
 				<Spinner className="size-4 mr-2" />

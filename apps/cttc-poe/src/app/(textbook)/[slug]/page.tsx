@@ -56,7 +56,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userPageSlug,
 		userFinished,
 	});
-	const { latest, unlocked } = pageStatus;
 
 	return (
 		<PageProvider

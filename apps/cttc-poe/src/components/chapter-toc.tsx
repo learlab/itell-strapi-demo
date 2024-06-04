@@ -8,6 +8,7 @@ import { getPageStatus } from "@/lib/page-status";
 import { tocChapters } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
+import { buttonVariants } from "@itell/ui/server";
 import { Page } from "contentlayer/generated";
 import { ArrowUpIcon, ChevronsUpDown, PencilIcon } from "lucide-react";
 import Link from "next/link";
@@ -32,11 +33,15 @@ const AnchorLink = ({
 	icon: React.ReactNode;
 }) => {
 	return (
-		<a href={href} className="block">
-			<Button variant="ghost" className="flex items-center gap-2 px-1 py-2">
-				{icon}
-				{text}
-			</Button>
+		<a
+			href={href}
+			className={cn(
+				buttonVariants({ variant: "ghost" }),
+				"flex items-center justify-start gap-2 px-1 py-2",
+			)}
+		>
+			{icon}
+			{text}
 		</a>
 	);
 };
