@@ -74,7 +74,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
 	}));
-	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
+	// skip first chunk, which is typically learning objectives
+	const validChunks = chunks.slice(1);
+	const randomChunkSlug =
+		validChunks[Math.floor(Math.random() * validChunks.length)];
 	const { setUser } = useSession();
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {

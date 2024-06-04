@@ -3,9 +3,9 @@ import { SessionUser } from "@/lib/auth";
 import { useSession } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { incrementUserPage } from "@/lib/user/actions";
 import { PageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
+import * as Sentry from "@sentry/nextjs";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useFormStatus } from "react-dom";
@@ -70,6 +70,11 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 				}
 				return { finished: true, error: null };
 			} catch (err) {
+				Sentry.captureMessage("summary error", {
+					extra: {
+						msg: JSON.stringify(err),
+					},
+				});
 				return { finished: false, error: "internal" };
 			}
 		},

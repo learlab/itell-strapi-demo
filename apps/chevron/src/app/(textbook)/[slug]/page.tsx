@@ -86,16 +86,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="relative lg:max-w-4xl md:max-w-3xl max-w-2xl"
 					style={{ flexGrow: 4 }}
 				>
-					<PageTitle>
-						{page.title}
-						{isPageLatest ? (
-							<EyeIcon />
-						) : isPageUnlocked ? (
-							<UnlockIcon />
-						) : (
-							<LockIcon />
-						)}
-					</PageTitle>
+					<PageTitle>{page.title}</PageTitle>
 					<PageContent code={page.body.code} />
 					<NoteToolbar pageSlug={pageSlug} userId={userId} />
 					<Pager pageIndex={pageIndex} />

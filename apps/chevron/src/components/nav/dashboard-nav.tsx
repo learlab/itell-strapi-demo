@@ -20,7 +20,11 @@ export async function DashboardNav(props: Props) {
 				<Link href="/" className="hidden items-center space-x-2 md:flex">
 					<span className="hidden font-bold sm:inline-block">{title}</span>
 				</Link>
-				<ContinueReading text="Back to textbook" variant="outline" />
+				<ContinueReading
+					text="Back to textbook"
+					variant="outline"
+					className="w-48"
+				/>
 			</div>
 			<DashboardNavMenu {...props} />
 		</div>

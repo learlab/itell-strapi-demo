@@ -88,10 +88,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="relative lg:max-w-4xl md:max-w-3xl max-w-2xl"
 					style={{ flexGrow: 4 }}
 				>
-					<PageTitle>
-						{page.title}
-						{latest ? <EyeIcon /> : unlocked ? <UnlockIcon /> : <LockIcon />}
-					</PageTitle>
+					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
 					<PageContent code={page.body.code} />
