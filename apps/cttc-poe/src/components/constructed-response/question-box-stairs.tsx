@@ -42,7 +42,6 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	pageStatus: PageStatus;
 };
 
 type FormState = {
@@ -56,23 +55,23 @@ export const QuestionBoxStairs = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	pageStatus,
 }: Props) => {
-	const { user } = useSession();
-	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
+	const {
+		session: { user },
+	} = useSession();
 	const [input, setInput] = useState("");
-	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
+	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
-			isPageFinished: state.isPageFinished,
+			shouldBlur: state.shouldBlur,
 			finishChunk: state.finishChunk,
 		}),
 	);
+	const [show, setShow] = useState(shouldBlur);
 
 	const [isShaking, setIsShaking] = useState(false);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
-		!isPageFinished,
-	);
+	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
+		useState(shouldBlur);
 
 	// Function to trigger the shake animation
 	const shakeModal = () => {
@@ -297,7 +296,7 @@ export const QuestionBoxStairs = ({
 							<p className="text-xl2 text-emerald-600 text-center">
 								Your answer is correct!
 							</p>
-							{!isPageFinished && (
+							{shouldBlur && (
 								<p className="text-sm">
 									Click on the button below to continue reading. Please use the
 									thumbs-up or thumbs-down icons on the top right side of this
@@ -310,10 +309,8 @@ export const QuestionBoxStairs = ({
 						question && (
 							<p>
 								<span className="font-bold">Question </span>
-								{pageStatus.isPageUnlocked && (
-									<span className="font-bold">(Optional)</span>
-								)}
-								: {question}
+								{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
+								{question}
 							</p>
 						)
 					)}

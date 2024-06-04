@@ -58,13 +58,14 @@ export const AdminTools = ({ userId, condition }: Props) => {
 			await updateUser(userId, {
 				condition,
 				pageSlug,
+				finished: false,
 			});
 
 			if (pageSlug) {
 				setUserPageSlug(pageSlug);
-				router.push(makePageHref(pageSlug));
+				window.location.href = makePageHref(pageSlug);
 			} else {
-				router.refresh();
+				window.location.reload();
 			}
 		});
 	};

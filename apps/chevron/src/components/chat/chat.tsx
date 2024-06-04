@@ -50,6 +50,9 @@ export const Chat = async ({
 						/>
 						<ChatInput pageSlug={pageSlug} userId={userId} />
 					</div>
+					<footer className="px-4 py-2 text-xs text-muted-foreground">
+						This content has been AI-generated and may contain errors.{" "}
+					</footer>
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>

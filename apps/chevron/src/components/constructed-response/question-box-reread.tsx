@@ -33,7 +33,6 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	pageStatus: PageStatus;
 };
 
 type FormState = {
@@ -46,20 +45,20 @@ export const QuestionBoxReread = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	pageStatus,
 }: Props) => {
-	const { user } = useSession();
-	const [show, setShow] = useState(!pageStatus.isPageUnlocked);
-	const { chunks, isPageFinished, finishChunk } = useConstructedResponse(
+	const {
+		session: { user },
+	} = useSession();
+	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,
-			isPageFinished: state.isPageFinished,
+			shouldBlur: state.shouldBlur,
 			finishChunk: state.finishChunk,
 		}),
 	);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] = useState(
-		!isPageFinished,
-	);
+	const [show, setShow] = useState(shouldBlur);
+	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
+		useState(shouldBlur);
 
 	const action = async (
 		prevState: FormState,
@@ -179,10 +178,8 @@ export const QuestionBoxReread = ({
 					{question && (
 						<p>
 							<span className="font-bold">Question </span>
-							{pageStatus.isPageUnlocked && (
-								<span className="font-bold">(Optional)</span>
-							)}
-							: {question}
+							{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
+							{question}
 						</p>
 					)}
 					{answerStatus === AnswerStatusReread.ANSWERED && (

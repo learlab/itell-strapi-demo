@@ -14,49 +14,12 @@ type TocSidebarProps = {
 	chunks: string[];
 };
 
-function onlyUnique(value: string, index: number, array: string[]) {
-	return array.indexOf(value) === index;
-}
-
 export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
-	const editedHeadings = useMemo(() => {
-		let headingsList = headings.map((heading) =>
-			heading.slug?.toLocaleLowerCase(),
-		);
-		const editedChunks = chunks
-			.map((chunk) => chunk.split("-").slice(0, -1).join("-"))
-			.filter(onlyUnique);
-		const editedHeadings = headings;
-		for (let i = 0; i < editedChunks.length; i++) {
-			if (!headingsList.includes(editedChunks[i].toLocaleLowerCase())) {
-				const target = editedChunks[i - 1];
-				if (target) {
-					const index =
-						headingsList.findIndex(
-							(value) => value === target.toLocaleLowerCase(),
-						) + 1;
-					editedHeadings.splice(index, 0, {
-						level:
-							index === 0
-								? "one"
-								: headings.find(
-										(value) => value.slug === target.toLocaleLowerCase(),
-									)?.level ?? "one",
-						text: editedChunks[i].split("-").join(" "),
-						slug: editedChunks[i].toLocaleLowerCase(),
-					});
-					headingsList = editedHeadings.map((heading) =>
-						heading.slug?.toLocaleLowerCase(),
-					);
-				}
-			}
-		}
-		return editedHeadings;
-	}, [headings, chunks]);
-
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			window.addEventListener("DOMContentLoaded", () => {
+				let mostRecentHeading: string | null = null;
+				let isUsingMostRecentHeading = false;
 				const observer = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						const id = entry.target.id;
@@ -64,12 +27,32 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 							document
 								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
 								?.classList.remove("border-transparent");
+							if (isUsingMostRecentHeading) {
+								document
+									.querySelector(
+										`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+									)
+									?.classList.add("border-transparent");
+							}
+							mostRecentHeading = id;
 						} else {
 							document
 								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
 								?.classList.add("border-transparent");
 						}
 					});
+					if (
+						entries
+							.map((entry) => entry.intersectionRatio)
+							.reduce((partialSum, a) => partialSum + a, 0) === 0
+					) {
+						isUsingMostRecentHeading = true;
+						document
+							.querySelector(
+								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+							)
+							?.classList.remove("border-transparent");
+					}
 				});
 
 				// Track all sections that have an `id` applied
@@ -90,7 +73,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 					});
 			});
 		}
-	}, [editedHeadings]);
+	}, [headings]);
 
 	return (
 		<div className="page-toc">
@@ -100,7 +83,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 			</p>
 
 			<ol className="max-h-[60vh] overflow-y-scroll mt-2 space-y-2 list-none">
-				{editedHeadings
+				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
 						<li key={heading.slug}>

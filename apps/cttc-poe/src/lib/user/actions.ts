@@ -3,7 +3,6 @@
 import { users } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { PgUpdateSetSource } from "drizzle-orm/pg-core";
-import { revalidatePath } from "next/cache";
 import { db, findUser } from "../db";
 import { isLastPage, isPageAfter, nextPage } from "../pages";
 import { setUserPageSlug } from "./page-slug";
@@ -25,7 +24,7 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 			})
 			.where(eq(users.id, userId));
 
-		revalidatePath(".");
+		// revalidatePath(".");
 	}
 };
 

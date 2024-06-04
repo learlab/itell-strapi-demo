@@ -1,4 +1,4 @@
-import { SessionUser, getSession } from "@/lib/auth";
+import { SessionUser } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";

@@ -1,4 +1,4 @@
-import { InferSelectModel } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
 	doublePrecision,
@@ -147,6 +147,7 @@ export const summaries = pgTable("summaries", {
 });
 
 export type Summary = InferSelectModel<typeof summaries>;
+export type NewSummary = InferInsertModel<typeof summaries>;
 
 export const notes = pgTable("notes", {
 	id: serial("id").primaryKey().notNull(),

@@ -1,4 +1,5 @@
 export { Button } from "./components/button";
+export * from "./components/status-button";
 export * from "./components/accordion";
 export * from "./components/tabs";
 export * from "./components/collapsible";

@@ -1,15 +1,10 @@
 "use client";
 
-import { env } from "@/env.mjs";
 import { SessionUser } from "@/lib/auth";
-import { isAdmin } from "@/lib/auth/role";
-import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { createSummary } from "@/lib/summary/actions";
-import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, getChunkElement, scrollToElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import {
@@ -22,14 +17,17 @@ import { Warning, buttonVariants } from "@itell/ui/server";
 import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+
+import { NewSummaryInput } from "@/app/api/summary/route";
+import { useSession } from "@/lib/auth/context";
+import { isProduction } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
-import { Button } from "../client-components";
+import { Button, StatusButton } from "../client-components";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
-import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	user: NonNullable<SessionUser>;
@@ -75,7 +73,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
 	}));
-	const randomChunkSlug = chunks[Math.floor(Math.random() * chunks.length)];
+	// skip first chunk, which is typically learning objectives
+	const validChunks = chunks.slice(1);
+	const randomChunkSlug =
+		validChunks[Math.floor(Math.random() * validChunks.length)];
+	const { setUser } = useSession();
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
@@ -108,6 +110,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		// }
 		const el = getChunkElement(randomChunkSlug);
 		if (el) {
+			scrollToElement(el);
 			driverObj.highlight({
 				element: el,
 				popover: {
@@ -143,7 +146,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		clearStages();
 
 		dispatch({ type: "submit" });
-		addStage("Analyzing");
+		addStage("Saving");
 
 		const formData = new FormData(e.currentTarget);
 		const input = String(formData.get("input")).replaceAll("\u0000", "");
@@ -174,7 +177,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw parsed.error;
 			}
 			summaryResponse = parsed.data;
-			await createSummary({
+			const body: NewSummaryInput = {
 				text: input,
 				userId: user.id,
 				pageSlug,
@@ -184,27 +187,39 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				similarityScore: summaryResponse.similarity,
 				wordingScore: summaryResponse.wording,
 				contentScore: summaryResponse.content,
+				shouldUpdateUser: true,
+			};
+			const createSummaryResponse = await fetch("/api/summary", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body),
 			});
-			await incrementUserPage(user.id, pageSlug);
+			if (!createSummaryResponse.ok) {
+				throw new Error(await createSummaryResponse.text());
+			}
 
-			finishStage("Analyzing");
+			finishStage("Saving");
 			dispatch({
 				type: "finish",
 				payload: true,
 			});
 
-			if (!pageStatus.isPageUnlocked) {
-				goToRandomChunk();
-			}
-
 			if (isLastPage(pageSlug)) {
+				setUser({ ...user, finished: true });
 				setIsTextbookFinished(true);
 				toast.info(
-					"You have finished the textbook! Redirecting to the outtake survey soon.",
+					"You have finished the entire textbook! Redirecting to the outtake survey soon.",
 				);
 				setTimeout(() => {
 					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 				}, 3000);
+			} else {
+				setUser({ ...user, pageSlug: page.nextPageSlug });
+				if (!isProduction || !pageStatus.unlocked) {
+					goToRandomChunk();
+				}
 			}
 		} catch (err) {
 			finishStage("Analyzing");
@@ -222,10 +237,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isPageFinished = useConstructedResponse(
-		(state) => state.isPageFinished,
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
 	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 
 	return (
 		<section className="space-y-2">
@@ -245,12 +259,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 
-			{isAdmin(user.role) && (
-				<Button variant={"outline"} onClick={goToRandomChunk}>
-					go to random chunk (admin)
-				</Button>
-			)}
-
 			{isTextbookFinished && (
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
@@ -265,7 +273,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			<form className="space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={editDisabled || state.pending}
+					disabled={state.pending || !isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
@@ -273,10 +281,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
-					<SummarySubmitButton
-						disabled={!isPageFinished}
-						pending={state.pending}
-					/>
+					<StatusButton disabled={!isSummaryReady} pending={state.pending}>
+						{state.prevInput === "" ? "Submit" : "Resubmit"}
+					</StatusButton>
 				</div>
 			</form>
 		</section>

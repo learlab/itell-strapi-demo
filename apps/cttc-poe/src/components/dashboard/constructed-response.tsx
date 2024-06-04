@@ -65,7 +65,11 @@ export const ConstructedResponse = async ({ userId: uid }: Props) => {
 						return (
 							<div key={chapter.index} className="space-y-4 pt-4">
 								<header>
-									<p className={cn("font-semibold text-xl text-pretty")}>
+									<p
+										className={cn(
+											"font-semibold text-xl text-pretty tracking-tight",
+										)}
+									>
 										{chapter.title}
 									</p>
 									<p className="text-muted-foreground">

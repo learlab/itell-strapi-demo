@@ -1,11 +1,13 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
+import { cn } from "@itell/core/utils";
 import { Info, Warning } from "@itell/ui/server";
 import { InfoIcon } from "lucide-react";
 
 type Props = {
+	className?: string;
 	feedback: SummaryFeedbackType | null;
-	canProceed: boolean;
+	needRevision: boolean;
 };
 
 const components = {
@@ -13,15 +15,26 @@ const components = {
 	false: Warning,
 };
 
-export const SummaryFeedback = ({ feedback, canProceed }: Props) => {
-	const terms = feedback?.suggestedKeyphrases || [];
+export const SummaryFeedback = ({
+	feedback,
+	needRevision,
+	className,
+}: Props) => {
+	const terms = feedback?.suggestedKeyphrases
+		? Array.from(new Set(feedback.suggestedKeyphrases))
+		: [];
 	const Component = components[feedback?.isPassed ? "true" : "false"];
 	return (
-		<section className="font-light leading-relaxed space-y-2 animate-in fade-in-50">
+		<section
+			className={cn(
+				"font-light leading-relaxed space-y-2 animate-in fade-in",
+				className,
+			)}
+		>
 			<header className="space-y-2">
 				<p>
-					{canProceed
-						? "You have completed all the assessments onthis page, but you are still welcome to summarize the text."
+					{needRevision
+						? "You have completed all the assessments on this page, but you are still welcome to summarize the text."
 						: feedback?.prompt}
 				</p>
 				{feedback && !feedback.isPassed && (

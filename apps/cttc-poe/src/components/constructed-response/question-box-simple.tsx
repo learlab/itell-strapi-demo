@@ -10,8 +10,6 @@ import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { AnswerStatusReread } from "./types";
 
-type QuestionScore = 0 | 1 | 2;
-
 type Props = {
 	question: string;
 	answer: string;
@@ -25,8 +23,10 @@ export const QuestionBoxSimple = ({
 	chunkSlug,
 	pageStatus,
 }: Props) => {
-	const { user } = useSession();
-	const [finished, setFinished] = useState(pageStatus.isPageUnlocked);
+	const {
+		session: { user },
+	} = useSession();
+	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const advanceChunk = useConstructedResponse((state) => state.advanceChunk);
 
 	if (!user) {
@@ -45,7 +45,12 @@ export const QuestionBoxSimple = ({
 					"flex justify-center items-center flex-col py-4 px-6 space-y-2",
 				)}
 			>
-				<CardContent className="flex flex-col justify-center items-start space-y-2 w-4/5 mx-auto">
+				<CardContent className="flex flex-col justify-center items-start space-y-1 w-4/5 mx-auto">
+					<p className="text-sm text-muted-foreground">
+						Below is a question related to the content you just read. When you
+						finished reading its answer, click the finish button below to move
+						on.
+					</p>
 					<p>
 						<span className="font-bold">Question: </span>
 						{question}

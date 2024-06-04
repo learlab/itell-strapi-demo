@@ -66,11 +66,12 @@ export const ChapterToc = ({
 		<>
 			<ol className="space-y-2">
 				{allPagesSorted.map((p) => {
-					const { isPageLatest, isPageUnlocked } = getPageStatus({
-						pageSlug: p.page_slug,
-						userPageSlug,
-						userFinished,
-					});
+					const { latest: isPageLatest, unlocked: isPageUnlocked } =
+						getPageStatus({
+							pageSlug: p.page_slug,
+							userPageSlug,
+							userFinished,
+						});
 
 					const visible = isPageLatest || isPageUnlocked;
 

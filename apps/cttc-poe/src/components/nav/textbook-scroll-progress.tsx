@@ -1,10 +1,8 @@
 "use client";
 
-import { usePageSlug } from "@/lib/hooks/utils";
-import { useScroll, motion, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 export const ScrollProgress = () => {
-	const slug = usePageSlug();
 	const { scrollYProgress } = useScroll();
 	const scaleX = useSpring(scrollYProgress, {
 		stiffness: 100,
@@ -13,11 +11,9 @@ export const ScrollProgress = () => {
 	});
 
 	return (
-		slug && (
-			<motion.div
-				className="h-[5px] bg-blue-400 origin-[0%]"
-				style={{ scaleX }}
-			/>
-		)
+		<motion.div
+			className="h-[5px] bg-blue-400 origin-[0%]"
+			style={{ scaleX }}
+		/>
 	);
 };

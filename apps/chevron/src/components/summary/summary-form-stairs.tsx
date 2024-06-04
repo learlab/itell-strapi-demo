@@ -1,6 +1,8 @@
 "use client";
 
+import { NewSummaryInput } from "@/app/api/summary/route";
 import { SessionUser } from "@/lib/auth";
+import { useSession } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -8,13 +10,8 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import {
-	countUserPageSummary,
-	createSummary,
-	findFocusTime,
-} from "@/lib/summary/actions";
+import { countUserPageSummary, findFocusTime } from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
-import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -39,12 +36,11 @@ import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
-import { Button } from "../client-components";
+import { Button, StatusButton } from "../client-components";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
-import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
 	user: NonNullable<SessionUser>;
@@ -97,8 +93,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		response: null,
 		stairsQuestion: null,
 		isPassed: false,
-		canProceed: pageStatus.isPageUnlocked,
+		canProceed: pageStatus.unlocked,
 	};
+	const { setUser } = useSession();
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
@@ -110,16 +107,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			messages: state.messages,
 		}),
 	);
-	const excludedChunks = useConstructedResponse(
-		(state) => state.excludedChunks,
-	);
+	const { excludedChunks, finishPage } = useConstructedResponse((state) => ({
+		excludedChunks: state.excludedChunks,
+		finishPage: state.finishPage,
+	}));
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "submit":
 				draft.pending = true;
 				draft.error = null;
-				draft.response = null;
-				draft.stairsQuestion = null;
 				break;
 			case "fail":
 				draft.pending = false;
@@ -145,7 +141,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				break;
 		}
 	}, initialState);
+
 	const { nodes: portalNodes, addNode } = usePortal();
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
+	);
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const feedback = state.response ? getFeedback(state.response) : null;
@@ -153,7 +153,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const goToQuestion = (question: StairsQuestion) => {
 		const el = getChunkElement(question.chunk);
 		if (el) {
-			scrollToElement(el);
 			driverObj.highlight({
 				element: el,
 				popover: {
@@ -249,81 +248,94 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				const decoder = new TextDecoder();
 				let done = false;
 				let chunkIndex = 0;
-				let stairsString: string | null = null;
+				let stairsChunk: string | null = null;
 
 				while (!done) {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
-					const chunk = decoder.decode(value);
-					const data = chunk
-						.split("\n")
-						.at(1)
-						?.replace(/data:\s+/, "");
+					const chunk = decoder.decode(value, { stream: true });
 
-					if (data) {
-						if (chunkIndex === 0) {
-							console.log("summary response chunk", data);
-							const parsed = SummaryResponseSchema.safeParse(JSON.parse(data));
-							if (parsed.success) {
-								summaryResponse = parsed.data;
-								dispatch({
-									type: "set_passed",
-									payload: summaryResponse.is_passed || isEnoughSummary,
-								});
-								dispatch({ type: "scored", payload: parsed.data });
-								finishStage("Scoring");
-							} else {
-								console.log("SummaryResults parse error", parsed.error);
-								clearStages();
-								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-								// summaryResponse parsing failed, return early
+					if (chunkIndex === 0) {
+						const data = chunk
+							.trim()
+							.split("\n")
+							.at(1)
+							?.replace(/data:\s+/, "");
 
-								Sentry.captureMessage("SummaryResponse parse error", {
-									extra: {
-										body: requestBody,
-										chunk: data,
-									},
-								});
-								return;
-							}
+						console.log("summary response chunk", data);
+
+						const parsed = SummaryResponseSchema.safeParse(
+							JSON.parse(String(data)),
+						);
+						if (parsed.success) {
+							summaryResponse = parsed.data;
+							dispatch({
+								type: "set_passed",
+								payload: summaryResponse.is_passed || isEnoughSummary,
+							});
+							dispatch({ type: "scored", payload: parsed.data });
+							finishStage("Scoring");
 						} else {
-							if (summaryResponse?.is_passed) {
-								// if the summary passed, we don't need to process later chunks
-								// note that if the user pass by summary amount
-								// question will still be generated but will not be asked
-								// they can still see the "question" button
-								break;
-							}
+							console.log("SummaryResults parse error", parsed.error);
+							clearStages();
+							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+							// summaryResponse parsing failed, return early
 
-							if (chunkIndex === 1) {
-								addStage("Analyzing");
-							}
+							Sentry.captureMessage("SummaryResponse parse error", {
+								extra: {
+									body: requestBody,
+									chunk: data,
+								},
+							});
+							return;
+						}
+					} else {
+						if (summaryResponse?.is_passed) {
+							// if the summary passed, we don't need to process later chunks
+							// note that if the user pass by summary amount
+							// question will still be generated but will not be asked
+							// they can still see the "question" button
+							break;
+						}
 
-							stairsString = data;
+						if (chunkIndex === 1) {
+							addStage("Analyzing");
+						}
+						if (chunk) {
+							stairsChunk = chunk;
 						}
 					}
 
 					chunkIndex++;
 				}
 
-				if (stairsString) {
-					console.log("final stairs chunk", stairsString);
-					stairsData = JSON.parse(stairsString) as StairsQuestion;
-					finishStage("Analyzing");
-					addStairsQuestion(stairsData);
+				if (stairsChunk) {
+					const regex = /data: ({"request_id":.*?})\n*/;
+					const match = stairsChunk.trim().match(regex);
+					console.log("final stairs chunk\n", stairsChunk);
+					if (match?.[1]) {
+						const stairsString = match[1];
+						console.log("parsed as", stairsString);
+						stairsData = JSON.parse(stairsString) as StairsQuestion;
+						finishStage("Analyzing");
+						addStairsQuestion(stairsData);
 
-					createEvent({
-						type: "stairs-question",
-						pageSlug,
-						userId: user.id,
-						data: stairsData,
-					});
+						createEvent({
+							type: "stairs-question",
+							pageSlug,
+							userId: user.id,
+							data: stairsData,
+						});
+					} else {
+						throw new Error("invalid stairs chunk");
+					}
 				}
 			}
 
 			if (summaryResponse) {
 				addStage("Saving");
-				await createSummary({
+				const shouldUpdateUser = summaryResponse.is_passed || isEnoughSummary;
+				const body: NewSummaryInput = {
 					text: input,
 					userId: user.id,
 					pageSlug,
@@ -333,14 +345,29 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					similarityScore: summaryResponse.similarity,
 					wordingScore: summaryResponse.wording,
 					contentScore: summaryResponse.content,
+					shouldUpdateUser,
+				};
+				const createSummaryResponse = await fetch("/api/summary", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(body),
 				});
+				if (!createSummaryResponse.ok) {
+					throw new Error(await createSummaryResponse.text());
+				}
 
-				if (summaryResponse.is_passed || isEnoughSummary) {
-					await incrementUserPage(userId, pageSlug);
+				finishStage("Saving");
+
+				if (shouldUpdateUser) {
 					if (isLastPage(pageSlug)) {
+						setUser({ ...user, finished: true });
 						setIsTextbookFinished(true);
-						toast.info("You have finished the textbook!");
+						toast.info("You have finished the entire textbook!");
 					} else {
+						setUser({ ...user, pageSlug: page.nextPageSlug });
+						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
 								? "Good job summarizing 🎉"
@@ -365,11 +392,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						payload: { canProceed: !isLastPage(pageSlug) },
 					});
 				}
-				finishStage("Saving");
 
 				if (stairsData) {
 					dispatch({ type: "stairs", payload: stairsData });
-					if (!summaryResponse.is_passed && !isEnoughSummary) {
+					if (!shouldUpdateUser) {
 						goToQuestion(stairsData);
 					}
 				}
@@ -389,15 +415,16 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const isPageFinished = useConstructedResponse(
-		(state) => state.isPageFinished,
-	);
-	const editDisabled = pageStatus.isPageUnlocked ? false : !isPageFinished;
 	return (
 		<section className="space-y-2">
 			{portalNodes}
-
-			<SummaryFeedback feedback={feedback} canProceed={state.canProceed} />
+			<SummaryFeedback
+				className={state.pending ? "opacity-70" : ""}
+				feedback={feedback}
+				needRevision={
+					isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
+				}
+			/>
 
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
@@ -419,24 +446,26 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			</div>
 
 			{isTextbookFinished && (
-				<p>You have finished the entire textbook. Congratulations! 🎉</p>
+				<div className="space-y-2">
+					<p>You have finished the entire textbook. Congratulations! 🎉</p>
+				</div>
 			)}
 
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={onSubmit}>
 				<SummaryInput
-					disabled={editDisabled || state.pending}
+					disabled={!isSummaryReady}
 					pageSlug={pageSlug}
 					pending={state.pending}
 					stages={stages}
 					userRole={user.role}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
+
 				<div className="flex justify-end">
-					<SummarySubmitButton
-						disabled={!pageStatus.isPageUnlocked && !isPageFinished}
-						pending={state.pending}
-					/>
+					<StatusButton disabled={!isSummaryReady} pending={state.pending}>
+						{state.prevInput === "" ? "Submit" : "Resubmit"}
+					</StatusButton>
 				</div>
 			</form>
 		</section>
