@@ -5,17 +5,12 @@ import { eq } from "drizzle-orm";
 import { PgUpdateSetSource } from "drizzle-orm/pg-core";
 import { db, findUser } from "../db";
 import { isLastPage, isPageAfter, nextPage } from "../pages";
-import { setUserPageSlug } from "./page-slug";
 
 export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	const user = await findUser(userId);
 	const nextSlug = nextPage(pageSlug);
 	if (user) {
 		const shouldUpdateUserPageSlug = isPageAfter(nextSlug, user.pageSlug);
-		// only update a slug if user's slug is not greater
-		if (shouldUpdateUserPageSlug) {
-			setUserPageSlug(nextSlug);
-		}
 		await db
 			.update(users)
 			.set({
@@ -26,17 +21,6 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	}
 
 	return nextSlug;
-};
-
-export const maybeFinishUser = async (userId: string, pageSlug: string) => {
-	if (!userId || !isLastPage(pageSlug)) {
-		return;
-	}
-
-	return await db
-		.update(users)
-		.set({ finished: true })
-		.where(eq(users.id, userId));
 };
 
 export const updateUser = async (

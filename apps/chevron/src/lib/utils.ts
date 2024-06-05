@@ -1,4 +1,5 @@
 import { env } from "@/env.mjs";
+import * as Sentry from "@sentry/nextjs";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
@@ -88,6 +89,12 @@ export const scrollToElement = (element: HTMLElement) => {
 	const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
 
 	window.scrollTo({ top: y, behavior: "smooth" });
+};
+
+export const reportSentry = (msg: string, extra: any) => {
+	Sentry.captureMessage(msg, {
+		extra,
+	});
 };
 
 export const randomNumber = () => {

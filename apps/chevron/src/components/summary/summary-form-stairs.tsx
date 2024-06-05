@@ -1,7 +1,5 @@
 "use client";
 
-import { NewSummaryInput } from "@/app/api/summary/route";
-import { SessionUser } from "@/lib/auth";
 import { useSession } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -10,12 +8,18 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
-import { countUserPageSummary, findFocusTime } from "@/lib/summary/actions";
+import {
+	countUserPageSummary,
+	createSummary,
+	findFocusTime,
+} from "@/lib/summary/actions";
 import { getFeedback } from "@/lib/summary/feedback";
+import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
 	makePageHref,
+	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
@@ -27,9 +31,9 @@ import {
 	validateSummary,
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import { User } from "lucia";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
@@ -41,10 +45,9 @@ import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
-import { SummarySubmitButton } from "./summary-submit-button";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	page: PageData;
 	pageStatus: PageStatus;
 };
@@ -281,12 +284,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							clearStages();
 							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
-
-							Sentry.captureMessage("SummaryResponse parse error", {
-								extra: {
-									body: requestBody,
-									chunk: data,
-								},
+							reportSentry("parse summary stairs", {
+								body: requestBody,
+								chunk: data,
 							});
 							return;
 						}
@@ -336,7 +336,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			if (summaryResponse) {
 				addStage("Saving");
 				const shouldUpdateUser = summaryResponse.is_passed || isEnoughSummary;
-				const body: NewSummaryInput = {
+				await createSummary({
 					text: input,
 					userId: user.id,
 					pageSlug,
@@ -344,27 +344,14 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					isPassed: summaryResponse.is_passed || false,
 					containmentScore: summaryResponse.containment,
 					similarityScore: summaryResponse.similarity,
-					wordingScore: summaryResponse.wording,
+					languageScore: summaryResponse.language,
 					contentScore: summaryResponse.content,
-					shouldUpdateUser,
-				};
-				const createSummaryResponse = await fetch("/api/summary", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(body),
 				});
-				if (!createSummaryResponse.ok) {
-					throw new Error(await createSummaryResponse.text());
-				}
-				const nextSlug =
-					((await createSummaryResponse.json()) as { nextSlug: string | null })
-						.nextSlug || page.nextPageSlug;
 
 				finishStage("Saving");
 
 				if (shouldUpdateUser) {
+					const nextSlug = await incrementUserPage(user.id, pageSlug);
 					if (isLastPage(pageSlug)) {
 						setUser({ ...user, finished: true });
 						setIsTextbookFinished(true);
@@ -406,15 +393,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			}
 		} catch (err) {
 			console.log("summary scoring error", err);
-			clearStages();
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-
-			Sentry.captureMessage("summary scoring error", {
-				extra: {
-					body: requestBody,
-					summaryResponse: summaryResponse,
-					stairsResponse: stairsData,
-				},
+			clearStages();
+			reportSentry("score summary stairs", {
+				body: requestBody,
+				summaryResponse,
+				stairsResponse: stairsData,
+				error: err,
 			});
 		}
 	};

@@ -21,9 +21,8 @@ import {
 	Switch,
 } from "@/components/client-components";
 import { Condition } from "@/lib/control/condition";
-import { allPagesSorted, allSummaryPagesSorted } from "@/lib/pages";
+import { allSummaryPagesSorted } from "@/lib/pages";
 import { updateUser } from "@/lib/user/actions";
-import { setUserPageSlug } from "@/lib/user/page-slug";
 import { makePageHref } from "@/lib/utils";
 import { SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -62,7 +61,6 @@ export const AdminTools = ({ userId, condition }: Props) => {
 			});
 
 			if (pageSlug) {
-				setUserPageSlug(pageSlug);
 				window.location.href = makePageHref(pageSlug);
 			} else {
 				window.location.reload();

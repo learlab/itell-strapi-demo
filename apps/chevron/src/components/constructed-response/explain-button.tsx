@@ -1,7 +1,8 @@
+"use client";
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
+import { reportSentry } from "@/lib/utils";
 import { parseEventStream } from "@itell/core/utils";
-import * as Sentry from "@sentry/nextjs";
 import { HelpCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -65,13 +66,11 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				});
 			}
 		} catch (err) {
-			Sentry.captureMessage("explain constructed response error", {
-				extra: {
-					pageSlug,
-					chunkSlug,
-					studentResponse: input,
-					msg: err,
-				},
+			reportSentry("explain cr", {
+				pageSlug,
+				chunkSlug,
+				input,
+				error: err,
 			});
 		}
 

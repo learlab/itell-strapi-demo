@@ -5,8 +5,8 @@ import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
-import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
+import { reportSentry } from "@/lib/utils";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { cn } from "@itell/core/utils";
@@ -17,7 +17,6 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
@@ -168,12 +167,11 @@ export const QuestionBoxStairs = ({
 			return prevState;
 		} catch (err) {
 			console.log("constructed response evaluation error", err);
-			Sentry.captureMessage("constructed response scoring error", {
-				extra: {
-					pageSlug,
-					chunkSlug,
-					input,
-				},
+			reportSentry("score cr stairs", {
+				pageSlug,
+				chunkSlug,
+				input,
+				error: err,
 			});
 			return {
 				error: "Answer evaluation failed, please try again later",

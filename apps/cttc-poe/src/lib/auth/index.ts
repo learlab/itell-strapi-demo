@@ -1,9 +1,8 @@
-import * as Sentry from "@sentry/nextjs";
 import { Lucia, Session as LuciaSession, User as LuciaUser } from "lucia";
-import { unstable_cache } from "next/cache";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import "server-only";
+import { reportSentry } from "../utils";
 import { adapter } from "./adapter";
 
 export const lucia = new Lucia(adapter, {
@@ -86,11 +85,7 @@ export const getSession = cache(
 				);
 			}
 		} catch (err) {
-			Sentry.captureMessage("get session error", {
-				extra: {
-					msg: JSON.stringify(err),
-				},
-			});
+			reportSentry("get session", { error: err });
 		}
 		return result;
 	},

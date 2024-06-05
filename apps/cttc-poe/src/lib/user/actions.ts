@@ -22,17 +22,6 @@ export const incrementUserPage = async (userId: string, pageSlug: string) => {
 	return nextSlug;
 };
 
-export const maybeFinishUser = async (userId: string, pageSlug: string) => {
-	if (!userId || !isLastPage(pageSlug)) {
-		return;
-	}
-
-	return await db
-		.update(users)
-		.set({ finished: true })
-		.where(eq(users.id, userId));
-};
-
 export const updateUser = async (
 	userId: string,
 	data: PgUpdateSetSource<typeof users>,

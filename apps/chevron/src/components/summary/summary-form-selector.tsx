@@ -1,16 +1,16 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { PageData } from "@/lib/utils";
+import { User } from "lucia";
 import { SummaryDescription } from "./summary-description";
 import { SummaryFormReread } from "./summary-form-reread";
 import { SummaryFormSimple } from "./summary-form-simple";
 import { SummaryFormStairs } from "./summary-form-stairs";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	page: PageData;
 	pageStatus: PageStatus;
 	condition: string;

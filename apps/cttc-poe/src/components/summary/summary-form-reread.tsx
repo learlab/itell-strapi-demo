@@ -4,7 +4,12 @@ import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { PageData, getChunkElement, scrollToElement } from "@/lib/utils";
+import {
+	PageData,
+	getChunkElement,
+	reportSentry,
+	scrollToElement,
+} from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
@@ -13,7 +18,6 @@ import {
 	SummaryResponseSchema,
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
@@ -186,7 +190,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				isPassed: summaryResponse.is_passed || false,
 				containmentScore: summaryResponse.containment,
 				similarityScore: summaryResponse.similarity,
-				wordingScore: summaryResponse.wording,
+				languageScore: summaryResponse.language,
 				contentScore: summaryResponse.content,
 			});
 			const nextSlug = await incrementUserPage(user.id, pageSlug);
@@ -219,12 +223,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 
 			console.log("summary error", err);
-			Sentry.captureMessage("summary error", {
-				extra: {
-					body: requestBody,
-					response: summaryResponse,
-					msg: JSON.stringify(err),
-				},
+			reportSentry("score summary reread", {
+				body: requestBody,
+				response: summaryResponse,
+				error: err,
 			});
 		}
 	};

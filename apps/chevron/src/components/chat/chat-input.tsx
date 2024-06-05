@@ -2,8 +2,8 @@
 
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { reportSentry } from "@/lib/utils";
 import { cn, parseEventStream } from "@itell/core/utils";
-import * as Sentry from "@sentry/nextjs";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
@@ -102,11 +102,8 @@ export const ChatInput = ({
 			}
 		} catch (err) {
 			console.log("chat input error", err);
-			Sentry.captureMessage("chat input error", {
-				extra: {
-					msg: err,
-				},
-			});
+			reportSentry("eval chat", { error: err, input: text, pageSlug });
+
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",

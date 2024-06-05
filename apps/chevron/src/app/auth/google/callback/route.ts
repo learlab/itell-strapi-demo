@@ -4,7 +4,7 @@ import { lucia } from "@/lib/auth";
 import { googleProvider } from "@/lib/auth/google";
 import { Condition } from "@/lib/control/condition";
 import { db, first } from "@/lib/db";
-import * as Sentry from "@sentry/nextjs";
+import { reportSentry } from "@/lib/utils";
 import { eq } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
@@ -87,11 +87,7 @@ export async function GET(req: Request) {
 		});
 	} catch (error) {
 		console.log("google oauth error", error);
-		Sentry.captureMessage("google oauth error", {
-			extra: {
-				msg: JSON.stringify(error),
-			},
-		});
+		reportSentry("google oauth", { error });
 		return new Response(null, {
 			status: 302,
 			headers: {

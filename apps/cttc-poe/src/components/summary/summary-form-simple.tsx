@@ -3,9 +3,8 @@ import { useSession } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
-import { PageData } from "@/lib/utils";
+import { PageData, reportSentry } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { User } from "lucia";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -69,10 +68,9 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 
 				return { finished: true, error: null };
 			} catch (err) {
-				Sentry.captureMessage("summary error", {
-					extra: {
-						msg: JSON.stringify(err),
-					},
+				reportSentry("summary simple", {
+					pageSlug: page.page_slug,
+					error: err,
 				});
 				return { finished: false, error: "internal" };
 			}

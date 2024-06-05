@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import { useSession } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -20,6 +19,7 @@ import {
 	PageData,
 	getChunkElement,
 	makePageHref,
+	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
@@ -31,7 +31,6 @@ import {
 	validateSummary,
 } from "@itell/core/summary";
 import { Warning, buttonVariants } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
@@ -285,12 +284,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							clearStages();
 							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
-
-							Sentry.captureMessage("SummaryResponse parse error", {
-								extra: {
-									body: requestBody,
-									chunk: data,
-								},
+							reportSentry("parse summary stairs", {
+								body: requestBody,
+								chunk: data,
 							});
 							return;
 						}
@@ -348,7 +344,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					isPassed: summaryResponse.is_passed || false,
 					containmentScore: summaryResponse.containment,
 					similarityScore: summaryResponse.similarity,
-					wordingScore: summaryResponse.wording,
+					languageScore: summaryResponse.language,
 					contentScore: summaryResponse.content,
 				});
 
@@ -402,15 +398,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			}
 		} catch (err) {
 			console.log("summary scoring error", err);
-			clearStages();
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-
-			Sentry.captureMessage("summary scoring error", {
-				extra: {
-					body: requestBody,
-					summaryResponse: summaryResponse,
-					stairsResponse: stairsData,
-				},
+			clearStages();
+			reportSentry("score summary stairs", {
+				body: requestBody,
+				summaryResponse,
+				stairsResponse: stairsData,
+				error: err,
 			});
 		}
 	};

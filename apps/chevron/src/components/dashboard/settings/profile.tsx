@@ -1,8 +1,8 @@
 import { UserAvatar } from "@/components/user-avatar";
-import { SessionUser } from "@/lib/auth";
 import { Skeleton } from "@itell/ui/server";
+import { User } from "lucia";
 
-export const Profile = ({ user }: { user: NonNullable<SessionUser> }) => {
+export const Profile = ({ user }: { user: User }) => {
 	return (
 		<div className="space-y-4">
 			<h3 className="mb-4 text-lg font-medium">Profile</h3>

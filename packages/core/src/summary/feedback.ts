@@ -14,13 +14,13 @@ export const simpleSummaryResponse = (): SummaryResponse => {
 		containment: -1,
 		containment_chat: null,
 		similarity: -1,
+		language: null,
 		content: null,
-		wording: null,
 		english: true,
 		included_keyphrases: [],
 		suggested_keyphrases: [],
 		prompt: "Your summary is accepted.",
 		prompt_details: [],
-		is_passed: true
-	}
-}
+		is_passed: true,
+	};
+};
