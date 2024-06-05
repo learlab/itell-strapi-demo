@@ -1,6 +1,7 @@
 "use client";
 
 import { createChatMessage } from "@/lib/chat/actions";
+import { isProduction } from "@/lib/constants";
 import { useChatStore } from "@/lib/store/chat";
 import { reportSentry } from "@/lib/utils";
 import { ChatHistory } from "@itell/core/chatbot";
@@ -8,6 +9,7 @@ import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
+import { toast } from "sonner";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
@@ -206,6 +208,12 @@ export const ChatInputStairs = ({
 									if (!e.currentTarget.value) return;
 									onMessage(e.currentTarget.value);
 									e.currentTarget.value = "";
+								}
+							}}
+							onPaste={(e) => {
+								if (isProduction) {
+									e.preventDefault();
+									toast.warning("Copy & Paste is not allowed");
 								}
 							}}
 						/>
