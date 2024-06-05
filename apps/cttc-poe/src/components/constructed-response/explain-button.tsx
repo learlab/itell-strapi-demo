@@ -1,3 +1,4 @@
+"use client";
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { parseEventStream } from "@itell/core/utils";

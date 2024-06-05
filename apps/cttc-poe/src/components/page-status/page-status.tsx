@@ -1,9 +1,7 @@
 "use client";
-
 import { useSession } from "@/lib/auth/context";
 import { getPageStatus } from "@/lib/page-status";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
-import React from "react";
 import {
 	Button,
 	HoverCard,

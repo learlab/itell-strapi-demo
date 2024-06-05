@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -18,9 +17,11 @@ import * as Sentry from "@sentry/nextjs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
-import { NewSummaryInput } from "@/app/api/summary/route";
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
+import { createSummary } from "@/lib/summary/actions";
+import { incrementUserPage } from "@/lib/user/actions";
+import { User } from "lucia";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
@@ -30,7 +31,7 @@ import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	page: PageData;
 	pageStatus: PageStatus;
 };
@@ -57,16 +58,6 @@ const initialState: State = {
 
 const driverObj = driver();
 
-const exitChunk = () => {
-	const summaryEl = document.querySelector("#page-summary");
-
-	driverObj.destroy();
-
-	if (summaryEl) {
-		scrollToElement(summaryEl as HTMLDivElement);
-	}
-};
-
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
@@ -77,7 +68,16 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const validChunks = chunks.slice(1);
 	const randomChunkSlug =
 		validChunks[Math.floor(Math.random() * validChunks.length)];
-	const { setUser } = useSession();
+
+	const exitChunk = () => {
+		const summaryEl = document.querySelector("#page-summary");
+
+		driverObj.destroy();
+
+		if (summaryEl) {
+			scrollToElement(summaryEl as HTMLDivElement);
+		}
+	};
 
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
@@ -100,6 +100,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, initialState);
 	const { nodes: portalNodes, addNode } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
+	const { setUser } = useSession();
 
 	const goToRandomChunk = () => {
 		// in production, only highlight 25% of the time
@@ -177,7 +178,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				throw parsed.error;
 			}
 			summaryResponse = parsed.data;
-			const body: NewSummaryInput = {
+			await createSummary({
 				text: input,
 				userId: user.id,
 				pageSlug,
@@ -187,23 +188,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				similarityScore: summaryResponse.similarity,
 				wordingScore: summaryResponse.wording,
 				contentScore: summaryResponse.content,
-				shouldUpdateUser: true,
-			};
-			const createSummaryResponse = await fetch("/api/summary", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(body),
 			});
-			if (!createSummaryResponse.ok) {
-				throw new Error(await createSummaryResponse.text());
-			}
-
-			const nextSlug =
-				((await createSummaryResponse.json()) as { nextSlug: string | null })
-					.nextSlug || page.nextPageSlug;
-
+			const nextSlug = await incrementUserPage(user.id, pageSlug);
 			finishStage("Saving");
 			dispatch({
 				type: "finish",
@@ -219,11 +205,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setTimeout(() => {
 					window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 				}, 3000);
-			} else {
-				setUser({ ...user, pageSlug: nextSlug });
-				if (!isProduction || !pageStatus.unlocked) {
-					goToRandomChunk();
-				}
+				return;
+			}
+
+			setUser({ ...user, pageSlug: nextSlug });
+			console.log("next slug is", nextSlug);
+			if (!isProduction || !pageStatus.unlocked) {
+				goToRandomChunk();
 			}
 		} catch (err) {
 			finishStage("Analyzing");
