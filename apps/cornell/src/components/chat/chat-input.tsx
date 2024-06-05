@@ -4,11 +4,13 @@ import { env } from "@/env.mjs";
 import { createChatMessage } from "@/lib/chat/actions";
 import { getChatHistory, useChatStore } from "@/lib/store/chat";
 import { fetchChatResponse } from "@itell/core/chatbot";
+import { isProduction } from "@/lib/constants";
 import { cn } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { type HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { Spinner } from "../spinner";
+import {toast} from "sonner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	pageSlug: string;
@@ -140,7 +142,17 @@ export const ChatInput = ({
 							e.currentTarget.value = "";
 						}
 					}}
-					onPaste={(e)=> e.preventDefault()}
+					onPaste={(e) => {
+						if (isProduction) {
+							e.preventDefault();
+							toast.warning("Copy & Paste is not allowed");
+						}
+					}}
+					onInput={(e) => {
+						if (e.currentTarget.value.length > 400) {
+						  e.currentTarget.value = e.currentTarget.value.slice(0, 400);
+						}
+					  }}
 				/>
 
 				<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
