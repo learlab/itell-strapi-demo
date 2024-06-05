@@ -36,9 +36,9 @@ export const StudentBadges = async ({
 			studentStats.avgContentScore && otherStats.avgContentScore
 				? studentStats.avgContentScore - otherStats.avgContentScore
 				: null,
-		avgWordingScore:
-			studentStats.avgWordingScore && otherStats.avgWordingScore
-				? studentStats.avgWordingScore - otherStats.avgWordingScore
+		avgLanguageScore:
+			studentStats.avgLanguageScore && otherStats.avgLanguageScore
+				? studentStats.avgLanguageScore - otherStats.avgLanguageScore
 				: null,
 	};
 
@@ -106,30 +106,30 @@ export const StudentBadges = async ({
 				</p>
 			</DashboardBadge>
 			<DashboardBadge
-				title="Average Wording Score"
+				title="Average Language Score"
 				icon={<WholeWordIcon className="size-4" />}
 				className={cn({
 					"border-green-500":
-						comparisons.avgWordingScore && comparisons.avgWordingScore > 0,
+						comparisons.avgLanguageScore && comparisons.avgLanguageScore > 0,
 					"border-destructive":
-						comparisons.avgWordingScore && comparisons.avgWordingScore < 0,
+						comparisons.avgLanguageScore && comparisons.avgLanguageScore < 0,
 				})}
 			>
 				<div className="text-2xl font-bold">
-					{Number.isNaN(studentStats.avgWordingScore)
+					{Number.isNaN(studentStats.avgLanguageScore)
 						? "NA"
-						: studentStats.avgWordingScore.toFixed(2)}
+						: studentStats.avgLanguageScore.toFixed(2)}
 				</div>
 				<p className="text-xs text-muted-foreground">
-					{comparisons.avgWordingScore
+					{comparisons.avgLanguageScore
 						? `
 					${
-						comparisons.avgWordingScore > 0 ? "+" : ""
-					}${comparisons.avgWordingScore.toFixed(2)} compared to class`
+						comparisons.avgLanguageScore > 0 ? "+" : ""
+					}${comparisons.avgLanguageScore.toFixed(2)} compared to class`
 						: "class stats unavailable"}
 				</p>
 				<p className="text-xs text-muted-foreground">
-					{studentStats.avgWordingScoreLastWeek.toFixed(2)} last week
+					{studentStats.avgLanguageScoreLastWeek.toFixed(2)} last week
 				</p>
 			</DashboardBadge>
 			<DashboardBadge

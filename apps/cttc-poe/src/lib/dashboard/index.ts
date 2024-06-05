@@ -23,9 +23,9 @@ export const getBadgeStats = async (userId: string) => {
 	const passedAnswers = [];
 	const passedAnswersLastWeek = [];
 	const contentScores: number[] = [];
-	const wordingScores: number[] = [];
+	const languageScores: number[] = [];
 	const contentScoresLastWeek: number[] = [];
-	const wordingScoresLastWeek: number[] = [];
+	const languageScoresLastWeek: number[] = [];
 
 	userSummaries.forEach((summary) => {
 		const passed = summary.isPassed;
@@ -33,8 +33,8 @@ export const getBadgeStats = async (userId: string) => {
 		if (summary.contentScore) {
 			contentScores.push(summary.contentScore);
 		}
-		if (summary.wordingScore) {
-			wordingScores.push(summary.wordingScore);
+		if (summary.languageScore) {
+			languageScores.push(summary.languageScore);
 		}
 
 		if (passed) {
@@ -45,8 +45,8 @@ export const getBadgeStats = async (userId: string) => {
 			if (summary.contentScore) {
 				contentScoresLastWeek.push(summary.contentScore);
 			}
-			if (summary.wordingScore) {
-				wordingScoresLastWeek.push(summary.wordingScore);
+			if (summary.languageScore) {
+				languageScoresLastWeek.push(summary.languageScore);
 			}
 		}
 		if (passed && duringLastWeek) {
@@ -75,11 +75,11 @@ export const getBadgeStats = async (userId: string) => {
 		avgContentScoreLastWeek:
 			contentScoresLastWeek.reduce((a, b) => a + b, 0) /
 			contentScoresLastWeek.length,
-		avgWordingScore:
-			wordingScores.reduce((a, b) => a + b, 0) / wordingScores.length,
-		avgWordingScoreLastWeek:
-			wordingScoresLastWeek.reduce((a, b) => a + b, 0) /
-			wordingScoresLastWeek.length,
+		avgLanguageScore:
+			languageScores.reduce((a, b) => a + b, 0) / languageScores.length,
+		avgLanguageScoreLastWeek:
+			languageScoresLastWeek.reduce((a, b) => a + b, 0) /
+			languageScoresLastWeek.length,
 		totalCount: userSummaries.length,
 		totalCountLastWeek: summariesLastWeek.length,
 		passedCount: passedSummaries.length,
@@ -95,7 +95,7 @@ export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
 	if (ids.length === 0) {
 		return {
 			avgContentScore: 0,
-			avgWordingScore: 0,
+			avgLanguageScore: 0,
 			totalCount: 0,
 			passedCount: 0,
 			totalConstructedResponses: 0,
@@ -106,7 +106,7 @@ export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
 	const [scores, allSummaries, allConstructedResponses] = await Promise.all([
 		db
 			.select({
-				wordingScore: avg(summaries.wordingScore).mapWith(Number),
+				languageScore: avg(summaries.languageScore).mapWith(Number),
 				contentScore: avg(summaries.contentScore).mapWith(Number),
 			})
 			.from(summaries)
@@ -126,7 +126,7 @@ export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
 	const score = first(scores);
 	return {
 		avgContentScore: score?.contentScore || 0,
-		avgWordingScore: score?.wordingScore || 0,
+		avgLanguageScore: score?.languageScore || 0,
 		totalCount: allSummaries.length,
 		passedCount: allSummaries.filter((s) => s.isPassed).length,
 		totalConstructedResponses: allConstructedResponses.length,
