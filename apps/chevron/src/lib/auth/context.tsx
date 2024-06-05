@@ -1,12 +1,13 @@
 "use client";
 
 import { User } from "lucia";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import type { Session } from ".";
 
-const SessionContext = createContext<{
-	session: Session;
-	setUser: (user: User | null) => void;
+const SessionContext = createContext<Session | null>(null);
+
+const SessionActionContext = createContext<{
+	updateUser: (val: Partial<User>) => void;
 } | null>(null);
 
 export const SessionProvider = ({
@@ -14,18 +15,20 @@ export const SessionProvider = ({
 	session,
 }: { session: Session; children: React.ReactNode }) => {
 	const [value, setValue] = useState<Session>(session);
-	const setUser = (user: User | null) => {
-		if (user && value.session) {
-			setValue({ session: value.session, user });
-		} else {
-			setValue({ session: null, user: null });
+	const updateUser = (val: Partial<User>) => {
+		if (value.session) {
+			setValue({ session: value.session, user: { ...value.user, ...val } });
 		}
 	};
 
+	const actions = useMemo(() => ({ updateUser }), [setValue]);
+
 	return (
-		<SessionContext.Provider value={{ session: value, setUser }}>
-			{children}
-		</SessionContext.Provider>
+		<SessionActionContext.Provider value={actions}>
+			<SessionContext.Provider value={value}>
+				{children}
+			</SessionContext.Provider>
+		</SessionActionContext.Provider>
 	);
 };
 
@@ -33,6 +36,14 @@ export const useSession = () => {
 	const context = useContext(SessionContext);
 	if (!context) {
 		throw new Error("useSession must be used within a SessionProvider");
+	}
+	return context;
+};
+
+export const useSessionAction = () => {
+	const context = useContext(SessionActionContext);
+	if (!context) {
+		throw new Error("useSessionAction must be used within a SessionProvider");
 	}
 	return context;
 };

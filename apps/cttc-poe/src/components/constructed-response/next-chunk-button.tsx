@@ -24,9 +24,7 @@ export const NextChunkButton = ({
 	...rest
 }: Props) => {
 	const advancedChunk = useConstructedResponse((state) => state.advanceChunk);
-	const {
-		session: { user },
-	} = useSession();
+	const { user } = useSession();
 
 	const onSubmit = async () => {
 		advancedChunk(chunkSlug);

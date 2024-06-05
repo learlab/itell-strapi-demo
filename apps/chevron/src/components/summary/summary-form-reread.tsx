@@ -21,7 +21,7 @@ import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
-import { useSession } from "@/lib/auth/context";
+import { useSession, useSessionAction } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createSummary } from "@/lib/summary/actions";
 import { incrementUserPage } from "@/lib/user/actions";
@@ -104,7 +104,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, initialState);
 	const { nodes: portalNodes, addNode } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
-	const { setUser } = useSession();
+	const { updateUser } = useSessionAction();
 
 	const goToRandomChunk = () => {
 		// in production, only highlight 25% of the time
@@ -201,14 +201,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			});
 
 			if (isLastPage(pageSlug)) {
-				setUser({ ...user, finished: true });
+				updateUser({ finished: true });
 				setIsTextbookFinished(true);
 				toast.info("You have finished the entire textbook!");
 				return;
 			}
 
-			setUser({ ...user, pageSlug: nextSlug });
-			console.log("next slug is", nextSlug);
+			updateUser({ ...user, pageSlug: nextSlug });
 			if (!isProduction || !pageStatus.unlocked) {
 				goToRandomChunk();
 			}

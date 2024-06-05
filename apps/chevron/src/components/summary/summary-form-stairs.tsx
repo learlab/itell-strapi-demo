@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/lib/auth/context";
+import { useSession, useSessionAction } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -99,7 +99,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		isPassed: false,
 		canProceed: pageStatus.unlocked,
 	};
-	const { setUser } = useSession();
+	const { updateUser } = useSessionAction();
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
@@ -353,11 +353,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (shouldUpdateUser) {
 					const nextSlug = await incrementUserPage(user.id, pageSlug);
 					if (isLastPage(pageSlug)) {
-						setUser({ ...user, finished: true });
+						updateUser({ finished: true });
 						setIsTextbookFinished(true);
 						toast.info("You have finished the entire textbook!");
 					} else {
-						setUser({ ...user, pageSlug: nextSlug });
+						updateUser({ pageSlug: nextSlug });
 						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed

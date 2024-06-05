@@ -25,7 +25,12 @@ export const SummaryFormSelector = ({
 }: Props) => {
 	if (condition === Condition.SIMPLE) {
 		return (
-			<SummaryFormSimple user={user} pageStatus={pageStatus} page={page} />
+			<SummaryFormSimple
+				userId={user.id}
+				prolificId={user.prolificId}
+				pageStatus={pageStatus}
+				page={page}
+			/>
 		);
 	}
 

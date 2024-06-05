@@ -63,9 +63,7 @@ type Props = {
 };
 
 export const Pager = ({ pageIndex }: Props) => {
-	const {
-		session: { user },
-	} = useSession();
+	const { user } = useSession();
 	const { prev, next } = getPagerLinks({
 		pageIndex,
 		userPageSlug: user?.pageSlug || null,

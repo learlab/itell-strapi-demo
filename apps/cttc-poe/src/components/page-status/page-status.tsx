@@ -14,9 +14,7 @@ type Props = {
 };
 
 export const PageStatus = ({ pageSlug }: Props) => {
-	const {
-		session: { user },
-	} = useSession();
+	const { user } = useSession();
 	const status = getPageStatus({
 		pageSlug,
 		userPageSlug: user?.pageSlug || null,

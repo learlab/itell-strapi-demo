@@ -45,9 +45,7 @@ export const QuestionBoxReread = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const {
-		session: { user },
-	} = useSession();
+	const { user } = useSession();
 	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
 			chunks: state.chunks,

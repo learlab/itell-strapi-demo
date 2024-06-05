@@ -65,9 +65,7 @@ export const NoteCard = React.memo(
 		color,
 		newNote = false,
 	}: Props) => {
-		const {
-			session: { user },
-		} = useSession();
+		const { user } = useSession();
 		if (!user) {
 			return null;
 		}
