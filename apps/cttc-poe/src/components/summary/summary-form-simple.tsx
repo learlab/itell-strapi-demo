@@ -39,7 +39,6 @@ type FormState = { finished: boolean; error: string | null };
 
 export const SummaryFormSimple = React.memo(
 	({ userId, pageStatus, page, prolificId }: Props) => {
-		console.log("rerender");
 		const { currentChunk, chunks } = useConstructedResponse((state) => ({
 			currentChunk: state.currentChunk,
 			chunks: state.chunks,

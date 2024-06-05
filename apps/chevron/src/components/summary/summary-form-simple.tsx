@@ -1,11 +1,10 @@
 "use client";
-import { useSession, useSessionAction } from "@/lib/auth/context";
+import { useSessionAction } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, reportSentry } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
-import { User } from "lucia";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
