@@ -1,5 +1,5 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { getBadgeStats, getClassBadgeStats } from "@/lib/dashboard";
+import { getClassBadgeStats } from "@/lib/dashboard";
 import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,
@@ -18,7 +18,7 @@ export const TeacherBadges = async ({ students }: Props) => {
 	const classStats = {
 		avgTotalCount: classSummaryStats.totalCount / students.length,
 		avgPassedCount: classSummaryStats.passedCount / students.length,
-		avgWordingScore: classSummaryStats.avgWordingScore,
+		avgLanguageScore: classSummaryStats.avgLanguageScore,
 		avgContentScore: classSummaryStats.avgContentScore,
 		constructedResponseCount:
 			classSummaryStats.totalConstructedResponses / students.length,
@@ -43,9 +43,9 @@ export const TeacherBadges = async ({ students }: Props) => {
 					{classStats.avgContentScore?.toFixed(2)}
 				</div>
 			</DashboardBadge>
-			<DashboardBadge title="Average Wording Score" icon={<WholeWordIcon />}>
+			<DashboardBadge title="Average Language Score" icon={<WholeWordIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgWordingScore?.toFixed(2)}
+					{classStats.avgLanguageScore?.toFixed(2)}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Total Constructed Responses" icon={<PencilIcon />}>

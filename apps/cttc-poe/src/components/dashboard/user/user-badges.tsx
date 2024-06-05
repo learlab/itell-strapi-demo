@@ -29,9 +29,9 @@ export const UserBadges = async ({ userId }: { userId: string }) => {
 		passedConstructedResponses,
 		passedConstructedResponsesLastWeek,
 		avgContentScore,
-		avgWordingScore,
+		avgLanguageScore,
 		avgContentScoreLastWeek,
-		avgWordingScoreLastWeek,
+		avgLanguageScoreLastWeek,
 	} = await getBadgeStats(userId);
 	return (
 		<>
@@ -63,12 +63,14 @@ export const UserBadges = async ({ userId }: { userId: string }) => {
 				</p>
 			</DashboardBadge>
 			<DashboardBadge
-				title="Average Wording Score"
+				title="Average Language Score"
 				icon={<WholeWordIcon className="size-4" />}
 			>
-				<div className="text-2xl font-bold">{roundNumber(avgWordingScore)}</div>
+				<div className="text-2xl font-bold">
+					{roundNumber(avgLanguageScore)}
+				</div>
 				<p className="text-xs text-muted-foreground">
-					{roundNumber(avgWordingScoreLastWeek)} last week
+					{roundNumber(avgLanguageScoreLastWeek)} last week
 				</p>
 			</DashboardBadge>
 			<DashboardBadge
