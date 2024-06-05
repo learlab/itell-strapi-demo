@@ -1,15 +1,17 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { PageTitle } from "@/components/page-title";
+import { lucia } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { allPagesSorted } from "@/lib/pages";
-import { getUserPageSlug } from "@/lib/user/page-slug";
 import { Skeleton } from "@itell/ui/server";
 import { BookmarkIcon } from "lucide-react";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 export default async function () {
-	const userPageSlug = getUserPageSlug();
+	const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+	const result = sessionId ? await lucia.validateSession(sessionId) : null;
+	const userPageSlug = result?.user?.pageSlug || null;
 	const headersList = headers();
 	const pathname = headersList.get("x-pathname") as string;
 	const split = pathname.split("/");

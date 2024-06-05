@@ -1,11 +1,11 @@
 "use client";
-import { SessionUser } from "@/lib/auth";
 import { useSession } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { PageData } from "@/lib/utils";
+import { incrementUserPage } from "@/lib/user/actions";
+import { PageData, reportSentry } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
+import { User } from "lucia";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -16,7 +16,7 @@ import { StatusButton } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
-	user: NonNullable<SessionUser>;
+	user: User;
 	pageStatus: PageStatus;
 	page: PageData;
 };
@@ -42,8 +42,8 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 		chunks: state.chunks,
 	}));
 	const isReady = pageStatus.unlocked || currentChunk === chunks.at(-1);
-	const { setUser } = useSession();
 	const router = useRouter();
+	const { setUser } = useSession();
 	const [state, action] = useFormState<FormState>(
 		async (state) => {
 			try {
@@ -51,36 +51,26 @@ export const SummaryFormSimple = ({ user, pageStatus, page }: Props) => {
 					if (page.nextPageSlug) {
 						router.push(page.nextPageSlug);
 					}
-				} else {
-					const res = await fetch("/api/user", {
-						method: "POST",
-						body: JSON.stringify({
-							userId: user.id,
-							pageSlug: page.page_slug,
-						}),
-					});
-					if (!res.ok) {
-						throw new Error(await res.text());
-					}
-					const { nextSlug } = (await res.json()) as { nextSlug: string };
-					if (isLastPage(page.page_slug)) {
-						setUser({ ...user, finished: true });
-						toast.info(
-							"You have finished the entire textbook! Redirecting to the outtake survey soon.",
-						);
-						setTimeout(() => {
-							window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
-						}, 3000);
-					} else {
-						setUser({ ...user, pageSlug: nextSlug });
-					}
 				}
+
+				const nextSlug = await incrementUserPage(user.id, page.page_slug);
+				if (!isLastPage(page.page_slug)) {
+					setUser({ ...user, pageSlug: nextSlug });
+				} else {
+					setUser({ ...user, finished: true });
+					toast.info(
+						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
+					);
+					setTimeout(() => {
+						window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
+					}, 3000);
+				}
+
 				return { finished: true, error: null };
 			} catch (err) {
-				Sentry.captureMessage("summary error", {
-					extra: {
-						msg: JSON.stringify(err),
-					},
+				reportSentry("summary simple", {
+					pageSlug: page.page_slug,
+					error: err,
 				});
 				return { finished: false, error: "internal" };
 			}

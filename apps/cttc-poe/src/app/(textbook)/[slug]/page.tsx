@@ -22,7 +22,6 @@ import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
 import { Info } from "@itell/ui/server";
-import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 

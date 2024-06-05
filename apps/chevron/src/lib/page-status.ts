@@ -20,6 +20,10 @@ export const getPageStatus = ({
 	userPageSlug: string | null;
 	userFinished: boolean;
 }): PageStatus => {
+	if (userFinished) {
+		return { unlocked: true, latest: pageSlug === userPageSlug };
+	}
+
 	if (!userPageSlug) {
 		return {
 			unlocked: isPageUnlockedWithoutUser(pageSlug),

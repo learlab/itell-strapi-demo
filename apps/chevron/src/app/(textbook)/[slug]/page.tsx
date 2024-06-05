@@ -21,7 +21,6 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 

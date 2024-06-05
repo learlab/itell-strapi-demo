@@ -4,11 +4,10 @@ import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
-import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
+import { reportSentry } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
@@ -24,7 +23,7 @@ import {
 import { useConstructedResponse } from "../provider/page-provider";
 import { NextChunkButton } from "./next-chunk-button";
 import { SubmitButton } from "./submit-button";
-import { AnswerStatusReread, AnswerStatusStairs } from "./types";
+import { AnswerStatusReread } from "./types";
 
 type QuestionScore = 0 | 1 | 2;
 
@@ -112,12 +111,10 @@ export const QuestionBoxReread = ({
 			};
 		} catch (err) {
 			console.log("constructed response evaluation error", err);
-			Sentry.captureMessage("constructed response scoring error", {
-				extra: {
-					pageSlug,
-					chunkSlug,
-					input,
-				},
+			reportSentry("score constructed response", {
+				pageSlug,
+				chunkSlug,
+				input,
 			});
 			return {
 				error: "Answer evaluation failed, please try again later",

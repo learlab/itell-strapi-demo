@@ -2,9 +2,9 @@
 
 import { createChatMessage } from "@/lib/chat/actions";
 import { useChatStore } from "@/lib/store/chat";
+import { reportSentry } from "@/lib/utils";
 import { ChatHistory } from "@itell/core/chatbot";
 import { cn, parseEventStream } from "@itell/core/utils";
-import * as Sentry from "@sentry/nextjs";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
@@ -158,10 +158,10 @@ export const ChatInputStairs = ({
 				throw new Error("invalid response");
 			}
 		} catch (err) {
-			Sentry.captureMessage("chat input error", {
-				extra: {
-					msg: err,
-				},
+			reportSentry("eval chat stairs", {
+				error: err,
+				input: text,
+				pageSlug,
 			});
 			updateBotMessage(
 				botMessageId,

@@ -2,7 +2,7 @@ import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { cn } from "@itell/core/utils";
 import { Info, Warning } from "@itell/ui/server";
-import { InfoIcon } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 
 type Props = {
 	className?: string;
@@ -47,16 +47,16 @@ export const SummaryFeedback = ({
 			</header>
 			{feedback && terms.length > 0 && (
 				<Component>
-					<p>
+					<p className="my-2">
 						Improve your summary by including some of the following keywords:
 					</p>
-					<ul className="space-y-2">
+					<ul className="space-y-1">
 						{terms.map((term) => (
 							<li
 								className="flex items-center gap-2 text-accent-foreground"
 								key={term}
 							>
-								<InfoIcon className="size-4" /> {term}
+								<Lightbulb className="size-4" /> {term}
 							</li>
 						))}
 					</ul>
@@ -65,7 +65,7 @@ export const SummaryFeedback = ({
 							<AccordionItem
 								value="first"
 								title="Scoring details"
-								accordionTriggerClassName="text-sm underline-none"
+								accordionTriggerClassName="text-sm my-2 underline-none"
 							>
 								{feedback.promptDetails.map(
 									(detail) =>

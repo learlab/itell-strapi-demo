@@ -9,7 +9,7 @@ import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { cn } from "@itell/core/utils";
 import type { Metadata } from "next";
-import { LoginRefresher } from "./login-refreser";
+import { LoginRefresher } from "./login-refresher";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const siteConfig = await getSiteConfig();

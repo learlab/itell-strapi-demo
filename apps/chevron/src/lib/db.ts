@@ -8,12 +8,9 @@ export const client = postgres(env.DATABASE_URL, { prepare: false });
 // { schema } is used for relational queries
 export const db = drizzle(client, { schema });
 
-export const findUser = async (id: string) => {
-	const result = await db
-		.select()
-		.from(schema.users)
-		.where(eq(schema.users.id, id));
-	return result[0];
-};
-
 export const first = <T>(res: T[]) => (res.length > 0 ? res[0] : null);
+export const findUser = async (id: string) => {
+	return first(
+		await db.select().from(schema.users).where(eq(schema.users.id, id)),
+	);
+};

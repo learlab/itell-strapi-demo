@@ -1,8 +1,8 @@
-import { SessionUser, getSession } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { Warning } from "@itell/ui/server";
+import { User } from "lucia";
 import { Suspense } from "react";
 import { SummaryCount } from "./summary-count";
 import { SummaryDescription } from "./summary-description";
@@ -11,7 +11,7 @@ import { SummaryFormSelector } from "./summary-form-selector";
 type Props = {
 	pageSlug: string;
 	pageStatus: PageStatus;
-	user: NonNullable<SessionUser>;
+	user: User;
 	condition: string;
 };
 

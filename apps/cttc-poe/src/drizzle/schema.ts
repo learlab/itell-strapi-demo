@@ -141,7 +141,7 @@ export const summaries = pgTable("summaries", {
 	isPassed: boolean("isPassed").notNull(),
 	containmentScore: doublePrecision("containment_score").notNull(),
 	similarityScore: doublePrecision("similarity_score").notNull(),
-	wordingScore: doublePrecision("wording_score"),
+	languageScore: doublePrecision("language_score"),
 	contentScore: doublePrecision("content_score"),
 	createdAt: CreatedAt,
 	updatedAt: UpdatedAt,
