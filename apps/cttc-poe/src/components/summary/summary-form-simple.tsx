@@ -91,8 +91,9 @@ export const SummaryFormSimple = React.memo(
 		return (
 			<section className="max-w-2xl mx-auto space-y-4">
 				<p className="font-light text-lg mb-4">
-					Below is a reference summary for this page. Please read it carefully
-					to better understand the information presented.
+					{state.finished
+						? "You have completed all the assessments on this page, but you are still welcome to read the reference summary below to enhance understanding."
+						: "Below is a reference summary for this page. Please read it carefully to better understand the information presented."}
 				</p>
 				<p>{page.referenceSummary}</p>
 

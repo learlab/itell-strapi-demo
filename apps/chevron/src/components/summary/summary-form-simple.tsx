@@ -84,8 +84,9 @@ export const SummaryFormSimple = React.memo(
 		return (
 			<section className="max-w-2xl mx-auto space-y-4">
 				<p className="font-light text-lg mb-4">
-					Below is a reference summary for this page. Please read it carefully
-					to better understand the information presented.
+					{state.finished
+						? "You have completed all the assessments on this page, but you are still welcome to read the reference summary below to enhance understanding."
+						: "Below is a reference summary for this page. Please read it carefully to better understand the information presented."}
 				</p>
 				<p>{page.referenceSummary}</p>
 
@@ -97,7 +98,8 @@ export const SummaryFormSimple = React.memo(
 							</span>
 						) : page.nextPageSlug ? (
 							<span className="inline-flex gap-1 items-center">
-								<ArrowRightIcon className="size-4" /> Go to next page
+								Go to next page
+								<ArrowRightIcon className="size-4 ml-2" />
 							</span>
 						) : (
 							<span>Textbook finished</span>
