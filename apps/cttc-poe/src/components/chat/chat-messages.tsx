@@ -2,10 +2,9 @@
 
 import { Button } from "@/components/client-components";
 import { useChatStore } from "@/lib/store/chat";
-import { getChunkElement } from "@/lib/utils";
+import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
-import { buttonVariants } from "@itell/ui/server";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
@@ -82,9 +81,6 @@ const MessageItem = ({
 		if (message.context) {
 			formattedSlug = message.context.split("-").slice(0, -1).join(" ");
 			chunk = getChunkElement(message.context);
-			if (chunk) {
-				chunk.id = message.context;
-			}
 		}
 	}
 
@@ -123,18 +119,19 @@ const MessageItem = ({
 					>
 						{"text" in message ? <p>{message.text}</p> : message.Node}
 						{chunk && (
-							<a
-								href={`#${chunk.id}`}
-								className={cn(
-									buttonVariants({ variant: "outline", size: "sm" }),
-									"mt-1",
-								)}
+							<Button
+								size={"sm"}
+								variant={"outline"}
+								className="mt-1"
+								onClick={() => {
+									scrollToElement(chunk);
+								}}
 							>
 								Source:{" "}
 								{formattedSlug.length > 25
 									? `${formattedSlug.slice(0, 22)}...`
 									: formattedSlug}
-							</a>
+							</Button>
 						)}
 					</div>
 				)}
