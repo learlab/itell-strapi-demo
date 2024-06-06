@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { Button, StatusButton } from "../client-components";
+import { NextPageButton } from "../page/next-page-button";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
@@ -53,17 +54,16 @@ type Action =
 	| { type: "finish"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
 
-const initialState: State = {
-	prevInput: "",
-	pending: false,
-	error: null,
-	finished: false,
-};
-
 const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
+	const initialState: State = {
+		prevInput: "",
+		pending: false,
+		error: null,
+		finished: pageStatus.unlocked,
+	};
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
@@ -243,12 +243,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						You have finished this page. You can choose to refine your summary
 						or move on to the next page.
 					</p>
-					<PageLink
-						pageSlug={page.nextPageSlug}
-						className={buttonVariants({ variant: "secondary" })}
-					>
-						Go to next page
-					</PageLink>
+					<NextPageButton pageSlug={page.nextPageSlug} />
 				</div>
 			)}
 

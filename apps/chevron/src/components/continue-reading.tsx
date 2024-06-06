@@ -2,12 +2,10 @@
 
 import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { firstPage } from "@/lib/pages";
-import { delay } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import React, { useTransition } from "react";
+import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { Button, StatusButton } from "./client-components";
-import { Spinner } from "./spinner";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
 	text?: string;

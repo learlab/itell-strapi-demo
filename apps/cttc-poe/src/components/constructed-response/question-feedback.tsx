@@ -7,7 +7,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
-import { delay } from "@/lib/utils";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -57,7 +56,6 @@ export const QuestionFeedback = ({
 								tags.push(tag);
 							}
 						}
-						await delay(1000);
 						await createConstructedResponseFeedback({
 							text,
 							chunkSlug,

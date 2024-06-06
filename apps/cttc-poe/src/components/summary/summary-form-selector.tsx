@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { PageData } from "@/lib/utils";

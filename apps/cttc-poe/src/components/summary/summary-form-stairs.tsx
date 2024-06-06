@@ -34,6 +34,7 @@ import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
+import { FileQuestionIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
@@ -41,6 +42,7 @@ import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button, StatusButton } from "../client-components";
+import { NextPageButton } from "../page/next-page-button";
 import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
@@ -423,19 +425,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
-					<PageLink
-						pageSlug={page.nextPageSlug}
-						className={buttonVariants({ variant: "secondary" })}
-					>
-						Go to next page
-					</PageLink>
+					<NextPageButton pageSlug={page.nextPageSlug} />
 				)}
 				{state.stairsQuestion && (
 					<Button
 						variant={"outline"}
 						onClick={() => goToQuestion(state.stairsQuestion as StairsQuestion)}
 					>
-						See question
+						<span>See question</span>
+						<FileQuestionIcon className="size-4 ml-2" />
 					</Button>
 				)}
 			</div>
