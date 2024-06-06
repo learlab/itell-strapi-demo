@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, useSessionAction } from "@/lib/auth/context";
+import { useSessionAction } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -43,7 +43,6 @@ import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
-import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
@@ -159,6 +158,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const goToQuestion = (question: StairsQuestion) => {
 		const el = getChunkElement(question.chunk);
 		if (el) {
+			scrollToElement(el);
 			driverObj.highlight({
 				element: el,
 				popover: {

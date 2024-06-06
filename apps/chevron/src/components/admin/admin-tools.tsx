@@ -1,5 +1,14 @@
 "use client";
 import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
 	Button,
 	Label,
 	RadioGroup,
@@ -22,7 +31,7 @@ import {
 } from "@/components/client-components";
 import { Condition } from "@/lib/control/condition";
 import { allSummaryPagesSorted } from "@/lib/pages";
-import { updateUser } from "@/lib/user/actions";
+import { resetUser, updateUser } from "@/lib/user/actions";
 import { makePageHref } from "@/lib/utils";
 import { SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -35,10 +44,47 @@ type Props = {
 	condition: string;
 };
 
+const RestartTextbook = ({ userId }: { userId: string }) => {
+	const [pending, startTransition] = useTransition();
+	const router = useRouter();
+
+	return (
+		<AlertDialog>
+			<AlertDialogTrigger asChild>
+				<Button>Restart textbook</Button>
+			</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+					<AlertDialogDescription>
+						This action will reset your progress to the first page and delete
+						all of your data, including summaries, chat messages, question
+						answers, etc.
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
+					<AlertDialogAction
+						disabled={pending}
+						onClick={() => {
+							startTransition(async () => {
+								const pageSlug = await resetUser(userId);
+								localStorage.clear();
+								router.push(makePageHref(pageSlug));
+							});
+						}}
+					>
+						{pending && <Spinner className="inline mr-2" />} Continue
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
+	);
+};
+
 export const AdminTools = ({ userId, condition }: Props) => {
 	const finishPage = useConstructedResponse((state) => state.finishPage);
 	const [pending, startTransition] = useTransition();
-	const router = useRouter();
 
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -170,6 +216,9 @@ export const AdminTools = ({ userId, condition }: Props) => {
 							Unblur all chunks from the current page and unlock summary
 							submission
 						</p>
+					</div>
+					<div>
+						<RestartTextbook userId={userId} />
 					</div>
 					<SheetClose asChild>
 						<Button type="submit" disabled={pending}>

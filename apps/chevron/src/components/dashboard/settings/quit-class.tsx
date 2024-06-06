@@ -42,7 +42,7 @@ export const QuitClass = ({ userId }: Props) => {
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
 					<AlertDialogAction asChild>
 						<Button
 							onClick={async () => {

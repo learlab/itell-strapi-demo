@@ -159,6 +159,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const goToQuestion = (question: StairsQuestion) => {
 		const el = getChunkElement(question.chunk);
 		if (el) {
+			scrollToElement(el);
 			driverObj.highlight({
 				element: el,
 				popover: {

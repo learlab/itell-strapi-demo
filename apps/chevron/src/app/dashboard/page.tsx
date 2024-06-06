@@ -8,7 +8,6 @@ import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
-import { getUser } from "@/lib/user";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { ReadingTimeChartLevel } from "@itell/core/types";
 import Link from "next/link";

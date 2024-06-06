@@ -237,7 +237,12 @@ export const focus_times = pgTable(
 export const chat_messages = pgTable(
 	"chat_messages",
 	{
-		userId: text("user_id").notNull(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => users.id, {
+				onDelete: "cascade",
+				onUpdate: "cascade",
+			}),
 		pageSlug: text("page_slug").notNull(),
 		data: jsonb("data").array().notNull().$type<ChatMessageData[]>(),
 		createdAt: CreatedAt,

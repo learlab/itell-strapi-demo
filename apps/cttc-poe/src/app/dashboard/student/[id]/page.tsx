@@ -5,7 +5,7 @@ import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { routes } from "@/lib/navigation";
-import { getUser } from "@/lib/user";
+import { getUser } from "@/lib/user/actions";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
 

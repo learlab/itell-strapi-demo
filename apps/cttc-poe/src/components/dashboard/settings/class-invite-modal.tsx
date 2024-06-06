@@ -77,7 +77,7 @@ export const ClassInviteModal = ({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
 					{canJoinClass && (
 						<AlertDialogAction
 							onClick={joinClass}
