@@ -5,6 +5,8 @@ export const allPagesSorted = allPages.sort((a, b) => {
 });
 
 export const firstPage = allPagesSorted[0];
+export const firstSummaryPage =
+	allPagesSorted.find((page) => page.summary) || firstPage;
 export const allSummaryPagesSorted = allPagesSorted.filter(
 	(page) => page.summary,
 );

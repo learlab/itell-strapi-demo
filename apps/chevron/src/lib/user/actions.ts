@@ -12,7 +12,7 @@ import {
 import { eq } from "drizzle-orm";
 import { PgUpdateSetSource } from "drizzle-orm/pg-core";
 import { db, findUser, first } from "../db";
-import { firstPage, isLastPage, isPageAfter, nextPage } from "../pages";
+import { firstSummaryPage, isLastPage, isPageAfter, nextPage } from "../pages";
 
 export const getUser = async (userId: string) => {
 	return first(await db.select().from(users).where(eq(users.id, userId)));
@@ -58,6 +58,6 @@ export const resetUser = async (userId: string) => {
 			.delete(constructed_responses_feedback)
 			.where(eq(constructed_responses_feedback.userId, userId));
 
-		return firstPage.page_slug;
+		return firstSummaryPage.page_slug;
 	});
 };

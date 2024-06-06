@@ -4,7 +4,7 @@ import { PageLink } from "@/components/page/page-link";
 import { DashboardShell } from "@/components/page/shell";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import { allPagesSorted, firstPage, firstSummaryPage } from "@/lib/pages";
+import { allPagesSorted, firstSummaryPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
 import { groupby } from "@itell/core/utils";
 import { redirect } from "next/navigation";
