@@ -16,7 +16,7 @@ import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type StudentData = Pick<User, "id" | "email" | "name" | "createdAt"> & {
-	progress: { chapter: number; title: string; index: number };
+	progress: { index: number; text: string };
 	summaryCounts: number;
 };
 
@@ -63,19 +63,13 @@ export const columns: ColumnDef<StudentData>[] = [
 		accessorKey: "progress",
 		header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
 		sortingFn: (rowA, rowB, columnId) => {
-			if (rowA.original.progress.chapter > rowB.original.progress.chapter) {
-				return 1;
-			}
-
-			if (rowA.original.progress.chapter === rowB.original.progress.chapter) {
-				return rowA.original.progress > rowB.original.progress ? 1 : -1;
-			}
-
-			return -1;
+			return rowA.original.progress.index > rowB.original.progress.index
+				? 1
+				: -1;
 		},
 		cell: ({ row }) => {
 			const progress = row.original.progress;
-			return `${progress.chapter + 1}. ${progress.title}`;
+			return `${progress.text}`;
 		},
 	},
 	{
