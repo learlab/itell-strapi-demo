@@ -5,6 +5,8 @@ import { useChatStore } from "@/lib/store/chat";
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Avatar, AvatarImage } from "../client-components";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
@@ -74,13 +76,15 @@ const MessageItem = ({
 	message,
 }: { userName: string | null; userImage: string | null; message: Message }) => {
 	const activeMessageId = useChatStore((state) => state.activeMessageId);
-	let chunk: HTMLElement | null = null;
+	const router = useRouter();
+	const context = "context" in message ? message.context : "";
 	let formattedSlug = "";
 	// Get div where data-subsection-id is message.context
-	if (!message.isUser) {
-		if (message.context) {
-			formattedSlug = message.context.split("-").slice(0, -1).join(" ");
-			chunk = getChunkElement(message.context);
+	if (context) {
+		if (context === "[User Guide]") {
+			formattedSlug = "User Guide";
+		} else {
+			formattedSlug = context.split("-").slice(0, -1).join(" ");
 		}
 	}
 
@@ -118,13 +122,23 @@ const MessageItem = ({
 						})}
 					>
 						{"text" in message ? <p>{message.text}</p> : message.Node}
-						{chunk && (
+						{context && (
 							<Button
 								size={"sm"}
 								variant={"outline"}
 								className="mt-1"
 								onClick={() => {
-									scrollToElement(chunk);
+									if (context === "[User Guide]") {
+										router.push("/guide");
+									} else {
+										const element = getChunkElement(context);
+										if (element) {
+											scrollToElement(element);
+											return;
+										}
+
+										toast.warning("Source not found");
+									}
 								}}
 							>
 								Source:{" "}

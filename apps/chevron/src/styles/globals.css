@@ -74,22 +74,6 @@ h5,
   max-width: 60%;
 }
 
-/* .driver-active #textbook-page-wrapper {
-  justify-content: end;
-} */
-
 .driver-popover {
-  max-width: 350px !important;
-  /* max-width: 350px !important; */
-  @apply bg-background text-foreground !important;
-}
-
-@media (max-width: 768px) {
-  .chapter-sidebar {
-    display: none;
-  }
-
-  .toc-sidebar {
-    display: none;
-  }
+  @apply max-w-80 bg-background text-foreground !important;
 }

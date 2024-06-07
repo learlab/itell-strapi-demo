@@ -334,6 +334,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						throw new Error("invalid stairs chunk");
 					}
 				}
+			} else {
+				throw new Error(await response.text());
 			}
 
 			if (summaryResponse) {
@@ -395,7 +397,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				}
 			}
 		} catch (err) {
-			console.log("summary scoring error", err);
+			console.log("summary scoring", err);
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 			clearStages();
 			reportSentry("score summary stairs", {

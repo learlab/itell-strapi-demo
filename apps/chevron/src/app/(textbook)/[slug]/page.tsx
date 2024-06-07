@@ -66,7 +66,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2"
 			>
 				<aside
-					className="chapter-sidebar sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
+					className="chapter-sidebar hidden md:block sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
 					<ChapterToc
@@ -91,7 +91,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</section>
 
 				<aside
-					className="toc-sidebar relative animate-out ease-in-out duration-200"
+					className="toc-sidebar hidden sm:block relative animate-out ease-in-out duration-200"
 					style={{ flexGrow: 1 }}
 				>
 					<div className="sticky top-20">
