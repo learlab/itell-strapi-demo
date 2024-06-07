@@ -160,7 +160,7 @@ export const ConstructedResponseControl = ({
 				el.style.filter = "blur(4px)";
 			}
 
-			if (chunkIndex === chunks.length - 1) {
+			if (chunks.length > 0 && chunkIndex === chunks.length - 1) {
 				insertScrollBackButton(el);
 			}
 		}

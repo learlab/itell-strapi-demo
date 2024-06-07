@@ -1,8 +1,7 @@
 "use client";
 
 import { getChunkElement, scrollToElement } from "@/lib/utils";
-import { cn } from "@itell/core/utils";
-import { buttonVariants } from "@itell/ui/server";
+import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 export const ScrollBackButton = () => {
@@ -14,29 +13,22 @@ export const ScrollBackButton = () => {
 	const scrollToCurrentChunk = () => {
 		const element = getChunkElement(currentChunk);
 		if (element) {
-			scrollToElement(element as HTMLDivElement);
+			scrollToElement(element);
 		}
 	};
 
-	// disappear is user unlocks all chunks
+	// disappear as user unlocks all chunks
 	if (chunks.at(-1) === currentChunk) {
 		return null;
 	}
 
 	return (
 		<div className="flex justify-center items-center p-4 gap-2">
-			<button
-				className={cn(
-					buttonVariants({ variant: "secondary" }),
-					"bg-emerald-400  hover:bg-emerald-200 text-white m-2 p-2",
-				)}
-				onClick={scrollToCurrentChunk}
-				type="button"
-			>
-				Click Here to Scroll Back Up to Your Current Subsection
-			</button>
-			<span className="absolute left-0 w-1/4 h-px bg-emerald-800 opacity-50" />
-			<span className="absolute right-0 w-1/4 h-px bg-emerald-800 opacity-50" />
+			<Button variant={"outline"} onClick={scrollToCurrentChunk} type="button">
+				Scroll back to current section
+			</Button>
+			<span className="absolute left-0 w-1/4 h-0.5 bg-accent-foreground opacity-50" />
+			<span className="absolute right-0 w-1/4 h-0.5 bg-accent-foreground opacity-50" />
 		</div>
 	);
 };

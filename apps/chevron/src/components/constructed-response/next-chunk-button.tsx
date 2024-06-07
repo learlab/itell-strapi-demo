@@ -54,15 +54,11 @@ export const NextChunkButton = ({
 
 	return (
 		<div className="flex justify-center items-center p-4 gap-2">
-			<Button
-				onClick={onSubmit}
-				className="bg-red-400  hover:bg-red-200 text-white m-2 p-2"
-				{...rest}
-			>
+			<Button onClick={onSubmit} {...rest}>
 				{children}
 			</Button>
-			<span className="absolute left-0 w-1/4 h-px bg-red-800 opacity-50" />
-			<span className="absolute right-0 w-1/4 h-px bg-red-800 opacity-50" />
+			<span className="absolute left-0 w-1/4 h-0.5 bg-accent-foreground opacity-50" />
+			<span className="absolute right-0 w-1/4 h-0.5 bg-accent-foreground opacity-50" />
 		</div>
 	);
 };
