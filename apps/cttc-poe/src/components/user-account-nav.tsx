@@ -2,6 +2,7 @@
 
 import { logout } from "@/lib/auth/actions";
 import { useSession } from "@/lib/auth/context";
+import { User } from "lucia";
 import {
 	ChevronDownIcon,
 	ChevronUpIcon,
@@ -25,10 +26,9 @@ import {
 import { Spinner } from "./spinner";
 import { UserAvatar } from "./user-avatar";
 
-export const UserAccountNav = () => {
+export const UserAccountNav = ({ user }: { user: User | null }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const router = useRouter();
-	const { user } = useSession();
 	const [pending, setPending] = useState(false);
 
 	if (!user) {

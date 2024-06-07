@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
+import React from "react";
 
-import { cn } from "@itell/core/utils";
 import { MobileNav } from "@/components/nav/mobile-nav";
 import { DashboardNavItem } from "@/types/nav";
+import { cn } from "@itell/core/utils";
+import { User } from "lucia";
 import { MenuIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { CommandMenu } from "../command-menu";
@@ -14,13 +15,18 @@ import ThemeToggle from "../theme/theme-toggle";
 import { UserAccountNav } from "../user-account-nav";
 
 interface Props {
+	user: User | null;
 	items?: DashboardNavItem[];
 	children?: React.ReactNode;
 }
 
-export function DashboardNavMenu({ items, children }: Props) {
+export function DashboardNavMenu({ user, items, children }: Props) {
 	const segment = useSelectedLayoutSegment();
 	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<div className="flex items-center justify-between flex-1 md:flex-initial">
@@ -56,7 +62,7 @@ export function DashboardNavMenu({ items, children }: Props) {
 			<div className="hidden sm:flex items-center gap-2">
 				<CommandMenu />
 				<ThemeToggle />
-				<UserAccountNav />
+				<UserAccountNav user={user} />
 			</div>
 		</div>
 	);

@@ -105,7 +105,7 @@ export async function GET(req: Request): Promise<Response> {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/?login=true",
+				Location: "/",
 			},
 		});
 	} catch {
