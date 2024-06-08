@@ -2,7 +2,7 @@
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
-import { type AnimationProps, motion } from "framer-motion";
+import { AnimatePresence, type AnimationProps, motion } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -51,33 +51,50 @@ export const NextPageButton = ({
 				});
 			}}
 			className={cn(
-				"relative backdrop-blur-xl transition-[box-shadow] duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)]",
+				"relative w-40 backdrop-blur-xl transition-[box-shadow] duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)]",
 				buttonVariants({ variant: "default" }),
 			)}
 		>
-			{pending ? (
-				<Spinner className="size-4" />
-			) : (
-				<>
-					<span
-						className="relative block h-full w-full text-sm tracking-wide "
-						style={{
-							maskImage:
-								"linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
-						}}
-					>
-						{text}
-					</span>
-					<ArrowRightIcon className="size-4 ml-2" />
-					<span
-						style={{
-							mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
-							maskComposite: "exclude",
-						}}
-						className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,hsl(var(--primary)/10%)_calc(var(--x)+20%),hsl(var(--primary)/50%)_calc(var(--x)+25%),hsl(var(--primary)/10%)_calc(var(--x)+100%))] p-px"
-					/>
-				</>
-			)}
+			<AnimatePresence mode="popLayout" initial={false}>
+				<motion.span
+					className="flex w-full items-center justify-center"
+					style={{ textShadow: "0px 1px 1.5px rgba(0, 0, 0, 0.16)" }}
+					initial="initial"
+					animate="visible"
+					exit="exit"
+					variants={{
+						initial: { opacity: 0, y: -25 },
+						visible: { opacity: 1, y: 0 },
+						exit: { opacity: 0, y: 25 },
+					}}
+					transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+					key={String(pending)}
+				>
+					{pending ? (
+						<Spinner className="size-4" />
+					) : (
+						<>
+							<span
+								className="relative block h-full w-full text-sm tracking-wide "
+								style={{
+									maskImage:
+										"linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
+								}}
+							>
+								{text}
+							</span>
+							<ArrowRightIcon className="size-4 ml-2" />
+							<span
+								style={{
+									mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
+									maskComposite: "exclude",
+								}}
+								className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,hsl(var(--primary)/10%)_calc(var(--x)+20%),hsl(var(--primary)/50%)_calc(var(--x)+25%),hsl(var(--primary)/10%)_calc(var(--x)+100%))] p-px"
+							/>
+						</>
+					)}
+				</motion.span>
+			</AnimatePresence>
 		</motion.button>
 	);
 };
