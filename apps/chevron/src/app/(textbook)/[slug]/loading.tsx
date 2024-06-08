@@ -31,7 +31,7 @@ export default async function () {
 	return (
 		<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
 			<aside
-				className="chapter-sidebar sticky top-20 h-fit z-20 basis-0"
+				className="chapter-sidebar hidden md:block sticky top-20 h-fit z-20 basis-0"
 				style={{ flexGrow: 1 }}
 			>
 				<ChapterToc
@@ -55,7 +55,10 @@ export default async function () {
 				))}
 			</section>
 
-			<aside className="toc-sidebar relative" style={{ flexGrow: 1 }}>
+			<aside
+				className="toc-sidebar hidden sm:block relative"
+				style={{ flexGrow: 1 }}
+			>
 				<p className="font-medium text-sm flex items-center">
 					<span>ON THIS PAGE</span>
 					<BookmarkIcon className="ml-2 size-4" />

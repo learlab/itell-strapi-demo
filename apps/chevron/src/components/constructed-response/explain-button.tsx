@@ -2,9 +2,11 @@
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
+import { useActionStatus } from "@itell/core/hooks";
 import { parseEventStream } from "@itell/core/utils";
+import { Warning } from "@itell/ui/server";
 import { HelpCircleIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button } from "../client-components";
 import { Spinner } from "../spinner";
@@ -18,13 +20,9 @@ type Props = {
 export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 	const { user } = useSession();
 	const [response, setResponse] = useState("");
-	const { pending } = useFormStatus();
-	const [loading, setLoading] = useState(false);
-	const isPending = pending || loading;
-
-	const onClick = async () => {
-		setLoading(true);
-		try {
+	const { pending: formPending } = useFormStatus();
+	const { action, isPending, isDelayed, isError, error } = useActionStatus(
+		async () => {
 			const res = await fetch("/api/itell/score/explain", {
 				method: "POST",
 				headers: {
@@ -50,6 +48,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 							setResponse(response);
 						} catch {
 							console.log("invalid json", data);
+							throw new Error("invalid json");
 						}
 					}
 				});
@@ -63,17 +62,15 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 					data: { chunkSlug, response },
 				});
 			}
-		} catch (err) {
-			reportSentry("explain cr", {
-				pageSlug,
-				chunkSlug,
-				input,
-				error: err,
-			});
-		}
+		},
+	);
 
-		setLoading(false);
-	};
+	useEffect(() => {
+		if (isError) {
+			console.log("explain cr", error);
+			reportSentry("explain cr", error);
+		}
+	}, [isError]);
 
 	return (
 		<div className="flex flex-col items-center justify-center">
@@ -82,8 +79,8 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				variant="secondary"
 				className="gap-2"
 				type="button"
-				disabled={isPending}
-				onClick={onClick}
+				disabled={formPending || isPending}
+				onClick={action}
 			>
 				{isPending ? (
 					<Spinner className="size-4" />
@@ -92,6 +89,16 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				)}
 				What's wrong with my answer?
 			</Button>
+
+			{isError && <Warning>{error}</Warning>}
+
+			{isDelayed && (
+				<p className="text-sm">
+					The request is taking long than usual, you can try refreshing and try
+					again. If this problem persists, please report to
+					lear.lab.vu@gmail.com.
+				</p>
+			)}
 		</div>
 	);
 };
