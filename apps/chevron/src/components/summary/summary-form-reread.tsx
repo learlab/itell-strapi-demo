@@ -1,9 +1,13 @@
 "use client";
 
+import { useSessionAction } from "@/lib/auth/context";
+import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
+import { createSummary } from "@/lib/summary/actions";
+import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -20,18 +24,12 @@ import {
 import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
-
-import { useSession, useSessionAction } from "@/lib/auth/context";
-import { isProduction } from "@/lib/constants";
-import { createSummary } from "@/lib/summary/actions";
-import { incrementUserPage } from "@/lib/user/actions";
 import { User } from "lucia";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useImmerReducer } from "use-immer";
+import { useActionStatus } from "use-action-status";
 import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
-import { PageLink } from "../page/page-link";
 import { useConstructedResponse } from "../provider/page-provider";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 
@@ -49,21 +47,14 @@ type State = {
 };
 
 type Action =
-	| { type: "submit" }
 	| { type: "fail"; payload: ErrorType }
-	| { type: "finish"; payload: boolean }
-	| { type: "set_prev_input"; payload: string };
+	| { type: "finish"; payload: boolean };
 
 const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
-	const initialState: State = {
-		prevInput: "",
-		pending: false,
-		error: null,
-		finished: pageStatus.unlocked,
-	};
+	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
@@ -83,28 +74,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
-		switch (action.type) {
-			case "set_prev_input":
-				draft.prevInput = action.payload;
-				break;
-			case "submit":
-				draft.pending = true;
-				draft.error = null;
-				break;
-			case "fail":
-				draft.pending = false;
-				draft.error = action.payload;
-				break;
-			case "finish":
-				draft.pending = false;
-				draft.finished = action.payload;
-				break;
-		}
-	}, initialState);
 	const { nodes: portalNodes, addNode } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const { updateUser } = useSessionAction();
+	const requestBodyRef = useRef<string>("");
+	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 
 	const goToRandomChunk = () => {
 		// in production, only highlight 25% of the time
@@ -146,93 +120,91 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		});
 	}, []);
 
-	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		clearStages();
+	const { status, isError, isDelayed, isPending, action, error } =
+		useActionStatus(
+			async (e: React.FormEvent<HTMLFormElement>) => {
+				e.preventDefault();
 
-		dispatch({ type: "submit" });
-		addStage("Saving");
+				clearStages();
+				addStage("Saving");
 
-		const formData = new FormData(e.currentTarget);
-		const input = String(formData.get("input")).replaceAll("\u0000", "");
+				const formData = new FormData(e.currentTarget);
+				const input = String(formData.get("input")).replaceAll("\u0000", "");
 
-		saveSummaryLocal(pageSlug, input);
+				saveSummaryLocal(pageSlug, input);
+				requestBodyRef.current = JSON.stringify({
+					summary: input,
+					page_slug: pageSlug,
+				});
+				console.log("requestBody", requestBodyRef.current);
+				const response = await fetch("/api/itell/score/summary", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: requestBodyRef.current,
+				});
+				const json = await response.json();
+				const parsed = SummaryResponseSchema.safeParse(json);
+				if (!parsed.success) {
+					throw parsed.error;
+				}
+				const scores = parsed.data;
+				summaryResponseRef.current = scores;
 
-		dispatch({ type: "set_prev_input", payload: input });
+				await createSummary({
+					text: input,
+					userId: user.id,
+					pageSlug,
+					condition: Condition.RANDOM_REREAD,
+					isPassed: scores.is_passed || false,
+					containmentScore: scores.containment,
+					similarityScore: scores.similarity,
+					languageScore: scores.language,
+					contentScore: scores.content,
+				});
+				const nextSlug = await incrementUserPage(user.id, pageSlug);
+				finishStage("Saving");
+				setFinished(true);
 
-		let requestBody = "";
-		let summaryResponse: SummaryResponse | null = null;
+				if (isLastPage(pageSlug)) {
+					updateUser({ finished: true });
+					setIsTextbookFinished(true);
+					toast.info("You have finished the entire textbook!");
 
-		try {
-			requestBody = JSON.stringify({
-				summary: input,
-				page_slug: pageSlug,
-			});
-			console.log("requestBody", requestBody);
-			const response = await fetch("/api/itell/score/summary", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: requestBody,
-			});
-			const json = await response.json();
-			const parsed = SummaryResponseSchema.safeParse(json);
-			if (!parsed.success) {
-				throw parsed.error;
-			}
-			summaryResponse = parsed.data;
-			await createSummary({
-				text: input,
-				userId: user.id,
-				pageSlug,
-				condition: Condition.RANDOM_REREAD,
-				isPassed: summaryResponse.is_passed || false,
-				containmentScore: summaryResponse.containment,
-				similarityScore: summaryResponse.similarity,
-				languageScore: summaryResponse.language,
-				contentScore: summaryResponse.content,
-			});
-			const nextSlug = await incrementUserPage(user.id, pageSlug);
-			finishStage("Saving");
-			dispatch({
-				type: "finish",
-				payload: true,
-			});
+					return;
+				}
 
-			if (isLastPage(pageSlug)) {
-				updateUser({ finished: true });
-				setIsTextbookFinished(true);
-				toast.info("You have finished the entire textbook!");
-				return;
-			}
-
-			updateUser({ ...user, pageSlug: nextSlug });
-			if (!isProduction || !pageStatus.unlocked) {
-				goToRandomChunk();
-			}
-		} catch (err) {
-			finishStage("Analyzing");
-			clearStages();
-			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-
-			console.log("summary error", err);
-			reportSentry("score summary reread", {
-				body: requestBody,
-				response: summaryResponse,
-				error: err,
-			});
-		}
-	};
+				updateUser({ pageSlug: nextSlug });
+				if (!isProduction || !pageStatus.unlocked) {
+					goToRandomChunk();
+				}
+			},
+			{ delayTimeout: 1000 },
+		);
 
 	const isSummaryReady = useConstructedResponse(
 		(state) => state.isSummaryReady,
 	);
 
+	useEffect(() => {
+		if (isError) {
+			finishStage("Analyzing");
+			clearStages();
+
+			console.log("score summary reread", error);
+			reportSentry("score summary reread", {
+				body: requestBodyRef.current,
+				response: summaryResponseRef.current,
+				error,
+			});
+		}
+	}, [isError]);
+
 	return (
 		<section className="space-y-2">
 			{portalNodes}
-			{state.finished && page.nextPageSlug && (
+			{finished && page.nextPageSlug && (
 				<div className="space-y-2 space-x-2">
 					<p>
 						You have finished this page. You can choose to refine your summary
@@ -248,18 +220,25 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 
-			<form className="space-y-4" onSubmit={onSubmit}>
+			<form className="space-y-4" onSubmit={action}>
 				<SummaryInput
-					disabled={state.pending || !isSummaryReady}
+					disabled={isPending || !isSummaryReady}
 					pageSlug={pageSlug}
-					pending={state.pending}
+					pending={isPending}
 					stages={stages}
 					userRole={user.role}
 				/>
-				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
+				{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+				{isDelayed && (
+					<p className="text-sm">
+						The request is taking longer than usual, if this keeps loading
+						without a response, please try refreshing the page. If the problem
+						persists, please report to lear.lab.vu@gmail.com.
+					</p>
+				)}
 				<div className="flex justify-end">
-					<StatusButton disabled={!isSummaryReady} pending={state.pending}>
-						{state.prevInput === "" ? "Submit" : "Resubmit"}
+					<StatusButton disabled={!isSummaryReady} pending={isPending}>
+						{status === "idle" ? "Submit" : "Resubmit"}
 					</StatusButton>
 				</div>
 			</form>

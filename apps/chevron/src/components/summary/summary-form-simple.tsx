@@ -4,39 +4,25 @@ import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, reportSentry } from "@/lib/utils";
+import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useFormStatus } from "react-dom";
-import { useFormState } from "react-dom";
+import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useActionStatus } from "use-action-status";
 import { StatusButton } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
 	userId: string;
+	prolificId: string | null;
 	pageStatus: PageStatus;
 	page: PageData;
 };
 
-const SubmitButton = ({
-	children,
-	disabled,
-}: { children: React.ReactNode; disabled?: boolean }) => {
-	const { pending } = useFormStatus();
-
-	return (
-		<StatusButton pending={pending} disabled={disabled} className="w-44">
-			{children}
-		</StatusButton>
-	);
-};
-
-type FormState = { finished: boolean; error: string | null };
-
 export const SummaryFormSimple = React.memo(
-	({ userId, pageStatus, page }: Props) => {
+	({ userId, pageStatus, page, prolificId }: Props) => {
 		const { currentChunk, chunks } = useConstructedResponse((state) => ({
 			currentChunk: state.currentChunk,
 			chunks: state.chunks,
@@ -44,34 +30,45 @@ export const SummaryFormSimple = React.memo(
 		const isReady = pageStatus.unlocked || currentChunk === chunks.at(-1);
 		const router = useRouter();
 		const { updateUser } = useSessionAction();
-		const [state, action] = useFormState<FormState>(
-			async (state) => {
-				try {
-					if (state.finished) {
-						if (page.nextPageSlug) {
-							router.push(page.nextPageSlug);
-						}
-					}
+		const [finished, setFinished] = useState(pageStatus.unlocked);
 
-					const nextSlug = await incrementUserPage(userId, page.page_slug);
-					if (!isLastPage(page.page_slug)) {
-						updateUser({ pageSlug: nextSlug });
-					} else {
-						updateUser({ finished: true });
-						toast.info("You have finished the entire textbook!");
+		const { action, isError, isPending, error, isDelayed } = useActionStatus(
+			async (e: FormEvent) => {
+				e.preventDefault();
+				if (finished) {
+					if (page.nextPageSlug) {
+						router.push(page.nextPageSlug);
+						return;
 					}
-
-					return { finished: true, error: null };
-				} catch (err) {
-					reportSentry("summary simple", {
-						pageSlug: page.page_slug,
-						error: err,
-					});
-					return { finished: false, error: "internal" };
 				}
+
+				const nextSlug = await incrementUserPage(userId, page.page_slug);
+				if (!isLastPage(page.page_slug)) {
+					updateUser({ pageSlug: nextSlug });
+				} else {
+					updateUser({ finished: true });
+					toast.info(
+						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
+					);
+					setTimeout(() => {
+						window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${prolificId}`;
+					}, 3000);
+				}
+
+				setFinished(true);
 			},
-			{ finished: pageStatus.unlocked, error: null },
+			{ delayTimeout: 3000 },
 		);
+
+		useEffect(() => {
+			if (isError) {
+				console.log("summary simple", error);
+				reportSentry("summary simple", {
+					pageSlug: page.page_slug,
+					error,
+				});
+			}
+		}, [isError]);
 
 		if (!isReady) {
 			return (
@@ -84,30 +81,38 @@ export const SummaryFormSimple = React.memo(
 		return (
 			<section className="max-w-2xl mx-auto space-y-4">
 				<p className="font-light text-lg mb-4">
-					{state.finished
+					{finished
 						? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."
 						: "Below is a reference summary for this page. Please read it carefully to better understand the information presented."}
 				</p>
 				<p>{page.referenceSummary}</p>
 
-				<form className="flex justify-end gap-2" action={action}>
-					<SubmitButton disabled={state.finished && !page.nextPageSlug}>
-						{!state.finished ? (
+				<form className="flex justify-end gap-2" onSubmit={action}>
+					<StatusButton
+						pending={isPending}
+						disabled={finished && !page.nextPageSlug}
+						className="w-44"
+					>
+						{!finished ? (
 							<span className="inline-flex gap-1 items-center">
 								<CheckSquare2Icon className="size-4" /> Mark as completed
 							</span>
 						) : page.nextPageSlug ? (
 							<span className="inline-flex gap-1 items-center">
-								Go to next page
-								<ArrowRightIcon className="size-4 ml-2" />
+								<ArrowRightIcon className="size-4" /> Go to next page
 							</span>
 						) : (
 							<span>Textbook finished</span>
 						)}
-					</SubmitButton>
+					</StatusButton>
 				</form>
-				{state.error && (
-					<Warning>An internal error occurred. Please try again later.</Warning>
+				{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+				{isDelayed && (
+					<p className="text-sm">
+						The request is taking longer than usual, if this keeps loading
+						without a response, please try refreshing the page. If the problem
+						persists, please report to lear.lab.vu@gmail.com.
+					</p>
 				)}
 			</section>
 		);

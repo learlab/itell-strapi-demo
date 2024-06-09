@@ -2,12 +2,13 @@
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
-import { useActionStatus } from "@itell/core/hooks";
+import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { parseEventStream } from "@itell/core/utils";
 import { Warning } from "@itell/ui/server";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { useActionStatus } from "use-action-status";
 import { Button } from "../client-components";
 import { Spinner } from "../spinner";
 
@@ -68,7 +69,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 	useEffect(() => {
 		if (isError) {
 			console.log("explain cr", error);
-			reportSentry("explain cr", error);
+			reportSentry("explain cr", { error });
 		}
 	}, [isError]);
 
@@ -90,7 +91,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				What's wrong with my answer?
 			</Button>
 
-			{isError && <Warning>{error}</Warning>}
+			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
 
 			{isDelayed && (
 				<p className="text-sm">
