@@ -180,7 +180,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					goToRandomChunk();
 				}
 			},
-			{ delayTimeout: 1000 },
+			{ delayTimeout: 10000 },
 		);
 
 	const isSummaryReady = useConstructedResponse(
