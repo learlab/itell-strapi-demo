@@ -55,6 +55,7 @@ export const Highlight = React.memo(({ id, color, range }: Props) => {
 				// remove database record
 				deleteNote(id);
 			}}
+			highlight
 		/>
 	);
 });

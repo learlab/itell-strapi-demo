@@ -22,9 +22,15 @@ type Props = {
 	open: boolean;
 	onOpenChange: (val: boolean) => void;
 	onDelete: () => Promise<void>;
+	highlight?: boolean;
 };
 
-export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
+export const NoteDelete = ({
+	open,
+	onOpenChange,
+	onDelete,
+	highlight,
+}: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	return (
@@ -34,11 +40,13 @@ export const NoteDelete = ({ open, onOpenChange, onDelete }: Props) => {
 				onOpenChange(val);
 			}}
 		>
-			<AlertDialogTrigger asChild>
-				<Button variant="ghost" size="sm" type="button">
-					<TrashIcon className="size-4" />
-				</Button>
-			</AlertDialogTrigger>
+			{!highlight && (
+				<AlertDialogTrigger asChild>
+					<Button variant="ghost" size="sm" type="button">
+						<TrashIcon className="size-4" />
+					</Button>
+				</AlertDialogTrigger>
+			)}
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
