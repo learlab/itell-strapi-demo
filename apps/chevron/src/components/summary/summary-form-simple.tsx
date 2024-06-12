@@ -16,13 +16,12 @@ import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
 	userId: string;
-	prolificId: string | null;
 	pageStatus: PageStatus;
 	page: PageData;
 };
 
 export const SummaryFormSimple = React.memo(
-	({ userId, pageStatus, page, prolificId }: Props) => {
+	({ userId, pageStatus, page }: Props) => {
 		const { currentChunk, chunks } = useConstructedResponse((state) => ({
 			currentChunk: state.currentChunk,
 			chunks: state.chunks,
@@ -47,12 +46,7 @@ export const SummaryFormSimple = React.memo(
 					updateUser({ pageSlug: nextSlug });
 				} else {
 					updateUser({ finished: true });
-					toast.info(
-						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
-					);
-					setTimeout(() => {
-						window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${prolificId}`;
-					}, 3000);
+					toast.info("You have finished the entire textbook!");
 				}
 
 				setFinished(true);
