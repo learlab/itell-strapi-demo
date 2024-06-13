@@ -23,11 +23,13 @@ type Props = {
 
 export const SummaryFormSimple = React.memo(
 	({ userId, pageStatus, page, prolificId }: Props) => {
-		const { currentChunk, chunks } = useConstructedResponse((state) => ({
-			currentChunk: state.currentChunk,
-			chunks: state.chunks,
-		}));
-		const isReady = pageStatus.unlocked || currentChunk === chunks.at(-1);
+		const { currentChunk, chunks, isSummaryReady } = useConstructedResponse(
+			(state) => ({
+				currentChunk: state.currentChunk,
+				chunks: state.chunks,
+				isSummaryReady: state.isSummaryReady,
+			}),
+		);
 		const router = useRouter();
 		const { updateUser } = useSessionAction();
 		const [finished, setFinished] = useState(pageStatus.unlocked);
@@ -70,7 +72,7 @@ export const SummaryFormSimple = React.memo(
 			}
 		}, [isError]);
 
-		if (!isReady) {
+		if (!isSummaryReady) {
 			return (
 				<section className="max-w-2xl mx-auto">
 					<p>Finish the entire page to move on.</p>

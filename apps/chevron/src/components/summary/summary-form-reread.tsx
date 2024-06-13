@@ -39,17 +39,6 @@ type Props = {
 	pageStatus: PageStatus;
 };
 
-type State = {
-	prevInput: string;
-	pending: boolean;
-	error: ErrorType | null;
-	finished: boolean;
-};
-
-type Action =
-	| { type: "fail"; payload: ErrorType }
-	| { type: "finish"; payload: boolean };
-
 const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
@@ -176,7 +165,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				}
 
 				updateUser({ pageSlug: nextSlug });
-				if (!isProduction || !pageStatus.unlocked) {
+				if (!pageStatus.unlocked && Math.random() <= 0.25) {
 					goToRandomChunk();
 				}
 			},

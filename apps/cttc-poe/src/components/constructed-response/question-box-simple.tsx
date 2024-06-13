@@ -8,7 +8,6 @@ import { useState } from "react";
 import { LoginButton } from "../auth/auth-form";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
-import { AnswerStatusReread } from "./types";
 
 type Props = {
 	question: string;
@@ -68,7 +67,7 @@ export const QuestionBoxSimple = ({
 						>
 							<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
 								<Button type="submit" variant={"outline"}>
-									Finish
+									Continue
 								</Button>
 							</div>
 						</form>

@@ -16,18 +16,19 @@ import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
 	userId: string;
-	prolificId: string | null;
 	pageStatus: PageStatus;
 	page: PageData;
 };
 
 export const SummaryFormSimple = React.memo(
-	({ userId, pageStatus, page, prolificId }: Props) => {
-		const { currentChunk, chunks } = useConstructedResponse((state) => ({
-			currentChunk: state.currentChunk,
-			chunks: state.chunks,
-		}));
-		const isReady = pageStatus.unlocked || currentChunk === chunks.at(-1);
+	({ userId, pageStatus, page }: Props) => {
+		const { currentChunk, chunks, isSummaryReady } = useConstructedResponse(
+			(state) => ({
+				currentChunk: state.currentChunk,
+				chunks: state.chunks,
+				isSummaryReady: state.isSummaryReady,
+			}),
+		);
 		const router = useRouter();
 		const { updateUser } = useSessionAction();
 		const [finished, setFinished] = useState(pageStatus.unlocked);
@@ -47,12 +48,7 @@ export const SummaryFormSimple = React.memo(
 					updateUser({ pageSlug: nextSlug });
 				} else {
 					updateUser({ finished: true });
-					toast.info(
-						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
-					);
-					setTimeout(() => {
-						window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${prolificId}`;
-					}, 3000);
+					toast.info("You have finished the entire textbook!");
 				}
 
 				setFinished(true);
@@ -70,7 +66,7 @@ export const SummaryFormSimple = React.memo(
 			}
 		}, [isError]);
 
-		if (!isReady) {
+		if (!isSummaryReady) {
 			return (
 				<section className="max-w-2xl mx-auto">
 					<p>Finish the entire page to move on.</p>
