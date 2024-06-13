@@ -9,89 +9,62 @@ type Heading = {
 	text: string | undefined;
 	slug: string | undefined;
 };
-
 type TocSidebarProps = {
 	headings: Heading[];
 	chunks: string[];
 };
 
-function onlyUnique(value: string, index: number, array: string[]) {
-	return array.indexOf(value) === index;
-}
-
-const useIntersectionObserver = (headings: Heading[]) => {
+export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					const id = entry.target.id;
-					if (entry.isIntersecting) {
+			window.addEventListener("DOMContentLoaded", () => {
+				let mostRecentHeading: string | null = null;
+				let isUsingMostRecentHeading = false;
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						const id = entry.target.id;
+						if (entry.intersectionRatio > 0) {
+							document
+								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+								?.classList.remove("border-transparent");
+							if (isUsingMostRecentHeading) {
+								document
+									.querySelector(
+										`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+									)
+									?.classList.add("border-transparent");
+							}
+							mostRecentHeading = id;
+						} else {
+							document
+								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+								?.classList.add("border-transparent");
+						}
+					});
+					if (
+						entries
+							.map((entry) => entry.intersectionRatio)
+							.reduce((partialSum, a) => partialSum + a, 0) === 0
+					) {
+						isUsingMostRecentHeading = true;
 						document
-							.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-							?.classList.add("bg-accent");
-					} else {
-						document
-							.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-							?.classList.remove("bg-accent");
+							.querySelector(
+								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+							)
+							?.classList.remove("border-transparent");
 					}
 				});
-			});
 
-			const sections = document.querySelectorAll("div[data-subsection-id]");
-			sections.forEach((section) => {
-				const renamedId = section.getAttribute("data-subsection-id");
-				if (renamedId) {
-					const lowercaseId = renamedId.toLowerCase();
-					const slicedId = lowercaseId.split("-").slice(0, -1).join("-");
-					if (headings.some((heading) => heading.slug === slicedId)) {
-						section.id = slicedId;
-						observer.observe(section);
+				// Track all sections that have an `id` applied
+				for (const heading of headings) {
+					const element = document.getElementById(heading.slug || "");
+					if (element) {
+						observer.observe(element);
 					}
 				}
 			});
-
-			return () => observer.disconnect();
 		}
 	}, [headings]);
-};
-
-export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
-	const editedHeadings = useMemo(() => {
-		let headingsList = headings.map((heading) =>
-			heading.slug?.toLocaleLowerCase(),
-		);
-		const editedChunks = chunks
-			.map((chunk) => chunk.split("-").slice(0, -1).join("-"))
-			.filter(onlyUnique);
-		const updatedHeadings = [...headings];
-		for (let i = 0; i < editedChunks.length; i++) {
-			if (!headingsList.includes(editedChunks[i].toLocaleLowerCase())) {
-				const target = editedChunks[i - 1];
-				if (target) {
-					const index =
-						headingsList.findIndex(
-							(value) => value === target.toLocaleLowerCase(),
-						) + 1;
-					updatedHeadings.splice(index, 0, {
-						level:
-							index === 0
-								? "one"
-								: headings.find(
-										(value) => value.slug === target.toLocaleLowerCase(),
-									)?.level ?? "one",
-						text: editedChunks[i].split("-").join(" "),
-						slug: editedChunks[i].toLocaleLowerCase(),
-					});
-					headingsList = updatedHeadings.map((heading) =>
-						heading.slug?.toLocaleLowerCase(),
-					);
-				}
-			}
-		}
-		return updatedHeadings;
-	}, [headings, chunks]);
-
-	useIntersectionObserver(editedHeadings);
 
 	return (
 		<div className="page-toc">
@@ -101,7 +74,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 			</p>
 
 			<ol className="max-h-[60vh] overflow-y-scroll mt-2 space-y-2 list-none">
-				{editedHeadings
+				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
 						<li key={heading.slug}>
@@ -109,7 +82,7 @@ export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
 								data-level={heading.level}
 								href={`#${heading.slug}`}
 								className={cn(
-									"hover:underline inline-flex px-1 rounded-md transition-colors ease-in-out delay-150 text-balance",
+									"hover:underline inline-flex border-l-2 border-transparent",
 									{
 										"text-base pl-1": heading.level === "two",
 										"text-sm pl-3": heading.level === "three",
