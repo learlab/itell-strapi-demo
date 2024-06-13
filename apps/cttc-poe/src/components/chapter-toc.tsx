@@ -110,7 +110,7 @@ export const ChapterToc = ({
 										return (
 											<li
 												className={cn(
-													"py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
+													"p-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
 													{
 														"bg-accent": item.page_slug === activePage,
 														"text-muted-foreground": !visible,
@@ -122,13 +122,15 @@ export const ChapterToc = ({
 													type="button"
 													onClick={() => navigatePage(item.page_slug)}
 													disabled={(pending || !visible) && isProduction}
-													className={pending ? "animate-pulse" : ""}
+													className={cn(
+														"w-full text-left text-balance inline-flex items-end",
+														{
+															"animate-pulse": pending,
+														},
+													)}
 												>
-													<p className="text-left text-pretty">
-														{item.title}
-														{visible ? "" : " 🔒"}
-														{unlocked ? " ✅" : ""}
-													</p>
+													<span>{item.title}</span>
+													<span>{unlocked ? "✅" : visible ? "" : "🔒"}</span>
 												</button>
 											</li>
 										);

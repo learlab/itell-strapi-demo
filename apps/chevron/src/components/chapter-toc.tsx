@@ -71,19 +71,18 @@ export const ChapterToc = ({
 		<>
 			<ol className="space-y-2">
 				{allPagesSorted.map((p) => {
-					const { latest: isPageLatest, unlocked: isPageUnlocked } =
-						getPageStatus({
-							pageSlug: p.page_slug,
-							userPageSlug,
-							userFinished,
-						});
+					const { latest, unlocked } = getPageStatus({
+						pageSlug: p.page_slug,
+						userPageSlug,
+						userFinished,
+					});
 
-					const visible = isPageLatest || isPageUnlocked;
+					const visible = latest || unlocked;
 
 					return (
 						<li
 							className={cn(
-								"py-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
+								"p-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
 								{
 									"bg-accent": p.page_slug === activePage,
 									"text-muted-foreground": !visible,
@@ -95,13 +94,15 @@ export const ChapterToc = ({
 								type="button"
 								onClick={() => navigatePage(p.page_slug)}
 								disabled={(pending || !visible) && isProduction}
-								className={pending ? "animate-pulse" : ""}
+								className={cn(
+									"w-full text-left text-balance inline-flex items-end",
+									{
+										"animate-pulse": pending,
+									},
+								)}
 							>
-								<p className="text-left text-pretty">
-									{p.title}
-									{visible ? "" : " 🔒"}
-									{isPageUnlocked ? " ✅" : ""}
-								</p>
+								<span>{p.title}</span>
+								<span>{unlocked ? "✅" : visible ? "" : "🔒"}</span>
 							</button>
 						</li>
 					);
