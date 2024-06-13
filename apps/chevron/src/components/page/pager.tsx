@@ -3,9 +3,9 @@ import { useSession } from "@/lib/auth/context";
 import { allPagesSorted } from "@/lib/pages";
 import { PageData, getPageData } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
+import { buttonVariants } from "@itell/ui/server";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../client-components";
 
 const getPagerLinks = ({
 	pageIndex,
@@ -41,20 +41,25 @@ const getPageLink = (
 export type PageLinkData = {
 	text: string;
 	href: string;
-	disabled?: boolean;
+	disabled: boolean;
 	icon?: React.ReactNode;
 };
-const PageLink = ({ text, href, icon, disabled }: PageLinkData) => {
+const PageLink = ({
+	href,
+	disabled,
+	children,
+}: { href: string; disabled: boolean; children: React.ReactNode }) => {
 	return (
-		<Button variant="outline" disabled={disabled} className="max-w-sm h-fit">
-			<Link
-				href={href}
-				className="font-light leading-relaxed text-pretty inline-flex items-center gap-2"
-			>
-				{icon}
-				{text}
-			</Link>
-		</Button>
+		<Link
+			className={cn(
+				buttonVariants({ variant: "outline" }),
+				"flex items-center h-14 max-w-sm text-balance gap-2",
+				{ "pointer-events-none opacity-50": disabled },
+			)}
+			href={href}
+		>
+			{children}
+		</Link>
 	);
 };
 
@@ -76,32 +81,24 @@ export const Pager = ({ pageIndex }: Props) => {
 			})}
 		>
 			{prev && (
-				<PageLink
-					text={prev.text}
-					href={prev.href}
-					disabled={prev.disabled}
-					icon={
-						prev.disabled ? (
-							<BanIcon className="size-4 mr-2" />
-						) : (
-							<ChevronLeftIcon className="size-4 mr-2" />
-						)
-					}
-				/>
+				<PageLink href={prev.href} disabled={prev.disabled}>
+					{prev.disabled ? (
+						<BanIcon className="size-4 shrink-0" />
+					) : (
+						<ChevronLeftIcon className="size-4 shrink-0" />
+					)}
+					<span className="line-clamp-2">{prev.text}</span>
+				</PageLink>
 			)}
 			{next && (
-				<PageLink
-					text={next.text}
-					href={next.href}
-					disabled={next.disabled}
-					icon={
-						next.disabled ? (
-							<BanIcon className="size-4 mr-2" />
-						) : (
-							<ChevronRightIcon className="size-4 mr-2" />
-						)
-					}
-				/>
+				<PageLink href={next.href} disabled={next.disabled}>
+					<span className="line-clamp-2">{next.text}</span>
+					{next.disabled ? (
+						<BanIcon className="size-4 shrink-0" />
+					) : (
+						<ChevronRightIcon className="size-4 shrink-0" />
+					)}
+				</PageLink>
 			)}
 		</div>
 	);
