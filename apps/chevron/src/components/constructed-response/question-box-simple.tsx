@@ -67,7 +67,7 @@ export const QuestionBoxSimple = ({
 						>
 							<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
 								<Button type="submit" variant={"outline"}>
-									Finish
+									Continue
 								</Button>
 							</div>
 						</form>

@@ -39,17 +39,6 @@ type Props = {
 	pageStatus: PageStatus;
 };
 
-type State = {
-	prevInput: string;
-	pending: boolean;
-	error: ErrorType | null;
-	finished: boolean;
-};
-
-type Action =
-	| { type: "fail"; payload: ErrorType }
-	| { type: "finish"; payload: boolean };
-
 const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
@@ -79,14 +68,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { updateUser } = useSessionAction();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
+	);
 
 	const goToRandomChunk = () => {
-		// in production, only highlight 25% of the time
-		// if (isProduction) {
-		// 	if (Math.random() > 0.25) {
-		// 		return;
-		// 	}
-		// }
 		const el = getChunkElement(randomChunkSlug);
 		if (el) {
 			scrollToElement(el);
@@ -180,16 +166,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				}
 
 				updateUser({ pageSlug: nextSlug });
-				if (!isProduction || !pageStatus.unlocked) {
+				// 25% random rereading if the page is not unlocked
+				if (!pageStatus.unlocked && Math.random() <= 0.25) {
 					goToRandomChunk();
 				}
 			},
 			{ delayTimeout: 10000 },
 		);
-
-	const isSummaryReady = useConstructedResponse(
-		(state) => state.isSummaryReady,
-	);
 
 	useEffect(() => {
 		if (isError) {
