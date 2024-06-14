@@ -129,40 +129,56 @@ export const teachers = pgTable("teachers", {
 	classId: text("class_id").notNull(),
 });
 
-export const summaries = pgTable("summaries", {
-	id: serial("id").primaryKey().notNull(),
-	text: text("text").notNull(),
-	condition: text("condition").notNull(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-	pageSlug: text("page_slug").notNull(),
-	isPassed: boolean("isPassed").notNull(),
-	containmentScore: doublePrecision("containment_score").notNull(),
-	similarityScore: doublePrecision("similarity_score").notNull(),
-	languageScore: doublePrecision("language_score"),
-	contentScore: doublePrecision("content_score"),
-	createdAt: CreatedAt,
-	updatedAt: UpdatedAt,
-});
+export const summaries = pgTable(
+	"summaries",
+	{
+		id: serial("id").primaryKey().notNull(),
+		text: text("text").notNull(),
+		condition: text("condition").notNull(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+		pageSlug: text("page_slug").notNull(),
+		isPassed: boolean("isPassed").notNull(),
+		containmentScore: doublePrecision("containment_score").notNull(),
+		similarityScore: doublePrecision("similarity_score").notNull(),
+		languageScore: doublePrecision("language_score"),
+		contentScore: doublePrecision("content_score"),
+		createdAt: CreatedAt,
+		updatedAt: UpdatedAt,
+	},
+	(table) => {
+		return {
+			summary_user_id_idx: index("summaries_user_id_idx").on(table.userId),
+		};
+	},
+);
 
 export type Summary = InferSelectModel<typeof summaries>;
 export type NewSummary = InferInsertModel<typeof summaries>;
 
-export const notes = pgTable("notes", {
-	id: serial("id").primaryKey().notNull(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-	y: doublePrecision("y").notNull(),
-	noteText: text("note_text"),
-	highlightedText: text("highlighted_text").notNull(),
-	pageSlug: text("page_slug").notNull(),
-	color: text("color").default("#3730a3").notNull(),
-	range: text("range").notNull(),
-	createdAt: CreatedAt,
-	updatedAt: UpdatedAt,
-});
+export const notes = pgTable(
+	"notes",
+	{
+		id: serial("id").primaryKey().notNull(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+		y: doublePrecision("y").notNull(),
+		noteText: text("note_text"),
+		highlightedText: text("highlighted_text").notNull(),
+		pageSlug: text("page_slug").notNull(),
+		color: text("color").default("#3730a3").notNull(),
+		range: text("range").notNull(),
+		createdAt: CreatedAt,
+		updatedAt: UpdatedAt,
+	},
+	(table) => {
+		return {
+			notes_user_id_idx: index("notes_user_id_idx").on(table.userId),
+		};
+	},
+);
 
 export type Note = InferSelectModel<typeof notes>;
 
