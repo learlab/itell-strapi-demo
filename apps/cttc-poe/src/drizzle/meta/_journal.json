@@ -15,6 +15,20 @@
       "when": 1718335851791,
       "tag": "0001_fearless_betty_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1718388365034,
+      "tag": "0002_next_yellowjacket",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1718388542314,
+      "tag": "0003_cultured_brood",
+      "breakpoints": true
     }
   ]
 }

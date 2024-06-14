@@ -99,28 +99,44 @@ export const users = pgTable("users", {
 
 export type User = InferSelectModel<typeof users>;
 
-export const sessions = pgTable("sessions", {
-	id: text("id").primaryKey(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-	expiresAt: timestamp("expires_at", {
-		mode: "date",
-		withTimezone: true,
-	}).notNull(),
-	createdAt: CreatedAt,
-});
+export const sessions = pgTable(
+	"sessions",
+	{
+		id: text("id").primaryKey(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+		expiresAt: timestamp("expires_at", {
+			mode: "date",
+			withTimezone: true,
+		}).notNull(),
+		createdAt: CreatedAt,
+	},
+	(table) => {
+		return {
+			sessions_user_id_idx: index("sessions_user_id_idx").on(table.userId),
+		};
+	},
+);
 
-export const events = pgTable("events", {
-	id: serial("id").primaryKey().notNull(),
-	type: text("event_type").notNull(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-	pageSlug: text("page_slug").notNull(),
-	data: jsonb("data"),
-	createdAt: CreatedAt,
-});
+export const events = pgTable(
+	"events",
+	{
+		id: serial("id").primaryKey().notNull(),
+		type: text("event_type").notNull(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+		pageSlug: text("page_slug").notNull(),
+		data: jsonb("data"),
+		createdAt: CreatedAt,
+	},
+	(table) => {
+		return {
+			events_user_id_idx: index("events_user_id_idx").on(table.userId),
+		};
+	},
+);
 
 export const teachers = pgTable("teachers", {
 	id: text("id").primaryKey().notNull(),
