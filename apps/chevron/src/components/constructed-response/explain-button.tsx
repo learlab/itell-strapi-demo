@@ -88,7 +88,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				) : (
 					<HelpCircleIcon className="size-4" />
 				)}
-				What's wrong with my answer?
+				How can I improve my answer?
 			</Button>
 
 			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
