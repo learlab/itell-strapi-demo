@@ -1,6 +1,7 @@
 import { MainMdx } from "@/components/mdx";
 import { userGuide, userGuideSimple, userGuideReread } from "contentlayer/generated";
 import { getSession } from "@/lib/auth";
+import { Condition } from "@/lib/control/condition";
 
 const { user } = await getSession();
 const userCondition = user?.condition || Condition.STAIRS;
