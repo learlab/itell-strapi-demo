@@ -3,11 +3,13 @@ import { userGuide, userGuideSimple, userGuideReread } from "contentlayer/genera
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 
+type UserGuideType = typeof userGuide | typeof userGuideSimple | typeof userGuideReread;
+
 export default async function () {
 
 	const { user } = await getSession();
 	const userCondition = user?.condition || Condition.STAIRS;
-	let targetGuide = userGuide;
+	let targetGuide: UserGuideType = userGuide;
 
 	if (userCondition === Condition.STAIRS) {
 	  targetGuide = userGuide;

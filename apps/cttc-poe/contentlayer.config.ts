@@ -140,7 +140,7 @@ const Page = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Page, Home, SummaryDescription, UserGuide],
+	documentTypes: [Page, Home, SummaryDescription, UserGuide, UserGuideReread, UserGuideSimple],
 	mdx: {
 		remarkPlugins: [remarkGfm],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
