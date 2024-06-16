@@ -55,6 +55,20 @@ const UserGuide = defineDocumentType(() => ({
 	isSingleton: true,
 }));
 
+const UserGuideSimple = defineDocumentType(() => ({
+	name: "UserGuideSimple",
+	filePathPattern: "userguidesimple.mdx",
+	contentType: "mdx",
+	isSingleton: true,
+}));
+
+const UserGuideReread = defineDocumentType(() => ({
+	name: "UserGuideReread",
+	filePathPattern: "userguidereread.mdx",
+	contentType: "mdx",
+	isSingleton: true,
+}));
+
 const Page = defineDocumentType(() => ({
 	name: "Page",
 	filePathPattern: "textbook/**/*.{md,mdx}",
