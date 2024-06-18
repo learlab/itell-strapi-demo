@@ -34,7 +34,7 @@ const _incrementView = async (
 	data?: unknown,
 ) => {
 	noStore();
-	db.insert(events).values({
+	await db.insert(events).values({
 		type: "dashboard_page_view",
 		pageSlug,
 		userId,

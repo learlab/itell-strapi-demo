@@ -143,6 +143,7 @@ export const AdminTools = ({ userId, condition }: Props) => {
 						>
 							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem
+									className="shrink-0"
 									value={Condition.SIMPLE}
 									id={Condition.SIMPLE}
 								/>
@@ -159,6 +160,7 @@ export const AdminTools = ({ userId, condition }: Props) => {
 
 							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem
+									className="shrink-0"
 									value={Condition.RANDOM_REREAD}
 									id={Condition.RANDOM_REREAD}
 								/>
@@ -176,6 +178,7 @@ export const AdminTools = ({ userId, condition }: Props) => {
 
 							<div className="flex items-baseline space-x-2">
 								<RadioGroupItem
+									className="shrink-0"
 									value={Condition.STAIRS}
 									id={Condition.STAIRS}
 								/>

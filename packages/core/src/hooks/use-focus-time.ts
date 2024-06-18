@@ -28,7 +28,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 	let countTimer: NodeJS.Timeout | null = null;
 	let saveTimer: NodeJS.Timeout | null = null;
 
-	const pause = () => {
+	const clearTimer = () => {
 		if (countTimer) {
 			clearInterval(countTimer);
 		}
@@ -40,7 +40,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 
 	const start = () => {
 		// clear the previous timer
-		pause();
+		clearTimer();
 		// initiate all entries
 		entries.current?.forEach((entry) => {
 			entry.lastTick = performance.now();
@@ -90,7 +90,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 
 	const onVisibilityChange = () => {
 		if (document.hidden) {
-			pause();
+			clearTimer();
 		} else {
 			start();
 		}
@@ -132,11 +132,11 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 		start();
 
 		return () => {
-			pause();
+			clearTimer();
 			chunks.forEach((el) => observer.unobserve(el));
 			window.removeEventListener("visibilitychange", onVisibilityChange);
 		};
 	}, []);
 
-	return { saveFocusTime, start, pause };
+	return { saveFocusTime, start, pause: clearTimer };
 };

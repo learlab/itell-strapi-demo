@@ -3,7 +3,6 @@ import {
 	AccordionContent,
 	AccordionItem,
 } from "@/components/client-components";
-import { ChatExit } from "./chat-exit";
 import { ChatInputStairs } from "./chat-input-stairs";
 import { ChatMessages } from "./chat-messages";
 
@@ -12,7 +11,7 @@ type Props = {
 	userName: string | null;
 	userImage: string | null;
 	pageSlug: string;
-	onExit: () => void;
+	RenderFooter: () => JSX.Element;
 };
 
 export const ChatStairs = ({
@@ -20,7 +19,7 @@ export const ChatStairs = ({
 	userName,
 	userImage,
 	pageSlug,
-	onExit,
+	RenderFooter,
 }: Props) => {
 	return (
 		<Accordion
@@ -36,7 +35,7 @@ export const ChatStairs = ({
 						isStairs={true}
 					/>
 					<ChatInputStairs pageSlug={pageSlug} userId={userId} />
-					<ChatExit onExit={onExit} />
+					<RenderFooter />
 					<footer className="px-4 py-2 text-xs text-muted-foreground">
 						This content has been AI-generated and may contain errors.{" "}
 					</footer>

@@ -48,25 +48,17 @@ const SummaryDescription = defineDocumentType(() => ({
 	isSingleton: true,
 }));
 
-const UserGuide = defineDocumentType(() => ({
-	name: "UserGuide",
-	filePathPattern: "userguide.mdx",
+const Guide = defineDocumentType(() => ({
+	name: "Guide",
+	filePathPattern: "guide/**/*.{md,mdx}",
 	contentType: "mdx",
-	isSingleton: true,
-}));
-
-const UserGuideSimple = defineDocumentType(() => ({
-	name: "UserGuideSimple",
-	filePathPattern: "userguidesimple.mdx",
-	contentType: "mdx",
-	isSingleton: true,
-}));
-
-const UserGuideReread = defineDocumentType(() => ({
-	name: "UserGuideReread",
-	filePathPattern: "userguidereread.mdx",
-	contentType: "mdx",
-	isSingleton: true,
+	fields: {
+		condition: {
+			type: "string",
+			description: "The matched user condition",
+			required: true,
+		},
+	},
 }));
 
 const Page = defineDocumentType(() => ({
@@ -140,7 +132,7 @@ const Page = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Page, Home, SummaryDescription, UserGuide, UserGuideReread, UserGuideSimple],
+	documentTypes: [Page, Home, SummaryDescription, Guide],
 	mdx: {
 		remarkPlugins: [remarkGfm],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],

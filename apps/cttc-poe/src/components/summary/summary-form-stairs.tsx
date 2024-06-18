@@ -181,7 +181,19 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						userImage={user.image}
 						userName={user.name}
 						pageSlug={pageSlug}
-						onExit={exitQuestion}
+						RenderFooter={() => (
+							<FinishReadingButton
+								onClick={(time) => {
+									exitQuestion();
+									createEvent({
+										type: Condition.STAIRS,
+										pageSlug,
+										userId: user.id,
+										data: { stairs: stairsDataRef.current, time },
+									});
+								}}
+							/>
+						)}
 					/>,
 					popover.wrapper,
 				);
@@ -317,13 +329,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							stairsDataRef.current = stairsData;
 							finishStage("Analyzing");
 							addStairsQuestion(stairsData);
-
-							createEvent({
-								type: "stairs-question",
-								pageSlug,
-								userId: user.id,
-								data: stairsData,
-							});
 						} else {
 							throw new Error("invalid stairs chunk");
 						}
@@ -479,5 +484,45 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				</p>
 			)}
 		</section>
+	);
+};
+
+const FinishReadingButton = ({
+	onClick,
+}: { onClick: (val: number) => void }) => {
+	const stairsAnswered = useChatStore((store) => store.stairsAnswered);
+	const time = useRef<number>(0);
+	let interval: NodeJS.Timeout | null = null;
+
+	useEffect(() => {
+		interval = setInterval(() => {
+			time.current += 1;
+		}, 1000);
+
+		return () => {
+			if (interval) {
+				clearInterval(interval);
+			}
+		};
+	}, []);
+
+	if (!stairsAnswered) {
+		return null;
+	}
+
+	return (
+		<div className="flex justify-end mt-4">
+			<Button
+				size="sm"
+				onClick={() => {
+					onClick(time.current);
+					if (interval) {
+						clearInterval(interval);
+					}
+				}}
+			>
+				Return to summary
+			</Button>
+		</div>
 	);
 };

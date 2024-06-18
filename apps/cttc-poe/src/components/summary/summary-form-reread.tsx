@@ -3,6 +3,7 @@
 import { useSessionAction } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
+import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -55,7 +56,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 	const exitChunk = () => {
 		const summaryEl = document.querySelector("#page-summary");
-
 		driverObj.destroy();
 
 		if (summaryEl) {
@@ -94,9 +94,18 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
 				addNode(
-					<Button onClick={exitChunk} size="sm" className="mt-4">
-						I finished rereading
-					</Button>,
+					<FinishReadingButton
+						onClick={(time) => {
+							exitChunk();
+
+							createEvent({
+								type: Condition.RANDOM_REREAD,
+								pageSlug,
+								userId: user.id,
+								data: { chunkSlug: randomChunkSlug, time },
+							});
+						}}
+					/>,
 					popover.wrapper,
 				);
 			},
@@ -236,5 +245,39 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			</form>
 		</section>
+	);
+};
+
+const FinishReadingButton = ({
+	onClick,
+}: { onClick: (time: number) => void }) => {
+	const time = useRef<number>(0);
+	let interval: NodeJS.Timeout | null = null;
+
+	useEffect(() => {
+		interval = setInterval(() => {
+			time.current += 1;
+		}, 1000);
+
+		return () => {
+			if (interval) {
+				clearInterval(interval);
+			}
+		};
+	}, []);
+
+	return (
+		<Button
+			onClick={() => {
+				onClick(time.current);
+				if (interval) {
+					clearInterval(interval);
+				}
+			}}
+			size="sm"
+			className="mt-4"
+		>
+			I finished rereading
+		</Button>
 	);
 };
