@@ -54,7 +54,7 @@ export const createConstructedResponseStore = (
 					// the next chunk is the last chunk, which does not have a question
 					// finish the page
 					if (!isLastChunkWithQuestion && nextIndex === chunks.length - 1) {
-						set({ isSummaryReady: true });
+						set({ isSummaryReady: true, shouldBlur: false });
 						return;
 					}
 
@@ -62,7 +62,7 @@ export const createConstructedResponseStore = (
 					// this happens when user clicks on next-chunk-button of the question box of the last chunk
 					const isLastQuestion = slug === chunks.at(-1);
 					if (isLastQuestion) {
-						set({ isSummaryReady: true });
+						set({ isSummaryReady: true, shouldBlur: false });
 					}
 				},
 				finishPage: () => {

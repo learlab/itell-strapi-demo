@@ -36,7 +36,7 @@ export const SummaryFormSelector = ({
 	return (
 		<section className="grid lg:grid-cols-3 gap-8" id="page-summary">
 			<section className="lg:col-span-1">
-				<SummaryDescription />
+				<SummaryDescription condition={condition} />
 			</section>
 			<section className="lg:col-span-2">
 				{condition === Condition.RANDOM_REREAD ? (

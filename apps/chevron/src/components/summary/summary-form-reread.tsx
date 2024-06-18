@@ -3,6 +3,7 @@
 import { useSessionAction } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
+import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -55,7 +56,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 	const exitChunk = () => {
 		const summaryEl = document.querySelector("#page-summary");
-
 		driverObj.destroy();
 
 		if (summaryEl) {
@@ -68,14 +68,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { updateUser } = useSessionAction();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
+	const isSummaryReady = useConstructedResponse(
+		(state) => state.isSummaryReady,
+	);
 
 	const goToRandomChunk = () => {
-		// in production, only highlight 25% of the time
-		// if (isProduction) {
-		// 	if (Math.random() > 0.25) {
-		// 		return;
-		// 	}
-		// }
 		const el = getChunkElement(randomChunkSlug);
 		if (el) {
 			scrollToElement(el);
@@ -83,7 +80,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				element: el,
 				popover: {
 					description:
-						'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
+						'Please re-read the highlighted section. when you are finished, press the "I finished rereading" button.',
 					side: "right",
 					align: "start",
 				},
@@ -97,9 +94,18 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
 				addNode(
-					<Button onClick={exitChunk} size="sm" className="mt-4">
-						I finished rereading
-					</Button>,
+					<FinishReadingButton
+						onClick={(time) => {
+							exitChunk();
+
+							createEvent({
+								type: Condition.RANDOM_REREAD,
+								pageSlug,
+								userId: user.id,
+								data: { chunkSlug: randomChunkSlug, time },
+							});
+						}}
+					/>,
 					popover.wrapper,
 				);
 			},
@@ -165,16 +171,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				}
 
 				updateUser({ pageSlug: nextSlug });
+				// 25% random rereading if the page is not unlocked
 				if (!pageStatus.unlocked && Math.random() <= 0.25) {
 					goToRandomChunk();
 				}
 			},
 			{ delayTimeout: 10000 },
 		);
-
-	const isSummaryReady = useConstructedResponse(
-		(state) => state.isSummaryReady,
-	);
 
 	useEffect(() => {
 		if (isError) {
@@ -232,5 +235,39 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			</form>
 		</section>
+	);
+};
+
+const FinishReadingButton = ({
+	onClick,
+}: { onClick: (time: number) => void }) => {
+	const time = useRef<number>(0);
+	let interval: NodeJS.Timeout | null = null;
+
+	useEffect(() => {
+		interval = setInterval(() => {
+			time.current += 1;
+		}, 1000);
+
+		return () => {
+			if (interval) {
+				clearInterval(interval);
+			}
+		};
+	}, []);
+
+	return (
+		<Button
+			onClick={() => {
+				onClick(time.current);
+				if (interval) {
+					clearInterval(interval);
+				}
+			}}
+			size="sm"
+			className="mt-4"
+		>
+			I finished rereading
+		</Button>
 	);
 };

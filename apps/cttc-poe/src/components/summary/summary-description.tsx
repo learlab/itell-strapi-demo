@@ -1,6 +1,16 @@
-import { summaryDescription } from "contentlayer/generated";
+import { Condition } from "@/lib/control/condition";
+import { allGuides } from "contentlayer/generated";
 import { MainMdx } from "../mdx";
 
-export const SummaryDescription = () => {
-	return <MainMdx code={summaryDescription.body.code} />;
+export const SummaryDescription = ({ condition }: { condition: string }) => {
+	const guideCondition =
+		condition === Condition.STAIRS
+			? "summary_description_stairs"
+			: condition === Condition.RANDOM_REREAD
+				? "summary_description_reread"
+				: undefined;
+	const guide = allGuides.find((g) => g.condition === guideCondition);
+	if (!guide) return null;
+
+	return <MainMdx code={guide.body.code} />;
 };

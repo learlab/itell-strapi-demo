@@ -80,7 +80,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				element: el,
 				popover: {
 					description:
-						'Please re-read the highlighted chunk. when you are finished, press the "I finished rereading" button.',
+						'Please re-read the highlighted section. when you are finished, press the "I finished rereading" button.',
 					side: "right",
 					align: "start",
 				},

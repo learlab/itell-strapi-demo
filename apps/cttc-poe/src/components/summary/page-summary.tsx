@@ -49,9 +49,6 @@ export const PageSummaryNoUser = () => (
 		className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4 mb-20"
 		id="page-summary"
 	>
-		<section className="sm:basis-1/3">
-			<SummaryDescription />
-		</section>
 		<section className="sm:basis-2/3">
 			<Warning>
 				You need to be logged in to submit a summary for this page and move

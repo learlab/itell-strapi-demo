@@ -41,13 +41,6 @@ const Home = defineDocumentType(() => ({
 	isSingleton: true,
 }));
 
-const SummaryDescription = defineDocumentType(() => ({
-	name: "SummaryDescription",
-	filePathPattern: "summary-description.mdx",
-	contentType: "mdx",
-	isSingleton: true,
-}));
-
 const Guide = defineDocumentType(() => ({
 	name: "Guide",
 	filePathPattern: "guide/**/*.{md,mdx}",
@@ -132,7 +125,7 @@ const Page = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Page, Home, SummaryDescription, Guide],
+	documentTypes: [Page, Home, Guide],
 	mdx: {
 		remarkPlugins: [remarkGfm],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
