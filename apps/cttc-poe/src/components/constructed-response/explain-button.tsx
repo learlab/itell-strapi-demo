@@ -2,6 +2,7 @@
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
+import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { parseEventStream } from "@itell/core/utils";
 import { Warning } from "@itell/ui/server";
 import { HelpCircleIcon } from "lucide-react";
@@ -48,7 +49,6 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 							setResponse(response);
 						} catch {
 							console.log("invalid json", data);
-							throw new Error("invalid json");
 						}
 					}
 				});
@@ -90,7 +90,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				How can I improve my answer?
 			</Button>
 
-			{isError && <Warning>{String(error)}</Warning>}
+			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
 
 			{isDelayed && (
 				<p className="text-sm">

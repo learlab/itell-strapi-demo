@@ -49,7 +49,6 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 							setResponse(response);
 						} catch {
 							console.log("invalid json", data);
-							throw new Error("invalid json");
 						}
 					}
 				});

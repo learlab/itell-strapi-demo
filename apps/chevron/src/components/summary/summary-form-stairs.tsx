@@ -185,12 +185,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							<FinishReadingButton
 								onClick={(time) => {
 									exitQuestion();
-									createEvent({
-										type: Condition.STAIRS,
-										pageSlug,
-										userId: user.id,
-										data: { stairs: stairsDataRef.current, time },
-									});
+
+									if (!stairsAnswered) {
+										createEvent({
+											type: Condition.STAIRS,
+											pageSlug,
+											userId: user.id,
+											data: { stairs: stairsDataRef.current, time },
+										});
+									}
 								}}
 							/>
 						)}

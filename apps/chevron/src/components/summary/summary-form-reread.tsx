@@ -1,7 +1,6 @@
 "use client";
 
 import { useSessionAction } from "@/lib/auth/context";
-import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -22,7 +21,7 @@ import {
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
@@ -98,12 +97,14 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						onClick={(time) => {
 							exitChunk();
 
-							createEvent({
-								type: Condition.RANDOM_REREAD,
-								pageSlug,
-								userId: user.id,
-								data: { chunkSlug: randomChunkSlug, time },
-							});
+							if (!pageStatus.unlocked) {
+								createEvent({
+									type: Condition.RANDOM_REREAD,
+									pageSlug,
+									userId: user.id,
+									data: { chunkSlug: randomChunkSlug, time },
+								});
+							}
 						}}
 					/>,
 					popover.wrapper,
