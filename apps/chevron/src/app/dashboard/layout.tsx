@@ -1,6 +1,8 @@
 import { DashboardNav } from "@/components/nav/dashboard-nav";
 import { DashboardSidebar } from "@/components/nav/dashboard-sidebar";
 import { dashboardConfig } from "@/config/dashboard";
+import { getSession } from "@/lib/auth";
+import { Condition } from "@/lib/control/condition";
 import { Suspense } from "react";
 
 export default async function DashboardLayout({
@@ -8,6 +10,8 @@ export default async function DashboardLayout({
 }: {
 	children: React.ReactNode;
 }) {
+	const { user } = await getSession();
+
 	return (
 		<div className="flex min-h-screen flex-col space-y-6">
 			<header className="sticky top-0 z-40 border-b bg-background">
@@ -21,7 +25,13 @@ export default async function DashboardLayout({
 						<DashboardSidebar />
 					</Suspense>
 				</aside>
-				<main className="flex flex-col">{children}</main>
+				<main className="flex flex-col">
+					{user?.condition !== Condition.SIMPLE ? (
+						children
+					) : (
+						<p>data unavailable</p>
+					)}
+				</main>
 			</div>
 		</div>
 	);
