@@ -22,7 +22,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { usePortal } from "@itell/core/hooks";
+import { usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -491,20 +491,7 @@ const FinishReadingButton = ({
 	onClick,
 }: { onClick: (val: number) => void }) => {
 	const stairsAnswered = useChatStore((store) => store.stairsAnswered);
-	const time = useRef<number>(0);
-	let interval: NodeJS.Timeout | null = null;
-
-	useEffect(() => {
-		interval = setInterval(() => {
-			time.current += 1;
-		}, 1000);
-
-		return () => {
-			if (interval) {
-				clearInterval(interval);
-			}
-		};
-	}, []);
+	const { time, clearTimer } = useTimer();
 
 	if (!stairsAnswered) {
 		return null;
@@ -515,10 +502,8 @@ const FinishReadingButton = ({
 			<Button
 				size="sm"
 				onClick={() => {
-					onClick(time.current);
-					if (interval) {
-						clearInterval(interval);
-					}
+					onClick(time);
+					clearTimer();
 				}}
 			>
 				Return to summary

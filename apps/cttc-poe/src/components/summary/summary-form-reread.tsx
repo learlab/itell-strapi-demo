@@ -15,7 +15,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { usePortal } from "@itell/core/hooks";
+import { usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -251,28 +251,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 const FinishReadingButton = ({
 	onClick,
 }: { onClick: (time: number) => void }) => {
-	const time = useRef<number>(0);
-	let interval: NodeJS.Timeout | null = null;
-
-	useEffect(() => {
-		interval = setInterval(() => {
-			time.current += 1;
-		}, 1000);
-
-		return () => {
-			if (interval) {
-				clearInterval(interval);
-			}
-		};
-	}, []);
+	const { time, clearTimer } = useTimer();
 
 	return (
 		<Button
 			onClick={() => {
-				onClick(time.current);
-				if (interval) {
-					clearInterval(interval);
-				}
+				onClick(time);
+				clearTimer();
 			}}
 			size="sm"
 			className="mt-4"
