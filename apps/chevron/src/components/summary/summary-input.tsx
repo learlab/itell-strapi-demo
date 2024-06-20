@@ -7,6 +7,7 @@ import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
+import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { SummaryProgress } from "./summary-progress";
@@ -53,39 +54,39 @@ export const SummaryInput = ({
 	}, []);
 
 	return (
-		<>
-			<p className="text-sm font-light">Number of words: {numOfWords(input)}</p>
-			<div className="relative">
-				<textarea
-					name="input"
-					value={input}
-					disabled={disabled}
-					placeholder={"Write your summary here"}
-					onChange={(e) => setInput(e.currentTarget.value)}
-					rows={10}
-					onPaste={(e) => {
-						if (isProduction && !isAdmin(userRole)) {
-							e.preventDefault();
-							toast.warning("Copy & Paste is not allowed");
-						}
-					}}
-					className={cn(
-						"flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-						"resize-none rounded-md shadow-md p-4 w-full ",
-					)}
-				/>
-				{pending ? (
-					<div className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">
-						<SummaryProgress items={stages} />
-					</div>
-				) : (
-					disabled && (
-						<div className="absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">
-							Please finish the entire page first
-						</div>
-					)
+		<div className="relative">
+			<p className="isolate text-sm font-light absolute right-2 bottom-2 opacity-70">
+				{pluralize("word", numOfWords(input), true)}
+			</p>
+			<textarea
+				name="input"
+				value={input}
+				disabled={disabled}
+				placeholder={"Write your summary here"}
+				onChange={(e) => setInput(e.currentTarget.value)}
+				rows={10}
+				onPaste={(e) => {
+					if (isProduction && !isAdmin(userRole)) {
+						e.preventDefault();
+						toast.warning("Copy & Paste is not allowed");
+					}
+				}}
+				className={cn(
+					"flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+					"resize-none rounded-md shadow-md p-4 w-full ",
 				)}
-			</div>
-		</>
+			/>
+			{pending ? (
+				<div className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">
+					<SummaryProgress items={stages} />
+				</div>
+			) : (
+				disabled && (
+					<div className="absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">
+						Please finish the entire page first
+					</div>
+				)
+			)}
+		</div>
 	);
 };
