@@ -1,13 +1,13 @@
-import { SessionUser } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
-import { Warning } from "@itell/ui/server";
 import { User } from "lucia";
 import { Suspense } from "react";
 import { SummaryCount } from "./summary-count";
 import { SummaryDescription } from "./summary-description";
-import { SummaryFormSelector } from "./summary-form-selector";
+import { SummaryFormReread } from "./summary-form-reread";
+import { SummaryFormSimple } from "./summary-form-simple";
+import { SummaryFormStairs } from "./summary-form-stairs";
 
 type Props = {
 	pageSlug: string;
@@ -28,32 +28,50 @@ export const PageSummary = async ({
 	}
 
 	return (
-		<section className="mt-10 border-t-2 py-4 mb-20 space-y-2">
+		<section className=" mt-10 border-t-2 py-4 mb-20 space-y-2">
 			{condition !== Condition.SIMPLE && (
 				<Suspense fallback={<SummaryCount.Skeleton />}>
 					<SummaryCount pageSlug={page.page_slug} userId={user.id} />
 				</Suspense>
 			)}
-			<SummaryFormSelector
-				user={user}
-				pageStatus={pageStatus}
-				page={page}
-				condition={condition}
-			/>
+
+			<section
+				className="grid gird-cols-1 lg:grid-cols-3 gap-8"
+				id="page-summary"
+			>
+				{condition === Condition.SIMPLE ? (
+					<section className="col-span-full">
+						<SummaryFormSimple
+							userId={user.id}
+							prolificId={user.prolificId}
+							page={page}
+							pageStatus={pageStatus}
+						/>
+					</section>
+				) : (
+					<>
+						<section className="col-span-full hidden md:block lg:col-span-1">
+							<SummaryDescription condition={condition} />
+						</section>
+
+						<section className="col-span-full lg:col-span-2">
+							{condition === Condition.RANDOM_REREAD ? (
+								<SummaryFormReread
+									user={user}
+									page={page}
+									pageStatus={pageStatus}
+								/>
+							) : condition === Condition.STAIRS ? (
+								<SummaryFormStairs
+									user={user}
+									page={page}
+									pageStatus={pageStatus}
+								/>
+							) : null}
+						</section>
+					</>
+				)}
+			</section>
 		</section>
 	);
 };
-
-export const PageSummaryNoUser = () => (
-	<section
-		className="flex flex-col sm:flex-row gap-8 mt-10 border-t-2 py-4 mb-20"
-		id="page-summary"
-	>
-		<section className="sm:basis-2/3">
-			<Warning>
-				You need to be logged in to submit a summary for this page and move
-				forward
-			</Warning>
-		</section>
-	</section>
-);

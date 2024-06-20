@@ -23,12 +23,8 @@ type Props = {
 
 export const SummaryFormSimple = React.memo(
 	({ userId, pageStatus, page, prolificId }: Props) => {
-		const { currentChunk, chunks, isSummaryReady } = useConstructedResponse(
-			(state) => ({
-				currentChunk: state.currentChunk,
-				chunks: state.chunks,
-				isSummaryReady: state.isSummaryReady,
-			}),
+		const isSummaryReady = useConstructedResponse(
+			(state) => state.isSummaryReady,
 		);
 		const router = useRouter();
 		const { updateUser } = useSessionAction();
