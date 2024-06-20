@@ -24,7 +24,8 @@ export const getClassStudentStats = async (classId: string) => {
 		.from(users)
 		.where(eq(users.classId, classId))
 		.leftJoin(summaries, eq(summaries.userId, users.id))
-		.groupBy(users.id);
+		.groupBy(users.id)
+		.orderBy(users.id);
 };
 
 export const countStudent = async (classId: string) => {
