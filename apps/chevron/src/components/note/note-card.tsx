@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "@/lib/auth/context";
-import { db } from "@/lib/db";
 import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/types/note";
@@ -76,8 +75,6 @@ export const NoteCard = React.memo(
 		const [recordId, setRecordId] = useState<number | undefined>(
 			newNote ? undefined : id,
 		);
-
-		const isUnsaved = !recordId;
 		const [text, setText] = useState(noteText);
 
 		const [editState, dispatch] = useImmerReducer<EditState, EditDispatch>(
@@ -232,39 +229,6 @@ export const NoteCard = React.memo(
 			}
 		}, []);
 
-		const FormFooter = () => {
-			const { pending } = useFormStatus();
-			return (
-				<footer className="mt-2">
-					{isUnsaved && (
-						<p className="text-sm text-muted-foreground">unsaved</p>
-					)}
-					<div className="flex justify-end gap-1">
-						<NoteDelete
-							open={editState.showDeleteModal}
-							onOpenChange={(val) =>
-								dispatch({
-									type: "set_show_delete_modal",
-									payload: val,
-								})
-							}
-							onDelete={handleDelete}
-						/>
-						{editState.editing && (
-							<Button
-								disabled={pending}
-								variant="ghost"
-								size="sm"
-								type="submit"
-							>
-								{pending ? <Spinner /> : <ForwardIcon className="size-4" />}
-							</Button>
-						)}
-					</div>
-				</footer>
-			);
-		};
-
 		return (
 			<div
 				className={cn(
@@ -341,7 +305,15 @@ export const NoteCard = React.memo(
 											</span>
 										</button>
 									)}
-									<FormFooter />
+									<NoteFooter
+										id={recordId}
+										isEditing={editState.editing}
+										showDelete={editState.showDeleteModal}
+										onDelete={handleDelete}
+										onShowDelete={(val) =>
+											dispatch({ type: "set_show_delete_modal", payload: val })
+										}
+									/>
 								</form>
 
 								{(updatedAt || createdAt) && (
@@ -357,3 +329,36 @@ export const NoteCard = React.memo(
 		);
 	},
 );
+
+const NoteFooter = ({
+	id,
+	isEditing,
+	showDelete,
+	onShowDelete,
+	onDelete,
+}: {
+	id: number | undefined;
+	isEditing: boolean;
+	showDelete: boolean;
+	onShowDelete: (val: boolean) => void;
+	onDelete: () => Promise<void>;
+}) => {
+	const { pending } = useFormStatus();
+	return (
+		<footer className="mt-2">
+			{!id && <p className="text-sm text-muted-foreground">unsaved</p>}
+			<div className="flex justify-end gap-1">
+				<NoteDelete
+					open={showDelete}
+					onOpenChange={onShowDelete}
+					onDelete={onDelete}
+				/>
+				{isEditing && (
+					<Button disabled={pending} variant="ghost" size="sm" type="submit">
+						{pending ? <Spinner /> : <ForwardIcon className="size-4" />}
+					</Button>
+				)}
+			</div>
+		</footer>
+	);
+};

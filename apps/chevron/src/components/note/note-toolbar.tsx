@@ -55,8 +55,8 @@ export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 		}
 
 		setState({
-			top: rect.top + window.scrollY - 60,
-			left: rect.left + 75,
+			top: rect.top + window.scrollY,
+			left: rect.left,
 			text,
 			range,
 		});
@@ -135,7 +135,10 @@ export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 				className={cn(
 					"absolute rounded-md shadow-sm px-2 py-1 flex flex-row gap-2 border-2 border-gray-100 items-center justify-between bg-background -ml-[75px]",
 				)}
-				style={{ left: state.left, top: state.top }}
+				style={{
+					left: `calc(${state.left}px + 4.6rem)`,
+					top: `calc(${state.top}px - 4rem)`,
+				}}
 			>
 				{commands.map((command) => (
 					<Button
