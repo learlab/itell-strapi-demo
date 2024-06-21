@@ -1,5 +1,4 @@
 import { summaries } from "@/drizzle/schema";
-import { SessionUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { cn } from "@itell/core/utils";
 import { Skeleton, buttonVariants } from "@itell/ui/server";

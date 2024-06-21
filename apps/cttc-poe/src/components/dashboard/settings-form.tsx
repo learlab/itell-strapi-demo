@@ -1,5 +1,4 @@
 import { Separator } from "@/components/client-components";
-import { SessionUser } from "@/lib/auth";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import { getUser } from "@/lib/user/actions";
 import {
@@ -9,12 +8,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/server";
+import { User } from "lucia";
 import { ClassInfo } from "./settings/class-info";
 import { ClassRegister } from "./settings/class-register";
 import { Profile } from "./settings/profile";
 import { WebsiteSettings } from "./settings/website-settings";
 
-export const SettingsForm = async ({ user }: { user: SessionUser }) => {
+export const SettingsForm = async ({ user }: { user: User | null }) => {
 	if (!user) {
 		return null;
 	}

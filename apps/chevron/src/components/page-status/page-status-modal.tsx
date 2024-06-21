@@ -1,10 +1,10 @@
-import { SessionUser } from "@/lib/auth";
 import { PageStatus } from "@/lib/page-status";
+import { User } from "lucia";
 import { PageLockedModal } from "./page-locked-modal";
 import { PageUnauthorizedModal } from "./page-unauthorized-modal";
 
 type Props = {
-	user: SessionUser;
+	user: User | null;
 	pageStatus: PageStatus;
 };
 

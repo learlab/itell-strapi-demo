@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";

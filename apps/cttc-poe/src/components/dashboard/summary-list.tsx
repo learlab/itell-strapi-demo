@@ -8,8 +8,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/client-components";
-import { Summary, User } from "@/drizzle/schema";
-import { SessionUser } from "@/lib/auth";
+import { Summary } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { keyof } from "@itell/core/utils";
 import pluralize from "pluralize";

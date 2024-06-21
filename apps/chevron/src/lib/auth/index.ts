@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import { Lucia, Session as LuciaSession, User as LuciaUser } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";

@@ -46,7 +46,6 @@
 		"react-dom": "18.2.0",
 		"react-dom-confetti": "^0.2.0",
 		"react-error-boundary": "^4.0.12",
-		"react-text-selection-popover": "^2.0.2",
 		"react-textarea-autosize": "^8.5.3",
 		"recharts": "^2.8.0",
 		"rehype-autolink-headings": "^6.1.1",
@@ -58,7 +57,6 @@
 		"turbo": "^1.10.15",
 		"use-action-status": "^0.0.1",
 		"use-immer": "^0.9.0",
-		"use-text-selection": "^1.1.5",
 		"zod": "^3.22.2",
 		"zustand": "^4.4.1"
 	},

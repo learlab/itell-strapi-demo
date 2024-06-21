@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { isProduction } from "@/lib/constants";
-import { firstPage, firstSummaryPage } from "@/lib/pages";
+import { firstSummaryPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
