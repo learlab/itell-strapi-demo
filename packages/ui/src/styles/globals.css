@@ -25,13 +25,5 @@
         content: counter(step);
     }
 
-    .callout-no-title p {
-        margin-top: 0;
-    }
-
-    .callout-no-title ul {
-        margin-top: 0;
-    }
-
 
 }

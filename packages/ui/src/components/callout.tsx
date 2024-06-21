@@ -1,8 +1,8 @@
 import { cn } from "@itell/core/utils";
+import { AlertCircleIcon, AlertTriangleIcon, InfoIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
-import { Typography } from "./typography";
-import { InfoIcon, AlertCircleIcon, AlertTriangleIcon } from "lucide-react";
 import { Card, CardContent } from "./card";
+import { Typography } from "./typography";
 
 export const Callout = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -22,7 +22,7 @@ export const Keyterm = ({
 }: { label: string; children: React.ReactNode }) => {
 	return (
 		<div className="border-2 px-4 py-2 rounded-md my-4">
-			<div className="border-accent border-b font-bold ">
+			<div className="border-accent border-b font-bold">
 				<Typography variant="h6">{label}</Typography>
 			</div>
 			<Typography as="div">{children}</Typography>
@@ -38,7 +38,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const Info = ({ title, children, className, ...rest }: Props) => (
 	<Alert
 		className={cn(
-			"bg-info dark:bg-inherit dark:border-2 dark:border-inf my-4",
+			"bg-info dark:bg-inherit dark:border-2 dark:border-info my-4",
 			className,
 		)}
 		{...rest}
@@ -46,7 +46,7 @@ export const Info = ({ title, children, className, ...rest }: Props) => (
 		<InfoIcon className="size-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
 		{/* align content with icon when there is no title */}
-		<AlertDescription className={cn({ "callout-no-title": !title })}>
+		<AlertDescription className={cn({ "[&>p]:my-0 [&>ul]:my-0": !title })}>
 			{children}
 		</AlertDescription>
 	</Alert>
@@ -56,7 +56,7 @@ export const Errorbox = ({ title, children, ...rest }: Props) => (
 	<Alert variant="destructive" {...rest}>
 		<AlertTriangleIcon className="size-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
-		<AlertDescription className={cn({ "callout-no-title": !title })}>
+		<AlertDescription className={cn({ "[&>p]:my-0 [&>ul]:my-0": !title })}>
 			{children}
 		</AlertDescription>
 	</Alert>
@@ -72,7 +72,7 @@ export const Warning = ({ title, children, className, ...rest }: Props) => (
 	>
 		<AlertCircleIcon className="size-4" />
 		{title && <AlertTitle>{title}</AlertTitle>}
-		<AlertDescription className={cn({ "callout-no-title": !title })}>
+		<AlertDescription className={cn({ "[&>p]:my-0 [&>ul]:my-0": !title })}>
 			{children}
 		</AlertDescription>
 	</Alert>

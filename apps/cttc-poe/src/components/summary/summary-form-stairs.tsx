@@ -22,7 +22,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { usePortal, useTimer } from "@itell/core/hooks";
+import { useKeydown, usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -91,6 +91,7 @@ const exitQuestion = () => {
 };
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const initialState: State = {
 		prevInput: "",
 		error: null,
@@ -343,7 +344,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const scores = summaryResponseRef.current;
 					addStage("Saving");
 					const shouldUpdateUser = scores.is_passed || isEnoughSummary;
-					await createSummary({
+					const { summaryId } = await createSummary({
 						text: input,
 						userId: user.id,
 						pageSlug,
@@ -354,6 +355,16 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						languageScore: scores.language,
 						contentScore: scores.content,
 					});
+
+					createEvent({
+						type: "keystroke",
+						pageSlug,
+						userId,
+						data: {
+							summaryId,
+							keystrokes,
+						},
+					}).then(clearKeystroke);
 
 					finishStage("Saving");
 
@@ -470,6 +481,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					pending={isPending}
 					stages={stages}
 					userRole={user.role}
+					ref={ref}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">

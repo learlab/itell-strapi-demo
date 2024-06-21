@@ -269,11 +269,11 @@ export const QuestionBoxStairs = ({
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
 					{answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
 						<div className="text-xs">
-							<p className="text-red-400 question-box-text">
+							<p className="text-red-400">
 								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
 								Please try again.
 							</p>
-							<p className="question-box-text underline">
+							<p className="underline">
 								{isLastQuestion
 									? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
 									: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
@@ -282,7 +282,7 @@ export const QuestionBoxStairs = ({
 					)}
 
 					{answerStatus === AnswerStatusStairs.SEMI_CORRECT && (
-						<p className="text-yellow-600 question-box-text text-xs">
+						<p className="text-yellow-600 text-xs">
 							<b>iTELL AI says:</b> You may have missed something, but you were
 							generally close. You can click on the "Continue reading" button
 							below go to the next part or try again with a different response.{" "}

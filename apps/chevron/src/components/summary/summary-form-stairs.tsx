@@ -22,7 +22,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { usePortal, useTimer } from "@itell/core/hooks";
+import { useKeydown, usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -100,6 +100,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		canProceed: pageStatus.unlocked,
 	};
 	const { updateUser } = useSessionAction();
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
@@ -344,7 +345,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const scores = summaryResponseRef.current;
 					addStage("Saving");
 					const shouldUpdateUser = scores.is_passed || isEnoughSummary;
-					await createSummary({
+					const { summaryId } = await createSummary({
 						text: input,
 						userId: user.id,
 						pageSlug,
@@ -355,6 +356,16 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						languageScore: scores.language,
 						contentScore: scores.content,
 					});
+
+					createEvent({
+						type: "keystroke",
+						pageSlug,
+						userId,
+						data: {
+							summaryId,
+							keystrokes,
+						},
+					}).then(clearKeystroke);
 
 					finishStage("Saving");
 
