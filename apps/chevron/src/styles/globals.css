@@ -77,3 +77,20 @@ h5,
 .driver-popover {
   @apply max-w-80 bg-background text-foreground !important;
 }
+
+.no-select {
+  user-select: none;
+  /* Standard property */
+  -webkit-user-select: none;
+  /* Chrome, Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+}
+
+#page-content button,
+#page-content .question-container,
+#page-content .pager {
+  @apply no-select
+}

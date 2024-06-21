@@ -14,7 +14,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { usePortal, useTimer } from "@itell/core/hooks";
+import { useKeydown, usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -43,6 +43,7 @@ const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
@@ -148,7 +149,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				const scores = parsed.data;
 				summaryResponseRef.current = scores;
 
-				await createSummary({
+				const { summaryId } = await createSummary({
 					text: input,
 					userId: user.id,
 					pageSlug,
@@ -159,6 +160,17 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					languageScore: scores.language,
 					contentScore: scores.content,
 				});
+
+				createEvent({
+					type: "keystroke",
+					pageSlug,
+					userId: user.id,
+					data: {
+						summaryId,
+						keystrokes,
+					},
+				}).then(clearKeystroke);
+
 				const nextSlug = await incrementUserPage(user.id, pageSlug);
 				finishStage("Saving");
 				setFinished(true);
@@ -220,6 +232,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					pending={isPending}
 					stages={stages}
 					userRole={user.role}
+					ref={ref}
 				/>
 				{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
 				{isDelayed && (

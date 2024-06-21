@@ -75,7 +75,7 @@ export const Pager = ({ pageIndex }: Props) => {
 	});
 	return (
 		<div
-			className={cn("flex flex-row items-center justify-between mt-5", {
+			className={cn("flex flex-row items-center justify-between mt-5 pager", {
 				"justify-end": next && !prev,
 				"justify-start": prev && !next,
 			})}

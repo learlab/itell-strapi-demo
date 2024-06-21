@@ -6,7 +6,12 @@ import { PgInsertValue } from "drizzle-orm/pg-core";
 import { db, first } from "../db";
 
 export const createSummary = async (input: PgInsertValue<typeof summaries>) => {
-	return await db.insert(summaries).values(input);
+	const record = await db
+		.insert(summaries)
+		.values(input)
+		.returning({ summaryId: summaries.id });
+
+	return record[0];
 };
 
 export const countUserPageSummary = async (
