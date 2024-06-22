@@ -25,7 +25,6 @@ import NoteColorPicker from "./note-color-picker";
 
 interface Props extends NoteCardType {
 	pageSlug: string;
-	newNote?: boolean;
 }
 
 type EditState = {
@@ -63,7 +62,7 @@ export const NoteCard = React.memo(
 		createdAt,
 		range,
 		color,
-		newNote = false,
+		local = false,
 	}: Props) => {
 		const { user } = useSession();
 		if (!user) {
@@ -71,9 +70,8 @@ export const NoteCard = React.memo(
 		}
 
 		const elements = useRef<HTMLElement[]>();
-		const [shouldCreate, setShouldCreate] = useState(newNote);
 		const [recordId, setRecordId] = useState<number | undefined>(
-			newNote ? undefined : id,
+			local ? undefined : id,
 		);
 		const [text, setText] = useState(noteText);
 
@@ -116,8 +114,8 @@ export const NoteCard = React.memo(
 			},
 			{
 				color, // border color ;
-				editing: newNote, // when editing show textarea otherwise show noteText
-				collapsed: !newNote, // if the note card is expanded
+				editing: local, // when editing show textarea otherwise show noteText
+				collapsed: !local, // if the note card is expanded
 				showDeleteModal: false, // show delete modal
 				showColorPicker: false, // show color picker
 				showEdit: false, // show edit overlay
@@ -134,7 +132,7 @@ export const NoteCard = React.memo(
 		const formAction = async (formData: FormData) => {
 			const input = String(formData.get("input"));
 			setText(input);
-			if (shouldCreate) {
+			if (!recordId) {
 				// create new note
 				const { noteId } = await createNote({
 					y,

@@ -1,3 +1,4 @@
+import { Note } from "@/drizzle/schema";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -24,6 +25,7 @@ export type NoteCard = {
 	range: string;
 	updatedAt?: Date;
 	createdAt?: Date;
+	local?: boolean;
 };
 
 export type Highlight = {
@@ -38,6 +40,7 @@ type State = {
 };
 
 type Actions = {
+	init: (notes: Note[], highlights: Note[]) => void;
 	createNote: (note: CreateNoteInput, theme?: string) => void;
 	createHighlight: (highlight: Highlight) => void;
 	updateNote: (id: number, input: UpdateNoteInput) => void;
@@ -49,6 +52,12 @@ export const useNotesStore = create(
 	immer<State & Actions>((set) => ({
 		notes: [],
 		highlights: [],
+		init: (notes, highlights) =>
+			set((state) => {
+				// @ts-ignore
+				state.notes = notes;
+				state.highlights = highlights;
+			}),
 		createNote: ({ id, y, highlightedText, color, range }) =>
 			set((state) => {
 				state.notes.push({
@@ -58,6 +67,7 @@ export const useNotesStore = create(
 					noteText: "",
 					color,
 					range,
+					local: true,
 				});
 			}),
 		updateNote: (id, { noteText, color, newId }) =>

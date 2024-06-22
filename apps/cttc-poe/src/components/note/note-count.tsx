@@ -9,23 +9,25 @@ import {
 import { useNotesStore } from "@/lib/store/note";
 import pluralize from "pluralize";
 
-type Props = {
-	noteCount: number;
-	highlightCount: number;
-};
-
-export const NoteCount = ({ noteCount, highlightCount }: Props) => {
+export const NoteCount = () => {
 	const { highlights, notes } = useNotesStore();
 
 	return (
-		<Button variant={"link"} className="text-sm px-0 text-left">
-			<span>
-				{`${pluralize("note", noteCount + notes.length, true)}, ${pluralize(
-					"highlight",
-					highlightCount + highlights.length,
-					true,
-				)}`}
-			</span>
-		</Button>
+		<HoverCard>
+			<HoverCardTrigger>
+				<Button variant={"link"} className="text-sm px-0 text-left">
+					<span>
+						{`${pluralize("note", notes.length, true)}, ${pluralize(
+							"highlight",
+							highlights.length,
+							true,
+						)}`}
+					</span>
+				</Button>
+			</HoverCardTrigger>
+			<HoverCardContent className="w-48 text-sm">
+				<p>Leave a note or highlight by selecting the text</p>
+			</HoverCardContent>
+		</HoverCard>
 	);
 };

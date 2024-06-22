@@ -1,7 +1,7 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { ChatLoader } from "@/components/chat/chat-loader";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
-import { NoteCountLoader } from "@/components/note/note-count-loader";
+import { NoteCount } from "@/components/note/note-count";
 import { NoteLoader } from "@/components/note/note-loader";
 import { NoteToolbar } from "@/components/note/note-toolbar";
 import { PageStatus } from "@/components/page-status/page-status";
@@ -98,9 +98,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<PageToc headings={page.headings} chunks={getPageChunks(page)} />
 						<div className="mt-8 flex flex-col gap-1">
 							<PageStatus pageSlug={pageSlug} />
-							<Suspense fallback={<NoteCountLoader.Skeleton />}>
-								<NoteCountLoader pageSlug={pageSlug} />
-							</Suspense>
+							<NoteCount />
 						</div>
 					</div>
 					<Suspense

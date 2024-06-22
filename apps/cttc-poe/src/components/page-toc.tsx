@@ -11,10 +11,9 @@ type Heading = {
 };
 type TocSidebarProps = {
 	headings: Heading[];
-	chunks: string[];
 };
 
-export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
+export const PageToc = ({ headings }: TocSidebarProps) => {
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			window.addEventListener("DOMContentLoaded", () => {

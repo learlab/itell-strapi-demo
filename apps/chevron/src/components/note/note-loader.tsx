@@ -16,5 +16,5 @@ export const NoteLoader = async ({ userId, pageSlug }: Props) => {
 		(note) => note.noteText === null,
 	);
 
-	return <NoteList notes={notes} highlights={highlights} pageSlug={pageSlug} />;
+	return <NoteList data={{ notes, highlights }} pageSlug={pageSlug} />;
 };
