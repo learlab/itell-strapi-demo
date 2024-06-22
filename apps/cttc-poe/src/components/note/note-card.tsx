@@ -9,6 +9,7 @@ import {
 	createNoteElements,
 	deserializeRange,
 	getElementsByNoteId,
+	removeNotes,
 } from "@itell/core/note";
 import { cn, relativeDate } from "@itell/core/utils";
 import { EditIcon } from "lucide-react";
@@ -69,8 +70,7 @@ export const NoteCard = React.memo(
 			return null;
 		}
 
-		const elementsRef = useRef<HTMLElement[]>();
-		const elements = elementsRef.current;
+		const elements = useRef<HTMLElement[]>();
 		const [shouldCreate, setShouldCreate] = useState(newNote);
 		const [recordId, setRecordId] = useState<number | undefined>(
 			newNote ? undefined : id,
@@ -136,7 +136,7 @@ export const NoteCard = React.memo(
 			setText(input);
 			if (shouldCreate) {
 				// create new note
-				const note = await createNote({
+				const { noteId } = await createNote({
 					y,
 					userId: user.id,
 					noteText: input,
@@ -145,13 +145,10 @@ export const NoteCard = React.memo(
 					color: editState.color,
 					range,
 				});
-				if (note) {
-					setRecordId(note.id);
-					setShouldCreate(false);
-				}
+				setRecordId(noteId);
 			} else {
 				// edit existing note
-				updateNoteLocal({ id, noteText: input });
+				updateNoteLocal(id, { noteText: input });
 				if (recordId) {
 					await updateNote(recordId, {
 						noteText: input,
@@ -172,16 +169,8 @@ export const NoteCard = React.memo(
 			element.style.fontStyle = "normal";
 		};
 
-		const unHighlightNote = (element: HTMLElement) => {
-			element.classList.remove("emphasized");
-			element.style.backgroundColor = "unset";
-			element.classList.add("unhighlighted");
-		};
-
 		const handleDelete = async () => {
-			if (elements) {
-				elements.forEach(unHighlightNote);
-			}
+			removeNotes(id);
 			setIsHidden(true);
 			deleteNoteLocal(id);
 			if (recordId) {
@@ -197,14 +186,14 @@ export const NoteCard = React.memo(
 					dispatch({ type: "set_show_edit", payload: true });
 				}
 				if (elements) {
-					elements.forEach(emphasizeNote);
+					elements.current?.forEach(emphasizeNote);
 				}
 			},
 			onMouseLeave: () => {
 				dispatch({ type: "set_show_edit", payload: false });
 
 				if (elements) {
-					elements.forEach(deemphasizeNote);
+					elements.current?.forEach(deemphasizeNote);
 				}
 			},
 		};
@@ -220,7 +209,7 @@ export const NoteCard = React.memo(
 					});
 					// elementsRef should be set after the note elements are created
 					// in the case of new note, they are already created by the toolbar
-					elementsRef.current = Array.from(
+					elements.current = Array.from(
 						getElementsByNoteId(id) || [],
 					) as HTMLElement[];
 				}, 300);
@@ -274,12 +263,10 @@ export const NoteCard = React.memo(
 									color={editState.color}
 									onChange={(color) => {
 										dispatch({ type: "set_color", payload: color });
-										if (elements) {
-											elements.forEach((element) => {
-												element.style.backgroundColor = color;
-											});
-										}
-										updateNoteLocal({ id, color });
+										elements.current?.forEach((element) => {
+											element.style.backgroundColor = color;
+										});
+										updateNoteLocal(id, { color });
 									}}
 								/>
 

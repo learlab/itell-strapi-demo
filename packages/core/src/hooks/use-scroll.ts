@@ -1,8 +1,13 @@
 "use client";
 
-import { ScrollEventData } from "@/types/telemetry";
 import { useEffect, useState } from "react";
 import { useDebounce } from "./utils";
+
+export type ScrollEventData = {
+	offset: number;
+	timestamp: number;
+	percentage: number;
+};
 
 type Props = {
 	onEvent: (data: ScrollEventData) => void;

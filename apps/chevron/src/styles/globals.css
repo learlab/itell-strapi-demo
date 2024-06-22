@@ -91,6 +91,8 @@ h5,
 
 #page-content button,
 #page-content .question-container,
-#page-content .pager {
+#page-content .pager,
+#page-content .note,
+#page-content .highlight {
   @apply no-select
 }

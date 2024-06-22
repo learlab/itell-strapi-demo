@@ -1,7 +1,7 @@
 import {
 	ReadingTimeChartLevel,
 	ReadingTimeChartParams,
-} from "@itell/core/types";
+} from "@itell/core/dashboard";
 import { DashboardBadge } from "@itell/ui/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";

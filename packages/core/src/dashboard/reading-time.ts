@@ -1,9 +1,6 @@
 import { format } from "date-fns";
-import {
-	ReadingTimeChartLevel,
-	ReadingTimeChartParams,
-} from "../types/reading-time";
 import { formatDate } from "../utils";
+import { ReadingTimeChartLevel, ReadingTimeChartParams } from "./schema";
 
 export const PrevDaysLookup = {
 	[ReadingTimeChartLevel.week_1]: 6,

@@ -15,7 +15,7 @@ type State = {
 type Actions = {
 	createNote: (note: CreateNoteInput, theme?: string) => void;
 	createHighlight: (highlight: Highlight) => void;
-	updateNote: (note: UpdateNoteInput) => void;
+	updateNote: (id: number, note: UpdateNoteInput) => void;
 	deleteNote: (id: number) => void;
 	deleteHighlight: (id: number) => void;
 };
@@ -35,7 +35,7 @@ export const useNotesStore = create(
 					range,
 				});
 			}),
-		updateNote: ({ id, noteText, color }) =>
+		updateNote: (id, { noteText, color }) =>
 			set((state) => {
 				const index = state.notes.findIndex((n) => n.id === id);
 				if (index !== -1) {

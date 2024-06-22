@@ -1,7 +1,7 @@
 import { User } from "@/drizzle/schema";
 import { routes } from "@/lib/navigation";
 import { getPageData } from "@/lib/utils";
-import { ReadingTimeChartLevel } from "@itell/core/types";
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import {
 	Card,
 	CardContent,

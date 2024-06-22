@@ -5,7 +5,7 @@ import {
 	getGroupedReadingTime,
 	getReadingTimeChartData,
 } from "@itell/core/dashboard";
-import { ReadingTimeChartParams } from "@itell/core/types";
+import { ReadingTimeChartParams } from "@itell/core/dashboard";
 import { getDatesBetween } from "@itell/core/utils";
 import {
 	Card,

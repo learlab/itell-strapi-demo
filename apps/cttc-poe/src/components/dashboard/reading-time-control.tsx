@@ -8,7 +8,7 @@ import {
 	SelectValue,
 } from "@/components/client-components";
 import { useSafeSearchParams } from "@/lib/navigation";
-import { ReadingTimeChartLevel } from "@itell/core/types";
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 

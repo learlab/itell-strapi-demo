@@ -24,7 +24,6 @@ const app = async (): Promise<UserConfigExport> => {
 					contentlayer: path.resolve(__dirname, "src/contentlayer.ts"),
 					note: path.resolve(__dirname, "src/note/index.ts"),
 					dashboard: path.resolve(__dirname, "src/dashboard/index.ts"),
-					types: path.resolve(__dirname, "src/types/index.ts"),
 					components: path.resolve(__dirname, "src/components/index.ts"),
 					summary: path.resolve(__dirname, "src/summary/index.ts"),
 					qa: path.resolve(__dirname, "src/qa/index.ts"),

@@ -6,7 +6,7 @@ import {
 	createNoteElements,
 	deserializeRange,
 	getElementsByNoteId,
-	removeHighlights,
+	removeNotes,
 } from "@itell/core/note";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -51,7 +51,7 @@ export const Highlight = React.memo(({ id, color, range }: Props) => {
 				// decrement highlight count
 				deleteHighlightLocal(id);
 				// remove dom element
-				removeHighlights(id);
+				removeNotes(id);
 				// remove database record
 				deleteNote(id);
 			}}

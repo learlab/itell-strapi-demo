@@ -2,8 +2,7 @@ import { getSafeRanges } from "./range";
 export { serializeRange, deserializeRange } from "./range";
 export {
 	getElementsByNoteId,
-	getHighlightId,
-	removeHighlights,
+	removeNotes,
 } from "./dom";
 
 export const createNoteElements = ({

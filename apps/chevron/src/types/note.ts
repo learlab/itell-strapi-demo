@@ -7,7 +7,6 @@ export type CreateNoteInput = {
 };
 
 export type UpdateNoteInput = {
-	id: number;
 	noteText?: string;
 	color?: string;
 };

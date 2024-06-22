@@ -1,9 +1,11 @@
-import {
-	ChunkEntry,
-	ChunkEntryWithLastTick,
-	FocusTimeEventData,
-} from "@/types/telemetry";
 import { useEffect, useRef } from "react";
+
+type ChunkEntry = {
+	chunkId: string;
+	totalViewTime: number;
+};
+type ChunkEntryWithLastTick = ChunkEntry & { lastTick: number };
+export type FocusTimeEventData = Record<string, number>;
 
 type Props = {
 	chunks: HTMLElement[];

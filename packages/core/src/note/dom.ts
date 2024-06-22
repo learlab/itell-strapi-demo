@@ -1,5 +1,3 @@
-export const getHighlightId = (el: HTMLSpanElement) => el.dataset.noteId;
-
 const unwrapElement = (el: Element) => {
 	if (el.textContent) {
 		const text = document.createTextNode(el.textContent);
@@ -7,7 +5,7 @@ const unwrapElement = (el: Element) => {
 	}
 };
 
-export const removeHighlights = async (id: number) => {
+export const removeNotes = async (id: number) => {
 	// Remove all existing tags before applying new highlighting
 	const highlights = getElementsByNoteId(id);
 	if (highlights) {

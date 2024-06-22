@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useDebounce } from "./utils";
-import { ClickEventData } from "@/types/telemetry";
+
+export type ClickEventData = {
+	x: number;
+	y: number;
+	timestamp: number;
+	element: string;
+};
 
 type Props = {
 	onEvent: (data: ClickEventData) => void;

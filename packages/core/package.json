@@ -50,10 +50,6 @@
 			"require": "./dist/contentlayer.cjs.js",
 			"import": "./dist/contentlayer.es.js"
 		},
-		"./types": {
-			"require": "./dist/types.cjs.js",
-			"import": "./dist/types.es.js"
-		},
 		"./itellFetch": {
 			"require": "./dist/itellFetch.cjs.js",
 			"import": "./dist/itellFetch.es.js"

@@ -1,4 +1,4 @@
-import { ReadingTimeChartLevel } from "@itell/core/types";
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { createNavigationConfig } from "next-safe-navigation";
 import { z } from "zod";
 
