@@ -1,9 +1,8 @@
 "use client";
 
-import { getChunkElement } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { BookmarkIcon } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 type Heading = {
 	level: "one" | "two" | "three" | "four" | "other";
@@ -12,56 +11,53 @@ type Heading = {
 };
 type TocSidebarProps = {
 	headings: Heading[];
-	chunks: string[];
 };
 
-export const PageToc = ({ headings, chunks }: TocSidebarProps) => {
+export const PageToc = ({ headings }: TocSidebarProps) => {
 	useEffect(() => {
-		window.addEventListener("DOMContentLoaded", () => {
-			let mostRecentHeading: string | null = null;
-			let isUsingMostRecentHeading = false;
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					const id = entry.target.id;
-					if (entry.intersectionRatio > 0) {
+		let mostRecentHeading: string | null = null;
+		let isUsingMostRecentHeading = false;
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				const id = entry.target.id;
+				if (entry.intersectionRatio > 0) {
+					document
+						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+						?.classList.add("bg-accent");
+					if (isUsingMostRecentHeading) {
 						document
-							.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-							?.classList.add("bg-accent");
-						if (isUsingMostRecentHeading) {
-							document
-								.querySelector(
-									`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
-								)
-								?.classList.remove("bg-accent");
-						}
-						mostRecentHeading = id;
-					} else {
-						document
-							.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+							.querySelector(
+								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
+							)
 							?.classList.remove("bg-accent");
 					}
-				});
-				if (
-					entries
-						.map((entry) => entry.intersectionRatio)
-						.reduce((partialSum, a) => partialSum + a, 0) === 0
-				) {
-					isUsingMostRecentHeading = true;
+					mostRecentHeading = id;
+				} else {
 					document
-						.querySelector(`div.page-toc ol li a[href="#${mostRecentHeading}"]`)
-						?.classList.add("bg-accent");
+						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+						?.classList.remove("bg-accent");
 				}
 			});
-
-			// Track all sections that have an `id` applied
-			for (const heading of headings) {
-				const element = document.getElementById(heading.slug || "");
-				if (element) {
-					observer.observe(element);
-				}
+			if (
+				entries
+					.map((entry) => entry.intersectionRatio)
+					.reduce((partialSum, a) => partialSum + a, 0) === 0
+			) {
+				isUsingMostRecentHeading = true;
+				document
+					.querySelector(`div.page-toc ol li a[href="#${mostRecentHeading}"]`)
+					?.classList.add("bg-accent");
 			}
 		});
-	}, [headings]);
+
+		// Track all sections that have an `id` applied
+		for (const heading of headings) {
+			const element = document.getElementById(heading.slug || "");
+			if (element) {
+				observer.observe(element);
+			}
+		}
+	}, []);
 
 	return (
 		<div className="page-toc">

@@ -15,55 +15,49 @@ type TocSidebarProps = {
 
 export const PageToc = ({ headings }: TocSidebarProps) => {
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.addEventListener("DOMContentLoaded", () => {
-				let mostRecentHeading: string | null = null;
-				let isUsingMostRecentHeading = false;
-				const observer = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						const id = entry.target.id;
-						if (entry.intersectionRatio > 0) {
-							document
-								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-								?.classList.remove("border-transparent");
-							if (isUsingMostRecentHeading) {
-								document
-									.querySelector(
-										`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
-									)
-									?.classList.add("border-transparent");
-							}
-							mostRecentHeading = id;
-						} else {
-							document
-								.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-								?.classList.add("border-transparent");
-						}
-					});
-					if (
-						entries
-							.map((entry) => entry.intersectionRatio)
-							.reduce((partialSum, a) => partialSum + a, 0) === 0
-					) {
-						isUsingMostRecentHeading = true;
+		let mostRecentHeading: string | null = null;
+		let isUsingMostRecentHeading = false;
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				const id = entry.target.id;
+				if (entry.intersectionRatio > 0) {
+					document
+						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+						?.classList.add("bg-accent");
+					if (isUsingMostRecentHeading) {
 						document
 							.querySelector(
 								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
 							)
-							?.classList.remove("border-transparent");
+							?.classList.remove("bg-accent");
 					}
-				});
-
-				// Track all sections that have an `id` applied
-				for (const heading of headings) {
-					const element = document.getElementById(heading.slug || "");
-					if (element) {
-						observer.observe(element);
-					}
+					mostRecentHeading = id;
+				} else {
+					document
+						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
+						?.classList.remove("bg-accent");
 				}
 			});
+			if (
+				entries
+					.map((entry) => entry.intersectionRatio)
+					.reduce((partialSum, a) => partialSum + a, 0) === 0
+			) {
+				isUsingMostRecentHeading = true;
+				document
+					.querySelector(`div.page-toc ol li a[href="#${mostRecentHeading}"]`)
+					?.classList.add("bg-accent");
+			}
+		});
+
+		// Track all sections that have an `id` applied
+		for (const heading of headings) {
+			const element = document.getElementById(heading.slug || "");
+			if (element) {
+				observer.observe(element);
+			}
 		}
-	}, [headings]);
+	}, []);
 
 	return (
 		<div className="page-toc">
@@ -81,7 +75,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 								data-level={heading.level}
 								href={`#${heading.slug}`}
 								className={cn(
-									"hover:underline inline-flex border-l-2 border-transparent",
+									"hover:underline inline-flex rounded-md py-0.5 px-1 transition-colors ease-out delay-150",
 									{
 										"text-base pl-1": heading.level === "two",
 										"text-sm pl-3": heading.level === "three",
