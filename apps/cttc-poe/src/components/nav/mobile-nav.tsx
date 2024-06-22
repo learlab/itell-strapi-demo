@@ -1,9 +1,9 @@
-import React from "react";
 import Link from "next/link";
+import React from "react";
 
-import { cn } from "@itell/core/utils";
+import { DashboardNavItem } from "@/config/dashboard";
 import { useLockBody } from "@itell/core/hooks";
-import { DashboardNavItem } from "@/types/nav";
+import { cn } from "@itell/core/utils";
 
 // had to accept title as a prop here
 // because MobileNav is imported by DashboardNavMenu (client component)
@@ -39,7 +39,7 @@ export function MobileNav({ items, children }: MobileNavProps) {
 					<TopLink href="/dashboard" text="Dashboard" />
 				</div>
 				<nav className="grid grid-flow-row auto-rows-max text-sm">
-					{items.map((item, index) => (
+					{items.map((item) => (
 						<Link
 							key={item.href}
 							href={item.disabled ? "#" : item.href}

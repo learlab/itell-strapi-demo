@@ -1,10 +1,18 @@
 "use client";
 
-import { SidebarNavItem } from "@/types/nav";
 import { cn } from "@itell/core/utils";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+export type SidebarNavItem = {
+	title: string;
+	href: string;
+	disabled?: boolean;
+	external?: boolean;
+	icon?: React.ReactNode;
+};
+
 type Props = {
 	item: SidebarNavItem;
 };

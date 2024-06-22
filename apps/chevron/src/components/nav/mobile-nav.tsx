@@ -1,9 +1,9 @@
-import React from "react";
 import Link from "next/link";
+import React from "react";
 
-import { cn } from "@itell/core/utils";
+import { DashboardNavItem } from "@/config/dashboard";
 import { useLockBody } from "@itell/core/hooks";
-import { DashboardNavItem } from "@/types/nav";
+import { cn } from "@itell/core/utils";
 
 // had to accept title as a prop here
 // because MobileNav is imported by DashboardNavMenu (client component)

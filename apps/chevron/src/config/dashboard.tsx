@@ -1,4 +1,4 @@
-import { DashboardConfig } from "@/types/config";
+import { SidebarNavItem } from "@/components/nav/dashboard-sidebar-item";
 import {
 	BarChart4Icon,
 	FileEditIcon,
@@ -8,6 +8,17 @@ import {
 } from "lucide-react";
 
 const iconClasses = "mr-2 size-4";
+
+export type DashboardNavItem = {
+	title: string;
+	href: string;
+	disabled?: boolean;
+};
+
+export type DashboardConfig = {
+	mainNav: DashboardNavItem[];
+	sidebarNav: SidebarNavItem[];
+};
 
 export const dashboardConfig: DashboardConfig = {
 	mainNav: [],

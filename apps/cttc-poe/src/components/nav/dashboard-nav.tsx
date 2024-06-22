@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React from "react";
 
+import { DashboardNavItem } from "@/config/dashboard";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import { DashboardNavItem } from "@/types/nav";
 import { ContinueReading } from "../continue-reading";
 import { DashboardNavMenu } from "./dashboard-nav-menu";
 

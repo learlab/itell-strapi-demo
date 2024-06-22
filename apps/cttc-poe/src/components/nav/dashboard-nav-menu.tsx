@@ -5,7 +5,7 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
 
 import { MobileNav } from "@/components/nav/mobile-nav";
-import { DashboardNavItem } from "@/types/nav";
+import { DashboardNavItem } from "@/config/dashboard";
 import { cn } from "@itell/core/utils";
 import { User } from "lucia";
 import { MenuIcon, XIcon } from "lucide-react";
