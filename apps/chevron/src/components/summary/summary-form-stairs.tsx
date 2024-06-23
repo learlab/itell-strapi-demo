@@ -7,7 +7,7 @@ import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { getChatHistory } from "@/lib/store/chat";
 import {
 	countUserPageSummary,
 	createSummary,
@@ -30,7 +30,7 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
@@ -44,7 +44,7 @@ import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
-import { useConstructedResponse } from "../provider/page-provider";
+import { useChat, useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 
@@ -104,13 +104,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
-	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
-		(state) => ({
-			stairsAnswered: state.stairsAnswered,
-			addStairsQuestion: state.addStairsQuestion,
-			messages: state.messages,
-		}),
-	);
+	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => ({
+		stairsAnswered: state.stairsAnswered,
+		addStairsQuestion: state.addStairsQuestion,
+		messages: state.messages,
+	}));
 	const { excludedChunks } = useConstructedResponse((state) => ({
 		excludedChunks: state.excludedChunks,
 	}));
@@ -493,7 +491,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 const FinishReadingButton = ({
 	onClick,
 }: { onClick: (val: number) => void }) => {
-	const stairsAnswered = useChatStore((store) => store.stairsAnswered);
+	const stairsAnswered = useChat((store) => store.stairsAnswered);
 	const { time, clearTimer } = useTimer();
 
 	if (!stairsAnswered) {

@@ -7,7 +7,7 @@ import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { getChatHistory } from "@/lib/store/chat";
 import {
 	countUserPageSummary,
 	createSummary,
@@ -18,6 +18,7 @@ import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
+	getSurveyLink,
 	makePageHref,
 	reportSentry,
 	scrollToElement,
@@ -44,7 +45,7 @@ import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
-import { useConstructedResponse } from "../provider/page-provider";
+import { useChat, useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
 import { SummaryInput, saveSummaryLocal } from "./summary-input";
 
@@ -91,6 +92,7 @@ const exitQuestion = () => {
 };
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
+	const surveyLink = getSurveyLink(user);
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const initialState: State = {
 		prevInput: "",
@@ -104,13 +106,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	const pageSlug = page.page_slug;
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
-	const { stairsAnswered, addStairsQuestion, messages } = useChatStore(
-		(state) => ({
+	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => {
+		return {
 			stairsAnswered: state.stairsAnswered,
 			addStairsQuestion: state.addStairsQuestion,
-			messages: state.messages,
-		}),
-	);
+			messages: state.stairsMessages,
+		};
+	});
 	const { excludedChunks } = useConstructedResponse((state) => ({
 		excludedChunks: state.excludedChunks,
 	}));
@@ -377,7 +379,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 								"You have finished the entire textbook! Redirecting to the outtake survey soon.",
 							);
 							setTimeout(() => {
-								window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
+								window.location.href = surveyLink;
 							}, 3000);
 						} else {
 							updateUser({ pageSlug: nextSlug });
@@ -465,7 +467,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
 					<a
-						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`}
+						href={surveyLink}
 						className={buttonVariants({ variant: "outline" })}
 					>
 						Take outtake survey and claim your progress
@@ -504,7 +506,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 const FinishReadingButton = ({
 	onClick,
 }: { onClick: (val: number) => void }) => {
-	const stairsAnswered = useChatStore((store) => store.stairsAnswered);
+	const stairsAnswered = useChat((store) => store.stairsAnswered);
 	const { time, clearTimer } = useTimer();
 
 	if (!stairsAnswered) {

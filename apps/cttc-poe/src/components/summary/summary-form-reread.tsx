@@ -11,6 +11,7 @@ import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
+	getSurveyLink,
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
@@ -42,6 +43,7 @@ type Props = {
 const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
+	const surveyLink = getSurveyLink(user);
 	const pageSlug = page.page_slug;
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
@@ -182,7 +184,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
 					);
 					setTimeout(() => {
-						window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
+						window.location.href = surveyLink;
 					}, 3000);
 					return;
 				}
@@ -227,7 +229,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				<div className="space-y-2">
 					<p>You have finished the entire textbook. Congratulations! 🎉</p>
 					<a
-						href={`https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`}
+						href={surveyLink}
 						className={buttonVariants({ variant: "outline" })}
 					>
 						Take the outtake survey and claim your progress

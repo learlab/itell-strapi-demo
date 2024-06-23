@@ -3,9 +3,10 @@ import { useSessionAction } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
-import { PageData, reportSentry } from "@/lib/utils";
+import { PageData, getSurveyLink, reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
+import { User } from "lucia";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -15,14 +16,14 @@ import { StatusButton } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
-	userId: string;
-	prolificId: string | null;
+	user: User;
 	pageStatus: PageStatus;
 	page: PageData;
 };
 
 export const SummaryFormSimple = React.memo(
-	({ userId, pageStatus, page, prolificId }: Props) => {
+	({ user, pageStatus, page }: Props) => {
+		const surveyLink = getSurveyLink(user);
 		const isSummaryReady = useConstructedResponse(
 			(state) => state.isSummaryReady,
 		);
@@ -40,7 +41,7 @@ export const SummaryFormSimple = React.memo(
 					}
 				}
 
-				const nextSlug = await incrementUserPage(userId, page.page_slug);
+				const nextSlug = await incrementUserPage(user.id, page.page_slug);
 				if (!isLastPage(page.page_slug)) {
 					updateUser({ pageSlug: nextSlug });
 				} else {
@@ -49,7 +50,7 @@ export const SummaryFormSimple = React.memo(
 						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
 					);
 					setTimeout(() => {
-						window.location.href = `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${prolificId}`;
+						window.location.href = surveyLink;
 					}, 3000);
 				}
 
