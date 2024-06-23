@@ -36,8 +36,7 @@ export const PageSummary = async ({
 				{condition === Condition.SIMPLE ? (
 					<section className="col-span-full">
 						<SummaryFormSimple
-							userId={user.id}
-							prolificId={user.prolificId}
+							user={user}
 							page={page}
 							pageStatus={pageStatus}
 						/>

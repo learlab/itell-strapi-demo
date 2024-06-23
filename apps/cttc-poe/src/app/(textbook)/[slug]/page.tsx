@@ -59,6 +59,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	return (
 		<PageProvider
 			pageSlug={pageSlug}
+			pageTitle={page.title}
 			chunks={chunks}
 			pageStatus={pageStatus}
 			isLastChunkWithQuestion={isLastChunkWithQuestion}

@@ -1,5 +1,6 @@
 import { env } from "@/env.mjs";
 import * as Sentry from "@sentry/nextjs";
+import { User } from "lucia";
 import { redirect } from "next/navigation";
 import { allPagesSorted } from "./pages";
 
@@ -101,4 +102,8 @@ export const randomNumber = () => {
 	const array = new Uint32Array(1);
 	window.crypto.getRandomValues(array);
 	return array[0];
+};
+
+export const getSurveyLink = (user: User) => {
+	return `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}&CODE=${user.id}`;
 };

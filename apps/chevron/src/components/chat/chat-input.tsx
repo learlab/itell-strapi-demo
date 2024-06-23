@@ -2,13 +2,14 @@
 
 import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
-import { getChatHistory, useChatStore } from "@/lib/store/chat";
+import { getChatHistory } from "@/lib/store/chat";
 import { reportSentry } from "@/lib/utils";
 import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
+import { useChat } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
@@ -30,7 +31,13 @@ export const ChatInput = ({
 		updateBotMessage,
 		setActiveMessageId,
 		messages,
-	} = useChatStore();
+	} = useChat((state) => ({
+		addUserMessage: state.addUserMessage,
+		addBotMessage: state.addBotMessage,
+		updateBotMessage: state.updateBotMessage,
+		setActiveMessageId: state.setActiveMessageId,
+		messages: state.messages,
+	}));
 	const [pending, setPending] = useState(false);
 
 	const onMessage = async (text: string) => {

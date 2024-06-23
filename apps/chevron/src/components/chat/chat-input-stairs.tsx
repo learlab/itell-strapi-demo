@@ -2,7 +2,6 @@
 
 import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
-import { useChatStore } from "@/lib/store/chat";
 import { reportSentry } from "@/lib/utils";
 import { ChatHistory } from "@itell/core/chatbot";
 import { cn, parseEventStream } from "@itell/core/utils";
@@ -10,6 +9,7 @@ import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
+import { useChat } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
@@ -33,7 +33,7 @@ export const ChatInputStairs = ({
 		setActiveMessageId,
 		stairsQuestion,
 		stairsMessages,
-	} = useChatStore();
+	} = useChat((state) => state);
 	const [pending, setPending] = useState(false);
 	const overMessageLimit = stairsMessages.length > 6;
 	const answered = useRef(false);

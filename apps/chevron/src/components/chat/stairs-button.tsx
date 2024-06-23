@@ -1,14 +1,14 @@
 "use client";
 
-import { useChatStore } from "@/lib/store/chat";
 import { Button } from "../client-components";
+import { useChat } from "../provider/page-provider";
 
 type Props = {
 	onClick: () => void;
 };
 
 export const StairsReadyButton = ({ onClick }: Props) => {
-	const ready = useChatStore((state) => state.stairsReady);
+	const ready = useChat((state) => state.stairsReady);
 	return (
 		<div className="space-y-2">
 			<p>When you are ready for the question, click the button below.</p>

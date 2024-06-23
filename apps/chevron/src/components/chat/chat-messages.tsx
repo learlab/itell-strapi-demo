@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@/components/client-components";
-import { useChatStore } from "@/lib/store/chat";
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Avatar, AvatarImage } from "../client-components";
+import { useChat } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";
 
@@ -28,8 +28,8 @@ export const ChatMessages = ({
 }: Props) => {
 	const oldMessages = isStairs ? [] : data || [];
 	const newMessages = isStairs
-		? useChatStore((state) => state.stairsMessages)
-		: useChatStore((state) => state.messages);
+		? useChat((state) => state.stairsMessages)
+		: useChat((state) => state.messages);
 
 	return (
 		<div
@@ -75,7 +75,7 @@ const MessageItem = ({
 	userImage,
 	message,
 }: { userName: string | null; userImage: string | null; message: Message }) => {
-	const activeMessageId = useChatStore((state) => state.activeMessageId);
+	const activeMessageId = useChat((state) => state.activeMessageId);
 	const router = useRouter();
 	const context = "context" in message ? message.context : "";
 	let formattedSlug = "";

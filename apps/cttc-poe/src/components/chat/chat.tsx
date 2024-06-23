@@ -4,7 +4,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/client-components";
-import { SessionUser } from "@/lib/auth";
 import { Message } from "@itell/core/chatbot";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
