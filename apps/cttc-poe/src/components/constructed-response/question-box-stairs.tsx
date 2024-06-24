@@ -266,7 +266,7 @@ export const QuestionBoxStairs = ({
 
 				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
 					{answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
-						<div className="text-xs">
+						<div className="text-sm">
 							<p className="text-red-400">
 								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
 								Please try again.

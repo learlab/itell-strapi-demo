@@ -1,23 +1,25 @@
 import { PencilIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import { Button } from "../client-components";
+import { StatusButton } from "../client-components";
 import { Spinner } from "../spinner";
 
 export const SubmitButton = ({ answered }: { answered: boolean }) => {
 	const { pending } = useFormStatus();
 	return (
-		<Button
+		<StatusButton
+			pending={pending}
 			type="submit"
 			disabled={pending}
-			className="gap-2"
 			variant={"outline"}
 		>
 			{pending ? (
 				<Spinner className="size-4" />
 			) : (
-				<PencilIcon className="size-4" />
+				<>
+					<PencilIcon className="size-3 mr-2 shrink-0" />
+					<span>{answered ? "Resubmit" : "Answer"}</span>
+				</>
 			)}
-			{answered ? "Resubmit" : "Answer"}
-		</Button>
+		</StatusButton>
 	);
 };
