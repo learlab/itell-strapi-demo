@@ -1,7 +1,6 @@
 import { summaries } from "@/drizzle/schema";
 import { db } from "@/lib/db";
-import { cn } from "@itell/core/utils";
-import { Skeleton, buttonVariants } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/server";
 import { and, count, eq } from "drizzle-orm";
 import Link from "next/link";
 import pluralize from "pluralize";
@@ -28,11 +27,11 @@ export const SummaryCount = async ({ pageSlug, userId }: Props) => {
 	}
 
 	return (
-		<p className="text-sm">
-			<Link
-				href="/dashboard/summaries"
-				className={cn(buttonVariants({ variant: "link" }), "pl-0")}
-			>
+		<Link
+			className="text-sm font-medium underline-offset-4 hover:underline text-pretty"
+			href="/dashboard/summaries"
+		>
+			<p>
 				You have written {pluralize("summary", summaryCount, true)} for this
 				section.
 				{summaryCount > 0 && (
@@ -40,8 +39,8 @@ export const SummaryCount = async ({ pageSlug, userId }: Props) => {
 						{passedSummaryCount} passed, {failedSummaryCount} failed.
 					</span>
 				)}
-			</Link>
-		</p>
+			</p>
+		</Link>
 	);
 };
 

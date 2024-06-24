@@ -43,11 +43,9 @@ type Props = {
 const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
-	const surveyLink = getSurveyLink(user);
 	const pageSlug = page.page_slug;
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
-	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunks,
 	}));
@@ -179,17 +177,14 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 				if (isLastPage(pageSlug)) {
 					updateUser({ finished: true });
-					setIsTextbookFinished(true);
 					toast.info(
-						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
+						"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
 					);
-					setTimeout(() => {
-						window.location.href = surveyLink;
-					}, 3000);
 					return;
 				}
 
 				updateUser({ pageSlug: nextSlug });
+
 				// 25% random rereading if the page is not unlocked
 				if (!pageStatus.unlocked && Math.random() <= 0.25) {
 					goToRandomChunk();
@@ -222,18 +217,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						or move on to the next page.
 					</p>
 					<NextPageButton pageSlug={page.nextPageSlug} />
-				</div>
-			)}
-
-			{isTextbookFinished && (
-				<div className="space-y-2">
-					<p>You have finished the entire textbook. Congratulations! 🎉</p>
-					<a
-						href={surveyLink}
-						className={buttonVariants({ variant: "outline" })}
-					>
-						Take the outtake survey and claim your progress
-					</a>
 				</div>
 			)}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSessionAction } from "@/lib/auth/context";
+import { useSession, useSessionAction } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -92,7 +92,6 @@ const exitQuestion = () => {
 };
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
-	const surveyLink = getSurveyLink(user);
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const initialState: State = {
 		prevInput: "",
@@ -103,9 +102,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		canProceed: pageStatus.unlocked,
 	};
 	const { updateUser } = useSessionAction();
+	const session = useSession();
+	const isTextbookFinished = session.user?.finished || false;
 
 	const pageSlug = page.page_slug;
-	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => {
 		return {
 			stairsAnswered: state.stairsAnswered,
@@ -374,13 +374,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						const nextSlug = await incrementUserPage(user.id, pageSlug);
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
-							setIsTextbookFinished(true);
 							toast.info(
-								"You have finished the entire textbook! Redirecting to the outtake survey soon.",
+								"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
 							);
-							setTimeout(() => {
-								window.location.href = surveyLink;
-							}, 3000);
 						} else {
 							updateUser({ pageSlug: nextSlug });
 							// check if we can already proceed to prevent excessive toasts
@@ -462,18 +458,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					</Button>
 				)}
 			</div>
-
-			{isTextbookFinished && (
-				<div className="space-y-2">
-					<p>You have finished the entire textbook. Congratulations! 🎉</p>
-					<a
-						href={surveyLink}
-						className={buttonVariants({ variant: "outline" })}
-					>
-						Take outtake survey and claim your progress
-					</a>
-				</div>
-			)}
 
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={action}>

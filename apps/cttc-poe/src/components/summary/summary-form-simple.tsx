@@ -47,11 +47,8 @@ export const SummaryFormSimple = React.memo(
 				} else {
 					updateUser({ finished: true });
 					toast.info(
-						"You have finished the entire textbook! Redirecting to the outtake survey soon.",
+						"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
 					);
-					setTimeout(() => {
-						window.location.href = surveyLink;
-					}, 3000);
 				}
 
 				setFinished(true);
@@ -78,7 +75,7 @@ export const SummaryFormSimple = React.memo(
 		}
 
 		return (
-			<section className="max-w-2xl mx-auto space-y-4">
+			<section>
 				<p className="font-light text-lg mb-4">
 					{finished
 						? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."

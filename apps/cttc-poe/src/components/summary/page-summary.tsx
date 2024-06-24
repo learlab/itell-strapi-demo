@@ -8,6 +8,7 @@ import { SummaryDescription } from "./summary-description";
 import { SummaryFormReread } from "./summary-form-reread";
 import { SummaryFormSimple } from "./summary-form-simple";
 import { SummaryFormStairs } from "./summary-form-stairs";
+import { SurveyLink } from "./survey-link";
 
 type Props = {
 	pageSlug: string;
@@ -34,7 +35,8 @@ export const PageSummary = async ({
 				id="page-summary"
 			>
 				{condition === Condition.SIMPLE ? (
-					<section className="col-span-full">
+					<section className="col-span-full max-w-2xl mx-auto space-y-4">
+						<SurveyLink user={user} />
 						<SummaryFormSimple
 							user={user}
 							page={page}
@@ -53,6 +55,7 @@ export const PageSummary = async ({
 						</section>
 
 						<section className="col-span-full lg:col-span-2">
+							<SurveyLink user={user} />
 							{condition === Condition.RANDOM_REREAD ? (
 								<SummaryFormReread
 									user={user}
