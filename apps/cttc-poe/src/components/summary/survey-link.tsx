@@ -2,6 +2,7 @@
 
 import { useSession } from "@/lib/auth/context";
 import { getSurveyLink } from "@/lib/utils";
+import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
 import { User } from "lucia";
 import { CopyIcon } from "lucide-react";
@@ -20,23 +21,29 @@ export const SurveyLink = ({ user }: Props) => {
 		session.user?.finished && (
 			<div className="space-y-2 pb-4 mb-8 border-b">
 				<p>
-					You have finished the entire textbook. Please click to copy the
-					completion code below and go to the outtake survey to claim your
-					progress.
+					You have finished the entire textbook. Please use the completion code
+					below and go to the outtake survey to claim your progress.
 				</p>
-				<div className="flex justify-between">
-					<Button
-						variant={"outline"}
-						className="flex gap-4"
-						onClick={async () => {
-							await navigator.clipboard.writeText(session.user.id);
-							toast.info("Code copied!");
-						}}
-					>
-						<span>{session.user.id}</span>
-						<CopyIcon className="size-4" />
-					</Button>
-					<a href={link} className={buttonVariants()}>
+				<div className="flex flex-col lg:flex-row justify-between">
+					<div className="flex items-center gap-2">
+						<p>
+							<span className="font-medium">Completion code</span> (click to
+							copy)
+						</p>
+						<Button
+							variant={"outline"}
+							className=" gap-4"
+							onClick={async () => {
+								await navigator.clipboard.writeText(session.user.id);
+								toast.info("Code copied!");
+							}}
+						>
+							<span>{session.user.id}</span>
+							<CopyIcon className="size-4" />
+						</Button>
+					</div>
+
+					<a href={link} className={cn(buttonVariants(), "w-fit")}>
 						Go to outtake survey
 					</a>
 				</div>
