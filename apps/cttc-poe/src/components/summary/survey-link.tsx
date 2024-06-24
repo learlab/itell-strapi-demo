@@ -34,11 +34,11 @@ export const SurveyLink = ({ user }: Props) => {
 							variant={"outline"}
 							className=" gap-4"
 							onClick={async () => {
-								await navigator.clipboard.writeText(session.user.id);
+								await navigator.clipboard.writeText("CMXK0UNH");
 								toast.info("Code copied!");
 							}}
 						>
-							<span>{session.user.id}</span>
+							<span>CMXK0UNH</span>
 							<CopyIcon className="size-4" />
 						</Button>
 					</div>

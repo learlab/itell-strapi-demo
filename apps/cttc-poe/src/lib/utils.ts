@@ -105,5 +105,5 @@ export const randomNumber = () => {
 };
 
 export const getSurveyLink = (user: User) => {
-	return `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}&CODE=${user.id}`;
+	return `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 };
