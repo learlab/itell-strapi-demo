@@ -11,7 +11,6 @@ import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
-	getSurveyLink,
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
@@ -22,7 +21,7 @@ import {
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
@@ -47,7 +46,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const { chunks } = useConstructedResponse((state) => ({
-		chunks: state.chunks,
+		chunks: state.chunkSlugs,
 	}));
 	// skip first chunk, which is typically learning objectives
 	const validChunks = chunks.slice(1);

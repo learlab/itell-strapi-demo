@@ -1,20 +1,31 @@
 import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { PageStatus } from "../page-status";
+import { Question, SelectedQuestions } from "../question";
+
+type ChunkData = Record<
+	string,
+	{
+		question: Question | undefined;
+		// a chunk status can be undefined (no interaction happened), completed (the page is unlocked or a question has been answered regardless of correctness), or passed (the question has been answered correctly)
+		status: undefined | "completed" | "passed";
+	}
+>;
 
 interface Props {
 	currentChunk: string;
-	chunks: string[];
-	excludedChunks: string[];
+	chunkData: ChunkData;
+	chunkSlugs: string[];
 	isSummaryReady: boolean;
 	shouldBlur: boolean;
 }
 
 export interface ConstructedResponseState extends Props {
 	advanceChunk: (slug: string) => void;
-	finishChunk: (slug: string) => void;
+	finishChunk: (slug: string, passed?: boolean) => void;
 	finishPage: () => void;
 	resetPage: () => void;
+	getExcludedChunks: () => string[];
 }
 
 export type ConstructedResponseStore = ReturnType<
@@ -23,42 +34,57 @@ export type ConstructedResponseStore = ReturnType<
 
 export const createConstructedResponseStore = (
 	pageSlug: string,
-	chunks: string[],
+	chunkSlugs: string[],
+	selectedQuestions: SelectedQuestions,
 	pageStatus: PageStatus,
-	isLastChunkWithQuestion: boolean,
 ) => {
+	const isLastChunkWithQuestion = selectedQuestions.has(
+		chunkSlugs[chunkSlugs.length - 1],
+	);
+
+	const chunkData: ChunkData = {};
+	chunkSlugs.forEach((slug) => {
+		const q = selectedQuestions.get(slug);
+		chunkData[slug] = {
+			question: q,
+			status: pageStatus.unlocked ? "completed" : undefined,
+		};
+	});
+
 	return createStore<ConstructedResponseState>()(
 		persist(
 			(set, get) => ({
-				currentChunk: chunks[0],
-				chunks,
-				excludedChunks: [],
+				currentChunk: chunkSlugs[0],
+				chunkSlugs,
+				chunkData,
 				isSummaryReady: pageStatus.unlocked,
 				shouldBlur: !pageStatus.unlocked,
 
-				finishChunk: (slug: string) => {
-					set({ excludedChunks: [...get().excludedChunks, slug] });
+				finishChunk: (slug: string, passed?: boolean) => {
+					const newData = { ...get().chunkData };
+					newData[slug].status = passed ? "passed" : "completed";
+					set({ chunkData: newData });
 				},
 
 				advanceChunk: (slug: string) => {
-					const currentIndex = chunks.indexOf(slug);
+					const currentIndex = chunkSlugs.indexOf(slug);
 					let nextIndex = currentIndex;
 
-					if (currentIndex + 1 < chunks.length) {
+					if (currentIndex + 1 < chunkSlugs.length) {
 						nextIndex = currentIndex + 1;
-						set({ currentChunk: chunks[nextIndex] });
+						set({ currentChunk: chunkSlugs[nextIndex] });
 					}
 
 					// the next chunk is the last chunk, which does not have a question
 					// finish the page
-					if (!isLastChunkWithQuestion && nextIndex === chunks.length - 1) {
+					if (!isLastChunkWithQuestion && nextIndex === chunkSlugs.length - 1) {
 						set({ isSummaryReady: true, shouldBlur: false });
 						return;
 					}
 
 					// user is on the last chunk, and it has a question
 					// this happens when user clicks on next-chunk-button of the question box of the last chunk
-					const isLastQuestion = slug === chunks.at(-1);
+					const isLastQuestion = slug === chunkSlugs.at(-1);
 					if (isLastQuestion) {
 						set({ isSummaryReady: true, shouldBlur: false });
 					}
@@ -67,15 +93,24 @@ export const createConstructedResponseStore = (
 					set({
 						isSummaryReady: true,
 						shouldBlur: false,
-						currentChunk: chunks.at(-1),
+						currentChunk: chunkSlugs.at(-1),
 					});
 				},
 				resetPage: () => {
 					set({
-						currentChunk: chunks[0],
+						currentChunk: chunkSlugs[0],
 						isSummaryReady: false,
 						shouldBlur: true,
 					});
+				},
+				getExcludedChunks: () => {
+					const excludedChunks: string[] = [];
+					for (const [slug, data] of Object.entries(get().chunkData)) {
+						if (data.status === "passed") {
+							excludedChunks.push(slug);
+						}
+					}
+					return excludedChunks;
 				},
 			}),
 			{

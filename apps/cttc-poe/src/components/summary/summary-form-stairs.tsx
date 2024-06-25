@@ -113,9 +113,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			messages: state.stairsMessages,
 		};
 	});
-	const { excludedChunks } = useConstructedResponse((state) => ({
-		excludedChunks: state.excludedChunks,
-	}));
+	const getExcludedChunks = useConstructedResponse(
+		(state) => state.getExcludedChunks,
+	);
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
 			case "submit":
@@ -211,7 +211,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				exitQuestion();
 			},
 		});
-	}, []);
+	}, [stairsAnswered]);
 
 	const { action, isPending, isDelayed, isError, error, status } =
 		useActionStatus(
@@ -249,7 +249,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					page_slug: pageSlug,
 					focus_time: focusTime?.data,
 					chat_history: getChatHistory(messages),
-					excluded_chunks: excludedChunks,
+					excluded_chunks: getExcludedChunks(),
 				});
 				requestBodyRef.current = body;
 				const response = await fetch("/api/itell/score/stairs", {

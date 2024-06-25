@@ -51,11 +51,40 @@ h5,
   scroll-margin-top: 5rem;
 }
 
-
-
 .content-chunk {
-  transition: 0.6s filter linear
+  transition: filter 1s ease-in-out;
 }
+
+
+.blurred {
+  position: relative;
+}
+
+.blurred>*:not(.continue-reading-button-container, .scroll-back-button-container) {
+  filter: blur(4px);
+  user-select: none;
+}
+
+.continue-reading-button-container {
+  position: absolute;
+  top: min(4rem, 20%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.scroll-back-button-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  bottom: min(4rem, 20%);
+  transform: translateX(-50%, -50%);
+  z-index: 1;
+}
+
 
 .note {
   color: black;
@@ -81,13 +110,6 @@ h5,
 
 .no-select {
   user-select: none;
-  /* Standard property */
-  -webkit-user-select: none;
-  /* Chrome, Safari */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
 }
 
 #page-content button,

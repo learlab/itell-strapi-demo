@@ -31,7 +31,7 @@ import {
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { ExplainButton } from "./explain-button";
-import { NextChunkButton } from "./next-chunk-button";
+import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
 import { SubmitButton } from "./submit-button";
 import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
@@ -57,9 +57,9 @@ export const QuestionBoxStairs = ({
 }: Props) => {
 	const { user } = useSession();
 	const [input, setInput] = useState("");
-	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
+	const { chunkSlugs, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
-			chunks: state.chunks,
+			chunkSlugs: state.chunkSlugs,
 			shouldBlur: state.shouldBlur,
 			finishChunk: state.finishChunk,
 		}),
@@ -67,8 +67,6 @@ export const QuestionBoxStairs = ({
 	const [show, setShow] = useState(shouldBlur);
 
 	const [isShaking, setIsShaking] = useState(false);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
-		useState(shouldBlur);
 
 	// Function to trigger the shake animation
 	const shakeModal = () => {
@@ -136,7 +134,7 @@ export const QuestionBoxStairs = ({
 			// if answer is correct, mark chunk as finished
 			// this will add the chunk to the list of finished chunks that gets excluded from stairs question
 			if (score === 2) {
-				finishChunk(chunkSlug);
+				finishChunk(chunkSlug, true);
 
 				return {
 					error: null,
@@ -184,9 +182,10 @@ export const QuestionBoxStairs = ({
 		error: null,
 		prevInput: "",
 	};
-
 	const [formState, formAction] = useFormState(action, initialFormState);
 	const answerStatus = formState.answerStatus;
+	const isNextButtonDisplayed =
+		shouldBlur && answerStatus !== AnswerStatusStairs.UNANSWERED;
 
 	const borderColor = borderColors[answerStatus];
 
@@ -195,19 +194,12 @@ export const QuestionBoxStairs = ({
 			toast.warning(formState.error);
 		}
 
-		if (
-			formState.answerStatus === AnswerStatusStairs.BOTH_CORRECT ||
-			formState.answerStatus === AnswerStatusStairs.PASSED
-		) {
-			setIsNextButtonDisplayed(true);
-		}
-
 		if (formState.answerStatus === AnswerStatusStairs.BOTH_INCORRECT) {
 			shakeModal();
 		}
 	}, [formState]);
 
-	const isLastQuestion = chunkSlug === chunks.at(-1);
+	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
 		: answerStatus === AnswerStatusStairs.BOTH_INCORRECT
@@ -341,14 +333,13 @@ export const QuestionBoxStairs = ({
 							{answerStatus === AnswerStatusStairs.BOTH_CORRECT &&
 							isNextButtonDisplayed ? (
 								// when answer is all correct and next button should be displayed
-								<NextChunkButton
-									pageSlug={pageSlug}
-									clickEventType="post-question chunk reveal"
-									onClick={() => setIsNextButtonDisplayed(false)}
+								<FinishQuestionButton
+									userId={user.id}
 									chunkSlug={chunkSlug}
-								>
-									{nextButtonText}
-								</NextChunkButton>
+									pageSlug={pageSlug}
+									isLastQuestion={isLastQuestion}
+									condition={Condition.STAIRS}
+								/>
 							) : (
 								// when answer is not all correct
 								<>
@@ -361,14 +352,13 @@ export const QuestionBoxStairs = ({
 
 									{answerStatus !== AnswerStatusStairs.UNANSWERED &&
 										isNextButtonDisplayed && (
-											<NextChunkButton
-												pageSlug={pageSlug}
+											<FinishQuestionButton
+												userId={user.id}
 												chunkSlug={chunkSlug}
-												clickEventType="post-question chunk reveal"
-												onClick={() => setIsNextButtonDisplayed(false)}
-											>
-												{nextButtonText}
-											</NextChunkButton>
+												pageSlug={pageSlug}
+												isLastQuestion={isLastQuestion}
+												condition={Condition.STAIRS}
+											/>
 										)}
 								</>
 							)}

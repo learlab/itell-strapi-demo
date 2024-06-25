@@ -21,7 +21,7 @@ import {
 	TextArea,
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
-import { NextChunkButton } from "./next-chunk-button";
+import { FinishQuestionButton } from "./finish-question-button";
 import { SubmitButton } from "./submit-button";
 import { AnswerStatusReread } from "./types";
 
@@ -46,15 +46,11 @@ export const QuestionBoxReread = ({
 	pageSlug,
 }: Props) => {
 	const { user } = useSession();
-	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
-		(state) => ({
-			chunks: state.chunks,
-			shouldBlur: state.shouldBlur,
-			finishChunk: state.finishChunk,
-		}),
-	);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
-		useState(shouldBlur);
+	const { shouldBlur, finishChunk } = useConstructedResponse((state) => ({
+		shouldBlur: state.shouldBlur,
+		finishChunk: state.finishChunk,
+	}));
+
 	const [show, setShow] = useState(shouldBlur);
 
 	const action = async (
@@ -102,7 +98,8 @@ export const QuestionBoxReread = ({
 				score,
 			});
 
-			finishChunk(chunkSlug);
+			finishChunk(chunkSlug, false);
+
 			return {
 				answerStatus: AnswerStatusReread.ANSWERED,
 				error: null,
@@ -120,7 +117,6 @@ export const QuestionBoxReread = ({
 			};
 		}
 	};
-
 	const initialFormState: FormState = {
 		answerStatus: AnswerStatusReread.UNANSWERED,
 		error: null,
@@ -128,19 +124,16 @@ export const QuestionBoxReread = ({
 
 	const [formState, formAction] = useFormState(action, initialFormState);
 	const answerStatus = formState.answerStatus;
+	const isNextButtonDisplayed =
+		shouldBlur && answerStatus === AnswerStatusReread.ANSWERED;
 
 	useEffect(() => {
 		if (formState.error) {
 			toast.warning(formState.error);
 		}
-
-		if (formState.answerStatus === AnswerStatusReread.ANSWERED) {
-			setIsNextButtonDisplayed(true);
-		}
 	}, [formState]);
 
-	const isLastQuestion = chunkSlug === chunks.at(-1);
-	const nextButtonText = isLastQuestion ? "Unlock summary" : "Continue reading";
+	const isLastQuestion = chunkSlug === chunkSlug.at(-1);
 
 	if (!user) {
 		return (
@@ -216,14 +209,13 @@ export const QuestionBoxReread = ({
 
 							{answerStatus !== AnswerStatusReread.UNANSWERED &&
 								isNextButtonDisplayed && (
-									<NextChunkButton
+									<FinishQuestionButton
+										userId={user.id}
 										pageSlug={pageSlug}
-										clickEventType="post-question chunk reveal"
-										onClick={() => setIsNextButtonDisplayed(false)}
 										chunkSlug={chunkSlug}
-									>
-										{nextButtonText}
-									</NextChunkButton>
+										isLastQuestion={isLastQuestion}
+										condition={Condition.RANDOM_REREAD}
+									/>
 								)}
 						</div>
 					</form>

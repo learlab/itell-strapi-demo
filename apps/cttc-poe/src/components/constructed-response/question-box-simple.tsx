@@ -1,6 +1,8 @@
 "use client";
 
 import { useSession } from "@/lib/auth/context";
+import { Condition } from "@/lib/control/condition";
+import { createEvent } from "@/lib/event/actions";
 import { PageStatus } from "@/lib/page-status";
 import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
@@ -12,6 +14,7 @@ import { useConstructedResponse } from "../provider/page-provider";
 type Props = {
 	question: string;
 	answer: string;
+	pageSlug: string;
 	chunkSlug: string;
 	pageStatus: PageStatus;
 };
@@ -19,6 +22,7 @@ type Props = {
 export const QuestionBoxSimple = ({
 	question,
 	answer,
+	pageSlug,
 	chunkSlug,
 	pageStatus,
 }: Props) => {
@@ -62,6 +66,15 @@ export const QuestionBoxSimple = ({
 								e.preventDefault();
 								advanceChunk(chunkSlug);
 								setFinished(true);
+								createEvent({
+									userId: user.id,
+									type: "post-question-chunk-reveal",
+									pageSlug,
+									data: {
+										chunkSlug,
+										condition: Condition.STAIRS,
+									},
+								});
 							}}
 							className="w-full space-y-2"
 						>
