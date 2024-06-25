@@ -236,9 +236,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.16.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@total-typescript/ts-reset':
-        specifier: ^0.4.2
-        version: 0.4.2
       '@types/pluralize':
         specifier: ^0.0.31
         version: 0.0.31
@@ -360,6 +357,12 @@ importers:
       '@biomejs/biome':
         specifier: ^1.5.2
         version: 1.7.1
+      '@total-typescript/ts-reset':
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@types/dom-view-transitions':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/qs':
         specifier: ^6.9.10
         version: 6.9.15
@@ -613,9 +616,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.16.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@total-typescript/ts-reset':
-        specifier: ^0.4.2
-        version: 0.4.2
       '@types/pluralize':
         specifier: ^0.0.31
         version: 0.0.31
@@ -737,6 +737,12 @@ importers:
       '@biomejs/biome':
         specifier: ^1.5.2
         version: 1.7.1
+      '@total-typescript/ts-reset':
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@types/dom-view-transitions':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/qs':
         specifier: ^6.9.10
         version: 6.9.15
@@ -3874,6 +3880,9 @@ packages:
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
+
+  '@types/dom-view-transitions@1.0.4':
+    resolution: {integrity: sha512-oDuagM6G+xPLrLU4KeCKlr1oalMF5mJqV5pDPMDVIEaa8AkUW00i6u+5P02XCjdEEUQJC9dpnxqSLsZeAciSLQ==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -10642,6 +10651,8 @@ snapshots:
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.34
+
+  '@types/dom-view-transitions@1.0.4': {}
 
   '@types/estree-jsx@1.0.5':
     dependencies:

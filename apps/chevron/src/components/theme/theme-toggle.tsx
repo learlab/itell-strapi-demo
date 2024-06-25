@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { useTheme } from "next-themes";
+import * as React from "react";
 
 import { Button } from "@/components/client-components";
 import {
@@ -13,7 +13,14 @@ import {
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 
 export default function ThemeToggle() {
-	const { setTheme } = useTheme();
+	const { setTheme: _setTheme } = useTheme();
+
+	const setTheme = (theme: string) => {
+		if (!document.startViewTransition) _setTheme(theme);
+		document.startViewTransition(() => {
+			_setTheme(theme);
+		});
+	};
 
 	return (
 		<DropdownMenu>
