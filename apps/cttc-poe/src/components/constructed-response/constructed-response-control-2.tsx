@@ -24,6 +24,7 @@ export const ConstructedResponseControl = ({
 	condition,
 }: Props) => {
 	// Ref for current chunk
+
 	const { currentChunk, chunkSlugs, chunkData, shouldBlur } =
 		useConstructedResponse((state) => ({
 			currentChunk: state.currentChunk,
@@ -128,30 +129,7 @@ export const ConstructedResponseControl = ({
 	// process chunk append "go to next" buttons to every chunk
 	// inserts questions to selected chunks
 	// and blur the chunks if the page is not finished
-	const processChunk = (chunkSlug: string, chunkIndex: number) => {
-		const el = getChunkElement(chunkSlug);
-		if (!el) {
-			return;
-		}
-		const currentIndex = chunkSlugs.indexOf(currentChunk);
-		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
-
-		const data = chunkData[chunkSlug];
-		if (data?.question) {
-			insertQuestion(
-				el,
-				chunkSlug,
-				data.question.question,
-				data.question.answer,
-			);
-		}
-
-		if (shouldBlur) {
-			if (chunkIndex !== 0 && isChunkUnvisited) {
-				el.classList.add("blurred");
-			}
-		}
-	};
+	const processChunk = (chunkSlug: string, chunkIndex: number) => {};
 
 	// reveal chunk unblurs a chunk when current chunk advances
 	// and controls the visibility of the "next-chunk" button
@@ -188,7 +166,20 @@ export const ConstructedResponseControl = ({
 	};
 
 	useEffect(() => {
-		chunkSlugs.forEach(processChunk);
+		chunkSlugs.forEach((slug) => {
+			const data = chunkData[slug];
+			if (data?.question) {
+				const el = getChunkElement(slug);
+				if (el) {
+					insertQuestion(
+						el,
+						slug,
+						data.question.question,
+						data.question.answer,
+					);
+				}
+			}
+		});
 
 		if (shouldBlur) {
 			const lastChunk = chunkSlugs[chunkSlugs.length - 1];
@@ -201,6 +192,24 @@ export const ConstructedResponseControl = ({
 
 	useEffect(() => {
 		console.log("current chunk", currentChunk);
+		chunkSlugs.forEach((slug, idx) => {
+			const el = getChunkElement(slug);
+			if (!el) {
+				return;
+			}
+			const currentIndex = chunkSlugs.indexOf(currentChunk);
+			const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
+
+			if (shouldBlur) {
+				if (idx !== 0 && isChunkUnvisited) {
+					el.classList.add("blurred");
+				} else {
+					el.classList.remove("blurred");
+					hideNextChunkButton(el);
+				}
+			}
+		});
+
 		revealChunk(currentChunk);
 	}, [currentChunk]);
 
