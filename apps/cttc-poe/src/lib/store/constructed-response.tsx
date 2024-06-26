@@ -37,7 +37,6 @@ export const createConstructedResponseStore = (
 	chunkSlugs: string[],
 	selectedQuestions: SelectedQuestions,
 	pageStatus: PageStatus,
-	currentChunk: string | undefined,
 ) => {
 	const isLastChunkWithQuestion = selectedQuestions.has(
 		chunkSlugs[chunkSlugs.length - 1],
@@ -55,7 +54,7 @@ export const createConstructedResponseStore = (
 	return createStore<ConstructedResponseState>()(
 		persist(
 			(set, get) => ({
-				currentChunk: currentChunk || chunkSlugs[0],
+				currentChunk: chunkSlugs[0],
 				chunkSlugs,
 				chunkData,
 				isSummaryReady: pageStatus.unlocked,

@@ -52,13 +52,11 @@ h5,
 }
 
 .content-chunk {
+  position: relative;
   transition: filter 1s ease-in-out;
 }
 
 
-.blurred {
-  position: relative;
-}
 
 .blurred>*:not(.continue-reading-button-container, .scroll-back-button-container) {
   filter: blur(4px);

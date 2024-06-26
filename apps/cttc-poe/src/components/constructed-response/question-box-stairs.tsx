@@ -200,11 +200,6 @@ export const QuestionBoxStairs = ({
 	}, [formState]);
 
 	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
-	const nextButtonText = isLastQuestion
-		? "Unlock summary"
-		: answerStatus === AnswerStatusStairs.BOTH_INCORRECT
-			? "Skip this question"
-			: "Continue reading";
 
 	if (!user) {
 		return (

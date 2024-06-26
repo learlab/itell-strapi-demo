@@ -36,7 +36,6 @@ import { makePageHref } from "@/lib/utils";
 import { SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { setCurrentChunkCookie } from "../constructed-response/constructed-response-control";
 import { useConstructedResponse } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 
@@ -47,7 +46,6 @@ type Props = {
 
 const RestartTextbook = ({ userId }: { userId: string }) => {
 	const [pending, startTransition] = useTransition();
-	const router = useRouter();
 
 	return (
 		<AlertDialog>
@@ -70,7 +68,6 @@ const RestartTextbook = ({ userId }: { userId: string }) => {
 						onClick={() => {
 							startTransition(async () => {
 								const pageSlug = await resetUser(userId);
-								await setCurrentChunkCookie(pageSlug, "");
 								localStorage.clear();
 								window.location.href = makePageHref(pageSlug);
 							});
