@@ -133,7 +133,6 @@ export const ConstructedResponseControl = ({
 		if (!el) {
 			return;
 		}
-
 		const currentIndex = chunkSlugs.indexOf(currentChunk);
 		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
 

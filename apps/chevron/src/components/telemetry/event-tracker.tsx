@@ -28,7 +28,15 @@ export const EventTracker = ({ pageSlug, chunks, userId }: Props) => {
 
 	return (
 		<Tracker
-			onClickEvent={async (data) => {
+			onClickEvent={async (data, event) => {
+				const target = event.target as HTMLElement;
+				const buttonContainer = target.closest("button");
+				if (buttonContainer) {
+					if (buttonContainer.dataset.noEvent === "true") {
+						return;
+					}
+				}
+
 				createEvent({
 					type: "click",
 					pageSlug,

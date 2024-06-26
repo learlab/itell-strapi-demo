@@ -4,11 +4,10 @@ import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
-import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
+import { reportSentry } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
@@ -22,9 +21,9 @@ import {
 	TextArea,
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
-import { NextChunkButton } from "./next-chunk-button";
+import { FinishQuestionButton } from "./finish-question-button";
 import { SubmitButton } from "./submit-button";
-import { AnswerStatusReread, AnswerStatusStairs } from "./types";
+import { AnswerStatusReread } from "./types";
 
 type QuestionScore = 0 | 1 | 2;
 
@@ -47,16 +46,12 @@ export const QuestionBoxReread = ({
 	pageSlug,
 }: Props) => {
 	const { user } = useSession();
-	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
-		(state) => ({
-			chunks: state.chunks,
-			shouldBlur: state.shouldBlur,
-			finishChunk: state.finishChunk,
-		}),
-	);
+	const { shouldBlur, finishChunk } = useConstructedResponse((state) => ({
+		shouldBlur: state.shouldBlur,
+		finishChunk: state.finishChunk,
+	}));
+
 	const [show, setShow] = useState(shouldBlur);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
-		useState(shouldBlur);
 
 	const action = async (
 		prevState: FormState,
@@ -103,19 +98,18 @@ export const QuestionBoxReread = ({
 				score,
 			});
 
-			finishChunk(chunkSlug);
+			finishChunk(chunkSlug, false);
+
 			return {
 				answerStatus: AnswerStatusReread.ANSWERED,
 				error: null,
 			};
 		} catch (err) {
 			console.log("constructed response evaluation error", err);
-			Sentry.captureMessage("constructed response scoring error", {
-				extra: {
-					pageSlug,
-					chunkSlug,
-					input,
-				},
+			reportSentry("score constructed response", {
+				pageSlug,
+				chunkSlug,
+				input,
 			});
 			return {
 				error: "Answer evaluation failed, please try again later",
@@ -123,7 +117,6 @@ export const QuestionBoxReread = ({
 			};
 		}
 	};
-
 	const initialFormState: FormState = {
 		answerStatus: AnswerStatusReread.UNANSWERED,
 		error: null,
@@ -131,19 +124,16 @@ export const QuestionBoxReread = ({
 
 	const [formState, formAction] = useFormState(action, initialFormState);
 	const answerStatus = formState.answerStatus;
+	const isNextButtonDisplayed =
+		shouldBlur && answerStatus === AnswerStatusReread.ANSWERED;
 
 	useEffect(() => {
 		if (formState.error) {
 			toast.warning(formState.error);
 		}
-
-		if (formState.answerStatus === AnswerStatusReread.ANSWERED) {
-			setIsNextButtonDisplayed(true);
-		}
 	}, [formState]);
 
-	const isLastQuestion = chunkSlug === chunks.at(-1);
-	const nextButtonText = isLastQuestion ? "Unlock summary" : "Continue reading";
+	const isLastQuestion = chunkSlug === chunkSlug.at(-1);
 
 	if (!user) {
 		return (
@@ -219,14 +209,13 @@ export const QuestionBoxReread = ({
 
 							{answerStatus !== AnswerStatusReread.UNANSWERED &&
 								isNextButtonDisplayed && (
-									<NextChunkButton
+									<FinishQuestionButton
+										userId={user.id}
 										pageSlug={pageSlug}
-										clickEventType="post-question chunk reveal"
-										onClick={() => setIsNextButtonDisplayed(false)}
 										chunkSlug={chunkSlug}
-									>
-										{nextButtonText}
-									</NextChunkButton>
+										isLastQuestion={isLastQuestion}
+										condition={Condition.RANDOM_REREAD}
+									/>
 								)}
 						</div>
 					</form>

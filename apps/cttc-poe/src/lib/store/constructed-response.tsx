@@ -72,6 +72,7 @@ export const createConstructedResponseStore = (
 
 					if (currentIndex + 1 < chunkSlugs.length) {
 						nextIndex = currentIndex + 1;
+						console.log("set current chunk to", chunkSlugs[nextIndex]);
 						set({ currentChunk: chunkSlugs[nextIndex] });
 					}
 

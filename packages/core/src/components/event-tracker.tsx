@@ -7,7 +7,7 @@ type Props = {
 	focusTimeSaveInterval: number;
 	chunks: HTMLElement[];
 	onFocusTimeEvent: (data: FocusTimeEventData) => Promise<void>;
-	onClickEvent: (data: ClickEventData) => Promise<void>;
+	onClickEvent: (data: ClickEventData, event: MouseEvent) => Promise<void>;
 	onScrollEvent: (data: ScrollEventData) => Promise<void>;
 };
 

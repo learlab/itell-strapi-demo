@@ -47,7 +47,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
-		chunks: state.chunks,
+		chunks: state.chunkSlugs,
 	}));
 	// skip first chunk, which is typically learning objectives
 	const validChunks = chunks.slice(1);

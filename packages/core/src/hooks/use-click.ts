@@ -10,13 +10,18 @@ export type ClickEventData = {
 	element: string;
 };
 
+type State = {
+	event: MouseEvent;
+	data: ClickEventData;
+};
+
 type Props = {
-	onEvent: (data: ClickEventData) => void;
+	onEvent: (data: ClickEventData, event: MouseEvent) => void;
 };
 
 export const useClick = ({ onEvent }: Props) => {
-	const [currentClick, setCurrentClick] = useState<ClickEventData>();
-	const clickDebounced = useDebounce(currentClick, 500);
+	const [state, setState] = useState<State>();
+	const stateDebounced = useDebounce(state, 500);
 
 	const handler = (event: MouseEvent) => {
 		const element = event.target as HTMLElement;
@@ -26,7 +31,7 @@ export const useClick = ({ onEvent }: Props) => {
 			element: `${element.tagName}-${element.textContent?.slice(0, 20)}`,
 			timestamp: Date.now(),
 		};
-		setCurrentClick(eventData);
+		setState({ event, data: eventData });
 	};
 
 	useEffect(() => {
@@ -36,8 +41,8 @@ export const useClick = ({ onEvent }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		if (clickDebounced) {
-			onEvent(clickDebounced);
+		if (stateDebounced) {
+			onEvent(stateDebounced.data, stateDebounced.event);
 		}
-	}, [clickDebounced]);
+	}, [stateDebounced]);
 };

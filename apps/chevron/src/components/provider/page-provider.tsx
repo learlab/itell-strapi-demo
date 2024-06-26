@@ -2,6 +2,7 @@
 
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
+import { SelectedQuestions } from "@/lib/question";
 import { ChatState, ChatStore, createChatStore } from "@/lib/store/chat";
 import {
 	ConstructedResponseState,
@@ -16,8 +17,8 @@ type Props = {
 	pageSlug: string;
 	pageTitle: string;
 	chunks: string[];
+	questions: SelectedQuestions;
 	pageStatus: PageStatus;
-	isLastChunkWithQuestion: boolean;
 };
 
 const PageContext = createContext<{
@@ -30,8 +31,8 @@ export const PageProvider = ({
 	pageSlug,
 	pageTitle,
 	chunks,
+	questions,
 	pageStatus,
-	isLastChunkWithQuestion,
 }: Props) => {
 	useTrackLastVisitedPage();
 
@@ -40,8 +41,8 @@ export const PageProvider = ({
 		constructedResponseStoreRef.current = createConstructedResponseStore(
 			pageSlug,
 			chunks,
+			questions,
 			pageStatus,
-			isLastChunkWithQuestion,
 		);
 	}
 

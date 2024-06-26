@@ -39,8 +39,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const pageSlug = page.page_slug;
 	const chunks = getPageChunks(page);
 
-	const selectedQuestions = await getRandomPageQuestions(pageSlug);
-	const isLastChunkWithQuestion = selectedQuestions.has(chunks.at(-1) || "");
+	const questions = await getRandomPageQuestions(pageSlug);
 
 	const userRole = user?.role || "user";
 	const userId = user?.id || null;
@@ -59,8 +58,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageSlug={pageSlug}
 			pageTitle={page.title}
 			chunks={chunks}
+			questions={questions}
 			pageStatus={pageStatus}
-			isLastChunkWithQuestion={isLastChunkWithQuestion}
 		>
 			<div
 				id="textbook-page-wrapper"
@@ -128,7 +127,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
 			<ConstructedResponseControl
-				selectedQuestions={selectedQuestions}
 				pageSlug={pageSlug}
 				pageStatus={pageStatus}
 				condition={userCondition}

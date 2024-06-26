@@ -56,6 +56,7 @@ const PageLink = ({
 				"flex items-center h-14 max-w-sm text-balance gap-2",
 				{ "pointer-events-none opacity-50": disabled },
 			)}
+			data-no-events={true}
 			href={href}
 		>
 			{children}

@@ -57,6 +57,7 @@ const PageLink = ({
 				{ "pointer-events-none opacity-50": disabled },
 			)}
 			href={href}
+			data-no-events={true}
 		>
 			{children}
 		</Link>

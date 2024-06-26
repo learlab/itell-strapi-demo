@@ -15,7 +15,11 @@ export const PageLink = ({
 	className,
 }: Props) => {
 	return (
-		<Link href={makePageHref(pageSlug, chunkSlug)} className={className}>
+		<Link
+			href={makePageHref(pageSlug, chunkSlug)}
+			className={className}
+			data-on-event={true}
+		>
 			{children}
 		</Link>
 	);

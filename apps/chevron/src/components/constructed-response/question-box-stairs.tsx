@@ -5,8 +5,8 @@ import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
-import { PageStatus } from "@/lib/page-status";
 import { getQAScore } from "@/lib/question";
+import { reportSentry } from "@/lib/utils";
 // import shake effect
 import "@/styles/shakescreen.css";
 import { cn } from "@itell/core/utils";
@@ -17,7 +17,6 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
-import * as Sentry from "@sentry/nextjs";
 import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
@@ -32,7 +31,7 @@ import {
 } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { ExplainButton } from "./explain-button";
-import { NextChunkButton } from "./next-chunk-button";
+import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
 import { SubmitButton } from "./submit-button";
 import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
@@ -58,9 +57,9 @@ export const QuestionBoxStairs = ({
 }: Props) => {
 	const { user } = useSession();
 	const [input, setInput] = useState("");
-	const { chunks, shouldBlur, finishChunk } = useConstructedResponse(
+	const { chunkSlugs, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
-			chunks: state.chunks,
+			chunkSlugs: state.chunkSlugs,
 			shouldBlur: state.shouldBlur,
 			finishChunk: state.finishChunk,
 		}),
@@ -68,8 +67,6 @@ export const QuestionBoxStairs = ({
 	const [show, setShow] = useState(shouldBlur);
 
 	const [isShaking, setIsShaking] = useState(false);
-	const [isNextButtonDisplayed, setIsNextButtonDisplayed] =
-		useState(shouldBlur);
 
 	// Function to trigger the shake animation
 	const shakeModal = () => {
@@ -137,7 +134,7 @@ export const QuestionBoxStairs = ({
 			// if answer is correct, mark chunk as finished
 			// this will add the chunk to the list of finished chunks that gets excluded from stairs question
 			if (score === 2) {
-				finishChunk(chunkSlug);
+				finishChunk(chunkSlug, true);
 
 				return {
 					error: null,
@@ -166,12 +163,11 @@ export const QuestionBoxStairs = ({
 			return prevState;
 		} catch (err) {
 			console.log("constructed response evaluation error", err);
-			Sentry.captureMessage("constructed response scoring error", {
-				extra: {
-					pageSlug,
-					chunkSlug,
-					input,
-				},
+			reportSentry("score cr stairs", {
+				pageSlug,
+				chunkSlug,
+				input,
+				error: err,
 			});
 			return {
 				error: "Answer evaluation failed, please try again later",
@@ -186,9 +182,10 @@ export const QuestionBoxStairs = ({
 		error: null,
 		prevInput: "",
 	};
-
 	const [formState, formAction] = useFormState(action, initialFormState);
 	const answerStatus = formState.answerStatus;
+	const isNextButtonDisplayed =
+		shouldBlur && answerStatus !== AnswerStatusStairs.UNANSWERED;
 
 	const borderColor = borderColors[answerStatus];
 
@@ -197,19 +194,12 @@ export const QuestionBoxStairs = ({
 			toast.warning(formState.error);
 		}
 
-		if (
-			formState.answerStatus === AnswerStatusStairs.BOTH_CORRECT ||
-			formState.answerStatus === AnswerStatusStairs.PASSED
-		) {
-			setIsNextButtonDisplayed(true);
-		}
-
 		if (formState.answerStatus === AnswerStatusStairs.BOTH_INCORRECT) {
 			shakeModal();
 		}
 	}, [formState]);
 
-	const isLastQuestion = chunkSlug === chunks.at(-1);
+	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
 	const nextButtonText = isLastQuestion
 		? "Unlock summary"
 		: answerStatus === AnswerStatusStairs.BOTH_INCORRECT
@@ -273,7 +263,7 @@ export const QuestionBoxStairs = ({
 								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
 								Please try again.
 							</p>
-							<p className="underline">
+							<p className=" underline">
 								{isLastQuestion
 									? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
 									: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
@@ -343,14 +333,13 @@ export const QuestionBoxStairs = ({
 							{answerStatus === AnswerStatusStairs.BOTH_CORRECT &&
 							isNextButtonDisplayed ? (
 								// when answer is all correct and next button should be displayed
-								<NextChunkButton
-									pageSlug={pageSlug}
-									clickEventType="post-question chunk reveal"
-									onClick={() => setIsNextButtonDisplayed(false)}
+								<FinishQuestionButton
+									userId={user.id}
 									chunkSlug={chunkSlug}
-								>
-									{nextButtonText}
-								</NextChunkButton>
+									pageSlug={pageSlug}
+									isLastQuestion={isLastQuestion}
+									condition={Condition.STAIRS}
+								/>
 							) : (
 								// when answer is not all correct
 								<>
@@ -363,14 +352,13 @@ export const QuestionBoxStairs = ({
 
 									{answerStatus !== AnswerStatusStairs.UNANSWERED &&
 										isNextButtonDisplayed && (
-											<NextChunkButton
-												pageSlug={pageSlug}
+											<FinishQuestionButton
+												userId={user.id}
 												chunkSlug={chunkSlug}
-												clickEventType="post-question chunk reveal"
-												onClick={() => setIsNextButtonDisplayed(false)}
-											>
-												{nextButtonText}
-											</NextChunkButton>
+												pageSlug={pageSlug}
+												isLastQuestion={isLastQuestion}
+												condition={Condition.STAIRS}
+											/>
 										)}
 								</>
 							)}

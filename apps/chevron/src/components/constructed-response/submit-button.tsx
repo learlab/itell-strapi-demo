@@ -16,7 +16,7 @@ export const SubmitButton = ({ answered }: { answered: boolean }) => {
 				<Spinner className="size-4" />
 			) : (
 				<>
-					<PencilIcon className="size-3 mr-2 shrink-0" />
+					<PencilIcon className="size-4 mr-2 shrink-0" />
 					<span>{answered ? "Resubmit" : "Answer"}</span>
 				</>
 			)}
