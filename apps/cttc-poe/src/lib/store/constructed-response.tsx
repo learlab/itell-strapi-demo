@@ -37,6 +37,7 @@ export const createConstructedResponseStore = (
 	chunkSlugs: string[],
 	selectedQuestions: SelectedQuestions,
 	pageStatus: PageStatus,
+	currentChunk: string | undefined,
 ) => {
 	const isLastChunkWithQuestion = selectedQuestions.has(
 		chunkSlugs[chunkSlugs.length - 1],
@@ -54,7 +55,7 @@ export const createConstructedResponseStore = (
 	return createStore<ConstructedResponseState>()(
 		persist(
 			(set, get) => ({
-				currentChunk: chunkSlugs[0],
+				currentChunk: currentChunk || chunkSlugs[0],
 				chunkSlugs,
 				chunkData,
 				isSummaryReady: pageStatus.unlocked,
@@ -72,7 +73,6 @@ export const createConstructedResponseStore = (
 
 					if (currentIndex + 1 < chunkSlugs.length) {
 						nextIndex = currentIndex + 1;
-						console.log("set current chunk to", chunkSlugs[nextIndex]);
 						set({ currentChunk: chunkSlugs[nextIndex] });
 					}
 
@@ -80,7 +80,6 @@ export const createConstructedResponseStore = (
 					// finish the page
 					if (!isLastChunkWithQuestion && nextIndex === chunkSlugs.length - 1) {
 						set({ isSummaryReady: true, shouldBlur: false });
-						return;
 					}
 
 					// user is on the last chunk, and it has a question

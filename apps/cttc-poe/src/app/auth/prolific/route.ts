@@ -1,8 +1,8 @@
 import { users } from "@/drizzle/schema";
 import { lucia } from "@/lib/auth";
-import { Condition, getUserCondition } from "@/lib/control/condition";
+import { Condition } from "@/lib/control/condition";
 import { db, first } from "@/lib/db";
-import { desc, eq, isNotNull, not } from "drizzle-orm";
+import { desc, eq, isNotNull } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";

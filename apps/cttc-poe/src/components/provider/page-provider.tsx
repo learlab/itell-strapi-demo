@@ -17,6 +17,7 @@ type Props = {
 	pageSlug: string;
 	pageTitle: string;
 	chunks: string[];
+	currentChunk: string | undefined;
 	questions: SelectedQuestions;
 	pageStatus: PageStatus;
 };
@@ -33,6 +34,7 @@ export const PageProvider = ({
 	chunks,
 	questions,
 	pageStatus,
+	currentChunk,
 }: Props) => {
 	useTrackLastVisitedPage();
 
@@ -43,6 +45,7 @@ export const PageProvider = ({
 			chunks,
 			questions,
 			pageStatus,
+			currentChunk,
 		);
 	}
 

@@ -16,7 +16,6 @@ type Props = {
 	answer: string;
 	pageSlug: string;
 	chunkSlug: string;
-	pageStatus: PageStatus;
 };
 
 export const QuestionBoxSimple = ({
@@ -24,11 +23,13 @@ export const QuestionBoxSimple = ({
 	answer,
 	pageSlug,
 	chunkSlug,
-	pageStatus,
 }: Props) => {
 	const { user } = useSession();
-	const [finished, setFinished] = useState(pageStatus.unlocked);
-	const advanceChunk = useConstructedResponse((state) => state.advanceChunk);
+	const { advanceChunk, currentChunk } = useConstructedResponse((state) => ({
+		advanceChunk: state.advanceChunk,
+		currentChunk: state.currentChunk,
+	}));
+	const disabled = currentChunk !== chunkSlug;
 
 	if (!user) {
 		return (
@@ -60,31 +61,29 @@ export const QuestionBoxSimple = ({
 						<span className="font-bold">Answer: </span>
 						{answer}
 					</p>
-					{!finished && (
-						<form
-							onSubmit={(e) => {
-								e.preventDefault();
-								advanceChunk(chunkSlug);
-								setFinished(true);
-								createEvent({
-									userId: user.id,
-									type: "post-question-chunk-reveal",
-									pageSlug,
-									data: {
-										chunkSlug,
-										condition: Condition.STAIRS,
-									},
-								});
-							}}
-							className="w-full space-y-2"
-						>
-							<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-								<Button type="submit" variant={"outline"}>
-									Continue
-								</Button>
-							</div>
-						</form>
-					)}
+
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							advanceChunk(chunkSlug);
+							createEvent({
+								userId: user.id,
+								type: "post-question-chunk-reveal",
+								pageSlug,
+								data: {
+									chunkSlug,
+									condition: Condition.SIMPLE,
+								},
+							});
+						}}
+						className="w-full space-y-2"
+					>
+						<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+							<Button type="submit" variant={"outline"} disabled={disabled}>
+								Continue
+							</Button>
+						</div>
+					</form>
 				</CardContent>
 			</Card>
 		</>

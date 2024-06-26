@@ -91,7 +91,6 @@ export const ConstructedResponseControl = ({
 			addNode(
 				<QuestionBoxSimple
 					chunkSlug={chunkSlug}
-					pageStatus={pageStatus}
 					pageSlug={pageSlug}
 					question={question}
 					answer={answer}
@@ -200,9 +199,26 @@ export const ConstructedResponseControl = ({
 	}, []);
 
 	useEffect(() => {
-		console.log("current chunk", currentChunk);
 		revealChunk(currentChunk);
+
+		setCurrentChunkCookie(pageSlug, currentChunk);
 	}, [currentChunk]);
 
 	return nodes;
+};
+
+export const setCurrentChunkCookie = async (
+	pageSlug: string,
+	currentChunk: string,
+) => {
+	await fetch("/api/user/progress", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			page_slug: pageSlug,
+			current_chunk: currentChunk,
+		}),
+	});
 };

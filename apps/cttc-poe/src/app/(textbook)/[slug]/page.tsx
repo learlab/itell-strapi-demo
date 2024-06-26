@@ -22,6 +22,7 @@ import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
 import { Info } from "@itell/ui/server";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -40,6 +41,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const pageSlug = page.page_slug;
 
 	const chunks = getPageChunks(page);
+	const currentChunk = readCurrentChunk(pageSlug);
 
 	const questions = await getRandomPageQuestions(pageSlug);
 	const userRole = user?.role || "user";
@@ -59,6 +61,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageSlug={pageSlug}
 			pageTitle={page.title}
 			chunks={chunks}
+			currentChunk={currentChunk}
 			questions={questions}
 			pageStatus={pageStatus}
 		>
@@ -174,4 +177,16 @@ const ReadingStrategy = () => {
 			</p>
 		</Info>
 	);
+};
+
+const readCurrentChunk = (pageSlug: string) => {
+	const data = cookies().get("user_current_chunk");
+	if (data) {
+		try {
+			const current = JSON.parse(data.value) as Record<string, string>;
+			return current[pageSlug] || undefined;
+		} catch {
+			return undefined;
+		}
+	}
 };
