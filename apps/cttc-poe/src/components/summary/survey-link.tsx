@@ -19,7 +19,7 @@ export const SurveyLink = ({ user }: Props) => {
 
 	return (
 		session.user?.finished && (
-			<div className="space-y-2 pb-4 mb-8 border-b">
+			<div className="space-y-2 rounded-md mb-8 border-2 r border-info p-4">
 				<p>
 					You have finished the entire textbook. Please use the code below to
 					access the outtake survey.{" "}
