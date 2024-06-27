@@ -21,24 +21,28 @@ export const SurveyLink = ({ user }: Props) => {
 		session.user?.finished && (
 			<div className="space-y-2 pb-4 mb-8 border-b">
 				<p>
-					You have finished the entire textbook. Please use the completion code
-					below and go to the outtake survey to claim your progress.
+					You have finished the entire textbook. Please use the code below to
+					access the outtake survey.{" "}
+					<span className="font-medium">
+						This is NOT the Prolific completion code.
+					</span>{" "}
+					You will be redirected to Prolific with the completion code
+					automatically provided upon completing the outtake survey.
 				</p>
 				<div className="flex flex-col lg:flex-row justify-between">
 					<div className="flex items-center gap-2">
 						<p>
-							<span className="font-medium">Completion code</span> (click to
-							copy)
+							<span className="font-medium">Survey code</span>
 						</p>
 						<Button
 							variant={"outline"}
 							className=" gap-4"
 							onClick={async () => {
-								await navigator.clipboard.writeText("CMXK0UNH");
+								await navigator.clipboard.writeText("outtakesurveycode001");
 								toast.info("Code copied!");
 							}}
 						>
-							<span>CMXK0UNH</span>
+							<span>outtakesurveycode001</span>
 							<CopyIcon className="size-4" />
 						</Button>
 					</div>
