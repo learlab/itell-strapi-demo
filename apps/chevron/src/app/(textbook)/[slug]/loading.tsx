@@ -59,9 +59,9 @@ export default async function () {
 				className="toc-sidebar hidden sm:block relative"
 				style={{ flexGrow: 1 }}
 			>
-				<p className="font-medium text-sm flex items-center">
-					<span>ON THIS PAGE</span>
-					<BookmarkIcon className="ml-2 size-4" />
+				<p className="font-medium flex items-center mb-4">
+					<BookmarkIcon className="mr-2 size-4" />
+					<span>On this page</span>
 				</p>
 				<ul className="mt-2 space-y-2">
 					{arr.slice(0, 5).map((i) => (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSessionAction } from "@/lib/auth/context";
+import { useSession, useSessionAction } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -30,7 +30,7 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning } from "@itell/ui/server";
+import { Warning, buttonVariants } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
@@ -90,7 +90,26 @@ const exitQuestion = () => {
 	}
 };
 
+const goToQuestion = (question: StairsQuestion) => {
+	const el = getChunkElement(question.chunk);
+	if (el) {
+		scrollToElement(el);
+		driverObj.highlight({
+			element: el,
+			popover: {
+				description:
+					"Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
+			},
+		});
+	} else {
+		toast.warning(
+			"No question found, please revise your summary or move on to the next page",
+		);
+	}
+};
+
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const initialState: State = {
 		prevInput: "",
 		error: null,
@@ -100,15 +119,17 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		canProceed: pageStatus.unlocked,
 	};
 	const { updateUser } = useSessionAction();
-	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
+	const session = useSession();
+	const isTextbookFinished = session.user?.finished || false;
 
 	const pageSlug = page.page_slug;
-	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
-	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => ({
-		stairsAnswered: state.stairsAnswered,
-		addStairsQuestion: state.addStairsQuestion,
-		messages: state.messages,
-	}));
+	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => {
+		return {
+			stairsAnswered: state.stairsAnswered,
+			addStairsQuestion: state.addStairsQuestion,
+			messages: state.stairsMessages,
+		};
+	});
 	const getExcludedChunks = useConstructedResponse(
 		(state) => state.getExcludedChunks,
 	);
@@ -151,24 +172,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
 
-	const goToQuestion = (question: StairsQuestion) => {
-		const el = getChunkElement(question.chunk);
-		if (el) {
-			scrollToElement(el);
-			driverObj.highlight({
-				element: el,
-				popover: {
-					description:
-						"Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
-				},
-			});
-		} else {
-			toast.warning(
-				"No question found, please revise your summary or move on to the next page",
-			);
-		}
-	};
-
 	useEffect(() => {
 		driverObj.setConfig({
 			smoothScroll: false,
@@ -184,7 +187,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							<FinishReadingButton
 								onClick={(time) => {
 									exitQuestion();
-
 									if (!stairsAnswered) {
 										createEvent({
 											type: Condition.STAIRS,
@@ -371,8 +373,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						const nextSlug = await incrementUserPage(user.id, pageSlug);
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
-							setIsTextbookFinished(true);
-							toast.info("You have finished the entire textbook!");
+							toast.info(
+								"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
+							);
 						} else {
 							updateUser({ pageSlug: nextSlug });
 							// check if we can already proceed to prevent excessive toasts
@@ -405,7 +408,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 					if (stairsDataRef.current) {
 						dispatch({ type: "stairs", payload: stairsDataRef.current });
-						if (!shouldUpdateUser) {
+						if (!shouldUpdateUser || pageStatus.unlocked) {
 							goToQuestion(stairsDataRef.current);
 						}
 					}
@@ -455,12 +458,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				)}
 			</div>
 
-			{isTextbookFinished && (
-				<div className="space-y-2">
-					<p>You have finished the entire textbook. Congratulations! 🎉</p>
-				</div>
-			)}
-
 			<Confetti active={feedback?.isPassed || false} />
 			<form className="mt-2 space-y-4" onSubmit={action}>
 				<SummaryInput
@@ -469,6 +466,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					pending={isPending}
 					stages={stages}
 					userRole={user.role}
+					ref={ref}
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">

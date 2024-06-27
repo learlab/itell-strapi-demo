@@ -61,9 +61,9 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 
 	return (
 		<div className="page-toc">
-			<p className="font-medium flex items-center pb-2">
+			<p className="font-medium flex items-center mb-4">
 				<BookmarkIcon className="mr-2 size-4" />
-				<span>ON THIS PAGE</span>
+				<span>On this page</span>
 			</p>
 
 			<ol className="max-h-[60vh] overflow-y-scroll mt-2 space-y-2 list-none">

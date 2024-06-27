@@ -18,7 +18,6 @@ import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
-	getSurveyLink,
 	makePageHref,
 	reportSentry,
 	scrollToElement,
@@ -31,13 +30,13 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
 import { FileQuestionIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
@@ -88,6 +87,24 @@ const exitQuestion = () => {
 
 	if (summaryEl) {
 		scrollToElement(summaryEl as HTMLDivElement);
+	}
+};
+
+const goToQuestion = (question: StairsQuestion) => {
+	const el = getChunkElement(question.chunk);
+	if (el) {
+		scrollToElement(el);
+		driverObj.highlight({
+			element: el,
+			popover: {
+				description:
+					"Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
+			},
+		});
+	} else {
+		toast.warning(
+			"No question found, please revise your summary or move on to the next page",
+		);
 	}
 };
 
@@ -154,24 +171,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const requestBodyRef = useRef<string | null>(null);
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
-
-	const goToQuestion = (question: StairsQuestion) => {
-		const el = getChunkElement(question.chunk);
-		if (el) {
-			scrollToElement(el);
-			driverObj.highlight({
-				element: el,
-				popover: {
-					description:
-						"Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
-				},
-			});
-		} else {
-			toast.warning(
-				"No question found, please revise your summary or move on to the next page",
-			);
-		}
-	};
 
 	useEffect(() => {
 		driverObj.setConfig({
@@ -409,7 +408,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 					if (stairsDataRef.current) {
 						dispatch({ type: "stairs", payload: stairsDataRef.current });
-						if (!shouldUpdateUser) {
+						if (!shouldUpdateUser || pageStatus.unlocked) {
 							goToQuestion(stairsDataRef.current);
 						}
 					}
