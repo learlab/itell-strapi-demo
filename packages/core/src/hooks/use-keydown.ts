@@ -2,14 +2,19 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-type KeydownEvent = [string, number][];
+// keycode, cursor position, timestamp
+type KeydownEvent = [string, number, number][];
 
 export const useKeydown = () => {
 	const ref = useRef<HTMLElement>(null);
 	const data = useRef<KeydownEvent>([]);
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		data.current.push([e.code, e.timeStamp]);
+		data.current.push([
+			e.code,
+			e.timeStamp,
+			(ref.current as HTMLTextAreaElement).selectionStart,
+		]);
 	};
 
 	const clear = useCallback(() => {
