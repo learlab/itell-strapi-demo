@@ -12,8 +12,8 @@ export const useKeydown = () => {
 	const handleKeydown = (e: KeyboardEvent) => {
 		data.current.push([
 			e.code,
-			e.timeStamp,
 			(ref.current as HTMLTextAreaElement).selectionStart,
+			e.timeStamp,
 		]);
 	};
 
