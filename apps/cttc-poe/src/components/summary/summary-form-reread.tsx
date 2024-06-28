@@ -25,13 +25,17 @@ import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
 import { useConstructedResponse } from "../provider/page-provider";
-import { SummaryInput, saveSummaryLocal } from "./summary-input";
+import {
+	SummaryInput,
+	getSummaryLocal,
+	saveSummaryLocal,
+} from "./summary-input";
 
 type Props = {
 	user: User;
@@ -43,15 +47,18 @@ const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
+	const prevInput = useRef<string | undefined>();
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunkSlugs,
 	}));
-	// skip first chunk, which is typically learning objectives
-	const validChunks = chunks.slice(1);
-	const randomChunkSlug =
-		validChunks[Math.floor(Math.random() * validChunks.length)];
+
+	const randomChunkSlug = useMemo(() => {
+		// skip first chunk, which is typically learning objectives
+		const validChunks = chunks.slice(1);
+		return validChunks[Math.floor(Math.random() * validChunks.length)];
+	}, []);
 
 	const exitChunk = () => {
 		const summaryEl = document.querySelector("#page-summary");
@@ -166,6 +173,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					userId: user.id,
 					data: {
 						summaryId,
+						start: prevInput.current
+							? prevInput.current
+							: getSummaryLocal(pageSlug),
 						keystrokes,
 					},
 				}).then(clearKeystroke);
@@ -173,11 +183,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				const nextSlug = await incrementUserPage(user.id, pageSlug);
 				finishStage("Saving");
 				setFinished(true);
+				prevInput.current = input;
 
 				if (isLastPage(pageSlug)) {
 					updateUser({ finished: true });
 					toast.info(
-						"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
+						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
 					);
 					return;
 				}

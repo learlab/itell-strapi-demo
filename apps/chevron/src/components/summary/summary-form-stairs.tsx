@@ -30,13 +30,13 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
-import { Warning, buttonVariants } from "@itell/ui/server";
+import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
 import { FileQuestionIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
@@ -46,7 +46,11 @@ import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
 import { useChat, useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
-import { SummaryInput, saveSummaryLocal } from "./summary-input";
+import {
+	SummaryInput,
+	getSummaryLocal,
+	saveSummaryLocal,
+} from "./summary-input";
 
 type Props = {
 	user: User;
@@ -61,7 +65,7 @@ type StairsQuestion = {
 };
 
 type State = {
-	prevInput: string;
+	prevInput: string | undefined;
 	isPassed: boolean;
 	error: ErrorType | null;
 	response: SummaryResponse | null;
@@ -111,7 +115,7 @@ const goToQuestion = (question: StairsQuestion) => {
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const initialState: State = {
-		prevInput: "",
+		prevInput: undefined,
 		error: null,
 		response: null,
 		stairsQuestion: null,
@@ -227,10 +231,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				const userId = user.id;
 				saveSummaryLocal(pageSlug, input);
 
-				const error = validateSummary(
-					input,
-					state.prevInput === "" ? undefined : state.prevInput,
-				);
+				const error = validateSummary(input, state.prevInput);
 
 				if (error) {
 					dispatch({ type: "fail", payload: error });
@@ -363,6 +364,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						userId,
 						data: {
 							summaryId,
+							start: state.prevInput
+								? state.prevInput
+								: getSummaryLocal(pageSlug),
 							keystrokes,
 						},
 					}).then(clearKeystroke);
@@ -373,9 +377,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						const nextSlug = await incrementUserPage(user.id, pageSlug);
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
-							toast.info(
-								"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
-							);
+							toast.info("You have finished the entire textbook!");
 						} else {
 							updateUser({ pageSlug: nextSlug });
 							// check if we can already proceed to prevent excessive toasts

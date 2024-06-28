@@ -46,7 +46,11 @@ import { Button, StatusButton } from "../client-components";
 import { NextPageButton } from "../page/next-page-button";
 import { useChat, useConstructedResponse } from "../provider/page-provider";
 import { SummaryFeedback } from "./summary-feedback";
-import { SummaryInput, saveSummaryLocal } from "./summary-input";
+import {
+	SummaryInput,
+	getSummaryLocal,
+	saveSummaryLocal,
+} from "./summary-input";
 
 type Props = {
 	user: User;
@@ -61,7 +65,7 @@ type StairsQuestion = {
 };
 
 type State = {
-	prevInput: string;
+	prevInput: string | undefined;
 	isPassed: boolean;
 	error: ErrorType | null;
 	response: SummaryResponse | null;
@@ -111,7 +115,7 @@ const goToQuestion = (question: StairsQuestion) => {
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const initialState: State = {
-		prevInput: "",
+		prevInput: undefined,
 		error: null,
 		response: null,
 		stairsQuestion: null,
@@ -227,10 +231,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				const userId = user.id;
 				saveSummaryLocal(pageSlug, input);
 
-				const error = validateSummary(
-					input,
-					state.prevInput === "" ? undefined : state.prevInput,
-				);
+				const error = validateSummary(input, state.prevInput);
 
 				if (error) {
 					dispatch({ type: "fail", payload: error });
@@ -363,6 +364,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						userId,
 						data: {
 							summaryId,
+							start: state.prevInput
+								? state.prevInput
+								: getSummaryLocal(pageSlug),
 							keystrokes,
 						},
 					}).then(clearKeystroke);
@@ -374,7 +378,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
 							toast.info(
-								"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
+								"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
 							);
 						} else {
 							updateUser({ pageSlug: nextSlug });

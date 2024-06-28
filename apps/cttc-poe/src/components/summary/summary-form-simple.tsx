@@ -3,7 +3,7 @@ import { useSessionAction } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
-import { PageData, getSurveyLink, reportSentry } from "@/lib/utils";
+import { PageData, reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
 import { User } from "lucia";
@@ -23,7 +23,6 @@ type Props = {
 
 export const SummaryFormSimple = React.memo(
 	({ user, pageStatus, page }: Props) => {
-		const surveyLink = getSurveyLink(user);
 		const isSummaryReady = useConstructedResponse(
 			(state) => state.isSummaryReady,
 		);
@@ -47,7 +46,7 @@ export const SummaryFormSimple = React.memo(
 				} else {
 					updateUser({ finished: true });
 					toast.info(
-						"You have finished the entire textbook! Copy the completion code and go to the outtake survey to claim your progress.",
+						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
 					);
 				}
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "@/lib/auth/context";
-import { getSurveyLink } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
 import { User } from "lucia";
@@ -11,6 +10,10 @@ import { Button } from "../client-components";
 
 type Props = {
 	user: User;
+};
+
+const getSurveyLink = (user: User) => {
+	return `https://peabody.az1.qualtrics.com/jfe/form/SV_9GKoZxI3GC2XgiO?PROLIFIC_PID=${user.prolificId}`;
 };
 
 export const SurveyLink = ({ user }: Props) => {
