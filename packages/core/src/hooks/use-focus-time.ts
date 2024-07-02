@@ -18,7 +18,7 @@ const COUNT_INTERVAL = 1000;
 export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 	const entries = useRef<ChunkEntryWithLastTick[]>([]);
 	const isSaving = useRef(false);
-	const visibleChunks = new Set<string>();
+	const visibleChunks = useRef<Set<string>>(new Set());
 	const savedTime = useRef<Map<string, number>>(new Map());
 
 	const options: IntersectionObserverInit = {
@@ -27,16 +27,16 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 		threshold: 0,
 	};
 
-	let countTimer: NodeJS.Timeout | null = null;
-	let saveTimer: NodeJS.Timeout | null = null;
+	const countTimer = useRef<NodeJS.Timeout | null>(null);
+	const saveTimer = useRef<NodeJS.Timeout | null>(null);
 
 	const clearTimer = () => {
-		if (countTimer) {
-			clearInterval(countTimer);
+		if (countTimer.current) {
+			clearInterval(countTimer.current);
 		}
 
-		if (saveTimer) {
-			clearInterval(saveTimer);
+		if (saveTimer.current) {
+			clearInterval(saveTimer.current);
 		}
 	};
 
@@ -47,10 +47,10 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 		entries.current?.forEach((entry) => {
 			entry.lastTick = performance.now();
 		});
-		countTimer = setInterval(() => {
+		countTimer.current = setInterval(() => {
 			if (entries.current && !isSaving.current) {
 				entries.current.forEach((entry) => {
-					if (visibleChunks.has(entry.chunkId)) {
+					if (visibleChunks.current.has(entry.chunkId)) {
 						entry.totalViewTime += Math.round(
 							(performance.now() - entry.lastTick) / 1000,
 						);
@@ -59,7 +59,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 				});
 			}
 		}, COUNT_INTERVAL);
-		saveTimer = setInterval(saveFocusTime, saveInterval);
+		saveTimer.current = setInterval(saveFocusTime, saveInterval);
 	};
 
 	const saveFocusTime = async () => {
@@ -120,9 +120,9 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 				const target = entry.target as HTMLElement;
 				const id = target.dataset.subsectionId as string;
 				if (entry.isIntersecting) {
-					visibleChunks.add(id);
+					visibleChunks.current.add(id);
 				} else {
-					visibleChunks.delete(id);
+					visibleChunks.current.delete(id);
 				}
 			});
 		}, options);
