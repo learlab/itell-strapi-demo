@@ -6,7 +6,7 @@ import { ScrollEventData, useScroll } from "@/hooks/use-scroll";
 type Props = {
 	focusTimeSaveInterval: number;
 	chunks: HTMLElement[];
-	onFocusTimeEvent: (data: FocusTimeEventData) => Promise<void>;
+	onFocusTimeEvent: (data: FocusTimeEventData, total: number) => Promise<void>;
 	onClickEvent: (data: ClickEventData, event: MouseEvent) => Promise<void>;
 	onScrollEvent: (data: ScrollEventData) => Promise<void>;
 };

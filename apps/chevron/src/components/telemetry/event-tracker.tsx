@@ -52,18 +52,20 @@ export const EventTracker = ({ pageSlug, chunks, userId }: Props) => {
 					data,
 				});
 			}}
-			onFocusTimeEvent={async (data) => {
-				createEvent({
-					type: "focus-time",
-					userId,
-					pageSlug,
-					data,
-				});
-				createFocusTime({
-					userId,
-					pageSlug,
-					data,
-				});
+			onFocusTimeEvent={async (data, total) => {
+				if (total > 0) {
+					createEvent({
+						type: "focus-time",
+						userId,
+						pageSlug,
+						data,
+					});
+					createFocusTime({
+						userId,
+						pageSlug,
+						data,
+					});
+				}
 			}}
 			chunks={els}
 			focusTimeSaveInterval={FOCUS_TIME_SAVE_INTERVAL}
