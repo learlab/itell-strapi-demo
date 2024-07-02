@@ -45,7 +45,9 @@ export const SummaryFormSimple = React.memo(
 					updateUser({ pageSlug: nextSlug });
 				} else {
 					updateUser({ finished: true });
-					toast.info("You have finished the entire textbook!");
+					toast.info(
+						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+					);
 				}
 
 				setFinished(true);

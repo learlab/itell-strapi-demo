@@ -6,7 +6,7 @@ import { PgInsertValue } from "drizzle-orm/pg-core";
 import { isProduction } from "../constants";
 import { db, first } from "../db";
 
-export const createEvent = async (input: PgInsertValue<typeof events>) => {
+export const createEvent = async (...input: PgInsertValue<typeof events>[]) => {
 	if (!isProduction) {
 		return;
 	}

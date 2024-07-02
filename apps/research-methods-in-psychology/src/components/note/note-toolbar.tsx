@@ -5,7 +5,6 @@ import {
 } from "@/lib/hooks/use-note-color";
 import { createNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
-import { randomNumber } from "@/lib/utils";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
@@ -168,4 +167,10 @@ export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 			document.body,
 		)
 	);
+};
+
+const randomNumber = () => {
+	const array = new Uint32Array(1);
+	window.crypto.getRandomValues(array);
+	return array[0];
 };

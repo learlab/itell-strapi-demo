@@ -4,6 +4,7 @@ import React from "react";
 import { DashboardNavItem } from "@/config/dashboard";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
+import Image from "next/image";
 import { ContinueReading } from "../continue-reading";
 import { DashboardNavMenu } from "./dashboard-nav-menu";
 
@@ -17,8 +18,15 @@ export async function DashboardNav(props: Props) {
 	const { user } = await getSession();
 
 	return (
-		<div className="flex gap-6 md:gap-10 justify-between">
+		<div className="flex gap-6 md:gap-10 justify-between h-16 px-8">
 			<div className="flex gap-4 items-center">
+				<Image
+					src="/images/itell.svg"
+					alt="itell logo"
+					width={24}
+					height={32}
+					className="mr-2"
+				/>
 				<Link href="/" className="hidden items-center space-x-2 md:flex">
 					<span className="hidden font-bold sm:inline-block">{title}</span>
 				</Link>

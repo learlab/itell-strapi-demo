@@ -1,5 +1,6 @@
 import { ChapterToc } from "@/components/chapter-toc";
 import { ChatLoader } from "@/components/chat/chat-loader";
+import { ScrollArea } from "@/components/client-components";
 import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
 import { NoteCount } from "@/components/note/note-count";
 import { NoteLoader } from "@/components/note/note-loader";
@@ -21,8 +22,8 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
+import { delay } from "@/lib/utils";
 import { Info } from "@itell/ui/server";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -65,25 +66,24 @@ export default async function ({ params }: { params: { slug: string } }) {
 		>
 			<div
 				id="textbook-page-wrapper"
-				className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2"
+				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6"
 			>
-				<aside
-					className="chapter-sidebar hidden md:block sticky top-20 h-fit z-20 basis-0 animate-out ease-in-out duration-200"
-					style={{ flexGrow: 1 }}
-				>
-					<ChapterToc
-						currentPage={page}
-						userId={userId}
-						userPageSlug={userPageSlug}
-						userFinished={userFinished}
-						userRole={userRole}
-						condition={userCondition}
-					/>
+				<aside className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
+						<ChapterToc
+							currentPage={page}
+							userId={userId}
+							userPageSlug={userPageSlug}
+							userFinished={userFinished}
+							userRole={userRole}
+							condition={userCondition}
+						/>
+					</ScrollArea>
 				</aside>
 
 				<section
 					id="page-content-wrapper"
-					className="relative lg:max-w-4xl md:max-w-3xl max-w-2xl"
+					className="relative p-4 lg:p-8"
 					style={{ flexGrow: 4 }}
 				>
 					<PageTitle>{page.title}</PageTitle>
@@ -94,16 +94,17 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<Pager pageIndex={pageIndex} />
 				</section>
 
-				<aside
-					className="toc-sidebar hidden sm:block relative animate-out ease-in-out duration-200"
-					style={{ flexGrow: 1 }}
-				>
-					<div className="sticky top-20">
-						<PageToc headings={page.headings} />
-						<div className="mt-8 flex flex-col gap-1">
-							<PageStatus pageSlug={pageSlug} />
-							<NoteCount />
-						</div>
+				<aside className="toc-sidebar hidden md:block relative">
+					<div className="sticky top-20 -mt-10 pt-4">
+						<ScrollArea className="pb-10">
+							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
+								<PageToc headings={page.headings} />
+								<div className="mt-8 flex flex-col gap-1">
+									<PageStatus pageSlug={pageSlug} />
+									<NoteCount />
+								</div>
+							</div>
+						</ScrollArea>
 					</div>
 					<Suspense
 						fallback={

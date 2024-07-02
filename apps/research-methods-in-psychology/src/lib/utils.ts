@@ -96,9 +96,3 @@ export const reportSentry = (msg: string, extra: any) => {
 		extra,
 	});
 };
-
-export const randomNumber = () => {
-	const array = new Uint32Array(1);
-	window.crypto.getRandomValues(array);
-	return array[0];
-};
