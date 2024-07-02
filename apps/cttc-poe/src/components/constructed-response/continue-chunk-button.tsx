@@ -54,7 +54,7 @@ export const ContinueChunkButton = ({
 		advancedChunk(chunkSlug);
 
 		if (user) {
-			await createEvent({
+			createEvent({
 				type: "chunk-reveal",
 				pageSlug,
 				userId: user.id,
