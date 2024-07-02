@@ -1,5 +1,6 @@
 import { DashboardNav } from "@/components/nav/dashboard-nav";
 import { DashboardSidebar } from "@/components/nav/dashboard-sidebar";
+import SiteNav from "@/components/nav/site-nav";
 import { dashboardConfig } from "@/config/dashboard";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
@@ -13,19 +14,17 @@ export default async function DashboardLayout({
 	const { user } = await getSession();
 
 	return (
-		<div className="flex min-h-screen flex-col space-y-6">
-			<header className="sticky top-0 z-40 border-b bg-background">
-				<div className="container py-4">
-					<DashboardNav items={dashboardConfig.mainNav} />
-				</div>
-			</header>
-			<div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-				<aside className="hidden w-[200px] flex-col md:flex">
+		<div className="min-h-screen">
+			<SiteNav>
+				<DashboardNav items={dashboardConfig.mainNav} />
+			</SiteNav>
+			<div className="grid md:grid-cols-[200px_1fr]">
+				<aside className="hidden w-[200px] flex-col md:flex border-r-2">
 					<Suspense fallback={<DashboardSidebar.Skeleton />}>
 						<DashboardSidebar />
 					</Suspense>
 				</aside>
-				<main className="flex flex-col">
+				<main className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl">
 					{user?.condition !== Condition.SIMPLE ? (
 						children
 					) : (

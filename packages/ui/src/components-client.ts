@@ -26,3 +26,4 @@ export * from "./components/checkbox";
 export * from "./components/login-button";
 export * from "./components/sheet";
 export * from "./components/switch";
+export * from "./components/scroll-area";

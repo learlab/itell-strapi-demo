@@ -1,7 +1,6 @@
 "use client";
 
 import { logout } from "@/lib/auth/actions";
-import { useSession } from "@/lib/auth/context";
 import { User } from "lucia";
 import {
 	ChevronDownIcon,

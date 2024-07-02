@@ -1,7 +1,6 @@
 "use client";
 
 import { Condition } from "@/lib/control/condition";
-import { PageStatus } from "@/lib/page-status";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
@@ -14,15 +13,10 @@ import { ScrollBackButton } from "./scroll-back-button";
 
 type Props = {
 	pageSlug: string;
-	pageStatus: PageStatus;
 	condition: string;
 };
 
-export const ConstructedResponseControl = ({
-	pageSlug,
-	pageStatus,
-	condition,
-}: Props) => {
+export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 	// Ref for current chunk
 	const { currentChunk, chunkSlugs, chunkData, shouldBlur } =
 		useConstructedResponse((state) => ({
@@ -91,7 +85,6 @@ export const ConstructedResponseControl = ({
 			addNode(
 				<QuestionBoxSimple
 					chunkSlug={chunkSlug}
-					pageStatus={pageStatus}
 					pageSlug={pageSlug}
 					question={question}
 					answer={answer}

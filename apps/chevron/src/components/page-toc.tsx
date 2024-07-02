@@ -23,19 +23,19 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				if (entry.intersectionRatio > 0) {
 					document
 						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-						?.classList.add("bg-accent");
+						?.classList.add("page-toc-active");
 					if (isUsingMostRecentHeading) {
 						document
 							.querySelector(
 								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
 							)
-							?.classList.remove("bg-accent");
+							?.classList.remove("page-toc-active");
 					}
 					mostRecentHeading = id;
 				} else {
 					document
 						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-						?.classList.remove("bg-accent");
+						?.classList.remove("page-toc-active");
 				}
 			});
 			if (
@@ -46,7 +46,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				isUsingMostRecentHeading = true;
 				document
 					.querySelector(`div.page-toc ol li a[href="#${mostRecentHeading}"]`)
-					?.classList.add("bg-accent");
+					?.classList.add("page-toc-active");
 			}
 		});
 
@@ -66,7 +66,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				<span>On this page</span>
 			</p>
 
-			<ol className="max-h-[60vh] overflow-y-scroll mt-2 space-y-2 list-none">
+			<ol className="mt-2 space-y-2 list-none text-foreground/70 tracking-tight">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
@@ -79,10 +79,8 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 									{
 										"text-base ml-1": heading.level === "two",
 										"text-sm ml-3": heading.level === "three",
-										"text-sm ml-5 text-muted-foreground":
-											heading.level === "four",
-										"text-muted-foreground text-sm ml-6":
-											heading.level === "other",
+										"text-sm ml-5": heading.level === "four",
+										"text-sm ml-6": heading.level === "other",
 									},
 								)}
 							>

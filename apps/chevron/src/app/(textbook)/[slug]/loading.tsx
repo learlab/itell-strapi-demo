@@ -1,4 +1,5 @@
 import { ChapterToc } from "@/components/chapter-toc";
+import { ScrollArea } from "@/components/client-components";
 import { PageTitle } from "@/components/page-title";
 import { lucia } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
@@ -29,25 +30,21 @@ export default async function () {
 	const arr = Array.from(Array(10).keys());
 
 	return (
-		<div className="flex flex-row max-w-[1440px] mx-auto gap-6 px-2">
-			<aside
-				className="chapter-sidebar hidden md:block sticky top-20 h-fit z-20 basis-0"
-				style={{ flexGrow: 1 }}
-			>
-				<ChapterToc
-					currentPage={page}
-					userPageSlug={userPageSlug}
-					userFinished={false}
-					userRole="user"
-					userId={null}
-					condition={Condition.STAIRS}
-				/>
+		<div className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6">
+			<aside className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+				<div className="h-full w-full px-6 py-6 lg:py-8">
+					<ChapterToc
+						currentPage={page}
+						userPageSlug={userPageSlug}
+						userFinished={false}
+						userRole="user"
+						userId={null}
+						condition={Condition.STAIRS}
+					/>
+				</div>
 			</aside>
 
-			<section
-				className="page-content relative space-y-4"
-				style={{ flexGrow: 4 }}
-			>
+			<section id="page-content-wrapper" className="relative p-4 lg:p-8">
 				<PageTitle>{page.title}</PageTitle>
 
 				{arr.map((i) => (
@@ -55,19 +52,20 @@ export default async function () {
 				))}
 			</section>
 
-			<aside
-				className="toc-sidebar hidden sm:block relative"
-				style={{ flexGrow: 1 }}
-			>
-				<p className="font-medium flex items-center mb-4">
-					<BookmarkIcon className="mr-2 size-4" />
-					<span>On this page</span>
-				</p>
-				<ul className="mt-2 space-y-2">
-					{arr.slice(0, 5).map((i) => (
-						<Skeleton className="w-32 h-7" key={i} />
-					))}
-				</ul>
+			<aside className="toc-sidebar hidden md:block relative">
+				<div className="sticky top-20 -mt-10 pt-4">
+					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
+						<p className="font-medium flex items-center mb-4">
+							<BookmarkIcon className="mr-2 size-4" />
+							<span>On this page</span>
+						</p>
+						<ul className="mt-2 space-y-2">
+							{arr.slice(0, 5).map((i) => (
+								<Skeleton className="w-36 h-7" key={i} />
+							))}
+						</ul>
+					</div>
+				</div>
 			</aside>
 		</div>
 	);

@@ -74,7 +74,7 @@ export const ChapterToc = ({
 	};
 
 	return (
-		<>
+		<div className="space-y-12">
 			<ol className="space-y-2">
 				{tocChapters.map((chapter) => {
 					return (
@@ -88,9 +88,11 @@ export const ChapterToc = ({
 										href={makePageHref(chapter.page_slug)}
 										className="flex px-1 py-2 items-center"
 									>
-										<p className="text-left text-pretty">{chapter.title}</p>
+										<p className="text-lg leading-relaxed tracking-tight text-balance ">
+											{chapter.title}
+										</p>
 									</Link>
-									<Button variant={"ghost"} className="p-1">
+									<Button variant={"ghost"}>
 										<ChevronsUpDown className="size-4" />
 										<span className="sr-only">Toggle</span>
 									</Button>
@@ -98,7 +100,7 @@ export const ChapterToc = ({
 							</CollapsibleTrigger>
 
 							<CollapsibleContent>
-								<ol className="space-y-1 text-sm px-1">
+								<ol className="text-sm">
 									{chapter.items.map((item) => {
 										const { latest, unlocked } = getPageStatus({
 											pageSlug: item.page_slug,
@@ -109,9 +111,10 @@ export const ChapterToc = ({
 										return (
 											<li
 												className={cn(
-													"p-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
+													"relative p-2 text-foreground hover:bg-accent border-l-2",
 													{
-														"bg-accent": item.page_slug === activePage,
+														"bg-accent font-semibold":
+															item.page_slug === activePage,
 														"text-muted-foreground": !visible,
 													},
 												)}
@@ -122,7 +125,7 @@ export const ChapterToc = ({
 													onClick={() => navigatePage(item.page_slug)}
 													disabled={(pending || !visible) && isProduction}
 													className={cn(
-														"w-full text-left text-balance inline-flex items-end",
+														"w-full text-left text-balance tracking-tight inline-flex items-end justify-between",
 														{
 															"animate-pulse": pending,
 														},
@@ -140,7 +143,7 @@ export const ChapterToc = ({
 					);
 				})}
 			</ol>
-			<div className="mt-12 space-y-2">
+			<div className="space-y-2">
 				{isAdmin(userRole) && userId && (
 					<AdminTools userId={userId} condition={condition} />
 				)}
@@ -158,6 +161,6 @@ export const ChapterToc = ({
 					href="#page-title"
 				/>
 			</div>
-		</>
+		</div>
 	);
 };

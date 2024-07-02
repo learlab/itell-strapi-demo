@@ -9,7 +9,7 @@ export default async function ({
 	return (
 		<Fragment>
 			<TextbookNavbar scroll />
-			<div className="max-w-screen-2xl mx-auto p-4 lg:p-8">{children}</div>
+			{children}
 		</Fragment>
 	);
 }

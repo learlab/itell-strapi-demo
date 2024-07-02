@@ -15,7 +15,7 @@ export const DashboardSidebar = async () => {
 		: dashboardConfig.sidebarNav.filter((i) => i.title !== "Class");
 
 	return (
-		<nav className="grid items-start gap-2">
+		<nav className="grid items-start pt-4">
 			{items.map((item) => (
 				<DashboardSidebarItem key={item.title} item={item} />
 			))}

@@ -56,7 +56,9 @@ h5,
   transition: filter 1s ease-in-out;
 }
 
-
+.page-toc-active {
+  @apply text-primary font-semibold
+}
 
 .blurred>*:not(.continue-reading-button-container, .scroll-back-button-container) {
   filter: blur(4px);

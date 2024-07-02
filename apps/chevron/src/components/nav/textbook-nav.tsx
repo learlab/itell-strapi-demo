@@ -1,4 +1,5 @@
 import { getSiteConfig } from "@/config/site";
+import { getSession } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { CommandMenu } from "../command-menu";
@@ -10,10 +11,11 @@ import { ScrollProgress } from "./textbook-scroll-progress";
 
 export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
 	const { title } = await getSiteConfig();
+	const { user } = await getSession();
 
 	return (
 		<SiteNav>
-			<div className="container flex h-16 w-full items-center space-x-4 justify-between sm:space-x-0">
+			<div className="flex h-16 px-6 items-center space-x-4 justify-between sm:space-x-0">
 				<div className="flex gap-4 items-center">
 					<Image
 						src="/images/itell.svg"
@@ -31,7 +33,7 @@ export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
 				<div className="ml-auto flex items-center gap-2">
 					<CommandMenu />
 					<ThemeToggle />
-					<UserAccountNav />
+					<UserAccountNav user={user} />
 				</div>
 			</div>
 

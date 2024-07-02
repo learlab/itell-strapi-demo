@@ -15,7 +15,7 @@ export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
 
 	return (
 		<SiteNav>
-			<div className="container flex h-16 w-full items-center space-x-4 justify-between sm:space-x-0">
+			<div className="flex h-16 px-6 items-center space-x-4 justify-between sm:space-x-0">
 				<div className="flex gap-4 items-center">
 					<Image
 						src="/images/itell.svg"

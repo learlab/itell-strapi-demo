@@ -24,7 +24,7 @@ export const DashboardSidebarItem = ({ item }: Props) => {
 		<Link href={item.disabled ? "/" : item.href}>
 			<span
 				className={cn(
-					"group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+					"group flex items-center px-6 h-12 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
 					path === item.href ? "bg-accent" : "transparent",
 					item.disabled && "cursor-not-allowed opacity-80",
 				)}
