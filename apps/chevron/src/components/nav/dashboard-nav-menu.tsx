@@ -62,7 +62,7 @@ export function DashboardNavMenu({ user, items, children }: Props) {
 			<div className="hidden sm:flex items-center gap-2">
 				<CommandMenu />
 				<ThemeToggle />
-				<UserAccountNav />
+				<UserAccountNav user={user} />
 			</div>
 		</div>
 	);
