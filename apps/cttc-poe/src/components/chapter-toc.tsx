@@ -75,7 +75,7 @@ export const ChapterToc = ({
 
 	return (
 		<div className="space-y-12">
-			<ol className="space-y-2">
+			<ol className="space-y-2 leading-relaxed tracking-tight">
 				{tocChapters.map((chapter) => {
 					return (
 						<Collapsible
@@ -88,7 +88,7 @@ export const ChapterToc = ({
 										href={makePageHref(chapter.page_slug)}
 										className="flex px-1 py-2 items-center"
 									>
-										<p className="text-lg leading-relaxed tracking-tight text-balance ">
+										<p className="text-lg text-balance xl:text-xl 2xl:text-2xl">
 											{chapter.title}
 										</p>
 									</Link>
@@ -125,7 +125,7 @@ export const ChapterToc = ({
 													onClick={() => navigatePage(item.page_slug)}
 													disabled={(pending || !visible) && isProduction}
 													className={cn(
-														"w-full text-left text-balance tracking-tight inline-flex items-end justify-between",
+														"w-full text-left text-balance tracking-tight inline-flex items-end justify-between xl:text-lg",
 														{
 															"animate-pulse": pending,
 														},

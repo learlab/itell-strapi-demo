@@ -13,7 +13,6 @@ import { ArrowUpIcon, PencilIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AdminTools } from "./admin/admin-tools";
-import { Button } from "./client-components";
 import { RestartPageButton } from "./page/restart-page-button";
 
 const AnchorLink = ({
@@ -69,7 +68,7 @@ export const ChapterToc = ({
 
 	return (
 		<>
-			<ol className="space-y-2">
+			<ol className="space-y-2 leading-relaxed tracking-tight">
 				{allPagesSorted.map((p) => {
 					const { latest, unlocked } = getPageStatus({
 						pageSlug: p.page_slug,
@@ -95,7 +94,7 @@ export const ChapterToc = ({
 								onClick={() => navigatePage(p.page_slug)}
 								disabled={(pending || !visible) && isProduction}
 								className={cn(
-									"w-full text-left text-balance inline-flex items-end",
+									"w-full text-left text-balance inline-flex items-end text-lg xl:text-xl",
 									{
 										"animate-pulse": pending,
 									},

@@ -61,7 +61,6 @@ h5,
 }
 
 
-
 .blurred>*:not(.continue-reading-button-container, .scroll-back-button-container) {
   filter: blur(4px);
   user-select: none;

@@ -9,7 +9,12 @@ import { UserAccountNav } from "../user-account-nav";
 import SiteNav from "./site-nav";
 import { ScrollProgress } from "./textbook-scroll-progress";
 
-export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
+type Props = {
+	scroll?: boolean;
+	read?: boolean;
+};
+
+export default async function TextbookNavbar({ scroll, read }: Props) {
 	const { title } = await getSiteConfig();
 	const { user } = await getSession();
 
@@ -27,7 +32,9 @@ export default async function TextbookNavbar({ scroll }: { scroll?: boolean }) {
 					<Link href="/" className="hidden items-center space-x-2 md:flex">
 						<span className="hidden font-bold sm:inline-block">{title}</span>
 					</Link>
-					<ContinueReading text="Read" variant="outline" size={"default"} />
+					{read && (
+						<ContinueReading text="Read" variant="outline" size={"default"} />
+					)}
 				</div>
 
 				<div className="ml-auto flex items-center gap-2">
