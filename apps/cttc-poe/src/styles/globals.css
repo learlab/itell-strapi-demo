@@ -99,10 +99,11 @@ h5,
   display: none;
 }
 
-/* make space for question popup */
-.driver-active #page-content-wrapper {
+.driver-active #textbook-page-wrapper {
+  grid-template-columns: 1fr;
   max-width: 60%;
 }
+
 
 .driver-popover {
   @apply max-w-80 bg-background text-foreground !important;

@@ -412,7 +412,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 					if (stairsDataRef.current) {
 						dispatch({ type: "stairs", payload: stairsDataRef.current });
-						if (!shouldUpdateUser || pageStatus.unlocked) {
+						if (!shouldUpdateUser && !pageStatus.unlocked) {
 							goToQuestion(stairsDataRef.current);
 						}
 					}

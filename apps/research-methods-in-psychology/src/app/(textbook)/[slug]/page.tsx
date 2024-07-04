@@ -81,11 +81,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</aside>
 
-				<section
-					id="page-content-wrapper"
-					className="relative p-4 lg:p-8"
-					style={{ flexGrow: 4 }}
-				>
+				<section id="page-content-wrapper" className="relative p-4 lg:p-8">
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
