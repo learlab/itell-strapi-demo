@@ -53,7 +53,7 @@ const PageLink = ({
 		<Link
 			className={cn(
 				buttonVariants({ variant: "outline" }),
-				"flex items-center h-14 max-w-sm text-balance gap-2",
+				"flex items-center h-14 xl:h-20 max-w-sm text-balance gap-2 xl:text-lg",
 				{ "pointer-events-none opacity-50": disabled },
 			)}
 			data-no-events={true}

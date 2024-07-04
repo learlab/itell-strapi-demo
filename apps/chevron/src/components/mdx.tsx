@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@itell/core/utils";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { MdxComponents } from "./mdx-components";
 
@@ -15,6 +16,27 @@ export const Mdx = ({ code, components }: MdxProps) => {
 	return <Component components={components} />;
 };
 
-export const MainMdx = ({ code }: { code: string }) => {
-	return <Mdx components={MdxComponents} code={code} />;
+interface MainMdxProps extends React.HTMLAttributes<HTMLDivElement> {
+	className?: string;
+	components?: Record<string, any>;
+	code: string;
+}
+
+export const MainMdx = ({
+	code,
+	className,
+	components = MdxComponents,
+	...rest
+}: MainMdxProps) => {
+	return (
+		<article
+			className={cn(
+				"prose prose-quoteless prose-neutral dark:prose-invert max-w-none xl:text-lg xl:leading-relaxed",
+				className,
+			)}
+			{...rest}
+		>
+			<Mdx components={components} code={code} />
+		</article>
+	);
 };

@@ -1,6 +1,7 @@
 import { Condition } from "@/lib/control/condition";
 import { allGuides } from "contentlayer/generated";
 import { MainMdx } from "../mdx";
+import { Accordion, AccordionItem } from "../ui/accordion";
 
 export const SummaryDescription = ({ condition }: { condition: string }) => {
 	const guideCondition =
@@ -12,5 +13,7 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 	const guide = allGuides.find((g) => g.condition === guideCondition);
 	if (!guide) return null;
 
-	return <MainMdx code={guide.body.code} />;
+	return (
+		<MainMdx code={guide.body.code} components={{ Accordion, AccordionItem }} />
+	);
 };
