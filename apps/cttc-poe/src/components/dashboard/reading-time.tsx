@@ -20,7 +20,6 @@ import { and, count, eq, gte, sql } from "drizzle-orm";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
-import { BarChart } from "../chart/bar-chart";
 import {
 	Button,
 	HoverCard,
@@ -28,6 +27,7 @@ import {
 	HoverCardTrigger,
 } from "../client-components";
 import { CreateErrorFallback } from "../error-fallback";
+import { ReadingTimeChart } from "./reading-time-chart";
 import { ReadingTimeControl } from "./reading-time-control";
 
 type Props = {
@@ -105,7 +105,6 @@ export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 		intervalDates,
 		params,
 	);
-
 	return (
 		<Card className="has-[[data-pending]]:animate-pulse">
 			<CardHeader>
@@ -133,7 +132,7 @@ export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 					</div>
 				</CardTitle>
 				<CardDescription>
-					{name ? name : "You"} spent {(totalViewTime / 60).toFixed(2)} minutes
+					{name ? name : "You"} spent {Math.round(totalViewTime / 60)} minutes
 					reading the textbook, wrote {""}
 					<Link className="font-semibold underline" href="/dashboard/summaries">
 						{pluralize("summary", summaryCounts, true)}
@@ -143,7 +142,7 @@ export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="pl-2 space-y-2">
-				<BarChart data={chartData} unit="min" />
+				<ReadingTimeChart data={chartData} />
 			</CardContent>
 		</Card>
 	);

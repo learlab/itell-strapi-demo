@@ -1,7 +1,7 @@
-import plugin from "tailwindcss/plugin";
-import { fontFamily } from "tailwindcss/defaultTheme";
 import { DefaultTheme, ThemeSchema } from "@itell/core/config";
 import type { Theme, ThemeColor } from "@itell/core/config";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 
 const camelToKebab = (str: string) => {
 	return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
@@ -17,7 +17,7 @@ const extractCssVariables = (obj: ThemeColor) => {
 };
 
 export default plugin(
-	function ({ addBase, config }) {
+	({ addBase, config }) => {
 		const themeConfig = config("itell.theme");
 		const themeParsed = ThemeSchema.safeParse(themeConfig);
 		let lightColors = {};
@@ -112,6 +112,11 @@ export default plugin(
 						DEFAULT: "hsl(var(--card))",
 						foreground: "hsl(var(--card-foreground))",
 					},
+					"chart-1": "hsl(var(--chart-1))",
+					"chart-2": "hsl(var(--chart-2))",
+					"chart-3": "hsl(var(--chart-3))",
+					"chart-4": "hsl(var(--chart-4))",
+					"chart-5": "hsl(var(--chart-5))",
 				},
 				typography: {
 					DEFAULT: {

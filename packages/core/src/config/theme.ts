@@ -26,6 +26,11 @@ export const DefaultTheme: Theme = {
 		radius: "0.5rem",
 		info: "214 95% 93%",
 		warning: "34 100% 92%",
+		"chart-1": "12 76% 61%",
+		"chart-2": "173 58% 39%",
+		"chart-3": "197 37% 24%",
+		"chart-4": "43 74% 66%",
+		"chart-5": "27 87% 67%",
 	},
 	dark: {
 		background: "224 71% 4%",
@@ -50,12 +55,17 @@ export const DefaultTheme: Theme = {
 		radius: "0.5rem",
 		info: "214 95% 67%",
 		warning: "34 100% 60%",
+		"chart-1": "220 70% 50%",
+		"chart-2": "160 60% 45%",
+		"chart-3": "30 80% 55%",
+		"chart-4": "280 65% 60%",
+		"chart-5": "340 75% 55%",
 	},
 };
 
 // this has to be synchronous to use in tailwind config
 export const getSiteTheme = (themePath: string): Theme => {
-	let themeData;
+	let themeData: unknown;
 	try {
 		themeData = load(readFileSync(themePath, "utf-8"));
 	} catch (e) {

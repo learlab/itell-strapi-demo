@@ -23,6 +23,11 @@ export const ThemeColorSchema = z.object({
 	radius: z.string(),
 	info: z.string(),
 	warning: z.string(),
+	"chart-1": z.string(),
+	"chart-2": z.string(),
+	"chart-3": z.string(),
+	"chart-4": z.string(),
+	"chart-5": z.string(),
 });
 
 export const UserColorSchema = ThemeColorSchema.strict().partial().optional();
