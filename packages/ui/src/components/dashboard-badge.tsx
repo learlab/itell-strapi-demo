@@ -22,5 +22,5 @@ export const DashboardBadge = ({ title, icon, className, children }: Props) => {
 };
 
 DashboardBadge.Skeleton = () => <Skeleton className="h-40" />;
-DashboardBadge.Skeletons = ({ num = 6 }: { num?: number }) =>
-	Array.from(Array(num)).map(() => <DashboardBadge.Skeleton />);
+DashboardBadge.Skeletons = ({ num = 4 }: { num?: number }) =>
+	Array.from(Array(num)).map(() => <DashboardBadge.Skeleton key={num} />);

@@ -31,9 +31,9 @@ export const ChapterCombobox = ({ defaultChapter, onValueChange }: Props) => {
 	const [value, setValue] = React.useState(() => {
 		if (defaultChapter) {
 			return pages.filter((c) => c.chapter === defaultChapter)[0].label;
-		} else {
-			return "";
 		}
+
+		return "";
 	});
 
 	const [open, setOpen] = React.useState(false);

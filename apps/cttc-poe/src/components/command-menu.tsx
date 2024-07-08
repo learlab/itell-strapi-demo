@@ -1,12 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
 import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 
 import { cn } from "@itell/core/utils";
 
+import { CommandMenuConfig } from "@/config/command-menu";
 import {
 	Button,
 	CommandDialog,
@@ -17,7 +18,6 @@ import {
 	CommandList,
 	CommandSeparator,
 } from "./client-components";
-import { CommandMenuConfig } from "@/config/command-menu";
 
 export function CommandMenu() {
 	const router = useRouter();
@@ -42,7 +42,7 @@ export function CommandMenu() {
 	}, []);
 
 	return (
-		<>
+		<search>
 			<Button
 				variant="outline"
 				className={cn(
@@ -112,6 +112,6 @@ export function CommandMenu() {
 					</CommandGroup>
 				</CommandList>
 			</CommandDialog>
-		</>
+		</search>
 	);
 }

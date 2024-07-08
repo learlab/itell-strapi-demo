@@ -47,10 +47,12 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 						<p>{student.email}</p>
 						<p>joined at {student.createdAt.toLocaleString("en-us")}</p>
 					</div>
-					<UserProgress
-						pageSlug={student.pageSlug}
-						finished={student.finished}
-					/>
+					<div className="text-center">
+						<UserProgress
+							pageSlug={student.pageSlug}
+							finished={student.finished}
+						/>
+					</div>
 
 					<div className="flex justify-between">
 						<p className="text-muted-foreground text-sm font-semibold">
@@ -63,11 +65,7 @@ export const StudentProfile = ({ student, searchParams }: Props) => {
 				</div>
 			</CardHeader>
 			<CardContent>
-				<UserStatistics
-					userId={student.id}
-					userClassId={student.classId}
-					readingTimeLevel={readingTimeLevel}
-				/>
+				<UserStatistics user={student} readingTimeLevel={readingTimeLevel} />
 			</CardContent>
 		</Card>
 	);

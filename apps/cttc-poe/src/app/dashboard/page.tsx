@@ -1,17 +1,14 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { ClassStudentCount } from "@/components/dashboard/student/class-student-count";
 import { UserStatistics } from "@/components/dashboard/user-statistics";
 import { UserProgress } from "@/components/dashboard/user/user-progress";
 import { DashboardShell } from "@/components/page/shell";
-import { Spinner } from "@/components/spinner";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
-import { redirectWithSearchParams } from "@/lib/utils";
+import { delay, redirectWithSearchParams } from "@/lib/utils";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
-import Link from "next/link";
-import { Suspense } from "react";
+import { Card, CardContent } from "@itell/ui/server";
 
 export const metadata = Meta.dashboard;
 
@@ -21,6 +18,7 @@ type Props = {
 
 export default async function ({ searchParams }: Props) {
 	const { user } = await getSession();
+	await delay(1000);
 	if (!user) {
 		return redirectWithSearchParams("auth", searchParams);
 	}
@@ -44,34 +42,15 @@ export default async function ({ searchParams }: Props) {
 				heading={Meta.dashboard.title}
 				text={Meta.dashboard.description}
 			/>
+			<Card>
+				<CardContent className="space-y-4">
+					<div className="text-center">
+						<UserProgress pageSlug={user.pageSlug} finished={user.finished} />
+					</div>
 
-			<div className="space-y-4">
-				<div className="px-2">
-					<UserProgress pageSlug={user.pageSlug} finished={user.finished} />
-				</div>
-				{user.classId ? (
-					<p className="p-2 text-muted-foreground">
-						You are enrolled in a class with{" "}
-						<Suspense fallback={<Spinner className="inline" />}>
-							<ClassStudentCount classId={user.classId} />
-						</Suspense>
-					</p>
-				) : (
-					<p className="p-2 text-muted-foreground">
-						You are not enrolled in any class. Enter your class code in{" "}
-						<Link href="/dashboard/settings#enroll" className="underline">
-							Settings
-						</Link>{" "}
-						to enroll in a class
-					</p>
-				)}
-
-				<UserStatistics
-					userId={user.id}
-					userClassId={user.classId}
-					readingTimeLevel={readingTimeLevel}
-				/>
-			</div>
+					<UserStatistics user={user} readingTimeLevel={readingTimeLevel} />
+				</CardContent>
+			</Card>
 		</DashboardShell>
 	);
 }

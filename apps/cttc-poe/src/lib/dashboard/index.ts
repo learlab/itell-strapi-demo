@@ -4,94 +4,10 @@ import {
 	teachers,
 	users,
 } from "@/drizzle/schema";
-import subDays from "date-fns/subDays";
 import { and, avg, eq, inArray } from "drizzle-orm";
-import { getConstructedResponses } from "../constructed-response";
 import { db, first } from "../db";
-import { getUserSummaries } from "../summary";
 
-export const getBadgeStats = async (userId: string) => {
-	const startDate = subDays(new Date(), 7);
-	const [userSummaries, answers] = await Promise.all([
-		getUserSummaries(userId),
-		getConstructedResponses(userId),
-	]);
-	const summariesLastWeek = [];
-	const answersLastWeek = [];
-	const passedSummaries = [];
-	const passedSummariesLastWeek = [];
-	const passedAnswers = [];
-	const passedAnswersLastWeek = [];
-	const contentScores: number[] = [];
-	const languageScores: number[] = [];
-	const contentScoresLastWeek: number[] = [];
-	const languageScoresLastWeek: number[] = [];
-
-	userSummaries.forEach((summary) => {
-		const passed = summary.isPassed;
-		const duringLastWeek = summary.createdAt > startDate;
-		if (summary.contentScore) {
-			contentScores.push(summary.contentScore);
-		}
-		if (summary.languageScore) {
-			languageScores.push(summary.languageScore);
-		}
-
-		if (passed) {
-			passedSummaries.push(summary);
-		}
-		if (duringLastWeek) {
-			summariesLastWeek.push(summary);
-			if (summary.contentScore) {
-				contentScoresLastWeek.push(summary.contentScore);
-			}
-			if (summary.languageScore) {
-				languageScoresLastWeek.push(summary.languageScore);
-			}
-		}
-		if (passed && duringLastWeek) {
-			passedSummariesLastWeek.push(summary);
-		}
-	});
-
-	answers.forEach((answer) => {
-		const passed = answer.score === 2;
-		const duringLastWeek = answer.createdAt > startDate;
-
-		if (passed) {
-			passedAnswers.push(answer);
-		}
-		if (duringLastWeek) {
-			answersLastWeek.push(answer);
-		}
-		if (passed && duringLastWeek) {
-			passedAnswersLastWeek.push(answer);
-		}
-	});
-
-	return {
-		avgContentScore:
-			contentScores.reduce((a, b) => a + b, 0) / contentScores.length,
-		avgContentScoreLastWeek:
-			contentScoresLastWeek.reduce((a, b) => a + b, 0) /
-			contentScoresLastWeek.length,
-		avgLanguageScore:
-			languageScores.reduce((a, b) => a + b, 0) / languageScores.length,
-		avgLanguageScoreLastWeek:
-			languageScoresLastWeek.reduce((a, b) => a + b, 0) /
-			languageScoresLastWeek.length,
-		totalCount: userSummaries.length,
-		totalCountLastWeek: summariesLastWeek.length,
-		passedCount: passedSummaries.length,
-		passedCountLastWeek: passedSummariesLastWeek.length,
-		totalConstructedResponses: answers.length,
-		totalConstructedResponsesLastWeek: answersLastWeek.length,
-		passedConstructedResponses: passedAnswers.length,
-		passedConstructedResponsesLastWeek: passedAnswersLastWeek.length,
-	};
-};
-
-export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
+export const getBadgeStats = async (ids: Array<{ id: string }>) => {
 	if (ids.length === 0) {
 		return {
 			avgContentScore: 0,
@@ -102,7 +18,7 @@ export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
 			passedConstructedResponses: 0,
 		};
 	}
-	const students = ids.map((id) => id.id);
+	const users = ids.map((id) => id.id);
 	const [scores, allSummaries, allConstructedResponses] = await Promise.all([
 		db
 			.select({
@@ -110,17 +26,17 @@ export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
 				contentScore: avg(summaries.contentScore).mapWith(Number),
 			})
 			.from(summaries)
-			.where(and(inArray(summaries.userId, students))),
+			.where(and(inArray(summaries.userId, users))),
 
 		db
 			.select()
 			.from(summaries)
-			.where(and(inArray(summaries.userId, students))),
+			.where(and(inArray(summaries.userId, users))),
 
 		db
 			.select()
 			.from(constructed_responses)
-			.where(and(inArray(constructed_responses.userId, students))),
+			.where(and(inArray(constructed_responses.userId, users))),
 	]);
 
 	const score = first(scores);
@@ -135,6 +51,8 @@ export const getClassBadgeStats = async (ids: Array<{ id: string }>) => {
 		).length,
 	};
 };
+
+export type BadgeStats = Awaited<ReturnType<typeof getBadgeStats>>;
 
 export const getUserTeacherStatus = async (userId: string) => {
 	const teacher = first(

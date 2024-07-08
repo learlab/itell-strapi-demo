@@ -29,7 +29,7 @@ const SelectChapter = ({
 					<SelectLabel>Select a chapter</SelectLabel>
 					{chapters.map((c) => (
 						<SelectItem key={c} value={c}>
-							Chapter {Number(c) + 1}
+							Chapter {Number(c)}
 						</SelectItem>
 					))}
 				</SelectGroup>
@@ -52,7 +52,7 @@ export const SummaryList = ({
 	const chapterSummaries = summariesByChapter[selectedChapter];
 
 	return (
-		<div className="p-4 ">
+		<div className="spacey-4">
 			<div className="flex items-center justify-between">
 				<SelectChapter
 					chapters={chapters}
@@ -64,7 +64,7 @@ export const SummaryList = ({
 				</p>
 			</div>
 
-			<div className="divide-y divide-border rounded-md border mt-4 w-[960px]">
+			<div className="divide-y divide-border rounded-md border mt-4">
 				{chapterSummaries.map((summary) => (
 					<SummaryItem
 						summary={summary}
