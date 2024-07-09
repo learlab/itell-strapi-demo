@@ -1,13 +1,18 @@
 import { MainMdx } from "@/components/mdx";
-import { userGuide } from "contentlayer/generated";
+import { getSession } from "@/lib/auth";
+import { Condition } from "@/lib/control/condition";
+import { Guide, allGuides } from "contentlayer/generated";
+export default async function () {
+	const { user } = await getSession();
+	const userCondition = user?.condition || Condition.STAIRS;
+	const guide = allGuides.find((g) => g.condition === userCondition) as Guide;
 
-export default function () {
 	return (
 		<>
 			<h2 className="text-2xl md:text-3xl 2xl:text-4xl font-extrabold tracking-tight mb-4 text-center text-balance">
 				iTELL User Guide
 			</h2>
-			<MainMdx code={userGuide.body.code} />
+			<MainMdx code={guide.body.code} />
 		</>
 	);
 }

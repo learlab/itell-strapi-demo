@@ -41,23 +41,22 @@ const Home = defineDocumentType(() => ({
 	isSingleton: true,
 }));
 
-const SummaryDescription = defineDocumentType(() => ({
-	name: "SummaryDescription",
-	filePathPattern: "summary-description.mdx",
+const Guide = defineDocumentType(() => ({
+	name: "Guide",
+	filePathPattern: "guide/**/*.{md,mdx}",
 	contentType: "mdx",
-	isSingleton: true,
-}));
-
-const UserGuide = defineDocumentType(() => ({
-	name: "UserGuide",
-	filePathPattern: "userguide.mdx",
-	contentType: "mdx",
-	isSingleton: true,
+	fields: {
+		condition: {
+			type: "string",
+			description: "The matched user condition",
+			required: true,
+		},
+	},
 }));
 
 const Page = defineDocumentType(() => ({
 	name: "Page",
-	filePathPattern: "textbook/*.{md,mdx}",
+	filePathPattern: "textbook/**/*.{md,mdx}",
 	contentType: "mdx",
 	fields: {
 		title: {
@@ -98,8 +97,20 @@ const Page = defineDocumentType(() => ({
 			type: "number",
 			description: "The chapter index of the page",
 			resolve: (doc) => {
+				return Number(doc._raw.sourceFileDir.split("-")[1]);
+			},
+		},
+		section: {
+			type: "number",
+			description: "The section index of the page",
+			resolve: (doc) => {
+				const sectionName = doc._raw.sourceFileName;
+				if (sectionName === "index.mdx") {
+					return 0;
+				}
+
 				return Number(
-					doc._raw.sourceFileName.replace(".mdx", "").split("-")[1],
+					doc._raw.sourceFileName.split("-")[1].replace(".mdx", ""),
 				);
 			},
 		},
@@ -114,7 +125,7 @@ const Page = defineDocumentType(() => ({
 
 export default makeSource({
 	contentDirPath: "content",
-	documentTypes: [Page, Home, SummaryDescription, UserGuide],
+	documentTypes: [Page, Home, Guide],
 	mdx: {
 		remarkPlugins: [remarkGfm],
 		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],

@@ -28,15 +28,15 @@ export const PageSummary = async ({
 	}
 
 	return (
-		<section className=" mt-10 border-t-2 py-4 mb-20 space-y-2">
+		<section className="mt-10 border-t-2 py-4 mb-20 space-y-2 p-4 lg:p-8">
 			<section
 				className="grid gird-cols-1 lg:grid-cols-3 gap-8"
 				id="page-summary"
 			>
 				{condition === Condition.SIMPLE ? (
-					<section className="col-span-full">
+					<section className="col-span-full max-w-2xl mx-auto space-y-4">
 						<SummaryFormSimple
-							userId={user.id}
+							user={user}
 							page={page}
 							pageStatus={pageStatus}
 						/>
@@ -44,10 +44,12 @@ export const PageSummary = async ({
 				) : (
 					<>
 						<section className="col-span-full hidden md:block lg:col-span-1">
-							<SummaryDescription />
+							<SummaryDescription condition={condition} />
 							{condition !== Condition.SIMPLE && (
 								<Suspense fallback={<SummaryCount.Skeleton />}>
-									<SummaryCount pageSlug={page.page_slug} userId={user.id} />
+									<div className="mt-8">
+										<SummaryCount pageSlug={page.page_slug} userId={user.id} />
+									</div>
 								</Suspense>
 							)}
 						</section>

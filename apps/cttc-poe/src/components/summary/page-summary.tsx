@@ -49,7 +49,9 @@ export const PageSummary = async ({
 							<SummaryDescription condition={condition} />
 							{condition !== Condition.SIMPLE && (
 								<Suspense fallback={<SummaryCount.Skeleton />}>
-									<SummaryCount pageSlug={page.page_slug} userId={user.id} />
+									<div className="mt-8">
+										<SummaryCount pageSlug={page.page_slug} userId={user.id} />
+									</div>
 								</Suspense>
 							)}
 						</section>

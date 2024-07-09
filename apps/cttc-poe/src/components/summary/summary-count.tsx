@@ -28,7 +28,7 @@ export const SummaryCount = async ({ pageSlug, userId }: Props) => {
 
 	return (
 		<Link
-			className="text-sm font-medium underline-offset-4 hover:underline text-pretty"
+			className="text-sm xl:text-base font-medium underline-offset-4 hover:underline text-pretty"
 			href="/dashboard/summaries"
 		>
 			<p>

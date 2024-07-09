@@ -6,6 +6,7 @@ import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/server";
+import { User } from "lucia";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -15,13 +16,13 @@ import { StatusButton } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
-	userId: string;
+	user: User;
 	pageStatus: PageStatus;
 	page: PageData;
 };
 
 export const SummaryFormSimple = React.memo(
-	({ userId, pageStatus, page }: Props) => {
+	({ user, pageStatus, page }: Props) => {
 		const isSummaryReady = useConstructedResponse(
 			(state) => state.isSummaryReady,
 		);
@@ -39,12 +40,14 @@ export const SummaryFormSimple = React.memo(
 					}
 				}
 
-				const nextSlug = await incrementUserPage(userId, page.page_slug);
+				const nextSlug = await incrementUserPage(user.id, page.page_slug);
 				if (!isLastPage(page.page_slug)) {
 					updateUser({ pageSlug: nextSlug });
 				} else {
 					updateUser({ finished: true });
-					toast.info("You have finished the entire textbook!");
+					toast.info(
+						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+					);
 				}
 
 				setFinished(true);
@@ -71,7 +74,7 @@ export const SummaryFormSimple = React.memo(
 		}
 
 		return (
-			<section className="max-w-2xl mx-auto space-y-4">
+			<section>
 				<p className="font-light text-lg mb-4">
 					{finished
 						? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."
