@@ -109,6 +109,7 @@ const ChartTooltipContent = React.forwardRef<
 			indicator?: "line" | "dot" | "dashed";
 			nameKey?: string;
 			labelKey?: string;
+			descriptionKey?: string;
 		}
 >(
 	(
@@ -126,10 +127,23 @@ const ChartTooltipContent = React.forwardRef<
 			color,
 			nameKey,
 			labelKey,
+			descriptionKey,
 		},
 		ref,
 	) => {
 		const { config } = useChart();
+		const description = React.useMemo(() => {
+			if (!payload?.length || !descriptionKey) {
+				return null;
+			}
+
+			const [item] = payload;
+			return (
+				<p className="text-muted-foreground text-xs max-w-64 text-balance">
+					{item.payload[descriptionKey]}
+				</p>
+			);
+		}, [payload, descriptionKey]);
 
 		const tooltipLabel = React.useMemo(() => {
 			if (hideLabel || !payload?.length) {
@@ -172,7 +186,6 @@ const ChartTooltipContent = React.forwardRef<
 		}
 
 		const nestLabel = payload.length === 1 && indicator !== "dot";
-
 		return (
 			<div
 				ref={ref}
@@ -247,6 +260,8 @@ const ChartTooltipContent = React.forwardRef<
 							</div>
 						);
 					})}
+
+					{description}
 				</div>
 			</div>
 		);

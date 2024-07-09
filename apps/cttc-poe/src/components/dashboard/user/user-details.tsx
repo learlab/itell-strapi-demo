@@ -29,7 +29,8 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 		getBadgeStats(otherUsers),
 	]);
 
-	const userProgress = getPageData(pageSlug)?.index || 0;
+	const pageIndex = getPageData(pageSlug)?.index;
+	const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
 	const otherProgress =
 		otherUsers.reduce((acc, user) => {
 			const data = getPageData(user.pageSlug);
@@ -37,7 +38,9 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 				acc += data.index;
 			}
 			return acc;
-		}, 0) / otherUsers.length;
+		}, 0) /
+			otherUsers.length +
+		1;
 
 	const diffs = {
 		totalCount:

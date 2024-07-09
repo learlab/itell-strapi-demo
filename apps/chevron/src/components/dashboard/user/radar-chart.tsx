@@ -16,7 +16,6 @@ import {
 	ChartTooltipContent,
 } from "@/components/client-components";
 import { BadgeStats } from "@/lib/dashboard";
-import { TrendingDown, TrendingUp } from "lucide-react";
 
 const chartConfig = {
 	user: {
@@ -24,7 +23,7 @@ const chartConfig = {
 		color: "hsl(var(--chart-1))",
 	},
 	other: {
-		label: "others",
+		label: "other",
 		color: "hsl(var(--chart-2))",
 	},
 } satisfies ChartConfig;
@@ -49,32 +48,41 @@ export const RadarChart = ({
 			label: "Progress",
 			user: userProgress,
 			other: otherProgress,
+			description: "Number of pages unlocked",
 		},
 		{
 			label: "Total Summaries",
 			user: userStats.totalCount,
 			other: otherStats.totalCount / otherCount,
+			description: "Total number of summaries submitted",
 		},
 		{
 			label: "Passed Summaries",
 			user: userStats.passedCount,
 			other: otherStats.passedCount / otherCount,
+			description:
+				"Total number of summaries that scored well in both content score and language score",
 		},
 		{
 			label: "Content Score",
 			user: userStats.avgContentScore,
 			other: otherStats.avgContentScore,
+			description:
+				"Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
 		},
 		{
 			label: "Language Score",
 			user: userStats.avgLanguageScore,
 			other: otherStats.avgLanguageScore,
+			description:
+				"Measures the language quality of the summary. The higher the score, the better the summary wording.",
 		},
 
 		{
 			label: "Correct Answers",
 			user: userStats.passedConstructedResponses,
 			other: otherStats.passedConstructedResponses,
+			description: "Total number of questions answered during reading.",
 		},
 	];
 
@@ -93,11 +101,16 @@ export const RadarChart = ({
 				>
 					<ChartTooltip
 						cursor={false}
-						content={<ChartTooltipContent indicator="line" />}
+						content={
+							<ChartTooltipContent
+								indicator="line"
+								descriptionKey="description"
+							/>
+						}
 					/>
 					<PolarGrid />
 					<PolarAngleAxis
-						dataKey="month"
+						dataKey="label"
 						tick={({ x, y, textAnchor, value, index, ...props }) => {
 							const d = data[index];
 							const pct = Math.round(((d.user - d.other) / d.other) * 100);
