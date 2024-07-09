@@ -1,12 +1,23 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { StudentProfile } from "@/components/dashboard/student/student-profile";
-import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
+import { User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user/actions";
+import { getPageData } from "@/lib/utils";
+import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
+import { UserProgress } from "@dashboard/_components/user-progress";
+import { UserStatistics } from "@dashboard/_components/user-statistics";
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { Errorbox } from "@itell/ui/server";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	buttonVariants,
+} from "@itell/ui/server";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata = Meta.student;
@@ -61,3 +72,62 @@ export default async function ({ params, searchParams }: PageProps) {
 		</DashboardShell>
 	);
 }
+
+const StudentProfile = ({
+	student,
+	searchParams,
+}: {
+	student: User;
+	searchParams: unknown;
+}) => {
+	const page = getPageData(student.pageSlug);
+	const { reading_time_level } =
+		routes.student.$parseSearchParams(searchParams);
+	let readingTimeLevel = ReadingTimeChartLevel.week_1;
+	if (
+		Object.values(ReadingTimeChartLevel).includes(
+			reading_time_level as ReadingTimeChartLevel,
+		)
+	) {
+		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
+	}
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>
+					<div className="flex items-center justify-between">
+						<p>{student.name}</p>
+						<p className="text-muted-foreground text-sm font-medium">
+							at chapter{" "}
+							<span className="ml-1 font-semibold">{page?.chapter}</span>
+						</p>
+					</div>
+				</CardTitle>
+				<div className="text-muted-foreground space-y-4">
+					<div className="flex items-center justify-between">
+						<p>{student.email}</p>
+						<p>joined at {student.createdAt.toLocaleString("en-us")}</p>
+					</div>
+					<div className="text-center">
+						<UserProgress
+							pageSlug={student.pageSlug}
+							finished={student.finished}
+						/>
+					</div>
+
+					<div className="flex justify-between">
+						<p className="text-muted-foreground text-sm font-semibold">
+							You are viewing a student in your class
+						</p>
+						<Link className={buttonVariants()} href="/dashboard/class">
+							Back to all students
+						</Link>
+					</div>
+				</div>
+			</CardHeader>
+			<CardContent>
+				<UserStatistics user={student} readingTimeLevel={readingTimeLevel} />
+			</CardContent>
+		</Card>
+	);
+};

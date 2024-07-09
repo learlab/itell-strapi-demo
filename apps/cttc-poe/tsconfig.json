@@ -18,8 +18,10 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"],
-			"contentlayer/generated": [".contentlayer/generated"],
-			"react": ["./node_modules/@types/react"]
+			"@dashboard/*": ["./src/app/dashboard/*"],
+			"@auth/*": ["./src/app/auth/*"],
+			"react": ["./node_modules/@types/react"],
+			"contentlayer/generated": [".contentlayer/generated"]
 		},
 		"plugins": [
 			{

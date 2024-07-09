@@ -2,7 +2,6 @@ import { cn } from "@itell/core/utils";
 import { AlertCircleIcon, AlertTriangleIcon, InfoIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Card, CardContent } from "./card";
-import { Typography } from "./typography";
 
 export const Callout = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -23,9 +22,9 @@ export const Keyterm = ({
 	return (
 		<div className="border-2 px-4 py-2 rounded-md my-4">
 			<div className="border-accent border-b font-bold">
-				<Typography variant="h6">{label}</Typography>
+				<h6 className="font-semibold leading-relaxed">{label}</h6>
 			</div>
-			<Typography as="div">{children}</Typography>
+			<div className="font-light leading-relaxed">{children}</div>
 		</div>
 	);
 };

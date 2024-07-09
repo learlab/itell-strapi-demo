@@ -5,7 +5,7 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/client-components";
 import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
@@ -31,10 +31,11 @@ export const QuestionFeedback = ({
 		? ["informative", "supportive", "helpful"]
 		: ["nonsensical", "inaccurate", "harmful"];
 	const [pending, setPending] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	return (
-		<Dialog>
-			<DialogTrigger asChild>
+		<Dialog open={open} onOpenChange={setOpen}>
+			<DialogTrigger asChild onClick={() => setOpen(true)}>
 				{isPositive ? (
 					<ThumbsUp className="hover:stroke-emerald-400 hover:cursor-pointer size-4" />
 				) : (
@@ -66,6 +67,7 @@ export const QuestionFeedback = ({
 						});
 						setPending(false);
 						toast.success("Thanks for your feedback. We'll review it shortly.");
+						setOpen(false);
 					}}
 				>
 					<TextArea

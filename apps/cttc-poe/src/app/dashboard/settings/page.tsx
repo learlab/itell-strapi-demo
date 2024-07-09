@@ -1,12 +1,11 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { SettingsForm } from "@/components/dashboard/settings-form";
-import { ClassInviteModal } from "@/components/dashboard/settings/class-invite-modal";
-import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
+import { JoinClassModal } from "@dashboard/_components/join-class-modal";
+import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
+import { Settings } from "./_components/settings";
 
 export const metadata = Meta.settings;
 
@@ -32,12 +31,12 @@ export default async function ({ searchParams }: Props) {
 				heading={Meta.settings.title}
 				text={Meta.settings.description}
 			/>
-			<SettingsForm user={user} />
+			<Settings user={user} />
 			{classId && teacher && (
-				<ClassInviteModal
+				<JoinClassModal
 					userId={user.id}
 					userClassId={user.classId}
-					teacherToJoin={teacher}
+					teacher={teacher}
 					classId={classId}
 				/>
 			)}

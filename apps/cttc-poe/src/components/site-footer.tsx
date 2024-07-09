@@ -1,7 +1,6 @@
 import { getSiteConfig } from "@/config/site";
 import { cn } from "@itell/core/utils";
 import { GithubIcon } from "lucide-react";
-import * as React from "react";
 
 export async function SiteFooter({
 	className,

@@ -6,7 +6,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/client-components";
 import { isProduction } from "@/lib/constants";
 import { firstSummaryPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";

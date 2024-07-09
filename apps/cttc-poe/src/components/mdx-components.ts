@@ -7,7 +7,6 @@ import {
 	Info,
 	Keyterm,
 	Steps,
-	Typography,
 	Warning,
 	YoutubeVideo,
 } from "@itell/ui/server";
@@ -20,7 +19,6 @@ import {
 	TabsBody,
 	TabsHeader,
 } from "@/components/ui/tabs";
-import { TextOverImage } from "@/components/ui/text-over-image";
 import { Accordion, AccordionItem } from "./ui/accordion";
 
 export const MdxComponents = {
@@ -29,13 +27,11 @@ export const MdxComponents = {
 	Blockquote,
 	Accordion,
 	AccordionItem,
-	TextOverImage,
 	Info,
 	Warning,
 	Keyterm,
 	Callout,
 	Caption,
-	Typography,
 	Steps,
 	Columns,
 	Column,

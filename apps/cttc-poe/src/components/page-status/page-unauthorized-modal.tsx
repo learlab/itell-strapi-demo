@@ -6,13 +6,10 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/client-components";
 import { isProduction } from "@/lib/constants";
-import { buttonVariants } from "@itell/ui/server";
-import Link from "next/link";
+import { LoginButton } from "@auth/_components/auth-form";
 import { useState } from "react";
-import { LoginButton } from "../auth/auth-form";
-import { Button } from "../client-components";
 
 export const PageUnauthorizedModal = () => {
 	const [open, setOpen] = useState(true);

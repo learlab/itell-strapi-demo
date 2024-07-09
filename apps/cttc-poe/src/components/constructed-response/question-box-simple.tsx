@@ -4,10 +4,10 @@ import { useSession } from "@/lib/auth/context";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
 import { PageStatus } from "@/lib/page-status";
+import { LoginButton } from "@auth/_components/auth-form";
 import { cn } from "@itell/core/utils";
 import { Card, CardContent, Warning } from "@itell/ui/server";
 import { useState } from "react";
-import { LoginButton } from "../auth/auth-form";
 import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 

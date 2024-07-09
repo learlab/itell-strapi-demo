@@ -29,8 +29,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { Button, StatusButton } from "../client-components";
-import { NextPageButton } from "../page/next-page-button";
 import { useConstructedResponse } from "../provider/page-provider";
+import { NextPageButton } from "./next-page-button";
 import {
 	SummaryInput,
 	getSummaryLocal,

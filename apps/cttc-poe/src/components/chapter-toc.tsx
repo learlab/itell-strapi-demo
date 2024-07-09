@@ -9,18 +9,25 @@ import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
 import { Page } from "contentlayer/generated";
-import { ArrowUpIcon, ChevronsUpDown, PencilIcon } from "lucide-react";
+import {
+	ArrowUpIcon,
+	ChevronsUpDown,
+	PencilIcon,
+	RotateCcwIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { AdminTools } from "./admin/admin-tools";
+import { AdminTools } from "./admin-tools";
 import {
 	Button,
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "./client-components";
-import { RestartPageButton } from "./page/restart-page-button";
+import { useConstructedResponse } from "./provider/page-provider";
+import { Spinner } from "./spinner";
+import { clearSummaryLocal } from "./summary/summary-input";
 
 const AnchorLink = ({
 	text,
@@ -162,5 +169,31 @@ export const ChapterToc = ({
 				/>
 			</div>
 		</div>
+	);
+};
+
+const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
+	const [pending, startTransition] = useTransition();
+	const resetPage = useConstructedResponse((state) => state.resetPage);
+	return (
+		<Button
+			className="flex justify-start items-center gap-2 px-1 py-2 w-full"
+			variant={"ghost"}
+			onClick={() => {
+				startTransition(() => {
+					resetPage();
+					clearSummaryLocal(pageSlug);
+					window.location.reload();
+				});
+			}}
+			disabled={pending}
+		>
+			{pending ? (
+				<Spinner className="size-4" />
+			) : (
+				<RotateCcwIcon className="size-4" />
+			)}
+			<span>Reset page</span>
+		</Button>
 	);
 };

@@ -2,8 +2,8 @@
 
 import { Session } from "@/lib/auth";
 import { SessionProvider } from "@/lib/auth/context";
+import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { ThemeProvider } from "../theme/theme-provider";
 
 export const RootProvider = ({
 	children,

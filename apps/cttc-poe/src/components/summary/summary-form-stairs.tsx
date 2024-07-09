@@ -43,8 +43,8 @@ import { useActionStatus } from "use-action-status";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
 import { Button, StatusButton } from "../client-components";
-import { NextPageButton } from "../page/next-page-button";
 import { useChat, useConstructedResponse } from "../provider/page-provider";
+import { NextPageButton } from "./next-page-button";
 import { SummaryFeedback } from "./summary-feedback";
 import {
 	SummaryInput,

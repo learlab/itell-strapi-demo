@@ -21,7 +21,7 @@
 			"style": {
 				"noUselessElse": "warn",
 				"noParameterAssign": "warn",
-				"useImportType": "warn"
+				"useImportType": "off"
 			}
 		}
 	},

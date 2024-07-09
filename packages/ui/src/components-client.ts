@@ -28,3 +28,4 @@ export * from "./components/sheet";
 export * from "./components/switch";
 export * from "./components/scroll-area";
 export * from "./components/chart";
+export * from "./components/carousel";

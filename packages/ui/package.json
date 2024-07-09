@@ -20,7 +20,12 @@
 	"main": "./dist/index.cjs.js",
 	"module": "./dist/index.es.js",
 	"types": "./index.d.ts",
-	"files": ["dist", "index.d.ts", "server.d.ts", "client.d.ts"],
+	"files": [
+		"dist",
+		"index.d.ts",
+		"server.d.ts",
+		"client.d.ts"
+	],
 	"scripts": {
 		"build": "vite build",
 		"test": "vitest",
@@ -53,6 +58,7 @@
 		"class-variance-authority": "^0.6.1",
 		"clsx": "^1.2.1",
 		"cmdk": "^0.2.0",
+		"embla-carousel-react": "8.0.0-rc17",
 		"framer-motion": "^10.16.4",
 		"immer": "^9.0.21",
 		"lucide-react": "^0.263.1",

@@ -1,9 +1,9 @@
-import TextbookNavbar from "@/components/nav/textbook-nav";
+import { TextbookNav } from "@/components/textbook-nav";
 
 export default function ({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<TextbookNavbar scroll />
+			<TextbookNav scroll />
 			<div className="max-w-4xl mx-auto min-h-screen p-4 lg:p-8">
 				{children}
 			</div>

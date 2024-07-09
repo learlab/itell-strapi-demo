@@ -113,6 +113,11 @@ h5,
   user-select: none;
 }
 
+
+.shake {
+  animation: shake 0.2s linear infinite;
+}
+
 #page-content button,
 #page-content .question-container,
 #page-content .pager,
@@ -157,5 +162,31 @@ h5,
 
   to {
     clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-10px);
+  }
+
+  40% {
+    transform: translateX(10px);
+  }
+
+  60% {
+    transform: translateX(-10px);
+  }
+
+  80% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(0);
   }
 }

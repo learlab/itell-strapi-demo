@@ -1,6 +1,3 @@
-import { SummaryOperations } from "@/components/dashboard/summary-operations";
-import { ReviseSummaryButton } from "@/components/summary/revise-summary-button";
-import { SummaryBackButton } from "@/components/summary/summary-back-button";
 import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { summaries } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
@@ -11,6 +8,9 @@ import { relativeDate } from "@itell/core/utils";
 import { Badge } from "@itell/ui/server";
 import { and, eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
+import { SummaryBackButton } from "./_components/summary-back-button";
+import { SummaryOperations } from "./_components/summary-operations";
+import { SummaryReviseButton } from "./_components/summary-revise-button";
 
 async function getSummaryForUser(summaryId: number, userId: string) {
 	return first(
@@ -53,7 +53,7 @@ export default async function ({ params }: PageProps) {
 				<div className="flex items-center space-x-10">
 					<SummaryBackButton />
 				</div>
-				<SummaryOperations summary={summary} pageUrl={page.url} />
+				<SummaryOperations pageUrl={page.url} />
 			</div>
 			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
 				<aside className="w-[200px] space-y-4">
@@ -77,7 +77,7 @@ export default async function ({ params }: PageProps) {
 					<div className="max-w-2xl mx-auto">
 						<p>{summary.text}</p>
 						<div className="flex justify-end">
-							<ReviseSummaryButton
+							<SummaryReviseButton
 								pageSlug={summary.pageSlug}
 								text={summary.text}
 							/>
