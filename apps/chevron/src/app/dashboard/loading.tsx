@@ -1,6 +1,7 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { UserDetails } from "@/components/dashboard/user/user-details";
 import { DashboardShell } from "@/components/page/shell";
-import { DashboardBadge, Skeleton } from "@itell/ui/server";
+import { Card, CardContent, Skeleton } from "@itell/ui/server";
 
 export default function () {
 	return (
@@ -9,16 +10,15 @@ export default function () {
 				heading="Learning Statistics"
 				text="Understand your learning journey"
 			/>
-			<div className="space-y-4">
-				<Skeleton className="w-96 h-8" />
-				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-					<DashboardBadge.Skeletons />
-				</div>
-				<div className="space-y-4">
-					<Skeleton className="h-[350px]" />
-					<Skeleton className="h-[350px]" />
-				</div>
-			</div>
+			<Card>
+				<CardContent className="space-y-4">
+					<UserDetails.Skeleton />
+					<div className="space-y-4">
+						<Skeleton className="h-[350px]" />
+						<Skeleton className="h-[350px]" />
+					</div>
+				</CardContent>
+			</Card>
 		</DashboardShell>
 	);
 }

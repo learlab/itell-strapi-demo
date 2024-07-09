@@ -4,10 +4,8 @@ import { DashboardShell } from "@/components/page/shell";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardHeader,
 	CardTitle,
-	DashboardBadge,
 	Skeleton,
 } from "@itell/ui/server";
 

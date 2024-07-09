@@ -92,7 +92,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 							setPending(true);
 							await logout();
 							setPending(false);
-							router.push("/auth");
+							window.location.href = "/auth";
 						}}
 					>
 						{pending ? (

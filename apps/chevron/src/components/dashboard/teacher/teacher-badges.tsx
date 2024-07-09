@@ -1,5 +1,5 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { getClassBadgeStats } from "@/lib/dashboard";
+import { getBadgeStats } from "@/lib/dashboard";
 import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const TeacherBadges = async ({ students }: Props) => {
-	const classSummaryStats = await getClassBadgeStats(students);
+	const classSummaryStats = await getBadgeStats(students);
 
 	const classStats = {
 		avgTotalCount: classSummaryStats.totalCount / students.length,

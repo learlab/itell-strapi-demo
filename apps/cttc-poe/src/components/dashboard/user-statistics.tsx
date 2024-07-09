@@ -2,7 +2,6 @@ import {
 	ReadingTimeChartLevel,
 	ReadingTimeChartParams,
 } from "@itell/core/dashboard";
-import { DashboardBadge } from "@itell/ui/server";
 import { User } from "lucia";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";

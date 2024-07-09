@@ -1,7 +1,7 @@
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserDetails } from "@/components/dashboard/user/user-details";
 import { DashboardShell } from "@/components/page/shell";
-import { Card, CardContent, DashboardBadge, Skeleton } from "@itell/ui/server";
+import { Card, CardContent, Skeleton } from "@itell/ui/server";
 
 export default function () {
 	return (
