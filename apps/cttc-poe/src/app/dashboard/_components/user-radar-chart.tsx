@@ -7,7 +7,7 @@ import {
 	Radar,
 } from "recharts";
 
-import { BadgeStats } from "@/lib/dashboard";
+import { OtherStats, UserStats } from "@/lib/dashboard";
 import {
 	ChartConfig,
 	ChartContainer,
@@ -18,7 +18,7 @@ import {
 } from "@itell/ui/client";
 
 const chartConfig = {
-	user: {
+	userScaled: {
 		label: "user",
 		color: "hsl(var(--chart-1))",
 	},
@@ -29,11 +29,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 type Props = {
-	userStats: BadgeStats;
-	otherStats: BadgeStats;
+	userStats: UserStats;
+	otherStats: OtherStats;
 	userProgress: number;
 	otherProgress: number;
-	otherCount: number;
 };
 
 export const UserRadarChart = ({
@@ -41,25 +40,30 @@ export const UserRadarChart = ({
 	otherStats,
 	userProgress,
 	otherProgress,
-	otherCount,
 }: Props) => {
 	const data = [
 		{
 			label: "Progress",
 			user: userProgress,
 			other: otherProgress,
+			userScaled: scale(userProgress, otherProgress),
 			description: "Number of pages unlocked",
 		},
 		{
 			label: "Total Summaries",
-			user: userStats.totalCount,
-			other: otherStats.totalCount / otherCount,
+			user: userStats.totalSummaries,
+			other: otherStats.avgTotalSummaries,
+			userScaled: scale(userStats.totalSummaries, otherStats.avgTotalSummaries),
 			description: "Total number of summaries submitted",
 		},
 		{
 			label: "Passed Summaries",
-			user: userStats.passedCount,
-			other: otherStats.passedCount / otherCount,
+			user: userStats.totalPassedSummaries,
+			other: otherStats.avgTotalPassedSummaries,
+			userScaled: scale(
+				userStats.totalPassedAnswers,
+				otherStats.avgTotalPassedAnswers,
+			),
 			description:
 				"Total number of summaries that scored well in both content score and language score",
 		},
@@ -67,6 +71,7 @@ export const UserRadarChart = ({
 			label: "Content Score",
 			user: userStats.avgContentScore,
 			other: otherStats.avgContentScore,
+			userScaled: scale(userStats.avgContentScore, otherStats.avgContentScore),
 			description:
 				"Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
 		},
@@ -74,14 +79,22 @@ export const UserRadarChart = ({
 			label: "Language Score",
 			user: userStats.avgLanguageScore,
 			other: otherStats.avgLanguageScore,
+			userScaled: scale(
+				userStats.avgLanguageScore,
+				otherStats.avgLanguageScore,
+			),
 			description:
 				"Measures the language quality of the summary. The higher the score, the better the summary wording.",
 		},
 
 		{
 			label: "Correct Answers",
-			user: userStats.passedConstructedResponses,
-			other: otherStats.passedConstructedResponses,
+			user: userStats.totalPassedAnswers,
+			other: otherStats.avgTotalPassedAnswers,
+			userScaled: scale(
+				userStats.totalPassedAnswers,
+				otherStats.avgTotalPassedAnswers,
+			),
 			description: "Total number of questions answered during reading.",
 		},
 	];
@@ -90,7 +103,7 @@ export const UserRadarChart = ({
 		<div className="flex items-center justify-center">
 			<ChartContainer
 				config={chartConfig}
-				className="mx-auto max-w-2xl  min-h-[350px]"
+				className="mx-auto max-w-2xl min-h-[350px]"
 			>
 				<BaseRadarChart
 					data={data}
@@ -105,6 +118,15 @@ export const UserRadarChart = ({
 							<ChartTooltipContent
 								indicator="line"
 								descriptionKey="description"
+								valueFn={(item) => {
+									if (item.dataKey === "userScaled") {
+										return item.payload.user;
+									}
+
+									if (item.dataKey === "other") {
+										return item.payload.other;
+									}
+								}}
 							/>
 						}
 					/>
@@ -113,7 +135,7 @@ export const UserRadarChart = ({
 						dataKey="label"
 						tick={({ x, y, textAnchor, value, index, ...props }) => {
 							const d = data[index];
-							const pct = Math.round(((d.user - d.other) / d.other) * 100);
+							const pct = getRelativePct(d.user, d.other);
 							return (
 								<text
 									x={x}
@@ -126,13 +148,13 @@ export const UserRadarChart = ({
 									<tspan
 										className="lg:text-sm"
 										fill={
-											pct < 0
-												? "var(--color-user)"
+											!pct || pct === 0
+												? "var(--color-muted-foreground)"
 												: pct > 0
 													? "var(--color-other)"
-													: "var(--color-muted-foreground)"
+													: "var(--color-userScaled)"
 										}
-									>{`${pct > 0 ? "+" : ""}${pct}%`}</tspan>
+									>{`${pct && pct > 0 ? "+" : ""}${pct}%`}</tspan>
 									<tspan
 										x={x}
 										dy={"1rem"}
@@ -146,10 +168,10 @@ export const UserRadarChart = ({
 						}}
 					/>
 					<Radar
-						dataKey="user"
-						fill="var(--color-user)"
+						dataKey="userScaled"
+						fill="var(--color-userScaled)"
 						fillOpacity={0}
-						stroke="var(--color-user)"
+						stroke="var(--color-userScaled)"
 						strokeWidth={2}
 					/>
 					<Radar
@@ -164,4 +186,25 @@ export const UserRadarChart = ({
 			</ChartContainer>
 		</div>
 	);
+};
+
+const getRelativePct = (a: number, b: number) => {
+	if (b === 0) {
+		return undefined;
+	}
+
+	return Math.round(((a - b) / Math.abs(b)) * 100);
+};
+
+const scale = (a: number, b: number) => {
+	const pct = getRelativePct(a, b);
+	if (pct === undefined) {
+		return "NA";
+	}
+
+	if (b === 0) {
+		return 0;
+	}
+
+	return 1 + pct / 100;
 };

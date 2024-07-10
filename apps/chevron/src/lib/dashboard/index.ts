@@ -4,55 +4,78 @@ import {
 	teachers,
 	users,
 } from "@/drizzle/schema";
-import { and, avg, eq, inArray } from "drizzle-orm";
+import { and, avg, count, eq, inArray, sql } from "drizzle-orm";
 import { db, first } from "../db";
 
-export const getBadgeStats = async (ids: Array<{ id: string }>) => {
-	if (ids.length === 0) {
-		return {
-			avgContentScore: 0,
-			avgLanguageScore: 0,
-			totalCount: 0,
-			passedCount: 0,
-			totalConstructedResponses: 0,
-			passedConstructedResponses: 0,
-		};
-	}
-	const users = ids.map((id) => id.id);
-	const [scores, allSummaries, allConstructedResponses] = await Promise.all([
+export const getUserStats = async (id: string) => {
+	const [summary, answers] = await Promise.all([
 		db
 			.select({
 				languageScore: avg(summaries.languageScore).mapWith(Number),
 				contentScore: avg(summaries.contentScore).mapWith(Number),
+				count: count(),
+				passedCount: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
 			})
 			.from(summaries)
-			.where(and(inArray(summaries.userId, users))),
+			.where(eq(summaries.userId, id)),
 
 		db
-			.select()
-			.from(summaries)
-			.where(and(inArray(summaries.userId, users))),
-
-		db
-			.select()
+			.select({
+				count: count(),
+				passedCount: count(
+					sql`CASE WHEN ${constructed_responses.score} = 2 THEN 1 END`,
+				),
+			})
 			.from(constructed_responses)
-			.where(and(inArray(constructed_responses.userId, users))),
+			.where(eq(constructed_responses.userId, id)),
 	]);
 
-	const score = first(scores);
 	return {
-		avgContentScore: score?.contentScore || 0,
-		avgLanguageScore: score?.languageScore || 0,
-		totalCount: allSummaries.length,
-		passedCount: allSummaries.filter((s) => s.isPassed).length,
-		totalConstructedResponses: allConstructedResponses.length,
-		passedConstructedResponses: allConstructedResponses.filter(
-			(cr) => cr.score === 2,
-		).length,
+		avgContentScore: summary[0].contentScore || 0,
+		avgLanguageScore: summary[0].languageScore || 0,
+		totalSummaries: summary[0].count,
+		totalPassedSummaries: summary[0].passedCount,
+		totalAnswers: answers[0].count,
+		totalPassedAnswers: answers[0].passedCount,
 	};
 };
 
-export type BadgeStats = Awaited<ReturnType<typeof getBadgeStats>>;
+export const getOtherStats = async (users: Array<{ id: string }>) => {
+	const ids = users.map((u) => u.id);
+	const [summary, answers] = await Promise.all([
+		db
+			.select({
+				languageScore: avg(summaries.languageScore).mapWith(Number),
+				contentScore: avg(summaries.contentScore).mapWith(Number),
+				count: count(),
+				passedCount: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
+			})
+			.from(summaries)
+			.where(inArray(summaries.userId, ids)),
+
+		db
+			.select({
+				count: count(),
+				passedCount: count(
+					sql`CASE WHEN ${constructed_responses.score} = 2 THEN 1 END`,
+				),
+			})
+			.from(constructed_responses)
+			.where(inArray(constructed_responses.userId, ids)),
+	]);
+
+	return {
+		avgContentScore: summary[0].contentScore || 0,
+		avgLanguageScore: summary[0].languageScore || 0,
+		avgTotalSummaries: summary[0].count / users.length,
+		avgTotalPassedSummaries: summary[0].passedCount / users.length,
+		avgTotalAnswers: answers[0].count / users.length,
+		avgTotalPassedAnswers: answers[0].passedCount / users.length,
+	};
+};
+
+export type UserStats = Awaited<ReturnType<typeof getUserStats>>;
+export type OtherStats = Awaited<ReturnType<typeof getOtherStats>>;
 
 export const getUserTeacherStatus = async (userId: string) => {
 	const teacher = first(

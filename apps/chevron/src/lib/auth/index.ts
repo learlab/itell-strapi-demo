@@ -23,7 +23,6 @@ export const lucia = new Lucia(adapter, {
 			finished: attributes.finished,
 			classId: attributes.classId,
 			pageSlug: attributes.pageSlug,
-			prolificId: attributes.prolificId,
 			timeZone: attributes.timeZone,
 		};
 	},
@@ -47,7 +46,6 @@ interface DatabaseUserAttributes {
 	finished: boolean;
 	classId: string | null;
 	pageSlug: string | null;
-	prolificId: string | null;
 	timeZone: string | null;
 }
 

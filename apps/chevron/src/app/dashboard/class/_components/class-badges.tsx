@@ -1,5 +1,5 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { getBadgeStats } from "@/lib/dashboard";
+import { getOtherStats } from "@/lib/dashboard";
 import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,
@@ -13,29 +13,18 @@ type Props = {
 };
 
 export const ClassBadges = async ({ students }: Props) => {
-	const classSummaryStats = await getBadgeStats(students);
-
-	const classStats = {
-		avgTotalCount: classSummaryStats.totalCount / students.length,
-		avgPassedCount: classSummaryStats.passedCount / students.length,
-		avgLanguageScore: classSummaryStats.avgLanguageScore,
-		avgContentScore: classSummaryStats.avgContentScore,
-		constructedResponseCount:
-			classSummaryStats.totalConstructedResponses / students.length,
-		passedConstructedResponseCount:
-			classSummaryStats.passedConstructedResponses / students.length,
-	};
+	const classStats = await getOtherStats(students);
 
 	return (
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			<DashboardBadge title="Total Summaries" icon={<PencilIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgTotalCount.toFixed(2)}
+					{classStats.avgTotalSummaries.toFixed(2)}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Passed Summaries" icon={<FlagIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgPassedCount.toFixed(2)}
+					{classStats.avgTotalPassedSummaries.toFixed(2)}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Average Content Score" icon={<FileTextIcon />}>
@@ -49,13 +38,11 @@ export const ClassBadges = async ({ students }: Props) => {
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Total Constructed Responses" icon={<PencilIcon />}>
-				<div className="text-2xl font-bold">
-					{classStats.constructedResponseCount}
-				</div>
+				<div className="text-2xl font-bold">{classStats.avgTotalAnswers}</div>
 			</DashboardBadge>
 			<DashboardBadge title="Passed Constructed Responses" icon={<FlagIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.passedConstructedResponseCount}
+					{classStats.avgTotalPassedAnswers}
 				</div>
 			</DashboardBadge>
 		</div>

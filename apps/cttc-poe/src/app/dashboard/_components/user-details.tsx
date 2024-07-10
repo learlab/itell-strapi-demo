@@ -1,6 +1,6 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getBadgeStats } from "@/lib/dashboard";
+import { getOtherStats, getUserStats } from "@/lib/dashboard";
 import { countStudent, getOtherUsers } from "@/lib/dashboard/class";
 import { getPageData } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
@@ -25,8 +25,8 @@ type Props = {
 export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 	const otherUsers = await getOtherUsers(classId ? { classId } : { userId });
 	const [userStats, otherStats] = await Promise.all([
-		getBadgeStats([{ id: userId }]),
-		getBadgeStats(otherUsers),
+		getUserStats(userId),
+		getOtherStats(otherUsers),
 	]);
 
 	const pageIndex = getPageData(pageSlug)?.index;
@@ -43,16 +43,12 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 		1;
 
 	const diffs = {
-		totalCount:
-			userStats.totalCount - otherStats.totalCount / otherUsers.length,
-		passedCount:
-			userStats.passedCount - otherStats.passedCount / otherUsers.length,
-		constructedResponseCount:
-			userStats.totalConstructedResponses -
-			otherStats.totalConstructedResponses,
-		passedConstructedResponseCount:
-			userStats.passedConstructedResponses -
-			otherStats.passedConstructedResponses,
+		totalSummaries: userStats.totalSummaries - otherStats.avgTotalSummaries,
+		totalPassedSummaries:
+			userStats.totalPassedSummaries - otherStats.avgTotalPassedSummaries,
+		totalAnswers: userStats.totalAnswers - otherStats.avgTotalAnswers,
+		totalPassedAnswers:
+			userStats.totalPassedAnswers - otherStats.avgTotalPassedAnswers,
 		avgContentScore:
 			userStats.avgContentScore && otherStats.avgContentScore
 				? userStats.avgContentScore - otherStats.avgContentScore
@@ -70,7 +66,6 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 				otherStats={otherStats}
 				userProgress={userProgress}
 				otherProgress={otherProgress}
-				otherCount={otherUsers.length}
 			/>
 			<p className="text-center text-muted-foreground">
 				percentages are relative to the average
@@ -98,28 +93,30 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 					title="Total Summaries"
 					icon={<PencilIcon className="size-4" />}
 					className={cn({
-						"border-green-500": diffs.totalCount > 0,
-						"border-destructive": diffs.totalCount < 0,
+						"border-green-500": diffs.totalSummaries > 0,
+						"border-destructive": diffs.totalSummaries < 0,
 					})}
 				>
-					<div className="text-2xl font-bold">{userStats.totalCount}</div>
+					<div className="text-2xl font-bold">{userStats.totalSummaries}</div>
 					<p className="text-xs text-muted-foreground">
-						{diffs.totalCount > 0 ? "+" : ""}
-						{Math.round(diffs.totalCount)} compared to others
+						{diffs.totalSummaries > 0 ? "+" : ""}
+						{Math.round(diffs.totalSummaries)} compared to others
 					</p>
 				</DashboardBadge>
 				<DashboardBadge
 					title="Passed Summaries"
 					icon={<FlagIcon className="size-4" />}
 					className={cn({
-						"border-green-500": diffs.passedCount > 0,
-						"border-destructive": diffs.passedCount < 0,
+						"border-green-500": diffs.totalPassedSummaries > 0,
+						"border-destructive": diffs.totalPassedSummaries < 0,
 					})}
 				>
-					<div className="text-2xl font-bold">{userStats.passedCount}</div>
+					<div className="text-2xl font-bold">
+						{userStats.totalPassedSummaries}
+					</div>
 					<p className="text-xs text-muted-foreground">
-						{diffs.passedCount > 0 ? "+" : ""}
-						{Math.round(diffs.passedCount)} compared to others
+						{diffs.totalPassedSummaries > 0 ? "+" : ""}
+						{Math.round(diffs.totalPassedSummaries)} compared to others
 					</p>
 				</DashboardBadge>
 				<DashboardBadge

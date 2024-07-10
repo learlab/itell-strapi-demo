@@ -3,6 +3,11 @@
 import { cn } from "@itell/core/utils";
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
+import {
+	NameType,
+	Payload,
+	ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -110,6 +115,7 @@ const ChartTooltipContent = React.forwardRef<
 			nameKey?: string;
 			labelKey?: string;
 			descriptionKey?: string;
+			valueFn?: (item: Payload<ValueType, NameType>) => ValueType;
 		}
 >(
 	(
@@ -128,6 +134,7 @@ const ChartTooltipContent = React.forwardRef<
 			nameKey,
 			labelKey,
 			descriptionKey,
+			valueFn,
 		},
 		ref,
 	) => {
@@ -200,6 +207,7 @@ const ChartTooltipContent = React.forwardRef<
 						const key = `${nameKey || item.name || item.dataKey || "value"}`;
 						const itemConfig = getPayloadConfigFromPayload(config, item, key);
 						const indicatorColor = color || item.payload.fill || item.color;
+						const value = valueFn ? valueFn(item) : item.value;
 
 						return (
 							<div
@@ -249,9 +257,9 @@ const ChartTooltipContent = React.forwardRef<
 													{itemConfig?.label || item.name}
 												</span>
 											</div>
-											{item.value && (
+											{value && (
 												<span className="font-mono font-medium tabular-nums text-foreground">
-													{item.value.toLocaleString()}
+													{value.toLocaleString()}
 												</span>
 											)}
 										</div>
