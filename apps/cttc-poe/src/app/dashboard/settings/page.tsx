@@ -40,7 +40,9 @@ export default async function ({ searchParams }: Props) {
 
 	incrementView(user.id, "settings", searchParams);
 
-	const teacher = classId ? await getTeacherWithClassId(classId) : null;
+	const teacher = dbUser.classId
+		? await getTeacherWithClassId(dbUser.classId)
+		: null;
 
 	return (
 		<DashboardShell>

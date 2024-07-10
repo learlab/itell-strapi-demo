@@ -19,30 +19,30 @@ export const ClassBadges = async ({ students }: Props) => {
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			<DashboardBadge title="Total Summaries" icon={<PencilIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgTotalSummaries.toFixed(2)}
+					{classStats.totalSummaries.toFixed(2)}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Passed Summaries" icon={<FlagIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgTotalPassedSummaries.toFixed(2)}
+					{classStats.totalPassedSummaries.toFixed(2)}
 				</div>
 			</DashboardBadge>
-			<DashboardBadge title="Average Content Score" icon={<FileTextIcon />}>
+			<DashboardBadge title="Content Score" icon={<FileTextIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgContentScore?.toFixed(2)}
+					{classStats.contentScore.toFixed(2)}
 				</div>
 			</DashboardBadge>
-			<DashboardBadge title="Average Language Score" icon={<WholeWordIcon />}>
+			<DashboardBadge title="Language Score" icon={<WholeWordIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgLanguageScore?.toFixed(2)}
+					{classStats.languageScore.toFixed(2)}
 				</div>
 			</DashboardBadge>
-			<DashboardBadge title="Total Constructed Responses" icon={<PencilIcon />}>
-				<div className="text-2xl font-bold">{classStats.avgTotalAnswers}</div>
+			<DashboardBadge title="Answers" icon={<PencilIcon />}>
+				<div className="text-2xl font-bold">{classStats.totalAnswers}</div>
 			</DashboardBadge>
-			<DashboardBadge title="Passed Constructed Responses" icon={<FlagIcon />}>
+			<DashboardBadge title="Correct Answers" icon={<FlagIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.avgTotalPassedAnswers}
+					{classStats.totalPassedAnswers}
 				</div>
 			</DashboardBadge>
 		</div>

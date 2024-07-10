@@ -4,15 +4,15 @@ import {
 	teachers,
 	users,
 } from "@/drizzle/schema";
-import { and, avg, count, eq, inArray, sql } from "drizzle-orm";
+import { and, count, eq, inArray, sql } from "drizzle-orm";
 import { db, first } from "../db";
 
 export const getUserStats = async (id: string) => {
 	const [summary, answers] = await Promise.all([
 		db
 			.select({
-				languageScore: avg(summaries.languageScore).mapWith(Number),
-				contentScore: avg(summaries.contentScore).mapWith(Number),
+				languageScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
+				contentScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
 				count: count(),
 				passedCount: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
 			})
@@ -31,8 +31,8 @@ export const getUserStats = async (id: string) => {
 	]);
 
 	return {
-		avgContentScore: summary[0].contentScore || 0,
-		avgLanguageScore: summary[0].languageScore || 0,
+		contentScore: summary[0].contentScore || 0,
+		languageScore: summary[0].languageScore || 0,
 		totalSummaries: summary[0].count,
 		totalPassedSummaries: summary[0].passedCount,
 		totalAnswers: answers[0].count,
@@ -40,37 +40,68 @@ export const getUserStats = async (id: string) => {
 	};
 };
 
-export const getOtherStats = async (users: Array<{ id: string }>) => {
-	const ids = users.map((u) => u.id);
-	const [summary, answers] = await Promise.all([
+export const getOtherStats = async (input: Array<{ id: string }>) => {
+	const ids = input.map((u) => u.id);
+
+	const _summaryCount = db.$with("_summaryCount").as(
 		db
 			.select({
-				languageScore: avg(summaries.languageScore).mapWith(Number),
-				contentScore: avg(summaries.contentScore).mapWith(Number),
-				count: count(),
-				passedCount: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
+				total: count().as("total"),
+				passed: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`).as(
+					"passed",
+				),
+			})
+			.from(summaries)
+			.groupBy(summaries.userId)
+			.where(inArray(summaries.userId, ids)),
+	);
+
+	const _answerCount = db.$with("_answerCount").as(
+		db
+			.select({
+				total: count().as("total"),
+				passed: count(
+					sql`CASE WHEN ${constructed_responses.score} = 2 THEN 1 END`,
+				).as("passed"),
+			})
+			.from(constructed_responses)
+			.groupBy(constructed_responses.userId)
+			.where(inArray(constructed_responses.userId, ids)),
+	);
+
+	const [summaryScores, summaryCount, answerCount] = await Promise.all([
+		db
+			.select({
+				languageScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
+				contentScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
 			})
 			.from(summaries)
 			.where(inArray(summaries.userId, ids)),
 
 		db
+			.with(_summaryCount)
 			.select({
-				count: count(),
-				passedCount: count(
-					sql`CASE WHEN ${constructed_responses.score} = 2 THEN 1 END`,
-				),
+				total: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_summaryCount.total})`,
+				passed: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_summaryCount.passed})`,
 			})
-			.from(constructed_responses)
-			.where(inArray(constructed_responses.userId, ids)),
+			.from(_summaryCount),
+
+		db
+			.with(_answerCount)
+			.select({
+				total: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_answerCount.total})`,
+				passed: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_answerCount.passed})`,
+			})
+			.from(_answerCount),
 	]);
 
 	return {
-		avgContentScore: summary[0].contentScore || 0,
-		avgLanguageScore: summary[0].languageScore || 0,
-		avgTotalSummaries: summary[0].count / users.length,
-		avgTotalPassedSummaries: summary[0].passedCount / users.length,
-		avgTotalAnswers: answers[0].count / users.length,
-		avgTotalPassedAnswers: answers[0].passedCount / users.length,
+		contentScore: summaryScores[0].contentScore || 0,
+		languageScore: summaryScores[0].languageScore || 0,
+		totalSummaries: summaryCount[0].total,
+		totalPassedSummaries: summaryCount[0].passed,
+		totalAnswers: answerCount[0].total,
+		totalPassedAnswers: answerCount[0].passed,
 	};
 };
 

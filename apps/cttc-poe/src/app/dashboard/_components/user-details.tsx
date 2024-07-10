@@ -31,31 +31,32 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 
 	const pageIndex = getPageData(pageSlug)?.index;
 	const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
-	const otherProgress =
-		otherUsers.reduce((acc, user) => {
-			const data = getPageData(user.pageSlug);
-			if (data) {
-				acc += data.index;
-			}
-			return acc;
-		}, 0) /
-			otherUsers.length +
-		1;
+	const otherProgress = otherUsers.map((user) => {
+		const pageIndex = getPageData(user.pageSlug)?.index;
+		return pageIndex !== undefined ? pageIndex + 1 : 0;
+	});
+
+	otherProgress.sort((a, b) => a - b);
+	const mid = Math.floor(otherProgress.length / 2);
+	const midProgress =
+		otherProgress.length % 2 !== 0
+			? otherProgress[mid]
+			: (otherProgress[mid - 1] + otherProgress[mid]) / 2;
 
 	const diffs = {
-		totalSummaries: userStats.totalSummaries - otherStats.avgTotalSummaries,
+		totalSummaries: userStats.totalSummaries - otherStats.totalSummaries,
 		totalPassedSummaries:
-			userStats.totalPassedSummaries - otherStats.avgTotalPassedSummaries,
-		totalAnswers: userStats.totalAnswers - otherStats.avgTotalAnswers,
+			userStats.totalPassedSummaries - otherStats.totalPassedSummaries,
+		totalAnswers: userStats.totalAnswers - otherStats.totalAnswers,
 		totalPassedAnswers:
-			userStats.totalPassedAnswers - otherStats.avgTotalPassedAnswers,
-		avgContentScore:
-			userStats.avgContentScore && otherStats.avgContentScore
-				? userStats.avgContentScore - otherStats.avgContentScore
+			userStats.totalPassedAnswers - otherStats.totalPassedAnswers,
+		contentScore:
+			userStats.contentScore && otherStats.contentScore
+				? userStats.contentScore - otherStats.contentScore
 				: null,
-		avgLanguageScore:
-			userStats.avgLanguageScore && otherStats.avgLanguageScore
-				? userStats.avgLanguageScore - otherStats.avgLanguageScore
+		languageScore:
+			userStats.languageScore && otherStats.languageScore
+				? userStats.languageScore - otherStats.languageScore
 				: null,
 	};
 
@@ -65,10 +66,10 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 				userStats={userStats}
 				otherStats={otherStats}
 				userProgress={userProgress}
-				otherProgress={otherProgress}
+				otherProgress={midProgress}
 			/>
 			<p className="text-center text-muted-foreground">
-				percentages are relative to the average
+				percentages are relative to the median
 			</p>
 			{classId ? (
 				<p className="text-center text-muted-foreground">
@@ -120,50 +121,47 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 					</p>
 				</DashboardBadge>
 				<DashboardBadge
-					title="Average Content Score"
+					title="Median Content Score"
 					icon={<FileTextIcon className="size-4" />}
 					className={cn({
-						"border-green-500":
-							diffs.avgContentScore && diffs.avgContentScore > 0,
-						"border-destructive":
-							diffs.avgContentScore && diffs.avgContentScore < 0,
+						"border-green-500": diffs.contentScore && diffs.contentScore > 0,
+						"border-destructive": diffs.contentScore && diffs.contentScore < 0,
 					})}
 				>
 					<div className="text-2xl font-bold">
-						{Number.isNaN(userStats.avgContentScore)
+						{Number.isNaN(userStats.contentScore)
 							? "NA"
-							: userStats.avgContentScore.toFixed(2)}
+							: userStats.contentScore.toFixed(2)}
 					</div>
 					<p className="text-xs text-muted-foreground">
-						{diffs.avgContentScore
+						{diffs.contentScore
 							? `
-					${
-						diffs.avgContentScore > 0 ? "+" : ""
-					}${diffs.avgContentScore.toFixed(2)} compared to others`
+					${diffs.contentScore > 0 ? "+" : ""}${diffs.contentScore.toFixed(
+						2,
+					)} compared to others`
 							: "class stats unavailable"}
 					</p>
 				</DashboardBadge>
 				<DashboardBadge
-					title="Average Language Score"
+					title="Median Language Score"
 					icon={<WholeWordIcon className="size-4" />}
 					className={cn({
-						"border-green-500":
-							diffs.avgLanguageScore && diffs.avgLanguageScore > 0,
+						"border-green-500": diffs.languageScore && diffs.languageScore > 0,
 						"border-destructive":
-							diffs.avgLanguageScore && diffs.avgLanguageScore < 0,
+							diffs.languageScore && diffs.languageScore < 0,
 					})}
 				>
 					<div className="text-2xl font-bold">
-						{Number.isNaN(userStats.avgLanguageScore)
+						{Number.isNaN(userStats.languageScore)
 							? "NA"
-							: userStats.avgLanguageScore.toFixed(2)}
+							: userStats.languageScore.toFixed(2)}
 					</div>
 					<p className="text-xs text-muted-foreground">
-						{diffs.avgLanguageScore
+						{diffs.languageScore
 							? `
-					${
-						diffs.avgLanguageScore > 0 ? "+" : ""
-					}${diffs.avgLanguageScore.toFixed(2)} compared to others`
+					${diffs.languageScore > 0 ? "+" : ""}${diffs.languageScore.toFixed(
+						2,
+					)} compared to others`
 							: "class stats unavailable"}
 					</p>
 				</DashboardBadge>

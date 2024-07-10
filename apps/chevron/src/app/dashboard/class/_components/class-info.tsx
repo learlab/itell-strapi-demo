@@ -45,10 +45,14 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 		};
 	});
 
-	const classIndex = Math.floor(
-		studentData.reduce((acc, student) => acc + student.progress.index, 0) /
-			students.length,
-	);
+	studentData.sort((a, b) => a.progress.index - b.progress.index);
+	const mid = Math.floor(studentData.length / 2);
+	const classIndex =
+		students.length % 2 !== 0
+			? studentData[mid].progress.index
+			: (studentData[mid - 1].progress.index +
+					studentData[mid].progress.index) /
+				2;
 
 	const classProgress = (classIndex / allPagesSorted.length) * 100;
 
@@ -64,7 +68,7 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-6">
-				<h3 className="mb-4 text-lg font-medium">Average Class Statistics</h3>
+				<h3 className="mb-4 text-lg font-medium">Median Class Statistics</h3>
 				<Suspense fallback={<ClassBadges.Skeleton />}>
 					<ErrorBoundary fallback={<ClassBadges.ErrorFallback />}>
 						<ClassBadges
@@ -73,7 +77,7 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 					</ErrorBoundary>
 				</Suspense>
 
-				<h3 className="mb-4 text-lg font-medium mt-4">Average Progress</h3>
+				<h3 className="mb-4 text-lg font-medium mt-4">Median Progress</h3>
 				<div className="flex items-center gap-4">
 					<Progress value={classProgress} className="w-1/3" />
 					<p className="text-muted-foreground">
@@ -97,10 +101,10 @@ ClassInfo.Skeleton = () => (
 			</CardDescription>
 		</CardHeader>
 		<CardContent className="space-y-6">
-			<h3 className="mb-4 text-lg font-medium">Average Class Statistics</h3>
+			<h3 className="mb-4 text-lg font-medium">Median Class Statistics</h3>
 			<ClassBadges.Skeleton />
 
-			<h3 className="mb-4 text-lg font-medium">Average Class Progress</h3>
+			<h3 className="mb-4 text-lg font-medium">Median Class Progress</h3>
 			<Skeleton className="w-96 h-8" />
 
 			<h3 className="mb-4 text-lg font-medium">Student Statistics</h3>

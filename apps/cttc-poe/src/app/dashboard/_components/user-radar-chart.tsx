@@ -22,7 +22,7 @@ const chartConfig = {
 		label: "user",
 		color: "hsl(var(--chart-1))",
 	},
-	other: {
+	otherScaled: {
 		label: "other",
 		color: "hsl(var(--chart-2))",
 	},
@@ -47,42 +47,44 @@ export const UserRadarChart = ({
 			user: userProgress,
 			other: otherProgress,
 			userScaled: scale(userProgress, otherProgress),
+			otherScaled: 1,
 			description: "Number of pages unlocked",
 		},
 		{
 			label: "Total Summaries",
 			user: userStats.totalSummaries,
-			other: otherStats.avgTotalSummaries,
-			userScaled: scale(userStats.totalSummaries, otherStats.avgTotalSummaries),
+			other: otherStats.totalSummaries,
+			userScaled: scale(userStats.totalSummaries, otherStats.totalSummaries),
+			otherScaled: 1,
 			description: "Total number of summaries submitted",
 		},
 		{
 			label: "Passed Summaries",
 			user: userStats.totalPassedSummaries,
-			other: otherStats.avgTotalPassedSummaries,
+			other: otherStats.totalPassedSummaries,
 			userScaled: scale(
-				userStats.totalPassedAnswers,
-				otherStats.avgTotalPassedAnswers,
+				userStats.totalPassedSummaries,
+				otherStats.totalPassedSummaries,
 			),
+			otherScaled: 1,
 			description:
 				"Total number of summaries that scored well in both content score and language score",
 		},
 		{
 			label: "Content Score",
-			user: userStats.avgContentScore,
-			other: otherStats.avgContentScore,
-			userScaled: scale(userStats.avgContentScore, otherStats.avgContentScore),
+			user: userStats.contentScore,
+			other: otherStats.contentScore,
+			userScaled: scale(userStats.contentScore, otherStats.contentScore),
+			otherScaled: 1,
 			description:
 				"Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
 		},
 		{
 			label: "Language Score",
-			user: userStats.avgLanguageScore,
-			other: otherStats.avgLanguageScore,
-			userScaled: scale(
-				userStats.avgLanguageScore,
-				otherStats.avgLanguageScore,
-			),
+			user: userStats.languageScore,
+			other: otherStats.languageScore,
+			userScaled: scale(userStats.languageScore, otherStats.languageScore),
+			otherScaled: 1,
 			description:
 				"Measures the language quality of the summary. The higher the score, the better the summary wording.",
 		},
@@ -90,11 +92,12 @@ export const UserRadarChart = ({
 		{
 			label: "Correct Answers",
 			user: userStats.totalPassedAnswers,
-			other: otherStats.avgTotalPassedAnswers,
+			other: otherStats.totalPassedAnswers,
 			userScaled: scale(
 				userStats.totalPassedAnswers,
-				otherStats.avgTotalPassedAnswers,
+				otherStats.totalPassedAnswers,
 			),
+			otherScaled: 1,
 			description: "Total number of questions answered during reading.",
 		},
 	];
@@ -123,7 +126,7 @@ export const UserRadarChart = ({
 										return item.payload.user;
 									}
 
-									if (item.dataKey === "other") {
+									if (item.dataKey === "otherScaled") {
 										return item.payload.other;
 									}
 								}}
@@ -151,10 +154,12 @@ export const UserRadarChart = ({
 											!pct || pct === 0
 												? "var(--color-muted-foreground)"
 												: pct > 0
-													? "var(--color-other)"
+													? "var(--color-otherScaled)"
 													: "var(--color-userScaled)"
 										}
-									>{`${pct && pct > 0 ? "+" : ""}${pct}%`}</tspan>
+									>{`${pct && pct > 0 ? "+" : ""}${
+										pct !== undefined ? pct : "NA"
+									}${pct !== undefined ? "%" : ""}`}</tspan>
 									<tspan
 										x={x}
 										dy={"1rem"}
@@ -169,16 +174,14 @@ export const UserRadarChart = ({
 					/>
 					<Radar
 						dataKey="userScaled"
-						fill="var(--color-userScaled)"
 						fillOpacity={0}
 						stroke="var(--color-userScaled)"
 						strokeWidth={2}
 					/>
 					<Radar
-						dataKey="other"
-						fill="var(--color-other)"
+						dataKey="otherScaled"
 						fillOpacity={0}
-						stroke="var(--color-other)"
+						stroke="var(--color-otherScaled)"
 						strokeWidth={2}
 					/>
 					<ChartLegend className="mt-8" content={<ChartLegendContent />} />
@@ -197,14 +200,9 @@ const getRelativePct = (a: number, b: number) => {
 };
 
 const scale = (a: number, b: number) => {
-	const pct = getRelativePct(a, b);
-	if (pct === undefined) {
-		return "NA";
+	if (Math.abs(b) < Number.EPSILON) {
+		return 2;
 	}
 
-	if (b === 0) {
-		return 0;
-	}
-
-	return 1 + pct / 100;
+	return a / Math.abs(b);
 };
