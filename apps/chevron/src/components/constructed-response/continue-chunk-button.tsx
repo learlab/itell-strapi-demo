@@ -3,10 +3,10 @@
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { cn } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
-import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 const animationProps = {
@@ -73,8 +73,8 @@ export const ContinueChunkButton = ({
 				"relative w-56 rounded-lg px-6 py-2 font-medium backdrop-blur-xl transition-[box-shadow] duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)]",
 				buttonVariants({ variant: "default" }),
 			)}
-			onClick={onSubmit}
 			data-no-event={true}
+			onClick={onSubmit}
 			disabled={disabled}
 		>
 			<span

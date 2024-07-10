@@ -1,9 +1,8 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { TeacherClass } from "@/components/dashboard/teacher/teacher-class";
-import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
+import { ClassInfo } from "@class/class-info";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
 
@@ -25,7 +24,7 @@ export default async function () {
 				text={Meta.class.description}
 			/>
 			{teacher ? (
-				<TeacherClass classId={teacher.classId} />
+				<ClassInfo classId={teacher.classId} />
 			) : (
 				<Errorbox>You have to be a teacher to view this page</Errorbox>
 			)}

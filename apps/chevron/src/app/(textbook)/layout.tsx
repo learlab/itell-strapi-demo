@@ -1,4 +1,4 @@
-import TextbookNavbar from "@/components/nav/textbook-nav";
+import { TextbookNav } from "@/components/textbook-nav";
 import { Fragment } from "react";
 
 export default async function ({
@@ -8,7 +8,7 @@ export default async function ({
 }) {
 	return (
 		<Fragment>
-			<TextbookNavbar scroll />
+			<TextbookNav scroll />
 			{children}
 		</Fragment>
 	);

@@ -87,7 +87,7 @@ export async function GET(req: Request) {
 		});
 	} catch (error) {
 		console.log("google oauth error", error);
-		reportSentry("google oauth", { error });
+		reportSentry("google oauth error", { error });
 		return new Response(null, {
 			status: 302,
 			headers: {

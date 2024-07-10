@@ -9,15 +9,15 @@ type Props = {
 };
 
 export const PageStatusModal = ({ user, pageStatus }: Props) => {
-	const { latest: isPageLatest, unlocked: isPageUnlocked } = pageStatus;
+	const { latest, unlocked } = pageStatus;
 
-	if (isPageUnlocked) {
+	if (unlocked) {
 		return null;
 	}
 
 	// user with locked page
 	if (user) {
-		if (isPageLatest) {
+		if (latest) {
 			return null;
 		}
 

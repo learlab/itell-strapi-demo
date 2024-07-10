@@ -4,6 +4,6 @@ export enum Condition {
 	STAIRS = "stairs",
 }
 
-export const getUserCondition = (): Condition => {
+export const getUserCondition = (prolificId: string): Condition => {
 	return Condition.STAIRS;
 };

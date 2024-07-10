@@ -9,6 +9,7 @@ export const client = postgres(env.DATABASE_URL, { prepare: false });
 export const db = drizzle(client, { schema });
 
 export const first = <T>(res: T[]) => (res.length > 0 ? res[0] : null);
+
 export const findUser = async (id: string) => {
 	return first(
 		await db.select().from(schema.users).where(eq(schema.users.id, id)),

@@ -1,12 +1,16 @@
+import { groupby } from "@itell/core/utils";
 import { allPages } from "contentlayer/generated";
 
 export const allPagesSorted = allPages.sort((a, b) => {
-	return a.chapter - b.chapter;
+	if (a.chapter !== b.chapter) {
+		return a.chapter - b.chapter;
+	}
+
+	return a.section - b.section;
 });
 
 export const firstPage = allPagesSorted[0];
-export const firstSummaryPage =
-	allPagesSorted.find((page) => page.summary) || firstPage;
+export const firstSummaryPage = allPagesSorted[1];
 export const allSummaryPagesSorted = allPagesSorted.filter(
 	(page) => page.summary,
 );
@@ -56,3 +60,32 @@ export const nextPage = (slug: string): string => {
 
 	return slug;
 };
+
+type TocItem = {
+	title: string;
+	chapter: number;
+	section: number;
+	page_slug: string;
+};
+const byChapter = groupby(allPagesSorted, (page) => page.chapter);
+export const tocChapters: Array<{
+	title: string;
+	chapter: number;
+	page_slug: string;
+	items: Array<TocItem>;
+}> = [];
+for (const chapter of Object.keys(byChapter)) {
+	const pages = byChapter[chapter];
+	const firstPage = pages[0];
+	tocChapters.push({
+		title: firstPage.title,
+		chapter: firstPage.chapter,
+		page_slug: firstPage.page_slug,
+		items: pages.slice(1).map((page) => ({
+			title: page.title,
+			chapter: page.chapter,
+			section: page.section,
+			page_slug: page.page_slug,
+		})),
+	});
+}

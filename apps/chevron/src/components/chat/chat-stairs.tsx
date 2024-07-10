@@ -1,8 +1,4 @@
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-} from "@/components/client-components";
+import { Accordion, AccordionContent, AccordionItem } from "@itell/ui/client";
 import { ChatInputStairs } from "./chat-input-stairs";
 import { ChatMessages } from "./chat-messages";
 

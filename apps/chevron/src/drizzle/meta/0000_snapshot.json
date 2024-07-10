@@ -1,5 +1,5 @@
 {
-  "id": "34579652-ab4c-41fc-a696-7f244b56edad",
+  "id": "b05993b8-ec10-45e5-8ac3-63cb3d704865",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -264,7 +264,15 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "events_user_id_idx": {
+          "name": "events_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "events_user_id_users_id_fk": {
           "name": "events_user_id_users_id_fk",
@@ -415,7 +423,15 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "notes_user_id_idx": {
+          "name": "notes_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "notes_user_id_users_id_fk": {
           "name": "notes_user_id_users_id_fk",
@@ -464,7 +480,15 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "sessions_user_id_idx": {
+          "name": "sessions_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "sessions_user_id_users_id_fk": {
           "name": "sessions_user_id_users_id_fk",
@@ -562,7 +586,15 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "summaries_user_id_idx": {
+          "name": "summaries_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "summaries_user_id_users_id_fk": {
           "name": "summaries_user_id_users_id_fk",

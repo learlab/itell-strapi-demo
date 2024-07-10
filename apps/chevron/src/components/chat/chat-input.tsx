@@ -112,7 +112,6 @@ export const ChatInput = ({
 		} catch (err) {
 			console.log("chat input error", err);
 			reportSentry("eval chat", { error: err, input: text, pageSlug });
-
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",

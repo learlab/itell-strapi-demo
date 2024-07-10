@@ -30,6 +30,7 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
+import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
@@ -42,9 +43,8 @@ import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
-import { Button, StatusButton } from "../client-components";
-import { NextPageButton } from "../page/next-page-button";
 import { useChat, useConstructedResponse } from "../provider/page-provider";
+import { NextPageButton } from "./next-page-button";
 import { SummaryFeedback } from "./summary-feedback";
 import {
 	SummaryInput,
@@ -377,7 +377,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						const nextSlug = await incrementUserPage(user.id, pageSlug);
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
-							toast.info("You have finished the entire textbook!");
+							toast.info(
+								"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+							);
 						} else {
 							updateUser({ pageSlug: nextSlug });
 							// check if we can already proceed to prevent excessive toasts

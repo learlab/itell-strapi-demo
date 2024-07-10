@@ -79,7 +79,6 @@ export const createConstructedResponseStore = (
 					// finish the page
 					if (!isLastChunkWithQuestion && nextIndex === chunkSlugs.length - 1) {
 						set({ isSummaryReady: true, shouldBlur: false });
-						return;
 					}
 
 					// user is on the last chunk, and it has a question

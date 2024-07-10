@@ -1,18 +1,15 @@
 "use client";
 
+import { isProduction } from "@/lib/constants";
+import { LoginButton } from "@auth//auth-form";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
-import { isProduction } from "@/lib/constants";
-import { buttonVariants } from "@itell/ui/server";
-import Link from "next/link";
+} from "@itell/ui/client";
 import { useState } from "react";
-import { LoginButton } from "../auth/auth-form";
-import { Button } from "../client-components";
 
 export const PageUnauthorizedModal = () => {
 	const [open, setOpen] = useState(true);

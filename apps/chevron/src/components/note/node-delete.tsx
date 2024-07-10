@@ -1,7 +1,6 @@
 "use client";
 import { TrashIcon } from "lucide-react";
 
-import { useState } from "react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -13,7 +12,8 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 	Button,
-} from "../client-components";
+} from "@itell/ui/client";
+import { useState } from "react";
 import { Spinner } from "../spinner";
 
 type Props = {

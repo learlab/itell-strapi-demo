@@ -45,7 +45,7 @@ export const resetUser = async (userId: string) => {
 	return await db.transaction(async (tx) => {
 		await tx
 			.update(users)
-			.set({ finished: false, pageSlug: null })
+			.set({ finished: false, pageSlug: firstSummaryPage.page_slug })
 			.where(eq(users.id, userId));
 		await tx.delete(summaries).where(eq(summaries.userId, userId));
 		await tx.delete(chat_messages).where(eq(chat_messages.userId, userId));

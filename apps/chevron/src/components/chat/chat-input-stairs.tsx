@@ -74,24 +74,26 @@ export const ChatInputStairs = ({
 			});
 			setActiveMessageId(null);
 
-			let data = {} as { request_id: string; text: string; context?: string[] };
 			if (response.ok && response.body) {
-				await parseEventStream(response.body, (d, done) => {
+				let botText = "";
+				await parseEventStream(response.body, (data, done) => {
 					if (!done) {
 						try {
-							data = JSON.parse(d) as typeof data;
-							updateBotMessage(botMessageId, data.text, true);
+							const { text } = JSON.parse(data) as {
+								request_id: string;
+								text: string;
+							};
+							botText = text;
+							updateBotMessage(botMessageId, botText, true);
 						} catch (err) {
 							console.log("invalid json", data);
 						}
 					}
 				});
 
-				updateBotMessage(botMessageId, data.text, true, data.context?.at(0));
-				// also add the final bot message to the normal chat
-				addBotMessage(data.text, false, data.context?.at(0));
-
 				const botTimestamp = Date.now();
+				// also add the final bot message to the normal chat
+				addBotMessage(botText, false);
 				history.current.push(
 					{
 						agent: "user",
@@ -99,7 +101,7 @@ export const ChatInputStairs = ({
 					},
 					{
 						agent: "bot",
-						text: data.text,
+						text: botText,
 					},
 				);
 
@@ -125,11 +127,10 @@ export const ChatInputStairs = ({
 								isStairs: true,
 							},
 							{
-								text: data.text,
+								text: botText,
 								isUser: false,
 								timestamp: botTimestamp,
 								isStairs: true,
-								context: data.context?.at(0),
 							},
 						],
 					});
@@ -146,11 +147,10 @@ export const ChatInputStairs = ({
 								isStairs: true,
 							},
 							{
-								text: data.text,
+								text: botText,
 								isUser: false,
 								timestamp: botTimestamp,
 								isStairs: true,
-								context: data.context?.at(0),
 							},
 						],
 					});
@@ -165,7 +165,6 @@ export const ChatInputStairs = ({
 				input: text,
 				pageSlug,
 			});
-
 			updateBotMessage(
 				botMessageId,
 				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",

@@ -1,16 +1,14 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { SummaryList } from "@/components/dashboard/summary-list";
-import { PageLink } from "@/components/page/page-link";
-import { DashboardShell } from "@/components/page/shell";
+import { PageLink } from "@/components/page-link";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstSummaryPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
-import { delay } from "@/lib/utils";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
+import { SummaryChart } from "@summaries/summary-chart";
+import { SummaryList } from "@summaries/summary-list";
 import { redirect } from "next/navigation";
-import { Chart } from "./chart";
 
 export default async function () {
 	const { user } = await getSession();
@@ -98,7 +96,7 @@ export default async function () {
 			<DashboardHeader heading="Summary" text="Create and manage summaries." />
 			<Card className="w-full">
 				<CardContent className="space-y-4">
-					<Chart
+					<SummaryChart
 						data={chartData}
 						startDate={summariesByPassing.startDate.toLocaleDateString()}
 						endDate={summariesByPassing.endDate.toLocaleDateString()}

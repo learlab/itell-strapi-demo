@@ -165,7 +165,7 @@ export const summaries = pgTable(
 	},
 	(table) => {
 		return {
-			summary_user_id_idx: index("summaries_user_id_idx").on(table.userId),
+			summaries_user_id_idx: index("summaries_user_id_idx").on(table.userId),
 		};
 	},
 );

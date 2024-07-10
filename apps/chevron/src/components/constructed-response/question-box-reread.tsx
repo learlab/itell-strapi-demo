@@ -6,20 +6,20 @@ import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
 import { getQAScore } from "@/lib/question";
 import { reportSentry } from "@/lib/utils";
+import { LoginButton } from "@auth//auth-form";
 import { cn } from "@itell/core/utils";
-import { Card, CardContent, Warning } from "@itell/ui/server";
-import { KeyRoundIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
-import { toast } from "sonner";
-import { LoginButton } from "../auth/auth-form";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
 	TextArea,
-} from "../client-components";
+} from "@itell/ui/client";
+import { Card, CardContent, Warning } from "@itell/ui/server";
+import { KeyRoundIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
+import { toast } from "sonner";
 import { useConstructedResponse } from "../provider/page-provider";
 import { FinishQuestionButton } from "./finish-question-button";
 import { SubmitButton } from "./submit-button";

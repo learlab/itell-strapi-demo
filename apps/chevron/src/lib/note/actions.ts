@@ -10,10 +10,9 @@ export const deleteNote = async (id: number) => {
 };
 
 export const createNote = async (values: PgInsertValue<typeof notes>) => {
-	const record = await db
-		.insert(notes)
-		.values(values)
-		.returning({ noteId: notes.id });
+	const record = await db.insert(notes).values(values).returning({
+		noteId: notes.id,
+	});
 
 	return record[0];
 };

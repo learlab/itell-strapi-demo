@@ -1,9 +1,9 @@
-import { AuthForm, LogoutButton } from "@/components/auth/auth-form";
-import { KnowledgeCarousel } from "@/components/auth/knowledge-carousel";
-import { Button } from "@/components/client-components";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
+import { AuthForm, LogoutButton } from "@auth/auth-form";
+import { KnowledgeCarousel } from "@auth/knowledge-carousel";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
@@ -15,6 +15,10 @@ type PageProps = {
 const ErrorDict: Record<string, string> = {
 	google_oauth:
 		"A problem occurred while logging in with Google. Please try again later.",
+	prolific_oauth:
+		"A problem occurred while logging in with Prolific. Please try again later.",
+	prolific_missing_pid: "Please enter a valid Prolific ID.",
+	prolific_wrong_pid: "Please use the same Prolific ID you used to sign up.",
 };
 
 export default async function ({ searchParams }: PageProps) {
@@ -25,6 +29,9 @@ export default async function ({ searchParams }: PageProps) {
 	if (error) {
 		if (error in ErrorDict) {
 			errorMessage = ErrorDict[error];
+		} else if (error.startsWith("prolific_existing_pid_")) {
+			const storedPid = error.replace("prolific_existing_pid_", "");
+			errorMessage = `Please use the same Prolific ID you used to sign up (${storedPid}).`;
 		}
 	}
 

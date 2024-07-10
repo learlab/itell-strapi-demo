@@ -95,8 +95,8 @@ export const SummaryProgress = ({ items }: Props) => {
 											item.status === "complete"
 												? "#3b82f6"
 												: item.status === "active"
-												  ? "#e5e5e5"
-												  : "transparent",
+													? "#e5e5e5"
+													: "transparent",
 									}}
 									transition={{ duration: 0.4, ease: "easeInOut" }}
 								/>

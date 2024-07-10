@@ -1,7 +1,6 @@
-import { Separator } from "@/components/client-components";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { Profile } from "@/components/dashboard/settings/profile";
-import { DashboardShell } from "@/components/page/shell";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { Separator } from "@itell/ui/client";
+
 import {
 	Card,
 	CardContent,
@@ -10,6 +9,7 @@ import {
 	CardTitle,
 	Skeleton,
 } from "@itell/ui/server";
+import { Profile } from "@settings/profile";
 
 export default function DashboardSettingsLoading() {
 	return (

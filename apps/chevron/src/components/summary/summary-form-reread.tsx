@@ -21,6 +21,7 @@ import {
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
+import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
@@ -28,9 +29,8 @@ import { User } from "lucia";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { Button, StatusButton } from "../client-components";
-import { NextPageButton } from "../page/next-page-button";
 import { useConstructedResponse } from "../provider/page-provider";
+import { NextPageButton } from "./next-page-button";
 import {
 	SummaryInput,
 	getSummaryLocal,
@@ -47,15 +47,15 @@ const driverObj = driver();
 
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
-	const prevInput = useRef<string | undefined>("");
+	const prevInput = useRef<string | undefined>();
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
-	const [isTextbookFinished, setIsTextbookFinished] = useState(user.finished);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunkSlugs,
 	}));
-	// skip first chunk, which is typically learning objectives
+
 	const randomChunkSlug = useMemo(() => {
+		// skip first chunk, which is typically learning objectives
 		const validChunks = chunks.slice(1);
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
@@ -187,13 +187,14 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 				if (isLastPage(pageSlug)) {
 					updateUser({ finished: true });
-					setIsTextbookFinished(true);
-					toast.info("You have finished the entire textbook!");
-
+					toast.info(
+						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+					);
 					return;
 				}
 
 				updateUser({ pageSlug: nextSlug });
+
 				// 25% random rereading if the page is not unlocked
 				if (!pageStatus.unlocked && Math.random() <= 0.25) {
 					goToRandomChunk();
@@ -226,12 +227,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						or move on to the next page.
 					</p>
 					<NextPageButton pageSlug={page.nextPageSlug} />
-				</div>
-			)}
-
-			{isTextbookFinished && (
-				<div className="space-y-2">
-					<p>You have finished the entire textbook. Congratulations! 🎉</p>
 				</div>
 			)}
 

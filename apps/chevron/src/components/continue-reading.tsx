@@ -2,10 +2,10 @@
 
 import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { firstPage } from "@/lib/pages";
+import { Button, StatusButton } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { Button, StatusButton } from "./client-components";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
 	text?: string;

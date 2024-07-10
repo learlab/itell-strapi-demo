@@ -4,12 +4,12 @@ import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { parseEventStream } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useActionStatus } from "use-action-status";
-import { Button } from "../client-components";
 import { Spinner } from "../spinner";
 
 type Props = {
@@ -94,9 +94,9 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 
 			{isDelayed && (
 				<p className="text-sm">
-					The request is taking long than usual, you can try refreshing and try
-					again. If this problem persists, please report to
-					lear.lab.vu@gmail.com.
+					The request is taking longer than usual, if this keeps loading without
+					a response, please try refreshing the page. If the problem persists,
+					please report to lear.lab.vu@gmail.com.
 				</p>
 			)}
 		</div>

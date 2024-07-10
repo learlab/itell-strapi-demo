@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1717697564196,
-      "tag": "0000_shiny_rage",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1718335959998,
-      "tag": "0001_adorable_fantastic_four",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1718388484084,
-      "tag": "0002_puzzling_lilandra",
+      "when": 1720580331963,
+      "tag": "0000_colossal_russian",
       "breakpoints": true
     }
   ]

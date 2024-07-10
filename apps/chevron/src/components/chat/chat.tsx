@@ -1,10 +1,10 @@
+import { Message } from "@itell/core/chatbot";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/client-components";
-import { Message } from "@itell/core/chatbot";
+} from "@itell/ui/client";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
@@ -31,7 +31,7 @@ export const Chat = async ({
 			type="single"
 			defaultValue={undefined}
 			collapsible
-			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-10 chatbot"
+			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30 chatbot"
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionTrigger className="border border-border px-6">

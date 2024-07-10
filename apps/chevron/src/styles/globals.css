@@ -60,7 +60,6 @@ h5,
   @apply text-primary font-semibold
 }
 
-
 .blurred>*:not(.continue-reading-button-container, .scroll-back-button-container) {
   filter: blur(4px);
   user-select: none;
@@ -105,12 +104,18 @@ h5,
   max-width: 60%;
 }
 
+
 .driver-popover {
   @apply max-w-80 bg-background text-foreground !important;
 }
 
 .no-select {
   user-select: none;
+}
+
+
+.shake {
+  animation: shake 0.2s linear infinite;
 }
 
 #page-content button,
@@ -157,5 +162,31 @@ h5,
 
   to {
     clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-10px);
+  }
+
+  40% {
+    transform: translateX(10px);
+  }
+
+  60% {
+    transform: translateX(-10px);
+  }
+
+  80% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(0);
   }
 }

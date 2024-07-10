@@ -21,9 +21,7 @@ export default async function () {
 	);
 }
 
-export async function SiteFooter({
-	className,
-}: React.HTMLAttributes<HTMLElement>) {
+const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
 	const { footer } = await getSiteConfig();
 
 	return (
@@ -40,4 +38,4 @@ export async function SiteFooter({
 			</div>
 		</footer>
 	);
-}
+};

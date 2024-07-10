@@ -1,12 +1,12 @@
 "use client";
 
+import { useNotesStore } from "@/lib/store/note";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
-} from "@/components/client-components";
-import { useNotesStore } from "@/lib/store/note";
+} from "@itell/ui/client";
 import pluralize from "pluralize";
 
 export const NoteCount = () => {

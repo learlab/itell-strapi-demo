@@ -1,5 +1,4 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { DashboardShell } from "@/components/page/shell";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { Skeleton } from "@itell/ui/server";
 
 const title = "Question Answering";

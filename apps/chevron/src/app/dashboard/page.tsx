@@ -1,12 +1,11 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { UserStatistics } from "@/components/dashboard/user-statistics";
-import { UserProgress } from "@/components/dashboard/user/user-progress";
-import { DashboardShell } from "@/components/page/shell";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { delay, redirectWithSearchParams } from "@/lib/utils";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { UserProgress } from "@dashboard//user-progress";
+import { UserStatistics } from "@dashboard//user-statistics";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { Card, CardContent } from "@itell/ui/server";
 

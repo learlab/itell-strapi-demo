@@ -1,13 +1,7 @@
 "use client";
 
-import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
-import * as React from "react";
-
+import { allPagesSorted } from "@/lib/pages";
 import { cn } from "@itell/core/utils";
-
-import { CommandMenuConfig } from "@/config/command-menu";
 import {
 	Button,
 	CommandDialog,
@@ -17,14 +11,18 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator,
-} from "./client-components";
+} from "@itell/ui/client";
+import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
-export function CommandMenu() {
+export const CommandMenu = () => {
 	const router = useRouter();
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 	const { setTheme } = useTheme();
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const down = (e: KeyboardEvent) => {
 			if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
@@ -36,7 +34,7 @@ export function CommandMenu() {
 		return () => document.removeEventListener("keydown", down);
 	}, []);
 
-	const runCommand = React.useCallback((command: () => unknown) => {
+	const runCommand = useCallback((command: () => unknown) => {
 		setOpen(false);
 		command();
 	}, []);
@@ -60,7 +58,7 @@ export function CommandMenu() {
 				<CommandList>
 					<CommandEmpty>No results found.</CommandEmpty>
 					<CommandGroup heading="Tools">
-						{CommandMenuConfig.tools.map((navItem) => (
+						{config.tools.map((navItem) => (
 							<CommandItem
 								key={navItem.href}
 								value={navItem.title}
@@ -81,7 +79,7 @@ export function CommandMenu() {
 						))}
 					</CommandGroup>
 					<CommandGroup heading="Textbook">
-						{CommandMenuConfig.textbookPages.map((navItem) => (
+						{config.textbookPages.map((navItem) => (
 							<CommandItem
 								key={navItem.href}
 								value={navItem.title}
@@ -114,4 +112,40 @@ export function CommandMenu() {
 			</CommandDialog>
 		</search>
 	);
-}
+};
+
+const config = {
+	textbookPages: allPagesSorted.map((s) => {
+		return {
+			title: `${s.title}`,
+			href: s.url,
+		};
+	}),
+	tools: [
+		{
+			title: "Dashboard",
+			href: "/dashboard",
+			description: "View your learning statistics",
+		},
+		{
+			title: "Summaries",
+			href: "/dashboard/summaries",
+			description: "Manage your summaries",
+		},
+		{
+			title: "Settings",
+			href: "/dashboard/settings",
+			description: "Configure personal settings",
+		},
+		{
+			title: "Class",
+			href: "/dashboard/class",
+			description: "Monitor student progress",
+		},
+		{
+			title: "Guide",
+			href: "/guide",
+			description: "Learn how to use the textbook",
+		},
+	],
+};

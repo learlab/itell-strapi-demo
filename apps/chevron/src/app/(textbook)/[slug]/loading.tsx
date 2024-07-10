@@ -1,10 +1,9 @@
-import { ChapterToc } from "@/components/chapter-toc";
-import { ScrollArea } from "@/components/client-components";
-import { PageTitle } from "@/components/page-title";
 import { lucia } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { allPagesSorted } from "@/lib/pages";
 import { Skeleton } from "@itell/ui/server";
+import { ChapterToc } from "@textbook/chapter-toc";
+import { PageTitle } from "@textbook/page-title";
 import { BookmarkIcon } from "lucide-react";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";

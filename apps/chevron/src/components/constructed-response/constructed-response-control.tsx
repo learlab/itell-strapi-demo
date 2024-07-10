@@ -1,5 +1,6 @@
 "use client";
 
+import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
@@ -17,7 +18,6 @@ type Props = {
 };
 
 export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
-	// Ref for current chunk
 	const { currentChunk, chunkSlugs, chunkData, shouldBlur } =
 		useConstructedResponse((state) => ({
 			currentChunk: state.currentChunk,
@@ -118,35 +118,6 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 		}
 	};
 
-	// process chunk append "go to next" buttons to every chunk
-	// inserts questions to selected chunks
-	// and blur the chunks if the page is not finished
-	const processChunk = (chunkSlug: string, chunkIndex: number) => {
-		const el = getChunkElement(chunkSlug);
-		if (!el) {
-			return;
-		}
-
-		const currentIndex = chunkSlugs.indexOf(currentChunk);
-		const isChunkUnvisited = currentIndex === -1 || chunkIndex > currentIndex;
-
-		const data = chunkData[chunkSlug];
-		if (data?.question) {
-			insertQuestion(
-				el,
-				chunkSlug,
-				data.question.question,
-				data.question.answer,
-			);
-		}
-
-		if (shouldBlur) {
-			if (chunkIndex !== 0 && isChunkUnvisited) {
-				el.classList.add("blurred");
-			}
-		}
-	};
-
 	// reveal chunk unblurs a chunk when current chunk advances
 	// and controls the visibility of the "next-chunk" button
 	const revealChunk = (currentChunk: string) => {
@@ -182,7 +153,33 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 	};
 
 	useEffect(() => {
-		chunkSlugs.forEach(processChunk);
+		chunkSlugs.forEach((chunkSlug, chunkIndex) => {
+			const el = getChunkElement(chunkSlug);
+			if (!el) {
+				return;
+			}
+
+			// insert questions
+			const data = chunkData[chunkSlug];
+			if (data?.question) {
+				insertQuestion(
+					el,
+					chunkSlug,
+					data.question.question,
+					data.question.answer,
+				);
+			}
+			// blur chunks
+			if (shouldBlur) {
+				const currentIndex = chunkSlugs.indexOf(currentChunk);
+				const isChunkUnvisited =
+					currentIndex === -1 || chunkIndex > currentIndex;
+
+				if (chunkIndex !== 0 && isChunkUnvisited) {
+					el.classList.add("blurred");
+				}
+			}
+		});
 
 		if (shouldBlur) {
 			const lastChunk = chunkSlugs[chunkSlugs.length - 1];
@@ -195,6 +192,26 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 
 	useEffect(() => {
 		revealChunk(currentChunk);
+
+		if (!isProduction) {
+			chunkSlugs.forEach((slug, idx) => {
+				const el = getChunkElement(slug);
+				if (!el) {
+					return;
+				}
+				const currentIndex = chunkSlugs.indexOf(currentChunk);
+				const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
+
+				if (shouldBlur) {
+					if (idx !== 0 && isChunkUnvisited) {
+						el.classList.add("blurred");
+					} else {
+						el.classList.remove("blurred");
+						hideNextChunkButton(el);
+					}
+				}
+			});
+		}
 	}, [currentChunk]);
 
 	return nodes;
