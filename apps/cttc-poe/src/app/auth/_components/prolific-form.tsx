@@ -1,5 +1,6 @@
 "use client";
 
+import { useSafeSearchParams } from "@/lib/navigation";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -10,8 +11,7 @@ import {
 	AlertDialogTitle,
 	Button,
 	Label,
-} from "@/components/client-components";
-import { useSafeSearchParams } from "@/lib/navigation";
+} from "@itell/ui/client";
 import { Input } from "@itell/ui/server";
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState, useTransition } from "react";

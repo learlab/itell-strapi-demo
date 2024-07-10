@@ -1,16 +1,16 @@
 "use client";
 
+import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTrigger,
-} from "@/components/client-components";
-import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
+} from "@itell/ui/client";
+import { Button, Checkbox, Label, TextArea } from "@itell/ui/client";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Button, Checkbox, Label, TextArea } from "../client-components";
 import { Spinner } from "../spinner";
 
 type Props = {

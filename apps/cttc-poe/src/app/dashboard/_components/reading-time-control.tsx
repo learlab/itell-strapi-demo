@@ -1,14 +1,14 @@
 "use client";
 
+import { useSafeSearchParams } from "@/lib/navigation";
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/client-components";
-import { useSafeSearchParams } from "@/lib/navigation";
-import { ReadingTimeChartLevel } from "@itell/core/dashboard";
+} from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 

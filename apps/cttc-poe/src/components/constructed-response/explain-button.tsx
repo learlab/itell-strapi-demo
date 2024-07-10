@@ -4,12 +4,12 @@ import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { parseEventStream } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useActionStatus } from "use-action-status";
-import { Button } from "../client-components";
 import { Spinner } from "../spinner";
 
 type Props = {

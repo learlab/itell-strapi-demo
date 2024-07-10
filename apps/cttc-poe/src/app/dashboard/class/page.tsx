@@ -1,10 +1,10 @@
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
-import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
+import { ClassInfo } from "@class/class-info";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
-import { ClassInfo } from "./_components/class-info";
 
 export const metadata = Meta.class;
 

@@ -2,7 +2,7 @@
 
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
-import { Button } from "../client-components";
+import { Button } from "@itell/ui/client";
 import { useConstructedResponse } from "../provider/page-provider";
 
 export const FinishQuestionButton = ({

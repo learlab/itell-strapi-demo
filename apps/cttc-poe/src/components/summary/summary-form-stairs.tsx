@@ -30,6 +30,7 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
+import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
@@ -42,7 +43,6 @@ import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useImmerReducer } from "use-immer";
 import { ChatStairs } from "../chat/chat-stairs";
-import { Button, StatusButton } from "../client-components";
 import { useChat, useConstructedResponse } from "../provider/page-provider";
 import { NextPageButton } from "./next-page-button";
 import { SummaryFeedback } from "./summary-feedback";

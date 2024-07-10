@@ -1,5 +1,9 @@
 "use client";
 
+import { Spinner } from "@/components/spinner";
+import { User } from "@/drizzle/schema";
+import { DEFAULT_TIME_ZONE } from "@/lib/constants";
+import { updateUser } from "@/lib/user/actions";
 import {
 	Button,
 	Label,
@@ -8,11 +12,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/client-components";
-import { Spinner } from "@/components/spinner";
-import { User } from "@/drizzle/schema";
-import { DEFAULT_TIME_ZONE } from "@/lib/constants";
-import { updateUser } from "@/lib/user/actions";
+} from "@itell/ui/client";
 import { Errorbox } from "@itell/ui/server";
 import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";

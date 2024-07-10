@@ -1,10 +1,10 @@
 "use client";
 
 import {
-	Avatar as BaseAvatar,
 	AvatarFallback,
 	AvatarImage,
-} from "@/components/client-components";
+	Avatar as BaseAvatar,
+} from "@itell/ui/client";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {
 	src: string | null;

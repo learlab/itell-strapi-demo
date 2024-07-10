@@ -1,5 +1,5 @@
-import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
-import { UserDetails } from "@dashboard/_components/user-details";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { UserDetails } from "@dashboard//user-details";
 import { Card, CardContent, Skeleton } from "@itell/ui/server";
 
 export default function () {

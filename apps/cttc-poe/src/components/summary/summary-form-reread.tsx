@@ -21,6 +21,7 @@ import {
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
+import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
@@ -28,7 +29,6 @@ import { User } from "lucia";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { Button, StatusButton } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { NextPageButton } from "./next-page-button";
 import {

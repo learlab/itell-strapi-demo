@@ -12,13 +12,13 @@ import {
 	removeNotes,
 } from "@itell/core/note";
 import { cn, relativeDate } from "@itell/core/utils";
+import { Button, TextArea } from "@itell/ui/client";
 import { EditIcon } from "lucide-react";
 import { ForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useFormStatus } from "react-dom";
 import { useImmerReducer } from "use-immer";
-import { Button, TextArea } from "../client-components";
 import { Spinner } from "../spinner";
 import { NoteDelete } from "./node-delete";
 import NoteColorPicker from "./note-color-picker";

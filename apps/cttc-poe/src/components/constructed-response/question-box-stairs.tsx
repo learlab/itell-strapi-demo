@@ -7,8 +7,15 @@ import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
 import { getQAScore } from "@/lib/question";
 import { reportSentry } from "@/lib/utils";
-import { LoginButton } from "@auth/_components/auth-form";
+import { LoginButton } from "@auth//auth-form";
 import { cn } from "@itell/core/utils";
+import {
+	Button,
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+	TextArea,
+} from "@itell/ui/client";
 import {
 	Card,
 	CardContent,
@@ -20,13 +27,6 @@ import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import {
-	Button,
-	HoverCard,
-	HoverCardContent,
-	HoverCardTrigger,
-	TextArea,
-} from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";

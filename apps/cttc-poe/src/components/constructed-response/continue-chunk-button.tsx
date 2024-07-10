@@ -3,10 +3,10 @@
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { cn } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
-import { Button } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 const animationProps = {

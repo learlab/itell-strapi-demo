@@ -25,7 +25,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/client-components";
+} from "@itell/ui/client";
 import { Input } from "@itell/ui/server";
 import pluralize from "pluralize";
 import { useState } from "react";

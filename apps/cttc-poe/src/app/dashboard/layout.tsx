@@ -9,7 +9,7 @@ import {
 	DashboardNavMenu,
 	SidebarItem,
 	SidebarNavItem,
-} from "@dashboard/_components/nav";
+} from "@dashboard//nav";
 import { Skeleton } from "@itell/ui/server";
 import {
 	BarChart4Icon,

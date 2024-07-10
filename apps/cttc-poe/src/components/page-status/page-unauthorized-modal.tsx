@@ -1,14 +1,14 @@
 "use client";
 
+import { isProduction } from "@/lib/constants";
+import { LoginButton } from "@auth//auth-form";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/client-components";
-import { isProduction } from "@/lib/constants";
-import { LoginButton } from "@auth/_components/auth-form";
+} from "@itell/ui/client";
 import { useState } from "react";
 
 export const PageUnauthorizedModal = () => {

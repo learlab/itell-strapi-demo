@@ -1,5 +1,8 @@
 "use client";
 
+import { useConstructedResponse } from "@/components/provider/page-provider";
+import { Spinner } from "@/components/spinner";
+import { clearSummaryLocal } from "@/components/summary/summary-input";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -7,6 +10,12 @@ import { getPageStatus } from "@/lib/page-status";
 import { tocChapters } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
+import {
+	Button,
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { Page } from "contentlayer/generated";
 import {
@@ -19,15 +28,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AdminTools } from "./admin-tools";
-import {
-	Button,
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "./client-components";
-import { useConstructedResponse } from "./provider/page-provider";
-import { Spinner } from "./spinner";
-import { clearSummaryLocal } from "./summary/summary-input";
 
 const AnchorLink = ({
 	text,

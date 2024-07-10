@@ -1,7 +1,7 @@
 "use client";
 
 import { CommandMenu } from "@/components/command-menu";
-import ThemeToggle from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { UserAccountNav } from "@/components/user-account-nav";
 import { useLockBody } from "@itell/core/hooks";
 import { cn } from "@itell/core/utils";
@@ -32,7 +32,7 @@ export const SidebarItem = ({ item }: { item: SidebarNavItem }) => {
 		<Link href={item.disabled ? "/" : item.href}>
 			<span
 				className={cn(
-					"group flex items-center px-6 h-12 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+					"group flex items-center px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
 					path === item.href ? "bg-accent" : "transparent",
 					item.disabled && "cursor-not-allowed opacity-80",
 				)}

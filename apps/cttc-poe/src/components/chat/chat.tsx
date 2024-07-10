@@ -1,10 +1,10 @@
+import { Message } from "@itell/core/chatbot";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/client-components";
-import { Message } from "@itell/core/chatbot";
+} from "@itell/ui/client";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";

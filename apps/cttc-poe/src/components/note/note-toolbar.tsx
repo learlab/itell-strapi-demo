@@ -7,11 +7,11 @@ import { createNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
-import { Button } from "../client-components";
 import { Spinner } from "../spinner";
 
 type Props = {

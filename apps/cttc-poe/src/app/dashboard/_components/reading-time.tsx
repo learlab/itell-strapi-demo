@@ -1,9 +1,3 @@
-import {
-	Button,
-	HoverCard,
-	HoverCardContent,
-	HoverCardTrigger,
-} from "@/components/client-components";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { focus_times, summaries } from "@/drizzle/schema";
 import { db, first } from "@/lib/db";
@@ -14,6 +8,12 @@ import {
 } from "@itell/core/dashboard";
 import { ReadingTimeChartParams } from "@itell/core/dashboard";
 import { getDatesBetween } from "@itell/core/utils";
+import {
+	Button,
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@itell/ui/client";
 import {
 	Card,
 	CardContent,
@@ -115,7 +115,7 @@ export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 								<Button
 									variant="link"
 									size="lg"
-									className="pl-0 text-lg flex items-center gap-1"
+									className="pl-0 text-lg xl:text-xl flex items-center gap-1"
 								>
 									Total Reading Time
 									<InfoIcon className="size-4" />

@@ -1,4 +1,3 @@
-import { TextbookPageModal } from "@/components/textbook-page-modal";
 import { summaries } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
@@ -6,11 +5,12 @@ import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
 import { relativeDate } from "@itell/core/utils";
 import { Badge } from "@itell/ui/server";
+import { SummaryBackButton } from "@summary/summary-back-button";
+import { SummaryOperations } from "@summary/summary-operations";
+import { SummaryReviseButton } from "@summary/summary-revise-button";
+import { TextbookPageModal } from "@summary/textbook-page-modal";
 import { and, eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
-import { SummaryBackButton } from "./_components/summary-back-button";
-import { SummaryOperations } from "./_components/summary-operations";
-import { SummaryReviseButton } from "./_components/summary-revise-button";
 
 async function getSummaryForUser(summaryId: number, userId: string) {
 	return first(

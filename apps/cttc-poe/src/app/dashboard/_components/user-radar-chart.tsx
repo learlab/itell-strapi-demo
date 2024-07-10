@@ -7,6 +7,7 @@ import {
 	Radar,
 } from "recharts";
 
+import { BadgeStats } from "@/lib/dashboard";
 import {
 	ChartConfig,
 	ChartContainer,
@@ -14,8 +15,7 @@ import {
 	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "@/components/client-components";
-import { BadgeStats } from "@/lib/dashboard";
+} from "@itell/ui/client";
 
 const chartConfig = {
 	user: {
@@ -124,6 +124,7 @@ export const UserRadarChart = ({
 									{...props}
 								>
 									<tspan
+										className="lg:text-sm"
 										fill={
 											pct < 0
 												? "var(--color-user)"
@@ -136,7 +137,7 @@ export const UserRadarChart = ({
 										x={x}
 										dy={"1rem"}
 										fontSize={12}
-										className="fill-muted-foreground"
+										className="fill-muted-foreground lg:text-sm"
 									>
 										{d.label}
 									</tspan>

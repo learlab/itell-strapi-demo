@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "../client-components";
+import { Button } from "@itell/ui/client";
 import { useChat } from "../provider/page-provider";
 
 type Props = {

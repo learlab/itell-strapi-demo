@@ -3,9 +3,9 @@ import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { delay, redirectWithSearchParams } from "@/lib/utils";
-import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
-import { UserProgress } from "@dashboard/_components/user-progress";
-import { UserStatistics } from "@dashboard/_components/user-statistics";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { UserProgress } from "@dashboard//user-progress";
+import { UserStatistics } from "@dashboard//user-statistics";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { Card, CardContent } from "@itell/ui/server";
 

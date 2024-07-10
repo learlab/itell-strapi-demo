@@ -1,4 +1,4 @@
-import { MainMdx } from "./mdx";
+import { MainMdx } from "@/components/mdx";
 
 export const PageContent = ({ code }: { code: string }) => {
 	return <MainMdx code={code} id="page-content" />;

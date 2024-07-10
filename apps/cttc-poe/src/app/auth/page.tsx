@@ -1,12 +1,12 @@
-import { Button } from "@/components/client-components";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
+import { AuthForm, LogoutButton } from "@auth/auth-form";
+import { KnowledgeCarousel } from "@auth/knowledge-carousel";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
-import { AuthForm, LogoutButton } from "./_components/auth-form";
-import { KnowledgeCarousel } from "./_components/knowledge-carousel";
 
 type PageProps = {
 	searchParams?: unknown;

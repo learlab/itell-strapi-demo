@@ -6,7 +6,7 @@ import { CommandMenu } from "./command-menu";
 import { ContinueReading } from "./continue-reading";
 import { ScrollProgress } from "./scroll-progress";
 import { SiteNav } from "./site-nav";
-import ThemeToggle from "./theme-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { UserAccountNav } from "./user-account-nav";
 
 type Props = {

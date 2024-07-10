@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/client-components";
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
+import { Avatar, AvatarImage } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Avatar, AvatarImage } from "../client-components";
 import { useChat } from "../provider/page-provider";
 import { Spinner } from "../spinner";
 import { UserAvatar } from "../user-avatar";

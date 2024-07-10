@@ -1,18 +1,18 @@
 "use client";
 
+import { isProduction } from "@/lib/constants";
+import { firstSummaryPage } from "@/lib/pages";
+import { makePageHref } from "@/lib/utils";
 import {
 	Dialog,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/client-components";
-import { isProduction } from "@/lib/constants";
-import { firstSummaryPage } from "@/lib/pages";
-import { makePageHref } from "@/lib/utils";
+} from "@itell/ui/client";
+import { Button } from "@itell/ui/client";
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "../client-components";
 
 type Props = {
 	userPageSlug: string | null;

@@ -1,6 +1,6 @@
+import { StatusButton } from "@itell/ui/client";
 import { PencilIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import { StatusButton } from "../client-components";
 import { Spinner } from "../spinner";
 
 export const SubmitButton = ({ answered }: { answered: boolean }) => {

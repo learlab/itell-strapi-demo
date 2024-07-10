@@ -1,8 +1,9 @@
-import react from "@vitejs/plugin-react";
 import path from "node:path";
-import dts from "vite-plugin-dts";
+import react from "@vitejs/plugin-react";
+import banner from "rollup-plugin-banner2";
 import tailwindcss from "tailwindcss";
 import { UserConfigExport, defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 const app = async (): Promise<UserConfigExport> => {
 	return defineConfig({
@@ -38,9 +39,22 @@ const app = async (): Promise<UserConfigExport> => {
 						next: "next",
 					},
 				},
+				plugins: [
+					banner((chunk) => {
+						if (
+							chunk.fileName === "client.cjs.js" ||
+							chunk.fileName === "client.es.js"
+						) {
+							return '"use client";\n';
+						}
+
+						return "";
+					}),
+				],
 			},
 		},
 	});
 };
+
 // https://vitejs.dev/config/
 export default app;

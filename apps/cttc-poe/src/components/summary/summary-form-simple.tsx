@@ -5,6 +5,7 @@ import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
+import { StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { User } from "lucia";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
@@ -12,7 +13,6 @@ import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { StatusButton } from "../client-components";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {

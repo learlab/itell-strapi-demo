@@ -5,13 +5,13 @@ import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { db } from "@/lib/db";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
-import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { cn, groupby } from "@itell/core/utils";
 import { Card, CardContent, CardDescription } from "@itell/ui/server";
+import { QuestionChart } from "@questions/question-chart";
 import { count, eq } from "drizzle-orm";
 import { FrownIcon, LaughIcon, LightbulbIcon, MehIcon } from "lucide-react";
 import pluralize from "pluralize";
-import { QuestionChart } from "./_components/question-chart";
 
 export const metadata = Meta.questions;
 

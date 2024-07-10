@@ -2,11 +2,11 @@
 
 import { useSession } from "@/lib/auth/context";
 import { cn } from "@itell/core/utils";
+import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { User } from "lucia";
 import { CopyIcon } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "../client-components";
 
 type Props = {
 	user: User;

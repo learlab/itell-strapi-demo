@@ -1,13 +1,13 @@
 "use client";
 import { useSession } from "@/lib/auth/context";
 import { getPageStatus } from "@/lib/page-status";
-import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
-} from "../client-components";
+} from "@itell/ui/client";
+import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 
 type Props = {
 	pageSlug: string;

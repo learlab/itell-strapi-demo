@@ -3,12 +3,12 @@ import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstSummaryPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
-import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
+import { SummaryChart } from "@summaries/summary-chart";
+import { SummaryList } from "@summaries/summary-list";
 import { redirect } from "next/navigation";
-import { SummaryChart } from "./_components/summary-chart";
-import { SummaryList } from "./_components/summary-list";
 
 export default async function () {
 	const { user } = await getSession();

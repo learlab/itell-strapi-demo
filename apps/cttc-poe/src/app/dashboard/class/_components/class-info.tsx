@@ -1,8 +1,8 @@
-import { Progress } from "@/components/client-components";
 import { Spinner } from "@/components/spinner";
 import { getClassStudentStats } from "@/lib/dashboard/class";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getPageData } from "@/lib/utils";
+import { Progress } from "@itell/ui/client";
 import {
 	Card,
 	CardContent,

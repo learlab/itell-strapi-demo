@@ -1,6 +1,14 @@
 "use client";
 
 import { logout } from "@/lib/auth/actions";
+import {
+	Button,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@itell/ui/client";
 import { User } from "lucia";
 import {
 	ChevronDownIcon,
@@ -14,14 +22,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-	Button,
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "./client-components";
 import { Spinner } from "./spinner";
 import { UserAvatar } from "./user-avatar";
 

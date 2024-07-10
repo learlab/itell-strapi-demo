@@ -1,5 +1,5 @@
-import { DashboardHeader, DashboardShell } from "@dashboard/_components/shell";
-import { ClassInfo } from "./_components/class-info";
+import { ClassInfo } from "@class/class-info";
+import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 
 export default function () {
 	return (

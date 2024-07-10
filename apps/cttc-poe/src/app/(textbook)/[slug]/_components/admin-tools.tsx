@@ -1,4 +1,10 @@
 "use client";
+import { useConstructedResponse } from "@/components/provider/page-provider";
+import { Spinner } from "@/components/spinner";
+import { Condition } from "@/lib/control/condition";
+import { allSummaryPagesSorted } from "@/lib/pages";
+import { resetUser, updateUser } from "@/lib/user/actions";
+import { makePageHref } from "@/lib/utils";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -28,16 +34,9 @@ import {
 	SheetTitle,
 	SheetTrigger,
 	Switch,
-} from "@/components/client-components";
-import { Condition } from "@/lib/control/condition";
-import { allSummaryPagesSorted } from "@/lib/pages";
-import { resetUser, updateUser } from "@/lib/user/actions";
-import { makePageHref } from "@/lib/utils";
+} from "@itell/ui/client";
 import { SettingsIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { useConstructedResponse } from "./provider/page-provider";
-import { Spinner } from "./spinner";
 
 type Props = {
 	userId: string;

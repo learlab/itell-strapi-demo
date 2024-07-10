@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/client-components";
+import { Button } from "@itell/ui/client";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
-export default function ThemeToggle() {
+export const ThemeToggle = () => {
 	const { setTheme: _setTheme } = useTheme();
 
 	const setTheme = (theme: string) => {
@@ -45,4 +45,4 @@ export default function ThemeToggle() {
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
-}
+};

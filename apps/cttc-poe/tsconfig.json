@@ -18,8 +18,14 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"],
-			"@dashboard/*": ["./src/app/dashboard/*"],
-			"@auth/*": ["./src/app/auth/*"],
+			"@textbook/*": ["./src/app/(textbook)/[slug]/_components/*"],
+			"@dashboard/*": ["./src/app/dashboard/_components/*"],
+			"@summaries/*": ["./src/app/dashboard/summaries/_components/*"],
+			"@settings/*": ["./src/app/dashboard/settings/_components/*"],
+			"@questions/*": ["./src/app/dashboard/questions/_components/*"],
+			"@class/*": ["./src/app/dashboard/class/_components/*"],
+			"@auth/*": ["./src/app/auth/_components/*"],
+			"@summary/*": ["./src/app/summary/[id]/_components/*"],
 			"react": ["./node_modules/@types/react"],
 			"contentlayer/generated": [".contentlayer/generated"]
 		},
