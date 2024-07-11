@@ -8,7 +8,7 @@ import { and, count, eq, inArray, sql } from "drizzle-orm";
 import { db, first } from "../db";
 
 export const getUserStats = async (id: string) => {
-	const [summary, answers] = await Promise.all([
+	const [summary, answer] = await Promise.all([
 		db
 			.select({
 				languageScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
@@ -35,8 +35,8 @@ export const getUserStats = async (id: string) => {
 		languageScore: summary[0].languageScore || 0,
 		totalSummaries: summary[0].count,
 		totalPassedSummaries: summary[0].passedCount,
-		totalAnswers: answers[0].count,
-		totalPassedAnswers: answers[0].passedCount,
+		totalAnswers: answer[0].count,
+		totalPassedAnswers: answer[0].passedCount,
 	};
 };
 

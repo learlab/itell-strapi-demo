@@ -2,6 +2,7 @@ import { Spinner } from "@/components/spinner";
 import { getClassStudentStats } from "@/lib/dashboard/class";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getPageData } from "@/lib/utils";
+import { median } from "@itell/core/utils";
 import { Progress } from "@itell/ui/client";
 import {
 	Card,
@@ -19,6 +20,26 @@ import { StudentsTable } from "./students-table";
 
 export const ClassInfo = async ({ classId }: { classId: string }) => {
 	const students = await getClassStudentStats(classId);
+	if (students.length === 0) {
+		return (
+			<Card>
+				<CardHeader>
+					<CardTitle>Your Class</CardTitle>
+					<CardDescription>
+						You have no students under class code
+						<span className="font-semibold">{classId}</span>
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<p className="text-muted-foreground">
+						You have no students under this class code. Share this code with
+						your students to get started.
+					</p>
+				</CardContent>
+			</Card>
+		);
+	}
+
 	const studentData: StudentData[] = students.map((s) => {
 		const page = getPageData(s.pageSlug);
 		let progress: StudentData["progress"];
@@ -45,16 +66,8 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 		};
 	});
 
-	studentData.sort((a, b) => a.progress.index - b.progress.index);
-	const mid = Math.floor(studentData.length / 2);
-	const classIndex =
-		students.length % 2 !== 0
-			? studentData[mid].progress.index
-			: (studentData[mid - 1].progress.index +
-					studentData[mid].progress.index) /
-				2;
-
-	const classProgress = (classIndex / allPagesSorted.length) * 100;
+	const classIndex = median(studentData.map((s) => s.progress.index)) || 0;
+	const classProgress = ((classIndex + 1) / allPagesSorted.length) * 100;
 
 	return (
 		<Card>

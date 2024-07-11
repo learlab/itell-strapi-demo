@@ -12,7 +12,7 @@ type Props = {
 export const DashboardBadge = ({ title, icon, className, children }: Props) => {
 	return (
 		<Card className={cn("flex flex-col justify-between", className)}>
-			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+			<CardHeader className="flex flex-row items-center justify-between space-y-0">
 				<CardTitle className="text-base lg:text-lg font-medium">
 					{title}
 				</CardTitle>

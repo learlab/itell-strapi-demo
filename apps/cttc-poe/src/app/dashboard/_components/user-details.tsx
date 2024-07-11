@@ -3,7 +3,7 @@ import { Spinner } from "@/components/spinner";
 import { getOtherStats, getUserStats } from "@/lib/dashboard";
 import { countStudent, getOtherUsers } from "@/lib/dashboard/class";
 import { getPageData } from "@/lib/utils";
-import { cn } from "@itell/core/utils";
+import { cn, median } from "@itell/core/utils";
 import { DashboardBadge, Skeleton } from "@itell/ui/server";
 import {
 	FileTextIcon,
@@ -36,12 +36,7 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 		return pageIndex !== undefined ? pageIndex + 1 : 0;
 	});
 
-	otherProgress.sort((a, b) => a - b);
-	const mid = Math.floor(otherProgress.length / 2);
-	const midProgress =
-		otherProgress.length % 2 !== 0
-			? otherProgress[mid]
-			: (otherProgress[mid - 1] + otherProgress[mid]) / 2;
+	const midProgress = median(otherProgress) || 0;
 
 	const diffs = {
 		totalSummaries: userStats.totalSummaries - otherStats.totalSummaries,
