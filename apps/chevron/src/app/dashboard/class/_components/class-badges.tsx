@@ -18,13 +18,11 @@ export const ClassBadges = async ({ students }: Props) => {
 	return (
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			<DashboardBadge title="Total Summaries" icon={<PencilIcon />}>
-				<div className="text-2xl font-bold">
-					{classStats.totalSummaries.toFixed(2)}
-				</div>
+				<div className="text-2xl font-bold">{classStats.totalSummaries}</div>
 			</DashboardBadge>
 			<DashboardBadge title="Passed Summaries" icon={<FlagIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.totalPassedSummaries.toFixed(2)}
+					{classStats.totalPassedSummaries}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Content Score" icon={<FileTextIcon />}>

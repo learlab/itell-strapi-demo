@@ -52,7 +52,7 @@ export const ReadingTimeChart = ({ data }: Props) => {
 						className="fill-foreground text-base xl:text-lg"
 						fontSize={12}
 						formatter={(value: number) => {
-							if (value === 0) return "";
+							if (Math.round(value) === 0) return "";
 							return `${Math.round(value)} minutes`;
 						}}
 					/>

@@ -26,7 +26,7 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 				<CardHeader>
 					<CardTitle>Your Class</CardTitle>
 					<CardDescription>
-						You have no students under class code
+						You have no students under class code{" "}
 						<span className="font-semibold">{classId}</span>
 					</CardDescription>
 				</CardHeader>

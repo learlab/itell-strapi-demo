@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import pluralize from "pluralize";
 import { Suspense } from "react";
+import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
 
 type Props = {
@@ -93,7 +94,14 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 						"border-destructive": diffs.totalSummaries < 0,
 					})}
 				>
-					<div className="text-2xl font-bold">{userStats.totalSummaries}</div>
+					<div className="flex items-baseline gap-2 h-6 mb-2">
+						<div className="text-2xl font-bold">{userStats.totalSummaries}</div>
+						<TrendChart
+							prev={userStats.totalSummariesLastWeek}
+							current={userStats.totalSummaries}
+							label="Total Summaries"
+						/>
+					</div>
 					<p className="text-xs text-muted-foreground">
 						{diffs.totalSummaries > 0 ? "+" : ""}
 						{Math.round(diffs.totalSummaries)} compared to others
@@ -107,8 +115,15 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 						"border-destructive": diffs.totalPassedSummaries < 0,
 					})}
 				>
-					<div className="text-2xl font-bold">
-						{userStats.totalPassedSummaries}
+					<div className="flex items-baseline gap-2 h-6 mb-2">
+						<div className="text-2xl font-bold">
+							{userStats.totalPassedSummaries}
+						</div>
+						<TrendChart
+							prev={userStats.totalPassedSummariesLastWeek}
+							current={userStats.totalPassedSummaries}
+							label="Passed Summaries"
+						/>
 					</div>
 					<p className="text-xs text-muted-foreground">
 						{diffs.totalPassedSummaries > 0 ? "+" : ""}
@@ -123,10 +138,19 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 						"border-destructive": diffs.contentScore && diffs.contentScore < 0,
 					})}
 				>
-					<div className="text-2xl font-bold">
-						{Number.isNaN(userStats.contentScore)
-							? "NA"
-							: userStats.contentScore.toFixed(2)}
+					<div className="flex items-baseline gap-2 h-6 mb-2">
+						<div className="text-2xl font-bold">
+							{Number.isNaN(userStats.contentScore)
+								? "NA"
+								: userStats.contentScore.toFixed(2)}
+						</div>
+						{userStats.contentScoreLastWeek && (
+							<TrendChart
+								prev={userStats.contentScoreLastWeek}
+								current={userStats.contentScore}
+								label="Content Score"
+							/>
+						)}
 					</div>
 					<p className="text-xs text-muted-foreground">
 						{diffs.contentScore
@@ -146,10 +170,19 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 							diffs.languageScore && diffs.languageScore < 0,
 					})}
 				>
-					<div className="text-2xl font-bold">
-						{Number.isNaN(userStats.languageScore)
-							? "NA"
-							: userStats.languageScore.toFixed(2)}
+					<div className="flex items-baseline gap-2 h-6 mb-2">
+						<div className="text-2xl font-bold">
+							{Number.isNaN(userStats.languageScore)
+								? "NA"
+								: userStats.languageScore.toFixed(2)}
+						</div>
+						{userStats.languageScoreLastWeek && (
+							<TrendChart
+								prev={userStats.languageScoreLastWeek}
+								current={userStats.languageScore}
+								label="Language Score"
+							/>
+						)}
 					</div>
 					<p className="text-xs text-muted-foreground">
 						{diffs.languageScore

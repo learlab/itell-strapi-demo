@@ -12,9 +12,25 @@ export const getUserStats = async (id: string) => {
 		db
 			.select({
 				languageScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
+				languageScoreLastWeek: sql<number>`
+			PERCENTILE_CONT(0.5) within group (
+			  order by ${summaries.languageScore}
+			) FILTER (WHERE ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS')
+		  `,
 				contentScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
+				contentScoreLastWeek: sql<number>`
+			PERCENTILE_CONT(0.5) within group (
+			  order by ${summaries.contentScore}
+			) FILTER (WHERE ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS')
+		  `,
 				count: count(),
 				passedCount: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
+				countLastWeek: count(
+					sql`CASE WHEN ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS' THEN 1 END`,
+				),
+				passedCountLastWeek: count(
+					sql`CASE WHEN ${summaries.isPassed} AND ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS' THEN 1 END`,
+				),
 			})
 			.from(summaries)
 			.where(eq(summaries.userId, id)),
@@ -33,8 +49,12 @@ export const getUserStats = async (id: string) => {
 	return {
 		contentScore: summary[0].contentScore || 0,
 		languageScore: summary[0].languageScore || 0,
+		contentScoreLastWeek: summary[0].contentScoreLastWeek || undefined,
+		languageScoreLastWeek: summary[0].languageScoreLastWeek || undefined,
 		totalSummaries: summary[0].count,
 		totalPassedSummaries: summary[0].passedCount,
+		totalSummariesLastWeek: summary[0].countLastWeek,
+		totalPassedSummariesLastWeek: summary[0].passedCountLastWeek,
 		totalAnswers: answer[0].count,
 		totalPassedAnswers: answer[0].passedCount,
 	};
