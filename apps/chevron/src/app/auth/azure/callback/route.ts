@@ -1,29 +1,26 @@
-import { oauthAccounts, users } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth";
-import { googleProvider } from "@/lib/auth/google";
+import { azureProvider } from "@/lib/auth/azure";
 import { Condition } from "@/lib/control/condition";
-import { db } from "@/lib/db";
 import { createUserTx, getUserByProvider } from "@/lib/user/actions";
 import { reportSentry } from "@/lib/utils";
-import { generateIdFromEntropySize } from "lucia";
+import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { readGoogleOAuthState } from "../state";
+import { readAzureOAuthState } from "../state";
 
-type GoogleUser = {
-	id: string;
-	name: string;
-	picture: string;
-	email: string;
+type AzureUser = {
+	oid: string;
+	preferred_username: string;
+	email?: string;
 };
 
-export async function GET(req: Request) {
+export const GET = async (req: Request) => {
 	const url = new URL(req.url);
 	const state = url.searchParams.get("state");
 	const code = url.searchParams.get("code");
 	const { state: storedState, codeVerifier: storedCodeVerifier } =
-		readGoogleOAuthState();
+		readAzureOAuthState();
 
 	if (
 		!code ||
@@ -36,38 +33,27 @@ export async function GET(req: Request) {
 	}
 
 	try {
-		const tokens = await googleProvider.validateAuthorizationCode(
+		const tokens = await azureProvider.validateAuthorizationCode(
 			code,
 			storedCodeVerifier,
 		);
-		const accessToken = tokens.accessToken();
-		const googleUserResponse = await fetch(
-			"https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
-			{
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			},
-		);
-		const googleUser = (await googleUserResponse.json()) as GoogleUser;
-
+		const idToken = tokens.idToken();
+		const azureUser = jwtDecode(idToken) as AzureUser;
 		let user = await getUserByProvider({
-			provider_id: "google",
-			provider_user_id: googleUser.id,
+			provider_id: "azure",
+			provider_user_id: azureUser.oid,
 		});
 
 		if (!user) {
 			user = await createUserTx({
 				user: {
-					name: googleUser.name,
-					image: googleUser.picture,
-					email: googleUser.email,
+					name: azureUser.preferred_username,
+					email: azureUser.email,
 					condition: Condition.STAIRS,
-					role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
+					role: env.ADMINS?.includes(azureUser.email || "") ? "admin" : "user",
 				},
-				provider_id: "google",
-				provider_user_id: googleUser.id,
+				provider_id: "azure",
+				provider_user_id: azureUser.oid,
 			});
 		}
 
@@ -85,8 +71,8 @@ export async function GET(req: Request) {
 			},
 		});
 	} catch (error) {
-		console.log("google oauth error", error);
-		reportSentry("google oauth error", { error });
+		console.log("azure oauth error", error);
+		reportSentry("azure oauth error", { error });
 		return new Response(null, {
 			status: 302,
 			headers: {
@@ -94,4 +80,4 @@ export async function GET(req: Request) {
 			},
 		});
 	}
-}
+};

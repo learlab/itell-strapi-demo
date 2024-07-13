@@ -87,7 +87,6 @@ export const users = pgTable("users", {
 	image: text("image"),
 	pageSlug: text("page_slug"),
 	timeZone: text("time_zone"),
-	googleId: text("google_id"),
 	email: text("email"),
 	role: text("role").default("user").notNull(),
 	condition: text("condition").notNull(),
@@ -98,6 +97,7 @@ export const users = pgTable("users", {
 });
 
 export type User = InferSelectModel<typeof users>;
+export type CreateUserInput = InferInsertModel<typeof users>;
 
 export const sessions = pgTable(
 	"sessions",
@@ -115,6 +115,25 @@ export const sessions = pgTable(
 	(table) => {
 		return {
 			sessions_user_id_idx: index("sessions_user_id_idx").on(table.userId),
+		};
+	},
+);
+
+export const oauthAccounts = pgTable(
+	"oauth_accounts",
+	{
+		provider_id: text("provider_id").notNull(),
+		provider_user_id: text("provider_user_id").notNull(),
+		user_id: text("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+	},
+	(table) => {
+		return {
+			oauth_accounts_pkey: primaryKey({
+				columns: [table.provider_id, table.provider_user_id],
+				name: "oauth_accounts_pk",
+			}),
 		};
 	},
 );

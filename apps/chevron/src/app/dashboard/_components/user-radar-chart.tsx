@@ -201,7 +201,7 @@ const getRelativePct = (a: number, b: number) => {
 
 const scale = (a: number, b: number) => {
 	if (Math.abs(b) < Number.EPSILON) {
-		return 2;
+		return a === 0 ? undefined : 2;
 	}
 
 	return a / Math.abs(b);

@@ -1,7 +1,7 @@
 import { PageLink } from "@/components/page-link";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
-import { allPagesSorted, firstSummaryPage } from "@/lib/pages";
+import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { groupby } from "@itell/core/utils";
@@ -28,10 +28,10 @@ export default async function () {
 					<CardContent>
 						You have not made any summary yet. Start with{" "}
 						<PageLink
-							pageSlug={firstSummaryPage.page_slug}
+							pageSlug={firstPage.page_slug}
 							className="underline font-medium"
 						>
-							{firstSummaryPage.title}
+							{firstPage.title}
 						</PageLink>
 						!
 					</CardContent>

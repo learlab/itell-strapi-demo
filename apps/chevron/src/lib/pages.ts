@@ -9,11 +9,13 @@ export const allPagesSorted = allPages.sort((a, b) => {
 	return a.section - b.section;
 });
 
-export const firstPage = allPagesSorted[0];
-export const firstSummaryPage = allPagesSorted[1];
 export const allSummaryPagesSorted = allPagesSorted.filter(
 	(page) => page.summary,
 );
+export const firstSummaryPage = allSummaryPagesSorted.find(
+	(page) => page.summary,
+);
+export const firstPage = firstSummaryPage || allPagesSorted[0];
 
 export const isLastPage = (slug: string) => {
 	const lastPage = allPagesSorted[allPagesSorted.length - 1];

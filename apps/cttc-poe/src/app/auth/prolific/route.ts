@@ -88,6 +88,7 @@ export async function GET(req: Request): Promise<Response> {
 					condition,
 					name: username,
 					prolificId: pid,
+					classId: "qiushi_class",
 					role: "user",
 				})
 				.returning();

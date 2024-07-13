@@ -13,12 +13,7 @@ type PageProps = {
 };
 
 const ErrorDict: Record<string, string> = {
-	google_oauth:
-		"A problem occurred while logging in with Google. Please try again later.",
-	prolific_oauth:
-		"A problem occurred while logging in with Prolific. Please try again later.",
-	prolific_missing_pid: "Please enter a valid Prolific ID.",
-	prolific_wrong_pid: "Please use the same Prolific ID you used to sign up.",
+	oauth: "A problem occurred while logging in. Please try again later.",
 };
 
 export default async function ({ searchParams }: PageProps) {
@@ -29,9 +24,8 @@ export default async function ({ searchParams }: PageProps) {
 	if (error) {
 		if (error in ErrorDict) {
 			errorMessage = ErrorDict[error];
-		} else if (error.startsWith("prolific_existing_pid_")) {
-			const storedPid = error.replace("prolific_existing_pid_", "");
-			errorMessage = `Please use the same Prolific ID you used to sign up (${storedPid}).`;
+		} else {
+			errorMessage = "An internal error occurred. Please try again later.";
 		}
 	}
 

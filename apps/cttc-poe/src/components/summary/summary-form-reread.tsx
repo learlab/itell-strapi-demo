@@ -14,7 +14,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { useKeydown, usePortal, useTimer } from "@itell/core/hooks";
+import { useKeystroke, usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -48,7 +48,7 @@ const driverObj = driver();
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const prevInput = useRef<string | undefined>();
-	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const { chunks } = useConstructedResponse((state) => ({
 		chunks: state.chunkSlugs,

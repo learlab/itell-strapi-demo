@@ -3,9 +3,7 @@ import { setGoogleOAuthState } from "./state";
 
 export async function GET(): Promise<Response> {
 	const { state, codeVerifier } = setGoogleOAuthState();
-	const url = await googleProvider.createAuthorizationURL(state, codeVerifier, {
-		scopes: ["openid", "profile", "email"],
-	});
-
+	const url = googleProvider.createAuthorizationURL(state, codeVerifier);
+	url.addScopes("openid", "profile", "email");
 	return Response.redirect(url);
 }

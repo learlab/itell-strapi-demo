@@ -17,6 +17,7 @@ export const AuthForm = () => {
 			</div>
 			<div className="flex flex-col gap-2">
 				<GoogleLoginButton />
+				<OutlookLoginButton />
 			</div>
 		</div>
 	);
@@ -48,6 +49,36 @@ export const GoogleLoginButton = () => {
 				/>
 			)}
 			<span>Google</span>
+		</Button>
+	);
+};
+
+export const OutlookLoginButton = () => {
+	const [pending, startTransition] = useTransition();
+	const router = useRouter();
+
+	return (
+		<Button
+			onClick={() => {
+				startTransition(() => {
+					router.push("/auth/azure");
+				});
+			}}
+			variant={"outline"}
+			disabled={pending}
+		>
+			{pending ? (
+				<Spinner className="size-4 mr-2" />
+			) : (
+				<Image
+					alt="Outlook Icon"
+					src="/icons/outlook.png"
+					width={24}
+					height={24}
+					className="mr-2"
+				/>
+			)}
+			<span>Outlook</span>
 		</Button>
 	);
 };

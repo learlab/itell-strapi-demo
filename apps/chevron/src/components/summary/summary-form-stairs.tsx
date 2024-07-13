@@ -22,7 +22,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { useKeydown, usePortal, useTimer } from "@itell/core/hooks";
+import { useKeystroke, usePortal, useTimer } from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -113,7 +113,7 @@ const goToQuestion = (question: StairsQuestion) => {
 };
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
-	const { ref, data: keystrokes, clear: clearKeystroke } = useKeydown();
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const initialState: State = {
 		prevInput: undefined,
 		error: null,

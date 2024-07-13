@@ -1,7 +1,7 @@
 "use client";
 
 import { isProduction } from "@/lib/constants";
-import { firstSummaryPage } from "@/lib/pages";
+import { firstPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import {
 	Dialog,
@@ -20,7 +20,7 @@ type Props = {
 
 export const PageLockedModal = ({ userPageSlug }: Props) => {
 	const [open, setOpen] = useState(true);
-	const href = makePageHref(userPageSlug || firstSummaryPage.page_slug);
+	const href = makePageHref(userPageSlug || firstPage.page_slug);
 	return (
 		<Dialog
 			open={open}
