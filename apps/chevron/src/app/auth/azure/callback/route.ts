@@ -12,6 +12,7 @@ import { readAzureOAuthState } from "../state";
 type AzureUser = {
 	oid: string;
 	preferred_username: string;
+	name: string;
 	email?: string;
 };
 
@@ -47,7 +48,7 @@ export const GET = async (req: Request) => {
 		if (!user) {
 			user = await createUserTx({
 				user: {
-					name: azureUser.preferred_username,
+					name: azureUser.name || azureUser.preferred_username,
 					email: azureUser.email,
 					condition: Condition.STAIRS,
 					role: env.ADMINS?.includes(azureUser.email || "") ? "admin" : "user",
