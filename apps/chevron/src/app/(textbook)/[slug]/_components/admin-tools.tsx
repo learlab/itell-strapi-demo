@@ -1,5 +1,5 @@
 "use client";
-import { useConstructedResponse } from "@/components/provider/page-provider";
+import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/control/condition";
 import { allSummaryPagesSorted } from "@/lib/pages";
@@ -81,7 +81,7 @@ const RestartTextbook = ({ userId }: { userId: string }) => {
 };
 
 export const AdminTools = ({ userId, condition }: Props) => {
-	const finishPage = useConstructedResponse((state) => state.finishPage);
+	const finishPage = useQuestion((state) => state.finishPage);
 	const [pending, startTransition] = useTransition();
 
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

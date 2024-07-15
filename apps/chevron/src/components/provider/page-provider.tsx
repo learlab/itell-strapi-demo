@@ -5,10 +5,10 @@ import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
 import { ChatState, ChatStore, createChatStore } from "@/lib/store/chat";
 import {
-	ConstructedResponseState,
-	ConstructedResponseStore,
-	createConstructedResponseStore,
-} from "@/lib/store/constructed-response";
+	QuestionState,
+	QuestionStore,
+	createQuestionStore,
+} from "@/lib/store/question";
 import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 
@@ -22,7 +22,7 @@ type Props = {
 };
 
 const PageContext = createContext<{
-	constructedResponseStore: ConstructedResponseStore;
+	questionStore: QuestionStore;
 	chatStore: ChatStore;
 } | null>(null);
 
@@ -36,9 +36,9 @@ export const PageProvider = ({
 }: Props) => {
 	useTrackLastVisitedPage();
 
-	const constructedResponseStoreRef = useRef<ConstructedResponseStore>();
-	if (!constructedResponseStoreRef.current) {
-		constructedResponseStoreRef.current = createConstructedResponseStore(
+	const questionStoreRef = useRef<QuestionStore>();
+	if (!questionStoreRef.current) {
+		questionStoreRef.current = createQuestionStore(
 			pageSlug,
 			chunks,
 			questions,
@@ -54,7 +54,7 @@ export const PageProvider = ({
 	return (
 		<PageContext.Provider
 			value={{
-				constructedResponseStore: constructedResponseStoreRef.current,
+				questionStore: questionStoreRef.current,
 				chatStore: chatStoreRef.current,
 			}}
 		>
@@ -63,12 +63,10 @@ export const PageProvider = ({
 	);
 };
 
-export function useConstructedResponse<T>(
-	selector: (state: ConstructedResponseState) => T,
-): T {
+export function useQuestion<T>(selector: (state: QuestionState) => T): T {
 	const value = useContext(PageContext);
 	if (!value) return {} as T;
-	return useStore(value.constructedResponseStore, selector);
+	return useStore(value.questionStore, selector);
 }
 
 export function useChat<T>(selector: (state: ChatState) => T): T {

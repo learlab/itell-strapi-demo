@@ -1,13 +1,5 @@
-import { ChatLoader } from "@/components/chat/chat-loader";
-import { ConstructedResponseControl } from "@/components/constructed-response/constructed-response-control";
-import { NoteCount } from "@/components/note/note-count";
-import { NoteLoader } from "@/components/note/note-loader";
-import { NoteToolbar } from "@/components/note/note-toolbar";
-import { PageStatus } from "@/components/page-status/page-status";
-import { PageStatusModal } from "@/components/page-status/page-status-modal";
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { PageSummary } from "@/components/summary/page-summary";
 import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
 import { Condition } from "@/lib/control/condition";
@@ -18,11 +10,19 @@ import { getRandomPageQuestions } from "@/lib/question";
 import { ScrollArea } from "@itell/ui/client";
 import { Info } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
+import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
+import { NotePopover } from "@textbook/note-popover";
+import { NoteCount } from "@textbook/note/note-count";
+import { NoteLoader } from "@textbook/note/note-loader";
 import { PageContent } from "@textbook/page-content";
+import { PageInfo } from "@textbook/page-info";
+import { PageStatusModal } from "@textbook/page-status-modal";
+import { PageSummary } from "@textbook/page-summary";
 import { PageTitle } from "@textbook/page-title";
 import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
+import { QuestionControl } from "@textbook/question/question-control";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -48,7 +48,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const userFinished = user?.finished || false;
 	const userPageSlug = user?.pageSlug || null;
 	const userCondition = user?.condition || Condition.STAIRS;
-
 	const pageStatus = getPageStatus({
 		pageSlug,
 		userPageSlug,
@@ -85,7 +84,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
 					<PageContent code={page.body.code} />
-					<NoteToolbar pageSlug={pageSlug} userId={userId} />
+					<NotePopover pageSlug={pageSlug} userId={userId} />
 					<Pager pageIndex={pageIndex} />
 				</section>
 
@@ -95,7 +94,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
 								<PageToc headings={page.headings} />
 								<div className="mt-8 flex flex-col gap-1">
-									<PageStatus pageSlug={pageSlug} />
+									<PageInfo pageSlug={pageSlug} />
 									<NoteCount />
 								</div>
 							</div>
@@ -126,10 +125,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			<ConstructedResponseControl
-				pageSlug={pageSlug}
-				condition={userCondition}
-			/>
+			<QuestionControl pageSlug={pageSlug} condition={userCondition} />
 			<EventTracker userId={userId} pageSlug={pageSlug} chunks={chunks} />
 			<Suspense fallback={<ChatLoader.Skeleton />}>
 				<ChatLoader pageSlug={pageSlug} condition={userCondition} />

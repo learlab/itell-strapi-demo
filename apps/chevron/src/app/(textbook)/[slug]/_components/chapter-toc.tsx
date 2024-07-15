@@ -1,8 +1,7 @@
 "use client";
 
-import { useConstructedResponse } from "@/components/provider/page-provider";
+import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { clearSummaryLocal } from "@/components/summary/summary-input";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -12,6 +11,7 @@ import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
+import { clearSummaryLocal } from "@textbook/summary/summary-input";
 import type { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon, RotateCcwIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ const AnchorLink = ({
 			href={href}
 			className={cn(
 				buttonVariants({ variant: "ghost" }),
-				"flex items-center justify-start gap-2 px-1 py-2",
+				"flex items-center justify-start gap-2 px-1 py-2 xl:text-lg xl:gap-4",
 			)}
 		>
 			{icon}
@@ -114,17 +114,18 @@ export const ChapterToc = ({
 				{isAdmin(userRole) && userId && (
 					<AdminTools userId={userId} condition={condition} />
 				)}
-				<RestartPageButton pageSlug={currentPage.page_slug} />
 				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink
-						icon={<PencilIcon className="size-4" />}
-						text="Write a summary"
+						icon={<PencilIcon className="size-4 xl:size-6" />}
+						text="Summarize"
 						href="#page-summary"
 					/>
 				)}
+				<RestartPageButton pageSlug={currentPage.page_slug} />
+
 				<AnchorLink
-					icon={<ArrowUpIcon className="size-4" />}
-					text="Back to top"
+					icon={<ArrowUpIcon className="size-4 xl:size-6" />}
+					text="Back"
 					href="#page-title"
 				/>
 			</div>
@@ -134,10 +135,10 @@ export const ChapterToc = ({
 
 const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 	const [pending, startTransition] = useTransition();
-	const resetPage = useConstructedResponse((state) => state.resetPage);
+	const resetPage = useQuestion((state) => state.resetPage);
 	return (
 		<Button
-			className="flex justify-start items-center gap-2 px-1 py-2 w-full"
+			className="flex justify-start items-center gap-2 px-1 py-2 w-full xl:text-lg xl:gap-4"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
@@ -149,11 +150,11 @@ const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 			disabled={pending}
 		>
 			{pending ? (
-				<Spinner className="size-4" />
+				<Spinner className="size-4 xl:size-6" />
 			) : (
-				<RotateCcwIcon className="size-4" />
+				<RotateCcwIcon className="size-4 xl:size-6" />
 			)}
-			<span>Reset page</span>
+			<span>Reset</span>
 		</Button>
 	);
 };

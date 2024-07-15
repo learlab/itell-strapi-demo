@@ -40,7 +40,7 @@ export const CommandMenu = () => {
 	}, []);
 
 	return (
-		<search>
+		<search className="hidden md:block">
 			<Button
 				variant="outline"
 				className={cn(

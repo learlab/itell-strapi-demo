@@ -1,13 +1,12 @@
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth";
-import { azureProvider } from "@/lib/auth/azure";
+import { azureProvider, readAzureOAuthState } from "@/lib/auth/provider";
 import { Condition } from "@/lib/control/condition";
 import { createUserTx, getUserByProvider } from "@/lib/user/actions";
 import { reportSentry } from "@/lib/utils";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { readAzureOAuthState } from "../state";
 
 type AzureUser = {
 	oid: string;

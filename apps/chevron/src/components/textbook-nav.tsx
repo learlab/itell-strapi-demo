@@ -10,11 +10,11 @@ import { ThemeToggle } from "./theme-toggle";
 import { UserAccountNav } from "./user-account-nav";
 
 type Props = {
-	scroll?: boolean;
+	scrollProgress?: boolean;
 	read?: boolean;
 };
 
-export const TextbookNav = async ({ scroll, read }: Props) => {
+export const TextbookNav = async ({ scrollProgress, read }: Props) => {
 	const { title } = await getSiteConfig();
 	const { user } = await getSession();
 
@@ -44,7 +44,7 @@ export const TextbookNav = async ({ scroll, read }: Props) => {
 				</div>
 			</div>
 
-			{scroll && <ScrollProgress />}
+			{scrollProgress && <ScrollProgress />}
 		</SiteNav>
 	);
 };

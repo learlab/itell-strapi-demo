@@ -1,5 +1,4 @@
-import { azureProvider } from "@/lib/auth/azure";
-import { setAzureOAuthState } from "./state";
+import { azureProvider, setAzureOAuthState } from "@/lib/auth/provider";
 
 export async function GET(): Promise<Response> {
 	const { state, codeVerifier } = setAzureOAuthState();

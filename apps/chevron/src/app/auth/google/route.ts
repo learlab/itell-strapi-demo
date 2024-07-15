@@ -1,5 +1,4 @@
-import { googleProvider } from "@/lib/auth/google";
-import { setGoogleOAuthState } from "./state";
+import { googleProvider, setGoogleOAuthState } from "@/lib/auth/provider";
 
 export async function GET(): Promise<Response> {
 	const { state, codeVerifier } = setGoogleOAuthState();

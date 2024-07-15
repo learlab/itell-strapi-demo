@@ -1,15 +1,11 @@
-import { oauthAccounts, users } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth";
-import { googleProvider } from "@/lib/auth/google";
+import { googleProvider, readGoogleOAuthState } from "@/lib/auth/provider";
 import { Condition } from "@/lib/control/condition";
-import { db } from "@/lib/db";
 import { createUserTx, getUserByProvider } from "@/lib/user/actions";
 import { reportSentry } from "@/lib/utils";
-import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { readGoogleOAuthState } from "../state";
 
 type GoogleUser = {
 	id: string;
