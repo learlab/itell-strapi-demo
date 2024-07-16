@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -20,7 +21,6 @@ import { KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 import { FinishQuestionButton } from "./finish-question-button";
 import { SubmitButton } from "./submit-button";
 import { AnswerStatusReread } from "./types";

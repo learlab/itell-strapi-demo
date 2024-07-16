@@ -1,5 +1,7 @@
 "use client";
 
+import { useChat } from "@/components/provider/page-provider";
+import { Spinner } from "@/components/spinner";
 import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
@@ -9,8 +11,6 @@ import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
-import { useChat } from "../../../../../components/provider/page-provider";
-import { Spinner } from "../../../../../components/spinner";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 	userId: string;

@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/spinner";
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
@@ -10,7 +11,6 @@ import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useActionStatus } from "use-action-status";
-import { Spinner } from "../../../../../components/spinner";
 
 type Props = {
 	pageSlug: string;

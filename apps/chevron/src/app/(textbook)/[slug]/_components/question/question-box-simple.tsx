@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { useSession } from "@/lib/auth/context";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -7,7 +8,6 @@ import { LoginButton } from "@auth//auth-form";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { Card, CardContent, Warning } from "@itell/ui/server";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 
 type Props = {
 	question: string;

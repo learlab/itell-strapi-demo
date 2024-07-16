@@ -1,5 +1,6 @@
 "use client";
 
+import { useChat, useQuestion } from "@/components/provider/page-provider";
 import { useSession, useSessionAction } from "@/lib/auth/context";
 import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
@@ -42,10 +43,6 @@ import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useImmerReducer } from "use-immer";
-import {
-	useChat,
-	useQuestion,
-} from "../../../../../components/provider/page-provider";
 import { ChatStairs } from "../chat/chat-stairs";
 import { SummaryFeedback } from "./summary-feedback";
 import {

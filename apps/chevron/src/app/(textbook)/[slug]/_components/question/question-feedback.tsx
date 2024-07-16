@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/spinner";
 import { createQuestionFeedback } from "@/lib/question/actions";
 import {
 	Dialog,
@@ -11,7 +12,6 @@ import { Button, Checkbox, Label, TextArea } from "@itell/ui/client";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Spinner } from "../../../../../components/spinner";
 
 type Props = {
 	userId: string;

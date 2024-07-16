@@ -1,4 +1,5 @@
 "use client";
+import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/lib/auth/context";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -13,7 +14,6 @@ import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 
 type Props = {
 	user: User;

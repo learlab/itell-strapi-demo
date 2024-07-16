@@ -1,5 +1,8 @@
 "use client";
 
+import { useChat } from "@/components/provider/page-provider";
+import { Spinner } from "@/components/spinner";
+import { UserAvatar } from "@/components/user-avatar";
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chatbot";
 import { cn, relativeDate } from "@itell/core/utils";
@@ -7,9 +10,6 @@ import { Button } from "@itell/ui/client";
 import { Avatar, AvatarImage } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useChat } from "../../../../../components/provider/page-provider";
-import { Spinner } from "../../../../../components/spinner";
-import { UserAvatar } from "../../../../../components/user-avatar";
 
 type Props = {
 	userName: string | null;

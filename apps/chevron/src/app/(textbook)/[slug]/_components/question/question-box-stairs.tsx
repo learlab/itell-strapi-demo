@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
@@ -27,7 +28,6 @@ import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";

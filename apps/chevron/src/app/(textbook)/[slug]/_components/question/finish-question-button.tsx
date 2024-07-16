@@ -1,9 +1,9 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
 import { Button } from "@itell/ui/client";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 
 export const FinishQuestionButton = ({
 	userId,

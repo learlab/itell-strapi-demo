@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/spinner";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
 import { buttonVariants } from "@itell/ui/server";
@@ -6,7 +7,6 @@ import { AnimatePresence, type AnimationProps, motion } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { Spinner } from "../../../../../components/spinner";
 
 const animationProps = {
 	initial: { "--x": "100%", scale: 0.8 },

@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/lib/auth/context";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
@@ -29,7 +30,6 @@ import { User } from "lucia";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 import {
 	SummaryInput,
 	getSummaryLocal,

@@ -1,11 +1,11 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
 import { QuestionBoxSimple } from "./question-box-simple";

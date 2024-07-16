@@ -1,7 +1,7 @@
+import { Spinner } from "@/components/spinner";
 import { StatusButton } from "@itell/ui/client";
 import { PencilIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import { Spinner } from "../../../../../components/spinner";
 
 export const SubmitButton = ({ answered }: { answered: boolean }) => {
 	const { pending } = useFormStatus();

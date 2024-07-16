@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuestion } from "@/components/provider/page-provider";
 import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { cn } from "@itell/core/utils";
@@ -7,7 +8,6 @@ import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
-import { useQuestion } from "../../../../../components/provider/page-provider";
 
 const animationProps = {
 	initial: { "--x": "100%", scale: 0.8 },

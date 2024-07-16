@@ -1,9 +1,9 @@
 "use client";
+import { Spinner } from "@/components/spinner";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { cn } from "@itell/core/utils";
 import { motion } from "framer-motion";
 import React, { ComponentProps } from "react";
-import { Spinner } from "../../../../../components/spinner";
 
 type Props = {
 	items: StageItem[];

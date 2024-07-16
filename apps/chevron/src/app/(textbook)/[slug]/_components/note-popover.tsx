@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/spinner";
 import {
 	defaultHighlightColor,
 	useNoteColor,
@@ -12,7 +13,6 @@ import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
-import { Spinner } from "../../../../components/spinner";
 
 type Props = {
 	pageSlug: string;

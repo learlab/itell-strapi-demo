@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/spinner";
 import { useSession } from "@/lib/auth/context";
 import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
@@ -19,7 +20,6 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useFormStatus } from "react-dom";
 import { useImmerReducer } from "use-immer";
-import { Spinner } from "../../../../../components/spinner";
 import { NoteDelete } from "./node-delete";
 import NoteColorPicker from "./note-color-picker";
 

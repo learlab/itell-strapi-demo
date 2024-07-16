@@ -1,7 +1,7 @@
 "use client";
 
+import { useChat } from "@/components/provider/page-provider";
 import { Button } from "@itell/ui/client";
-import { useChat } from "../../../../../components/provider/page-provider";
 
 type Props = {
 	onClick: () => void;

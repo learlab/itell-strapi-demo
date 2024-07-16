@@ -1,6 +1,7 @@
 "use client";
 import { TrashIcon } from "lucide-react";
 
+import { Spinner } from "@/components/spinner";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -14,7 +15,6 @@ import {
 	Button,
 } from "@itell/ui/client";
 import { useState } from "react";
-import { Spinner } from "../../../../../components/spinner";
 
 type Props = {
 	// need this prop to tell note-card the modal is open
