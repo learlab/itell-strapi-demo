@@ -1,3 +1,4 @@
+import { TEXTBOOK_SLUG } from "@/config/site";
 import { QAScoreSchema } from "@itell/core/qa";
 import qs from "qs";
 import { z } from "zod";
@@ -87,6 +88,42 @@ const getPageQuestions = async (pageSlug: string) => {
 		filters: {
 			slug: {
 				$eq: pageSlug,
+			},
+		},
+		populate: {
+			Content: {
+				on: {
+					"page.chunk": {
+						fields: ["QuestionAnswerResponse", "Slug"],
+						populate: "*",
+					},
+				},
+			},
+		},
+	});
+
+	const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
+	try {
+		const response = await (await fetch(endpoint)).json();
+		const parsed = PageQuestionsSchema.safeParse(response);
+		if (!parsed.success) {
+			throw new Error("Failed to parse response", parsed.error);
+		}
+
+		return parsed.data;
+	} catch (e) {
+		console.error("Failed to fetch page questions", e);
+		return null;
+	}
+};
+
+export const getAllQuestions = async () => {
+	const q = qs.stringify({
+		filters: {
+			text: {
+				slug: {
+					$eq: TEXTBOOK_SLUG,
+				},
 			},
 		},
 		populate: {

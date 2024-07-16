@@ -1,17 +1,16 @@
-import { PageLink } from "@/components/page-link";
 import { Meta } from "@/config/metadata";
-import { constructed_responses } from "@/drizzle/schema";
+import { ConstructedResponse, constructed_responses } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { db } from "@/lib/db";
+import { getAllQuestions } from "@/lib/question";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { cn, groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
-import { count, eq } from "drizzle-orm";
-import { FrownIcon, LaughIcon, LightbulbIcon, MehIcon } from "lucide-react";
-import pluralize from "pluralize";
 import { QuestionChart } from "@questions/question-chart";
+import { count, eq } from "drizzle-orm";
+import pluralize from "pluralize";
 
 export const metadata = Meta.questions;
 
@@ -41,6 +40,28 @@ export default async function () {
 			value: s.count,
 			fill: `var(--color-${name})`,
 		};
+	});
+
+	const allQuestions = await getAllQuestions();
+	const questions: Array<{
+		chunkSlug: string;
+		question: string;
+		answer: string;
+	}> = [];
+	allQuestions?.data.forEach((page) => {
+		page.attributes.Content.forEach((chunk) => {
+			if (chunk.QuestionAnswerResponse) {
+				const parsed = JSON.parse(chunk.QuestionAnswerResponse) as {
+					question: string;
+					answer: string;
+				};
+				questions.push({
+					chunkSlug: chunk.Slug,
+					question: parsed.question,
+					answer: parsed.answer,
+				});
+			}
+		});
 	});
 
 	return (
@@ -84,28 +105,25 @@ export default async function () {
 														{excellentAnswers.length} excellent
 													</p>
 												</header>
-												{answers.map((a) => (
-													<div
-														key={a.id}
-														className="flex items-baseline justify-between gap-4"
-													>
-														<PageLink
-															pageSlug={a.pageSlug}
-															chunkSlug={a.chunkSlug}
-															className="flex-1 flex items-baseline gap-2 hover:underline"
-														>
-															<LightbulbIcon className="size-4" />
-															<p className="flex-1">{a.text}</p>
-														</PageLink>
-														{a.score === 0 ? (
-															<FrownIcon />
-														) : a.score === 1 ? (
-															<MehIcon />
-														) : (
-															<LaughIcon />
-														)}
-													</div>
-												))}
+												<div className="divide-y divide-border border space-y-2">
+													{questions.map(({ chunkSlug, question, answer }) => {
+														const records = answers.filter(
+															(a) => a.chunkSlug === chunkSlug,
+														);
+														if (records.length === 0) {
+															return null;
+														}
+
+														return (
+															<AnswerItem
+																key={chunkSlug}
+																answers={records}
+																question={question}
+																refAnswer={answer}
+															/>
+														);
+													})}
+												</div>
 											</div>
 										);
 									})}
@@ -118,6 +136,42 @@ export default async function () {
 		</DashboardShell>
 	);
 }
+
+const AnswerItem = ({
+	answers,
+	question,
+	refAnswer,
+}: { answers: ConstructedResponse[]; question: string; refAnswer: string }) => {
+	return (
+		<div className="space-y-2 rounded-md p-4 lg:p-6">
+			<div className="space-y-1">
+				<p>
+					<span className="font-semibold">Question: </span>
+					{question}
+				</p>
+				<p>
+					<span className="font-semibold">Reference Answer: </span>
+					{refAnswer}
+				</p>
+			</div>
+
+			<div className="space-y-1">
+				<p className="font-semibold">User Answers</p>
+				<ul className="space-y-1 font-light leading-snug">
+					{answers.map((answer) => (
+						<li key={answer.id} className="ml-4 flex justify-between">
+							<p>{answer.text}</p>
+							<div className="flex gap-2 text-sm text-muted-foreground">
+								<p>{getLabel(answer.score)}</p>
+								<time>{answer.createdAt.toLocaleDateString()}</time>
+							</div>
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	);
+};
 
 const getAnswers = async (userId: string) => {
 	return await db

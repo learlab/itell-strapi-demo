@@ -23,7 +23,7 @@ export const UserProgress = ({
 		<div className="leading-none">
 			<p className="lg:text-lg font-semibold ">
 				{displayProgress}% completed, {unlockedPages}/{validPages.length}{" "}
-				{pluralize("page", unlockedPages)}
+				{pluralize("page", validPages.length)}
 			</p>
 			<p className="text-muted-foreground">
 				{finished ? (

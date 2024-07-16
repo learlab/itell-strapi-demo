@@ -241,6 +241,10 @@ export const constructed_responses = pgTable(
 	},
 );
 
+export type ConstructedResponse = InferSelectModel<
+	typeof constructed_responses
+>;
+
 export const constructed_responses_feedback = pgTable(
 	"constructed_responses_feedback",
 	{

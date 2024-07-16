@@ -11,6 +11,7 @@ export const SubmitButton = ({ answered }: { answered: boolean }) => {
 			type="submit"
 			disabled={pending}
 			variant={"outline"}
+			className="w-32"
 		>
 			{pending ? (
 				<Spinner className="size-4" />

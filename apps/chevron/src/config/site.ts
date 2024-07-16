@@ -9,3 +9,5 @@ export const getSiteConfig = async () => {
 		favicon: "/images/avatars/favicon.png",
 	};
 };
+
+export const TEXTBOOK_SLUG = "chevron";
