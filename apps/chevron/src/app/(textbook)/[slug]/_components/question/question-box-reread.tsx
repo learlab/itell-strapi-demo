@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSession } from "@/lib/auth/context";
+import { useSession } from "@/components/provider/session-provider";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getQAScore } from "@/lib/question";

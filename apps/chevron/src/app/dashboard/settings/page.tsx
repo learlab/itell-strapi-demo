@@ -4,8 +4,8 @@ import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user/actions";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { JoinClassModal } from "@dashboard//join-class-modal";
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { JoinClassModal } from "@dashboard/join-class-modal";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Separator } from "@itell/ui/client";
 import {
 	Card,

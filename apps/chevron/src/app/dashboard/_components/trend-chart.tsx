@@ -11,15 +11,20 @@ import {
 
 type Props = {
 	label: string;
-	current: number;
-	prev: number;
+	current: number | null;
+	prev: number | null;
 };
 
 export const TrendChart = ({ label, prev, current }: Props) => {
 	const chartConfig = {
 		value: {
 			label,
-			color: current - prev > 0 ? "hsl(var(--chart-2))" : "hsl(var(--chart-1))",
+			color:
+				current && prev
+					? current - prev > 0
+						? "hsl(var(--chart-2))"
+						: "hsl(var(--chart-1))"
+					: "hsl(var(--chart-1))",
 		},
 	} satisfies ChartConfig;
 	const chartData = [

@@ -1,23 +1,25 @@
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { UserDetails } from "@dashboard//user-details";
-import { Card, CardContent, Skeleton } from "@itell/ui/server";
+import { SiteNav } from "@/components/site-nav";
+import {
+	DashboardNav,
+	DashboardSidebar,
+	dashboardConfig,
+} from "@dashboard/dashboard-nav";
+import { Skeleton } from "@itell/ui/server";
 
 export default function () {
 	return (
-		<DashboardShell>
-			<DashboardHeader
-				heading="Learning Statistics"
-				text="Understand your learning journey"
-			/>
-			<Card>
-				<CardContent className="space-y-4">
-					<UserDetails.Skeleton />
-					<div className="space-y-4">
-						<Skeleton className="h-[350px]" />
-						<Skeleton className="h-[350px]" />
-					</div>
-				</CardContent>
-			</Card>
-		</DashboardShell>
+		<div className="min-h-screen">
+			<SiteNav>
+				<DashboardNav items={dashboardConfig.mainNav} />
+			</SiteNav>
+			<div className="grid md:grid-cols-[200px_1fr]">
+				<aside className="hidden w-[200px] flex-col md:flex border-r-2">
+					<DashboardSidebar />
+				</aside>
+				<main className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl">
+					<Skeleton className="w-full h-[600px]" />
+				</main>
+			</div>
+		</div>
 	);
 }

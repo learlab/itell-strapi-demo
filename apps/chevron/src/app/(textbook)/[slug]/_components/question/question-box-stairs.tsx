@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuestion } from "@/components/provider/page-provider";
+import { useSession } from "@/components/provider/session-provider";
 import { Confetti } from "@/components/ui/confetti";
-import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getQAScore } from "@/lib/question";

@@ -14,6 +14,7 @@ import {
 import { and, eq } from "drizzle-orm";
 import { PgUpdateSetSource } from "drizzle-orm/pg-core";
 import { generateIdFromEntropySize } from "lucia";
+import { OAuthProvider } from "../auth/provider";
 import { db, findUser, first } from "../db";
 import {
 	firstPage,
@@ -30,7 +31,7 @@ export const getUser = async (userId: string) => {
 export const getUserByProvider = async ({
 	provider_id,
 	provider_user_id,
-}: { provider_id: string; provider_user_id: string }) => {
+}: { provider_id: OAuthProvider; provider_user_id: string }) => {
 	const joined = first(
 		await db
 			.select()
@@ -53,7 +54,7 @@ export const createUserTx = async ({
 	provider_user_id,
 }: {
 	user: Omit<CreateUserInput, "id">;
-	provider_id: string;
+	provider_id: OAuthProvider;
 	provider_user_id: string;
 }) => {
 	return await db.transaction(async (tx) => {

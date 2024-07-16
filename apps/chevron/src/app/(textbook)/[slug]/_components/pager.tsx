@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "@/lib/auth/context";
+import { useSession } from "@/components/provider/session-provider";
 import { allPagesSorted } from "@/lib/pages";
 import { PageData, getPageData } from "@/lib/utils";
 import { cn } from "@itell/core/utils";

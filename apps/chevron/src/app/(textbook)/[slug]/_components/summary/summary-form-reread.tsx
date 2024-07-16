@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSessionAction } from "@/lib/auth/context";
+import { useSessionAction } from "@/components/provider/session-provider";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";

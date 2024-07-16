@@ -1,6 +1,6 @@
 "use client";
+import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
-import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";

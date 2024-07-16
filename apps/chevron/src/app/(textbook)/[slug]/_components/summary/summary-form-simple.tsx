@@ -1,6 +1,6 @@
 "use client";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSessionAction } from "@/lib/auth/context";
+import { useSessionAction } from "@/components/provider/session-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";

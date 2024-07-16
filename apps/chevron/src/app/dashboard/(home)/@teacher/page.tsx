@@ -1,8 +1,9 @@
+import { ClassInfo } from "@/app/dashboard/(home)/@teacher/_components/class-info";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
-import { ClassInfo } from "@class/class-info";
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { delay } from "@/lib/utils";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
 
@@ -10,6 +11,7 @@ export const metadata = Meta.class;
 
 export default async function () {
 	const { user } = await getSession();
+	await delay(1000);
 
 	if (!user) {
 		return redirect("/auth");

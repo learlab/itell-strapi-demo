@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSession } from "@/lib/auth/context";
+import { useSession } from "@/components/provider/session-provider";
 import { createEvent } from "@/lib/event/actions";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";

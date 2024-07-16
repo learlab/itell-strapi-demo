@@ -5,7 +5,7 @@ import { incrementView } from "@/lib/dashboard/actions";
 import { db } from "@/lib/db";
 import { getAllQuestions } from "@/lib/question";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { cn, groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
 import { QuestionChart } from "@questions/question-chart";

@@ -39,6 +39,7 @@ export const GET = async (req: Request) => {
 		);
 		const idToken = tokens.idToken();
 		const azureUser = jwtDecode(idToken) as AzureUser;
+
 		let user = await getUserByProvider({
 			provider_id: "azure",
 			provider_user_id: azureUser.oid,

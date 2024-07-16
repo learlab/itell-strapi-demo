@@ -74,7 +74,10 @@ export const UserRadarChart = ({
 			label: "Content Score",
 			user: userStats.contentScore,
 			other: otherStats.contentScore,
-			userScaled: scale(userStats.contentScore, otherStats.contentScore),
+			userScaled:
+				userStats.contentScore && otherStats.contentScore
+					? scale(userStats.contentScore, otherStats.contentScore)
+					: undefined,
 			otherScaled: 1,
 			description:
 				"Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
@@ -83,7 +86,10 @@ export const UserRadarChart = ({
 			label: "Language Score",
 			user: userStats.languageScore,
 			other: otherStats.languageScore,
-			userScaled: scale(userStats.languageScore, otherStats.languageScore),
+			userScaled:
+				userStats.languageScore && otherStats.languageScore
+					? scale(userStats.languageScore, otherStats.languageScore)
+					: undefined,
 			otherScaled: 1,
 			description:
 				"Measures the language quality of the summary. The higher the score, the better the summary wording.",
@@ -138,7 +144,8 @@ export const UserRadarChart = ({
 						dataKey="label"
 						tick={({ x, y, textAnchor, value, index, ...props }) => {
 							const d = data[index];
-							const pct = getRelativePct(d.user, d.other);
+							const pct =
+								d.user && d.other ? getRelativePct(d.user, d.other) : undefined;
 							return (
 								<text
 									x={x}

@@ -1,7 +1,12 @@
 import { teachers } from "@/drizzle/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db, first } from "../db";
 
 export const isTeacher = async (userId: string) => {
-	return first(await db.select().from(teachers).where(eq(teachers.id, userId)));
+	return first(
+		await db
+			.select()
+			.from(teachers)
+			.where(and(eq(teachers.id, userId), eq(teachers.isApproved, true))),
+	);
 };

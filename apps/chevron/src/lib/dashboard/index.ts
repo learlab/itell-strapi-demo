@@ -11,14 +11,18 @@ export const getUserStats = async (id: string) => {
 	const [summary, answer] = await Promise.all([
 		db
 			.select({
-				languageScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
-				languageScoreLastWeek: sql<number>`
+				languageScore: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
+				languageScoreLastWeek: sql<number | null>`
 			PERCENTILE_CONT(0.5) within group (
 			  order by ${summaries.languageScore}
 			) FILTER (WHERE ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS')
 		  `,
-				contentScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
-				contentScoreLastWeek: sql<number>`
+				contentScore: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
+				contentScoreLastWeek: sql<number | null>`
 			PERCENTILE_CONT(0.5) within group (
 			  order by ${summaries.contentScore}
 			) FILTER (WHERE ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS')
@@ -47,10 +51,10 @@ export const getUserStats = async (id: string) => {
 	]);
 
 	return {
-		contentScore: summary[0].contentScore || 0,
-		languageScore: summary[0].languageScore || 0,
-		contentScoreLastWeek: summary[0].contentScoreLastWeek || undefined,
-		languageScoreLastWeek: summary[0].languageScoreLastWeek || undefined,
+		contentScore: summary[0].contentScore,
+		languageScore: summary[0].languageScore,
+		contentScoreLastWeek: summary[0].contentScoreLastWeek,
+		languageScoreLastWeek: summary[0].languageScoreLastWeek,
 		totalSummaries: summary[0].count,
 		totalPassedSummaries: summary[0].passedCount,
 		totalSummariesLastWeek: summary[0].countLastWeek,
@@ -92,8 +96,12 @@ export const getOtherStats = async (input: Array<{ id: string }>) => {
 	const [summaryScores, summaryCount, answerCount] = await Promise.all([
 		db
 			.select({
-				languageScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
-				contentScore: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
+				languageScore: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
+				contentScore: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
 			})
 			.from(summaries)
 			.where(inArray(summaries.userId, ids)),
@@ -101,27 +109,35 @@ export const getOtherStats = async (input: Array<{ id: string }>) => {
 		db
 			.with(_summaryCount)
 			.select({
-				total: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_summaryCount.total})`,
-				passed: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_summaryCount.passed})`,
+				total: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${_summaryCount.total})`,
+				passed: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${_summaryCount.passed})`,
 			})
 			.from(_summaryCount),
 
 		db
 			.with(_answerCount)
 			.select({
-				total: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_answerCount.total})`,
-				passed: sql<number>`PERCENTILE_CONT(0.5) within group (order by ${_answerCount.passed})`,
+				total: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${_answerCount.total})`,
+				passed: sql<
+					number | null
+				>`PERCENTILE_CONT(0.5) within group (order by ${_answerCount.passed})`,
 			})
 			.from(_answerCount),
 	]);
 
 	return {
-		contentScore: summaryScores[0].contentScore || 0,
-		languageScore: summaryScores[0].languageScore || 0,
-		totalSummaries: summaryCount[0].total,
-		totalPassedSummaries: summaryCount[0].passed,
-		totalAnswers: answerCount[0].total,
-		totalPassedAnswers: answerCount[0].passed,
+		contentScore: summaryScores[0].contentScore,
+		languageScore: summaryScores[0].languageScore,
+		totalSummaries: summaryCount[0].total || 0,
+		totalPassedSummaries: summaryCount[0].passed || 0,
+		totalAnswers: answerCount[0].total || 0,
+		totalPassedAnswers: answerCount[0].passed || 0,
 	};
 };
 

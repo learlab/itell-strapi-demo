@@ -1,4 +1,5 @@
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { Meta } from "@/config/metadata";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Separator } from "@itell/ui/client";
 
 import {
@@ -15,8 +16,8 @@ export default function DashboardSettingsLoading() {
 	return (
 		<DashboardShell>
 			<DashboardHeader
-				heading="Settings"
-				text="Manage account and website settings"
+				heading={Meta.settings.title}
+				text={Meta.settings.description}
 			/>
 			<Card>
 				<CardHeader className="gap-2">

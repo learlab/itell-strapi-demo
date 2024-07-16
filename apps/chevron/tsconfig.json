@@ -23,7 +23,7 @@
 			"@summaries/*": ["./src/app/dashboard/summaries/_components/*"],
 			"@settings/*": ["./src/app/dashboard/settings/_components/*"],
 			"@questions/*": ["./src/app/dashboard/questions/_components/*"],
-			"@class/*": ["./src/app/dashboard/class/_components/*"],
+			"@class/*": ["src/app/dashboard/(home)/@teacher/_components/*"],
 			"@auth/*": ["./src/app/auth/_components/*"],
 			"@summary/*": ["./src/app/summary/[id]/_components/*"],
 			"react": ["./node_modules/@types/react"],

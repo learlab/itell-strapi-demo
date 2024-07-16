@@ -8,6 +8,8 @@ import {
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
+export type OAuthProvider = "google" | "azure";
+
 export const azureProvider = new MicrosoftEntraId(
 	env.AZURE_TENANT_ID,
 	env.AZURE_CLIENT_ID,

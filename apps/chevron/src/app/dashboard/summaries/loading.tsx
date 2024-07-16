@@ -1,4 +1,4 @@
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent, Skeleton } from "@itell/ui/server";
 import { SummaryItemSkeleton } from "@summaries/summary-list";
 

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 export const Meta = {
-	dashboard: {
+	home: {
 		title: "Learning Statistics",
 		description: "Understand your learning journey",
 	},
@@ -11,10 +11,10 @@ export const Meta = {
 	},
 	settings: {
 		title: "Settings",
-		description: "Manage account and website settings",
+		description: "Manage account settings",
 	},
 	class: {
-		title: "Manage Your Class",
+		title: "Class Statistics",
 		description: "View students' progress",
 	},
 	student: {

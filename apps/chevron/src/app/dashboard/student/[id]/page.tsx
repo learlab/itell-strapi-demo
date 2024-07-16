@@ -5,9 +5,9 @@ import { getUserTeacherStatus } from "@/lib/dashboard";
 import { routes } from "@/lib/navigation";
 import { getUser } from "@/lib/user/actions";
 import { getPageData } from "@/lib/utils";
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { UserProgress } from "@dashboard//user-progress";
-import { UserStatistics } from "@dashboard//user-statistics";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { UserProgress } from "@dashboard/user-progress";
+import { UserStatistics } from "@dashboard/user-statistics";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { Errorbox } from "@itell/ui/server";
 import {

@@ -3,7 +3,7 @@ import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
-import { DashboardHeader, DashboardShell } from "@dashboard//shell";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
 import { SummaryChart } from "@summaries/summary-chart";

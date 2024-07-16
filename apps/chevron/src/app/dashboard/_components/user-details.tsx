@@ -140,9 +140,9 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 				>
 					<div className="flex items-baseline gap-2 h-6 mb-2">
 						<div className="text-2xl font-bold">
-							{Number.isNaN(userStats.contentScore)
-								? "NA"
-								: userStats.contentScore.toFixed(2)}
+							{userStats.contentScore
+								? userStats.contentScore.toFixed(2)
+								: "NA"}
 						</div>
 						{userStats.contentScoreLastWeek && (
 							<TrendChart
@@ -172,9 +172,9 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 				>
 					<div className="flex items-baseline gap-2 h-6 mb-2">
 						<div className="text-2xl font-bold">
-							{Number.isNaN(userStats.languageScore)
-								? "NA"
-								: userStats.languageScore.toFixed(2)}
+							{userStats.languageScore
+								? userStats.languageScore.toFixed(2)
+								: "NA"}
 						</div>
 						{userStats.languageScoreLastWeek && (
 							<TrendChart

@@ -1,9 +1,13 @@
+import { sessions, users } from "@/drizzle/schema";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia, Session as LuciaSession, User as LuciaUser } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import "server-only";
+import { db } from "../db";
 import { reportSentry } from "../utils";
-import { adapter } from "./adapter";
+
+const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {

@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem } from "@itell/ui/client";
-import { ChatInputStairs } from "./chat-input-stairs";
-import { ChatMessages } from "./chat-messages";
+import { ChatInputStairs } from "./chat/chat-input-stairs";
+import { ChatMessages } from "./chat/chat-messages";
 
 type Props = {
 	userId: string;

@@ -27,12 +27,14 @@ export const ClassBadges = async ({ students }: Props) => {
 			</DashboardBadge>
 			<DashboardBadge title="Content Score" icon={<FileTextIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.contentScore.toFixed(2)}
+					{classStats.contentScore ? classStats.contentScore.toFixed(2) : "NA"}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Language Score" icon={<WholeWordIcon />}>
 				<div className="text-2xl font-bold">
-					{classStats.languageScore.toFixed(2)}
+					{classStats.languageScore
+						? classStats.languageScore.toFixed(2)
+						: "NA"}
 				</div>
 			</DashboardBadge>
 			<DashboardBadge title="Answers" icon={<PencilIcon />}>

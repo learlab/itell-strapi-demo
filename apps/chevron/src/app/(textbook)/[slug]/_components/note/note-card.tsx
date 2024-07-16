@@ -1,7 +1,7 @@
 "use client";
 
+import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
-import { useSession } from "@/lib/auth/context";
 import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/lib/store/note";
