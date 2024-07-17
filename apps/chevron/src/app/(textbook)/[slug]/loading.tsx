@@ -1,4 +1,4 @@
-import { lucia } from "@/lib/auth";
+import { lucia } from "@/lib/auth/lucia";
 import { Condition } from "@/lib/control/condition";
 import { allPagesSorted } from "@/lib/pages";
 import { Skeleton } from "@itell/ui/server";

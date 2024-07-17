@@ -66,24 +66,23 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				<span>On this page</span>
 			</p>
 
-			<ol className="mt-2 space-y-2 list-none text-foreground/70 tracking-tight">
+			<ol className="mt-2 list-none text-foreground/70 tracking-tight">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
-						<li key={heading.slug}>
-							<a
-								data-level={heading.level}
-								href={`#${heading.slug}`}
-								className={cn(
-									"hover:underline inline-flex rounded-md py-0.5 px-1 transition-colors ease-out delay-150",
-									{
-										"text-base pl-1": heading.level === "two",
-										"text-sm pl-3": heading.level === "three",
-										"text-sm pl-5": heading.level === "four",
-										" text-sm pl-6": heading.level === "other",
-									},
-								)}
-							>
+						<li
+							key={heading.slug}
+							className={cn(
+								"hover:underline inline-flex py-0.5 px-1 my-1 transition-colors ease-out delay-150 ",
+								{
+									"text-base ml-2": heading.level === "two",
+									"text-sm ml-4": heading.level === "three",
+									"text-sm ml-5": heading.level === "four",
+									" text-sm ml-6": heading.level === "other",
+								},
+							)}
+						>
+							<a data-level={heading.level} href={`#${heading.slug}`}>
 								{heading.text}
 							</a>
 						</li>

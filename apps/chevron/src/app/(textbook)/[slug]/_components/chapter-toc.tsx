@@ -97,7 +97,7 @@ export const ChapterToc = ({
 								onClick={() => navigatePage(p.page_slug)}
 								disabled={(pending || !visible) && isProduction}
 								className={cn(
-									"w-full text-left text-balance inline-flex items-end gap-1 text-lg xl:text-xl ",
+									"w-full text-left text-balance inline-flex justify-between items-start text-lg xl:text-xl xl:gap-4",
 									{
 										"animate-pulse": pending,
 									},

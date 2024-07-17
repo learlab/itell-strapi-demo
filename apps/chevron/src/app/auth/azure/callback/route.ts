@@ -1,5 +1,5 @@
 import { env } from "@/env.mjs";
-import { lucia } from "@/lib/auth";
+import { lucia } from "@/lib/auth/lucia";
 import { azureProvider, readAzureOAuthState } from "@/lib/auth/provider";
 import { Condition } from "@/lib/control/condition";
 import { createUserTx, getUserByProvider } from "@/lib/user/actions";

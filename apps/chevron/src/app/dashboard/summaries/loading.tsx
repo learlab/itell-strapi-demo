@@ -1,3 +1,4 @@
+import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent, Skeleton } from "@itell/ui/server";
 import { SummaryItemSkeleton } from "@summaries/summary-list";
@@ -5,7 +6,10 @@ import { SummaryItemSkeleton } from "@summaries/summary-list";
 export default function () {
 	return (
 		<DashboardShell>
-			<DashboardHeader heading="Summary" text="Manage summaries" />
+			<DashboardHeader
+				heading={Meta.summaries.title}
+				text={Meta.summaries.description}
+			/>
 			<Card>
 				<CardContent className="space-y-4">
 					<div className="space-y-2">

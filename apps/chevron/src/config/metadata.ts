@@ -4,10 +4,13 @@ export const Meta = {
 		title: "Learning Statistics",
 		description: "Understand your learning journey",
 	},
+	summaries: {
+		title: "Summary Submissions",
+		description: "Comprehend the text by summarizing it",
+	},
 	questions: {
 		title: "Question Answering",
-		description:
-			"You will receive content-related questions as assessment items throughout the read",
+		description: "Answer assessment questions throughout the read",
 	},
 	settings: {
 		title: "Settings",

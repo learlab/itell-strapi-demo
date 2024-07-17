@@ -1,6 +1,6 @@
 "use client";
 
-import type { Session } from "@/lib/auth";
+import type { Session } from "@/lib/auth/actions";
 import { User } from "lucia";
 import { createContext, useContext, useMemo, useState } from "react";
 

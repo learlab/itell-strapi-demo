@@ -2,7 +2,6 @@ import { getSession } from "@/lib/auth";
 import { isTeacher } from "@/lib/user/teacher";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
-import React from "react";
 
 type Props = {
 	children: React.ReactNode;

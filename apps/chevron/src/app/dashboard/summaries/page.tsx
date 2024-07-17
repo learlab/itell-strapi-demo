@@ -1,4 +1,5 @@
 import { PageLink } from "@/components/page-link";
+import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstPage } from "@/lib/pages";
@@ -93,7 +94,10 @@ export default async function () {
 
 	return (
 		<DashboardShell>
-			<DashboardHeader heading="Summary" text="Create and manage summaries." />
+			<DashboardHeader
+				heading={Meta.summaries.title}
+				text={Meta.summaries.description}
+			/>
 			<Card className="w-full">
 				<CardContent className="space-y-4">
 					<SummaryChart

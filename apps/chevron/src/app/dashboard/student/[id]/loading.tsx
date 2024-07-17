@@ -1,3 +1,4 @@
+import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserDetails } from "@dashboard/user-details";
 import {
@@ -11,7 +12,10 @@ import {
 export default function () {
 	return (
 		<DashboardShell>
-			<DashboardHeader heading="Student Details" />
+			<DashboardHeader
+				heading={Meta.student.title}
+				text={Meta.student.description}
+			/>
 			<Card>
 				<CardHeader>
 					<CardTitle>

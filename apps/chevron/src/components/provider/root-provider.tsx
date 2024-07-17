@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from "@/components/provider/session-provider";
-import { Session } from "@/lib/auth";
+import type { Session } from "@/lib/auth/actions";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 

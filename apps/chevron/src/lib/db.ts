@@ -2,6 +2,7 @@ import { env } from "@/env.mjs";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import "server-only";
 import * as schema from "../drizzle/schema";
 
 export const client = postgres(env.DATABASE_URL, { prepare: false });

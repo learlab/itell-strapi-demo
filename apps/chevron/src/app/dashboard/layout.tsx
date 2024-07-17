@@ -12,14 +12,12 @@ import {
 
 export default async function DashboardLayout({
 	children,
-	searchParams,
 }: {
 	children: React.ReactNode;
-	searchParams?: unknown;
 }) {
 	const { user } = await getSession();
 	if (!user) {
-		return redirectWithSearchParams("auth", searchParams);
+		return redirectWithSearchParams("auth");
 	}
 
 	if (user?.condition === Condition.SIMPLE) {
