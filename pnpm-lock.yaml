@@ -332,9 +332,6 @@ importers:
       rehype-autolink-headings:
         specifier: ^6.1.1
         version: 6.1.1
-      rehype-katex:
-        specifier: ^6.0.3
-        version: 6.0.3
       rehype-slug:
         specifier: ^5.1.0
         version: 5.1.0
