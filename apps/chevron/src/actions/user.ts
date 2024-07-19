@@ -10,7 +10,6 @@ import {
 	focus_times,
 	oauthAccounts,
 	summaries,
-	teachers,
 	users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
@@ -113,8 +112,7 @@ const getUserActionHandler = memoize(
 /**
  * Get user by OAuth provider
  */
-export const getUserByProviderAction = authedProcedure
-	.createServerAction()
+export const getUserByProviderAction = createServerAction()
 	.input(
 		z.object({
 			provider_id: z.enum(["google", "azure"]),
