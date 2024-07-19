@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-// keycode, cursor position, keydowntime, keyuptime
+// keycode, cursor position, downtime, uptime
 type KeystrokeEvent = [string, number, number, number];
 
 export const useKeystroke = () => {

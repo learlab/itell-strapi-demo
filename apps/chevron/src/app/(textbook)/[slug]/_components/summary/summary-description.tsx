@@ -1,6 +1,6 @@
 import { MainMdx } from "@/components/mdx";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { allGuides } from "contentlayer/generated";
 
 export const SummaryDescription = ({ condition }: { condition: string }) => {

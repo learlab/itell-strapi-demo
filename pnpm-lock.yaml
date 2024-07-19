@@ -241,7 +241,7 @@ importers:
         version: 0.0.31
       arctic:
         specifier: 2.0.0-next.1
-        version: 2.0.0-next.1(@types/node@20.12.7)(happy-dom@10.11.2)(lightningcss@1.24.1)
+        version: 2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)
       cmdk:
         specifier: ^0.2.0
         version: 0.2.1(@types/react@18.2.55)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -257,6 +257,9 @@ importers:
       drizzle-orm:
         specifier: ^0.30.10
         version: 0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.2.55)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.2.55)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0))(zod@3.23.4)
       embla-carousel-react:
         specifier: 8.0.0-rc17
         version: 8.0.0-rc17(react@18.2.0)
@@ -293,6 +296,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      nextjs-better-unstable-cache:
+        specifier: ^1.1.0
+        version: 1.1.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       node-html-parser:
         specifier: ^6.1.12
         version: 6.1.13
@@ -353,6 +359,12 @@ importers:
       zod:
         specifier: ^3.22.2
         version: 3.23.4
+      zsa:
+        specifier: ^0.5.1
+        version: 0.5.1(zod@3.23.4)
+      zsa-react:
+        specifier: ^0.2.2
+        version: 0.2.2(react@18.2.0)(zod@3.23.4)
       zustand:
         specifier: ^4.4.1
         version: 4.5.2(@types/react@18.2.55)(immer@9.0.21)(react@18.2.0)
@@ -1160,10 +1172,10 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2
       react:
-        specifier: ^18.2.0
+        specifier: ^18
         version: 18.2.0
       react-dom:
-        specifier: 18.2.0
+        specifier: ^18
         version: 18.2.0(react@18.2.0)
       tailwind-merge:
         specifier: ^1.14.0
@@ -5116,6 +5128,12 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-zod@0.5.1:
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
@@ -6502,6 +6520,12 @@ packages:
         optional: true
       sass:
         optional: true
+
+  nextjs-better-unstable-cache@1.1.0:
+    resolution: {integrity: sha512-IkN7f5a9oMq135gIkjQs3OnWcrmo35R6nj/AgiFzxQhOJmX9ev0aJg8zbJecdtMp0LZlGZf20upL+muq75tIxg==}
+    peerDependencies:
+      next: '>=13.4'
+      react: '>=18.2.0'
 
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
@@ -8043,6 +8067,17 @@ packages:
 
   zod@3.23.4:
     resolution: {integrity: sha512-/AtWOKbBgjzEYYQRNfoGKHObgfAZag6qUJX1VbHo2PRBgS+wfWagEY2mizjfyAPcGesrJOcx/wcl0L9WnVrHFw==}
+
+  zsa-react@0.2.2:
+    resolution: {integrity: sha512-0jUGzIy4PRc8Ur3JS+YBdRyD3rnsErCzNeJOVLhTxPqaKDDQ+JEmIHGYAK354RNpchIlvGVDcuedZXEGL6Nl6Q==}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0
+      zod: ^3.23.5
+
+  zsa@0.5.1:
+    resolution: {integrity: sha512-8QI/SQrcdVFTlcFYGvKbB9UroLVZ0LJNEI1aVZUD2ASsRWqrgz1aEGqPAvuMgr+MM9+PQ3AyH8zspAcvbd2FoA==}
+    peerDependencies:
+      zod: ^3.23.5
 
   zustand@4.5.2:
     resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
@@ -11541,11 +11576,11 @@ snapshots:
     dependencies:
       oslo: 1.2.0
 
-  arctic@2.0.0-next.1(@types/node@20.12.7)(happy-dom@10.11.2)(lightningcss@1.24.1):
+  arctic@2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1):
     dependencies:
       '@oslojs/encoding': 0.3.0
       '@oslojs/oauth2': 0.3.0
-      vitest: 1.6.0(@types/node@20.12.7)(happy-dom@10.11.2)(lightningcss@1.24.1)
+      vitest: 1.6.0(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@types/node'
@@ -12248,6 +12283,11 @@ snapshots:
       pg: 8.11.5
       postgres: 3.4.4
       react: 18.2.0
+
+  drizzle-zod@0.5.1(drizzle-orm@0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.2.55)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0))(zod@3.23.4):
+    dependencies:
+      drizzle-orm: 0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.2.55)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
+      zod: 3.23.4
 
   eastasianwidth@0.2.0: {}
 
@@ -14138,6 +14178,12 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  nextjs-better-unstable-cache@1.1.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0):
+    dependencies:
+      chalk: 4.1.2
+      next: 14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
@@ -15658,13 +15704,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite-node@1.6.0(@types/node@20.12.7)(lightningcss@1.24.1):
+  vite-node@1.6.0(@types/node@20.14.10)(lightningcss@1.24.1):
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.3.3(@types/node@20.12.7)(lightningcss@1.24.1)
+      vite: 5.3.3(@types/node@20.14.10)(lightningcss@1.24.1)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15713,13 +15759,13 @@ snapshots:
       fsevents: 2.3.3
       lightningcss: 1.24.1
 
-  vite@5.3.3(@types/node@20.12.7)(lightningcss@1.24.1):
+  vite@5.3.3(@types/node@20.14.10)(lightningcss@1.24.1):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.39
       rollup: 4.18.1
     optionalDependencies:
-      '@types/node': 20.12.7
+      '@types/node': 20.14.10
       fsevents: 2.3.3
       lightningcss: 1.24.1
 
@@ -15762,7 +15808,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@1.6.0(@types/node@20.12.7)(happy-dom@10.11.2)(lightningcss@1.24.1):
+  vitest@1.6.0(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -15781,11 +15827,11 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.3.3(@types/node@20.12.7)(lightningcss@1.24.1)
-      vite-node: 1.6.0(@types/node@20.12.7)(lightningcss@1.24.1)
+      vite: 5.3.3(@types/node@20.14.10)(lightningcss@1.24.1)
+      vite-node: 1.6.0(@types/node@20.14.10)(lightningcss@1.24.1)
       why-is-node-running: 2.2.2
     optionalDependencies:
-      '@types/node': 20.12.7
+      '@types/node': 20.14.10
       happy-dom: 10.11.2
     transitivePeerDependencies:
       - less
@@ -15911,6 +15957,16 @@ snapshots:
       commander: 9.5.0
 
   zod@3.23.4: {}
+
+  zsa-react@0.2.2(react@18.2.0)(zod@3.23.4):
+    dependencies:
+      react: 18.2.0
+      zod: 3.23.4
+      zsa: 0.5.1(zod@3.23.4)
+
+  zsa@0.5.1(zod@3.23.4):
+    dependencies:
+      zod: 3.23.4
 
   zustand@4.5.2(@types/react@18.2.55)(immer@9.0.21)(react@18.2.0):
     dependencies:

@@ -1,9 +1,9 @@
 "use client";
+import { incrementUserPageSlugAction } from "@/actions/user";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/components/provider/session-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { StatusButton } from "@itell/ui/client";
@@ -37,10 +37,14 @@ export const SummaryFormSimple = React.memo(
 						return;
 					}
 				}
-
-				const nextSlug = await incrementUserPage(user.id, page.page_slug);
+				const [data, err] = await incrementUserPageSlugAction({
+					currentPageSlug: page.page_slug,
+				});
+				if (err) {
+					throw new Error(err.message);
+				}
 				if (!isLastPage(page.page_slug)) {
-					updateUser({ pageSlug: nextSlug });
+					updateUser({ pageSlug: data.nextPageSlug });
 				} else {
 					updateUser({ finished: true });
 					toast.info(

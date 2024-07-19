@@ -1,5 +1,5 @@
 import { lucia } from "@/lib/auth/lucia";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { allPagesSorted } from "@/lib/pages";
 import { Skeleton } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
@@ -37,7 +37,6 @@ export default async function () {
 						userPageSlug={userPageSlug}
 						userFinished={false}
 						userRole="user"
-						userId={null}
 						condition={Condition.STAIRS}
 					/>
 				</div>

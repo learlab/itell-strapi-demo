@@ -1,4 +1,4 @@
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { User } from "lucia";
@@ -28,7 +28,7 @@ export const PageSummary = async ({
 	}
 
 	return (
-		<section className="mt-10 border-t-2 py-4 mb-20 space-y-2 p-4 lg:p-8">
+		<section className="border-t-2 py-4 mb-20 space-y-2 p-4 lg:p-8">
 			<section
 				className="grid gird-cols-1 lg:grid-cols-3 gap-8"
 				id="page-summary"

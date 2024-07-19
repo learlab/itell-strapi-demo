@@ -1,10 +1,11 @@
+import { createUserAction, getUserByProviderAction } from "@/actions/user";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth/lucia";
 import { azureProvider, readAzureOAuthState } from "@/lib/auth/provider";
-import { Condition } from "@/lib/control/condition";
-import { createUserTx, getUserByProvider } from "@/lib/user/actions";
+import { Condition } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { jwtDecode } from "jwt-decode";
+import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -40,14 +41,18 @@ export const GET = async (req: Request) => {
 		const idToken = tokens.idToken();
 		const azureUser = jwtDecode(idToken) as AzureUser;
 
-		let user = await getUserByProvider({
+		let [user, err] = await getUserByProviderAction({
 			provider_id: "azure",
 			provider_user_id: azureUser.oid,
 		});
+		if (err) {
+			throw new Error(err?.message);
+		}
 
 		if (!user) {
-			user = await createUserTx({
+			const [newUser, err] = await createUserAction({
 				user: {
+					id: generateIdFromEntropySize(16),
 					name: azureUser.name || azureUser.preferred_username,
 					email: azureUser.email,
 					condition: Condition.STAIRS,
@@ -56,6 +61,11 @@ export const GET = async (req: Request) => {
 				provider_id: "azure",
 				provider_user_id: azureUser.oid,
 			});
+			if (err) {
+				throw new Error(err?.message);
+			}
+
+			user = newUser;
 		}
 
 		const session = await lucia.createSession(user.id, {});

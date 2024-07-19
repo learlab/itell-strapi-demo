@@ -1,5 +1,5 @@
 import { TEXTBOOK_SLUG } from "@/config/site";
-import { QAScoreSchema } from "@itell/core/qa";
+import { ScoreSchema } from "@itell/core/question";
 import qs from "qs";
 import { z } from "zod";
 
@@ -80,7 +80,7 @@ export const getQAScore = async ({
 	});
 
 	const data = await response.json();
-	return QAScoreSchema.safeParse(data);
+	return ScoreSchema.parse(data);
 };
 
 const getPageQuestions = async (pageSlug: string) => {

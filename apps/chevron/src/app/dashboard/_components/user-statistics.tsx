@@ -24,11 +24,7 @@ export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 		<div className="space-y-4">
 			<Suspense fallback={<UserDetails.Skeleton />}>
 				<ErrorBoundary fallback={<UserDetails.ErrorFallback />}>
-					<UserDetails
-						userId={user.id}
-						pageSlug={user.pageSlug}
-						classId={user.classId}
-					/>
+					<UserDetails user={user} />
 				</ErrorBoundary>
 			</Suspense>
 

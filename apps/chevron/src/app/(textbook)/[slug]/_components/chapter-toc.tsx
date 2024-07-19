@@ -4,7 +4,7 @@ import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
@@ -43,7 +43,6 @@ const AnchorLink = ({
 
 type Props = {
 	currentPage: Page;
-	userId: string | null;
 	userRole: string;
 	userFinished: boolean;
 	userPageSlug: string | null;
@@ -52,7 +51,6 @@ type Props = {
 
 export const ChapterToc = ({
 	currentPage,
-	userId,
 	userRole,
 	userPageSlug,
 	userFinished,
@@ -111,9 +109,7 @@ export const ChapterToc = ({
 				})}
 			</ol>
 			<div className="mt-12 space-y-2">
-				{isAdmin(userRole) && userId && (
-					<AdminTools userId={userId} condition={condition} />
-				)}
+				{isAdmin(userRole) && <AdminTools condition={condition} />}
 				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4 xl:size-6" />}

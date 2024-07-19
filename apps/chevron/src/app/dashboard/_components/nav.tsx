@@ -10,39 +10,7 @@ import { ArrowRightIcon, MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 import { useState } from "react";
-
-export type DashboardNavItem = {
-	title: string;
-	href: string;
-	disabled?: boolean;
-};
-
-export type SidebarNavItem = {
-	title: string;
-	href: string;
-	disabled?: boolean;
-	external?: boolean;
-	icon?: React.ReactNode;
-};
-
-export const SidebarItem = ({ item }: { item: SidebarNavItem }) => {
-	const path = usePathname();
-
-	return (
-		<Link href={item.disabled ? "/" : item.href}>
-			<span
-				className={cn(
-					"group flex items-center px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
-					path === item.href ? "bg-accent" : "transparent",
-					item.disabled && "cursor-not-allowed opacity-80",
-				)}
-			>
-				{item.icon || <ArrowRightIcon className="mr-2 size-4" />}
-				<span>{item.title}</span>
-			</span>
-		</Link>
-	);
-};
+import { DashboardNavItem } from "./config";
 
 export const DashboardNavMenu = ({
 	user,

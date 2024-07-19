@@ -1,8 +1,9 @@
 "use client";
 
+import { updateUserAction } from "@/actions/user";
+import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
-import { updateUser } from "@/lib/user/actions";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -16,11 +17,11 @@ import {
 	Button,
 } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useServerAction } from "zsa-react";
 
-export const QuitClass = ({ userId }: { userId: string }) => {
-	const [isLoading, setIsLoading] = useState(false);
+export const QuitClass = () => {
 	const router = useRouter();
+	const { execute, isPending, isError } = useServerAction(updateUserAction);
 	if (isProduction) {
 		return null;
 	}
@@ -35,26 +36,27 @@ export const QuitClass = ({ userId }: { userId: string }) => {
 					<AlertDialogTitle>
 						Are you sure you want to leave the class?
 					</AlertDialogTitle>
-					<AlertDialogDescription>
-						Your data will no longer be shared with the teacher
+					<AlertDialogDescription asChild>
+						<div className="text-sm text-muted-foreground">
+							<p>Your data will no longer be shared with the teacher</p>
+							{isError && <InternalError />}
+						</div>
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
-					<AlertDialogAction asChild>
-						<Button
-							onClick={async () => {
-								setIsLoading(true);
-								await updateUser(userId, { classId: null });
-
-								setIsLoading(false);
+					<Button
+						disabled={isPending}
+						onClick={async () => {
+							const [_, err] = await execute({ classId: null });
+							if (!err) {
 								router.refresh();
-							}}
-						>
-							{isLoading && <Spinner className="inline mr-2" />}
-							Confirm
-						</Button>
-					</AlertDialogAction>
+							}
+						}}
+					>
+						{isPending && <Spinner className="inline mr-2" />}
+						Confirm
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

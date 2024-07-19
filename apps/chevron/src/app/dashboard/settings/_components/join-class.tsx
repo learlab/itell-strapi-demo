@@ -1,57 +1,41 @@
 "use client";
 
+import { getTeacherByClassAction } from "@/actions/dashboard";
+import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
-import { User } from "@/drizzle/schema";
-import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { JoinClassModal } from "@dashboard/join-class-modal";
 import { Button } from "@itell/ui/client";
-import { Errorbox, Input } from "@itell/ui/server";
-import { useFormState, useFormStatus } from "react-dom";
+import { Input } from "@itell/ui/server";
+import { User } from "lucia";
+import { useState } from "react";
+import { useServerAction } from "zsa-react";
 
 type Props = {
 	user: User;
 };
 
-type FormState =
-	| { teacher: User; error: null; classId: string }
-	| { teacher: null; error: string; classId: string }
-	| { teacher: null; error: null; classId: string };
-
-const onSubmit = async (
-	prevState: FormState,
-	formData: FormData,
-): Promise<FormState> => {
-	const classId = String(formData.get("code"));
-	const teacher = await getTeacherWithClassId(classId);
-
-	if (!teacher) {
-		return { teacher: null, error: "Invalid class code", classId };
-	}
-
-	return {
-		teacher,
-		error: null,
-		classId,
-	};
-};
-
-export const SubmitButton = () => {
-	const { pending } = useFormStatus();
-	return (
-		<Button disabled={pending}>
-			{pending && <Spinner className="inline-flex mr-2" />}Submit
-		</Button>
-	);
-};
-
 export const JoinClassForm = ({ user }: Props) => {
 	const { join_class_code } = useSafeSearchParams("settings");
-	const [formState, formAction] = useFormState(onSubmit, {
-		teacher: null,
-		error: null,
-		classId: join_class_code || "",
-	});
+	const { execute, isPending, isError } = useServerAction(
+		getTeacherByClassAction,
+	);
+	const [teacher, setTeacher] = useState<User | null>(null);
+	const [classId, setClassId] = useState<string>(join_class_code || "");
+
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const code = String(formData.get("code"));
+
+		const [teacher, err] = await execute({
+			classId: code,
+		});
+		if (!err) {
+			setTeacher(teacher);
+			setClassId(code);
+		}
+	};
 
 	return (
 		<div className="space-y-4">
@@ -60,26 +44,27 @@ export const JoinClassForm = ({ user }: Props) => {
 				teacher for a class code to enter it here. This will allow you to
 				receive class-based feedback.
 			</p>
-			<form action={formAction} className="space-y-2">
-				{formState.error && (
-					<Errorbox title="Error">{formState.error}</Errorbox>
-				)}
+			<form className="grid gap-2" onSubmit={onSubmit}>
 				<Input
 					name="code"
 					placeholder="Enter your class code here"
 					type="text"
 					required
-					defaultValue={formState.classId}
+					defaultValue={join_class_code || ""}
 				/>
-				<SubmitButton />
+				{isError && <InternalError />}
+				<footer>
+					<Button disabled={isPending} type="submit">
+						{isPending && <Spinner className="inline-flex mr-2" />}Submit
+					</Button>
+				</footer>
 			</form>
 			{/* dialog to confirm joining a class */}
-			{formState.teacher && (
+			{teacher && (
 				<JoinClassModal
-					userId={user.id}
 					userClassId={user.classId}
-					teacher={formState.teacher}
-					classId={formState.classId}
+					teacher={teacher}
+					classId={classId}
 				/>
 			)}
 		</div>

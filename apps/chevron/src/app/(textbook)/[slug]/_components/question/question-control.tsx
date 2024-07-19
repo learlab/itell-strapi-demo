@@ -2,7 +2,7 @@
 
 import { useQuestion } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
 import { useEffect } from "react";

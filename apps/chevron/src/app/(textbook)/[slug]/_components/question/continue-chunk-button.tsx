@@ -1,8 +1,9 @@
 "use client";
 
+import { createEventAction } from "@/actions/event";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSession } from "@/components/provider/session-provider";
-import { createEvent } from "@/lib/event/actions";
+import { EventType } from "@/lib/constants";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
@@ -54,10 +55,9 @@ export const ContinueChunkButton = ({
 		advancedChunk(chunkSlug);
 
 		if (user) {
-			createEvent({
-				type: "chunk-reveal",
+			createEventAction({
+				type: EventType.CHUNK_REVEAL,
 				pageSlug,
-				userId: user.id,
 				data: {
 					chunkSlug,
 					condition,

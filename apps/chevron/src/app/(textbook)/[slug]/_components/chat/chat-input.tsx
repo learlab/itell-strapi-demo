@@ -1,8 +1,8 @@
 "use client";
 
+import { createChatsAction } from "@/actions/chat";
+import { InternalError } from "@/components/interval-error";
 import { useChat } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
-import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
 import { getChatHistory } from "@/lib/store/chat";
 import { reportSentry } from "@/lib/utils";
@@ -11,16 +11,15 @@ import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
+import { useServerAction } from "zsa-react";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
-	userId: string;
 	pageSlug: string;
 }
 
 const isStairs = false;
 
 export const ChatInput = ({
-	userId,
 	className,
 	pageSlug,
 	...props
@@ -39,6 +38,7 @@ export const ChatInput = ({
 		messages: state.messages,
 	}));
 	const [pending, setPending] = useState(false);
+	const { isError, execute } = useServerAction(createChatsAction);
 
 	const onMessage = async (text: string) => {
 		setPending(true);
@@ -86,8 +86,7 @@ export const ChatInput = ({
 				);
 
 				const botTimestamp = Date.now();
-				createChatMessage({
-					userId,
+				execute({
 					pageSlug,
 					messages: [
 						{
@@ -123,7 +122,7 @@ export const ChatInput = ({
 	};
 
 	return (
-		<div {...props} className={cn("px-2", className)}>
+		<div {...props} className={cn("px-2 grid gap-2", className)}>
 			<form
 				className="relative mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none"
 				onSubmit={(e) => {
@@ -140,7 +139,7 @@ export const ChatInput = ({
 					autoFocus
 					disabled={pending}
 					placeholder="Message ITELL AI..."
-					className="disabled:opacity-50 bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
+					className="disabled:opacity-50 disabled:pointer-events-none bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
 					onKeyDown={async (e) => {
 						if (e.key === "Enter" && !e.shiftKey) {
 							e.preventDefault();
@@ -158,14 +157,10 @@ export const ChatInput = ({
 				/>
 
 				<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-					<button type="submit">
-						{pending ? (
-							<Spinner className="size-4" />
-						) : (
-							<kbd className="inline-flex items-center rounded border px-1 text-xs">
-								<CornerDownLeft className="size-4" />
-							</kbd>
-						)}
+					<button type="submit" disabled={pending}>
+						<kbd className="inline-flex items-center rounded border px-1 text-xs">
+							<CornerDownLeft className="size-4" />
+						</kbd>
 					</button>
 				</div>
 
@@ -174,6 +169,9 @@ export const ChatInput = ({
 					aria-hidden="true"
 				/>
 			</form>
+			{isError && (
+				<InternalError className="px-2">Failed to save chat</InternalError>
+			)}
 		</div>
 	);
 };

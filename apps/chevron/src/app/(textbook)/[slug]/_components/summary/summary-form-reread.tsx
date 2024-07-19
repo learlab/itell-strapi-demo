@@ -1,14 +1,13 @@
 "use client";
 
+import { createEventAction } from "@/actions/event";
+import { createSummaryAction } from "@/actions/summary";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/components/provider/session-provider";
-import { Condition } from "@/lib/control/condition";
-import { createEvent } from "@/lib/event/actions";
+import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { createSummary } from "@/lib/summary/actions";
-import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -103,10 +102,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 							exitChunk();
 
 							if (!pageStatus.unlocked) {
-								createEvent({
-									type: Condition.RANDOM_REREAD,
+								createEventAction({
+									type: EventType.RANDOM_REREAD,
 									pageSlug,
-									userId: user.id,
 									data: { chunkSlug: randomChunkSlug, time },
 								});
 							}
@@ -153,32 +151,27 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				const scores = parsed.data;
 				summaryResponseRef.current = scores;
 
-				const { summaryId } = await createSummary({
-					text: input,
-					userId: user.id,
-					pageSlug,
-					condition: Condition.RANDOM_REREAD,
-					isPassed: scores.is_passed || false,
-					containmentScore: scores.containment,
-					similarityScore: scores.similarity,
-					languageScore: scores.language,
-					contentScore: scores.content,
-				});
-
-				createEvent({
-					type: "keystroke",
-					pageSlug,
-					userId: user.id,
-					data: {
-						summaryId,
-						start: prevInput.current
-							? prevInput.current
-							: getSummaryLocal(pageSlug),
-						keystrokes,
+				const [data, err] = await createSummaryAction({
+					summary: {
+						text: input,
+						pageSlug,
+						condition: Condition.RANDOM_REREAD,
+						isPassed: scores.is_passed || false,
+						containmentScore: scores.containment,
+						similarityScore: scores.similarity,
+						languageScore: scores.language,
+						contentScore: scores.content,
 					},
-				}).then(clearKeystroke);
+					keystroke: {
+						start: prevInput.current || getSummaryLocal(pageSlug) || "",
+						data: keystrokes,
+					},
+				});
+				if (err) {
+					throw new Error(err.message);
+				}
 
-				const nextSlug = await incrementUserPage(user.id, pageSlug);
+				clearKeystroke();
 				finishStage("Saving");
 				setFinished(true);
 				prevInput.current = input;
@@ -191,7 +184,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					return;
 				}
 
-				updateUser({ pageSlug: nextSlug });
+				updateUser({ pageSlug: data.nextPageSlug });
 
 				// 25% random rereading if the page is not unlocked
 				if (!pageStatus.unlocked && Math.random() <= 0.25) {

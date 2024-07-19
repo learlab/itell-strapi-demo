@@ -1,7 +1,8 @@
+import { getClassStudentsAction } from "@/actions/dashboard";
+import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getClassStudentStats } from "@/lib/dashboard/class";
 import { allPagesSorted, firstPage } from "@/lib/pages";
-import { getPageData } from "@/lib/utils";
+import { getPageData, reportSentry } from "@/lib/utils";
 import { median } from "@itell/core/utils";
 import { Progress } from "@itell/ui/client";
 import {
@@ -19,7 +20,11 @@ import { StudentData, columns } from "./student-columns";
 import { StudentsTable } from "./students-table";
 
 export const ClassInfo = async ({ classId }: { classId: string }) => {
-	const students = await getClassStudentStats(classId);
+	const [students, err] = await getClassStudentsAction({ classId });
+	if (err) {
+		throw new Error();
+	}
+
 	if (students.length === 0) {
 		return (
 			<Card>
@@ -42,27 +47,17 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 
 	const studentData: StudentData[] = students.map((s) => {
 		const page = getPageData(s.pageSlug);
-		let progress: StudentData["progress"];
-
-		if (page) {
-			progress = {
-				index: page.index,
-				text: page.title,
-			};
-		} else {
-			progress = {
-				index: 0,
-				text: firstPage.title,
-			};
-		}
+		const progress = page
+			? { index: page.index, text: page.title }
+			: { index: 0, text: firstPage.title };
 
 		return {
 			id: s.id,
 			name: s.name,
 			email: s.email,
-			createdAt: s.createdAt,
+			createdAt: new Date(s.createdAt),
 			progress,
-			summaryCounts: s.summaryCount,
+			summaryCount: s.summaryCount,
 		};
 	});
 
@@ -104,6 +99,10 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 		</Card>
 	);
 };
+
+ClassInfo.ErrorFallback = CreateErrorFallback(
+	"Failed to get students in the class",
+);
 
 ClassInfo.Skeleton = () => (
 	<Card className="p-4">

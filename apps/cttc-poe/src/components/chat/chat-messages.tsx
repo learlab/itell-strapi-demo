@@ -1,7 +1,7 @@
 "use client";
 
 import { getChunkElement, scrollToElement } from "@/lib/utils";
-import { Message } from "@itell/core/chatbot";
+import { Message } from "@itell/core/chat";
 import { cn, relativeDate } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { Avatar, AvatarImage } from "@itell/ui/client";

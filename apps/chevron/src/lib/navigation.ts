@@ -37,6 +37,7 @@ export const { routes, useSafeParams, useSafeSearchParams } =
 				.object({
 					join_class_code: z.string().optional(),
 					reading_time_level: z.string().default(ReadingTimeChartLevel.week_1),
+					tab: z.enum(["class", "personal"]).optional(),
 				})
 				.default({
 					reading_time_level: ReadingTimeChartLevel.week_1,

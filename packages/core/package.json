@@ -30,29 +30,17 @@
 			"require": "./dist/dashboard.cjs.js",
 			"import": "./dist/dashboard.es.js"
 		},
-		"./components": {
-			"require": "./dist/components.cjs.js",
-			"import": "./dist/components.es.js"
-		},
 		"./summary": {
 			"require": "./dist/summary.cjs.js",
 			"import": "./dist/summary.es.js"
 		},
-		"./qa": {
-			"require": "./dist/qa.cjs.js",
-			"import": "./dist/qa.es.js"
+		"./question": {
+			"require": "./dist/question.cjs.js",
+			"import": "./dist/question.es.js"
 		},
-		"./chatbot": {
-			"require": "./dist/chatbot.cjs.js",
-			"import": "./dist/chatbot.es.js"
-		},
-		"./contentlayer": {
-			"require": "./dist/contentlayer.cjs.js",
-			"import": "./dist/contentlayer.es.js"
-		},
-		"./itellFetch": {
-			"require": "./dist/itellFetch.cjs.js",
-			"import": "./dist/itellFetch.es.js"
+		"./chat": {
+			"require": "./dist/chat.cjs.js",
+			"import": "./dist/chat.es.js"
 		}
 	},
 	"typings": "./index.d.ts",
@@ -60,12 +48,13 @@
 		"dist",
 		"index.d.ts",
 		"hooks.d.ts",
+		"note.d.ts",
 		"utils.d.ts",
+		"dashboard.d.ts",
+		"question.d.ts",
+		"chat.d.ts",
 		"config.d.ts",
-		"components.d.ts",
-		"summary.d.ts",
-		"contentlayer.d.ts",
-		"itellFetch.d.ts"
+		"summary.d.ts"
 	],
 	"scripts": {
 		"build": "vite build",
@@ -85,8 +74,8 @@
 		"zod": "^3.22.2"
 	},
 	"peerDependencies": {
-		"react": "^18.2.0",
-		"react-dom": "18.2.0"
+		"react": "^18",
+		"react-dom": "^18"
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",

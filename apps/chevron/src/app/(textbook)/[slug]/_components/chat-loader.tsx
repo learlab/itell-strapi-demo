@@ -1,8 +1,8 @@
+import { getChatsAction } from "@/actions/chat";
 import { Spinner } from "@/components/spinner";
 import { getSession } from "@/lib/auth";
-import { getChatMessages } from "@/lib/chat";
-import { Condition } from "@/lib/control/condition";
-import { Message } from "@itell/core/chatbot";
+import { Condition } from "@/lib/constants";
+import { Message } from "@itell/core/chat";
 import { Avatar, AvatarImage } from "@itell/ui/client";
 import { Chat } from "./chat/chat";
 
@@ -21,23 +21,26 @@ export const ChatLoader = async ({ pageSlug, condition }: Props) => {
 		return null;
 	}
 
-	const { data, updatedAt } = await getChatMessages(user.id, pageSlug);
+	const [chats, err] = await getChatsAction({ pageSlug });
+	if (!err) {
+		const { data, updatedAt } = chats;
+		const messages = data.map((d) => ({
+			...d,
+			id: crypto.randomUUID(),
+		})) as Message[];
 
-	const messages = data.map((d) => ({
-		...d,
-		id: crypto.randomUUID(),
-	})) as Message[];
+		return (
+			<Chat
+				pageSlug={pageSlug}
+				userName={user.name}
+				userImage={user.image}
+				data={messages}
+				updatedAt={updatedAt}
+			/>
+		);
+	}
 
-	return (
-		<Chat
-			pageSlug={pageSlug}
-			userId={user.id}
-			userName={user.name}
-			userImage={user.image}
-			data={messages}
-			updatedAt={updatedAt}
-		/>
-	);
+	return null;
 };
 
 ChatLoader.Skeleton = () => (

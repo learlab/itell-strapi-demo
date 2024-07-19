@@ -1,9 +1,9 @@
+import { incrementViewAction } from "@/actions/dashboard";
+import { getSummariesAction } from "@/actions/summary";
 import { PageLink } from "@/components/page-link";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
-import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstPage } from "@/lib/pages";
-import { getUserSummaries } from "@/lib/summary";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
@@ -17,11 +17,14 @@ export default async function () {
 		return redirect("/auth");
 	}
 
-	incrementView(user.id, "summaries");
+	incrementViewAction({ pageSlug: Meta.summaries.slug });
 
-	const userSummaries = await getUserSummaries(user.id);
+	const [summaries, err] = await getSummariesAction();
+	if (err) {
+		throw new Error(err.message);
+	}
 
-	if (userSummaries.length === 0) {
+	if (summaries.length === 0) {
 		return (
 			<DashboardShell>
 				<DashboardHeader heading="Summary" text="Manage summaries." />
@@ -41,7 +44,7 @@ export default async function () {
 		);
 	}
 
-	const summaries = userSummaries
+	const summariesWithPage = summaries
 		.map((s) => {
 			const page = allPagesSorted.find((page) => page.page_slug === s.pageSlug);
 
@@ -57,7 +60,10 @@ export default async function () {
 		})
 		.filter((s) => s !== undefined);
 
-	const summariesByChapter = groupby(summaries, (summary) => summary.chapter);
+	const summariesByChapter = groupby(
+		summariesWithPage,
+		(summary) => summary.chapter,
+	);
 
 	const summariesByPassing = summaries.reduce(
 		(acc, summary) => {

@@ -35,7 +35,7 @@ export const QuestionChart = ({ data }: Props) => {
 	return (
 		<ChartContainer
 			config={chartConfig}
-			className="max-w-[600px] min-h-[200px]"
+			className="max-w-[600px] min-h-[100px]"
 		>
 			<BarChart
 				accessibilityLayer
@@ -64,7 +64,7 @@ export const QuestionChart = ({ data }: Props) => {
 						dataKey="name"
 						position="insideLeft"
 						offset={8}
-						className="fill-[--color-label] text-sm xl:text-base"
+						className="fill-[--color-label] text-base xl:text-lg"
 						fontSize={12}
 						formatter={(value: string) => {
 							return chartConfig[value as keyof typeof chartConfig]?.label;
@@ -73,7 +73,7 @@ export const QuestionChart = ({ data }: Props) => {
 					<LabelList
 						dataKey="value"
 						position="right"
-						className="fill-foreground text-sm xl:text-base"
+						className="fill-foreground text-base xl:text-lg"
 						offset={8}
 						fontSize={12}
 					/>

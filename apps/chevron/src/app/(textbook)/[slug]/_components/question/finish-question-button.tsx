@@ -1,23 +1,23 @@
 "use client";
 
+import { createEventAction } from "@/actions/event";
 import { useQuestion } from "@/components/provider/page-provider";
-import { Condition } from "@/lib/control/condition";
-import { createEvent } from "@/lib/event/actions";
+import { Condition, EventType } from "@/lib/constants";
 import { Button } from "@itell/ui/client";
 
-export const FinishQuestionButton = ({
-	userId,
-	chunkSlug,
-	pageSlug,
-	isLastQuestion,
-	condition,
-}: {
-	userId: string;
+type Props = {
 	chunkSlug: string;
 	pageSlug: string;
 	isLastQuestion: boolean;
 	condition: Condition;
-}) => {
+};
+
+export const FinishQuestionButton = ({
+	chunkSlug,
+	pageSlug,
+	isLastQuestion,
+	condition,
+}: Props) => {
 	const { currentChunk, advanceChunk } = useQuestion((state) => ({
 		advanceChunk: state.advanceChunk,
 		currentChunk: state.currentChunk,
@@ -30,10 +30,9 @@ export const FinishQuestionButton = ({
 			disabled={disabled}
 			onClick={() => {
 				advanceChunk(chunkSlug);
-				createEvent({
-					userId,
+				createEventAction({
 					pageSlug,
-					type: "post-question-chunk-reveal",
+					type: EventType.CHUNK_REVEAL_QUESTION,
 					data: {
 						chunkSlug,
 						condition,

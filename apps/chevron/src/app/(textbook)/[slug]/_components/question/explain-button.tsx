@@ -1,7 +1,8 @@
 "use client";
+import { createEventAction } from "@/actions/event";
 import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
-import { createEvent } from "@/lib/event/actions";
+import { EventType } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { parseEventStream } from "@itell/core/utils";
@@ -55,9 +56,8 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 			}
 
 			if (user) {
-				createEvent({
-					userId: user.id,
-					type: "explain-constructed-response",
+				createEventAction({
+					type: EventType.EXPLAIN,
 					pageSlug,
 					data: { chunkSlug, response },
 				});

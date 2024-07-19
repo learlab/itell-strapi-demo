@@ -1,11 +1,6 @@
+import { countSummaryAction, getReadingTimeAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { focus_times, summaries } from "@/drizzle/schema";
-import { db, first } from "@/lib/db";
-import {
-	PrevDaysLookup,
-	getGroupedReadingTime,
-	getReadingTimeChartData,
-} from "@itell/core/dashboard";
+import { PrevDaysLookup, getReadingTimeChartData } from "@itell/core/dashboard";
 import { ReadingTimeChartParams } from "@itell/core/dashboard";
 import { getDatesBetween } from "@itell/core/utils";
 import {
@@ -23,7 +18,6 @@ import {
 	Skeleton,
 } from "@itell/ui/server";
 import { format, subDays } from "date-fns";
-import { and, count, eq, gte, sql } from "drizzle-orm";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
@@ -36,69 +30,17 @@ type Props = {
 	name?: string;
 };
 
-const getSummaryCounts = async (userId: string, startDate: Date) => {
-	const record = first(
-		await db
-			.select({
-				count: count(),
-			})
-			.from(summaries)
-			.where(
-				and(eq(summaries.userId, userId), gte(summaries.createdAt, startDate)),
-			),
-	);
-
-	return record?.count || 0;
-};
-
-const getReadingTime = async (
-	userId: string,
-	startDate: Date,
-	intervalDates: Date[],
-) => {
-	// TODO: fix this query or how we store focus time data
-	// for records created before start date, they can still be updated
-	// but this won't be reflected in the reading time
-	const dataExpanded = db.$with("expanded").as(
-		db
-			.select({
-				value: sql`(jsonb_each(${focus_times.data})).value`.as("value"),
-				createdAt: sql<Date>`${focus_times.createdAt}::date`.as("createdAt"),
-			})
-			.from(focus_times)
-			.where(
-				and(
-					eq(focus_times.userId, userId),
-					gte(focus_times.createdAt, startDate),
-				),
-			),
-	);
-
-	const records = await db
-		.with(dataExpanded)
-		.select({
-			totalViewTime: sql<number>`sum(value::integer)::integer`.as(
-				"totalViewTime",
-			),
-			createdAt: dataExpanded.createdAt,
-		})
-		.from(dataExpanded)
-		.groupBy(dataExpanded.createdAt);
-
-	const readingTimeGrouped = await getGroupedReadingTime(
-		records,
-		intervalDates,
-	);
-	return readingTimeGrouped;
-};
-
-export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
+export const ReadingTime = async ({ userId, params, name }: Props) => {
 	const startDate = subDays(new Date(), PrevDaysLookup[params.level]);
 	const intervalDates = getDatesBetween(startDate, new Date());
-	const [summaryCounts, readingTimeGrouped] = await Promise.all([
-		getSummaryCounts(uid, startDate),
-		getReadingTime(uid, startDate, intervalDates),
+	const [[summaryCount, err1], [readingTimeGrouped, err2]] = await Promise.all([
+		countSummaryAction({ userId, startDate }),
+		getReadingTimeAction({ userId, startDate, intervalDates }),
 	]);
+
+	if (err1 || err2) {
+		throw new Error();
+	}
 
 	const { totalViewTime, chartData } = getReadingTimeChartData(
 		readingTimeGrouped,
@@ -135,7 +77,7 @@ export const ReadingTime = async ({ userId: uid, params, name }: Props) => {
 					{name ? name : "You"} spent {Math.round(totalViewTime / 60)} minutes
 					reading the textbook, wrote {""}
 					<Link className="font-semibold underline" href="/dashboard/summaries">
-						{pluralize("summary", summaryCounts, true)}
+						{pluralize("summary", summaryCount, true)}
 					</Link>{" "}
 					during{" "}
 					{`${format(startDate, "LLL, dd")}-${format(new Date(), "LLL, dd")}`}

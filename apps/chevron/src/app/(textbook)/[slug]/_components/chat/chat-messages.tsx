@@ -4,7 +4,7 @@ import { useChat } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { UserAvatar } from "@/components/user-avatar";
 import { getChunkElement, scrollToElement } from "@/lib/utils";
-import { Message } from "@itell/core/chatbot";
+import { Message } from "@itell/core/chat";
 import { cn, relativeDate } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { Avatar, AvatarImage } from "@itell/ui/client";

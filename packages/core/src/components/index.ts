@@ -1,1 +1,3 @@
-export * from "./event-tracker";
+import { EventTracker } from "./event-tracker";
+
+export { EventTracker };

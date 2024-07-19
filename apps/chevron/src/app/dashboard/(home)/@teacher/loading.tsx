@@ -1,6 +1,6 @@
-import { ClassInfo } from "@/app/dashboard/(home)/@teacher/_components/class-info";
 import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { ClassInfo } from "./_components/class-info";
 
 export default function () {
 	return (

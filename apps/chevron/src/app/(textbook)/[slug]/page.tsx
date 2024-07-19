@@ -2,7 +2,7 @@ import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { getSession } from "@/lib/auth";
 import { getPageChunks } from "@/lib/chunks";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
@@ -70,7 +70,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
 							currentPage={page}
-							userId={userId}
 							userPageSlug={userPageSlug}
 							userFinished={userFinished}
 							userRole={userRole}
@@ -79,7 +78,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</aside>
 
-				<section id="page-content-wrapper" className="relative p-4 lg:p-8">
+				<section
+					id="page-content-wrapper"
+					className="relative p-4 lg:p-8 lg:pb-12"
+				>
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
@@ -100,16 +102,17 @@ export default async function ({ params }: { params: { slug: string } }) {
 							</div>
 						</ScrollArea>
 					</div>
-					<Suspense
-						fallback={
-							<p className="text-sm text-muted-foreground mt-8">
-								<Spinner className="inline mr-2" />
-								Loading notes
-							</p>
-						}
-					>
-						<NoteLoader userId={userId} pageSlug={pageSlug} />
-					</Suspense>
+					{user && (
+						<Suspense
+							fallback={
+								<p className="text-sm text-muted-foreground mt-8">
+									<Spinner className="inline mr-2" />
+								</p>
+							}
+						>
+							<NoteLoader pageSlug={pageSlug} />
+						</Suspense>
+					)}
 				</aside>
 			</div>
 
@@ -126,7 +129,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
 			<QuestionControl pageSlug={pageSlug} condition={userCondition} />
-			<EventTracker userId={userId} pageSlug={pageSlug} chunks={chunks} />
+			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatLoader.Skeleton />}>
 				<ChatLoader pageSlug={pageSlug} condition={userCondition} />
 			</Suspense>

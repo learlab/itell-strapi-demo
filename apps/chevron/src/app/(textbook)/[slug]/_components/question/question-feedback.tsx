@@ -1,7 +1,8 @@
 "use client";
 
+import { createQuestionFeedbackAction } from "@/actions/question";
+import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
-import { createQuestionFeedback } from "@/lib/question/actions";
 import {
 	Dialog,
 	DialogContent,
@@ -12,26 +13,22 @@ import { Button, Checkbox, Label, TextArea } from "@itell/ui/client";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useServerAction } from "zsa-react";
 
 type Props = {
-	userId: string;
 	type: "positive" | "negative";
 	chunkSlug: string;
 	pageSlug: string;
 };
 
-export const QuestionFeedback = ({
-	userId,
-	type,
-	pageSlug,
-	chunkSlug,
-}: Props) => {
+export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 	const isPositive = type === "positive";
 	const allTags = isPositive
 		? ["informative", "supportive", "helpful"]
 		: ["nonsensical", "inaccurate", "harmful"];
-	const [pending, setPending] = useState(false);
 	const [open, setOpen] = useState(false);
+	const [pending, setPending] = useState(false);
+	const { isError, execute } = useServerAction(createQuestionFeedbackAction);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -45,6 +42,7 @@ export const QuestionFeedback = ({
 			<DialogContent>
 				<DialogHeader>Provide additional feedback</DialogHeader>
 				<form
+					className="grid gap-2"
 					onSubmit={async (e) => {
 						e.preventDefault();
 						setPending(true);
@@ -57,17 +55,20 @@ export const QuestionFeedback = ({
 								tags.push(tag);
 							}
 						}
-						await createQuestionFeedback({
+						const [_, err] = await execute({
 							text,
 							chunkSlug,
 							pageSlug,
 							isPositive,
 							tags,
-							userId,
 						});
+						if (!err) {
+							setOpen(false);
+							toast.success(
+								"Thanks for your feedback. We'll review it shortly.",
+							);
+						}
 						setPending(false);
-						toast.success("Thanks for your feedback. We'll review it shortly.");
-						setOpen(false);
 					}}
 				>
 					<TextArea
@@ -84,6 +85,11 @@ export const QuestionFeedback = ({
 							</div>
 						))}
 					</div>
+					{isError && (
+						<InternalError>
+							<p>Failed to submit feedback, please try again later.</p>
+						</InternalError>
+					)}
 					<div className="flex justify-end">
 						<Button type="submit" disabled={pending}>
 							{pending && <Spinner className="inline mr-2" />}

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteNote } from "@/lib/note/actions";
+import { deleteNoteAction } from "@/actions/note";
 import { useNotesStore } from "@/lib/store/note";
 import {
 	createNoteElements,
@@ -53,7 +53,7 @@ export const Highlight = React.memo(({ id, color, range }: Props) => {
 				// remove dom element
 				removeNotes(id);
 				// remove database record
-				deleteNote(id);
+				deleteNoteAction({ id });
 			}}
 			highlight
 		/>

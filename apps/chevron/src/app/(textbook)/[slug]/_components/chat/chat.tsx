@@ -1,4 +1,4 @@
-import { Message } from "@itell/core/chatbot";
+import { Message } from "@itell/core/chat";
 import {
 	Accordion,
 	AccordionContent,
@@ -10,7 +10,6 @@ import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
-	userId: string;
 	userName: string | null;
 	userImage: string | null;
 	pageSlug: string;
@@ -19,7 +18,6 @@ type Props = {
 };
 
 export const Chat = async ({
-	userId,
 	userName,
 	userImage,
 	pageSlug,
@@ -47,7 +45,7 @@ export const Chat = async ({
 							isStairs={false}
 							updatedAt={updatedAt}
 						/>
-						<ChatInput pageSlug={pageSlug} userId={userId} />
+						<ChatInput pageSlug={pageSlug} />
 					</div>
 					<footer className="px-4 py-2 text-xs text-muted-foreground">
 						This content has been AI-generated and may contain errors.{" "}

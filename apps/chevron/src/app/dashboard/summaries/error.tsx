@@ -1,0 +1,22 @@
+"use client";
+
+import { InternalError } from "@/components/interval-error";
+import { Meta } from "@/config/metadata";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { Card, CardContent } from "@itell/ui/server";
+
+export default function () {
+	return (
+		<DashboardShell>
+			<DashboardHeader
+				heading={Meta.summaries.title}
+				text={Meta.summaries.description}
+			/>
+			<Card className="w-full">
+				<CardContent className="space-y-4">
+					<InternalError />
+				</CardContent>
+			</Card>
+		</DashboardShell>
+	);
+}

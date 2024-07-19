@@ -1,7 +1,8 @@
+import { getTeacherAction } from "@/actions/user";
 import { getSession } from "@/lib/auth";
-import { isTeacher } from "@/lib/user/teacher";
+import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
+import { TeacherTabs } from "./_components/teacher-tabs";
 
 type Props = {
 	children: React.ReactNode;
@@ -15,20 +16,12 @@ export default async function ({ children, teacher, searchParams }: Props) {
 		return redirectWithSearchParams("auth", searchParams);
 	}
 
-	const userIsTeacher = await isTeacher(user.id);
+	const { tab } = routes.dashboard.$parseSearchParams(searchParams);
+	const [data, error] = await getTeacherAction({ userId: user.id });
 
-	if (!userIsTeacher) {
+	if (!data || error) {
 		return <>{children}</>;
 	}
 
-	return (
-		<Tabs defaultValue="class">
-			<TabsList className="grid max-w-96 grid-cols-2">
-				<TabsTrigger value="class">Class</TabsTrigger>
-				<TabsTrigger value="personal">Personal</TabsTrigger>
-			</TabsList>
-			<TabsContent value="class">{teacher}</TabsContent>
-			<TabsContent value="personal">{children}</TabsContent>
-		</Tabs>
-	);
+	return <TeacherTabs tab={tab} teacher={teacher} personal={children} />;
 }

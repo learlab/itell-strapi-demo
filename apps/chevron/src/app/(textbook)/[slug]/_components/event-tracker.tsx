@@ -1,18 +1,18 @@
 "use client";
 
-import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
-import { createEvent, createFocusTime } from "@/lib/event/actions";
+import { createEventAction } from "@/actions/event";
+import { createFocusTimeAction } from "@/actions/focus-time";
+import { EventType, FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { getChunkElement } from "@/lib/utils";
-import { EventTracker as Tracker } from "@itell/core/components";
+import { EventTracker as Tracker } from "@itell/core";
 import { useEffect, useState } from "react";
 
 type Props = {
-	userId: string | null;
 	chunks: string[];
 	pageSlug: string;
 };
 
-export const EventTracker = ({ pageSlug, chunks, userId }: Props) => {
+export const EventTracker = ({ pageSlug, chunks }: Props) => {
 	const [els, setEls] = useState<HTMLElement[] | undefined>();
 
 	useEffect(() => {
@@ -22,7 +22,7 @@ export const EventTracker = ({ pageSlug, chunks, userId }: Props) => {
 		setEls(chunkElements);
 	}, []);
 
-	if (!els || !userId) {
+	if (!els) {
 		return null;
 	}
 
@@ -37,31 +37,22 @@ export const EventTracker = ({ pageSlug, chunks, userId }: Props) => {
 					}
 				}
 
-				createEvent({
-					type: "click",
+				createEventAction({
+					type: EventType.CLICK,
 					pageSlug,
-					userId,
 					data,
 				});
 			}}
 			onScrollEvent={async (data) => {
-				createEvent({
-					type: "scroll",
-					userId,
+				createEventAction({
+					type: EventType.SCROLL,
 					pageSlug,
 					data,
 				});
 			}}
 			onFocusTimeEvent={async (data, total) => {
 				if (total > 0) {
-					createEvent({
-						type: "focus-time",
-						userId,
-						pageSlug,
-						data,
-					});
-					createFocusTime({
-						userId,
+					createFocusTimeAction({
 						pageSlug,
 						data,
 					});

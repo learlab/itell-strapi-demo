@@ -1,7 +1,7 @@
 import { FocusTimeData } from "@/drizzle/schema";
 import { env } from "@/env.mjs";
 import { ifetch } from "@/lib/api";
-import type { ChatHistory } from "@itell/core/dist/chatbot/schema";
+import type { ChatHistory } from "@itell/core/chat";
 
 interface Data {
 	summary: string;

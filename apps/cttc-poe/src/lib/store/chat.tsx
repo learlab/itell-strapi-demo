@@ -1,5 +1,5 @@
 import { StairsReadyButton } from "@/components/chat/stairs-button";
-import { BotMessage, ChatHistory, Message } from "@itell/core/chatbot";
+import { BotMessage, ChatHistory, Message } from "@itell/core/chat";
 import { createStore } from "zustand";
 import { immer } from "zustand/middleware/immer";
 

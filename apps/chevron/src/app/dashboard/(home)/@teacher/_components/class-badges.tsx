@@ -1,5 +1,5 @@
+import { getOtherStatsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { getOtherStats } from "@/lib/dashboard";
 import { DashboardBadge } from "@itell/ui/server";
 import {
 	FileTextIcon,
@@ -13,7 +13,12 @@ type Props = {
 };
 
 export const ClassBadges = async ({ students }: Props) => {
-	const classStats = await getOtherStats(students);
+	const [classStats, err] = await getOtherStatsAction({
+		ids: students.map((student) => student.id),
+	});
+	if (err) {
+		throw new Error();
+	}
 
 	return (
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

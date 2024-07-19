@@ -146,7 +146,7 @@ const ChartTooltipContent = React.forwardRef<
 
 			const [item] = payload;
 			return (
-				<p className="text-muted-foreground text-xs max-w-64 text-balance">
+				<p className="text-muted-foreground text-xs xl:text-sm max-w-48 xl:max-w-64 text-balance">
 					{item.payload[descriptionKey]}
 				</p>
 			);

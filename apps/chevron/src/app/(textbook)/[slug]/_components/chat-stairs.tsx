@@ -3,7 +3,6 @@ import { ChatInputStairs } from "./chat/chat-input-stairs";
 import { ChatMessages } from "./chat/chat-messages";
 
 type Props = {
-	userId: string;
 	userName: string | null;
 	userImage: string | null;
 	pageSlug: string;
@@ -11,7 +10,6 @@ type Props = {
 };
 
 export const ChatStairs = ({
-	userId,
 	userName,
 	userImage,
 	pageSlug,
@@ -30,7 +28,7 @@ export const ChatStairs = ({
 						userName={userName}
 						isStairs={true}
 					/>
-					<ChatInputStairs pageSlug={pageSlug} userId={userId} />
+					<ChatInputStairs pageSlug={pageSlug} />
 					<RenderFooter />
 					<footer className="px-4 py-2 text-xs text-muted-foreground">
 						This content has been AI-generated and may contain errors.{" "}

@@ -1,10 +1,10 @@
 "use client";
+import { createNoteAction } from "@/actions/note";
 import { Spinner } from "@/components/spinner";
 import {
 	defaultHighlightColor,
 	useNoteColor,
 } from "@/lib/hooks/use-note-color";
-import { createNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
@@ -45,17 +45,19 @@ export const NotePopover = ({ pageSlug, userId }: Props) => {
 				if (state) {
 					if (userId) {
 						const serializedRange = serializeRange(state.range);
-						const { noteId } = await createNote({
+						const [data, err] = await createNoteAction({
 							y: state.top,
 							highlightedText: state.text,
 							pageSlug,
-							userId,
 							color: defaultHighlightColor,
 							range: serializedRange,
 						});
+						if (err) {
+							return toast.error("Failed to create highlight");
+						}
 
 						createHighlightLocal({
-							id: noteId,
+							id: data.id,
 							color: defaultHighlightColor,
 							range: serializedRange,
 						});

@@ -12,6 +12,9 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
+
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
 export const code_challenge_method = pgEnum("code_challenge_method", [
 	"s256",
@@ -98,6 +101,8 @@ export const users = pgTable("users", {
 
 export type User = InferSelectModel<typeof users>;
 export type CreateUserInput = InferInsertModel<typeof users>;
+export const CreateUserSchema = createInsertSchema(users);
+export const UpdateUserSchema = createInsertSchema(users).partial();
 
 export const sessions = pgTable(
 	"sessions",
@@ -156,6 +161,7 @@ export const events = pgTable(
 		};
 	},
 );
+export const CreateEventSchema = createInsertSchema(events);
 
 export const teachers = pgTable("teachers", {
 	id: text("id").primaryKey().notNull(),
@@ -163,6 +169,7 @@ export const teachers = pgTable("teachers", {
 	isPrimary: boolean("is_primary").default(false).notNull(),
 	classId: text("class_id").notNull(),
 });
+export const TeacherSchema = createSelectSchema(teachers);
 
 export const summaries = pgTable(
 	"summaries",
@@ -174,7 +181,7 @@ export const summaries = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 		pageSlug: text("page_slug").notNull(),
-		isPassed: boolean("isPassed").notNull(),
+		isPassed: boolean("is_passed").notNull(),
 		containmentScore: doublePrecision("containment_score").notNull(),
 		similarityScore: doublePrecision("similarity_score").notNull(),
 		languageScore: doublePrecision("language_score"),
@@ -190,7 +197,8 @@ export const summaries = pgTable(
 );
 
 export type Summary = InferSelectModel<typeof summaries>;
-export type NewSummary = InferInsertModel<typeof summaries>;
+export type CreateSummaryInput = InferInsertModel<typeof summaries>;
+export const CreateSummarySchema = createInsertSchema(summaries);
 
 export const notes = pgTable(
 	"notes",
@@ -214,7 +222,8 @@ export const notes = pgTable(
 		};
 	},
 );
-
+export const CreateNoteSchema = createInsertSchema(notes);
+export const UpdateNoteSchema = CreateNoteSchema.partial();
 export type Note = InferSelectModel<typeof notes>;
 
 export const constructed_responses = pgTable(
@@ -244,6 +253,9 @@ export const constructed_responses = pgTable(
 export type ConstructedResponse = InferSelectModel<
 	typeof constructed_responses
 >;
+export const CreateConstructedResponseSchema = createInsertSchema(
+	constructed_responses,
+);
 
 export const constructed_responses_feedback = pgTable(
 	"constructed_responses_feedback",
@@ -259,8 +271,15 @@ export const constructed_responses_feedback = pgTable(
 		chunkSlug: text("chunk_slug").notNull(),
 		isPositive: boolean("is_positive").notNull(),
 		text: text("text").notNull(),
-		tags: text("tags").array(),
+		tags: text("tags").array().notNull(),
 		createdAt: CreatedAt,
+	},
+);
+export const CreateConstructedResponseFeedbackSchema = createInsertSchema(
+	constructed_responses_feedback,
+	{
+		// fix for https://github.com/drizzle-team/drizzle-orm/issues/1110
+		tags: z.array(z.string()),
 	},
 );
 
@@ -287,6 +306,7 @@ export const focus_times = pgTable(
 		};
 	},
 );
+export const CreateFocusTimeSchema = createInsertSchema(focus_times);
 
 export const chat_messages = pgTable(
 	"chat_messages",
@@ -311,17 +331,19 @@ export const chat_messages = pgTable(
 		};
 	},
 );
+export const ChatMessageDataSchema = z.object({
+	text: z.string(),
+	isUser: z.boolean(),
+	isStairs: z.boolean(),
+	timestamp: z.number(),
+	stairsData: z
+		.object({
+			chunk: z.string(),
+			question_type: z.string(),
+		})
+		.optional(),
+	context: z.string().optional(),
+});
 
-export type ChatMessageData = {
-	text: string;
-	isUser: boolean;
-	isStairs: boolean;
-	timestamp: number;
-	stairsData?: {
-		chunk: string;
-		question_type: string;
-	};
-	context?: string;
-};
-
+export type ChatMessageData = z.infer<typeof ChatMessageDataSchema>;
 export type FocusTimeData = Record<string, number>;

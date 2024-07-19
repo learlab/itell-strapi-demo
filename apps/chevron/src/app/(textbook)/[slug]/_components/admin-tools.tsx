@@ -1,13 +1,13 @@
 "use client";
+import { resetUserAction, updateUserAction } from "@/actions/user";
+import { InternalError } from "@/components/interval-error";
 import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { allSummaryPagesSorted } from "@/lib/pages";
-import { resetUser, updateUser } from "@/lib/user/actions";
 import { makePageHref } from "@/lib/utils";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -27,7 +27,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 	Sheet,
-	SheetClose,
 	SheetContent,
 	SheetDescription,
 	SheetHeader,
@@ -36,15 +35,15 @@ import {
 	Switch,
 } from "@itell/ui/client";
 import { SettingsIcon } from "lucide-react";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useServerAction } from "zsa-react";
 
 type Props = {
-	userId: string;
 	condition: string;
 };
 
-const RestartTextbook = ({ userId }: { userId: string }) => {
-	const [pending, startTransition] = useTransition();
+const RestartTextbook = () => {
+	const { isPending, isError, execute } = useServerAction(resetUserAction);
 
 	return (
 		<AlertDialog>
@@ -54,37 +53,43 @@ const RestartTextbook = ({ userId }: { userId: string }) => {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-					<AlertDialogDescription>
-						This action will reset your progress to the first page and delete
-						all of your data, including summaries, chat messages, question
-						answers, etc.
+					<AlertDialogDescription asChild>
+						<div className="grid gap-2">
+							<p className="text-sm text-muted-foreground">
+								This action will reset your progress to the first page and
+								delete all of your data, including summaries, chat messages,
+								question answers, etc.
+							</p>
+							{isError && <InternalError />}
+						</div>
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
-					<AlertDialogAction
-						disabled={pending}
-						onClick={() => {
-							startTransition(async () => {
-								const pageSlug = await resetUser(userId);
+					<Button
+						disabled={isPending}
+						onClick={async () => {
+							const [data, err] = await execute();
+							if (!err) {
 								localStorage.clear();
-								window.location.href = makePageHref(pageSlug);
-							});
+								window.location.href = makePageHref(data.pageSlug);
+							}
 						}}
 					>
-						{pending && <Spinner className="inline mr-2" />} Continue
-					</AlertDialogAction>
+						{isPending && <Spinner className="inline mr-2" />} Continue
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
 	);
 };
 
-export const AdminTools = ({ userId, condition }: Props) => {
+export const AdminTools = ({ condition }: Props) => {
 	const finishPage = useQuestion((state) => state.finishPage);
-	const [pending, startTransition] = useTransition();
+	const [open, setOpen] = useState(false);
+	const { execute, isPending, isError } = useServerAction(updateUserAction);
 
-	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const condition = String(formData.get("condition"));
@@ -93,27 +98,27 @@ export const AdminTools = ({ userId, condition }: Props) => {
 				? String(formData.get("page-progress"))
 				: undefined;
 
-		startTransition(async () => {
-			if (formData.get("page-unblur") === "on") {
-				finishPage();
-			}
+		if (formData.get("page-unblur") === "on") {
+			finishPage();
+		}
 
-			await updateUser(userId, {
-				condition,
-				pageSlug,
-				finished: false,
-			});
-
+		const [_, err] = await execute({
+			condition,
+			pageSlug,
+			finished: false,
+		});
+		if (!err) {
+			setOpen(false);
 			if (pageSlug) {
 				window.location.href = makePageHref(pageSlug);
 			} else {
 				window.location.reload();
 			}
-		});
+		}
 	};
 
 	return (
-		<Sheet>
+		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
@@ -131,7 +136,10 @@ export const AdminTools = ({ userId, condition }: Props) => {
 						lost.
 					</SheetDescription>
 				</SheetHeader>
-				<form className="grid gap-8 py-4" onSubmit={onSubmit}>
+				<form
+					className="grid gap-8 py-4 justify-items-start"
+					onSubmit={onSubmit}
+				>
 					<div className="flex flex-col gap-4">
 						<Label htmlFor="condition">AI feedback</Label>
 						<RadioGroup
@@ -218,14 +226,14 @@ export const AdminTools = ({ userId, condition }: Props) => {
 							submission
 						</p>
 					</div>
-					<div>
-						<RestartTextbook userId={userId} />
-					</div>
-					<SheetClose asChild>
-						<Button type="submit" disabled={pending}>
-							{pending && <Spinner className="size-4 mr-2" />} Save changes
+
+					<div className="grid gap-2">
+						<Button type="submit" disabled={isPending}>
+							{isPending && <Spinner className="size-4 mr-2" />} Save changes
 						</Button>
-					</SheetClose>
+						<RestartTextbook />
+						{isError && <InternalError />}
+					</div>
 				</form>
 			</SheetContent>
 		</Sheet>

@@ -7,7 +7,7 @@ import {
 	Radar,
 } from "recharts";
 
-import { OtherStats, UserStats } from "@/lib/dashboard";
+import { OtherStats, UserStats } from "@/actions/dashboard";
 import {
 	ChartConfig,
 	ChartContainer,
@@ -127,6 +127,7 @@ export const UserRadarChart = ({
 							<ChartTooltipContent
 								indicator="line"
 								descriptionKey="description"
+								className="xl:text-base"
 								valueFn={(item) => {
 									if (item.dataKey === "userScaled") {
 										return item.payload.user;

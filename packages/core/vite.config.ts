@@ -21,14 +21,11 @@ const app = async (): Promise<UserConfigExport> => {
 					hooks: path.resolve(__dirname, "src/hooks/index.ts"),
 					utils: path.resolve(__dirname, "src/utils.ts"),
 					config: path.resolve(__dirname, "src/config/index.ts"),
-					contentlayer: path.resolve(__dirname, "src/contentlayer.ts"),
 					note: path.resolve(__dirname, "src/note/index.ts"),
 					dashboard: path.resolve(__dirname, "src/dashboard/index.ts"),
-					components: path.resolve(__dirname, "src/components/index.ts"),
 					summary: path.resolve(__dirname, "src/summary/index.ts"),
-					qa: path.resolve(__dirname, "src/qa/index.ts"),
-					chatbot: path.resolve(__dirname, "src/chatbot/index.ts"),
-					itellFetch: path.resolve(__dirname, "src/itellFetch.ts"),
+					question: path.resolve(__dirname, "src/question/index.ts"),
+					chat: path.resolve(__dirname, "src/chat/index.ts"),
 				},
 				name: "core",
 				formats: ["es", "cjs"],
@@ -36,7 +33,7 @@ const app = async (): Promise<UserConfigExport> => {
 			},
 			emptyOutDir: true,
 			rollupOptions: {
-				external: ["react", "fs/promises", "fs"],
+				external: ["react", "react-dom", "fs/promises", "fs"],
 				output: {
 					globals: {
 						react: "React",

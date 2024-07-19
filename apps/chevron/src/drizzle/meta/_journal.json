@@ -22,6 +22,13 @@
       "when": 1720844097164,
       "tag": "0002_little_doctor_octopus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1721259983624,
+      "tag": "0003_fixed_bishop",
+      "breakpoints": true
     }
   ]
 }

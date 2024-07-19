@@ -1,4 +1,4 @@
-import { BotMessage, ChatHistory, Message } from "@itell/core/chatbot";
+import { BotMessage, ChatHistory, Message } from "@itell/core/chat";
 import { StairsReadyButton } from "@textbook/chat/stairs-button";
 import { createStore } from "zustand";
 import { immer } from "zustand/middleware/immer";

@@ -1,4 +1,4 @@
-import { Message } from "@itell/core/chatbot";
+import { Message } from "@itell/core/chat";
 import {
 	Accordion,
 	AccordionContent,

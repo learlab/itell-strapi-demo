@@ -24,7 +24,6 @@ type Props = {
 
 export const PageStatusModal = ({ user, pageStatus }: Props) => {
 	const { latest, unlocked } = pageStatus;
-
 	if (unlocked) {
 		return null;
 	}

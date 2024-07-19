@@ -1,6 +1,7 @@
+import { incrementViewAction } from "@/actions/dashboard";
+import { Meta } from "@/config/metadata";
 import { summaries } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { incrementView } from "@/lib/dashboard/actions";
 import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
 import { relativeDate } from "@itell/core/utils";
@@ -45,7 +46,7 @@ export default async function ({ params }: PageProps) {
 		return notFound();
 	}
 
-	incrementView(user.id, "summary", { summaryId: summary.id });
+	incrementViewAction({ pageSlug: Meta.student.slug, data: { id: user.id } });
 
 	return (
 		<div className="px-32 py-4">

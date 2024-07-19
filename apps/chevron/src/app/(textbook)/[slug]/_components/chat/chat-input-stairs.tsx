@@ -1,27 +1,23 @@
 "use client";
 
+import { createChatsAction } from "@/actions/chat";
+import { InternalError } from "@/components/interval-error";
 import { useChat } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
-import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
-import { ChatHistory } from "@itell/core/chatbot";
+import { ChatHistory } from "@itell/core/chat";
 import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
+import { useServerAction } from "zsa-react";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
-	userId: string;
 	pageSlug: string;
 }
 
-export const ChatInputStairs = ({
-	userId,
-	className,
-	pageSlug,
-}: ChatInputProps) => {
+export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 	const {
 		addUserMessage,
 		addBotMessage,
@@ -43,6 +39,7 @@ export const ChatInputStairs = ({
 			text: String(stairsQuestion?.text),
 		},
 	]);
+	const { isError, execute } = useServerAction(createChatsAction);
 
 	const onMessage = async (text: string) => {
 		setPending(true);
@@ -106,8 +103,7 @@ export const ChatInputStairs = ({
 				);
 
 				if (!answered.current) {
-					createChatMessage({
-						userId,
+					execute({
 						pageSlug,
 						messages: [
 							{
@@ -136,8 +132,7 @@ export const ChatInputStairs = ({
 					});
 				} else {
 					answered.current = true;
-					createChatMessage({
-						userId,
+					execute({
 						pageSlug,
 						messages: [
 							{
@@ -176,7 +171,7 @@ export const ChatInputStairs = ({
 	};
 
 	return (
-		<div className={cn("px-2", className)}>
+		<div className={cn("grid gap-2 px-2", className)}>
 			<form
 				className="mt-4 flex-1 overflow-hidden rounded-lg border-none outline-none"
 				onSubmit={(e) => {
@@ -201,7 +196,7 @@ export const ChatInputStairs = ({
 									? "Please return to the summary"
 									: "Message ITELL AI..."
 							}
-							className="disabled:opacity-50 bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
+							className="disabled:opacity-50 disabled:pointer-events-none bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
 							onKeyDown={async (e) => {
 								if (e.key === "Enter" && !e.shiftKey) {
 									e.preventDefault();
@@ -219,14 +214,10 @@ export const ChatInputStairs = ({
 						/>
 
 						<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-							<button type="submit">
-								{pending ? (
-									<Spinner className="size-4" />
-								) : (
-									<kbd className="inline-flex items-center rounded border px-1 text-xs">
-										<CornerDownLeft className="size-4" />
-									</kbd>
-								)}
+							<button type="submit" disabled={pending}>
+								<kbd className="inline-flex items-center rounded border px-1 text-xs">
+									<CornerDownLeft className="size-4" />
+								</kbd>
 							</button>
 						</div>
 
@@ -241,6 +232,11 @@ export const ChatInputStairs = ({
 					</p>
 				)}
 			</form>
+			{isError && (
+				<InternalError className="px-2">
+					<p>Failed to save chat</p>
+				</InternalError>
+			)}
 		</div>
 	);
 };

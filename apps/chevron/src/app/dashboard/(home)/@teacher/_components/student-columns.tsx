@@ -17,7 +17,7 @@ import Link from "next/link";
 // You can use a Zod schema here if you want.
 export type StudentData = Pick<User, "id" | "email" | "name" | "createdAt"> & {
 	progress: { index: number; text: string };
-	summaryCounts: number;
+	summaryCount: number;
 };
 
 const ColumnWithSorting = ({
@@ -74,7 +74,7 @@ export const columns: ColumnDef<StudentData>[] = [
 	},
 	{
 		id: "Total Summaries",
-		accessorKey: "summaryCounts",
+		accessorKey: "summaryCount",
 		header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
 	},
 	{
@@ -82,11 +82,11 @@ export const columns: ColumnDef<StudentData>[] = [
 		accessorKey: "createdAt",
 		header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
 
-		sortingFn: (rowA, rowB, columnId) => {
+		sortingFn: (rowA, rowB) => {
 			return rowA.original.createdAt > rowB.original.createdAt ? 1 : -1;
 		},
 		cell: ({ row }) => {
-			return row.original.createdAt.toLocaleDateString("en-us");
+			return row.original.createdAt.toLocaleDateString();
 		},
 	},
 	{

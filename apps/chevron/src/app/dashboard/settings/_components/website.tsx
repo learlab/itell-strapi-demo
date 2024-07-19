@@ -1,9 +1,9 @@
 "use client";
 
+import { updateUserAction } from "@/actions/user";
+import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
-import { User } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
-import { updateUser } from "@/lib/user/actions";
 import {
 	Button,
 	Label,
@@ -13,10 +13,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@itell/ui/client";
-import { Errorbox } from "@itell/ui/server";
-import { useRouter } from "next/navigation";
-import { useFormState, useFormStatus } from "react-dom";
+import { User } from "lucia";
+import React from "react";
 import { toast } from "sonner";
+import { useServerAction } from "zsa-react";
 
 const timeZoneData = [
 	"America/Los_Angeles", // Pacific Time Zone
@@ -29,48 +29,28 @@ const timeZoneData = [
 	"Pacific/Saipan", // Chamorro Time Zone
 ];
 
-type FormState = { error: null | string };
-
-const SubmitButton = () => {
-	const { pending } = useFormStatus();
-	return (
-		<Button disabled={pending}>
-			{pending && <Spinner className="mr-2 size-4" />} Save
-		</Button>
-	);
-};
-
 export const WebsiteSettings = ({ user }: { user: User }) => {
-	const router = useRouter();
-	const onSubmit = async (
-		prevState: FormState,
-		formData: FormData,
-	): Promise<FormState> => {
+	const { execute, isError, isPending } = useServerAction(updateUserAction);
+
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
 		const data = {
 			timeZone: String(formData.get("time_zone")),
 		};
 
-		try {
-			await updateUser(user.id, data);
+		const [_, err] = await execute(data);
+		if (!err) {
 			toast.success("Settings saved!");
-			router.refresh();
-			return { error: null };
-		} catch (err) {
-			return { error: "Failed to save settings. Please try again later." };
 		}
 	};
-
-	const [formState, formAction] = useFormState(onSubmit, { error: null });
 
 	return (
 		<div className="space-y-4">
 			<h3 className="mb-4 text-lg font-medium leading-relaxed">
 				Website Settings
 			</h3>
-			<form action={formAction} className="space-y-2 max-w-2xl">
-				{formState.error && (
-					<Errorbox title="Error">{formState.error}</Errorbox>
-				)}
+			<form onSubmit={onSubmit} className="grid gap-2 max-w-2xl">
 				<Label htmlFor="time_zone">Time Zone</Label>
 				<Select
 					name="time_zone"
@@ -86,8 +66,13 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 							</SelectItem>
 						))}
 					</SelectContent>
-					<SubmitButton />
 				</Select>
+				{isError && <InternalError />}
+				<footer>
+					<Button disabled={isPending} type="submit">
+						{isPending && <Spinner className="mr-2 size-4" />} <span>Save</span>
+					</Button>
+				</footer>
 			</form>
 		</div>
 	);

@@ -92,6 +92,7 @@ export const scrollToElement = (element: HTMLElement) => {
 };
 
 export const reportSentry = (msg: string, extra: any) => {
+	console.log("reporting to sentry", msg, extra);
 	Sentry.captureMessage(msg, {
 		extra,
 	});

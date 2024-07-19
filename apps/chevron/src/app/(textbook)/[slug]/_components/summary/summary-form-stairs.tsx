@@ -1,24 +1,18 @@
 "use client";
 
+import { createEventAction } from "@/actions/event";
+import { getFocusTimeAction } from "@/actions/focus-time";
+import { createSummaryAction } from "@/actions/summary";
 import { useChat, useQuestion } from "@/components/provider/page-provider";
 import {
 	useSession,
 	useSessionAction,
 } from "@/components/provider/session-provider";
-import { PAGE_SUMMARY_THRESHOLD } from "@/lib/constants";
-import { Condition } from "@/lib/control/condition";
-import { createEvent } from "@/lib/event/actions";
+import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { getChatHistory } from "@/lib/store/chat";
-import {
-	countUserPageSummary,
-	createSummary,
-	findFocusTime,
-} from "@/lib/summary/actions";
-import { getFeedback } from "@/lib/summary/feedback";
-import { incrementUserPage } from "@/lib/user/actions";
 import {
 	PageData,
 	getChunkElement,
@@ -34,6 +28,7 @@ import {
 	SummaryResponseSchema,
 	validateSummary,
 } from "@itell/core/summary";
+import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
@@ -69,7 +64,6 @@ type StairsQuestion = {
 
 type State = {
 	prevInput: string | undefined;
-	isPassed: boolean;
 	error: ErrorType | null;
 	response: SummaryResponse | null;
 	stairsQuestion: StairsQuestion | null;
@@ -82,10 +76,18 @@ type Action =
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "stairs"; payload: StairsQuestion }
 	| { type: "finish"; payload: { canProceed: boolean } }
-	| { type: "set_passed"; payload: boolean }
 	| { type: "set_prev_input"; payload: string };
 
 const driverObj = driver();
+
+const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
+	return {
+		isPassed: response.is_passed || false,
+		prompt: response.prompt || "",
+		promptDetails: response.prompt_details || [],
+		suggestedKeyphrases: response.suggested_keyphrases,
+	};
+};
 
 const exitQuestion = () => {
 	const summaryEl = document.querySelector("#page-summary");
@@ -101,6 +103,7 @@ const goToQuestion = (question: StairsQuestion) => {
 	const el = getChunkElement(question.chunk);
 	if (el) {
 		scrollToElement(el);
+
 		driverObj.highlight({
 			element: el,
 			popover: {
@@ -122,7 +125,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		error: null,
 		response: null,
 		stairsQuestion: null,
-		isPassed: false,
 		canProceed: pageStatus.unlocked,
 	};
 	const { updateUser } = useSessionAction();
@@ -149,9 +151,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				break;
 			case "scored":
 				draft.response = action.payload;
-				break;
-			case "set_passed":
-				draft.isPassed = action.payload;
 				break;
 			case "stairs":
 				draft.stairsQuestion = action.payload;
@@ -182,7 +181,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			onPopoverRender: (popover) => {
 				addNode(
 					<ChatStairs
-						userId={user.id}
 						userImage={user.image}
 						userName={user.name}
 						pageSlug={pageSlug}
@@ -191,10 +189,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 								onClick={(time) => {
 									exitQuestion();
 									if (!stairsAnswered) {
-										createEvent({
+										createEventAction({
 											type: Condition.STAIRS,
 											pageSlug,
-											userId: user.id,
 											data: { stairs: stairsDataRef.current, time },
 										});
 									}
@@ -239,10 +236,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				// set prev input here so we are not comparing consecutive error summaries
 				dispatch({ type: "set_prev_input", payload: input });
-				const summaryCount = await countUserPageSummary(userId, pageSlug);
-				const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
-				const focusTime = await findFocusTime(userId, pageSlug);
+				const [focusTime, err] = await getFocusTimeAction({ pageSlug });
+				if (err) {
+					throw new Error(err.message);
+				}
 				const body = JSON.stringify({
 					summary: input,
 					page_slug: pageSlug,
@@ -285,10 +283,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							);
 							if (parsed.success) {
 								summaryResponseRef.current = parsed.data;
-								dispatch({
-									type: "set_passed",
-									payload: parsed.data.is_passed || isEnoughSummary,
-								});
 								dispatch({ type: "scored", payload: parsed.data });
 								finishStage("Scoring");
 							} else {
@@ -344,43 +338,40 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (summaryResponseRef.current) {
 					const scores = summaryResponseRef.current;
 					addStage("Saving");
-					const shouldUpdateUser = scores.is_passed || isEnoughSummary;
-					const { summaryId } = await createSummary({
-						text: input,
-						userId: user.id,
-						pageSlug,
-						condition: Condition.STAIRS,
-						isPassed: scores.is_passed || false,
-						containmentScore: scores.containment,
-						similarityScore: scores.similarity,
-						languageScore: scores.language,
-						contentScore: scores.content,
-					});
 
-					createEvent({
-						type: "keystroke",
-						pageSlug,
-						userId,
-						data: {
-							summaryId,
+					const [data, err] = await createSummaryAction({
+						summary: {
+							text: input,
+							pageSlug,
+							condition: Condition.STAIRS,
+							isPassed: scores.is_passed || false,
+							containmentScore: scores.containment,
+							similarityScore: scores.similarity,
+							languageScore: scores.language,
+							contentScore: scores.content,
+						},
+						keystroke: {
 							start: state.prevInput
 								? state.prevInput
-								: getSummaryLocal(pageSlug),
-							keystrokes,
+								: getSummaryLocal(pageSlug) || "",
+							data: keystrokes,
 						},
-					}).then(clearKeystroke);
+					});
+					if (err) {
+						throw new Error(err.message);
+					}
 
+					clearKeystroke();
 					finishStage("Saving");
 
-					if (shouldUpdateUser) {
-						const nextSlug = await incrementUserPage(user.id, pageSlug);
+					if (data.canProceed) {
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
 							toast.info(
 								"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
 							);
 						} else {
-							updateUser({ pageSlug: nextSlug });
+							updateUser({ pageSlug: data.nextPageSlug });
 							// check if we can already proceed to prevent excessive toasts
 							if (!state.canProceed) {
 								const title = feedback?.isPassed
@@ -411,7 +402,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 					if (stairsDataRef.current) {
 						dispatch({ type: "stairs", payload: stairsDataRef.current });
-						if (!shouldUpdateUser && !pageStatus.unlocked) {
+						if (!data.canProceed && !pageStatus.unlocked) {
 							goToQuestion(stairsDataRef.current);
 						}
 					}

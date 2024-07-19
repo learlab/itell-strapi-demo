@@ -1,9 +1,11 @@
+import {
+	getTeacherByClassAction,
+	incrementViewAction,
+} from "@/actions/dashboard";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
-import { getTeacherWithClassId, incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
-import { getUser } from "@/lib/user/actions";
-import { redirectWithSearchParams } from "@/lib/utils";
+import { delay, redirectWithSearchParams } from "@/lib/utils";
 import { JoinClassModal } from "@dashboard/join-class-modal";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Separator } from "@itell/ui/client";
@@ -18,6 +20,7 @@ import { JoinClassForm } from "@settings/join-class";
 import { Profile } from "@settings/profile";
 import { QuitClass } from "@settings/quit-class";
 import { WebsiteSettings } from "@settings/website";
+import { User } from "lucia";
 
 export const metadata = Meta.settings;
 
@@ -33,16 +36,17 @@ export default async function ({ searchParams }: Props) {
 	if (!user) {
 		return redirectWithSearchParams("auth", searchParams);
 	}
-	const dbUser = await getUser(user.id);
-	if (!dbUser) {
-		return null;
+
+	incrementViewAction({ pageSlug: Meta.settings.slug, data: searchParams });
+
+	let teacher: User | null = null;
+	if (user.classId) {
+		const [res, err] = await getTeacherByClassAction({ classId: user.classId });
+		if (err) {
+			throw new Error();
+		}
+		teacher = res;
 	}
-
-	incrementView(user.id, "settings", searchParams);
-
-	const teacher = dbUser.classId
-		? await getTeacherWithClassId(dbUser.classId)
-		: null;
 
 	return (
 		<DashboardShell>
@@ -58,27 +62,26 @@ export default async function ({ searchParams }: Props) {
 				<CardContent className="space-y-4">
 					<Profile user={user} />
 					<Separator />
-					<WebsiteSettings user={dbUser} />
+					<WebsiteSettings user={user} />
 					<Separator />
 					{teacher ? (
-						<div>
-							<h3 className="mb-4 text-lg font-medium">Class Information</h3>
-							<p className="text-muted-foreground text-sm max-w-lg mb-4">
+						<div className="grid gap-2 items-start justify-items-start">
+							<h3 className="text-lg font-medium">Class Information</h3>
+							<p className="text-muted-foreground text-sm max-w-lg">
 								You are enrolled in a class taught by {teacher.name}.
 							</p>
-							<QuitClass userId={user.id} />
+							<QuitClass />
 						</div>
 					) : (
 						<div className="space-y-4" id="enroll">
 							<h3 className="mb-4 text-lg font-medium">Class Registration</h3>
-							<JoinClassForm user={dbUser} />
+							<JoinClassForm user={user} />
 						</div>
 					)}
 				</CardContent>
 			</Card>
 			{classId && teacher && (
 				<JoinClassModal
-					userId={user.id}
 					userClassId={user.classId}
 					teacher={teacher}
 					classId={classId}

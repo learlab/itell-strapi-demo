@@ -1,11 +1,12 @@
-import { ClassInfo } from "@/app/dashboard/(home)/@teacher/_components/class-info";
+import { getTeacherAction } from "@/actions/user";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
-import { getUserTeacherStatus } from "@/lib/dashboard";
 import { delay } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
+import { ErrorBoundary } from "react-error-boundary";
+import { ClassInfo } from "./_components/class-info";
 
 export const metadata = Meta.class;
 
@@ -17,7 +18,10 @@ export default async function () {
 		return redirect("/auth");
 	}
 
-	const teacher = await getUserTeacherStatus(user.id);
+	const [teacher, err] = await getTeacherAction({ userId: user.id });
+	if (err) {
+		throw new Error();
+	}
 
 	return (
 		<DashboardShell>
@@ -26,7 +30,9 @@ export default async function () {
 				text={Meta.class.description}
 			/>
 			{teacher ? (
-				<ClassInfo classId={teacher.classId} />
+				<ErrorBoundary fallback={<ClassInfo.ErrorFallback />}>
+					<ClassInfo classId={teacher.classId} />
+				</ErrorBoundary>
 			) : (
 				<Errorbox>You have to be a teacher to view this page</Errorbox>
 			)}

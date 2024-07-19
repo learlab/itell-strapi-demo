@@ -1,20 +1,10 @@
 import { ContinueReading } from "@/components/continue-reading";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import {
-	DashboardNavItem,
-	DashboardNavMenu,
-	SidebarItem,
-	SidebarNavItem,
-} from "@dashboard/nav";
-import {
-	BarChart4Icon,
-	FileEditIcon,
-	MessageCircleQuestion,
-	SettingsIcon,
-} from "lucide-react";
+import { DashboardNavMenu } from "@dashboard/nav";
 import Image from "next/image";
 import Link from "next/link";
+import { DashboardNavItem } from "./config";
 
 interface DashboardNavProps {
 	items?: DashboardNavItem[];
@@ -47,46 +37,4 @@ export const DashboardNav = async (props: DashboardNavProps) => {
 			<DashboardNavMenu user={user} {...props} />
 		</div>
 	);
-};
-
-export const DashboardSidebar = () => {
-	return (
-		<nav className="grid items-start pt-4">
-			{dashboardConfig.sidebarNav.map((item) => (
-				<SidebarItem key={item.title} item={item} />
-			))}
-		</nav>
-	);
-};
-
-const iconClasses = "mr-2 size-4";
-export const dashboardConfig: DashboardConfig = {
-	mainNav: [],
-	sidebarNav: [
-		{
-			title: "Statistics",
-			href: "/dashboard",
-			icon: <BarChart4Icon className={iconClasses} />,
-		},
-		{
-			title: "Summaries",
-			href: "/dashboard/summaries",
-			icon: <FileEditIcon className={iconClasses} />,
-		},
-		{
-			title: "Questions",
-			href: "/dashboard/questions",
-			icon: <MessageCircleQuestion className={iconClasses} />,
-		},
-		{
-			title: "Settings",
-			href: "/dashboard/settings",
-			icon: <SettingsIcon className={iconClasses} />,
-		},
-	],
-};
-
-type DashboardConfig = {
-	mainNav: DashboardNavItem[];
-	sidebarNav: SidebarNavItem[];
 };

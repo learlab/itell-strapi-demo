@@ -1,6 +1,6 @@
+import { incrementViewAction } from "@/actions/dashboard";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
-import { incrementView } from "@/lib/dashboard/actions";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
@@ -32,7 +32,7 @@ export default async function ({ searchParams }: Props) {
 		readingTimeLevel = reading_time_level as ReadingTimeChartLevel;
 	}
 
-	incrementView(user.id, "dashboard", searchParams);
+	incrementViewAction({ pageSlug: Meta.home.slug, data: searchParams });
 
 	return (
 		<DashboardShell>

@@ -1,5 +1,5 @@
 import { env } from "@/env.mjs";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import "server-only";
@@ -14,5 +14,16 @@ export const first = <T>(res: T[]) => (res.length > 0 ? res[0] : null);
 export const findUser = async (id: string) => {
 	return first(
 		await db.select().from(schema.users).where(eq(schema.users.id, id)),
+	);
+};
+
+export const findTeacher = async (id: string) => {
+	return first(
+		await db
+			.select()
+			.from(schema.teachers)
+			.where(
+				and(eq(schema.teachers.id, id), eq(schema.teachers.isApproved, true)),
+			),
 	);
 };

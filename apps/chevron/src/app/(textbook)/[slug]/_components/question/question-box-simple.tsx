@@ -1,9 +1,9 @@
 "use client";
 
+import { createEventAction } from "@/actions/event";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSession } from "@/components/provider/session-provider";
-import { Condition } from "@/lib/control/condition";
-import { createEvent } from "@/lib/event/actions";
+import { Condition, EventType } from "@/lib/constants";
 import { LoginButton } from "@auth//auth-form";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
@@ -64,9 +64,8 @@ export const QuestionBoxSimple = ({
 						onSubmit={(e) => {
 							e.preventDefault();
 							advanceChunk(chunkSlug);
-							createEvent({
-								userId: user.id,
-								type: "post-question-chunk-reveal",
+							createEventAction({
+								type: EventType.CHUNK_REVEAL_QUESTION,
 								pageSlug,
 								data: {
 									chunkSlug,

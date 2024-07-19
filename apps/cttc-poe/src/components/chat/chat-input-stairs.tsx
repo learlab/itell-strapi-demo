@@ -3,7 +3,7 @@
 import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
-import { ChatHistory } from "@itell/core/chatbot";
+import { ChatHistory } from "@itell/core/chat";
 import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";

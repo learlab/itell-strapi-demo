@@ -1,7 +1,7 @@
+import { incrementViewAction } from "@/actions/dashboard";
 import { Meta } from "@/config/metadata";
 import { ConstructedResponse, constructed_responses } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { incrementView } from "@/lib/dashboard/actions";
 import { db } from "@/lib/db";
 import { getAllQuestions } from "@/lib/question";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
@@ -20,11 +20,12 @@ export default async function () {
 		return redirectWithSearchParams("/auth");
 	}
 
-	incrementView(user.id, "constructed-response");
+	incrementViewAction({ pageSlug: Meta.questions.slug });
 
-	const [records, byScore] = await Promise.all([
+	const [records, byScore, allQuestions] = await Promise.all([
 		getAnswers(user.id),
 		getScoreCount(user.id),
+		getAllQuestions(),
 	]);
 	const byChapter = groupby(records, (d) => d.pageSlug);
 	const chapters = Object.keys(byChapter)
@@ -42,7 +43,6 @@ export default async function () {
 		};
 	});
 
-	const allQuestions = await getAllQuestions();
 	const questions: Array<{
 		chunkSlug: string;
 		question: string;
@@ -78,24 +78,24 @@ export default async function () {
 					{records.length > 0 && (
 						<>
 							<QuestionChart data={chartData} />
-							<div>
-								<h2 className="font-semibold text-lg">All Records</h2>
+							<div className="grid gap-2">
+								<h2 className="font-semibold text-xl">All Records</h2>
 								<p className="text-sm text-muted-foreground">
 									Due to randomness in question placement, you may not receive
 									the same question set for a chapter
 								</p>
-								<div className="space-y-4 divide-y divide-border">
+								<div className="grid gap-4 divide-y divide-border">
 									{chapters.map((chapter) => {
 										const answers = byChapter[chapter.page_slug];
 										const excellentAnswers = answers.filter(
 											(a) => a.score === 2,
 										);
 										return (
-											<div key={chapter.index} className="space-y-4 pt-4">
+											<div key={chapter.index} className="grid gap-4">
 												<header>
 													<p
 														className={cn(
-															"font-semibold text-xl text-pretty tracking-tight",
+															"font-semibold text-lg text-pretty tracking-tight",
 														)}
 													>
 														{chapter.title}

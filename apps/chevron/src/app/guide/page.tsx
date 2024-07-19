@@ -1,6 +1,6 @@
 import { MainMdx } from "@/components/mdx";
 import { getSession } from "@/lib/auth";
-import { Condition } from "@/lib/control/condition";
+import { Condition } from "@/lib/constants";
 import { Guide, allGuides } from "contentlayer/generated";
 export default async function () {
 	const { user } = await getSession();

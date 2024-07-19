@@ -1,9 +1,9 @@
+import { getTeacherAction, getUserAction } from "@/actions/user";
+import { authedProcedure } from "@/actions/utils";
 import { Meta } from "@/config/metadata";
 import { User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { getUserTeacherStatus } from "@/lib/dashboard";
 import { routes } from "@/lib/navigation";
-import { getUser } from "@/lib/user/actions";
 import { getPageData } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";
@@ -34,7 +34,7 @@ export default async function ({ params, searchParams }: PageProps) {
 		return redirect("/auth");
 	}
 
-	const teacher = await getUserTeacherStatus(user.id);
+	const teacher = await getTeacherAction({ userId: user.id });
 
 	if (!teacher) {
 		return (
@@ -49,8 +49,8 @@ export default async function ({ params, searchParams }: PageProps) {
 	}
 
 	const { id } = routes.student.$parseParams(params);
-	const student = await getUser(id);
-	if (!student) {
+	const [student, err] = await getUserAction({ userId: id });
+	if (!student || err) {
 		return (
 			<DashboardShell>
 				<DashboardHeader
@@ -119,7 +119,7 @@ const StudentProfile = ({
 						<p className="text-muted-foreground text-sm font-semibold">
 							You are viewing a student in your class
 						</p>
-						<Link className={buttonVariants()} href="/dashboard/class">
+						<Link className={buttonVariants()} href="/dashboard?tab=class">
 							Back to all students
 						</Link>
 					</div>

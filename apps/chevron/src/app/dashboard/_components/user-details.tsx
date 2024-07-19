@@ -1,10 +1,15 @@
+import {
+	countStudentAction,
+	getOtherStatsAction,
+	getOtherUsersAction,
+	getUserStatsAction,
+} from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getOtherStats, getUserStats } from "@/lib/dashboard";
-import { countStudent, getOtherUsers } from "@/lib/dashboard/class";
 import { getPageData } from "@/lib/utils";
 import { cn, median } from "@itell/core/utils";
 import { DashboardBadge, Skeleton } from "@itell/ui/server";
+import { User } from "lucia";
 import {
 	FileTextIcon,
 	FlagIcon,
@@ -18,19 +23,29 @@ import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
 
 type Props = {
-	userId: string;
-	pageSlug: string | null;
-	classId: string | null;
+	user: User;
 };
 
-export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
-	const otherUsers = await getOtherUsers(classId ? { classId } : { userId });
-	const [userStats, otherStats] = await Promise.all([
-		getUserStats(userId),
-		getOtherStats(otherUsers),
+export const UserDetails = async ({ user }: Props) => {
+	const [otherUsers, err] = await getOtherUsersAction();
+	if (err) {
+		throw new Error();
+	}
+
+	const [[userStats, err1], [otherStats, err2]] = await Promise.all([
+		getUserStatsAction(),
+		getOtherStatsAction({ ids: otherUsers.map((user) => user.id) }),
 	]);
 
-	const pageIndex = getPageData(pageSlug)?.index;
+	if (err1) {
+		throw new Error();
+	}
+
+	if (err2) {
+		throw new Error();
+	}
+
+	const pageIndex = getPageData(user.pageSlug)?.index;
 	const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
 	const otherProgress = otherUsers.map((user) => {
 		const pageIndex = getPageData(user.pageSlug)?.index;
@@ -67,11 +82,11 @@ export const UserDetails = async ({ userId, pageSlug, classId }: Props) => {
 			<p className="text-center text-muted-foreground">
 				percentages are relative to the median
 			</p>
-			{classId ? (
+			{user.classId ? (
 				<p className="text-center text-muted-foreground">
 					comparing with{" "}
 					<Suspense fallback={<Spinner className="inline" />}>
-						<StudentCount classId={classId} />
+						<StudentCount classId={user.classId} />
 					</Suspense>{" "}
 					from the same class
 				</p>
@@ -214,7 +229,8 @@ UserDetails.Skeleton = () => (
 );
 
 const StudentCount = async ({ classId }: { classId: string }) => {
-	const numStudents = await countStudent(classId);
-
-	return <span>{pluralize("student", numStudents, true)}</span>;
+	const [numStudents, err] = await countStudentAction({ classId });
+	if (!err) {
+		return <span>{pluralize("student", numStudents, true)}</span>;
+	}
 };

@@ -1,14 +1,10 @@
-import { ContinueReading } from "@/components/continue-reading";
 import { SiteNav } from "@/components/site-nav";
-import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import { Condition } from "@/lib/control/condition";
-import { delay, redirectWithSearchParams } from "@/lib/utils";
-import {
-	DashboardNav,
-	DashboardSidebar,
-	dashboardConfig,
-} from "@dashboard/dashboard-nav";
+import { Condition } from "@/lib/constants";
+import { redirectWithSearchParams } from "@/lib/utils";
+import { dashboardConfig } from "@dashboard/config";
+import { DashboardNav } from "@dashboard/dashboard-nav";
+import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 
 export default async function DashboardLayout({
 	children,

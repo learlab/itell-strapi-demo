@@ -124,9 +124,7 @@ h5,
 }
 
 
-.shake {
-  animation: shake 0.2s linear infinite;
-}
+
 
 #page-content button,
 #page-content .question-container,
@@ -174,6 +172,14 @@ h5,
     clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
   }
 }
+
+.shake {
+  animation-name: shake;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 2;
+}
+
 
 @keyframes shake {
   0% {

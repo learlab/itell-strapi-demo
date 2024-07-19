@@ -3,7 +3,7 @@
 import { FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { createEvent, createFocusTime } from "@/lib/event/actions";
 import { getChunkElement } from "@/lib/utils";
-import { EventTracker as Tracker } from "@itell/core/components";
+import { EventTracker as Tracker } from "@itell/core";
 import { useEffect, useState } from "react";
 
 type Props = {

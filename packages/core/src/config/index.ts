@@ -1,4 +1,3 @@
-export { getSiteConfig } from "./site";
 export { getSiteTheme, DefaultTheme } from "./theme";
 export type {
 	Theme,

@@ -1,8 +1,12 @@
 "use client";
 
+import {
+	createNoteAction,
+	deleteNoteAction,
+	updateNoteAction,
+} from "@/actions/note";
 import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
-import { createNote, deleteNote, updateNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/lib/store/note";
 import { useClickOutside } from "@itell/core/hooks";
@@ -19,6 +23,7 @@ import { ForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useFormStatus } from "react-dom";
+import { toast } from "sonner";
 import { useImmerReducer } from "use-immer";
 import { NoteDelete } from "./node-delete";
 import NoteColorPicker from "./note-color-picker";
@@ -134,24 +139,32 @@ export const NoteCard = React.memo(
 			setText(input);
 			if (!recordId) {
 				// create new note
-				const { noteId } = await createNote({
+				const [data, err] = await createNoteAction({
 					y,
-					userId: user.id,
 					noteText: input,
 					highlightedText,
 					pageSlug,
 					color: editState.color,
 					range,
 				});
-				setRecordId(noteId);
+				if (err) {
+					return toast.error("Failed to create note");
+				}
+				setRecordId(data.id);
 			} else {
 				// edit existing note
 				updateNoteLocal(id, { noteText: input });
 				if (recordId) {
-					await updateNote(recordId, {
-						noteText: input,
-						color: editState.color,
+					const [_, err] = await updateNoteAction({
+						id: recordId,
+						data: {
+							noteText: input,
+							color: editState.color,
+						},
 					});
+					if (err) {
+						return toast.error("Failed to update note");
+					}
 				}
 			}
 			dispatch({ type: "finish_upsert" });
@@ -173,7 +186,7 @@ export const NoteCard = React.memo(
 			deleteNoteLocal(id);
 			if (recordId) {
 				// delete note in database
-				await deleteNote(recordId);
+				deleteNoteAction({ id: recordId });
 			}
 			dispatch({ type: "finish_delete" });
 		};
