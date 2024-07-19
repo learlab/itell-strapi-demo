@@ -78,7 +78,7 @@ module.exports = withSentryConfig(
 		// Suppresses source map uploading logs during build
 		silent: true,
 		org: "lear-lab",
-		project: "cttc-poe",
+		project: "chevron",
 	},
 	{
 		// For all available options, see:

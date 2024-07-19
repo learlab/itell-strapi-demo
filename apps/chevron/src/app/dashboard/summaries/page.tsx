@@ -11,6 +11,8 @@ import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { redirect } from "next/navigation";
 
+export const metadata = Meta.summaries;
+
 export default async function () {
 	const { user } = await getSession();
 	if (!user) {
@@ -19,7 +21,7 @@ export default async function () {
 
 	incrementViewAction({ pageSlug: Meta.summaries.slug });
 
-	const [summaries, err] = await getSummariesAction();
+	const [summaries, err] = await getSummariesAction({});
 	if (err) {
 		throw new Error(err.message);
 	}

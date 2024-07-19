@@ -1,5 +1,6 @@
 "use server";
 
+import { db, findUser, first } from "@/actions/db";
 import {
 	events,
 	constructed_responses,
@@ -9,7 +10,6 @@ import {
 	users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
-import { db, findUser, first } from "@/lib/db";
 import { reportSentry } from "@/lib/utils";
 import { getGroupedReadingTime } from "@itell/core/dashboard";
 import { and, count, eq, gte, inArray, ne, sql } from "drizzle-orm";

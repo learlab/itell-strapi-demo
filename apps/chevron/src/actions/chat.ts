@@ -1,6 +1,6 @@
 "use server";
+import { db, first } from "@/actions/db";
 import { ChatMessageDataSchema, chat_messages } from "@/drizzle/schema";
-import { db, first } from "@/lib/db";
 import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";

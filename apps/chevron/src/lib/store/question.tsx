@@ -1,7 +1,7 @@
+import { PageStatus } from "@/lib/page-status";
+import { Question, SelectedQuestions } from "@/lib/question";
 import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { PageStatus } from "../page-status";
-import { Question, SelectedQuestions } from "../question";
 
 type ChunkData = Record<
 	string,

@@ -1,7 +1,5 @@
-import { summaries } from "@/drizzle/schema";
-import { db } from "@/lib/db";
+import { countSummaryByPassingAction } from "@/actions/summary";
 import { Skeleton } from "@itell/ui/server";
-import { and, count, eq } from "drizzle-orm";
 import Link from "next/link";
 import pluralize from "pluralize";
 
@@ -11,20 +9,11 @@ type Props = {
 };
 
 export const SummaryCount = async ({ pageSlug, userId }: Props) => {
-	const summaryByPassing = await db
-		.select({ isPassed: summaries.isPassed, count: count() })
-		.from(summaries)
-		.where(and(eq(summaries.userId, userId), eq(summaries.pageSlug, pageSlug)))
-		.groupBy(summaries.isPassed);
-	const passedSummaryCount =
-		summaryByPassing.find((item) => item.isPassed)?.count || 0;
-	const failedSummaryCount =
-		summaryByPassing.find((item) => !item.isPassed)?.count || 0;
-	const summaryCount = passedSummaryCount + failedSummaryCount;
-
-	if (!summaryCount) {
+	const [data, err] = await countSummaryByPassingAction({ pageSlug });
+	if (err) {
 		return null;
 	}
+	const summaryCount = data.failed + data.passed;
 
 	return (
 		<Link
@@ -36,7 +25,7 @@ export const SummaryCount = async ({ pageSlug, userId }: Props) => {
 				section.
 				{summaryCount > 0 && (
 					<span className="ml-1">
-						{passedSummaryCount} passed, {failedSummaryCount} failed.
+						{data.passed} passed, {data.failed} failed.
 					</span>
 				)}
 			</p>

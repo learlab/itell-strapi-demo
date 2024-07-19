@@ -5,7 +5,7 @@ import {
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
-import { delay, redirectWithSearchParams } from "@/lib/utils";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { JoinClassModal } from "@dashboard/join-class-modal";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Separator } from "@itell/ui/client";

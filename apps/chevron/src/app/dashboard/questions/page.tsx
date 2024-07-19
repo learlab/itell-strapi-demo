@@ -1,15 +1,14 @@
 import { incrementViewAction } from "@/actions/dashboard";
+import { getAnswerStatsAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
-import { ConstructedResponse, constructed_responses } from "@/drizzle/schema";
+import { ConstructedResponse } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { getAllQuestions } from "@/lib/question";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { cn, groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
 import { QuestionChart } from "@questions/question-chart";
-import { count, eq } from "drizzle-orm";
 import pluralize from "pluralize";
 
 export const metadata = Meta.questions;
@@ -22,11 +21,14 @@ export default async function () {
 
 	incrementViewAction({ pageSlug: Meta.questions.slug });
 
-	const [records, byScore, allQuestions] = await Promise.all([
-		getAnswers(user.id),
-		getScoreCount(user.id),
+	const [[data, err], allQuestions] = await Promise.all([
+		getAnswerStatsAction(),
 		getAllQuestions(),
 	]);
+	if (err) {
+		throw new Error(err.message);
+	}
+	const { records, byScore } = data;
 	const byChapter = groupby(records, (d) => d.pageSlug);
 	const chapters = Object.keys(byChapter)
 		.map((k) => getPageData(k))
@@ -78,7 +80,7 @@ export default async function () {
 					{records.length > 0 && (
 						<>
 							<QuestionChart data={chartData} />
-							<div className="grid gap-2">
+							<div className="grid gap-2q">
 								<h2 className="font-semibold text-xl">All Records</h2>
 								<p className="text-sm text-muted-foreground">
 									Due to randomness in question placement, you may not receive
@@ -171,21 +173,6 @@ const AnswerItem = ({
 			</div>
 		</div>
 	);
-};
-
-const getAnswers = async (userId: string) => {
-	return await db
-		.select()
-		.from(constructed_responses)
-		.where(eq(constructed_responses.userId, userId));
-};
-
-const getScoreCount = async (userId: string) => {
-	return await db
-		.select({ score: constructed_responses.score, count: count() })
-		.from(constructed_responses)
-		.where(eq(constructed_responses.userId, userId))
-		.groupBy(constructed_responses.score);
 };
 
 const getLabel = (score: number) => {

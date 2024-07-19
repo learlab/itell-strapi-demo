@@ -1,13 +1,14 @@
 "use server";
 
+import { db } from "@/actions/db";
 import {
 	CreateConstructedResponseFeedbackSchema,
 	CreateConstructedResponseSchema,
 	constructed_responses,
 	constructed_responses_feedback,
 } from "@/drizzle/schema";
-import { db } from "@/lib/db";
 import { reportSentry } from "@/lib/utils";
+import { count, eq } from "drizzle-orm";
 import { authedProcedure } from "./utils";
 
 /**
@@ -36,5 +37,36 @@ export const createQuestionFeedbackAction = authedProcedure
 		return await db.insert(constructed_responses_feedback).values({
 			...input,
 			userId: ctx.user.id,
+		});
+	});
+
+/**
+ * Get question-answer statistics
+ *
+ * - all answers
+ * - count answers by score
+ */
+export const getAnswerStatsAction = authedProcedure
+	.createServerAction()
+	.onError((err) => {
+		reportSentry("get answer stats", { error: err });
+	})
+	.handler(async ({ ctx }) => {
+		return await db.transaction(async (tx) => {
+			const records = await tx
+				.select()
+				.from(constructed_responses)
+				.where(eq(constructed_responses.userId, ctx.user.id));
+
+			const byScore = await tx
+				.select({
+					count: count(),
+					score: constructed_responses.score,
+				})
+				.from(constructed_responses)
+				.where(eq(constructed_responses.userId, ctx.user.id))
+				.groupBy(constructed_responses.score);
+
+			return { records, byScore };
 		});
 	});

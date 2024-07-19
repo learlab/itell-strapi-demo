@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { FinishQuestionButton } from "./finish-question-button";
-import { AnswerStatusReread, QuestionScore } from "./types";
+import { QuestionScore, StatusReread } from "./types";
 
 type Props = {
 	question: string;
@@ -35,7 +35,7 @@ type Props = {
 };
 
 type State = {
-	status: AnswerStatusReread;
+	status: StatusReread;
 	show: boolean;
 	error: string | null;
 };
@@ -54,7 +54,7 @@ export const QuestionBoxReread = ({
 
 	const [state, setState] = useState<State>({
 		error: null,
-		status: AnswerStatusReread.UNANSWERED,
+		status: StatusReread.UNANSWERED,
 		show: shouldBlur,
 	});
 
@@ -85,7 +85,7 @@ export const QuestionBoxReread = ({
 		setState((state) => ({
 			...state,
 			error: null,
-			status: AnswerStatusReread.ANSWERED,
+			status: StatusReread.ANSWERED,
 		}));
 
 		createQuestionAnswerAction({
@@ -98,7 +98,7 @@ export const QuestionBoxReread = ({
 	});
 
 	const isNextButtonDisplayed =
-		shouldBlur && state.status === AnswerStatusReread.ANSWERED;
+		shouldBlur && state.status === StatusReread.ANSWERED;
 
 	useEffect(() => {
 		if (isError) {
@@ -136,9 +136,7 @@ export const QuestionBoxReread = ({
 		<Card
 			className={cn(
 				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
-				state.status === AnswerStatusReread.ANSWERED
-					? "border-2 border-border"
-					: "",
+				state.status === StatusReread.ANSWERED ? "border-2 border-border" : "",
 			)}
 		>
 			<CardContent className="flex flex-col gap-4 justify-center items-center w-4/5 mx-auto">
@@ -149,7 +147,7 @@ export const QuestionBoxReread = ({
 						{question}
 					</p>
 				)}
-				{state.status === AnswerStatusReread.ANSWERED && (
+				{state.status === StatusReread.ANSWERED && (
 					<p className="text-sm text-muted-foreground">
 						Thanks for completing this question. You can move on to the next
 						section or refine your answer.
@@ -174,7 +172,7 @@ export const QuestionBoxReread = ({
 					)}
 
 					<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-						{state.status === AnswerStatusReread.ANSWERED && (
+						{state.status === StatusReread.ANSWERED && (
 							<HoverCard>
 								<HoverCardTrigger asChild>
 									<Button variant={"outline"} type="button">
@@ -201,7 +199,7 @@ export const QuestionBoxReread = ({
 								<>
 									<PencilIcon className="size-4 mr-2 shrink-0" />
 									<span>
-										{state.status === AnswerStatusReread.ANSWERED
+										{state.status === StatusReread.ANSWERED
 											? "Resubmit"
 											: "Answer"}
 									</span>
@@ -209,7 +207,7 @@ export const QuestionBoxReread = ({
 							)}
 						</StatusButton>
 
-						{state.status !== AnswerStatusReread.UNANSWERED &&
+						{state.status !== StatusReread.UNANSWERED &&
 							isNextButtonDisplayed && (
 								<FinishQuestionButton
 									pageSlug={pageSlug}

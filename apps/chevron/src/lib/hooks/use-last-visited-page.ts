@@ -1,8 +1,8 @@
+import { firstPage } from "@/lib/pages";
+import { makePageHref } from "@/lib/utils";
 import { useLocalStorage } from "@itell/core/hooks";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { firstPage } from "../pages";
-import { makePageHref } from "../utils";
 
 const key = "last-visited-page";
 

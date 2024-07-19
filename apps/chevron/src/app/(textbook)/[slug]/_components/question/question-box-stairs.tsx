@@ -33,7 +33,7 @@ import { useActionStatus } from "use-action-status";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
-import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
+import { QuestionScore, StatusStairs, borderColors } from "./types";
 
 type Props = {
 	question: string;
@@ -43,7 +43,7 @@ type Props = {
 };
 
 type State = {
-	status: AnswerStatusStairs;
+	status: StatusStairs;
 	error: string | null;
 	show: boolean;
 	input: string;
@@ -63,7 +63,7 @@ export const QuestionBoxStairs = ({
 		finishChunk: state.finishChunk,
 	}));
 	const [state, setState] = useState<State>({
-		status: AnswerStatusStairs.UNANSWERED,
+		status: StatusStairs.UNANSWERED,
 		error: null,
 		show: shouldBlur,
 		input: "",
@@ -111,7 +111,7 @@ export const QuestionBoxStairs = ({
 			finishChunk(chunkSlug, true);
 
 			setState({
-				status: AnswerStatusStairs.BOTH_CORRECT,
+				status: StatusStairs.BOTH_CORRECT,
 				error: null,
 				input,
 				show: true,
@@ -121,7 +121,7 @@ export const QuestionBoxStairs = ({
 
 		if (score === 1) {
 			setState({
-				status: AnswerStatusStairs.SEMI_CORRECT,
+				status: StatusStairs.SEMI_CORRECT,
 				error: null,
 				input,
 				show: true,
@@ -132,7 +132,7 @@ export const QuestionBoxStairs = ({
 		if (score === 0) {
 			ref.current?.classList.add("shake");
 			setState({
-				status: AnswerStatusStairs.BOTH_INCORRECT,
+				status: StatusStairs.BOTH_INCORRECT,
 				error: null,
 				input,
 				show: true,
@@ -143,7 +143,7 @@ export const QuestionBoxStairs = ({
 
 	const status = state.status;
 	const isNextButtonDisplayed =
-		shouldBlur && status !== AnswerStatusStairs.UNANSWERED;
+		shouldBlur && status !== StatusStairs.UNANSWERED;
 
 	const borderColor = borderColors[state.status];
 
@@ -186,7 +186,7 @@ export const QuestionBoxStairs = ({
 				`${borderColor}`,
 			)}
 		>
-			<Confetti active={status === AnswerStatusStairs.BOTH_CORRECT} />
+			<Confetti active={status === StatusStairs.BOTH_CORRECT} />
 
 			<CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
 				<CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
@@ -209,7 +209,7 @@ export const QuestionBoxStairs = ({
 			</CardHeader>
 
 			<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-				{status === AnswerStatusStairs.BOTH_INCORRECT && (
+				{status === StatusStairs.BOTH_INCORRECT && (
 					<div className="text-sm">
 						<p className="text-red-400">
 							<b>iTELL AI says:</b> You likely got a part of the answer wrong.
@@ -223,7 +223,7 @@ export const QuestionBoxStairs = ({
 					</div>
 				)}
 
-				{status === AnswerStatusStairs.SEMI_CORRECT && (
+				{status === StatusStairs.SEMI_CORRECT && (
 					<p className="text-yellow-600 text-xs">
 						<b>iTELL AI says:</b> You may have missed something, but you were
 						generally close. You can click on the "Continue reading" button
@@ -231,7 +231,7 @@ export const QuestionBoxStairs = ({
 					</p>
 				)}
 
-				{status === AnswerStatusStairs.BOTH_CORRECT ? (
+				{status === StatusStairs.BOTH_CORRECT ? (
 					<div className="flex items-center flex-col">
 						<p className="text-xl2 text-emerald-600 text-center">
 							Your answer is correct!
@@ -268,7 +268,7 @@ export const QuestionBoxStairs = ({
 						}}
 					/>
 					<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-						{status !== AnswerStatusStairs.UNANSWERED && (
+						{status !== StatusStairs.UNANSWERED && (
 							<HoverCard>
 								<HoverCardTrigger asChild>
 									<Button variant={"outline"} type="button">
@@ -282,8 +282,7 @@ export const QuestionBoxStairs = ({
 							</HoverCard>
 						)}
 
-						{status === AnswerStatusStairs.BOTH_CORRECT &&
-						isNextButtonDisplayed ? (
+						{status === StatusStairs.BOTH_CORRECT && isNextButtonDisplayed ? (
 							// when answer is all correct and next button should be displayed
 							<FinishQuestionButton
 								chunkSlug={chunkSlug}
@@ -294,7 +293,7 @@ export const QuestionBoxStairs = ({
 						) : (
 							// when answer is not all correct
 							<div>
-								{status !== AnswerStatusStairs.BOTH_CORRECT && (
+								{status !== StatusStairs.BOTH_CORRECT && (
 									<StatusButton
 										pending={isPending}
 										type="submit"
@@ -308,7 +307,7 @@ export const QuestionBoxStairs = ({
 											<>
 												<PencilIcon className="size-4 mr-2 shrink-0" />
 												<span>
-													{status !== AnswerStatusStairs.UNANSWERED
+													{status !== StatusStairs.UNANSWERED
 														? "Resubmit"
 														: "Answer"}
 												</span>
@@ -317,7 +316,7 @@ export const QuestionBoxStairs = ({
 									</StatusButton>
 								)}
 
-								{status !== AnswerStatusStairs.UNANSWERED &&
+								{status !== StatusStairs.UNANSWERED &&
 									isNextButtonDisplayed && (
 										<FinishQuestionButton
 											chunkSlug={chunkSlug}
@@ -333,8 +332,8 @@ export const QuestionBoxStairs = ({
 						<p className="text-red-500 text-sm text-center">{state.error}</p>
 					)}
 					<div className="flex items-center justify-center mt-4">
-						{(status === AnswerStatusStairs.SEMI_CORRECT ||
-							status === AnswerStatusStairs.BOTH_INCORRECT) && (
+						{(status === StatusStairs.SEMI_CORRECT ||
+							status === StatusStairs.BOTH_INCORRECT) && (
 							<ExplainButton
 								chunkSlug={chunkSlug}
 								pageSlug={pageSlug}

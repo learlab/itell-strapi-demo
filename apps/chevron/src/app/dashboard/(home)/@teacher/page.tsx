@@ -12,7 +12,6 @@ export const metadata = Meta.class;
 
 export default async function () {
 	const { user } = await getSession();
-	await delay(1000);
 
 	if (!user) {
 		return redirect("/auth");
@@ -20,7 +19,7 @@ export default async function () {
 
 	const [teacher, err] = await getTeacherAction({ userId: user.id });
 	if (err) {
-		throw new Error();
+		throw new Error(err.message);
 	}
 
 	return (

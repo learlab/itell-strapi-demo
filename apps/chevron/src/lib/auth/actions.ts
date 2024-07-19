@@ -1,9 +1,9 @@
 "use server";
+import { reportSentry } from "@/lib/utils";
 import { User, Session as _Session } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import "server-only";
-import { reportSentry } from "../utils";
 import { lucia } from "./lucia";
 
 export const getSession = cache(

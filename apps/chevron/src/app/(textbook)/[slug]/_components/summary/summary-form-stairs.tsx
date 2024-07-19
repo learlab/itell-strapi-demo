@@ -31,6 +31,7 @@ import {
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { ChatStairs } from "@textbook/chat-stairs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
@@ -41,7 +42,6 @@ import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useImmerReducer } from "use-immer";
-import { ChatStairs } from "../chat-stairs";
 import { SummaryFeedback } from "./summary-feedback";
 import {
 	SummaryInput,

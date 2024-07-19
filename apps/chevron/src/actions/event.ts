@@ -1,8 +1,8 @@
 "use server";
 
+import { db } from "@/actions/db";
 import { events, CreateEventSchema } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
-import { db } from "@/lib/db";
 import { reportSentry } from "@/lib/utils";
 import { authedProcedure } from "./utils";
 

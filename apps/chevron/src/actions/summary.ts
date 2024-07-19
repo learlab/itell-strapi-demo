@@ -1,4 +1,5 @@
 "use server";
+import { db } from "@/actions/db";
 import {
 	events,
 	CreateSummarySchema,
@@ -11,14 +12,14 @@ import {
 	isProduction,
 } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
-import { db } from "@/lib/db";
 import { isLastPage, isPageAfter, nextPage } from "@/lib/pages";
-import { and, count, desc, eq } from "drizzle-orm";
+import { reportSentry } from "@/lib/utils";
+import { and, count, desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { authedProcedure } from "./utils";
 
 /**
- * - Create summary record
+ * - Create summary record for current user
  * - If summary is passed or enough summaries has been written, update user's page slug to the next page that requires s summary, if user is at the last page, set finished to true
  * - Create keystroke events
  */
@@ -33,6 +34,9 @@ export const createSummaryAction = authedProcedure
 			}),
 		}),
 	)
+	.onError((error) => {
+		reportSentry("create summary", { error });
+	})
 	.output(
 		z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() }),
 	)
@@ -109,17 +113,49 @@ export const createSummaryAction = authedProcedure
 	});
 
 /**
- * Get all summaries for user
+ * Get summary current user, if summary id is not provided, return all summaries
  */
 export const getSummariesAction = authedProcedure
 	.createServerAction()
+	.input(z.object({ summaryId: z.number().optional() }))
 	.onError((error) => {
-		console.error(error);
+		reportSentry("get summaries", { error });
 	})
-	.handler(async ({ ctx }) => {
+	.handler(async ({ input, ctx }) => {
 		return await db
 			.select()
 			.from(summaries)
-			.where(eq(summaries.userId, ctx.user.id))
+			.where(
+				and(
+					eq(summaries.userId, ctx.user.id),
+					input.summaryId ? eq(summaries.id, input.summaryId) : undefined,
+				),
+			)
 			.orderBy(desc(summaries.updatedAt));
+	});
+
+/**
+ * Count summaries by pass / fail for current user and page
+ */
+export const countSummaryByPassingAction = authedProcedure
+	.createServerAction()
+	.onError((error) => {
+		reportSentry("count summary by passing", { error });
+	})
+	.input(z.object({ pageSlug: z.string() }))
+	.handler(async ({ input, ctx }) => {
+		const record = await db
+			.select({
+				passed: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
+				failed: count(sql`CASE WHEN NOT ${summaries.isPassed} THEN 1 END`),
+			})
+			.from(summaries)
+			.where(
+				and(
+					eq(summaries.userId, ctx.user.id),
+					eq(summaries.pageSlug, input.pageSlug),
+				),
+			);
+
+		return record[0];
 	});

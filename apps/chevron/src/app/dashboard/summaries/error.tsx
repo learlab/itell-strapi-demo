@@ -14,7 +14,9 @@ export default function () {
 			/>
 			<Card className="w-full">
 				<CardContent className="space-y-4">
-					<InternalError />
+					<InternalError>
+						Failed to get your summaries at this point, please try again later.
+					</InternalError>
 				</CardContent>
 			</Card>
 		</DashboardShell>

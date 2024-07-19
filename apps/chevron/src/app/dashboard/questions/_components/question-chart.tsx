@@ -40,13 +40,11 @@ export const QuestionChart = ({ data }: Props) => {
 			<BarChart
 				accessibilityLayer
 				data={data}
-				layout="vertical"
 				margin={{
-					left: 0,
 					right: 32,
 				}}
 			>
-				<YAxis
+				<XAxis
 					dataKey="name"
 					type="category"
 					tickLine={false}
@@ -54,17 +52,16 @@ export const QuestionChart = ({ data }: Props) => {
 					axisLine={false}
 					hide
 				/>
-				<XAxis dataKey="value" type="number" hide />
+				<YAxis dataKey="value" type="number" hide />
 				<ChartTooltip
 					cursor={false}
 					content={<ChartTooltipContent hideLabel indicator="line" />}
 				/>
-				<Bar dataKey="value" layout="vertical" radius={5}>
+				<Bar dataKey="value" radius={5}>
 					<LabelList
 						dataKey="name"
-						position="insideLeft"
 						offset={8}
-						className="fill-[--color-label] text-base xl:text-lg"
+						className="fill-[--color-label] text-base xl:text-lg font-light"
 						fontSize={12}
 						formatter={(value: string) => {
 							return chartConfig[value as keyof typeof chartConfig]?.label;
@@ -72,7 +69,7 @@ export const QuestionChart = ({ data }: Props) => {
 					/>
 					<LabelList
 						dataKey="value"
-						position="right"
+						position="top"
 						className="fill-foreground text-base xl:text-lg"
 						offset={8}
 						fontSize={12}

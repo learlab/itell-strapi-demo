@@ -1,4 +1,5 @@
 "use server";
+import { db, findTeacher, findUser, first } from "@/actions/db";
 import {
 	events,
 	CreateUserSchema,
@@ -13,7 +14,6 @@ import {
 	users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
-import { db, findTeacher, findUser, first } from "@/lib/db";
 import { firstPage, isLastPage, isPageAfter, nextPage } from "@/lib/pages";
 import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";

@@ -1,7 +1,7 @@
 "use server";
 
+import { db } from "@/actions/db";
 import { CreateNoteSchema, UpdateNoteSchema, notes } from "@/drizzle/schema";
-import { db } from "@/lib/db";
 import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";

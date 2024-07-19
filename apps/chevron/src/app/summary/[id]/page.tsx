@@ -1,8 +1,7 @@
 import { incrementViewAction } from "@/actions/dashboard";
+import { getSummariesAction } from "@/actions/summary";
 import { Meta } from "@/config/metadata";
-import { summaries } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
 import { relativeDate } from "@itell/core/utils";
 import { Badge } from "@itell/ui/server";
@@ -10,17 +9,7 @@ import { SummaryBackButton } from "@summary/summary-back-button";
 import { SummaryOperations } from "@summary/summary-operations";
 import { SummaryReviseButton } from "@summary/summary-revise-button";
 import { TextbookPageModal } from "@summary/textbook-page-modal";
-import { and, eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
-
-async function getSummaryForUser(summaryId: number, userId: string) {
-	return first(
-		await db
-			.select()
-			.from(summaries)
-			.where(and(eq(summaries.id, summaryId), eq(summaries.userId, userId))),
-	);
-}
 
 interface PageProps {
 	params: {
@@ -33,12 +22,19 @@ export default async function ({ params }: PageProps) {
 	if (!user) {
 		return redirect("/auth");
 	}
-	const summary = await getSummaryForUser(Number(params.id), user.id);
+	const [data, err] = await getSummariesAction({
+		summaryId: Number(params.id),
+	});
 
-	if (!summary) {
+	if (err) {
+		throw new Error(err.message);
+	}
+
+	if (data.length === 0) {
 		return notFound();
 	}
 
+	const summary = data[0];
 	const page = allPagesSorted.find(
 		(page) => page.page_slug === summary.pageSlug,
 	);

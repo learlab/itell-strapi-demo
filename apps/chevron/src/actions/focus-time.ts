@@ -1,4 +1,5 @@
 "use server";
+import { db, first } from "@/actions/db";
 import {
 	events,
 	CreateFocusTimeSchema,
@@ -6,7 +7,6 @@ import {
 	focus_times,
 } from "@/drizzle/schema";
 import { EventType, isProduction } from "@/lib/constants";
-import { db, first } from "@/lib/db";
 import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";

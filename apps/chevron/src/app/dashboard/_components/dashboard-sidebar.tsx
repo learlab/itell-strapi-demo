@@ -7,13 +7,13 @@ import { useState, useTransition } from "react";
 import { dashboardConfig } from "./config";
 
 export const DashboardSidebar = () => {
-	const [_, startTransition] = useTransition();
+	const [pending, startTransition] = useTransition();
 	const pathname = usePathname();
 	const [activeRoute, setActiveRoute] = useState(pathname);
 	const router = useRouter();
 
 	return (
-		<nav className="grid items-start pt-4">
+		<nav className="grid items-start pt-4" data-pending={pending}>
 			{dashboardConfig.sidebarNav.map((item) => (
 				<button
 					type="button"
