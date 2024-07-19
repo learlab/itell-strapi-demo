@@ -148,11 +148,13 @@ export const QuestionBoxStairs = ({
 	const borderColor = borderColors[state.status];
 
 	useEffect(() => {
-		setState((state) => ({
-			...state,
-			error: "Failed to evaluate answer, please try again later",
-		}));
-		reportSentry("evaluate constructed response", { error });
+		if (isError) {
+			setState((state) => ({
+				...state,
+				error: "Failed to evaluate answer, please try again later",
+			}));
+			reportSentry("evaluate constructed response", { error });
+		}
 	}, [isError]);
 
 	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
