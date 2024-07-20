@@ -1,10 +1,33 @@
 import { SiteNav } from "@/components/site-nav";
+import { SiteConfig } from "@/config/site";
+import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { dashboardConfig } from "@dashboard/config";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
+
+export const generateMetadata = () => {
+	const title = "Dashboard";
+	const description = `Learning statistics on the ${SiteConfig.title} intelligent textbook`;
+	return {
+		title,
+		description,
+		metadataBase: new URL(env.HOST),
+		openGraph: {
+			title,
+			description,
+			type: "article",
+			url: env.HOST,
+			images: [
+				{
+					url: "/og?dashboard=true",
+				},
+			],
+		},
+	};
+};
 
 export default async function DashboardLayout({
 	children,

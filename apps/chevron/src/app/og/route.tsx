@@ -8,20 +8,27 @@ export const runtime = "edge";
 
 export const GET = async (req: Request) => {
 	const url = new URL(req.url);
+	const isDashboard = url.searchParams.get("dashboard") === "true";
+
 	const heading = url.searchParams.get("title") || SiteConfig.title;
+	const footer = isDashboard
+		? "Learning statistics"
+		: url.searchParams.get("title") && `A chapter from "${SiteConfig.title}"`;
+
 	const font = fetch(
 		new URL("../../../public/fonts/kaisei-tokumin-bold.ttf", import.meta.url),
 	).then((res) => res.arrayBuffer());
 
 	const image = fetch(
-		new URL("../../../public/images/avatars/favicon.png", import.meta.url),
+		new URL("../../../public/images/itell.png", import.meta.url),
 	).then((res) => res.arrayBuffer());
 	const fontData = await font;
 	const imageData = await image;
 	return new ImageResponse(
 		<div
 			style={{
-				backgroundColor: "#1c1c28",
+				background:
+					"linear-gradient(to bottom right, #2d1b4e, #1c1c28, #1e3a5f)",
 				height: "100%",
 				width: "100%",
 				display: "flex",
@@ -43,13 +50,11 @@ export const GET = async (req: Request) => {
 					display: "flex",
 					alignItems: "center",
 					gap: "40px",
-					marginBottom: "300px",
 				}}
 			>
 				<img
 					width="96"
 					height="96"
-					style={{ marginTop: "30px" }}
 					// @ts-ignore
 					src={imageData}
 					alt="itell icon"
@@ -67,15 +72,34 @@ export const GET = async (req: Request) => {
 					{heading}
 				</h1>
 			</div>
+			{isDashboard && (
+				<img
+					height="250"
+					style={{ marginTop: "auto", width: "100%" }}
+					// @ts-ignore
+					src={
+						await fetch(
+							new URL("../../../public/images/chart.png", import.meta.url),
+						).then((res) => res.arrayBuffer())
+					}
+					alt="example line chart"
+				/>
+			)}
 			<footer
 				style={{
 					display: "flex",
 					color: "white",
-					justifyContent: "space-between",
+					marginTop: "auto",
 				}}
 			>
-				<p>A chapter from "{SiteConfig.title}"</p>
-				<p>An intelligent textbook by LearLab</p>
+				<p>{footer}</p>
+				<p
+					style={{
+						marginLeft: "auto",
+					}}
+				>
+					An intelligent textbook by LearLab
+				</p>
 			</footer>
 		</div>,
 		{
