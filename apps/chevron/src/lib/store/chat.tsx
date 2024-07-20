@@ -3,12 +3,6 @@ import { StairsReadyButton } from "@textbook/chat/stairs-button";
 import { createStore } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-type StairsQuestion = {
-	text: string;
-	chunk: string;
-	question_type: string;
-};
-
 interface ChatProps {
 	messages: Message[];
 	activeMessageId: string | null;
@@ -193,4 +187,10 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 			},
 		})),
 	);
+};
+
+type StairsQuestion = {
+	text: string;
+	chunk: string;
+	question_type: string;
 };

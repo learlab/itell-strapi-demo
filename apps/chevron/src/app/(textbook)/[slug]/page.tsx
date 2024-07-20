@@ -40,7 +40,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.page_slug;
 
-	const chunks = getPageChunks(page);
+	const chunks = getPageChunks(page.body.raw);
 
 	const questions = await getRandomPageQuestions(pageSlug);
 	const userRole = user?.role || "user";

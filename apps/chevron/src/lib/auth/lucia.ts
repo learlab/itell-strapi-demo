@@ -1,7 +1,7 @@
 import { db } from "@/actions/db";
 import { sessions, users } from "@/drizzle/schema";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { Lucia, User as LuciaUser } from "lucia";
+import { Lucia } from "lucia";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
@@ -50,5 +50,3 @@ interface DatabaseUserAttributes {
 }
 
 interface DatabaseSessionAttributes {}
-
-export type SessionUser = LuciaUser | null;

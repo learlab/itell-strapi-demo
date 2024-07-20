@@ -1,19 +1,15 @@
-import { Page } from "contentlayer/generated";
-import { parse } from "node-html-parser";
-import "server-only";
-const regex = /data-subsection-id\s*=\s*"(.*?)"/;
-
-export const getPageChunks = (page: Page) => {
-	const body = parse(page.body.raw);
+export const getPageChunks = (raw: string) => {
+	const contentChunkRegex =
+		/<div\s+className="content-chunk"\s+data-subsection-id\s*=\s*"([^"]+)"/g;
 	const chunks: string[] = [];
-	body.childNodes.forEach((el) => {
-		if ("rawAttrs" in el && typeof el.rawAttrs === "string") {
-			const match = el.rawAttrs.match(regex);
-			if (match) {
-				chunks.push(match[1]);
-			}
+
+	const matches = raw.matchAll(contentChunkRegex);
+
+	for (const match of matches) {
+		if (match[1]) {
+			chunks.push(match[1]);
 		}
-	});
+	}
 
 	return chunks;
 };

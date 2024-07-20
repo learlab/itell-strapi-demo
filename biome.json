@@ -11,7 +11,8 @@
 				"useExhaustiveDependencies": "warn"
 			},
 			"a11y": {
-				"useButtonType": "warn"
+				"useButtonType": "warn",
+				"noSvgWithoutTitle": "warn"
 			},
 			"suspicious": {
 				"noArrayIndexKey": "warn",

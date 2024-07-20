@@ -17,7 +17,6 @@ import {
 	CardTitle,
 	Skeleton,
 } from "@itell/ui/server";
-import { format, subDays } from "date-fns";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
@@ -82,8 +81,8 @@ export const ReadingTime = async ({ params, name }: Props) => {
 					<Link className="font-semibold underline" href="/dashboard/summaries">
 						{pluralize("summary", summaryCount, true)}
 					</Link>{" "}
-					during{" "}
-					{`${format(startDate, "LLL, dd")}-${format(new Date(), "LLL, dd")}`}
+					during {startDate.toLocaleDateString()} -{" "}
+					{new Date().toLocaleDateString()}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="pl-2 space-y-2">
@@ -97,3 +96,9 @@ ReadingTime.Skeleton = () => <Skeleton className="w-full h-[350px]" />;
 ReadingTime.ErrorFallback = CreateErrorFallback(
 	"Failed to calculate total reading time",
 );
+
+const subDays = (date: Date, days: number) => {
+	const result = new Date(date);
+	result.setDate(date.getDate() - days);
+	return result;
+};
