@@ -210,7 +210,7 @@ export const NoteCard = React.memo(
 		};
 
 		useEffect(() => {
-			// if the note is loaded from the database, create the .note span elements
+			// create note elements
 			try {
 				setTimeout(() => {
 					createNoteElements({

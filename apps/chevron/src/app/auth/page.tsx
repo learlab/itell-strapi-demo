@@ -1,4 +1,4 @@
-import { getSiteConfig } from "@/config/site";
+import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { AuthForm, LogoutButton } from "@auth/auth-form";
@@ -17,7 +17,6 @@ const ErrorDict: Record<string, string> = {
 };
 
 export default async function ({ searchParams }: PageProps) {
-	const config = await getSiteConfig();
 	const { error } = routes.auth.$parseSearchParams(searchParams);
 	const { user } = await getSession();
 	let errorMessage: string | null = null;
@@ -42,7 +41,9 @@ export default async function ({ searchParams }: PageProps) {
 					<div className="flex flex-col space-y-2 text-center">
 						<CommandIcon className="mx-auto size-6" />
 						<h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
-						<p className="font-light tracking-tight text-lg">{config.title}</p>
+						<p className="font-light tracking-tight text-lg">
+							{SiteConfig.title}
+						</p>
 					</div>
 					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
 					{user ? (

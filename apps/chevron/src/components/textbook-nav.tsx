@@ -1,4 +1,4 @@
-import { getSiteConfig } from "@/config/site";
+import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +15,6 @@ type Props = {
 };
 
 export const TextbookNav = async ({ scrollProgress, read }: Props) => {
-	const { title } = await getSiteConfig();
 	const { user } = await getSession();
 
 	return (
@@ -30,7 +29,9 @@ export const TextbookNav = async ({ scrollProgress, read }: Props) => {
 						className="mr-2"
 					/>
 					<Link href="/" className="hidden items-center space-x-2 md:flex">
-						<span className="hidden font-bold sm:inline-block">{title}</span>
+						<span className="hidden font-bold sm:inline-block">
+							{SiteConfig.title}
+						</span>
 					</Link>
 					{read && (
 						<ContinueReading text="Read" variant="outline" size={"default"} />

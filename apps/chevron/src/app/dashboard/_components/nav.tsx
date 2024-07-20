@@ -6,9 +6,9 @@ import { UserAccountNav } from "@/components/user-account-nav";
 import { useLockBody } from "@itell/core/hooks";
 import { cn } from "@itell/core/utils";
 import { User } from "lucia";
-import { ArrowRightIcon, MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+import { useSelectedLayoutSegment } from "next/navigation";
 import { useState } from "react";
 import { DashboardNavItem } from "./config";
 

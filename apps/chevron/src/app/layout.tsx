@@ -4,20 +4,32 @@ import { GeistSans as FontSans } from "geist/font/sans";
 import { Roboto_Slab as FontSerif } from "next/font/google";
 
 import { RootProvider } from "@/components/provider/root-provider";
-import { getSiteConfig } from "@/config/site";
+import { SiteConfig } from "@/config/site";
+import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { isProduction } from "@/lib/constants";
 import { cn } from "@itell/core/utils";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-	const siteConfig = await getSiteConfig();
 	return {
 		title: {
-			default: siteConfig.title,
-			template: `%s | ${siteConfig.title}`,
+			default: SiteConfig.title,
+			template: `%s | ${SiteConfig.title}`,
 		},
-		description: siteConfig.description,
+		description: SiteConfig.description,
+		metadataBase: new URL(env.HOST),
+		openGraph: {
+			title: SiteConfig.title,
+			description: SiteConfig.description,
+			type: "article",
+			url: env.HOST,
+			images: [
+				{
+					url: "/og",
+				},
+			],
+		},
 	};
 }
 
@@ -29,14 +41,13 @@ const fontSerif = FontSerif({
 export default async function RootLayout({
 	children,
 }: { children: React.ReactNode }) {
-	const { latex, favicon } = await getSiteConfig();
 	const session = await getSession();
 
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
-				<link rel="icon" type="image/x-icon" href={favicon || "/favicon.ico"} />
-				{latex && (
+				<link rel="icon" type="image/x-icon" href={SiteConfig.favicon} />
+				{SiteConfig.latex && (
 					<link
 						rel="stylesheet"
 						href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"

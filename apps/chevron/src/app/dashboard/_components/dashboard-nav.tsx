@@ -1,5 +1,5 @@
 import { ContinueReading } from "@/components/continue-reading";
-import { getSiteConfig } from "@/config/site";
+import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { DashboardNavMenu } from "@dashboard/nav";
 import Image from "next/image";
@@ -12,7 +12,6 @@ interface DashboardNavProps {
 }
 
 export const DashboardNav = async (props: DashboardNavProps) => {
-	const { title } = await getSiteConfig();
 	const { user } = await getSession();
 
 	return (
@@ -26,7 +25,9 @@ export const DashboardNav = async (props: DashboardNavProps) => {
 					className="mr-2"
 				/>
 				<Link href="/" className="hidden items-center space-x-2 md:flex">
-					<span className="hidden font-bold sm:inline-block">{title}</span>
+					<span className="hidden font-bold sm:inline-block">
+						{SiteConfig.title}
+					</span>
 				</Link>
 				<ContinueReading
 					text="Back to textbook"

@@ -10,7 +10,7 @@ const server = z.object({
 	AZURE_CLIENT_ID: z.string(),
 	AZURE_CLIENT_SECRET: z.string(),
 	AZURE_TENANT_ID: z.string(),
-	NEXTAUTH_URL: z.string(),
+	HOST: z.string(),
 	NODE_ENV: z.enum(["development", "test", "production"]),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
@@ -33,7 +33,7 @@ const client = z.object({
  */
 const processEnv = {
 	NODE_ENV: process.env.NODE_ENV,
-	NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+	HOST: process.env.HOST,
 	SCORE_API_URL: process.env.SCORE_API_URL,
 	DATABASE_URL: process.env.DATABASE_URL,
 	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

@@ -64,6 +64,11 @@ const Page = defineDocumentType(() => ({
 			description: "The title of the page",
 			required: true,
 		},
+		description: {
+			type: "string",
+			description: "The description of the page",
+			required: false,
+		},
 		page_slug: {
 			type: "string",
 			description: "The slug of the page",
