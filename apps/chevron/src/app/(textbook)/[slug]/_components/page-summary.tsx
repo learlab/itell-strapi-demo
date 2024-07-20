@@ -48,7 +48,7 @@ export const PageSummary = async ({
 							{condition !== Condition.SIMPLE && (
 								<Suspense fallback={<SummaryCount.Skeleton />}>
 									<div className="mt-8">
-										<SummaryCount pageSlug={page.page_slug} userId={user.id} />
+										<SummaryCount pageSlug={page.page_slug} />
 									</div>
 								</Suspense>
 							)}

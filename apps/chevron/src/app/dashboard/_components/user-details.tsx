@@ -29,7 +29,7 @@ type Props = {
 export const UserDetails = async ({ user }: Props) => {
 	const [otherUsers, err] = await getOtherUsersAction();
 	if (err) {
-		throw new Error();
+		throw new Error(err.message);
 	}
 
 	const [[userStats, err1], [otherStats, err2]] = await Promise.all([
@@ -38,11 +38,11 @@ export const UserDetails = async ({ user }: Props) => {
 	]);
 
 	if (err1) {
-		throw new Error();
+		throw new Error(err1.message);
 	}
 
 	if (err2) {
-		throw new Error();
+		throw new Error(err2.message);
 	}
 
 	const pageIndex = getPageData(user.pageSlug)?.index;

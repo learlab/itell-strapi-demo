@@ -43,7 +43,7 @@ export default async function ({ searchParams }: Props) {
 	if (user.classId) {
 		const [res, err] = await getTeacherByClassAction({ classId: user.classId });
 		if (err) {
-			throw new Error();
+			throw new Error(err.message);
 		}
 		teacher = res;
 	}

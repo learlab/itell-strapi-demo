@@ -4,11 +4,10 @@ import Link from "next/link";
 import pluralize from "pluralize";
 
 type Props = {
-	userId: string;
 	pageSlug: string;
 };
 
-export const SummaryCount = async ({ pageSlug, userId }: Props) => {
+export const SummaryCount = async ({ pageSlug }: Props) => {
 	const [data, err] = await countSummaryByPassingAction({ pageSlug });
 	if (err) {
 		return null;

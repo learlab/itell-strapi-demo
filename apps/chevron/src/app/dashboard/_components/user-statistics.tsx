@@ -30,7 +30,7 @@ export const UserStatistics = ({ user, readingTimeLevel }: Props) => {
 
 			<Suspense fallback={<ReadingTime.Skeleton />}>
 				<ErrorBoundary fallback={<ReadingTime.ErrorFallback />}>
-					<ReadingTime userId={user.id} params={readingTimeParams} />
+					<ReadingTime params={readingTimeParams} />
 				</ErrorBoundary>
 			</Suspense>
 		</div>

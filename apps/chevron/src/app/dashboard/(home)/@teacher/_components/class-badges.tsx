@@ -17,7 +17,7 @@ export const ClassBadges = async ({ students }: Props) => {
 		ids: students.map((student) => student.id),
 	});
 	if (err) {
-		throw new Error();
+		throw new Error(err.message);
 	}
 
 	return (

@@ -9,7 +9,7 @@ type Props = {
 	chunkSlug: string;
 	pageSlug: string;
 	isLastQuestion: boolean;
-	condition: Condition;
+	condition: string;
 };
 
 export const FinishQuestionButton = ({

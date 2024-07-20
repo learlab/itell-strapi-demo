@@ -46,13 +46,13 @@ const incrementViewHandler = cache(
 );
 
 /**
- * Count user summaries with a start date
+ * Count user summaries with a start date for current user
  */
 export const countSummaryAction = authedProcedure
 	.createServerAction()
-	.input(z.object({ userId: z.string(), startDate: z.date() }))
+	.input(z.object({ startDate: z.date() }))
 	.output(z.number())
-	.handler(async ({ input }) => {
+	.handler(async ({ input, ctx }) => {
 		const record = first(
 			await db
 				.select({
@@ -61,7 +61,7 @@ export const countSummaryAction = authedProcedure
 				.from(summaries)
 				.where(
 					and(
-						eq(summaries.userId, input.userId),
+						eq(summaries.userId, ctx.user.id),
 						gte(summaries.createdAt, input.startDate),
 					),
 				),
@@ -69,20 +69,19 @@ export const countSummaryAction = authedProcedure
 		return record?.count ?? 0;
 	});
 /**
- * Get data for reading time chart
+ * Get data for reading time chart for current user
  */
 export const getReadingTimeAction = authedProcedure
 	.createServerAction()
 	.input(
 		z.object({
-			userId: z.string(),
 			startDate: z.date(),
 			intervalDates: z.array(z.date()),
 		}),
 	)
-	.handler(async ({ input }) => {
+	.handler(async ({ input, ctx }) => {
 		return await getReadingTimeHandler(
-			input.userId,
+			ctx.user.id,
 			input.startDate,
 			input.intervalDates,
 		);

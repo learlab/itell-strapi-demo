@@ -22,7 +22,7 @@ import { StudentsTable } from "./students-table";
 export const ClassInfo = async ({ classId }: { classId: string }) => {
 	const [students, err] = await getClassStudentsAction({ classId });
 	if (err) {
-		throw new Error();
+		throw new Error(err.message);
 	}
 
 	if (students.length === 0) {

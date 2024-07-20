@@ -25,21 +25,24 @@ import { ReadingTimeChart } from "./reading-time-chart";
 import { ReadingTimeControl } from "./reading-time-control";
 
 type Props = {
-	userId: string;
 	params: ReadingTimeChartParams;
 	name?: string;
 };
 
-export const ReadingTime = async ({ userId, params, name }: Props) => {
+export const ReadingTime = async ({ params, name }: Props) => {
 	const startDate = subDays(new Date(), PrevDaysLookup[params.level]);
 	const intervalDates = getDatesBetween(startDate, new Date());
 	const [[summaryCount, err1], [readingTimeGrouped, err2]] = await Promise.all([
-		countSummaryAction({ userId, startDate }),
-		getReadingTimeAction({ userId, startDate, intervalDates }),
+		countSummaryAction({ startDate }),
+		getReadingTimeAction({ startDate, intervalDates }),
 	]);
 
-	if (err1 || err2) {
-		throw new Error();
+	if (err1) {
+		throw new Error(err1.message);
+	}
+
+	if (err2) {
+		throw new Error(err2.message);
 	}
 
 	const { totalViewTime, chartData } = getReadingTimeChartData(
