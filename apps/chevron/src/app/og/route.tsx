@@ -1,4 +1,5 @@
 import { SiteConfig } from "@/config/site";
+import { env } from "@/env.mjs";
 import { ImageResponse } from "next/og";
 const size = {
 	width: 1200,
@@ -9,11 +10,22 @@ export const runtime = "edge";
 export const GET = async (req: Request) => {
 	const url = new URL(req.url);
 	const isDashboard = url.searchParams.get("dashboard") === "true";
-
+	const isAuth = url.searchParams.get("auth") === "true";
 	const heading = url.searchParams.get("title") || SiteConfig.title;
+	const slug = url.searchParams.get("slug");
+
+	const header = isDashboard
+		? `${env.HOST}/dashboard`
+		: isAuth
+			? `${env.HOST}/auth`
+			: slug
+				? `${env.HOST}/${slug}`
+				: env.HOST;
 	const footer = isDashboard
 		? "Learning statistics"
-		: url.searchParams.get("title") && `A chapter from "${SiteConfig.title}"`;
+		: isAuth
+			? "Getting started"
+			: url.searchParams.get("title") && `A chapter from "${SiteConfig.title}"`;
 
 	const font = fetch(
 		new URL("../../../public/fonts/kaisei-tokumin-bold.ttf", import.meta.url),
@@ -43,7 +55,7 @@ export const GET = async (req: Request) => {
 					color: "gray",
 				}}
 			>
-				<p>{SiteConfig.host}</p>
+				<p>{header}</p>
 			</header>
 			<div
 				style={{
@@ -90,6 +102,7 @@ export const GET = async (req: Request) => {
 					display: "flex",
 					color: "white",
 					marginTop: "auto",
+					fontSize: 24,
 				}}
 			>
 				<p>{footer}</p>

@@ -48,7 +48,10 @@ export default async function ({ searchParams }: PageProps) {
 					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
 					{user ? (
 						<div className="text-center space-y-2">
-							<p>You have already logged in</p>
+							<p className="font-light">
+								You are logged in as{" "}
+								<span className="font-semibold">{user.name}</span>
+							</p>
 							<LogoutButton />
 						</div>
 					) : (
@@ -56,7 +59,7 @@ export default async function ({ searchParams }: PageProps) {
 					)}
 				</div>
 			</div>
-			<div className="hidden h-full bg-gray-100 lg:col-span-1 lg:flex lg:items-center">
+			<div className="hidden h-full bg-muted lg:col-span-1 lg:flex lg:items-center">
 				<KnowledgeCarousel />
 			</div>
 		</div>

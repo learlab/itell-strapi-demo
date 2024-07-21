@@ -1,5 +1,7 @@
+import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { allPagesSorted } from "@/lib/pages";
+import { makePageHref } from "@/lib/utils";
 
 export const generateStaticParams = async () => {
 	return allPagesSorted.map((page) => {
@@ -17,20 +19,23 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 		};
 	}
 
-	const title = page.title;
+	const title = `${page.title} | ${SiteConfig.title}`;
 	const description = page.description || page.body.raw.slice(0, 100);
+	const ogUrl = new URL(`${env.HOST}/og`);
+	ogUrl.searchParams.set("title", page.title);
+	ogUrl.searchParams.set("slug", page.page_slug);
+
 	return {
 		title,
 		description,
-		metadataBase: new URL(env.HOST),
 		openGraph: {
 			title,
 			description,
 			type: "article",
-			url: env.HOST,
+			url: `${env.HOST}${makePageHref(page.page_slug)}`,
 			images: [
 				{
-					url: `/og?title=${title}`,
+					url: ogUrl,
 				},
 			],
 		},

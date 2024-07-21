@@ -9,7 +9,7 @@ import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 
 export const generateMetadata = () => {
-	const title = "Dashboard";
+	const title = `Dashboard | ${SiteConfig.title}`;
 	const description = `Learning statistics on the ${SiteConfig.title} intelligent textbook`;
 	return {
 		title,
@@ -19,7 +19,7 @@ export const generateMetadata = () => {
 			title,
 			description,
 			type: "article",
-			url: env.HOST,
+			url: `${env.HOST}/dashboard`,
 			images: [
 				{
 					url: "/og?dashboard=true",

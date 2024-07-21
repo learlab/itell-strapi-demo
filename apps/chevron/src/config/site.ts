@@ -6,7 +6,6 @@ export const SiteConfig = {
 		"A project by the Language and Educational Analytics Research (Lear)Lab",
 	latex: false,
 	favicon: "/images/avatars/favicon.png",
-	host: "https://itell-chevron.vercel.app",
 } as const;
 
 export const TEXTBOOK_SLUG = "chevron";
