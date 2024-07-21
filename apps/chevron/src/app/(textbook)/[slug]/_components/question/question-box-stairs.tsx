@@ -56,7 +56,7 @@ export const QuestionBoxStairs = ({
 	pageSlug,
 }: Props) => {
 	const { user } = useSession();
-	const ref = useRef<HTMLDivElement | null>();
+	const ref = useRef<HTMLDivElement>(null);
 	const { chunkSlugs, shouldBlur, finishChunk } = useQuestion((state) => ({
 		chunkSlugs: state.chunkSlugs,
 		shouldBlur: state.shouldBlur,
@@ -185,6 +185,7 @@ export const QuestionBoxStairs = ({
 				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
 				`${borderColor}`,
 			)}
+			ref={ref}
 		>
 			<Confetti active={status === StatusStairs.BOTH_CORRECT} />
 

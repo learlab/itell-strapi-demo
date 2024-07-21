@@ -51,6 +51,7 @@ import {
 	getSummaryLocal,
 	saveSummaryLocal,
 } from "./summary-input";
+import { getSurveyLink } from "./survey-link";
 
 type Props = {
 	user: User;
@@ -378,8 +379,12 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						if (isLastPage(pageSlug)) {
 							updateUser({ finished: true });
 							toast.info(
-								"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+								"You have finished the entire textbook! Redirecting to the outtake survey.",
 							);
+
+							setTimeout(() => {
+								window.location.href = getSurveyLink(user);
+							}, 3000);
 						} else {
 							updateUser({ pageSlug: nextSlug });
 							// check if we can already proceed to prevent excessive toasts

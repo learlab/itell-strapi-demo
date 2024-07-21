@@ -24,7 +24,7 @@ import {
 	Warning,
 } from "@itell/ui/server";
 import { AlertTriangle, KeyRoundIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 import { useConstructedResponse } from "../provider/page-provider";
@@ -54,6 +54,8 @@ export const QuestionBoxStairs = ({
 	pageSlug,
 }: Props) => {
 	const { user } = useSession();
+	const ref = useRef<HTMLDivElement>(null);
+
 	const [input, setInput] = useState("");
 	const { chunkSlugs, shouldBlur, finishChunk } = useConstructedResponse(
 		(state) => ({
@@ -63,18 +65,6 @@ export const QuestionBoxStairs = ({
 		}),
 	);
 	const [show, setShow] = useState(shouldBlur);
-
-	const [isShaking, setIsShaking] = useState(false);
-
-	// Function to trigger the shake animation
-	const shakeModal = () => {
-		setIsShaking(true);
-
-		// Reset the shake animation after a short delay
-		setTimeout(() => {
-			setIsShaking(false);
-		}, 400);
-	};
 
 	const action = async (
 		prevState: FormState,
@@ -150,6 +140,8 @@ export const QuestionBoxStairs = ({
 			}
 
 			if (score === 0) {
+				ref.current?.classList.add("shake");
+
 				return {
 					error: null,
 					answerStatus: AnswerStatusStairs.BOTH_INCORRECT,
@@ -191,10 +183,6 @@ export const QuestionBoxStairs = ({
 		if (formState.error) {
 			toast.warning(formState.error);
 		}
-
-		if (formState.answerStatus === AnswerStatusStairs.BOTH_INCORRECT) {
-			shakeModal();
-		}
 	}, [formState]);
 
 	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
@@ -217,158 +205,155 @@ export const QuestionBoxStairs = ({
 	}
 
 	return (
-		<>
-			<Card
-				className={cn(
-					"flex justify-center items-center flex-col py-4 px-6 space-y-2",
-					`${borderColor}`,
-					`${isShaking ? "shake" : ""}`,
-				)}
-			>
-				<Confetti active={answerStatus === AnswerStatusStairs.BOTH_CORRECT} />
+		<Card
+			className={cn(
+				"flex justify-center items-center flex-col py-4 px-6 space-y-2",
+				`${borderColor}`,
+			)}
+			ref={ref}
+		>
+			<Confetti active={answerStatus === AnswerStatusStairs.BOTH_CORRECT} />
 
-				<CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
-					<CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
-						{" "}
-						<AlertTriangle className="stroke-yellow-400 mr-4" /> iTELL AI is in
-						alpha testing. It will try its best to help you but it can still
-						make mistakes. Let us know how you feel about iTELL AI's performance
-						using the feedback icons to the right (thumbs up or thumbs down).{" "}
-					</CardDescription>
-					<QuestionFeedback
-						type="positive"
-						pageSlug={pageSlug}
-						chunkSlug={chunkSlug}
-						userId={user.id}
-					/>
-					<QuestionFeedback
-						type="negative"
-						pageSlug={pageSlug}
-						chunkSlug={chunkSlug}
-						userId={user.id}
-					/>
-				</CardHeader>
+			<CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
+				<CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
+					{" "}
+					<AlertTriangle className="stroke-yellow-400 mr-4" /> iTELL AI is in
+					alpha testing. It will try its best to help you but it can still make
+					mistakes. Let us know how you feel about iTELL AI's performance using
+					the feedback icons to the right (thumbs up or thumbs down).{" "}
+				</CardDescription>
+				<QuestionFeedback
+					type="positive"
+					pageSlug={pageSlug}
+					chunkSlug={chunkSlug}
+					userId={user.id}
+				/>
+				<QuestionFeedback
+					type="negative"
+					pageSlug={pageSlug}
+					chunkSlug={chunkSlug}
+					userId={user.id}
+				/>
+			</CardHeader>
 
-				<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-					{answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
-						<div className="text-sm">
-							<p className="text-red-400">
-								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
-								Please try again.
-							</p>
-							<p className=" underline">
-								{isLastQuestion
-									? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
-									: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
-							</p>
-						</div>
-					)}
-
-					{answerStatus === AnswerStatusStairs.SEMI_CORRECT && (
-						<p className="text-yellow-600 text-xs">
-							<b>iTELL AI says:</b> You may have missed something, but you were
-							generally close. You can click on the "Continue reading" button
-							below go to the next part or try again with a different response.{" "}
+			<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
+				{answerStatus === AnswerStatusStairs.BOTH_INCORRECT && (
+					<div className="text-sm">
+						<p className="text-red-400">
+							<b>iTELL AI says:</b> You likely got a part of the answer wrong.
+							Please try again.
 						</p>
-					)}
+						<p className=" underline">
+							{isLastQuestion
+								? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
+								: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
+						</p>
+					</div>
+				)}
 
-					{answerStatus === AnswerStatusStairs.BOTH_CORRECT ? (
-						<div className="flex items-center flex-col">
-							<p className="text-xl2 text-emerald-600 text-center">
-								Your answer is correct!
+				{answerStatus === AnswerStatusStairs.SEMI_CORRECT && (
+					<p className="text-yellow-600 text-xs">
+						<b>iTELL AI says:</b> You may have missed something, but you were
+						generally close. You can click on the "Continue reading" button
+						below go to the next part or try again with a different response.{" "}
+					</p>
+				)}
+
+				{answerStatus === AnswerStatusStairs.BOTH_CORRECT ? (
+					<div className="flex items-center flex-col">
+						<p className="text-xl2 text-emerald-600 text-center">
+							Your answer is correct!
+						</p>
+						{shouldBlur && (
+							<p className="text-sm">
+								Click on the button below to continue reading. Please use the
+								thumbs-up or thumbs-down icons on the top right side of this box
+								if you have any feedback about this question that you would like
+								to provide before you continue reading.
 							</p>
-							{shouldBlur && (
-								<p className="text-sm">
-									Click on the button below to continue reading. Please use the
-									thumbs-up or thumbs-down icons on the top right side of this
-									box if you have any feedback about this question that you
-									would like to provide before you continue reading.
-								</p>
-							)}
-						</div>
-					) : (
-						question && (
-							<p>
-								<span className="font-bold">Question </span>
-								{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
-								{question}
-							</p>
-						)
-					)}
+						)}
+					</div>
+				) : (
+					question && (
+						<p>
+							<span className="font-bold">Question </span>
+							{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
+							{question}
+						</p>
+					)
+				)}
 
-					<form action={formAction} className="w-full space-y-2">
-						<TextArea
-							name="input"
-							rows={2}
-							className="max-w-lg mx-auto rounded-md shadow-md p-4"
-							onPaste={(e) => {
-								if (isProduction) {
-									e.preventDefault();
-									toast.warning("Copy & Paste is not allowed for question");
-								}
-							}}
-						/>
-						<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-							{answerStatus !== AnswerStatusStairs.UNANSWERED && (
-								<HoverCard>
-									<HoverCardTrigger asChild>
-										<Button variant={"outline"} type="button">
-											<KeyRoundIcon className="size-4 mr-2" />
-											Reveal Answer
-										</Button>
-									</HoverCardTrigger>
-									<HoverCardContent className="w-80">
-										<p className="leading-relaxed">{answer}</p>
-									</HoverCardContent>
-								</HoverCard>
-							)}
+				<form action={formAction} className="w-full space-y-2">
+					<TextArea
+						name="input"
+						rows={2}
+						className="max-w-lg mx-auto rounded-md shadow-md p-4"
+						onPaste={(e) => {
+							if (isProduction) {
+								e.preventDefault();
+								toast.warning("Copy & Paste is not allowed for question");
+							}
+						}}
+					/>
+					<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+						{answerStatus !== AnswerStatusStairs.UNANSWERED && (
+							<HoverCard>
+								<HoverCardTrigger asChild>
+									<Button variant={"outline"} type="button">
+										<KeyRoundIcon className="size-4 mr-2" />
+										Reveal Answer
+									</Button>
+								</HoverCardTrigger>
+								<HoverCardContent className="w-80">
+									<p className="leading-relaxed">{answer}</p>
+								</HoverCardContent>
+							</HoverCard>
+						)}
 
-							{answerStatus === AnswerStatusStairs.BOTH_CORRECT &&
-							isNextButtonDisplayed ? (
-								// when answer is all correct and next button should be displayed
-								<FinishQuestionButton
-									userId={user.id}
-									chunkSlug={chunkSlug}
-									pageSlug={pageSlug}
-									isLastQuestion={isLastQuestion}
-									condition={Condition.STAIRS}
-								/>
-							) : (
-								// when answer is not all correct
-								<>
-									{formState.answerStatus !==
-										AnswerStatusStairs.BOTH_CORRECT && (
-										<SubmitButton
-											answered={answerStatus !== AnswerStatusStairs.UNANSWERED}
+						{answerStatus === AnswerStatusStairs.BOTH_CORRECT &&
+						isNextButtonDisplayed ? (
+							// when answer is all correct and next button should be displayed
+							<FinishQuestionButton
+								userId={user.id}
+								chunkSlug={chunkSlug}
+								pageSlug={pageSlug}
+								isLastQuestion={isLastQuestion}
+								condition={Condition.STAIRS}
+							/>
+						) : (
+							// when answer is not all correct
+							<>
+								{formState.answerStatus !== AnswerStatusStairs.BOTH_CORRECT && (
+									<SubmitButton
+										answered={answerStatus !== AnswerStatusStairs.UNANSWERED}
+									/>
+								)}
+
+								{answerStatus !== AnswerStatusStairs.UNANSWERED &&
+									isNextButtonDisplayed && (
+										<FinishQuestionButton
+											userId={user.id}
+											chunkSlug={chunkSlug}
+											pageSlug={pageSlug}
+											isLastQuestion={isLastQuestion}
+											condition={Condition.STAIRS}
 										/>
 									)}
-
-									{answerStatus !== AnswerStatusStairs.UNANSWERED &&
-										isNextButtonDisplayed && (
-											<FinishQuestionButton
-												userId={user.id}
-												chunkSlug={chunkSlug}
-												pageSlug={pageSlug}
-												isLastQuestion={isLastQuestion}
-												condition={Condition.STAIRS}
-											/>
-										)}
-								</>
-							)}
-						</div>
-						<div className="flex items-center justify-center mt-4">
-							{(answerStatus === AnswerStatusStairs.SEMI_CORRECT ||
-								answerStatus === AnswerStatusStairs.BOTH_INCORRECT) && (
-								<ExplainButton
-									chunkSlug={chunkSlug}
-									pageSlug={pageSlug}
-									input={input}
-								/>
-							)}
-						</div>
-					</form>
-				</CardContent>
-			</Card>
-		</>
+							</>
+						)}
+					</div>
+					<div className="flex items-center justify-center mt-4">
+						{(answerStatus === AnswerStatusStairs.SEMI_CORRECT ||
+							answerStatus === AnswerStatusStairs.BOTH_INCORRECT) && (
+							<ExplainButton
+								chunkSlug={chunkSlug}
+								pageSlug={pageSlug}
+								input={input}
+							/>
+						)}
+					</div>
+				</form>
+			</CardContent>
+		</Card>
 	);
 };

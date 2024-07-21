@@ -14,6 +14,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useConstructedResponse } from "../provider/page-provider";
+import { getSurveyLink } from "./survey-link";
 
 type Props = {
 	user: User;
@@ -41,16 +42,19 @@ export const SummaryFormSimple = React.memo(
 				}
 
 				const nextSlug = await incrementUserPage(user.id, page.page_slug);
+				setFinished(true);
 				if (!isLastPage(page.page_slug)) {
 					updateUser({ pageSlug: nextSlug });
 				} else {
 					updateUser({ finished: true });
 					toast.info(
-						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+						"You have finished the entire textbook! Redirecting to the outtake survey.",
 					);
-				}
 
-				setFinished(true);
+					setTimeout(() => {
+						window.location.href = getSurveyLink(user);
+					}, 3000);
+				}
 			},
 			{ delayTimeout: 3000 },
 		);

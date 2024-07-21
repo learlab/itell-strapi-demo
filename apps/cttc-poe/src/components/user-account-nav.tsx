@@ -21,14 +21,37 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Spinner } from "./spinner";
 import { UserAvatar } from "./user-avatar";
 
+const items = [
+	{
+		text: "Dashboard",
+		href: "/dashboard",
+		icon: <LineChartIcon className="size-4" />,
+	},
+	{
+		text: "Summaries",
+		href: "/dashboard/summaries",
+		icon: <FileBoxIcon className="size-4" />,
+	},
+	{
+		text: "Settings",
+		href: "/dashboard/settings",
+		icon: <SettingsIcon className="size-4" />,
+	},
+	{
+		text: "Guide",
+		href: "/guide",
+		icon: <CompassIcon className="size-4" />,
+	},
+];
+
 export const UserAccountNav = ({ user }: { user: User | null }) => {
-	const [menuOpen, setMenuOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 	const router = useRouter();
-	const [pending, setPending] = useState(false);
+	const [pending, startTransition] = useTransition();
 
 	if (!user) {
 		return (
@@ -40,10 +63,10 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 
 	return (
 		<div className="ml-auto flex items-center gap-1">
-			<DropdownMenu open={menuOpen} onOpenChange={(val) => setMenuOpen(val)}>
+			<DropdownMenu open={open} onOpenChange={(val) => setOpen(val)}>
 				<DropdownMenuTrigger className="flex items-center gap-1">
 					<UserAvatar image={user.image} name={user.name} className="h-8 w-8" />
-					{menuOpen ? (
+					{open ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
 						<ChevronDownIcon className="size-4" />
@@ -62,45 +85,41 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 						</div>
 					</div>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem asChild>
-						<Link href="/dashboard">
-							<LineChartIcon className="size-4 mr-2" /> Dashboard
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
-						<Link href="/dashboard/summaries">
-							<FileBoxIcon className="size-4 mr-2" />
-							Summaries
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
-						<Link href="/dashboard/settings">
-							<SettingsIcon className="size-4 mr-2" /> Settings
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
-						<Link href="/guide">
-							<CompassIcon className="size-4 mr-2" /> Guide
-						</Link>
-					</DropdownMenuItem>
+					{items.map((item) => (
+						<DropdownMenuItem
+							onSelect={(e) => {
+								e.preventDefault();
+								startTransition(() => {
+									router.push(item.href);
+									setOpen(false);
+								});
+							}}
+							disabled={pending}
+							key={item.href}
+						>
+							<button type="button" className="flex items-center gap-2 w-full">
+								{item.icon}
+								<span>{item.text}</span>
+							</button>
+						</DropdownMenuItem>
+					))}
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className="cursor-pointer"
 						disabled={pending}
 						onSelect={async (event) => {
 							event.preventDefault();
-							setPending(true);
-							await logout();
-							setPending(false);
-							window.location.href = "/auth";
+							startTransition(async () => {
+								await logout();
+								router.push("/auth");
+								setOpen(false);
+							});
 						}}
 					>
-						{pending ? (
-							<Spinner className="size-4 mr-2" />
-						) : (
-							<LogOutIcon className="size-4 mr-2" />
-						)}
-						Sign out
+						<button type="button" className="flex items-center gap-2 w-full">
+							<LogOutIcon className="size-4" />
+							Sign out
+						</button>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
