@@ -67,7 +67,6 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 
 	useEffect(() => {
 		if (isError) {
-			console.log("explain cr", error);
 			reportSentry("explain cr", { error });
 		}
 	}, [isError]);

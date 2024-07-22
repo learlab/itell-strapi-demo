@@ -5,6 +5,7 @@ import { useSessionAction } from "@/components/provider/session-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { PageData, reportSentry } from "@/lib/utils";
+import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
@@ -28,14 +29,18 @@ export const SummaryFormSimple = React.memo(
 		const { updateUser } = useSessionAction();
 		const [finished, setFinished] = useState(pageStatus.unlocked);
 
-		const { action, isError, isPending, error, isDelayed } = useActionStatus(
+		const {
+			action,
+			isError,
+			isPending: _isPending,
+			error,
+			isDelayed,
+		} = useActionStatus(
 			async (e: FormEvent) => {
 				e.preventDefault();
-				if (finished) {
-					if (page.nextPageSlug) {
-						router.push(page.nextPageSlug);
-						return;
-					}
+				if (finished && page.nextPageSlug) {
+					router.push(page.nextPageSlug);
+					return;
 				}
 				const [data, err] = await incrementUserPageSlugAction({
 					currentPageSlug: page.page_slug,
@@ -56,10 +61,10 @@ export const SummaryFormSimple = React.memo(
 			},
 			{ delayTimeout: 3000 },
 		);
+		const isPending = useDebounce(_isPending, 100);
 
 		useEffect(() => {
 			if (isError) {
-				console.log("summary simple", error);
 				reportSentry("summary simple", {
 					pageSlug: page.page_slug,
 					error,

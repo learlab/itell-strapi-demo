@@ -19,6 +19,8 @@ import { ClassBadges } from "./class-badges";
 import { StudentData, columns } from "./student-columns";
 import { StudentsTable } from "./students-table";
 
+const numChapters = allPagesSorted.length;
+
 export const ClassInfo = async ({ classId }: { classId: string }) => {
 	const [students, err] = await getClassStudentsAction({ classId });
 	if (err) {
@@ -48,8 +50,11 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 	const studentData: StudentData[] = students.map((s) => {
 		const page = getPageData(s.pageSlug);
 		const progress = page
-			? { index: page.index, text: page.title }
-			: { index: 0, text: firstPage.title };
+			? {
+					index: page.index,
+					text: `${Math.round((page.index + 1) / numChapters) * 100}%`,
+				}
+			: { index: 0, text: "0%" };
 
 		return {
 			id: s.id,

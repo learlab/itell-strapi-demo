@@ -10,6 +10,7 @@ import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
+import { useDebounce } from "@itell/core/hooks";
 import { cn } from "@itell/core/utils";
 import {
 	Button,
@@ -60,7 +61,7 @@ export const QuestionBoxReread = ({
 
 	const {
 		action: onSubmit,
-		isPending,
+		isPending: _isPending,
 		isError,
 		error,
 	} = useActionStatus(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -96,6 +97,7 @@ export const QuestionBoxReread = ({
 			score,
 		});
 	});
+	const isPending = useDebounce(_isPending, 100);
 
 	const isNextButtonDisplayed =
 		shouldBlur && state.status === StatusReread.ANSWERED;
@@ -180,7 +182,7 @@ export const QuestionBoxReread = ({
 										Reveal Answer
 									</Button>
 								</HoverCardTrigger>
-								<HoverCardContent className="w-80">
+								<HoverCardContent className="w-80 no-select">
 									<p className="leading-relaxed">{answer}</p>
 								</HoverCardContent>
 							</HoverCard>

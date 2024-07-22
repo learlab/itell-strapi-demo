@@ -20,7 +20,12 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { useKeystroke, usePortal, useTimer } from "@itell/core/hooks";
+import {
+	useDebounce,
+	useKeystroke,
+	usePortal,
+	useTimer,
+} from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -212,204 +217,210 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		});
 	}, [stairsAnswered]);
 
-	const { action, isPending, isDelayed, isError, error, status } =
-		useActionStatus(
-			async (e: React.FormEvent<HTMLFormElement>) => {
-				e.preventDefault();
-				clearStages();
+	const {
+		action,
+		isPending: _isPending,
+		isDelayed,
+		isError,
+		error,
+		status,
+	} = useActionStatus(
+		async (e: React.FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
+			clearStages();
 
-				dispatch({ type: "submit" });
-				addStage("Scoring");
+			dispatch({ type: "submit" });
+			addStage("Scoring");
 
-				const formData = new FormData(e.currentTarget);
-				const input = String(formData.get("input")).replaceAll("\u0000", "");
+			const formData = new FormData(e.currentTarget);
+			const input = String(formData.get("input")).replaceAll("\u0000", "");
 
-				const userId = user.id;
-				saveSummaryLocal(pageSlug, input);
+			const userId = user.id;
+			saveSummaryLocal(pageSlug, input);
 
-				const error = validateSummary(input, state.prevInput);
+			const error = validateSummary(input, state.prevInput);
 
-				if (error) {
-					dispatch({ type: "fail", payload: error });
-					return;
+			if (error) {
+				dispatch({ type: "fail", payload: error });
+				return;
+			}
+
+			// set prev input here so we are not comparing consecutive error summaries
+			dispatch({ type: "set_prev_input", payload: input });
+
+			const [focusTime, err] = await getFocusTimeAction({ pageSlug });
+			if (err) {
+				throw new Error(err.message);
+			}
+			const body = JSON.stringify({
+				summary: input,
+				page_slug: pageSlug,
+				focus_time: focusTime?.data,
+				chat_history: getChatHistory(messages),
+				excluded_chunks: getExcludedChunks(),
+			});
+			requestBodyRef.current = body;
+			const response = await fetch("/api/itell/score/stairs", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body,
+			});
+
+			if (response.ok && response.body) {
+				const reader = response.body.getReader();
+				const decoder = new TextDecoder();
+				let done = false;
+				let chunkIndex = 0;
+				let stairsChunk: string | null = null;
+
+				while (!done) {
+					const { value, done: doneReading } = await reader.read();
+					done = doneReading;
+					const chunk = decoder.decode(value, { stream: true });
+
+					if (chunkIndex === 0) {
+						const data = chunk
+							.trim()
+							.split("\n")
+							.at(1)
+							?.replace(/data:\s+/, "");
+
+						console.log("summary response chunk", data);
+
+						const parsed = SummaryResponseSchema.safeParse(
+							JSON.parse(String(data)),
+						);
+						if (parsed.success) {
+							summaryResponseRef.current = parsed.data;
+							dispatch({ type: "scored", payload: parsed.data });
+							finishStage("Scoring");
+						} else {
+							console.log("SummaryResults parse error", parsed.error);
+							clearStages();
+							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+							// summaryResponse parsing failed, return early
+							reportSentry("parse summary stairs", {
+								body,
+								chunk: data,
+							});
+							return;
+						}
+					} else {
+						if (summaryResponseRef.current?.is_passed) {
+							// if the summary passed, we don't need to process later chunks
+							// note that if the user pass by summary amount
+							// question will still be generated but will not be asked
+							// they can still see the "question" button
+							break;
+						}
+
+						if (chunkIndex === 1) {
+							addStage("Analyzing");
+						}
+						if (chunk) {
+							stairsChunk = chunk;
+						}
+					}
+
+					chunkIndex++;
 				}
 
-				// set prev input here so we are not comparing consecutive error summaries
-				dispatch({ type: "set_prev_input", payload: input });
+				if (stairsChunk) {
+					const regex = /data: ({"request_id":.*?})\n*/;
+					const match = stairsChunk.trim().match(regex);
+					console.log("final stairs chunk\n", stairsChunk);
+					if (match?.[1]) {
+						const stairsString = match[1];
+						console.log("parsed as", stairsString);
+						const stairsData = JSON.parse(stairsString) as StairsQuestion;
+						stairsDataRef.current = stairsData;
+						finishStage("Analyzing");
+						addStairsQuestion(stairsData);
+					} else {
+						throw new Error("invalid stairs chunk");
+					}
+				}
+			} else {
+				throw new Error(await response.text());
+			}
 
-				const [focusTime, err] = await getFocusTimeAction({ pageSlug });
+			if (summaryResponseRef.current) {
+				const scores = summaryResponseRef.current;
+				addStage("Saving");
+
+				const [data, err] = await createSummaryAction({
+					summary: {
+						text: input,
+						pageSlug,
+						condition: Condition.STAIRS,
+						isPassed: scores.is_passed || false,
+						containmentScore: scores.containment,
+						similarityScore: scores.similarity,
+						languageScore: scores.language,
+						contentScore: scores.content,
+					},
+					keystroke: {
+						start: state.prevInput
+							? state.prevInput
+							: getSummaryLocal(pageSlug) || "",
+						data: keystrokes,
+					},
+				});
 				if (err) {
 					throw new Error(err.message);
 				}
-				const body = JSON.stringify({
-					summary: input,
-					page_slug: pageSlug,
-					focus_time: focusTime?.data,
-					chat_history: getChatHistory(messages),
-					excluded_chunks: getExcludedChunks(),
-				});
-				requestBodyRef.current = body;
-				const response = await fetch("/api/itell/score/stairs", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body,
-				});
 
-				if (response.ok && response.body) {
-					const reader = response.body.getReader();
-					const decoder = new TextDecoder();
-					let done = false;
-					let chunkIndex = 0;
-					let stairsChunk: string | null = null;
+				clearKeystroke();
+				finishStage("Saving");
 
-					while (!done) {
-						const { value, done: doneReading } = await reader.read();
-						done = doneReading;
-						const chunk = decoder.decode(value, { stream: true });
-
-						if (chunkIndex === 0) {
-							const data = chunk
-								.trim()
-								.split("\n")
-								.at(1)
-								?.replace(/data:\s+/, "");
-
-							console.log("summary response chunk", data);
-
-							const parsed = SummaryResponseSchema.safeParse(
-								JSON.parse(String(data)),
-							);
-							if (parsed.success) {
-								summaryResponseRef.current = parsed.data;
-								dispatch({ type: "scored", payload: parsed.data });
-								finishStage("Scoring");
-							} else {
-								console.log("SummaryResults parse error", parsed.error);
-								clearStages();
-								dispatch({ type: "fail", payload: ErrorType.INTERNAL });
-								// summaryResponse parsing failed, return early
-								reportSentry("parse summary stairs", {
-									body,
-									chunk: data,
-								});
-								return;
-							}
-						} else {
-							if (summaryResponseRef.current?.is_passed) {
-								// if the summary passed, we don't need to process later chunks
-								// note that if the user pass by summary amount
-								// question will still be generated but will not be asked
-								// they can still see the "question" button
-								break;
-							}
-
-							if (chunkIndex === 1) {
-								addStage("Analyzing");
-							}
-							if (chunk) {
-								stairsChunk = chunk;
-							}
-						}
-
-						chunkIndex++;
-					}
-
-					if (stairsChunk) {
-						const regex = /data: ({"request_id":.*?})\n*/;
-						const match = stairsChunk.trim().match(regex);
-						console.log("final stairs chunk\n", stairsChunk);
-						if (match?.[1]) {
-							const stairsString = match[1];
-							console.log("parsed as", stairsString);
-							const stairsData = JSON.parse(stairsString) as StairsQuestion;
-							stairsDataRef.current = stairsData;
-							finishStage("Analyzing");
-							addStairsQuestion(stairsData);
-						} else {
-							throw new Error("invalid stairs chunk");
+				if (data.canProceed) {
+					if (isLastPage(pageSlug)) {
+						updateUser({ finished: true });
+						toast.info(
+							"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+						);
+					} else {
+						updateUser({ pageSlug: data.nextPageSlug });
+						// check if we can already proceed to prevent excessive toasts
+						if (!state.canProceed) {
+							const title = feedback?.isPassed
+								? "Good job summarizing 🎉"
+								: "You can now move on 👏";
+							toast(title, {
+								className: "toast",
+								description: "Move to the next page to continue reading",
+								duration: 5000,
+								action: page.nextPageSlug
+									? {
+											label: "Proceed",
+											onClick: () => {
+												router.push(makePageHref(page.nextPageSlug as string));
+											},
+										}
+									: undefined,
+							});
 						}
 					}
-				} else {
-					throw new Error(await response.text());
-				}
-
-				if (summaryResponseRef.current) {
-					const scores = summaryResponseRef.current;
-					addStage("Saving");
-
-					const [data, err] = await createSummaryAction({
-						summary: {
-							text: input,
-							pageSlug,
-							condition: Condition.STAIRS,
-							isPassed: scores.is_passed || false,
-							containmentScore: scores.containment,
-							similarityScore: scores.similarity,
-							languageScore: scores.language,
-							contentScore: scores.content,
-						},
-						keystroke: {
-							start: state.prevInput
-								? state.prevInput
-								: getSummaryLocal(pageSlug) || "",
-							data: keystrokes,
-						},
+					dispatch({
+						type: "finish",
+						payload: { canProceed: !isLastPage(pageSlug) },
 					});
-					if (err) {
-						throw new Error(err.message);
-					}
+				}
 
-					clearKeystroke();
-					finishStage("Saving");
-
-					if (data.canProceed) {
-						if (isLastPage(pageSlug)) {
-							updateUser({ finished: true });
-							toast.info(
-								"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
-							);
-						} else {
-							updateUser({ pageSlug: data.nextPageSlug });
-							// check if we can already proceed to prevent excessive toasts
-							if (!state.canProceed) {
-								const title = feedback?.isPassed
-									? "Good job summarizing 🎉"
-									: "You can now move on 👏";
-								toast(title, {
-									className: "toast",
-									description: "Move to the next page to continue reading",
-									duration: 5000,
-									action: page.nextPageSlug
-										? {
-												label: "Proceed",
-												onClick: () => {
-													router.push(
-														makePageHref(page.nextPageSlug as string),
-													);
-												},
-											}
-										: undefined,
-								});
-							}
-						}
-						dispatch({
-							type: "finish",
-							payload: { canProceed: !isLastPage(pageSlug) },
-						});
-					}
-
-					if (stairsDataRef.current) {
-						dispatch({ type: "stairs", payload: stairsDataRef.current });
-						if (!data.canProceed && !pageStatus.unlocked) {
-							goToQuestion(stairsDataRef.current);
-						}
+				if (stairsDataRef.current) {
+					dispatch({ type: "stairs", payload: stairsDataRef.current });
+					if (!data.canProceed && !pageStatus.unlocked) {
+						goToQuestion(stairsDataRef.current);
 					}
 				}
-			},
-			{ delayTimeout: 20000 },
-		);
+			}
+		},
+		{ delayTimeout: 20000 },
+	);
+
+	const isPending = useDebounce(_isPending, 100);
 
 	useEffect(() => {
 		if (isError) {

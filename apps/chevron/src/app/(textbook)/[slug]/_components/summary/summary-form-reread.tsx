@@ -14,7 +14,12 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { useKeystroke, usePortal, useTimer } from "@itell/core/hooks";
+import {
+	useDebounce,
+	useKeystroke,
+	usePortal,
+	useTimer,
+} from "@itell/core/hooks";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -119,87 +124,93 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		});
 	}, []);
 
-	const { status, isError, isDelayed, isPending, action, error } =
-		useActionStatus(
-			async (e: React.FormEvent<HTMLFormElement>) => {
-				e.preventDefault();
+	const {
+		status,
+		isError,
+		isDelayed,
+		isPending: _isPending,
+		action,
+		error,
+	} = useActionStatus(
+		async (e: React.FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
 
-				clearStages();
-				addStage("Saving");
+			clearStages();
+			addStage("Saving");
 
-				const formData = new FormData(e.currentTarget);
-				const input = String(formData.get("input")).replaceAll("\u0000", "");
+			const formData = new FormData(e.currentTarget);
+			const input = String(formData.get("input")).replaceAll("\u0000", "");
 
-				saveSummaryLocal(pageSlug, input);
-				requestBodyRef.current = JSON.stringify({
-					summary: input,
-					page_slug: pageSlug,
-				});
-				console.log("requestBody", requestBodyRef.current);
-				const response = await fetch("/api/itell/score/summary", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: requestBodyRef.current,
-				});
-				const json = await response.json();
-				const parsed = SummaryResponseSchema.safeParse(json);
-				if (!parsed.success) {
-					throw parsed.error;
-				}
-				const scores = parsed.data;
-				summaryResponseRef.current = scores;
+			saveSummaryLocal(pageSlug, input);
+			requestBodyRef.current = JSON.stringify({
+				summary: input,
+				page_slug: pageSlug,
+			});
+			console.log("requestBody", requestBodyRef.current);
+			const response = await fetch("/api/itell/score/summary", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: requestBodyRef.current,
+			});
+			const json = await response.json();
+			const parsed = SummaryResponseSchema.safeParse(json);
+			if (!parsed.success) {
+				throw parsed.error;
+			}
+			const scores = parsed.data;
+			summaryResponseRef.current = scores;
 
-				const [data, err] = await createSummaryAction({
-					summary: {
-						text: input,
-						pageSlug,
-						condition: Condition.RANDOM_REREAD,
-						isPassed: scores.is_passed || false,
-						containmentScore: scores.containment,
-						similarityScore: scores.similarity,
-						languageScore: scores.language,
-						contentScore: scores.content,
-					},
-					keystroke: {
-						start: prevInput.current || getSummaryLocal(pageSlug) || "",
-						data: keystrokes,
-					},
-				});
-				if (err) {
-					throw new Error(err.message);
-				}
+			const [data, err] = await createSummaryAction({
+				summary: {
+					text: input,
+					pageSlug,
+					condition: Condition.RANDOM_REREAD,
+					isPassed: scores.is_passed || false,
+					containmentScore: scores.containment,
+					similarityScore: scores.similarity,
+					languageScore: scores.language,
+					contentScore: scores.content,
+				},
+				keystroke: {
+					start: prevInput.current || getSummaryLocal(pageSlug) || "",
+					data: keystrokes,
+				},
+			});
+			if (err) {
+				throw new Error(err.message);
+			}
 
-				clearKeystroke();
-				finishStage("Saving");
-				setFinished(true);
-				prevInput.current = input;
+			clearKeystroke();
+			finishStage("Saving");
+			setFinished(true);
+			prevInput.current = input;
 
-				if (isLastPage(pageSlug)) {
-					updateUser({ finished: true });
-					toast.info(
-						"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
-					);
-					return;
-				}
+			if (isLastPage(pageSlug)) {
+				updateUser({ finished: true });
+				toast.info(
+					"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
+				);
+				return;
+			}
 
-				updateUser({ pageSlug: data.nextPageSlug });
+			updateUser({ pageSlug: data.nextPageSlug });
 
-				// 25% random rereading if the page is not unlocked
-				if (!pageStatus.unlocked && Math.random() <= 0.25) {
-					goToRandomChunk();
-				}
-			},
-			{ delayTimeout: 10000 },
-		);
+			// 25% random rereading if the page is not unlocked
+			if (!pageStatus.unlocked && Math.random() <= 0.25) {
+				goToRandomChunk();
+			}
+		},
+		{ delayTimeout: 10000 },
+	);
+	const isPending = useDebounce(_isPending, 100);
 
 	useEffect(() => {
 		if (isError) {
 			finishStage("Analyzing");
 			clearStages();
 
-			console.log("score summary reread", error);
 			reportSentry("score summary reread", {
 				body: requestBodyRef.current,
 				response: summaryResponseRef.current,
@@ -214,8 +225,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			{finished && page.nextPageSlug && (
 				<div className="space-y-2 space-x-2">
 					<p>
-						You have finished this page. You can choose to refine your summary
-						or move on to the next page.
+						You have finished this page and can move on. You are still welcome
+						to improve the summary.
 					</p>
 					<NextPageButton pageSlug={page.nextPageSlug} />
 				</div>

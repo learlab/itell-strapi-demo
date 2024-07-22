@@ -4,6 +4,7 @@ import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { incrementUserPage } from "@/lib/user/actions";
 import { PageData, reportSentry } from "@/lib/utils";
+import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
@@ -31,7 +32,13 @@ export const SummaryFormSimple = React.memo(
 		const { updateUser } = useSessionAction();
 		const [finished, setFinished] = useState(pageStatus.unlocked);
 
-		const { action, isError, isPending, error, isDelayed } = useActionStatus(
+		const {
+			action,
+			isError,
+			isPending: _isPending,
+			error,
+			isDelayed,
+		} = useActionStatus(
 			async (e: FormEvent) => {
 				e.preventDefault();
 				if (finished) {
@@ -58,6 +65,7 @@ export const SummaryFormSimple = React.memo(
 			},
 			{ delayTimeout: 3000 },
 		);
+		const isPending = useDebounce(_isPending, 300);
 
 		useEffect(() => {
 			if (isError) {

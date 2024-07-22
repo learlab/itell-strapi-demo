@@ -109,7 +109,6 @@ export const ChatInput = ({
 				throw new Error("invalid response");
 			}
 		} catch (err) {
-			console.log("chat input error", err);
 			reportSentry("eval chat", { error: err, input: text, pageSlug });
 			updateBotMessage(
 				botMessageId,

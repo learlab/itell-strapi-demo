@@ -82,7 +82,6 @@ export const GET = async (req: Request) => {
 			},
 		});
 	} catch (error) {
-		console.log("azure oauth error", error);
 		reportSentry("azure oauth error", { error });
 		return new Response(null, {
 			status: 302,

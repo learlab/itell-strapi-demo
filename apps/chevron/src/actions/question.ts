@@ -7,6 +7,7 @@ import {
 	constructed_responses,
 	constructed_responses_feedback,
 } from "@/drizzle/schema";
+import { isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { count, eq } from "drizzle-orm";
 import { authedProcedure } from "./utils";
@@ -21,10 +22,12 @@ export const createQuestionAnswerAction = authedProcedure
 		reportSentry("create constructed response", { error: err });
 	})
 	.handler(async ({ input, ctx }) => {
-		return await db.insert(constructed_responses).values({
-			...input,
-			userId: ctx.user.id,
-		});
+		if (isProduction) {
+			return await db.insert(constructed_responses).values({
+				...input,
+				userId: ctx.user.id,
+			});
+		}
 	});
 
 /**

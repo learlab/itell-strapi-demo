@@ -123,15 +123,12 @@ h5,
   user-select: none;
 }
 
-
-
-
 #page-content button,
 #page-content .question-container,
 #page-content .pager,
 #page-content .highlight,
 #page-content .note {
-  @apply no-select
+  user-select: none;
 }
 
 ::view-transition-group(root) {

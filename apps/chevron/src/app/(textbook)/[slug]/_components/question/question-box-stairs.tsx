@@ -10,6 +10,7 @@ import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
+import { useDebounce } from "@itell/core/hooks";
 import { cn } from "@itell/core/utils";
 import {
 	Button,
@@ -71,7 +72,7 @@ export const QuestionBoxStairs = ({
 
 	const {
 		action: onSubmit,
-		isPending,
+		isPending: _isPending,
 		isError,
 		error,
 	} = useActionStatus(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -140,6 +141,7 @@ export const QuestionBoxStairs = ({
 			return;
 		}
 	});
+	const isPending = useDebounce(_isPending, 100);
 
 	const status = state.status;
 	const isNextButtonDisplayed =
@@ -277,14 +279,14 @@ export const QuestionBoxStairs = ({
 										Reveal Answer
 									</Button>
 								</HoverCardTrigger>
-								<HoverCardContent className="w-80">
-									<p className="leading-relaxed">{answer}</p>
+								<HoverCardContent className="w-80 ">
+									<p className="leading-relaxed no-select">{answer}</p>
 								</HoverCardContent>
 							</HoverCard>
 						)}
 
 						{status === StatusStairs.BOTH_CORRECT && isNextButtonDisplayed ? (
-							// when answer is all correct and next button should be displayed
+							// when answer is both correct and next button should be displayed
 							<FinishQuestionButton
 								chunkSlug={chunkSlug}
 								pageSlug={pageSlug}
@@ -292,8 +294,8 @@ export const QuestionBoxStairs = ({
 								condition={Condition.STAIRS}
 							/>
 						) : (
-							// when answer is not all correct
-							<div>
+							// when answer is not both correct
+							<>
 								{status !== StatusStairs.BOTH_CORRECT && (
 									<StatusButton
 										pending={isPending}
@@ -326,7 +328,7 @@ export const QuestionBoxStairs = ({
 											condition={Condition.STAIRS}
 										/>
 									)}
-							</div>
+							</>
 						)}
 					</div>
 					{state.error && (

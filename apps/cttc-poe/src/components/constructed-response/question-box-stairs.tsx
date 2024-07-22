@@ -305,7 +305,7 @@ export const QuestionBoxStairs = ({
 									</Button>
 								</HoverCardTrigger>
 								<HoverCardContent className="w-80">
-									<p className="leading-relaxed">{answer}</p>
+									<p className="leading-relaxed no-select">{answer}</p>
 								</HoverCardContent>
 							</HoverCard>
 						)}
