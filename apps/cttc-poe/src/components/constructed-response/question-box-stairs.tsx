@@ -1,7 +1,6 @@
 "use client";
 
 import { Confetti } from "@/components/ui/confetti";
-import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
@@ -35,6 +34,7 @@ import { SubmitButton } from "./submit-button";
 import { AnswerStatusStairs, QuestionScore, borderColors } from "./types";
 
 type Props = {
+	userId: string | null;
 	question: string;
 	answer: string;
 	chunkSlug: string;
@@ -48,12 +48,12 @@ type FormState = {
 };
 
 export const QuestionBoxStairs = ({
+	userId,
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { user } = useSession();
 	const ref = useRef<HTMLDivElement>(null);
 
 	const [input, setInput] = useState("");
@@ -70,7 +70,7 @@ export const QuestionBoxStairs = ({
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
-		if (!user) {
+		if (!userId) {
 			return {
 				...prevState,
 				error: "You need to be logged in to answer this question",
@@ -111,11 +111,11 @@ export const QuestionBoxStairs = ({
 
 			const score = response.data.score as QuestionScore;
 			createConstructedResponse({
-				text: input,
-				userId: user.id,
+				userId,
 				chunkSlug,
 				pageSlug,
 				score,
+				text: input,
 				condition: Condition.STAIRS,
 			});
 
@@ -187,7 +187,7 @@ export const QuestionBoxStairs = ({
 
 	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
 
-	if (!user) {
+	if (!userId) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
@@ -207,7 +207,7 @@ export const QuestionBoxStairs = ({
 	return (
 		<Card
 			className={cn(
-				"flex justify-center items-center flex-col py-4 px-6 space-y-2",
+				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
 				`${borderColor}`,
 			)}
 			ref={ref}
@@ -226,13 +226,13 @@ export const QuestionBoxStairs = ({
 					type="positive"
 					pageSlug={pageSlug}
 					chunkSlug={chunkSlug}
-					userId={user.id}
+					userId={userId}
 				/>
 				<QuestionFeedback
 					type="negative"
 					pageSlug={pageSlug}
 					chunkSlug={chunkSlug}
-					userId={user.id}
+					userId={userId}
 				/>
 			</CardHeader>
 
@@ -314,7 +314,7 @@ export const QuestionBoxStairs = ({
 						isNextButtonDisplayed ? (
 							// when answer is all correct and next button should be displayed
 							<FinishQuestionButton
-								userId={user.id}
+								userId={userId}
 								chunkSlug={chunkSlug}
 								pageSlug={pageSlug}
 								isLastQuestion={isLastQuestion}
@@ -332,7 +332,7 @@ export const QuestionBoxStairs = ({
 								{answerStatus !== AnswerStatusStairs.UNANSWERED &&
 									isNextButtonDisplayed && (
 										<FinishQuestionButton
-											userId={user.id}
+											userId={userId}
 											chunkSlug={chunkSlug}
 											pageSlug={pageSlug}
 											isLastQuestion={isLastQuestion}
@@ -346,6 +346,7 @@ export const QuestionBoxStairs = ({
 						{(answerStatus === AnswerStatusStairs.SEMI_CORRECT ||
 							answerStatus === AnswerStatusStairs.BOTH_INCORRECT) && (
 							<ExplainButton
+								userId={userId}
 								chunkSlug={chunkSlug}
 								pageSlug={pageSlug}
 								input={input}

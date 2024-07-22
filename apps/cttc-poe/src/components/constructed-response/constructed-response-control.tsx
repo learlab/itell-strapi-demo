@@ -13,11 +13,16 @@ import { QuestionBoxStairs } from "./question-box-stairs";
 import { ScrollBackButton } from "./scroll-back-button";
 
 type Props = {
+	userId: string | null;
 	pageSlug: string;
 	condition: string;
 };
 
-export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
+export const ConstructedResponseControl = ({
+	userId,
+	pageSlug,
+	condition,
+}: Props) => {
 	const { currentChunk, chunkSlugs, chunkData, shouldBlur } =
 		useConstructedResponse((state) => ({
 			currentChunk: state.currentChunk,
@@ -63,6 +68,7 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 
 		addNode(
 			<ContinueChunkButton
+				userId={userId}
 				chunkSlug={chunkSlug}
 				pageSlug={pageSlug}
 				condition={condition}
@@ -84,6 +90,7 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 		if (condition === Condition.SIMPLE) {
 			addNode(
 				<QuestionBoxSimple
+					userId={userId}
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					question={question}
@@ -96,6 +103,7 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 		if (condition === Condition.RANDOM_REREAD) {
 			addNode(
 				<QuestionBoxReread
+					userId={userId}
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					question={question}
@@ -108,6 +116,7 @@ export const ConstructedResponseControl = ({ pageSlug, condition }: Props) => {
 		if (condition === Condition.STAIRS) {
 			addNode(
 				<QuestionBoxStairs
+					userId={userId}
 					question={question}
 					answer={answer}
 					chunkSlug={chunkSlug}

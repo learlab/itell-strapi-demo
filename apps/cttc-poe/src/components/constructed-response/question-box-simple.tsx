@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "@/lib/auth/context";
 import { Condition } from "@/lib/control/condition";
 import { createEvent } from "@/lib/event/actions";
 import { LoginButton } from "@auth//auth-form";
@@ -10,6 +9,7 @@ import { Card, CardContent, Warning } from "@itell/ui/server";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {
+	userId: string | null;
 	question: string;
 	answer: string;
 	pageSlug: string;
@@ -17,19 +17,19 @@ type Props = {
 };
 
 export const QuestionBoxSimple = ({
+	userId,
 	question,
 	answer,
 	pageSlug,
 	chunkSlug,
 }: Props) => {
-	const { user } = useSession();
 	const { advanceChunk, currentChunk } = useConstructedResponse((state) => ({
 		advanceChunk: state.advanceChunk,
 		currentChunk: state.currentChunk,
 	}));
 	const disabled = currentChunk !== chunkSlug;
 
-	if (!user) {
+	if (!userId) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
@@ -65,7 +65,7 @@ export const QuestionBoxSimple = ({
 							e.preventDefault();
 							advanceChunk(chunkSlug);
 							createEvent({
-								userId: user.id,
+								userId,
 								type: "post-question-chunk-reveal",
 								pageSlug,
 								data: {

@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
@@ -13,13 +12,18 @@ import { useActionStatus } from "use-action-status";
 import { Spinner } from "../spinner";
 
 type Props = {
+	userId: string;
 	pageSlug: string;
 	chunkSlug: string;
 	input: string;
 };
 
-export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
-	const { user } = useSession();
+export const ExplainButton = ({
+	userId,
+	pageSlug,
+	chunkSlug,
+	input,
+}: Props) => {
 	const [response, setResponse] = useState("");
 	const { pending: formPending } = useFormStatus();
 	const { action, isPending, isDelayed, isError, error } = useActionStatus(
@@ -54,14 +58,12 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				});
 			}
 
-			if (user) {
-				createEvent({
-					userId: user.id,
-					type: "explain-constructed-response",
-					pageSlug,
-					data: { chunkSlug, response },
-				});
-			}
+			createEvent({
+				userId,
+				pageSlug,
+				data: { chunkSlug, response },
+				type: "explain-constructed-response",
+			});
 		},
 	);
 

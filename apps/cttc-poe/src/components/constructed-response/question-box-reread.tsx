@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "@/lib/auth/context";
 import { isProduction } from "@/lib/constants";
 import { createConstructedResponse } from "@/lib/constructed-response/actions";
 import { Condition } from "@/lib/control/condition";
@@ -23,11 +22,10 @@ import { toast } from "sonner";
 import { useConstructedResponse } from "../provider/page-provider";
 import { FinishQuestionButton } from "./finish-question-button";
 import { SubmitButton } from "./submit-button";
-import { AnswerStatusReread } from "./types";
-
-type QuestionScore = 0 | 1 | 2;
+import { AnswerStatusReread, QuestionScore } from "./types";
 
 type Props = {
+	userId: string | null;
 	question: string;
 	answer: string;
 	chunkSlug: string;
@@ -40,12 +38,12 @@ type FormState = {
 };
 
 export const QuestionBoxReread = ({
+	userId,
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { user } = useSession();
 	const { shouldBlur, finishChunk } = useConstructedResponse((state) => ({
 		shouldBlur: state.shouldBlur,
 		finishChunk: state.finishChunk,
@@ -57,7 +55,7 @@ export const QuestionBoxReread = ({
 		prevState: FormState,
 		formData: FormData,
 	): Promise<FormState> => {
-		if (!user) {
+		if (!userId) {
 			return {
 				...prevState,
 				error: "You need to be logged in to answer this question",
@@ -90,12 +88,12 @@ export const QuestionBoxReread = ({
 
 			const score = response.data.score as QuestionScore;
 			createConstructedResponse({
-				userId: user.id,
-				text: input,
-				condition: Condition.RANDOM_REREAD,
+				userId,
 				chunkSlug,
 				pageSlug,
 				score,
+				text: input,
+				condition: Condition.RANDOM_REREAD,
 			});
 
 			finishChunk(chunkSlug, false);
@@ -135,7 +133,7 @@ export const QuestionBoxReread = ({
 
 	const isLastQuestion = chunkSlug === chunkSlug.at(-1);
 
-	if (!user) {
+	if (!userId) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>
@@ -156,7 +154,7 @@ export const QuestionBoxReread = ({
 		<>
 			<Card
 				className={cn(
-					"flex justify-center items-center flex-col py-4 px-6 space-y-2",
+					"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
 					answerStatus === AnswerStatusReread.ANSWERED
 						? "border-2 border-border"
 						: "",
@@ -210,7 +208,7 @@ export const QuestionBoxReread = ({
 							{answerStatus !== AnswerStatusReread.UNANSWERED &&
 								isNextButtonDisplayed && (
 									<FinishQuestionButton
-										userId={user.id}
+										userId={userId}
 										pageSlug={pageSlug}
 										chunkSlug={chunkSlug}
 										isLastQuestion={isLastQuestion}

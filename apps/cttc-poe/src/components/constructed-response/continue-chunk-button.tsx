@@ -1,9 +1,8 @@
 "use client";
 
-import { useSession } from "@/lib/auth/context";
 import { createEvent } from "@/lib/event/actions";
+import { LoginButton } from "@auth/auth-form";
 import { cn } from "@itell/core/utils";
-import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
@@ -30,18 +29,19 @@ const animationProps = {
 	},
 } as AnimationProps;
 
-interface Props extends React.ComponentPropsWithRef<typeof Button> {
+interface Props extends React.HTMLAttributes<HTMLButtonElement> {
+	userId: string | null;
 	chunkSlug: string;
 	pageSlug: string;
 	condition: string;
 }
 
 export const ContinueChunkButton = ({
+	userId,
 	chunkSlug,
 	pageSlug,
 	condition,
 }: Props) => {
-	const { user } = useSession();
 	const { advancedChunk, chunkData } = useConstructedResponse((state) => ({
 		advancedChunk: state.advanceChunk,
 		chunkData: state.chunkData,
@@ -53,11 +53,11 @@ export const ContinueChunkButton = ({
 	const onSubmit = async () => {
 		advancedChunk(chunkSlug);
 
-		if (user) {
+		if (userId) {
 			createEvent({
 				type: "chunk-reveal",
 				pageSlug,
-				userId: user.id,
+				userId,
 				data: {
 					chunkSlug,
 					condition,
@@ -65,6 +65,10 @@ export const ContinueChunkButton = ({
 			});
 		}
 	};
+
+	if (!userId) {
+		return <LoginButton />;
+	}
 
 	return (
 		<motion.button

@@ -50,8 +50,10 @@ const items = [
 
 export const UserAccountNav = ({ user }: { user: User | null }) => {
 	const [open, setOpen] = useState(false);
+	const [active, setActive] = useState("");
 	const router = useRouter();
 	const [pending, startTransition] = useTransition();
+	const [logoutPending, setLogoutPending] = useState(false);
 
 	if (!user) {
 		return (
@@ -89,35 +91,39 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 						<DropdownMenuItem
 							onSelect={(e) => {
 								e.preventDefault();
+								setActive(item.text);
 								startTransition(() => {
-									router.push(item.href);
 									setOpen(false);
+									router.push(item.href);
+									setActive("");
 								});
 							}}
-							disabled={pending}
+							disabled={active === item.text && pending}
 							key={item.href}
 						>
 							<button type="button" className="flex items-center gap-2 w-full">
-								{item.icon}
-								<span>{item.text}</span>
+								{active === item.text ? <Spinner /> : item.icon}
+								{item.text}
 							</button>
 						</DropdownMenuItem>
 					))}
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className="cursor-pointer"
-						disabled={pending}
+						disabled={logoutPending}
 						onSelect={async (event) => {
 							event.preventDefault();
+							setLogoutPending(true);
 							startTransition(async () => {
 								await logout();
 								router.push("/auth");
 								setOpen(false);
+								setLogoutPending(false);
 							});
 						}}
 					>
 						<button type="button" className="flex items-center gap-2 w-full">
-							<LogOutIcon className="size-4" />
+							{logoutPending ? <Spinner /> : <LogOutIcon className="size-4" />}
 							Sign out
 						</button>
 					</DropdownMenuItem>

@@ -117,9 +117,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 			{page.summary && user && (
 				<footer>
 					<PageSummary
+						user={user}
 						pageSlug={pageSlug}
 						pageStatus={pageStatus}
-						user={user}
 						condition={userCondition}
 					/>
 				</footer>
@@ -127,6 +127,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
 			<ConstructedResponseControl
+				userId={userId}
 				pageSlug={pageSlug}
 				condition={userCondition}
 			/>
