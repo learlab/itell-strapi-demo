@@ -5,7 +5,7 @@ import {
 	SettingsIcon,
 } from "lucide-react";
 
-const iconClasses = "mr-2 size-4";
+const iconClasses = "size-4";
 export const dashboardConfig: DashboardConfig = {
 	mainNav: [],
 	sidebarNav: [

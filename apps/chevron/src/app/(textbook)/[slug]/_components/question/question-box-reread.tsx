@@ -178,8 +178,14 @@ export const QuestionBoxReread = ({
 							<HoverCard>
 								<HoverCardTrigger asChild>
 									<Button variant={"outline"} type="button">
-										<KeyRoundIcon className="size-4 mr-2" />
-										Reveal Answer
+										<span className="flex items-center gap-2">
+											{isPending ? (
+												<Spinner />
+											) : (
+												<KeyRoundIcon className="size-4" />
+											)}
+											Reveal Answer
+										</span>
 									</Button>
 								</HoverCardTrigger>
 								<HoverCardContent className="w-80 no-select">
@@ -195,18 +201,10 @@ export const QuestionBoxReread = ({
 							variant={"outline"}
 							className="w-32"
 						>
-							{isPending ? (
-								<Spinner className="size-4" />
-							) : (
-								<>
-									<PencilIcon className="size-4 mr-2 shrink-0" />
-									<span>
-										{state.status === StatusReread.ANSWERED
-											? "Resubmit"
-											: "Answer"}
-									</span>
-								</>
-							)}
+							<span className="flex items-center gap-2">
+								<PencilIcon className="size-4" />
+								{state.status === StatusReread.ANSWERED ? "Resubmit" : "Answer"}
+							</span>
 						</StatusButton>
 
 						{state.status !== StatusReread.UNANSWERED &&

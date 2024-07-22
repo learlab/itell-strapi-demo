@@ -53,9 +53,11 @@ export default async function () {
 			<aside className="toc-sidebar hidden md:block relative">
 				<div className="sticky top-20 -mt-10 pt-4">
 					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
-						<p className="font-medium flex items-center mb-4">
-							<BookmarkIcon className="mr-2 size-4" />
-							<span>On this page</span>
+						<p className="font-semibold mb-4">
+							<span className="flex items-center gap-2">
+								<BookmarkIcon className="size-4" />
+								On this page
+							</span>
 						</p>
 						<ul className="mt-2 space-y-2">
 							{arr.slice(0, 5).map((i) => (

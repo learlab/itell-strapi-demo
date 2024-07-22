@@ -28,10 +28,12 @@ const ColumnWithSorting = ({
 		<Button
 			variant="ghost"
 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-			className="pl-0"
+			className="px-1"
 		>
-			{text}
-			<ArrowUpDown className="ml-2 size-4" />
+			<span className="flex items-center gap-2">
+				<ArrowUpDown className="size-4" />
+				{text}
+			</span>
 		</Button>
 	);
 };

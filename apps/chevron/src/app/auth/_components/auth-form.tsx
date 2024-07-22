@@ -3,6 +3,7 @@
 import { Spinner } from "@/components/spinner";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
+import { LogInIcon, LogOutIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -37,18 +38,19 @@ export const GoogleLoginButton = () => {
 			variant={"outline"}
 			disabled={pending}
 		>
-			{pending ? (
-				<Spinner className="size-4 mr-2" />
-			) : (
-				<Image
-					alt="Google Icon"
-					src="/icons/google.png"
-					width={16}
-					height={16}
-					className="mr-2"
-				/>
-			)}
-			<span>Google</span>
+			<span className="flex items-center gap-2">
+				{pending ? (
+					<Spinner className="size-4" />
+				) : (
+					<Image
+						alt="Google Icon"
+						src="/icons/google.png"
+						width={16}
+						height={16}
+					/>
+				)}
+				Google
+			</span>
 		</Button>
 	);
 };
@@ -67,18 +69,19 @@ export const OutlookLoginButton = () => {
 			variant={"outline"}
 			disabled={pending}
 		>
-			{pending ? (
-				<Spinner className="size-4 mr-2" />
-			) : (
-				<Image
-					alt="Outlook Icon"
-					src="/icons/outlook.png"
-					width={24}
-					height={24}
-					className="mr-2"
-				/>
-			)}
-			<span>Outlook</span>
+			<span className="flex items-center gap-2">
+				{pending ? (
+					<Spinner className="size-4" />
+				) : (
+					<Image
+						alt="Outlook Icon"
+						src="/icons/outlook.png"
+						width={24}
+						height={24}
+					/>
+				)}
+				Outlook
+			</span>
 		</Button>
 	);
 };
@@ -97,8 +100,10 @@ export const LoginButton = () => {
 			variant={"outline"}
 			disabled={pending}
 		>
-			{pending && <Spinner className="size-4 mr-2" />}
-			<span>Log in</span>
+			<span className="flex items-center gap-2">
+				{pending ? <Spinner /> : <LogInIcon className="size-4" />}
+				Log in
+			</span>
 		</Button>
 	);
 };
@@ -118,8 +123,10 @@ export const LogoutButton = () => {
 			disabled={pending}
 			variant={"outline"}
 		>
-			{pending && <Spinner className="size-4 mr-2" />}
-			<span>Log out</span>
+			<span className="flex items-center gap-2">
+				{pending ? <Spinner /> : <LogOutIcon className="size-4" />}
+				Log out
+			</span>
 		</Button>
 	);
 };

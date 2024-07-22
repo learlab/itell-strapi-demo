@@ -10,7 +10,7 @@ import {
 	DialogTrigger,
 } from "@itell/ui/client";
 import { Button, Checkbox, Label, TextArea } from "@itell/ui/client";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { SendHorizontalIcon, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
@@ -92,8 +92,14 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 					)}
 					<div className="flex justify-end">
 						<Button type="submit" disabled={pending}>
-							{pending && <Spinner className="inline mr-2" />}
-							Submit feedback
+							<span className="flex items-center gap-2">
+								{pending ? (
+									<Spinner />
+								) : (
+									<SendHorizontalIcon className="size-4" />
+								)}
+								Submit feedback
+							</span>
 						</Button>
 					</div>
 				</form>

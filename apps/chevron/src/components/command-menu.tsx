@@ -65,8 +65,9 @@ export const CommandMenu = () => {
 								onSelect={() => {
 									runCommand(() => router.push(navItem.href as string));
 								}}
+								className="flex items-center gap-2"
 							>
-								<div className="mr-2 flex size-4 items-center justify-center">
+								<div className="flex size-4 items-center justify-center">
 									<Circle className="h-3 w-3" />
 								</div>
 								<div>
@@ -87,8 +88,10 @@ export const CommandMenu = () => {
 									runCommand(() => router.push(navItem.href as string));
 								}}
 							>
-								<File className="mr-2 size-4" />
-								{navItem.title}
+								<span className="flex items-center gap-2">
+									<File className="size-4" />
+									{navItem.title}
+								</span>
 							</CommandItem>
 						))}
 					</CommandGroup>
@@ -96,16 +99,22 @@ export const CommandMenu = () => {
 					<CommandSeparator />
 					<CommandGroup heading="Theme">
 						<CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
-							<SunMedium className="mr-2 size-4" />
-							Light
+							<span className="flex items-center gap-2">
+								<SunMedium className="size-4" />
+								Light
+							</span>
 						</CommandItem>
 						<CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
-							<Moon className="mr-2 size-4" />
-							Dark
+							<span className="flex items-center gap-2">
+								<Moon className="size-4" />
+								Dark
+							</span>
 						</CommandItem>
 						<CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
-							<Laptop className="mr-2 size-4" />
-							System
+							<span className="flex items-center gap-2">
+								<Laptop className="size-4" />
+								System
+							</span>
 						</CommandItem>
 					</CommandGroup>
 				</CommandList>

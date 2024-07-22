@@ -55,7 +55,10 @@ export const JoinClassForm = ({ user }: Props) => {
 				{isError && <InternalError />}
 				<footer>
 					<Button disabled={isPending} type="submit">
-						{isPending && <Spinner className="inline-flex mr-2" />}Submit
+						<span className="flex items-center gap-2">
+							{isPending && <Spinner />}
+							Submit
+						</span>
 					</Button>
 				</footer>
 			</form>

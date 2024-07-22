@@ -40,7 +40,7 @@ import { ChatStairs } from "@textbook/chat-stairs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
-import { FileQuestionIcon } from "lucide-react";
+import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
@@ -457,8 +457,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						variant={"outline"}
 						onClick={() => goToQuestion(state.stairsQuestion as StairsQuestion)}
 					>
-						<span>See question</span>
-						<FileQuestionIcon className="size-4 ml-2" />
+						<span className="flex items-center gap-2">
+							<FileQuestionIcon className="size-4" />
+							See question
+						</span>
 					</Button>
 				)}
 			</div>
@@ -475,8 +477,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
-					<StatusButton disabled={!isSummaryReady} pending={isPending}>
-						{status === "idle" ? "Submit" : "Resubmit"}
+					<StatusButton
+						disabled={!isSummaryReady}
+						pending={isPending}
+						className="w-32"
+					>
+						<span className="flex items-center gap-2 px-2">
+							<SendHorizontalIcon className="size-4" />
+							{status === "idle" ? "Submit" : "Resubmit"}
+						</span>
 					</StatusButton>
 				</div>
 			</form>

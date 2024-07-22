@@ -26,7 +26,6 @@ export const TextbookNav = async ({ scrollProgress, read }: Props) => {
 						alt="itell logo"
 						width={24}
 						height={32}
-						className="mr-2"
 					/>
 					<Link href="/" className="hidden items-center space-x-2 md:flex">
 						<span className="hidden font-bold sm:inline-block">

@@ -275,8 +275,10 @@ export const QuestionBoxStairs = ({
 							<HoverCard>
 								<HoverCardTrigger asChild>
 									<Button variant={"outline"} type="button">
-										<KeyRoundIcon className="size-4 mr-2" />
-										Reveal Answer
+										<span className="flex items-center gap-2">
+											<KeyRoundIcon className="size-4" />
+											Reveal Answer
+										</span>
 									</Button>
 								</HoverCardTrigger>
 								<HoverCardContent className="w-80 ">
@@ -304,18 +306,12 @@ export const QuestionBoxStairs = ({
 										variant={"outline"}
 										className="w-32"
 									>
-										{isPending ? (
-											<Spinner className="size-4" />
-										) : (
-											<>
-												<PencilIcon className="size-4 mr-2 shrink-0" />
-												<span>
-													{status !== StatusStairs.UNANSWERED
-														? "Resubmit"
-														: "Answer"}
-												</span>
-											</>
-										)}
+										<span className="flex items-center gap-2">
+											<PencilIcon className="size-4" />
+											{state.status !== StatusStairs.UNANSWERED
+												? "Resubmit"
+												: "Answer"}
+										</span>
 									</StatusButton>
 								)}
 

@@ -103,13 +103,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						</ScrollArea>
 					</div>
 					{user && (
-						<Suspense
-							fallback={
-								<p className="text-sm text-muted-foreground mt-8">
-									<Spinner className="inline mr-2" />
-								</p>
-							}
-						>
+						<Suspense fallback={<Spinner className="mt-8" />}>
 							<NoteLoader pageSlug={pageSlug} />
 						</Suspense>
 					)}

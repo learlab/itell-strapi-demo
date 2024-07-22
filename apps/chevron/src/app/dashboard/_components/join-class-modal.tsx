@@ -92,8 +92,10 @@ export const JoinClassModal = ({
 							disabled={isPending}
 							className="bg-primary focus:ring-primary"
 						>
-							{isPending && <Spinner className="mr-2 inline" />}
-							Confirm
+							<span className="flex items-center gap-2">
+								{isPending && <Spinner />}
+								Confirm
+							</span>
 						</Button>
 					)}
 				</AlertDialogFooter>

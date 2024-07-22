@@ -3,13 +3,13 @@
 import { cn } from "@itell/core/utils";
 import { ArrowRightIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import { dashboardConfig } from "./config";
 
 export const DashboardSidebar = () => {
 	const [pending, startTransition] = useTransition();
 	const pathname = usePathname();
-	const [activeRoute, setActiveRoute] = useState(pathname);
+	const [activeRoute, setActiveRoute] = useOptimistic(pathname);
 	const router = useRouter();
 
 	return (
@@ -28,13 +28,13 @@ export const DashboardSidebar = () => {
 				>
 					<span
 						className={cn(
-							"group flex items-center px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
+							"group flex items-center gap-2 px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
 							activeRoute === item.href ? "bg-accent" : "transparent",
 							item.disabled && "cursor-not-allowed opacity-80",
 						)}
 					>
-						{item.icon || <ArrowRightIcon className="mr-2 size-4" />}
-						<span>{item.title}</span>
+						{item.icon || <ArrowRightIcon className="size-4" />}
+						{item.title}
 					</span>
 				</button>
 			))}

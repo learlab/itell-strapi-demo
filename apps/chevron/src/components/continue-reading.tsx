@@ -3,6 +3,7 @@
 import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { firstPage } from "@/lib/pages";
 import { Button, StatusButton } from "@itell/ui/client";
+import { BookIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 
@@ -26,7 +27,10 @@ export const ContinueReading = ({ text, ...rest }: Props) => {
 				startTransition(() => router.push(href));
 			}}
 		>
-			{text ? text : url ? "Continue Reading" : "Start Reading"}
+			<span className="flex items-center gap-2">
+				<BookIcon className="size-4" />
+				{text ? text : url ? "Continue Reading" : "Start Reading"}
+			</span>
 		</StatusButton>
 	);
 };

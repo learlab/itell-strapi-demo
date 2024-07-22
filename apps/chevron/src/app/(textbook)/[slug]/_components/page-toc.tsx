@@ -61,11 +61,12 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 
 	return (
 		<div className="page-toc">
-			<p className="font-medium flex items-center mb-4">
-				<BookmarkIcon className="mr-2 size-4" />
-				<span>On this page</span>
+			<p className="font-semibold mb-4">
+				<span className="flex items-center gap-2">
+					<BookmarkIcon className="size-4" />
+					On this page
+				</span>
 			</p>
-
 			<ol className="mt-2 list-none text-foreground/70 tracking-tight">
 				{headings
 					.filter((heading) => heading.level !== "other")

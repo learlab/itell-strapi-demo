@@ -54,8 +54,10 @@ export const QuitClass = () => {
 							}
 						}}
 					>
-						{isPending && <Spinner className="inline mr-2" />}
-						Confirm
+						<span className="flex items-center gap-2">
+							{isPending && <Spinner />}
+							Confirm
+						</span>
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>

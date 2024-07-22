@@ -75,15 +75,15 @@ export const NextPageButton = ({
 					) : (
 						<>
 							<span
-								className="relative block h-full w-full text-sm tracking-wide "
+								className="flex items-center gap-2 relative h-full w-full text-sm tracking-wide "
 								style={{
 									maskImage:
 										"linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
 								}}
 							>
 								{text}
+								<ArrowRightIcon className="size-4" />
 							</span>
-							<ArrowRightIcon className="size-4 ml-2" />
 							<span
 								style={{
 									mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",

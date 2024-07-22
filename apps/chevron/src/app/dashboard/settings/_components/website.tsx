@@ -70,7 +70,10 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 				{isError && <InternalError />}
 				<footer>
 					<Button disabled={isPending} type="submit">
-						{isPending && <Spinner className="mr-2 size-4" />} <span>Save</span>
+						<span className="flex items-center gap-2">
+							{isPending && <Spinner className="size-4" />}
+							Save
+						</span>
 					</Button>
 				</footer>
 			</form>

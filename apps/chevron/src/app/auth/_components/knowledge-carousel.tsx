@@ -65,8 +65,10 @@ export const KnowledgeCard = ({
 									className="italic inline-flex items-center hover:underline"
 									href={href}
 								>
-									<LinkIcon className="size-4 mr-2" />
-									{source}
+									<span className="flex items-center gap-2">
+										<LinkIcon className="size-4" />
+										{source}
+									</span>
 								</Link>
 							</div>
 						</figcaption>

@@ -76,7 +76,10 @@ const RestartTextbook = () => {
 							}
 						}}
 					>
-						{isPending && <Spinner className="inline mr-2" />} Continue
+						<span className="flex items-center gap-2">
+							{isPending && <Spinner />}
+							Continue
+						</span>
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
@@ -229,7 +232,10 @@ export const AdminTools = ({ condition }: Props) => {
 
 					<div className="grid gap-2">
 						<Button type="submit" disabled={isPending}>
-							{isPending && <Spinner className="size-4 mr-2" />} Save changes
+							<span className="flex items-center gap-2">
+								{isPending && <Spinner className="size-4" />}
+								Save changes
+							</span>
 						</Button>
 						<RestartTextbook />
 						{isError && <InternalError />}

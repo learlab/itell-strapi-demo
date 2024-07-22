@@ -32,11 +32,13 @@ const AnchorLink = ({
 			href={href}
 			className={cn(
 				buttonVariants({ variant: "ghost" }),
-				"flex items-center justify-start gap-2 px-1 py-2 xl:text-lg xl:gap-4",
+				"flex items-center justify-start  px-1 py-2 xl:text-lg",
 			)}
 		>
-			{icon}
-			{text}
+			<span className="flex items-center gap-2 xl:gap-4">
+				{icon}
+				{text}
+			</span>
 		</a>
 	);
 };
@@ -134,7 +136,7 @@ const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 	const resetPage = useQuestion((state) => state.resetPage);
 	return (
 		<Button
-			className="flex justify-start items-center gap-2 px-1 py-2 w-full xl:text-lg xl:gap-4"
+			className="flex items-center justify-start w-full p-0 xl:text-lg"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
@@ -145,12 +147,14 @@ const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 			}}
 			disabled={pending}
 		>
-			{pending ? (
-				<Spinner className="size-4 xl:size-6" />
-			) : (
-				<RotateCcwIcon className="size-4 xl:size-6" />
-			)}
-			<span>Reset</span>
+			<span className="flex justify-start items-center gap-2 px-1 py-2 xl:gap-4 w-full">
+				{pending ? (
+					<Spinner className="size-4 xl:size-6 " />
+				) : (
+					<RotateCcwIcon className="size-4 xl:size-6" />
+				)}
+				Reset
+			</span>
 		</Button>
 	);
 };

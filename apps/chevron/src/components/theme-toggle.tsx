@@ -31,16 +31,22 @@ export const ThemeToggle = () => {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem onClick={() => setTheme("light")}>
-					<SunIcon className="mr-2 size-4" />
-					<span>Light</span>
+					<span className="flex items-center gap-2">
+						<SunIcon className="size-4" />
+						Light
+					</span>
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme("dark")}>
-					<MoonIcon className="mr-2 size-4" />
-					<span>Dark</span>
+					<span className="flex items-center gap-2">
+						<MoonIcon className="size-4" />
+						Dark
+					</span>
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme("system")}>
-					<LaptopIcon className="mr-2 size-4" />
-					<span>System</span>
+					<span className="flex items-center gap-2">
+						<LaptopIcon className="size-4" />
+						System
+					</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
