@@ -37,6 +37,7 @@ import { QuestionFeedback } from "./question-feedback";
 import { QuestionScore, StatusStairs, borderColors } from "./types";
 
 type Props = {
+	userId: string | null;
 	question: string;
 	answer: string;
 	chunkSlug: string;
@@ -51,12 +52,12 @@ type State = {
 };
 
 export const QuestionBoxStairs = ({
+	userId,
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { user } = useSession();
 	const ref = useRef<HTMLDivElement>(null);
 	const { chunkSlugs, shouldBlur, finishChunk } = useQuestion((state) => ({
 		chunkSlugs: state.chunkSlugs,
@@ -161,7 +162,7 @@ export const QuestionBoxStairs = ({
 
 	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
 
-	if (!user) {
+	if (!userId) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>

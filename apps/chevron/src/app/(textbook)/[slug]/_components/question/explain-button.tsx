@@ -20,7 +20,6 @@ type Props = {
 };
 
 export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
-	const { user } = useSession();
 	const [response, setResponse] = useState("");
 	const { pending: formPending } = useFormStatus();
 	const { action, isPending, isDelayed, isError, error } = useActionStatus(
@@ -55,13 +54,11 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				});
 			}
 
-			if (user) {
-				createEventAction({
-					type: EventType.EXPLAIN,
-					pageSlug,
-					data: { chunkSlug, response },
-				});
-			}
+			createEventAction({
+				type: EventType.EXPLAIN,
+				pageSlug,
+				data: { chunkSlug, response },
+			});
 		},
 	);
 

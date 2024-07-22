@@ -4,6 +4,7 @@ import { createEventAction } from "@/actions/event";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSession } from "@/components/provider/session-provider";
 import { EventType } from "@/lib/constants";
+import { LoginButton } from "@auth/auth-form";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
@@ -32,17 +33,18 @@ const animationProps = {
 } as AnimationProps;
 
 interface Props extends React.ComponentPropsWithRef<typeof Button> {
+	userId: string | null;
 	chunkSlug: string;
 	pageSlug: string;
 	condition: string;
 }
 
 export const ContinueChunkButton = ({
+	userId,
 	chunkSlug,
 	pageSlug,
 	condition,
 }: Props) => {
-	const { user } = useSession();
 	const { advancedChunk, chunkData } = useQuestion((state) => ({
 		advancedChunk: state.advanceChunk,
 		chunkData: state.chunkData,
@@ -54,17 +56,19 @@ export const ContinueChunkButton = ({
 	const onSubmit = async () => {
 		advancedChunk(chunkSlug);
 
-		if (user) {
-			createEventAction({
-				type: EventType.CHUNK_REVEAL,
-				pageSlug,
-				data: {
-					chunkSlug,
-					condition,
-				},
-			});
-		}
+		createEventAction({
+			type: EventType.CHUNK_REVEAL,
+			pageSlug,
+			data: {
+				chunkSlug,
+				condition,
+			},
+		});
 	};
+
+	if (!userId) {
+		return <LoginButton />;
+	}
 
 	return (
 		<motion.button

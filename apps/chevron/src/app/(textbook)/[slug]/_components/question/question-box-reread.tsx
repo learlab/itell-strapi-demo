@@ -29,6 +29,7 @@ import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionScore, StatusReread } from "./types";
 
 type Props = {
+	userId: string | null;
 	question: string;
 	answer: string;
 	chunkSlug: string;
@@ -42,12 +43,12 @@ type State = {
 };
 
 export const QuestionBoxReread = ({
+	userId,
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { user } = useSession();
 	const { shouldBlur, finishChunk } = useQuestion((state) => ({
 		shouldBlur: state.shouldBlur,
 		finishChunk: state.finishChunk,
@@ -114,7 +115,7 @@ export const QuestionBoxReread = ({
 
 	const isLastQuestion = chunkSlug === chunkSlug.at(-1);
 
-	if (!user) {
+	if (!userId) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>

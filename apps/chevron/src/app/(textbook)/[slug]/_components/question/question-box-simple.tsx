@@ -10,6 +10,7 @@ import { Button } from "@itell/ui/client";
 import { Card, CardContent, Warning } from "@itell/ui/server";
 
 type Props = {
+	userId: string | null;
 	question: string;
 	answer: string;
 	pageSlug: string;
@@ -17,19 +18,19 @@ type Props = {
 };
 
 export const QuestionBoxSimple = ({
+	userId,
 	question,
 	answer,
 	pageSlug,
 	chunkSlug,
 }: Props) => {
-	const { user } = useSession();
 	const { advanceChunk, currentChunk } = useQuestion((state) => ({
 		advanceChunk: state.advanceChunk,
 		currentChunk: state.currentChunk,
 	}));
 	const disabled = currentChunk !== chunkSlug;
 
-	if (!user) {
+	if (!userId) {
 		return (
 			<Warning>
 				<p>You need to be logged in to view this question and move forward</p>

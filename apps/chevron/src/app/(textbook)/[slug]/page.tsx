@@ -122,7 +122,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />
-			<QuestionControl pageSlug={pageSlug} condition={userCondition} />
+			<QuestionControl
+				userId={userId}
+				pageSlug={pageSlug}
+				condition={userCondition}
+			/>
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatLoader.Skeleton />}>
 				<ChatLoader pageSlug={pageSlug} condition={userCondition} />
