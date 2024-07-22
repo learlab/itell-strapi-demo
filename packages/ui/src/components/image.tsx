@@ -1,14 +1,14 @@
 import { cn } from "@itell/core/utils";
+import { ExpandIcon } from "lucide-react";
 import NextImage from "next/image";
 import { useState } from "react";
+import { Button } from "./button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 } from "./dialog";
-import { Button } from "./button";
-import { ExpandIcon } from "lucide-react";
 
 type ImageProps = {
 	src: string;
@@ -60,6 +60,7 @@ export const Figure = ({
 						variant="outline"
 						className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out "
 						onClick={onExpandClick}
+						aria-label="expand"
 					>
 						<ExpandIcon className="size-4 fill-primary" />
 					</Button>

@@ -15,6 +15,7 @@ import { Condition } from "@/lib/constants";
 import { isLastPage, isPageAfter, nextPage } from "@/lib/pages";
 import { reportSentry } from "@/lib/utils";
 import { and, count, desc, eq, sql } from "drizzle-orm";
+import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 import { authedProcedure } from "./utils";
 
@@ -122,17 +123,33 @@ export const getSummariesAction = authedProcedure
 		reportSentry("get summaries", { error });
 	})
 	.handler(async ({ input, ctx }) => {
+		return await getSummariesHandler(ctx.user.id, input.summaryId);
+	});
+
+export const getSummariesHandler = memoize(
+	async (userId: string, summaryId?: number) => {
 		return await db
 			.select()
 			.from(summaries)
 			.where(
 				and(
-					eq(summaries.userId, ctx.user.id),
-					input.summaryId ? eq(summaries.id, input.summaryId) : undefined,
+					eq(summaries.userId, userId),
+					summaryId !== undefined ? eq(summaries.id, summaryId) : undefined,
 				),
 			)
 			.orderBy(desc(summaries.updatedAt));
-	});
+	},
+	{
+		persist: false,
+		revalidateTags: (userId, summaryId) => [
+			"get-summaries",
+			userId,
+			String(summaryId),
+		],
+		log: isProduction ? undefined : ["dedupe", "datacache", "verbose"],
+		logid: "Get summaries",
+	},
+);
 
 /**
  * Count summaries by pass / fail for current user and page

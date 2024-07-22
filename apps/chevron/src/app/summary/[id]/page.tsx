@@ -18,12 +18,13 @@ interface PageProps {
 }
 
 export default async function ({ params }: PageProps) {
+	const summaryId = Number(params.id);
 	const { user } = await getSession();
 	if (!user) {
 		return redirect("/auth");
 	}
 	const [data, err] = await getSummariesAction({
-		summaryId: Number(params.id),
+		summaryId,
 	});
 
 	if (err) {

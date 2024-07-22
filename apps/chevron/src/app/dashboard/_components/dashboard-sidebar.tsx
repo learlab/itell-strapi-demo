@@ -3,7 +3,7 @@
 import { cn } from "@itell/core/utils";
 import { ArrowRightIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useOptimistic, useState, useTransition } from "react";
+import { useOptimistic, useTransition } from "react";
 import { dashboardConfig } from "./config";
 
 export const DashboardSidebar = () => {
