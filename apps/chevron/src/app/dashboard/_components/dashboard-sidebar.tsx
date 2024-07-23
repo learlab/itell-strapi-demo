@@ -14,33 +14,37 @@ export const DashboardSidebar = () => {
 
 	return (
 		<nav
-			className="hidden md:grid items-start pt-4 w-[200px] border-r-2"
-			data-pending={pending}
+			className="hidden md:grid items-start pt-4 border-r-2"
+			data-pending={pending ? "" : undefined}
 		>
-			{dashboardConfig.sidebarNav.map((item) => (
-				<button
-					type="button"
-					disabled={item.disabled}
-					onClick={() => {
-						setActiveRoute(item.href);
-						startTransition(() => {
-							router.push(item.href);
-						});
-					}}
-					key={item.title}
-				>
-					<span
-						className={cn(
-							"group flex items-center gap-2 px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
-							activeRoute === item.href ? "bg-accent" : "transparent",
-							item.disabled && "cursor-not-allowed opacity-80",
-						)}
-					>
-						{item.icon || <ArrowRightIcon className="size-4" />}
-						{item.title}
-					</span>
-				</button>
-			))}
+			<ol>
+				{dashboardConfig.sidebarNav.map((item) => (
+					<li key={item.title}>
+						<button
+							type="button"
+							className="block w-full"
+							disabled={item.disabled}
+							onClick={() => {
+								setActiveRoute(item.href);
+								startTransition(() => {
+									router.push(item.href);
+								});
+							}}
+						>
+							<span
+								className={cn(
+									"group flex items-center gap-2 px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
+									activeRoute === item.href ? "bg-accent" : "transparent",
+									item.disabled && "cursor-not-allowed opacity-80",
+								)}
+							>
+								{item.icon || <ArrowRightIcon className="size-4" />}
+								{item.title}
+							</span>
+						</button>
+					</li>
+				))}
+			</ol>
 		</nav>
 	);
 };

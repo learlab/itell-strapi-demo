@@ -1,7 +1,6 @@
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { getSession } from "@/lib/auth";
-import { getPageChunks } from "@/lib/chunks";
 import { Condition } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
@@ -162,4 +161,19 @@ const ReadingStrategy = () => {
 			</p>
 		</Info>
 	);
+};
+const getPageChunks = (raw: string) => {
+	const contentChunkRegex =
+		/<section(?=\s)(?=[\s\S]*?\bclassName="content-chunk")(?=[\s\S]*?\bdata-subsection-id="([^"]+)")[\s\S]*?>/g;
+	const chunks: string[] = [];
+
+	const matches = raw.matchAll(contentChunkRegex);
+
+	for (const match of matches) {
+		if (match[1]) {
+			chunks.push(match[1]);
+		}
+	}
+
+	return chunks;
 };

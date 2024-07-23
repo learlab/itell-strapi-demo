@@ -56,7 +56,7 @@ export const SummaryChart = ({
 					config={chartConfig}
 					className="mx-auto aspect-square max-h-[300px]"
 				>
-					<PieChart margin={{ left: 60, right: 60 }}>
+					<PieChart margin={{ left: 60, right: 60 }} accessibilityLayer>
 						<ChartTooltip
 							cursor={false}
 							content={<ChartTooltipContent hideLabel />}

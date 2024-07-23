@@ -29,7 +29,10 @@ export default async function () {
 	if (summaries.length === 0) {
 		return (
 			<DashboardShell>
-				<DashboardHeader heading="Summary" text="Manage summaries." />
+				<DashboardHeader
+					heading={Meta.summaries.title}
+					text={Meta.summaries.description}
+				/>
 				<Card>
 					<CardContent>
 						You have not made any summary yet. Start with{" "}

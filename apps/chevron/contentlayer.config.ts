@@ -1,37 +1,8 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import GithubSlugger from "github-slugger";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
-
-export const getHeadingsFromRawBody = (doc: string) => {
-	const regXHeader = /\n(#{1,6})\s+(.+)/g;
-
-	const slugger = new GithubSlugger();
-
-	const headings: Array<{ level: string; text: string; slug: string }> = [];
-	for (const match of doc.matchAll(regXHeader)) {
-		const flag = match[1];
-		const content = match[2];
-		if (content && content !== "null") {
-			headings.push({
-				level:
-					flag?.length === 1
-						? "one"
-						: flag?.length === 2
-							? "two"
-							: flag?.length === 3
-								? "three"
-								: flag?.length === 4
-									? "four"
-									: "other",
-				text: content,
-				slug: slugger.slug(content),
-			});
-		}
-	}
-
-	return headings;
-};
 
 const Home = defineDocumentType(() => ({
 	name: "Home",
@@ -101,23 +72,12 @@ const Page = defineDocumentType(() => ({
 			type: "number",
 			description: "The chapter index of the page",
 			resolve: (doc) => {
-				return Number(doc._raw.sourceFileDir.split("-")[1]);
-			},
-		},
-		section: {
-			type: "number",
-			description: "The section index of the page",
-			resolve: (doc) => {
-				const sectionName = doc._raw.sourceFileName;
-				if (sectionName === "index.mdx") {
-					return 0;
-				}
-
 				return Number(
-					doc._raw.sourceFileName.split("-")[1].replace(".mdx", ""),
+					doc._raw.sourceFileName.split("-")[1].replaceAll(".mdx", ""),
 				);
 			},
 		},
+
 		headings: {
 			type: "json",
 			description:
@@ -131,8 +91,40 @@ export default makeSource({
 	contentDirPath: "content",
 	documentTypes: [Page, Home, Guide],
 	mdx: {
+		// @ts-ignore
 		remarkPlugins: [remarkGfm, remarkHeadingId],
-		rehypePlugins: [],
+		rehypePlugins: [rehypeSlug],
 	},
 	disableImportAliasWarning: true,
 });
+
+const getHeadingsFromRawBody = (doc: string) => {
+	// Updated regex to capture potential ID modifiers
+	const regXHeader = /\n(#{1,6})\s+(.+?)(?:\s+\\{#[\w-]+\})?$/gm;
+
+	const slugger = new GithubSlugger();
+
+	const headings: Array<{ level: string; text: string; slug: string }> = [];
+	for (const match of doc.matchAll(regXHeader)) {
+		const flag = match[1];
+		const content = match[2].trim(); // Trim any trailing whitespace
+		if (content && content !== "null") {
+			headings.push({
+				level:
+					flag.length === 1
+						? "one"
+						: flag.length === 2
+							? "two"
+							: flag.length === 3
+								? "three"
+								: flag.length === 4
+									? "four"
+									: "other",
+				text: content,
+				slug: slugger.slug(content),
+			});
+		}
+	}
+
+	return headings;
+};

@@ -33,15 +33,25 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild onClick={() => setOpen(true)}>
-				{isPositive ? (
-					<ThumbsUp className="hover:stroke-emerald-400 hover:cursor-pointer size-4" />
-				) : (
-					<ThumbsDown className="hover:stroke-rose-700 hover:cursor-pointer size-4" />
-				)}
+				<button
+					type="button"
+					aria-label={
+						isPositive ? "submit positive feedback" : "submit negative feedback"
+					}
+				>
+					{isPositive ? (
+						<ThumbsUp className="hover:stroke-emerald-400  size-4" />
+					) : (
+						<ThumbsDown className="hover:stroke-rose-700  size-4" />
+					)}
+				</button>
 			</DialogTrigger>
 			<DialogContent>
-				<DialogHeader>Provide additional feedback</DialogHeader>
+				<DialogHeader id="feedback-form-heading">
+					Provide feedback to the question
+				</DialogHeader>
 				<form
+					aria-labelledby="feedback-form-heading"
 					className="grid gap-2"
 					onSubmit={async (e) => {
 						e.preventDefault();

@@ -21,7 +21,6 @@ export const SummaryList = ({
 	const chapters = keyof(summariesByChapter);
 	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
 	const chapterSummaries = summariesByChapter[selectedChapter];
-
 	return (
 		<div className="spacey-4">
 			<div className="flex items-center justify-between">

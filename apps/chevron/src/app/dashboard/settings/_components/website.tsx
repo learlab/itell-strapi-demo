@@ -47,10 +47,17 @@ export const WebsiteSettings = ({ user }: { user: User }) => {
 
 	return (
 		<div className="space-y-4">
-			<h3 className="mb-4 text-lg font-medium leading-relaxed">
-				Website Settings
+			<h3
+				id="settings-form-heading"
+				className="mb-4 text-lg font-medium leading-relaxed"
+			>
+				Edit website settings
 			</h3>
-			<form onSubmit={onSubmit} className="grid gap-2 max-w-2xl">
+			<form
+				onSubmit={onSubmit}
+				className="grid gap-2 max-w-2xl"
+				aria-labelledby="settings-form-heading"
+			>
 				<Label htmlFor="time_zone">Time Zone</Label>
 				<Select
 					name="time_zone"

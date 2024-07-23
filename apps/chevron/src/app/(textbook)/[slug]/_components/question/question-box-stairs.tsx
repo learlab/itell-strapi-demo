@@ -259,7 +259,14 @@ export const QuestionBoxStairs = ({
 					)
 				)}
 
-				<form onSubmit={onSubmit} className="w-full space-y-2">
+				<h2 id="form-question-heading" className="sr-only">
+					Answer the question
+				</h2>
+				<form
+					aria-labelledby="form-question-heading"
+					onSubmit={onSubmit}
+					className="w-full space-y-2"
+				>
 					<TextArea
 						name="input"
 						rows={2}

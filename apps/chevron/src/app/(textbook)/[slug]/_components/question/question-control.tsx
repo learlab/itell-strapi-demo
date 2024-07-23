@@ -82,6 +82,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	) => {
 		const questionContainer = document.createElement("div");
 		questionContainer.className = "question-container";
+		questionContainer.ariaLabel = "a question for the text above";
 		el.appendChild(questionContainer);
 
 		if (condition === Condition.SIMPLE) {

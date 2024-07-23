@@ -44,7 +44,14 @@ export const JoinClassForm = ({ user }: Props) => {
 				teacher for a class code to enter it here. This will allow you to
 				receive class-based feedback.
 			</p>
-			<form className="grid gap-2" onSubmit={onSubmit}>
+			<h2 className="sr-only" id="form-class-heading">
+				Join a class
+			</h2>
+			<form
+				aria-labelledby="form-class-heading"
+				className="grid gap-2 justify-items-start"
+				onSubmit={onSubmit}
+			>
 				<Input
 					name="code"
 					placeholder="Enter your class code here"
@@ -53,14 +60,12 @@ export const JoinClassForm = ({ user }: Props) => {
 					defaultValue={join_class_code || ""}
 				/>
 				{isError && <InternalError />}
-				<footer>
-					<Button disabled={isPending} type="submit">
-						<span className="flex items-center gap-2">
-							{isPending && <Spinner />}
-							Submit
-						</span>
-					</Button>
-				</footer>
+				<Button disabled={isPending} aria-disabled={isPending} type="submit">
+					<span className="flex items-center gap-2">
+						{isPending && <Spinner />}
+						Submit
+					</span>
+				</Button>
 			</form>
 			{/* dialog to confirm joining a class */}
 			{teacher && (

@@ -231,10 +231,17 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					<NextPageButton pageSlug={page.nextPageSlug} />
 				</div>
 			)}
-
-			<form className="space-y-4" onSubmit={action}>
+			<h2 id="summary-form-heading" className="sr-only">
+				Summarize the page "{page.title}"
+			</h2>
+			<form
+				className="space-y-4"
+				onSubmit={action}
+				aria-labelledby="summary-form-heading"
+				aria-disabled={!isSummaryReady || isPending}
+			>
 				<SummaryInput
-					disabled={isPending || !isSummaryReady}
+					disabled={!isSummaryReady}
 					pageSlug={pageSlug}
 					pending={isPending}
 					stages={stages}

@@ -19,6 +19,7 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 		const chunkElements = chunks
 			.map((chunkId) => getChunkElement(chunkId))
 			.filter(Boolean);
+		console.log("chunk elements", chunkElements);
 		setEls(chunkElements);
 	}, []);
 

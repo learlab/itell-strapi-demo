@@ -235,7 +235,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			const formData = new FormData(e.currentTarget);
 			const input = String(formData.get("input")).replaceAll("\u0000", "");
 
-			const userId = user.id;
 			saveSummaryLocal(pageSlug, input);
 
 			const error = validateSummary(input, state.prevInput);
@@ -466,7 +465,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			</div>
 
 			<Confetti active={feedback?.isPassed || false} />
-			<form className="mt-2 space-y-4" onSubmit={action}>
+			<h2 id="summary-form-heading" className="sr-only">
+				Summarize the page "{page.title}"
+			</h2>
+			<form
+				className="mt-2 space-y-4"
+				onSubmit={action}
+				aria-labelledby="summary-form-heading"
+				aria-disabled={!isSummaryReady || isPending}
+			>
 				<SummaryInput
 					disabled={!isSummaryReady}
 					pageSlug={pageSlug}

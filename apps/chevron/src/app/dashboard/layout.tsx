@@ -45,7 +45,7 @@ export default async function DashboardLayout({
 				<SiteNav>
 					<DashboardNav items={dashboardConfig.mainNav} />
 				</SiteNav>
-				<div>
+				<div className="p-4">
 					<p>data unavailable</p>
 				</div>
 			</div>
