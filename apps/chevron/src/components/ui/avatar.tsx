@@ -15,10 +15,10 @@ export const Avatar = ({ src, fallback, ...rest }: Props) => {
 	return (
 		<BaseAvatar {...rest}>
 			{src ? (
-				<AvatarImage alt="Picture" src={src} />
+				<AvatarImage alt="User profile photo" src={src} />
 			) : (
 				<AvatarFallback>
-					<span className="sr-only">{fallback}</span>
+					<span className="User profile photo">{fallback}</span>
 					<span>{fallback}</span>
 				</AvatarFallback>
 			)}

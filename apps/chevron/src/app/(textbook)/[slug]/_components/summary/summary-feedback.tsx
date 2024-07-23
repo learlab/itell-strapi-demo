@@ -25,11 +25,12 @@ export const SummaryFeedback = ({
 		: [];
 	const Component = components[feedback?.isPassed ? "true" : "false"];
 	return (
-		<section
+		<div
 			className={cn(
 				"font-light leading-relaxed space-y-2 animate-in fade-in",
 				className,
 			)}
+			role="alert"
 		>
 			<header className="space-y-2">
 				<p>
@@ -83,6 +84,6 @@ export const SummaryFeedback = ({
 					)}
 				</Component>
 			)}
-		</section>
+		</div>
 	);
 };

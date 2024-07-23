@@ -1,8 +1,7 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import GithubSlugger from "github-slugger";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import remarkHeadingId from "remark-heading-id";
 
 export const getHeadingsFromRawBody = (doc: string) => {
 	const regXHeader = /\n(#{1,6})\s+(.+)/g;
@@ -132,8 +131,8 @@ export default makeSource({
 	contentDirPath: "content",
 	documentTypes: [Page, Home, Guide],
 	mdx: {
-		remarkPlugins: [remarkGfm],
-		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+		remarkPlugins: [remarkGfm, remarkHeadingId],
+		rehypePlugins: [],
 	},
 	disableImportAliasWarning: true,
 });

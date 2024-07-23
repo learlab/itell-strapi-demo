@@ -13,7 +13,10 @@ export const DashboardSidebar = () => {
 	const router = useRouter();
 
 	return (
-		<nav className="grid items-start pt-4" data-pending={pending}>
+		<nav
+			className="hidden md:grid items-start pt-4 w-[200px] border-r-2"
+			data-pending={pending}
+		>
 			{dashboardConfig.sidebarNav.map((item) => (
 				<button
 					type="button"

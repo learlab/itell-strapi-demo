@@ -27,5 +27,5 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
-	return <div className="min-h-screen">{children}</div>;
+	return <main className="min-h-screen">{children}</main>;
 }

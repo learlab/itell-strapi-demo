@@ -14,8 +14,8 @@ import { buttonVariants } from "@itell/ui/server";
 import { clearSummaryLocal } from "@textbook/summary/summary-input";
 import type { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon, RotateCcwIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useOptimistic, useState, useTransition } from "react";
 import { AdminTools } from "./admin-tools";
 
 const AnchorLink = ({
@@ -58,7 +58,8 @@ export const ChapterToc = ({
 	userFinished,
 	condition,
 }: Props) => {
-	const [activePage, setActivePage] = useState(currentPage.page_slug);
+	const pathname = usePathname();
+	const [activePage, setActivePage] = useOptimistic(pathname?.slice(1));
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
 
@@ -70,7 +71,7 @@ export const ChapterToc = ({
 	};
 
 	return (
-		<>
+		<nav>
 			<ol className="space-y-2 leading-relaxed tracking-tight">
 				{allPagesSorted.map((p) => {
 					const { latest, unlocked } = getPageStatus({
@@ -102,15 +103,21 @@ export const ChapterToc = ({
 										"animate-pulse": pending,
 									},
 								)}
+								aria-busy={pending}
+								aria-label={`${p.title} - ${
+									unlocked ? "Unlocked" : visible ? "Visible" : "Locked"
+								}`}
 							>
 								<span>{p.title}</span>
-								<span>{unlocked ? "✅" : visible ? "" : "🔒"}</span>
+								<span aria-hidden="true">
+									{unlocked ? "✅" : visible ? "" : "🔒"}
+								</span>
 							</button>
 						</li>
 					);
 				})}
 			</ol>
-			<div className="mt-12 space-y-2">
+			<div className="mt-12 space-y-2" aria-label="page control">
 				{isAdmin(userRole) && <AdminTools condition={condition} />}
 				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink
@@ -127,7 +134,7 @@ export const ChapterToc = ({
 					href="#page-title"
 				/>
 			</div>
-		</>
+		</nav>
 	);
 };
 

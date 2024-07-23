@@ -220,7 +220,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<section className="space-y-2">
+		<div className="flex flex-col gap-2">
 			{portalNodes}
 			{finished && page.nextPageSlug && (
 				<div className="space-y-2 space-x-2">
@@ -255,7 +255,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					</StatusButton>
 				</div>
 			</form>
-		</section>
+		</div>
 	);
 };
 

@@ -437,7 +437,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<section className="space-y-2">
+		<div className="flex flex-col gap-2">
 			{portalNodes}
 
 			<SummaryFeedback
@@ -496,7 +496,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					please report to lear.lab.vu@gmail.com.
 				</p>
 			)}
-		</section>
+		</div>
 	);
 };
 

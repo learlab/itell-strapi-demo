@@ -48,7 +48,13 @@ const PageLink = ({
 	href,
 	disabled,
 	children,
-}: { href: string; disabled: boolean; children: React.ReactNode }) => {
+	dir,
+}: {
+	href: string;
+	disabled: boolean;
+	children: React.ReactNode;
+	dir: "prev" | "next";
+}) => {
 	return (
 		<Link
 			className={cn(
@@ -57,6 +63,8 @@ const PageLink = ({
 				{ "pointer-events-none opacity-50": disabled },
 			)}
 			data-no-events={true}
+			aria-disabled={disabled}
+			aria-label={`Go to ${dir === "prev" ? "previous" : "next"} page`}
 			href={href}
 		>
 			{children}
@@ -75,14 +83,15 @@ export const Pager = ({ pageIndex }: Props) => {
 		userPageSlug: user?.pageSlug || null,
 	});
 	return (
-		<div
+		<nav
 			className={cn("flex flex-row items-center justify-between mt-5 pager", {
 				"justify-end": next && !prev,
 				"justify-start": prev && !next,
 			})}
+			aria-label="pagination"
 		>
 			{prev && (
-				<PageLink href={prev.href} disabled={prev.disabled}>
+				<PageLink href={prev.href} disabled={prev.disabled} dir="prev">
 					{prev.disabled ? (
 						<BanIcon className="size-4 shrink-0" />
 					) : (
@@ -92,7 +101,7 @@ export const Pager = ({ pageIndex }: Props) => {
 				</PageLink>
 			)}
 			{next && (
-				<PageLink href={next.href} disabled={next.disabled}>
+				<PageLink href={next.href} disabled={next.disabled} dir="next">
 					<span className="line-clamp-2">{next.text}</span>
 					{next.disabled ? (
 						<BanIcon className="size-4 shrink-0" />
@@ -101,6 +110,6 @@ export const Pager = ({ pageIndex }: Props) => {
 					)}
 				</PageLink>
 			)}
-		</div>
+		</nav>
 	);
 };

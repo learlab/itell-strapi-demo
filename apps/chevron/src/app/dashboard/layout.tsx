@@ -53,18 +53,19 @@ export default async function DashboardLayout({
 	}
 
 	return (
-		<div className="min-h-screen">
+		<>
 			<SiteNav>
 				<DashboardNav items={dashboardConfig.mainNav} />
 			</SiteNav>
-			<div className="grid md:grid-cols-[200px_1fr]">
-				<aside className="hidden w-[200px] flex-col md:flex border-r-2 group">
-					<DashboardSidebar />
-				</aside>
-				<main className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse">
+			<main className="min-h-screen grid md:grid-cols-[200px_1fr] group">
+				<DashboardSidebar />
+				<div
+					aria-label="dashboard main panel"
+					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
+				>
 					{children}
-				</main>
-			</div>
-		</div>
+				</div>
+			</main>
+		</>
 	);
 }

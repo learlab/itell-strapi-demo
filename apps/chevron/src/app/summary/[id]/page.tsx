@@ -54,7 +54,7 @@ export default async function ({ params }: PageProps) {
 				<SummaryOperations pageUrl={page.url} />
 			</div>
 			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
-				<aside className="w-[200px] space-y-4">
+				<div aria-label="summary scores" className="w-[200px] space-y-4">
 					<div className="flex items-center justify-center">
 						<Badge variant={summary.isPassed ? "default" : "destructive"}>
 							{summary.isPassed ? "Passed" : "Failed"}
@@ -63,8 +63,8 @@ export default async function ({ params }: PageProps) {
 					<p className="tracking-tight text-sm text-muted-foreground">
 						Click on the title to review this page's content.
 					</p>
-				</aside>
-				<div className="space-y-2">
+				</div>
+				<div aria-label="summary text" className="space-y-2">
 					<div className="text-center">
 						<TextbookPageModal page={page} />
 					</div>
