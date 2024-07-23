@@ -1,38 +1,8 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import GithubSlugger from "github-slugger";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-
-export const getHeadingsFromRawBody = (doc: string) => {
-	const regXHeader = /\n(#{1,6})\s+(.+)/g;
-
-	const slugger = new GithubSlugger();
-
-	const headings: Array<{ level: string; text: string; slug: string }> = [];
-	for (const match of doc.matchAll(regXHeader)) {
-		const flag = match[1];
-		const content = match[2];
-		if (content && content !== "null") {
-			headings.push({
-				level:
-					flag?.length === 1
-						? "one"
-						: flag?.length === 2
-							? "two"
-							: flag?.length === 3
-								? "three"
-								: flag?.length === 4
-									? "four"
-									: "other",
-				text: content,
-				slug: slugger.slug(content),
-			});
-		}
-	}
-
-	return headings;
-};
+import remarkHeadingId from "remark-heading-id";
 
 const Home = defineDocumentType(() => ({
 	name: "Home",
@@ -127,8 +97,41 @@ export default makeSource({
 	contentDirPath: "content",
 	documentTypes: [Page, Home, Guide],
 	mdx: {
-		remarkPlugins: [remarkGfm],
-		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+		// @ts-ignore
+		remarkPlugins: [remarkGfm, remarkHeadingId],
+		rehypePlugins: [rehypeSlug],
 	},
 	disableImportAliasWarning: true,
 });
+
+const getHeadingsFromRawBody = (doc: string) => {
+	// Updated regex to capture the heading content and potential ID separately
+	const regXHeader = /\n(#{1,6})\s+(.+?)(?:\s+\\{#([\w-]+)\})?$/gm;
+
+	const slugger = new GithubSlugger();
+
+	const headings: Array<{ level: string; text: string; slug: string }> = [];
+	for (const match of doc.matchAll(regXHeader)) {
+		const flag = match[1];
+		const content = match[2].trim();
+		const customId = match[3];
+		if (content && content !== "null") {
+			headings.push({
+				level:
+					flag.length === 1
+						? "one"
+						: flag.length === 2
+							? "two"
+							: flag.length === 3
+								? "three"
+								: flag.length === 4
+									? "four"
+									: "other",
+				text: content, // This is now clean, without the custom ID
+				slug: customId || slugger.slug(content), // Use custom ID if present, otherwise use slugger
+			});
+		}
+	}
+
+	return headings;
+};

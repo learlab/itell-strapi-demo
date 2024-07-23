@@ -101,6 +101,9 @@ h5,
   color: black;
 }
 
+.question-container {
+  margin: 1em 0;
+}
 
 .driver-active .toc-sidebar,
 .driver-active .chapter-sidebar,

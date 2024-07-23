@@ -43,13 +43,13 @@ export default async function () {
 				</div>
 			</aside>
 
-			<section id="page-content-wrapper" className="relative p-4 lg:p-8">
+			<div id="page-content-wrapper" className="relative p-4 lg:p-8">
 				<PageTitle>{page.title}</PageTitle>
 
 				{arr.map((i) => (
 					<Skeleton className="w-full h-28 mb-4" key={i} />
 				))}
-			</section>
+			</div>
 
 			<aside className="toc-sidebar hidden md:block relative">
 				<div className="sticky top-20 -mt-10 pt-4">

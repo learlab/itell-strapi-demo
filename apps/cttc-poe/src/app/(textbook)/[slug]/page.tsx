@@ -9,7 +9,6 @@ import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { PageSummary } from "@/components/summary/page-summary";
 import { getSession } from "@/lib/auth";
-import { getPageChunks } from "@/lib/chunks";
 import { Condition } from "@/lib/control/condition";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
@@ -40,7 +39,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.page_slug;
 
-	const chunks = getPageChunks(page);
+	const chunks = getPageChunks(page.body.raw);
 
 	const questions = await getRandomPageQuestions(pageSlug);
 	const userRole = user?.role || "user";
@@ -80,14 +79,14 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</aside>
 
-				<section id="page-content-wrapper" className="relative p-4 lg:p-8">
+				<div id="page-content-wrapper" className="relative p-4 lg:p-8">
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
 					<PageContent code={page.body.code} />
 					<NoteToolbar pageSlug={pageSlug} userId={userId} />
 					<Pager pageIndex={pageIndex} />
-				</section>
+				</div>
 
 				<aside className="toc-sidebar hidden md:block relative">
 					<div className="sticky top-20 -mt-10 pt-4">
@@ -171,4 +170,20 @@ const ReadingStrategy = () => {
 			</p>
 		</Info>
 	);
+};
+
+const getPageChunks = (raw: string) => {
+	const contentChunkRegex =
+		/<section(?=\s)(?=[\s\S]*?\bclassName="content-chunk")(?=[\s\S]*?\bdata-subsection-id="([^"]+)")[\s\S]*?>/g;
+	const chunks: string[] = [];
+
+	const matches = raw.matchAll(contentChunkRegex);
+
+	for (const match of matches) {
+		if (match[1]) {
+			chunks.push(match[1]);
+		}
+	}
+
+	return chunks;
 };

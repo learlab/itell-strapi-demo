@@ -1,5 +1,6 @@
 "use client";
 
+import { isNil } from "es-toolkit/predicate";
 import {
 	RadarChart as BaseRadarChart,
 	PolarAngleAxis,
@@ -74,7 +75,10 @@ export const UserRadarChart = ({
 			label: "Content Score",
 			user: userStats.contentScore,
 			other: otherStats.contentScore,
-			userScaled: scale(userStats.contentScore, otherStats.contentScore),
+			userScaled:
+				userStats.contentScore && otherStats.contentScore
+					? scale(userStats.contentScore, otherStats.contentScore)
+					: 0,
 			otherScaled: 1,
 			description:
 				"Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
@@ -83,7 +87,10 @@ export const UserRadarChart = ({
 			label: "Language Score",
 			user: userStats.languageScore,
 			other: otherStats.languageScore,
-			userScaled: scale(userStats.languageScore, otherStats.languageScore),
+			userScaled:
+				userStats.languageScore && otherStats.languageScore
+					? scale(userStats.languageScore, otherStats.languageScore)
+					: 0,
 			otherScaled: 1,
 			description:
 				"Measures the language quality of the summary. The higher the score, the better the summary wording.",
@@ -104,9 +111,55 @@ export const UserRadarChart = ({
 
 	return (
 		<div className="flex items-center justify-center">
+			<div className="sr-only" id="radar-chart-title">
+				<h3>
+					Radar Chart: user is {data[0].userScaled > 1 ? "ahead of" : "behind"}{" "}
+					median reading progress
+				</h3>
+			</div>
+
+			<div className="sr-only" id="radar-chart-description">
+				<p>
+					This radar chart compares the user's statistics across several
+					categories with the median of other users. Key observations are the
+					following:
+				</p>
+				<ul>
+					<li>
+						User completed {data[0].user} pages, median is {data[0].other}, user
+						is {data[0].userScaled > 1 ? "ahead of" : "behind"} the median.
+					</li>
+					<li>
+						User submitted {data[1].user} summaries, median is {data[1].other},
+						user is {data[1].userScaled > 1 ? "ahead of" : "behind"} the median.
+					</li>
+					<li>
+						User passed {data[2].user} summaries, median is {data[2].other},
+						user is {data[2].userScaled > 1 ? "ahead of" : "behind"} the median.
+					</li>
+					<li>
+						User scored {data[3].user} in summary content score, median is{" "}
+						{data[3].other}, user is{" "}
+						{data[3].userScaled > 1 ? "ahead of" : "behind"} the median.
+					</li>
+					<li>
+						User scored {data[4].user} in summary language score, median is{" "}
+						{data[4].other}, user is{" "}
+						{data[4].userScaled > 1 ? "ahead of" : "behind"} the median.
+					</li>
+					<li>
+						User had {data[5].user} correct answer to questions, median is{" "}
+						{data[5].other}, user is{" "}
+						{data[5].userScaled > 1 ? "ahead of" : "behind"} the median.
+					</li>
+				</ul>
+			</div>
+
 			<ChartContainer
 				config={chartConfig}
 				className="mx-auto max-w-2xl min-h-[350px]"
+				aria-labelledby="radar-chart-title"
+				aria-describedby="radar-chart-description"
 			>
 				<BaseRadarChart
 					data={data}
@@ -114,6 +167,7 @@ export const UserRadarChart = ({
 						right: 60,
 						left: 60,
 					}}
+					accessibilityLayer
 				>
 					<ChartTooltip
 						cursor={false}
@@ -121,13 +175,16 @@ export const UserRadarChart = ({
 							<ChartTooltipContent
 								indicator="line"
 								descriptionKey="description"
+								className="xl:text-base"
 								valueFn={(item) => {
 									if (item.dataKey === "userScaled") {
-										return item.payload.user;
+										return isNil(item.payload.user) ? "NA" : item.payload.user;
 									}
 
 									if (item.dataKey === "otherScaled") {
-										return item.payload.other;
+										return isNil(item.payload.other)
+											? "NA"
+											: item.payload.other;
 									}
 								}}
 							/>
@@ -138,7 +195,7 @@ export const UserRadarChart = ({
 						dataKey="label"
 						tick={({ x, y, textAnchor, value, index, ...props }) => {
 							const d = data[index];
-							const pct = getRelativePct(d.user, d.other);
+							const label = getComparisonText(d.user, d.other);
 							return (
 								<text
 									x={x}
@@ -151,15 +208,17 @@ export const UserRadarChart = ({
 									<tspan
 										className="lg:text-sm"
 										fill={
-											!pct || pct === 0
+											label === "NA" || label === "same" || label === 0
 												? "var(--color-muted-foreground)"
-												: pct > 0
+												: (typeof label === "number" && label > 0) ||
+														label === "ahead"
 													? "var(--color-otherScaled)"
 													: "var(--color-userScaled)"
 										}
-									>{`${pct && pct > 0 ? "+" : ""}${
-										pct !== undefined ? pct : "NA"
-									}${pct !== undefined ? "%" : ""}`}</tspan>
+									>
+										{label}
+										{typeof label === "number" ? "%" : ""}
+									</tspan>
 									<tspan
 										x={x}
 										dy={"1rem"}
@@ -191,6 +250,23 @@ export const UserRadarChart = ({
 	);
 };
 
+const getComparisonText = (user: number | null, other: number | null) => {
+	const pct = user && other ? getRelativePct(user, other) : undefined;
+	if (pct !== undefined) {
+		return pct;
+	}
+
+	if (isNil(user)) {
+		return "NA";
+	}
+
+	if (other === 0) {
+		return user === 0 ? "same" : user > 0 ? "ahead" : "behind";
+	}
+
+	return "NA";
+};
+
 const getRelativePct = (a: number, b: number) => {
 	if (b === 0) {
 		return undefined;
@@ -201,7 +277,7 @@ const getRelativePct = (a: number, b: number) => {
 
 const scale = (a: number, b: number) => {
 	if (Math.abs(b) < Number.EPSILON) {
-		return 2;
+		return a === 0 ? 0 : 2;
 	}
 
 	return a / Math.abs(b);

@@ -17,6 +17,7 @@ export const createNoteElements = ({
 			const newNode = document.createElement("span");
 			newNode.classList.add(isHighlight ? "highlight" : "note");
 			newNode.dataset.noteId = String(id);
+			newNode.role = "mark";
 			newNode.style.backgroundColor = color;
 			r.surroundContents(newNode);
 		}

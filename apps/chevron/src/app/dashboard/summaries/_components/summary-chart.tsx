@@ -52,9 +52,15 @@ export const SummaryChart = ({
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex-1 pb-0">
+				<p className="sr-only" id="summary-chart-title">
+					A pie chart of user's summaries,{" "}
+					{data.find((d) => d.name === "passed")?.value} passed,{" "}
+					{data.find((d) => d.name === "failed")?.value} failed
+				</p>
 				<ChartContainer
 					config={chartConfig}
 					className="mx-auto aspect-square max-h-[300px]"
+					aria-labelledby="summary-chart-title"
 				>
 					<PieChart margin={{ left: 60, right: 60 }} accessibilityLayer>
 						<ChartTooltip

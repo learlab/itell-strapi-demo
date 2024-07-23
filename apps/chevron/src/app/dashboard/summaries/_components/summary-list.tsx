@@ -34,7 +34,7 @@ export const SummaryList = ({
 				</p>
 			</div>
 
-			<div className="divide-y divide-border rounded-md border mt-4">
+			<ol className="divide-y divide-border rounded-md border mt-4">
 				{chapterSummaries.map((summary) => (
 					<SummaryItem
 						summary={summary}
@@ -42,7 +42,7 @@ export const SummaryList = ({
 						timeZone={userTimeZone || DEFAULT_TIME_ZONE}
 					/>
 				))}
-			</div>
+			</ol>
 		</div>
 	);
 };
@@ -60,6 +60,7 @@ export const SummaryItem = ({ summary, timeZone }: SummaryItemProps) => {
 				buttonVariants({ variant: "ghost", className: "h-fit" }),
 				"block p-4",
 			)}
+			aria-label="user summary"
 		>
 			<header className="flex flex-col text-sm text-muted-foreground">
 				<p className="font-semibold text-lg leading-relaxed ">

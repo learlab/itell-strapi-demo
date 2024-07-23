@@ -99,15 +99,16 @@ export default makeSource({
 });
 
 const getHeadingsFromRawBody = (doc: string) => {
-	// Updated regex to capture potential ID modifiers
-	const regXHeader = /\n(#{1,6})\s+(.+?)(?:\s+\\{#[\w-]+\})?$/gm;
+	// Updated regex to capture the heading content and potential ID separately
+	const regXHeader = /\n(#{1,6})\s+(.+?)(?:\s+\\{#([\w-]+)\})?$/gm;
 
 	const slugger = new GithubSlugger();
 
 	const headings: Array<{ level: string; text: string; slug: string }> = [];
 	for (const match of doc.matchAll(regXHeader)) {
 		const flag = match[1];
-		const content = match[2].trim(); // Trim any trailing whitespace
+		const content = match[2].trim(); // This now excludes the custom ID part
+		const customId = match[3]; // Capture the custom ID if present
 		if (content && content !== "null") {
 			headings.push({
 				level:
@@ -120,8 +121,8 @@ const getHeadingsFromRawBody = (doc: string) => {
 								: flag.length === 4
 									? "four"
 									: "other",
-				text: content,
-				slug: slugger.slug(content),
+				text: content, // This is now clean, without the custom ID
+				slug: customId || slugger.slug(content), // Use custom ID if present, otherwise use slugger
 			});
 		}
 	}

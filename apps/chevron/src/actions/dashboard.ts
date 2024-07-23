@@ -346,7 +346,7 @@ const getOtherUsersHandler = memoize(
 		return await db
 			.select({ id: users.id, pageSlug: users.pageSlug })
 			.from(users)
-			.where(ne(users.id, users.id))
+			.where(ne(users.id, user.id))
 			.limit(100);
 	},
 	{
