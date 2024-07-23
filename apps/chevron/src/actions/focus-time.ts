@@ -33,7 +33,6 @@ export const createFocusTimeAction = authedProcedure
 			const userId = ctx.user.id;
 
 			await db.transaction(async (tx) => {
-				console.log("createFocusTimeAction", input);
 				// add events record
 				await tx.insert(events).values({
 					userId,

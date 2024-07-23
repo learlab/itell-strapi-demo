@@ -2,11 +2,7 @@ import { groupby } from "@itell/core/utils";
 import { allPages } from "contentlayer/generated";
 
 export const allPagesSorted = allPages.sort((a, b) => {
-	if (a.chapter !== b.chapter) {
-		return a.chapter - b.chapter;
-	}
-
-	return a.section - b.section;
+	return a.chapter - b.chapter;
 });
 
 export const allSummaryPagesSorted = allPagesSorted.filter(
@@ -66,7 +62,6 @@ export const nextPage = (slug: string): string => {
 type TocItem = {
 	title: string;
 	chapter: number;
-	section: number;
 	page_slug: string;
 };
 const byChapter = groupby(allPagesSorted, (page) => page.chapter);
@@ -86,7 +81,6 @@ for (const chapter of Object.keys(byChapter)) {
 		items: pages.slice(1).map((page) => ({
 			title: page.title,
 			chapter: page.chapter,
-			section: page.section,
 			page_slug: page.page_slug,
 		})),
 	});
