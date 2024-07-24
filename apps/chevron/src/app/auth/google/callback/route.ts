@@ -19,6 +19,16 @@ export async function GET(req: Request) {
 	const url = new URL(req.url);
 	const state = url.searchParams.get("state");
 	const code = url.searchParams.get("code");
+	const err = url.searchParams.get("error");
+	if (err === "access_denied") {
+		return new Response(null, {
+			status: 302,
+			headers: {
+				Location: "/auth?error=access_denied",
+			},
+		});
+	}
+
 	const { state: storedState, codeVerifier: storedCodeVerifier } =
 		readGoogleOAuthState();
 

@@ -25,34 +25,32 @@ const PageQuestionsSchema = z.object({
 
 export type SelectedQuestions = Map<string, Question>;
 export const getRandomPageQuestions = async (pageSlug: string) => {
-	const questions = await getPageQuestions(pageSlug);
+	const chunks = (await getPageChunks(pageSlug))?.filter(
+		(c) => c.QuestionAnswerResponse !== null,
+	) as { Slug: string; QuestionAnswerResponse: string }[];
 	const selectedQuestions: SelectedQuestions = new Map();
 
-	if (questions && questions.data.length > 0) {
-		const chunks = questions.data[0].attributes.Content.filter((c) =>
-			Boolean(c.QuestionAnswerResponse),
-		);
-
-		const chooseQuestion = (c: (typeof chunks)[number]) => {
-			if (c.QuestionAnswerResponse) {
-				const parsed = JSON.parse(c.QuestionAnswerResponse);
-				const questionParsed = QuestionSchema.safeParse(parsed);
-				if (questionParsed.success) {
-					selectedQuestions.set(c.Slug, questionParsed.data);
-				}
-			}
-		};
+	if (chunks && chunks.length > 0) {
 		if (chunks.length > 0) {
 			chunks.forEach((chunk) => {
 				if (Math.random() < 1 / 3) {
-					chooseQuestion(chunk);
+					const parsed = JSON.parse(chunk.QuestionAnswerResponse);
+					const questionParsed = QuestionSchema.safeParse(parsed);
+					if (questionParsed.success) {
+						selectedQuestions.set(chunk.Slug, questionParsed.data);
+					}
 				}
 			});
 
 			// Each page will have at least one question
 			if (selectedQuestions.size === 0) {
 				const randChunk = Math.floor(Math.random() * (chunks.length - 1));
-				chooseQuestion(chunks[randChunk]);
+				const chunk = chunks[randChunk];
+				const parsed = JSON.parse(chunk.QuestionAnswerResponse);
+				const questionParsed = QuestionSchema.safeParse(parsed);
+				if (questionParsed.success) {
+					selectedQuestions.set(chunk.Slug, questionParsed.data);
+				}
 			}
 		}
 	}
@@ -82,10 +80,10 @@ export const getQAScore = async ({
 	return ScoreSchema.safeParse(data);
 };
 
-const getPageQuestions = async (pageSlug: string) => {
+const getPageChunks = async (pageSlug: string) => {
 	const q = qs.stringify({
 		filters: {
-			slug: {
+			Slug: {
 				$eq: pageSlug,
 			},
 		},
@@ -109,7 +107,7 @@ const getPageQuestions = async (pageSlug: string) => {
 			throw new Error("Failed to parse response", parsed.error);
 		}
 
-		return parsed.data;
+		return parsed.data ? parsed.data.data[0].attributes.Content : [];
 	} catch (e) {
 		console.error("Failed to fetch page questions", e);
 		return null;
