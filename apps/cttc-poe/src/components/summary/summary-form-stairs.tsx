@@ -439,7 +439,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	useEffect(() => {
 		if (isError) {
-			console.log("summary scoring", error);
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 			clearStages();
 			reportSentry("score summary stairs", {

@@ -103,7 +103,6 @@ export const QuestionBoxReread = ({
 				error: null,
 			};
 		} catch (err) {
-			console.log("constructed response evaluation error", err);
 			reportSentry("score constructed response", {
 				pageSlug,
 				chunkSlug,

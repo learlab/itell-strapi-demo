@@ -69,7 +69,6 @@ export const ExplainButton = ({
 
 	useEffect(() => {
 		if (isError) {
-			console.log("explain cr", error);
 			reportSentry("explain cr", { error });
 		}
 	}, [isError]);

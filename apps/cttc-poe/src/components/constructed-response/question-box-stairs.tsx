@@ -152,7 +152,6 @@ export const QuestionBoxStairs = ({
 			// for typing purposes, this should never run
 			return prevState;
 		} catch (err) {
-			console.log("constructed response evaluation error", err);
 			reportSentry("score cr stairs", {
 				pageSlug,
 				chunkSlug,

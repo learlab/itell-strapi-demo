@@ -69,7 +69,6 @@ export const SummaryFormSimple = React.memo(
 
 		useEffect(() => {
 			if (isError) {
-				console.log("summary simple", error);
 				reportSentry("summary simple", {
 					pageSlug: page.page_slug,
 					error,

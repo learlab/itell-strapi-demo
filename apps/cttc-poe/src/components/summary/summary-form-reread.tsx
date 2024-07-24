@@ -226,7 +226,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			finishStage("Analyzing");
 			clearStages();
 
-			console.log("score summary reread", error);
 			reportSentry("score summary reread", {
 				body: requestBodyRef.current,
 				response: summaryResponseRef.current,
