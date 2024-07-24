@@ -10,7 +10,7 @@ import { useTransition } from "react";
 
 export const AuthForm = () => {
 	return (
-		<div className="space-y-4">
+		<div className="grid gap-4 px-4">
 			<div className="relative">
 				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
 					<p>Social Login</p>

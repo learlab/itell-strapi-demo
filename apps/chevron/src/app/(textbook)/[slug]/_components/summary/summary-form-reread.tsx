@@ -31,6 +31,7 @@ import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
+import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
@@ -232,7 +233,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 			<h2 id="summary-form-heading" className="sr-only">
-				Summarize the page "{page.title}"
+				submit summary
 			</h2>
 			<form
 				className="space-y-4"
@@ -257,8 +258,15 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					</p>
 				)}
 				<div className="flex justify-end">
-					<StatusButton disabled={!isSummaryReady} pending={isPending}>
-						{status === "idle" ? "Submit" : "Resubmit"}
+					<StatusButton
+						disabled={!isSummaryReady}
+						pending={isPending}
+						className="w-32"
+					>
+						<span className="flex items-center gap-2">
+							<SendHorizontalIcon className="size-4" />
+							{status === "idle" ? "Submit" : "Resubmit"}
+						</span>
 					</StatusButton>
 				</div>
 			</form>

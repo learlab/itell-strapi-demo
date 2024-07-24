@@ -7,11 +7,13 @@ export const Profile = ({ user }: { user: User }) => {
 		<div className="space-y-4">
 			<h3 className="mb-4 text-lg font-medium">Profile</h3>
 			<div className="space-y-2">
-				<p className="font-medium flex items-center gap-2">
+				<div className="flex items-center gap-2">
 					<UserAvatar name={user.name} image={user.image} />
-					{user.name}
+					<p className="leading-none font-semibold">{user.name}</p>
+				</div>
+				<p aria-label="user email" className="text-muted-foreground text-sm">
+					{user.email}
 				</p>
-				<p className="text-muted-foreground text-sm">{user.email}</p>
 			</div>
 		</div>
 	);

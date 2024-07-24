@@ -8,7 +8,7 @@ export default async function ({
 }) {
 	return (
 		<Fragment>
-			<TextbookNav scroll />
+			<TextbookNav scrollProgress />
 			{children}
 		</Fragment>
 	);

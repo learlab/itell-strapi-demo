@@ -50,7 +50,10 @@ export default async function () {
 				))}
 			</div>
 
-			<div className="toc-sidebar hidden md:block relative">
+			<aside
+				aria-label="table of contents"
+				className="toc-sidebar hidden md:block relative"
+			>
 				<div className="sticky top-20 -mt-10 pt-4">
 					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
 						<p
@@ -71,7 +74,7 @@ export default async function () {
 						</ul>
 					</div>
 				</div>
-			</div>
+			</aside>
 		</div>
 	);
 }

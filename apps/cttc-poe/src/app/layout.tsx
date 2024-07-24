@@ -47,14 +47,14 @@ export default async function RootLayout({
 			</head>
 			<body
 				className={cn(
-					"min-h-screen bg-background font-sans antialiased",
+					"min-h-screen bg-background font-sans antialiased flex flex-col",
 					FontSans.className,
 					fontSerif.variable,
 				)}
 			>
 				<RootProvider session={session}>
 					<TailwindIndicator />
-					<main> {children} </main>
+					{children}
 				</RootProvider>
 			</body>
 		</html>

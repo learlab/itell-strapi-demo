@@ -452,7 +452,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<section className="space-y-2">
+		<div className="space-y-2">
 			{portalNodes}
 
 			<SummaryFeedback
@@ -479,7 +479,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			</div>
 
 			<Confetti active={feedback?.isPassed || false} />
-			<form className="mt-2 space-y-4" onSubmit={action}>
+
+			<h2 className="sr-only" id="summarization-form-heading">
+				summarization
+			</h2>
+			<form
+				aria-labelledby="summarization-form-heading"
+				className="mt-2 space-y-4"
+				onSubmit={action}
+			>
 				<SummaryInput
 					disabled={!isSummaryReady}
 					pageSlug={pageSlug}
@@ -502,7 +510,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					please report to lear.lab.vu@gmail.com.
 				</p>
 			)}
-		</section>
+		</div>
 	);
 };
 

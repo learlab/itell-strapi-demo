@@ -20,7 +20,7 @@ export const UserProgress = ({
 	}
 
 	return (
-		<div className="leading-none">
+		<div className="leading-none" aria-label="user's reading progress">
 			<p className="lg:text-lg font-semibold ">
 				{displayProgress}% completed, {unlockedPages}/{validPages.length}{" "}
 				{pluralize("page", validPages.length)}

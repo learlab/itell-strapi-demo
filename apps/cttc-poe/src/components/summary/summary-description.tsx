@@ -14,6 +14,10 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 	if (!guide) return null;
 
 	return (
-		<MainMdx components={{ AccordionItem, Accordion }} code={guide.body.code} />
+		<MainMdx
+			article={false}
+			components={{ AccordionItem, Accordion }}
+			code={guide.body.code}
+		/>
 	);
 };

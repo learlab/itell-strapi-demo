@@ -81,12 +81,15 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
-					<PageContent code={page.body.code} />
+					<PageContent title={page.title} code={page.body.code} />
 					<NotePopover pageSlug={pageSlug} userId={userId} />
 					<Pager pageIndex={pageIndex} />
 				</div>
 
-				<div className="toc-sidebar hidden md:block relative">
+				<aside
+					aria-label="table of contents"
+					className="toc-sidebar hidden md:block relative"
+				>
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
@@ -103,7 +106,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 							<NoteLoader pageSlug={pageSlug} />
 						</Suspense>
 					)}
-				</div>
+				</aside>
 			</main>
 
 			{page.summary && user && (

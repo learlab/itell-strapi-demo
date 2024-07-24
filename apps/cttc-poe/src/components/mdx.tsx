@@ -19,24 +19,31 @@ export const Mdx = ({ code, components }: MdxProps) => {
 interface MainMdxProps extends React.HTMLAttributes<HTMLDivElement> {
 	className?: string;
 	components?: Record<string, any>;
+	title?: string;
+	article?: boolean;
 	code: string;
 }
 
 export const MainMdx = ({
 	code,
 	className,
+	title,
+	article = true, // default to article
 	components = MdxComponents,
 	...rest
 }: MainMdxProps) => {
+	const Comp = article ? "article" : "div";
+
 	return (
-		<article
+		<Comp
 			className={cn(
 				"prose prose-quoteless prose-neutral dark:prose-invert max-w-none xl:text-lg xl:leading-relaxed",
 				className,
 			)}
+			aria-label={title}
 			{...rest}
 		>
 			<Mdx components={components} code={code} />
-		</article>
+		</Comp>
 	);
 };

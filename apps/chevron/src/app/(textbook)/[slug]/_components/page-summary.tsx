@@ -28,47 +28,44 @@ export const PageSummary = async ({
 	}
 
 	return (
-		<div className="border-t-2 py-4 mb-20 space-y-2 p-4 lg:p-8">
-			<div className="grid gird-cols-1 lg:grid-cols-3 gap-8" id="page-summary">
-				{condition === Condition.SIMPLE ? (
-					<div className="col-span-full max-w-2xl mx-auto space-y-4">
-						<SummaryFormSimple
-							user={user}
-							page={page}
-							pageStatus={pageStatus}
-						/>
+		<div
+			className="grid gird-cols-1 lg:grid-cols-3 gap-8 p-4 lg:p-8 border-t-2 mb-20 "
+			id="page-summary"
+		>
+			{condition === Condition.SIMPLE ? (
+				<div className="col-span-full max-w-2xl mx-auto space-y-4">
+					<SummaryFormSimple page={page} pageStatus={pageStatus} />
+				</div>
+			) : (
+				<>
+					<div className="col-span-full hidden md:block lg:col-span-1">
+						<SummaryDescription condition={condition} />
+						{condition !== Condition.SIMPLE && (
+							<Suspense fallback={<SummaryCount.Skeleton />}>
+								<div className="mt-8">
+									<SummaryCount pageSlug={page.page_slug} />
+								</div>
+							</Suspense>
+						)}
 					</div>
-				) : (
-					<>
-						<div className="col-span-full hidden md:block lg:col-span-1">
-							<SummaryDescription condition={condition} />
-							{condition !== Condition.SIMPLE && (
-								<Suspense fallback={<SummaryCount.Skeleton />}>
-									<div className="mt-8">
-										<SummaryCount pageSlug={page.page_slug} />
-									</div>
-								</Suspense>
-							)}
-						</div>
 
-						<div className="col-span-full lg:col-span-2">
-							{condition === Condition.RANDOM_REREAD ? (
-								<SummaryFormReread
-									user={user}
-									page={page}
-									pageStatus={pageStatus}
-								/>
-							) : condition === Condition.STAIRS ? (
-								<SummaryFormStairs
-									user={user}
-									page={page}
-									pageStatus={pageStatus}
-								/>
-							) : null}
-						</div>
-					</>
-				)}
-			</div>
+					<div className="col-span-full lg:col-span-2">
+						{condition === Condition.RANDOM_REREAD ? (
+							<SummaryFormReread
+								user={user}
+								page={page}
+								pageStatus={pageStatus}
+							/>
+						) : condition === Condition.STAIRS ? (
+							<SummaryFormStairs
+								user={user}
+								page={page}
+								pageStatus={pageStatus}
+							/>
+						) : null}
+					</div>
+				</>
+			)}
 		</div>
 	);
 };

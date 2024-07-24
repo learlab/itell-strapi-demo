@@ -2,11 +2,11 @@ import { Skeleton } from "@itell/ui/server";
 
 export default function Loading() {
 	return (
-		<div className="px-32 py-4">
-			<div className="flex items-center justify-between">
+		<>
+			<header className="flex items-center justify-between">
 				<Skeleton className="h-[38px] w-[90px]" />
-			</div>
-			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
+			</header>
+			<main className="grid gap-12 md:grid-cols-[200px_700px] mt-4">
 				<div className="hidden w-[200px] flex-col md:flex space-y-4">
 					<Skeleton className="w-full h-[30px]" />
 				</div>
@@ -19,7 +19,7 @@ export default function Loading() {
 						<Skeleton className="h-[38px] w-[100px]" />
 					</div>
 				</div>
-			</div>
-		</div>
+			</main>
+		</>
 	);
 }

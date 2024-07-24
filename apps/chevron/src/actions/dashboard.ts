@@ -18,7 +18,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
 import { cache } from "react";
 import { z } from "zod";
-import { getTeacherAction, getUserAction } from "./user";
+import { getTeacherAction } from "./user";
 import { authedProcedure } from "./utils";
 
 /**

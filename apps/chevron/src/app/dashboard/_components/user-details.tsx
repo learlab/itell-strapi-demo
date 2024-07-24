@@ -79,7 +79,7 @@ export const UserDetails = async ({ user }: Props) => {
 				userProgress={userProgress}
 				otherProgress={midProgress}
 			/>
-			<p className="text-center text-muted-foreground">
+			<p aria-hidden="true" className="text-center text-muted-foreground">
 				percentages are relative to the median
 			</p>
 			{user.classId ? (

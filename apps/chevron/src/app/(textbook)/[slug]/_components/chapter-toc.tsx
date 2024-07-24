@@ -15,25 +15,25 @@ import { clearSummaryLocal } from "@textbook/summary/summary-input";
 import type { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon, RotateCcwIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useOptimistic, useState, useTransition } from "react";
+import React, { useOptimistic, useState, useTransition } from "react";
 import { AdminTools } from "./admin-tools";
 
-const AnchorLink = ({
-	text,
-	href,
-	icon,
-}: {
+interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
 	text: string;
 	href: string;
 	icon: React.ReactNode;
-}) => {
+}
+
+const AnchorLink = ({ text, href, icon, className, ...rest }: LinkProps) => {
 	return (
 		<a
 			href={href}
 			className={cn(
 				buttonVariants({ variant: "ghost" }),
 				"flex items-center justify-start  px-1 py-2 xl:text-lg",
+				className,
 			)}
+			{...rest}
 		>
 			<span className="flex items-center gap-2 xl:gap-4">
 				{icon}
@@ -72,7 +72,7 @@ export const ChapterToc = ({
 
 	return (
 		<>
-			<nav aria-label="primary">
+			<nav aria-label="textbook primary">
 				<ol className="space-y-2 leading-relaxed tracking-tight">
 					{allPagesSorted.map((p) => {
 						const { latest, unlocked } = getPageStatus({
@@ -126,13 +126,14 @@ export const ChapterToc = ({
 						icon={<PencilIcon className="size-4 xl:size-6" />}
 						text="Summarize"
 						href="#page-summary"
+						aria-label="summarize this page"
 					/>
 				)}
 				<RestartPageButton pageSlug={currentPage.page_slug} />
 
 				<AnchorLink
 					icon={<ArrowUpIcon className="size-4 xl:size-6" />}
-					text="Back"
+					text="Back to top"
 					href="#page-title"
 				/>
 			</div>

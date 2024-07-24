@@ -8,16 +8,16 @@ import { GithubIcon } from "lucide-react";
 
 export default async function () {
 	return (
-		<section className="h-screen flex flex-col">
+		<>
 			<TextbookNav read />
-			<div className="flex-1 px-6 md:px-10 lg:px-16 py-8 mx-auto max-w-3xl space-y-6">
+			<main className="flex-1 px-6 md:px-10 lg:px-16 py-8 mx-auto max-w-3xl space-y-6">
 				<MainMdx code={home.body.code} />
 				<div className="flex justify-center items-center">
 					<ContinueReading className="w-48" />
 				</div>
-			</div>
+			</main>
 			<SiteFooter />
-		</section>
+		</>
 	);
 }
 
@@ -33,6 +33,7 @@ const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
 				<div>
 					<a href="https://github.com/learlab/itell">
 						<GithubIcon />
+						<span className="sr-only">github repository</span>
 					</a>
 				</div>
 			</div>

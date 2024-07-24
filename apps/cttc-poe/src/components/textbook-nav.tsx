@@ -10,13 +10,13 @@ import { ThemeToggle } from "./theme-toggle";
 import { UserAccountNav } from "./user-account-nav";
 
 type Props = {
-	scroll?: boolean;
+	scrollProgress?: boolean;
 	read?: boolean;
 };
 
-export const TextbookNav = async ({ scroll, read }: Props) => {
-	const { title } = await getSiteConfig();
+export const TextbookNav = async ({ scrollProgress, read }: Props) => {
 	const { user } = await getSession();
+	const { title } = await getSiteConfig();
 
 	return (
 		<SiteNav>
@@ -27,7 +27,6 @@ export const TextbookNav = async ({ scroll, read }: Props) => {
 						alt="itell logo"
 						width={24}
 						height={32}
-						className="mr-2"
 					/>
 					<Link href="/" className="hidden items-center space-x-2 md:flex">
 						<span className="hidden font-bold sm:inline-block">{title}</span>
@@ -44,7 +43,7 @@ export const TextbookNav = async ({ scroll, read }: Props) => {
 				</div>
 			</div>
 
-			{scroll && <ScrollProgress />}
+			{scrollProgress && <ScrollProgress />}
 		</SiteNav>
 	);
 };

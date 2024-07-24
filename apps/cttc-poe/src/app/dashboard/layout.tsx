@@ -2,7 +2,6 @@ import { ContinueReading } from "@/components/continue-reading";
 import { SiteNav } from "@/components/site-nav";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import { Condition } from "@/lib/control/condition";
 import { isTeacher } from "@/lib/user/teacher";
 import {
 	DashboardNavItem,
@@ -20,35 +19,27 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default async function DashboardLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const { user } = await getSession();
-
 	return (
-		<div className="min-h-screen">
+		<>
 			<SiteNav>
 				<DashboardNav items={dashboardConfig.mainNav} />
 			</SiteNav>
-			<div className="grid md:grid-cols-[200px_1fr]">
-				<aside className="hidden w-[200px] flex-col md:flex border-r-2">
-					<Suspense fallback={<DashboardSidebar.Skeleton />}>
-						<DashboardSidebar />
-					</Suspense>
-				</aside>
-				<main className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl">
-					{user?.condition !== Condition.SIMPLE ? (
-						children
-					) : (
-						<p>data unavailable</p>
-					)}
-				</main>
-			</div>
-		</div>
+			<main className="min-h-screen grid md:grid-cols-[200px_1fr] group">
+				<DashboardSidebar />
+				<div
+					aria-label="dashboard main panel"
+					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
+				>
+					{children}
+				</div>
+			</main>
+		</>
 	);
 }
 
@@ -96,10 +87,14 @@ const DashboardSidebar = async () => {
 		: dashboardConfig.sidebarNav.filter((i) => i.title !== "Class");
 
 	return (
-		<nav className="grid items-start pt-4">
-			{items.map((item) => (
-				<SidebarItem key={item.title} item={item} />
-			))}
+		<nav className="hidden md:grid items-start pt-4 border-r-2">
+			<ol>
+				{items.map((item) => (
+					<li key={item.title}>
+						<SidebarItem item={item} />
+					</li>
+				))}
+			</ol>
 		</nav>
 	);
 };

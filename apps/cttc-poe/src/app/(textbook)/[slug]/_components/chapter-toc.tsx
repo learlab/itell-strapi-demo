@@ -81,76 +81,78 @@ export const ChapterToc = ({
 	};
 
 	return (
-		<div className="space-y-12">
-			<ol className="space-y-2 leading-relaxed tracking-tight">
-				{tocChapters.map((chapter) => {
-					return (
-						<Collapsible
-							key={chapter.page_slug}
-							defaultOpen={currentPage.chapter === chapter.chapter}
-						>
-							<CollapsibleTrigger asChild>
-								<div className="flex items-center gap-2">
-									<Link
-										href={makePageHref(chapter.page_slug)}
-										className="flex px-1 py-2 items-center"
-									>
-										<p className="text-lg text-balance xl:text-xl 2xl:text-2xl">
-											{chapter.title}
-										</p>
-									</Link>
-									<Button variant={"ghost"}>
-										<ChevronsUpDown className="size-4" />
-										<span className="sr-only">Toggle</span>
-									</Button>
-								</div>
-							</CollapsibleTrigger>
+		<>
+			<nav aria-label="textbook primary">
+				<ol className="space-y-2 leading-relaxed tracking-tight">
+					{tocChapters.map((chapter) => {
+						return (
+							<Collapsible
+								key={chapter.page_slug}
+								defaultOpen={currentPage.chapter === chapter.chapter}
+							>
+								<CollapsibleTrigger asChild>
+									<div className="flex items-center gap-2">
+										<Link
+											href={makePageHref(chapter.page_slug)}
+											className="flex px-1 py-2 items-center"
+										>
+											<p className="text-lg text-balance xl:text-xl 2xl:text-2xl">
+												{chapter.title}
+											</p>
+										</Link>
+										<Button variant={"ghost"}>
+											<ChevronsUpDown className="size-4" />
+											<span className="sr-only">Toggle</span>
+										</Button>
+									</div>
+								</CollapsibleTrigger>
 
-							<CollapsibleContent>
-								<ol className="text-sm">
-									{chapter.items.map((item) => {
-										const { latest, unlocked } = getPageStatus({
-											pageSlug: item.page_slug,
-											userPageSlug,
-											userFinished,
-										});
-										const visible = latest || unlocked;
-										return (
-											<li
-												className={cn(
-													"relative p-2 text-foreground hover:bg-accent border-l-2",
-													{
-														"bg-accent font-semibold":
-															item.page_slug === activePage,
-														"text-muted-foreground": !visible,
-													},
-												)}
-												key={item.page_slug}
-											>
-												<button
-													type="button"
-													onClick={() => navigatePage(item.page_slug)}
-													disabled={(pending || !visible) && isProduction}
+								<CollapsibleContent>
+									<ol className="text-sm">
+										{chapter.items.map((item) => {
+											const { latest, unlocked } = getPageStatus({
+												pageSlug: item.page_slug,
+												userPageSlug,
+												userFinished,
+											});
+											const visible = latest || unlocked;
+											return (
+												<li
 													className={cn(
-														"w-full text-left text-balance tracking-tight inline-flex items-end justify-between gap-1 xl:text-lg",
+														"relative p-2 text-foreground hover:bg-accent border-l-2",
 														{
-															"animate-pulse": pending,
+															"bg-accent font-semibold":
+																item.page_slug === activePage,
+															"text-muted-foreground": !visible,
 														},
 													)}
+													key={item.page_slug}
 												>
-													<span>{item.title}</span>
-													<span>{unlocked ? "✅" : visible ? "" : "🔒"}</span>
-												</button>
-											</li>
-										);
-									})}
-								</ol>
-							</CollapsibleContent>
-						</Collapsible>
-					);
-				})}
-			</ol>
-			<div className="space-y-2">
+													<button
+														type="button"
+														onClick={() => navigatePage(item.page_slug)}
+														disabled={(pending || !visible) && isProduction}
+														className={cn(
+															"w-full text-left text-balance tracking-tight inline-flex items-end justify-between gap-1 xl:text-lg",
+															{
+																"animate-pulse": pending,
+															},
+														)}
+													>
+														<span>{item.title}</span>
+														<span>{unlocked ? "✅" : visible ? "" : "🔒"}</span>
+													</button>
+												</li>
+											);
+										})}
+									</ol>
+								</CollapsibleContent>
+							</Collapsible>
+						);
+					})}
+				</ol>
+			</nav>
+			<div className="mt-12 space-y-2">
 				{isAdmin(userRole) && userId && (
 					<AdminTools userId={userId} condition={condition} />
 				)}
@@ -168,7 +170,7 @@ export const ChapterToc = ({
 					href="#page-title"
 				/>
 			</div>
-		</div>
+		</>
 	);
 };
 

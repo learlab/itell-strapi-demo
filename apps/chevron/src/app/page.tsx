@@ -32,11 +32,9 @@ const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
 			<p className="text-center text-sm leading-loose md:text-left">
 				{SiteConfig.footer}
 			</p>
-			<a
-				href="https://github.com/learlab/itell"
-				aria-label="github repository for itell"
-			>
+			<a href="https://github.com/learlab/itell">
 				<GithubIcon />
+				<span className="sr-only">github repository</span>
 			</a>
 		</footer>
 	);

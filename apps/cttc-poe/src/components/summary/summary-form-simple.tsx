@@ -79,14 +79,14 @@ export const SummaryFormSimple = React.memo(
 
 		if (!isSummaryReady) {
 			return (
-				<section className="max-w-2xl mx-auto">
+				<div className="max-w-2xl mx-auto">
 					<p>Finish the entire page to move on.</p>
-				</section>
+				</div>
 			);
 		}
 
 		return (
-			<section>
+			<div>
 				<p className="font-light text-lg mb-4">
 					{finished
 						? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."
@@ -94,7 +94,14 @@ export const SummaryFormSimple = React.memo(
 				</p>
 				<p>{page.referenceSummary}</p>
 
-				<form className="flex justify-end gap-2" onSubmit={action}>
+				<h2 className="sr-only" id="completion-form-heading">
+					completion
+				</h2>
+				<form
+					aria-labelledby="completion-form-heading"
+					className="flex justify-end gap-2"
+					onSubmit={action}
+				>
 					<StatusButton
 						pending={isPending}
 						disabled={finished && !page.nextPageSlug}
@@ -121,7 +128,7 @@ export const SummaryFormSimple = React.memo(
 						persists, please report to lear.lab.vu@gmail.com.
 					</p>
 				)}
-			</section>
+			</div>
 		);
 	},
 );

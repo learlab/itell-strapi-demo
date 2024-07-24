@@ -236,7 +236,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<section className="space-y-2">
+		<div className="space-y-2">
 			{portalNodes}
 			{finished && page.nextPageSlug && (
 				<div className="space-y-2 space-x-2">
@@ -248,7 +248,14 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				</div>
 			)}
 
-			<form className="space-y-4" onSubmit={action}>
+			<h2 className="sr-only" id="summarization-form-heading">
+				summarization
+			</h2>
+			<form
+				aria-labelledby="summarization-form-heading"
+				className="space-y-4"
+				onSubmit={action}
+			>
 				<SummaryInput
 					disabled={isPending || !isSummaryReady}
 					pageSlug={pageSlug}
@@ -271,7 +278,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					</StatusButton>
 				</div>
 			</form>
-		</section>
+		</div>
 	);
 };
 

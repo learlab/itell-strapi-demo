@@ -30,18 +30,18 @@ export default async function () {
 
 	return (
 		<div className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6">
-			<aside className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+			<div className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
 				<div className="h-full w-full px-6 py-6 lg:py-8">
 					<ChapterToc
+						userId={null}
 						currentPage={page}
 						userPageSlug={userPageSlug}
 						userFinished={false}
 						userRole="user"
-						userId={null}
 						condition={Condition.STAIRS}
 					/>
 				</div>
-			</aside>
+			</div>
 
 			<div id="page-content-wrapper" className="relative p-4 lg:p-8">
 				<PageTitle>{page.title}</PageTitle>
@@ -51,12 +51,22 @@ export default async function () {
 				))}
 			</div>
 
-			<aside className="toc-sidebar hidden md:block relative">
+			<aside
+				aria-label="table of contents"
+				className="toc-sidebar hidden md:block relative"
+			>
 				<div className="sticky top-20 -mt-10 pt-4">
 					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
-						<p className="font-medium flex items-center mb-4">
-							<BookmarkIcon className="mr-2 size-4" />
-							<span>On this page</span>
+						<p
+							id="page-toc-heading"
+							className="font-semibold mb-4"
+							role="heading"
+							aria-level={2}
+						>
+							<span className="flex items-center gap-2">
+								<BookmarkIcon className="size-4" />
+								On this page
+							</span>
 						</p>
 						<ul className="mt-2 space-y-2">
 							{arr.slice(0, 5).map((i) => (

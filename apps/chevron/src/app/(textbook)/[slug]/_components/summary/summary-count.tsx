@@ -18,6 +18,7 @@ export const SummaryCount = async ({ pageSlug }: Props) => {
 		<Link
 			className="text-sm xl:text-base font-medium underline-offset-4 hover:underline text-pretty"
 			href="/dashboard/summaries"
+			aria-label="past summary submissions for this page"
 		>
 			<p>
 				You have written {pluralize("summary", summaryCount, true)} for this

@@ -62,33 +62,36 @@ export default async function ({ params }: { params: { slug: string } }) {
 			questions={questions}
 			pageStatus={pageStatus}
 		>
-			<div
+			<main
 				id="textbook-page-wrapper"
 				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6"
 			>
-				<aside className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+				<div className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
-							currentPage={page}
 							userId={userId}
+							currentPage={page}
 							userPageSlug={userPageSlug}
 							userFinished={userFinished}
 							userRole={userRole}
 							condition={userCondition}
 						/>
 					</ScrollArea>
-				</aside>
+				</div>
 
 				<div id="page-content-wrapper" className="relative p-4 lg:p-8">
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
-					<PageContent code={page.body.code} />
+					<PageContent title={page.title} code={page.body.code} />
 					<NoteToolbar pageSlug={pageSlug} userId={userId} />
 					<Pager pageIndex={pageIndex} />
 				</div>
 
-				<aside className="toc-sidebar hidden md:block relative">
+				<aside
+					aria-label="table of contents"
+					className="toc-sidebar hidden md:block relative"
+				>
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
@@ -111,17 +114,15 @@ export default async function ({ params }: { params: { slug: string } }) {
 						<NoteLoader userId={userId} pageSlug={pageSlug} />
 					</Suspense>
 				</aside>
-			</div>
+			</main>
 
 			{page.summary && user && (
-				<footer>
-					<PageSummary
-						user={user}
-						pageSlug={pageSlug}
-						pageStatus={pageStatus}
-						condition={userCondition}
-					/>
-				</footer>
+				<PageSummary
+					user={user}
+					pageSlug={pageSlug}
+					pageStatus={pageStatus}
+					condition={userCondition}
+				/>
 			)}
 
 			<PageStatusModal user={user} pageStatus={pageStatus} />

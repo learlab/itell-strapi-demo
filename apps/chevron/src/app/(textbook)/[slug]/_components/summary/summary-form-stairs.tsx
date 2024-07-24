@@ -439,13 +439,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		<div className="flex flex-col gap-2">
 			{portalNodes}
 
-			<SummaryFeedback
-				className={isPending ? "opacity-70" : ""}
-				feedback={feedback}
-				needRevision={
-					isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
-				}
-			/>
+			{feedback && (
+				<SummaryFeedback
+					className={isPending ? "opacity-70" : ""}
+					feedback={feedback}
+					needRevision={
+						isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
+					}
+				/>
+			)}
 
 			<div className="flex gap-2 items-center">
 				{state.canProceed && page.nextPageSlug && (
@@ -466,7 +468,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 			<Confetti active={feedback?.isPassed || false} />
 			<h2 id="summary-form-heading" className="sr-only">
-				Summarize the page "{page.title}"
+				submit summary
 			</h2>
 			<form
 				className="mt-2 space-y-4"
@@ -489,7 +491,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						pending={isPending}
 						className="w-32"
 					>
-						<span className="flex items-center gap-2 px-2">
+						<span className="flex items-center gap-2">
 							<SendHorizontalIcon className="size-4" />
 							{status === "idle" ? "Submit" : "Resubmit"}
 						</span>

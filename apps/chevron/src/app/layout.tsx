@@ -65,7 +65,7 @@ export default async function RootLayout({
 			>
 				<RootProvider session={session}>
 					<TailwindIndicator />
-					<> {children} </>
+					{children}
 				</RootProvider>
 			</body>
 		</html>

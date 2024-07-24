@@ -46,14 +46,14 @@ export default async function ({ params }: PageProps) {
 	incrementViewAction({ pageSlug: Meta.student.slug, data: { id: user.id } });
 
 	return (
-		<div className="px-32 py-4">
-			<div className="flex w-full items-center justify-between">
+		<>
+			<header className="flex w-full items-center justify-between">
 				<div className="flex items-center space-x-10">
 					<SummaryBackButton />
 				</div>
 				<SummaryOperations pageUrl={page.url} />
-			</div>
-			<div className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
+			</header>
+			<main className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
 				<div aria-label="summary scores" className="w-[200px] space-y-4">
 					<div className="flex items-center justify-center">
 						<Badge variant={summary.isPassed ? "default" : "destructive"}>
@@ -64,7 +64,7 @@ export default async function ({ params }: PageProps) {
 						Click on the title to review this page's content.
 					</p>
 				</div>
-				<div aria-label="summary text" className="space-y-2">
+				<div className="grid gap-2">
 					<div className="text-center">
 						<TextbookPageModal page={page} />
 					</div>
@@ -72,17 +72,16 @@ export default async function ({ params }: PageProps) {
 					<p className="text-sm text-muted-foreground text-center">
 						{`Created at ${relativeDate(summary.createdAt)}`}
 					</p>
-					<div className="max-w-2xl mx-auto">
-						<p>{summary.text}</p>
-						<div className="flex justify-end">
-							<SummaryReviseButton
-								pageSlug={summary.pageSlug}
-								text={summary.text}
-							/>
-						</div>
+
+					<p aria-label="summary text">{summary.text}</p>
+					<div className="flex justify-end">
+						<SummaryReviseButton
+							pageSlug={summary.pageSlug}
+							text={summary.text}
+						/>
 					</div>
 				</div>
-			</div>
-		</div>
+			</main>
+		</>
 	);
 }

@@ -113,8 +113,9 @@ export const UserRadarChart = ({
 		<div className="flex items-center justify-center">
 			<div className="sr-only" id="radar-chart-title">
 				<h3>
-					Radar Chart: user is {data[0].userScaled > 1 ? "ahead of" : "behind"}{" "}
-					median reading progress
+					Radar Chart: user is{" "}
+					<span>{data[0].userScaled > 1 ? "ahead of" : "behind"}</span> median
+					reading progress
 				</h3>
 			</div>
 
@@ -130,26 +131,28 @@ export const UserRadarChart = ({
 						is {data[0].userScaled > 1 ? "ahead of" : "behind"} the median.
 					</li>
 					<li>
-						User submitted {data[1].user} summaries, median is {data[1].other},
-						user is {data[1].userScaled > 1 ? "ahead of" : "behind"} the median.
+						User submitted {data[1].user} summaries, median is{" "}
+						{Math.round(data[1].other || 0)}, user is{" "}
+						{data[1].userScaled > 1 ? "ahead of" : "behind"} the median.
 					</li>
 					<li>
-						User passed {data[2].user} summaries, median is {data[2].other},
-						user is {data[2].userScaled > 1 ? "ahead of" : "behind"} the median.
+						User passed {data[2].user} summaries, median is{" "}
+						{Math.round(data[2].other || 0)}, user is{" "}
+						{data[2].userScaled > 1 ? "ahead of" : "behind"} the median.
 					</li>
 					<li>
 						User scored {data[3].user} in summary content score, median is{" "}
-						{data[3].other}, user is{" "}
+						{data[3].other ? Math.round(data[3].other) : "NA"}, user is{" "}
 						{data[3].userScaled > 1 ? "ahead of" : "behind"} the median.
 					</li>
 					<li>
 						User scored {data[4].user} in summary language score, median is{" "}
-						{data[4].other}, user is{" "}
+						{data[4].other ? Math.round(data[4].other) : "NA"}, user is{" "}
 						{data[4].userScaled > 1 ? "ahead of" : "behind"} the median.
 					</li>
 					<li>
 						User had {data[5].user} correct answer to questions, median is{" "}
-						{data[5].other}, user is{" "}
+						{Math.round(data[5].other || 0)}, user is{" "}
 						{data[5].userScaled > 1 ? "ahead of" : "behind"} the median.
 					</li>
 				</ul>
