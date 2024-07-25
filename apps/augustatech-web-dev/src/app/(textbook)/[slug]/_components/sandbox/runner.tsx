@@ -14,7 +14,7 @@ const srcDoc = `
 <html>
 <head>
     <script>
-        let currentId = null; 
+        let currentId = null;
         const originalConsole = { ...console };
         const methods = ["log", "debug", "info", "warn", "error", "table", "clear", "time", "timeEnd", "count", "assert", "dir"];
 
@@ -38,7 +38,7 @@ const srcDoc = `
 
         function serializeArg(arg) {
             if (arg instanceof Promise) return "Promise { <pending> }";
-            if (typeof arg === "object") return JSON.parse(JSON.stringify(arg));
+            if (typeof arg === "object") return structuredClone(arg);
             if (typeof arg === "function") return arg.toString();
             return arg;
         }
@@ -46,8 +46,8 @@ const srcDoc = `
         async function handleEvent(event) {
             if (event.data.type === "run-code") {
                 const { code, id, source } = event.data;
-                currentId = id; 
-                
+                currentId = id;
+
                 if (source === "console") {
                     postLogToParent("source-console", [code], id);
                 }
