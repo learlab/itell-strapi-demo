@@ -43,7 +43,7 @@ The remainder of this chapter introduces the atomic elements of JavaScript progr
 ## Numbers \{#Numbers-764t}
 Values of the _number_ type are, unsurprisingly, numeric values. In a JavaScript program, they are written as follows:
 
-```javascript
+```js
 13
 ```
 
@@ -57,13 +57,13 @@ Not all whole numbers less than 18 quintillion fit in a JavaScript number, thoug
 
 Fractional numbers are written using a dot:
 
-```javascript
+```js
 9.81
 ```
 
 For very big or very small numbers, you may also use scientific notation by adding an _e_ (for _exponent_), followed by the exponent of the number.
 
-```javascript
+```js
 2.998e8
 ```
 
@@ -96,5 +96,53 @@ console.log(typeof 4.5)
 console.log(typeof "x")
 // → string
 </Sandbox>
+
+Example of inline code `[1, 2, 3].join('-'){:js}`
+
+Example of highlights
+
+
+```js {1}
+console.log("Hello World");
+
+const [age, setAge] = useState(50);
+const [name, setName] = useState("Taylor");
+```
+
+
+```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /"Taylor"/#i
+console.log("Hello World");
+
+const [age, setAge] = useState(50);
+const [name, setName] = useState("Taylor");
+```
+
+Example of filenames
+
+```js showLineNumbers title="next.config.mjs" caption="example caption"
+import fs from "node:fs";
+import nextMDX from "@next/mdx";
+import rehypePrettyCode from "rehype-pretty-code";
+
+/** @type {import('rehype-pretty-code').Options} */
+const options = {
+  // See Options section below.
+};
+
+const withMDX = nextMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [[rehypePrettyCode, options]],
+  },
+});
+
+/** @type {import('next').NextConfig} */
+const nextConfig = { reactStrictMode: true };
+
+export default withMDX(nextConfig);
+```
+
+
 
 </section>

@@ -1,7 +1,7 @@
-// @ts-nocheck
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import GithubSlugger from "github-slugger";
-import rehypePrism from "rehype-prism-plus";
+import rehypePrettyCode from "rehype-pretty-code";
+
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
@@ -93,13 +93,22 @@ export default makeSource({
 	contentDirPath: "content",
 	documentTypes: [Page, Home, Guide],
 	mdx: {
+		// @ts-ignore
 		remarkPlugins: [remarkGfm, remarkHeadingId],
 		rehypePlugins: [
 			rehypeSlug,
+			// @ts-ignore
 			() =>
-				rehypePrism({
-					ignoreMissing: true,
+				rehypePrettyCode({
+					theme: {
+						dark: "one-dark-pro",
+						light: "github-light",
+					},
 				}),
+			// () =>
+			// 	rehypePrism({
+			// 		ignoreMissing: true,
+			// 	}),
 		],
 	},
 	disableImportAliasWarning: true,

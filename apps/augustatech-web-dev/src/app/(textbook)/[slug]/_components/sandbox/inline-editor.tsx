@@ -1,6 +1,7 @@
 "use client";
 import { ChevronRight } from "lucide-react";
 import { useContext } from "react";
+import ReactTextareaAutosize from "react-textarea-autosize";
 import { Context } from "./context";
 
 export const InlineEditor = () => {
@@ -9,12 +10,7 @@ export const InlineEditor = () => {
 	const handleKeydown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.shiftKey && e.key === "Enter") {
 			e.preventDefault();
-			const target = e.currentTarget;
-			const start = target.selectionStart;
-			const end = target.selectionEnd;
-			const value = target.value;
-			target.value = `${value.substring(0, start)}\n${value.substring(end)}`;
-			target.selectionStart = target.selectionEnd = start + 1;
+			e.currentTarget.value += "\n";
 			return;
 		}
 
@@ -43,8 +39,8 @@ export const InlineEditor = () => {
 			<div className="pl-1">
 				<ChevronRight className="size-5 fill-blue-500" />
 			</div>
-			<textarea
-				className="flex-1 py-[7px]"
+			<ReactTextareaAutosize
+				className="flex-1 p-2 overflow-y-hidden"
 				rows={1}
 				style={{ fontFamily: "PT Mono, monospace" }}
 				onKeyDown={handleKeydown}

@@ -1,7 +1,8 @@
 "use client";
 import { Spinner } from "@/components/spinner";
+import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "./context";
 
 const Editor = dynamic(
@@ -22,17 +23,20 @@ const Editor = dynamic(
 const minHeight = 60;
 export const CodeEditor = (props: { height?: number }) => {
 	const { editorRef, code } = useContext(Context);
+	const { theme } = useTheme();
 	const [height, setHeight] = useState(props.height || minHeight);
+	useEffect(() => {}, []);
 
 	return (
 		<Editor
 			width="100%"
 			height={height}
 			language="javascript"
-			theme="light"
+			theme={theme === "dark" ? "vs-dark" : "light"}
 			defaultValue={code}
 			onMount={(e) => {
 				editorRef.current = e;
+
 				if (!props.height) {
 					const lines = e.getModel()?.getLineCount();
 					setHeight(lines ? Math.max(lines * 40, minHeight) : minHeight);

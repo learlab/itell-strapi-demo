@@ -18,6 +18,14 @@ html {
   scroll-behavior: smooth;
 }
 
+
+textarea {
+  resize: none;
+}
+
+
+
+
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
   margin-top: 0;
