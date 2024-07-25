@@ -134,6 +134,9 @@ h5,
   user-select: none;
 }
 
+code,
+pre,
+table,
 #page-content button,
 #page-content .question-container,
 #page-content .pager,
