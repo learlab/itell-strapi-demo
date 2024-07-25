@@ -66,7 +66,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, []);
 
 	const exitChunk = () => {
-		const summaryEl = document.querySelector("#page-summary");
+		const summaryEl = document.querySelector("#page-assignments");
 		driverObj.destroy();
 
 		if (summaryEl) {

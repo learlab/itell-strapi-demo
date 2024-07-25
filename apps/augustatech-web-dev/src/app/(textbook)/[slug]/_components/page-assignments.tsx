@@ -16,7 +16,7 @@ type Props = {
 	condition: string;
 };
 
-export const PageSummary = async ({
+export const PageAssignments = async ({
 	pageSlug,
 	pageStatus,
 	user,
@@ -28,10 +28,14 @@ export const PageSummary = async ({
 	}
 
 	return (
-		<div
+		<section
 			className="grid gird-cols-1 lg:grid-cols-3 gap-8 p-4 lg:p-8 border-t-2 mb-20 "
-			id="page-summary"
+			id="page-assignments"
+			aria-labelledby="page-assignments-heading"
 		>
+			<h2 className="sr-only" id="page-assignments-heading">
+				assignments
+			</h2>
 			{condition === Condition.SIMPLE ? (
 				<div className="col-span-full max-w-2xl mx-auto space-y-4">
 					<SummaryFormSimple page={page} pageStatus={pageStatus} />
@@ -66,6 +70,6 @@ export const PageSummary = async ({
 					</div>
 				</>
 			)}
-		</div>
+		</section>
 	);
 };

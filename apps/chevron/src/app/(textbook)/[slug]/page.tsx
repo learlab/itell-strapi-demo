@@ -1,3 +1,4 @@
+import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assignments";
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { getSession } from "@/lib/auth";
@@ -17,7 +18,6 @@ import { NoteLoader } from "@textbook/note/note-loader";
 import { PageContent } from "@textbook/page-content";
 import { PageInfo } from "@textbook/page-info";
 import { PageStatusModal } from "@textbook/page-status-modal";
-import { PageSummary } from "@textbook/page-summary";
 import { PageTitle } from "@textbook/page-title";
 import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
@@ -110,7 +110,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			</main>
 
 			{page.summary && user && (
-				<PageSummary
+				<PageAssignments
 					pageSlug={pageSlug}
 					pageStatus={pageStatus}
 					user={user}

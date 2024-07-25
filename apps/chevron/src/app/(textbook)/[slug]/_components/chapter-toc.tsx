@@ -124,9 +124,9 @@ export const ChapterToc = ({
 				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4 xl:size-6" />}
-						text="Summarize"
-						href="#page-summary"
-						aria-label="summarize this page"
+						text="Assignment"
+						href="#page-assignments"
+						aria-label="assignments for this page"
 					/>
 				)}
 				<RestartPageButton pageSlug={currentPage.page_slug} />

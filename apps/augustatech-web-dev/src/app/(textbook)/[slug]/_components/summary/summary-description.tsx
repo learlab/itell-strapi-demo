@@ -14,15 +14,15 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 	if (!guide) return null;
 
 	return (
-		<section aria-labelledby="summary-guide">
-			<h2 id="summary-guide" className="sr-only">
-				guide on writing a summary
+		<aside aria-labelledby="summary-guide-heading">
+			<h2 id="summary-guide-heading" className="sr-only">
+				summary writing guide
 			</h2>
 			<MainMdx
 				article={false}
 				components={{ AccordionItem, Accordion }}
 				code={guide.body.code}
 			/>
-		</section>
+		</aside>
 	);
 };

@@ -16,7 +16,7 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 	return (
 		<section aria-labelledby="summary-guide">
 			<h2 id="summary-guide" className="sr-only">
-				guide on writing a summary
+				summary writing guide
 			</h2>
 			<MainMdx
 				article={false}

@@ -95,7 +95,7 @@ const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 };
 
 const exitQuestion = () => {
-	const summaryEl = document.querySelector("#page-summary");
+	const summaryEl = document.querySelector("#page-assignments");
 
 	driverObj.destroy();
 
