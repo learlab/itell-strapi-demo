@@ -17,8 +17,6 @@ export const Sandbox = ({ height, children }: Props) => {
 	return (
 		<Provider code={code}>
 			<div className="grid gap-1 sandbox">
-				<Runner />
-
 				<Control />
 				<div className="flex flex-col gap-0">
 					<div className="border-b pb-4">

@@ -5,6 +5,7 @@ const { withContentlayer } = require("next-contentlayer");
  */
 const nextConfig = {
 	reactStrictMode: false,
+
 	images: {
 		remotePatterns: [
 			{

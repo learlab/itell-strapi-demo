@@ -7,6 +7,7 @@ import {
 	SetStateAction,
 	createContext,
 	useCallback,
+	useEffect,
 	useId,
 	useRef,
 	useState,
@@ -17,7 +18,6 @@ type ContextType = {
 	logs: LogMessage[];
 	setLogs: Dispatch<SetStateAction<LogMessage[]>>;
 	editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>;
-	runnerRef: RefObject<HTMLIFrameElement>;
 	runCode: (code?: string, source?: "editor" | "console") => void;
 	id: string;
 	code: string;
@@ -35,14 +35,14 @@ export const Provider = ({ children, code }: Props) => {
 	const id = useId();
 	const [logs, setLogs] = useState<LogMessage[]>([]);
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-	const runnerRef = useRef<HTMLIFrameElement>(null);
+	const runnerRef = useRef<HTMLIFrameElement>();
 
 	const runCode = useCallback(
 		(code?: string, source: "editor" | "console" = "editor") => {
 			if (runnerRef.current?.contentWindow) {
 				const c = code || editorRef.current?.getValue() || "";
 				runnerRef.current.contentWindow.postMessage(
-					{ type: "run-code", code: c, source, iframeId: id },
+					{ type: "run-code", code: c, source, id },
 					"*",
 				);
 			}
@@ -57,6 +57,25 @@ export const Provider = ({ children, code }: Props) => {
 		}
 	}, []);
 
+	const handleMessage = useCallback((event: MessageEvent) => {
+		if (event.data && event.data.type === "log" && event.data.id === id) {
+			if (Array.isArray(event.data.log)) {
+				setLogs((prevLogs) => [...prevLogs, ...event.data.log]);
+			} else {
+				setLogs((prevLogs) => [...prevLogs, event.data.log]);
+			}
+		}
+	}, []);
+
+	useEffect(() => {
+		runnerRef.current = document.querySelector("#runner") as HTMLIFrameElement;
+
+		window.addEventListener("message", handleMessage);
+		return () => {
+			window.removeEventListener("message", handleMessage);
+		};
+	}, [handleMessage]);
+
 	return (
 		<Context.Provider
 			value={{
@@ -64,7 +83,6 @@ export const Provider = ({ children, code }: Props) => {
 				logs,
 				setLogs,
 				editorRef,
-				runnerRef,
 				runCode,
 				code,
 				reset,
