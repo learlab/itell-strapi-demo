@@ -35,7 +35,7 @@ export const CodeEditor = (props: { height?: number }) => {
 				editorRef.current = e;
 				if (!props.height) {
 					const lines = e.getModel()?.getLineCount();
-					setHeight(Math.max(lines * 40, minHeight));
+					setHeight(lines ? Math.max(lines * 40, minHeight) : minHeight);
 				}
 			}}
 			options={{
