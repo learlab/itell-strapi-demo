@@ -43,7 +43,7 @@ const srcDoc = `
             return arg;
         }
 
-        async function handleEvent(event) {
+        window.addEventListener("message", async (event) => {
             if (event.data.type === "run-code") {
                 const { code, id, source } = event.data;
                 currentId = id;
@@ -53,7 +53,7 @@ const srcDoc = `
                 }
 
                 try {
-                    const result = eval(code);
+                    const result = eval?.(code);
                     if (result !== undefined && result !== "use strict") {
                         postLogToParent("return", [serializeArg(result)], id);
                     }
@@ -62,9 +62,7 @@ const srcDoc = `
                     postLogToParent("error", [error.toString()], id);
                 }
             }
-        }
-
-        window.addEventListener("message", handleEvent);
+        });
     </script>
 </head>
 <body></body>

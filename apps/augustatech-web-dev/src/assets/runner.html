@@ -1,7 +1,8 @@
 <html>
+
 <head>
     <script>
-        let currentId = null; 
+        let currentId = null;
         const originalConsole = { ...console };
         const methods = ["log", "debug", "info", "warn", "error", "table", "clear", "time", "timeEnd", "count", "assert", "dir"];
 
@@ -25,22 +26,22 @@
 
         function serializeArg(arg) {
             if (arg instanceof Promise) return "Promise { <pending> }";
-            if (typeof arg === "object") return JSON.parse(JSON.stringify(arg));
+            if (typeof arg === "object") return structuredClone(arg);
             if (typeof arg === "function") return arg.toString();
             return arg;
         }
 
-        async function handleEvent(event) {
+        window.addEventListener("message", async (event) => {
             if (event.data.type === "run-code") {
                 const { code, id, source } = event.data;
-                currentId = id; 
-                
+                currentId = id;
+
                 if (source === "console") {
                     postLogToParent("source-console", [code], id);
                 }
 
                 try {
-                    const result = eval(code);
+                    const result = eval?.(code);
                     if (result !== undefined && result !== "use strict") {
                         postLogToParent("return", [serializeArg(result)], id);
                     }
@@ -49,10 +50,10 @@
                     postLogToParent("error", [error.toString()], id);
                 }
             }
-        }
-
-        window.addEventListener("message", handleEvent);
+        });
     </script>
 </head>
+
 <body></body>
+
 </html>

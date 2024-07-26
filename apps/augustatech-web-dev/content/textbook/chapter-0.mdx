@@ -76,26 +76,45 @@ Calculations with whole numbers (also called _integers_) that are smaller than t
 ## Arithmetic \{#Arithmetic-763t}
 The main thing to do with numbers is arithmetic. Arithmetic operations such as addition or multiplication take two number values and produce a new number from them. Here is what they look like in JavaScript:
 
-<Sandbox>
+```js
 100 + 4 * 11;
-</Sandbox>
+```
 
 The `+` and `*` symbols are called _operators_. The first stands for addition and the second stands for multiplication. Putting an operator between two values will apply it to those values and produce a new value.
 
 Does this example mean “Add 4 and 100, and multiply the result by 11”, or is the multiplication done before the adding? As you might have guessed, the multiplication happens first. As in mathematics, you can change this by wrapping the addition in parentheses.
 
-<Sandbox>
+```js
 (100 + 4) * 11
-</Sandbox>
+```
 
 **example of setting the height for the sandbox**
 
-<Sandbox height={300} >
-console.log(typeof 4.5)
-// → number
-console.log(typeof "x")
-// → string
+<Sandbox id = "repeat">
+{`
+function repeat(n, action) {
+  for (let i = 0; i < n; i++) {
+    action(i);
+  }
+}
+
+repeat(3, console.log);
+`}
 </Sandbox>
+
+
+<Sandbox >
+{`
+let labels = [];
+repeat(5, i => {
+  labels.push(\`Unit \${i + 1}\`);
+});
+console.log(labels);
+`}
+</Sandbox>
+
+
+
 
 Example of inline code `[1, 2, 3].join('-'){:js}`
 

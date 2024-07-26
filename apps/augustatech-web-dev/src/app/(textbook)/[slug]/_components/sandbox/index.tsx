@@ -1,31 +1,49 @@
 import React from "react";
-import { Provider } from "./context";
-import { Control } from "./control";
 import { CodeEditor } from "./editor";
-import { InlineEditor } from "./inline-editor";
-import { Output } from "./output";
-import { Runner } from "./runner";
 
 type Props = {
 	height?: number;
+	id?: string;
+	code?: string;
 	children: React.ReactNode;
+	dependencies?: string[];
 };
 
-export const Sandbox = ({ height, children }: Props) => {
-	const child = React.Children.toArray(children).at(0);
-	const code = (child as any)?.props?.children || "";
+const hash = async (code: string) => {
+	const encoder = new TextEncoder();
+	const data = encoder.encode(code);
+	const hash = await crypto.subtle.digest("SHA-256", data);
+	const hashArray = Array.from(new Uint8Array(hash));
+	const hashHex = hashArray
+		.map((b) => b.toString(16).padStart(2, "0"))
+		.join("");
+	return hashHex;
+};
+
+export const Sandbox = async ({
+	id,
+	code,
+	height,
+	children,
+	dependencies,
+}: Props) => {
+	const editorCode =
+		code || React.Children.toArray(children).join("").trim() || "";
+
+	const editorId = id || (await hash(editorCode)).slice(0, 8);
+
 	return (
-		<Provider code={code}>
-			<div className="grid gap-1 sandbox">
-				<Control />
-				<div className="flex flex-col gap-0">
-					<div className="border-b pb-4">
-						<CodeEditor height={height} />
-					</div>
-					<Output />
-					<InlineEditor />
-				</div>
-			</div>
-		</Provider>
+		<div
+			className="flex flex-col my-4 sandbox"
+			id={editorId}
+			aria-label="code exercise"
+		>
+			<CodeEditor
+				id={editorId}
+				code={editorCode}
+				height={height}
+				dependencies={dependencies}
+			/>
+		</div>
 	);
 };
