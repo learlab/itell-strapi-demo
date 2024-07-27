@@ -35,6 +35,7 @@ export const GoogleLoginButton = () => {
 					router.push("/auth/google");
 				});
 			}}
+			aria-label="log in via google"
 			variant={"outline"}
 			disabled={pending}
 		>
@@ -66,6 +67,7 @@ export const OutlookLoginButton = () => {
 					router.push("/auth/azure");
 				});
 			}}
+			aria-label="log in via outlook"
 			variant={"outline"}
 			disabled={pending}
 		>
@@ -98,6 +100,7 @@ export const LoginButton = () => {
 				});
 			}}
 			variant={"outline"}
+			aria-disabled={pending}
 			disabled={pending}
 		>
 			<span className="flex items-center gap-2">
@@ -120,6 +123,7 @@ export const LogoutButton = () => {
 					router.push("/auth");
 				});
 			}}
+			aria-disabled={pending}
 			disabled={pending}
 			variant={"outline"}
 		>

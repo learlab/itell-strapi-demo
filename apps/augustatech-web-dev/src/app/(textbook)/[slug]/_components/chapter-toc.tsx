@@ -97,6 +97,7 @@ export const ChapterToc = ({
 								<button
 									type="button"
 									onClick={() => navigatePage(p.page_slug)}
+									role="link"
 									disabled={(pending || !visible) && isProduction}
 									className={cn(
 										"w-full text-left text-balance inline-flex justify-between items-start text-lg xl:text-xl xl:gap-4",

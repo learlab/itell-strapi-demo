@@ -54,11 +54,16 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 				<p className="isolate text-sm font-light absolute right-2 bottom-2 opacity-70">
 					{pluralize("word", numOfWords(input), true)}
 				</p>
+				<label htmlFor="summary-input" className="sr-only">
+					summary text
+				</label>
 				<textarea
+					id="summary-input"
 					name="input"
 					ref={ref as ForwardedRef<HTMLTextAreaElement>}
 					value={input}
 					disabled={disabled}
+					aria-disabled={disabled}
 					placeholder={"Write your summary here"}
 					onChange={(e) => setInput(e.currentTarget.value)}
 					rows={10}

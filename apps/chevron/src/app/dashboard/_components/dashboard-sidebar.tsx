@@ -23,7 +23,7 @@ export const DashboardSidebar = () => {
 						<button
 							type="button"
 							className="block w-full"
-							disabled={item.disabled}
+							role="link"
 							onClick={() => {
 								setActiveRoute(item.href);
 								startTransition(() => {
@@ -35,7 +35,6 @@ export const DashboardSidebar = () => {
 								className={cn(
 									"group flex items-center gap-2 px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
 									activeRoute === item.href ? "bg-accent" : "transparent",
-									item.disabled && "cursor-not-allowed opacity-80",
 								)}
 							>
 								{item.icon || <ArrowRightIcon className="size-4" />}

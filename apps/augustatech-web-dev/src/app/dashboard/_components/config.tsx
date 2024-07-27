@@ -41,7 +41,6 @@ export type DashboardNavItem = {
 export type SidebarNavItem = {
 	title: string;
 	href: string;
-	disabled?: boolean;
 	external?: boolean;
 	icon?: React.ReactNode;
 };

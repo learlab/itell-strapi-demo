@@ -81,9 +81,16 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 					{/* user name and email */}
 					<div className="flex items-center justify-start gap-2 p-2">
 						<div className="flex flex-col space-y-1 leading-none">
-							{user.name && <p className="font-medium">{user.name}</p>}
+							{user.name && (
+								<p className="font-medium" aria-label="username">
+									{user.name}
+								</p>
+							)}
 							{user.email && (
-								<p className="w-[200px] truncate text-sm text-muted-foreground">
+								<p
+									className="w-[200px] truncate text-sm text-muted-foreground"
+									aria-label="user email"
+								>
 									{user.email}
 								</p>
 							)}
@@ -104,7 +111,11 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 							disabled={active === item.text && pending}
 							key={item.href}
 						>
-							<button type="button" className="flex items-center gap-2 w-full">
+							<button
+								role="link"
+								type="button"
+								className="flex items-center gap-2 w-full"
+							>
 								{active === item.text ? <Spinner /> : item.icon}
 								{item.text}
 							</button>
@@ -125,7 +136,11 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 							});
 						}}
 					>
-						<button type="button" className="flex items-center gap-2 w-full">
+						<button
+							role="link"
+							type="button"
+							className="flex items-center gap-2 w-full"
+						>
 							{logoutPending ? <Spinner /> : <LogOutIcon className="size-4" />}
 							Sign out
 						</button>

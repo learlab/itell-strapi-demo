@@ -104,6 +104,7 @@ export const ChapterToc = ({
 											"animate-pulse": pending,
 										},
 									)}
+									role="link"
 									aria-busy={pending}
 									aria-label={`${p.title} - ${
 										unlocked ? "Unlocked" : visible ? "Visible" : "Locked"
