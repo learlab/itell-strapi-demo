@@ -7,13 +7,13 @@ interface AuthLayoutProps {
 }
 
 export const generateMetadata = async (): Promise<Metadata> => {
-	const title = `Create an account | ${SiteConfig.title}`;
+	const title = "Create an account";
 	const description = "Getting started with the textbook";
 	return {
 		title,
 		description,
 		openGraph: {
-			title,
+			title: `${title} | ${SiteConfig.title}`,
 			description,
 			type: "article",
 			url: `${env.HOST}/auth`,

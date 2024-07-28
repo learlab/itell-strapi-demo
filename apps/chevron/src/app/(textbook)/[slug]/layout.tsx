@@ -19,7 +19,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 		};
 	}
 
-	const title = `${page.title} | ${SiteConfig.title}`;
+	const title = page.title;
 	const description = page.description || page.body.raw.slice(0, 100);
 	const ogUrl = new URL(`${env.HOST}/og`);
 	ogUrl.searchParams.set("title", page.title);
@@ -29,7 +29,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 		title,
 		description,
 		openGraph: {
-			title,
+			title: `${title} | ${SiteConfig.title}`,
 			description,
 			type: "article",
 			url: `${env.HOST}${makePageHref(page.page_slug)}`,

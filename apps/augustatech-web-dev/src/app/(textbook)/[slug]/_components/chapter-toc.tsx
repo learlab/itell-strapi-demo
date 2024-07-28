@@ -73,7 +73,10 @@ export const ChapterToc = ({
 	return (
 		<>
 			<nav aria-label="textbook primary">
-				<ol className="space-y-2 leading-relaxed tracking-tight">
+				<ol
+					aria-label="list of chapters"
+					className="space-y-2 leading-relaxed tracking-tight"
+				>
 					{allPagesSorted.map((p) => {
 						const { latest, unlocked } = getPageStatus({
 							pageSlug: p.page_slug,

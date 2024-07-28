@@ -318,9 +318,7 @@ export const QuestionBoxStairs = ({
 									>
 										<span className="flex items-center gap-2">
 											<PencilIcon className="size-4" />
-											{state.status !== StatusStairs.UNANSWERED
-												? "Resubmit"
-												: "Answer"}
+											Answer
 										</span>
 									</StatusButton>
 								)}

@@ -11,8 +11,6 @@ import { Card, CardContent } from "@itell/ui/server";
 import { QuestionChart } from "@questions/question-chart";
 import pluralize from "pluralize";
 
-export const metadata = Meta.questions;
-
 export default async function () {
 	const { user } = await getSession();
 	if (!user) {

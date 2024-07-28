@@ -79,6 +79,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<div
 					id={Elements.TEXTBOOK_MAIN}
 					className="relative p-4 lg:p-8 lg:pb-12"
+					aria-live="polite"
 				>
 					<PageTitle>{page.title}</PageTitle>
 					<PageContent title={page.title} code={page.body.code} />

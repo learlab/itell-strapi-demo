@@ -39,8 +39,7 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 				</CardHeader>
 				<CardContent>
 					<p className="text-muted-foreground">
-						You have no students under this class code. Share this code with
-						your students to get started.
+						Share this code with your students to get started.
 					</p>
 				</CardContent>
 			</Card>

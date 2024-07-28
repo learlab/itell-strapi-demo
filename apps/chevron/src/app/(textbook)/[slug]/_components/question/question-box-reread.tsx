@@ -216,7 +216,7 @@ export const QuestionBoxReread = ({
 						>
 							<span className="flex items-center gap-2">
 								<PencilIcon className="size-4" />
-								{state.status === StatusReread.ANSWERED ? "Resubmit" : "Answer"}
+								Answer
 							</span>
 						</StatusButton>
 

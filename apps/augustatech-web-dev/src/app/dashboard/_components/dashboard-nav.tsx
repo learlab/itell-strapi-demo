@@ -1,6 +1,7 @@
 import { ContinueReading } from "@/components/continue-reading";
 import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
+import { Elements } from "@/lib/constants";
 import { DashboardNavMenu } from "@dashboard/nav";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +17,9 @@ export const DashboardNav = async (props: DashboardNavProps) => {
 
 	return (
 		<div className="flex gap-6 md:gap-10 justify-between h-16 px-8">
+			<a className="sr-only" href={`#${Elements.DASHBOARD_MAIN}`}>
+				skip to main content
+			</a>
 			<div className="flex gap-4 items-center">
 				<Image
 					src="/images/itell.svg"

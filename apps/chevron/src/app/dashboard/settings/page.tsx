@@ -22,8 +22,6 @@ import { QuitClass } from "@settings/quit-class";
 import { WebsiteSettings } from "@settings/website";
 import { User } from "lucia";
 
-export const metadata = Meta.settings;
-
 type Props = {
 	searchParams?: Record<string, string>;
 };

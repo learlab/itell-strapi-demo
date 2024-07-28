@@ -493,7 +493,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					>
 						<span className="flex items-center gap-2">
 							<SendHorizonalIcon className="size-4" />
-							{status === "idle" ? "Submit" : "Resubmit"}
+							Submit
 						</span>
 					</StatusButton>
 				</div>

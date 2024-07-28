@@ -57,7 +57,7 @@ export const SummaryFeedback = ({
 								className="flex items-center gap-2 text-accent-foreground"
 								key={term}
 							>
-								<Lightbulb className="size-4" /> {term}
+								<Lightbulb className="size-4" aria-hidden="true" /> {term}
 							</li>
 						))}
 					</ul>

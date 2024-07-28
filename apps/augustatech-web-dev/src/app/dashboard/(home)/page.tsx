@@ -9,8 +9,6 @@ import { UserStatistics } from "@dashboard/user-statistics";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import { Card, CardContent } from "@itell/ui/server";
 
-export const metadata = Meta.home;
-
 type Props = {
 	searchParams?: unknown;
 };

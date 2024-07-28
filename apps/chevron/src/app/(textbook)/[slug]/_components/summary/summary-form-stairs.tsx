@@ -125,6 +125,7 @@ const goToQuestion = (question: StairsQuestion) => {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
+	const submitButtonRef = useRef<HTMLButtonElement | null>(null);
 	const initialState: State = {
 		prevInput: undefined,
 		error: null,
@@ -223,12 +224,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		isDelayed,
 		isError,
 		error,
-		status,
 	} = useActionStatus(
 		async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-			clearStages();
 
+			if (submitButtonRef) {
+				submitButtonRef.current?.blur();
+			}
+
+			clearStages();
 			dispatch({ type: "submit" });
 			addStage("Scoring");
 
@@ -423,7 +427,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	useEffect(() => {
 		if (isError) {
-			console.log("summary scoring", error);
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 			clearStages();
 			reportSentry("score summary stairs", {
@@ -490,10 +493,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						disabled={!isSummaryReady}
 						pending={isPending}
 						className="w-32"
+						ref={submitButtonRef}
 					>
 						<span className="flex items-center gap-2">
 							<SendHorizontalIcon className="size-4" />
-							{status === "idle" ? "Submit" : "Resubmit"}
+							Submit
 						</span>
 					</StatusButton>
 				</div>

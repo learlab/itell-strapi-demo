@@ -80,6 +80,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<div
 					className="relative p-4 lg:p-8 lg:pb-12"
 					id={Elements.TEXTBOOK_MAIN}
+					aria-live="polite"
 				>
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&

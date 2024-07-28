@@ -1,14 +1,11 @@
 import { getTeacherAction } from "@/actions/user";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
-import { delay } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Errorbox } from "@itell/ui/server";
 import { redirect } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
 import { ClassInfo } from "./_components/class-info";
-
-export const metadata = Meta.class;
 
 export default async function () {
 	const { user } = await getSession();
