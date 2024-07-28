@@ -213,51 +213,53 @@ export const QuestionBoxStairs = ({
 			</CardHeader>
 
 			<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-				{status === StatusStairs.BOTH_INCORRECT && (
-					<div className="text-sm">
-						<p className="text-red-400">
-							<b>iTELL AI says:</b> You likely got a part of the answer wrong.
-							Please try again.
-						</p>
-						<p className=" underline">
-							{isLastQuestion
-								? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
-								: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
-						</p>
-					</div>
-				)}
-
-				{status === StatusStairs.SEMI_CORRECT && (
-					<p className="text-yellow-600 text-xs">
-						<b>iTELL AI says:</b> You may have missed something, but you were
-						generally close. You can click on the "Continue reading" button
-						below go to the next part or try again with a different response.{" "}
-					</p>
-				)}
-
-				{status === StatusStairs.BOTH_CORRECT ? (
-					<div className="flex items-center flex-col">
-						<p className="text-xl2 text-emerald-600 text-center">
-							Your answer is correct!
-						</p>
-						{shouldBlur && (
-							<p className="text-sm">
-								Click on the button below to continue reading. Please use the
-								thumbs-up or thumbs-down icons on the top right side of this box
-								if you have any feedback about this question that you would like
-								to provide before you continue reading.
+				<div role="status" className="spacey-y-4">
+					{status === StatusStairs.BOTH_INCORRECT && (
+						<div className="text-sm">
+							<p className="text-red-400">
+								<b>iTELL AI says:</b> You likely got a part of the answer wrong.
+								Please try again.
 							</p>
-						)}
-					</div>
-				) : (
-					question && (
-						<p>
-							<span className="font-bold">Question </span>
-							{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
-							{question}
+							<p className=" underline">
+								{isLastQuestion
+									? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
+									: 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
+							</p>
+						</div>
+					)}
+
+					{status === StatusStairs.SEMI_CORRECT && (
+						<p className="text-yellow-600 text-xs">
+							<b>iTELL AI says:</b> You may have missed something, but you were
+							generally close. You can click on the "Continue reading" button
+							below go to the next part or try again with a different response.{" "}
 						</p>
-					)
-				)}
+					)}
+
+					{status === StatusStairs.BOTH_CORRECT ? (
+						<div className="flex items-center flex-col">
+							<p className="text-xl2 text-emerald-600 text-center">
+								Your answer is correct!
+							</p>
+							{shouldBlur && (
+								<p className="text-sm">
+									Click on the button below to continue reading. Please use the
+									thumbs-up or thumbs-down icons on the top right side of this
+									box if you have any feedback about this question that you
+									would like to provide before you continue reading.
+								</p>
+							)}
+						</div>
+					) : (
+						question && (
+							<p>
+								<span className="font-bold">Question </span>
+								{!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
+								{question}
+							</p>
+						)
+					)}
+				</div>
 
 				<h2 id="form-question-heading" className="sr-only">
 					Answer the question

@@ -150,12 +150,15 @@ export const QuestionBoxReread = ({
 						{question}
 					</p>
 				)}
-				{state.status === StatusReread.ANSWERED && (
-					<p className="text-sm text-muted-foreground">
-						Thanks for completing this question. You can move on to the next
-						section or refine your answer.
-					</p>
-				)}
+
+				<div role="status">
+					{state.status === StatusReread.ANSWERED && (
+						<p className="text-sm text-muted-foreground">
+							Thanks for completing this question. You can move on to the next
+							section or refine your answer.
+						</p>
+					)}
+				</div>
 
 				<h2 id="form-question-heading" className="sr-only">
 					Answer the question

@@ -1,5 +1,6 @@
 "use client";
 import { createEventAction } from "@/actions/event";
+import { DelayMessage } from "@/components/delay-message";
 import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
 import { EventType } from "@/lib/constants";
@@ -70,7 +71,12 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 
 	return (
 		<div className="flex flex-col items-center justify-center">
-			{response && <p className="text-sm text-muted-foreground">{response}</p>}
+			<div role="status">
+				{response && (
+					<p className="text-sm text-muted-foreground">{response}</p>
+				)}
+			</div>
+
 			<Button
 				variant="secondary"
 				className="gap-2"
@@ -88,13 +94,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 
 			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
 
-			{isDelayed && (
-				<p className="text-sm">
-					The request is taking longer than usual, if this keeps loading without
-					a response, please try refreshing the page. If the problem persists,
-					please report to lear.lab.vu@gmail.com.
-				</p>
-			)}
+			{isDelayed && <DelayMessage />}
 		</div>
 	);
 };

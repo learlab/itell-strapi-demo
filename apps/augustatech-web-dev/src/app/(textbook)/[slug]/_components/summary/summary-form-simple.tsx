@@ -1,5 +1,6 @@
 "use client";
 import { incrementUserPageSlugAction } from "@/actions/user";
+import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/components/provider/session-provider";
 import { PageStatus } from "@/lib/page-status";
@@ -49,9 +50,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 				updateUser({ pageSlug: data.nextPageSlug });
 			} else {
 				updateUser({ finished: true });
-				toast.info(
-					"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
-				);
+				toast.info("You have finished the entire textbook!");
 			}
 
 			setFinished(true);
@@ -79,7 +78,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<p className="font-light text-lg mb-4">
+			<p className="font-light text-lg mb-4" role="status">
 				{finished
 					? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."
 					: "Below is a reference summary for this page. Please read it carefully to better understand the information presented."}
@@ -113,13 +112,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 				</StatusButton>
 			</form>
 			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
-			{isDelayed && (
-				<p className="text-sm">
-					The request is taking longer than usual, if this keeps loading without
-					a response, please try refreshing the page. If the problem persists,
-					please report to lear.lab.vu@gmail.com.
-				</p>
-			)}
+			{isDelayed && <DelayMessage />}
 		</div>
 	);
 });

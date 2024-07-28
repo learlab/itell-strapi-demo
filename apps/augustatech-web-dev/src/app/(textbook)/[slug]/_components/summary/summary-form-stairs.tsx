@@ -3,11 +3,13 @@
 import { createEventAction } from "@/actions/event";
 import { getFocusTimeAction } from "@/actions/focus-time";
 import { createSummaryAction } from "@/actions/summary";
+import { DelayMessage } from "@/components/delay-message";
 import { useChat, useQuestion } from "@/components/provider/page-provider";
 import {
 	useSession,
 	useSessionAction,
 } from "@/components/provider/session-provider";
+import { Spinner } from "@/components/spinner";
 import { Condition, Elements } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -34,13 +36,13 @@ import {
 	validateSummary,
 } from "@itell/core/summary";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
-import { Button, StatusButton } from "@itell/ui/client";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChatStairs } from "@textbook/chat-stairs";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
-import { FileQuestionIcon, SendHorizonalIcon } from "lucide-react";
+import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
@@ -377,9 +379,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (data.canProceed) {
 					if (isLastPage(pageSlug)) {
 						updateUser({ finished: true });
-						toast.info(
-							"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
-						);
+						toast.info("You have finished the entire textbook!");
 					} else {
 						updateUser({ pageSlug: data.nextPageSlug });
 						// check if we can already proceed to prevent excessive toasts
@@ -486,7 +486,21 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
-					<StatusButton
+					<Button
+						type="submit"
+						disabled={isPending || !isSummaryReady}
+						aria-disabled={isPending || !isSummaryReady}
+					>
+						<span className="inline-flex items-center gap-2">
+							{isPending ? (
+								<Spinner />
+							) : (
+								<SendHorizontalIcon className="size-4" />
+							)}
+							Submit
+						</span>
+					</Button>
+					{/* <StatusButton
 						disabled={!isSummaryReady}
 						pending={isPending}
 						className="w-32"
@@ -495,16 +509,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							<SendHorizonalIcon className="size-4" />
 							Submit
 						</span>
-					</StatusButton>
+					</StatusButton> */}
 				</div>
 			</form>
-			{isDelayed && (
-				<p className="text-sm">
-					The request is taking longer than usual, if this keeps loading without
-					a response, please try refreshing the page. If the problem persists,
-					please report to lear.lab.vu@gmail.com.
-				</p>
-			)}
+			{isDelayed && <DelayMessage />}
 		</div>
 	);
 };

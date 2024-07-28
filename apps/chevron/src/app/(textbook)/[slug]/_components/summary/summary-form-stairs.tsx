@@ -3,11 +3,13 @@
 import { createEventAction } from "@/actions/event";
 import { getFocusTimeAction } from "@/actions/focus-time";
 import { createSummaryAction } from "@/actions/summary";
+import { DelayMessage } from "@/components/delay-message";
 import { useChat, useQuestion } from "@/components/provider/page-provider";
 import {
 	useSession,
 	useSessionAction,
 } from "@/components/provider/session-provider";
+import { Spinner } from "@/components/spinner";
 import { Condition, Elements } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -125,7 +127,6 @@ const goToQuestion = (question: StairsQuestion) => {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
-	const submitButtonRef = useRef<HTMLButtonElement | null>(null);
 	const initialState: State = {
 		prevInput: undefined,
 		error: null,
@@ -227,10 +228,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	} = useActionStatus(
 		async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-
-			if (submitButtonRef) {
-				submitButtonRef.current?.blur();
-			}
 
 			clearStages();
 			dispatch({ type: "submit" });
@@ -381,9 +378,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (data.canProceed) {
 					if (isLastPage(pageSlug)) {
 						updateUser({ finished: true });
-						toast.info(
-							"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
-						);
+						toast.info("You have finished the entire textbook!");
 					} else {
 						updateUser({ pageSlug: data.nextPageSlug });
 						// check if we can already proceed to prevent excessive toasts
@@ -489,26 +484,33 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				/>
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
-					<StatusButton
+					<Button
+						type="submit"
+						disabled={isPending || !isSummaryReady}
+						aria-disabled={isPending || !isSummaryReady}
+					>
+						<span className="inline-flex items-center gap-2">
+							{isPending ? (
+								<Spinner />
+							) : (
+								<SendHorizontalIcon className="size-4" />
+							)}
+							Submit
+						</span>
+					</Button>
+					{/* <StatusButton
 						disabled={!isSummaryReady}
 						pending={isPending}
 						className="w-32"
-						ref={submitButtonRef}
 					>
 						<span className="flex items-center gap-2">
 							<SendHorizontalIcon className="size-4" />
 							Submit
 						</span>
-					</StatusButton>
+					</StatusButton> */}
 				</div>
 			</form>
-			{isDelayed && (
-				<p className="text-sm">
-					The request is taking longer than usual, if this keeps loading without
-					a response, please try refreshing the page. If the problem persists,
-					please report to lear.lab.vu@gmail.com.
-				</p>
-			)}
+			{isDelayed && <DelayMessage />}
 		</div>
 	);
 };

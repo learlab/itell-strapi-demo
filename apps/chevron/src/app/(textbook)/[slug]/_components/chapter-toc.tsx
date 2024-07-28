@@ -126,7 +126,7 @@ export const ChapterToc = ({
 			<div className="mt-12 space-y-2">
 				<p className="sr-only">page control</p>
 				{isAdmin(userRole) && <AdminTools condition={condition} />}
-				{currentPage.summary && condition !== Condition.SIMPLE && (
+				{currentPage.summary && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4 xl:size-6" />}
 						text="Assignment"

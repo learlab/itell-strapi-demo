@@ -47,7 +47,7 @@ export const SummaryFeedback = ({
 				)}
 			</header>
 			{feedback && terms.length > 0 && (
-				<Component>
+				<Component role="status">
 					<p className="my-2">
 						Improve your summary by including some of the following keywords:
 					</p>
@@ -57,7 +57,8 @@ export const SummaryFeedback = ({
 								className="flex items-center gap-2 text-accent-foreground"
 								key={term}
 							>
-								<Lightbulb className="size-4" aria-hidden="true" /> {term}
+								<Lightbulb className="size-4" aria-hidden="true" />
+								{term}
 							</li>
 						))}
 					</ul>

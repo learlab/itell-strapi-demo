@@ -2,8 +2,10 @@
 
 import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
+import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/components/provider/session-provider";
+import { Spinner } from "@/components/spinner";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -190,9 +192,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			if (isLastPage(pageSlug)) {
 				updateUser({ finished: true });
-				toast.info(
-					"You have finished the entire textbook! Please use the survey code to access the outtake survey.",
-				);
+				toast.info("You have finished the entire textbook!");
 				return;
 			}
 
@@ -223,15 +223,19 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	return (
 		<div className="flex flex-col gap-2">
 			{portalNodes}
-			{finished && page.nextPageSlug && (
-				<div className="space-y-2 space-x-2">
-					<p>
-						You have finished this page and can move on. You are still welcome
-						to improve the summary.
-					</p>
-					<NextPageButton pageSlug={page.nextPageSlug} />
-				</div>
-			)}
+
+			<div role="status">
+				{finished && page.nextPageSlug && (
+					<div className="space-y-2 space-x-2">
+						<p>
+							You have finished this page and can move on. You are still welcome
+							to improve the summary.
+						</p>
+						<NextPageButton pageSlug={page.nextPageSlug} />
+					</div>
+				)}
+			</div>
+
 			<h2 id="summary-form-heading" className="sr-only">
 				submit summary
 			</h2>
@@ -250,13 +254,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					ref={ref}
 				/>
 				{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
-				{isDelayed && (
-					<p className="text-sm">
-						The request is taking longer than usual, if this keeps loading
-						without a response, please try refreshing the page. If the problem
-						persists, please report to lear.lab.vu@gmail.com.
-					</p>
-				)}
+				{isDelayed && <DelayMessage />}
 				<div className="flex justify-end">
 					<StatusButton
 						disabled={!isSummaryReady}
@@ -264,7 +262,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						className="w-32"
 					>
 						<span className="flex items-center gap-2">
-							<SendHorizontalIcon className="size-4" />
+							{isPending ? (
+								<Spinner />
+							) : (
+								<SendHorizontalIcon className="size-4" />
+							)}
 							Submit
 						</span>
 					</StatusButton>
