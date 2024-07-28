@@ -123,7 +123,8 @@ export const ChapterToc = ({
 					})}
 				</ol>
 			</nav>
-			<div className="mt-12 space-y-2" aria-label="page control">
+			<div className="mt-12 space-y-2">
+				<p className="sr-only">page control</p>
 				{isAdmin(userRole) && <AdminTools condition={condition} />}
 				{currentPage.summary && condition !== Condition.SIMPLE && (
 					<AnchorLink

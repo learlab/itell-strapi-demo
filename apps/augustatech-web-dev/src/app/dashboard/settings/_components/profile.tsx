@@ -11,7 +11,8 @@ export const Profile = ({ user }: { user: User }) => {
 					<UserAvatar name={user.name} image={user.image} />
 					<p className="leading-none font-semibold">{user.name}</p>
 				</div>
-				<p aria-label="user email" className="text-muted-foreground text-sm">
+				<p className="text-muted-foreground text-sm">
+					<span className="sr-only">user's email</span>
 					{user.email}
 				</p>
 			</div>

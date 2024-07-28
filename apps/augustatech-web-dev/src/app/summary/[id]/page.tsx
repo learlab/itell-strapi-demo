@@ -54,7 +54,8 @@ export default async function ({ params }: PageProps) {
 				<SummaryOperations pageUrl={page.url} />
 			</header>
 			<main className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
-				<div aria-label="summary scores" className="w-[200px] space-y-4">
+				<div className="w-[200px] space-y-4">
+					<p className="sr-only">summary scores</p>
 					<div className="flex items-center justify-center">
 						<Badge variant={summary.isPassed ? "default" : "destructive"}>
 							{summary.isPassed ? "Passed" : "Failed"}

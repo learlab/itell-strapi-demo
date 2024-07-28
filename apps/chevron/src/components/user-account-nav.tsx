@@ -82,15 +82,14 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 					<div className="flex items-center justify-start gap-2 p-2">
 						<div className="flex flex-col space-y-1 leading-none">
 							{user.name && (
-								<p className="font-medium" aria-label="username">
+								<p className="font-medium">
+									<span className="sr-only">username</span>
 									{user.name}
 								</p>
 							)}
 							{user.email && (
-								<p
-									className="w-[200px] truncate text-sm text-muted-foreground"
-									aria-label="user email"
-								>
+								<p className="w-[200px] truncate text-sm text-muted-foreground">
+									<span className="sr-only">user email</span>
 									{user.email}
 								</p>
 							)}

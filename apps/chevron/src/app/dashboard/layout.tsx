@@ -62,13 +62,13 @@ export default async function DashboardLayout({
 				className="min-h-screen grid md:grid-cols-[200px_1fr] group"
 			>
 				<DashboardSidebar />
-				<div
+				<section
 					aria-label="dashboard main panel"
 					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
 					aria-live="polite"
 				>
 					{children}
-				</div>
+				</section>
 			</main>
 		</>
 	);

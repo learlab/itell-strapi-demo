@@ -12,7 +12,9 @@ export function middleware(request: NextRequest) {
 	const response = NextResponse.next();
 	if (pathname.startsWith("/dashboard") || pathname.startsWith("/summary/")) {
 		if (!request.cookies.has("auth_session")) {
-			return NextResponse.redirect(new URL("/auth", request.nextUrl.origin));
+			const url = new URL("/auth", request.nextUrl.origin);
+			url.searchParams.set("from_dashboard", "true");
+			return NextResponse.redirect(url);
 		}
 	}
 

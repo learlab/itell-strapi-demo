@@ -1,4 +1,5 @@
 import { SiteConfig } from "@/config/site";
+import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { AuthForm, LogoutButton } from "@auth/auth-form";
@@ -6,6 +7,7 @@ import { KnowledgeCarousel } from "@auth/knowledge-carousel";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 
 type PageProps = {
@@ -16,6 +18,52 @@ const ErrorDict: Record<string, string> = {
 	oauth: "A problem occurred while logging in. Please try again later.",
 	access_denied:
 		"This application needs your consent to access your social account. You may come back at any time.",
+};
+
+export const generateMetadata = async ({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string | string[] | undefined };
+}): Promise<Metadata> => {
+	const fromDashboard = searchParams && searchParams.from_dashboard === "true";
+	if (fromDashboard) {
+		const title = "Dashboard";
+		const description = `Learning statistics on the ${SiteConfig.title} intelligent textbook`;
+		return {
+			title,
+			description,
+			metadataBase: new URL(env.HOST),
+			openGraph: {
+				title: `${title} | ${SiteConfig.title}`,
+				description,
+				type: "article",
+				url: `${env.HOST}/dashboard`,
+				images: [
+					{
+						url: "/og?dashboard=true",
+					},
+				],
+			},
+		};
+	}
+
+	const title = "Create an account";
+	const description = "Getting started with the textbook";
+	return {
+		title,
+		description,
+		openGraph: {
+			title: `${title} | ${SiteConfig.title}`,
+			description,
+			type: "article",
+			url: `${env.HOST}/auth`,
+			images: [
+				{
+					url: "/og?auth=true",
+				},
+			],
+		},
+	};
 };
 
 export default async function ({ searchParams }: PageProps) {
