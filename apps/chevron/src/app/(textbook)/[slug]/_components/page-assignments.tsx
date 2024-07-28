@@ -1,4 +1,4 @@
-import { Condition } from "@/lib/constants";
+import { Condition, Elements } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { User } from "lucia";
@@ -30,7 +30,7 @@ export const PageAssignments = async ({
 	return (
 		<div
 			className="grid gird-cols-1 lg:grid-cols-3 gap-8 p-4 lg:p-8 border-t-2 mb-20 "
-			id="page-assignments"
+			id={Elements.PAGE_ASSIGNMENTS}
 			aria-labelledby="page-assignments-heading"
 		>
 			<h2 className="sr-only" id="page-assignments-heading">

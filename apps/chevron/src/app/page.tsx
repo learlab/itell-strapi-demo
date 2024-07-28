@@ -2,6 +2,7 @@ import { ContinueReading } from "@/components/continue-reading";
 import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
+import { Elements } from "@/lib/constants";
 import { cn } from "@itell/core/utils";
 import { home } from "contentlayer/generated";
 import { GithubIcon } from "lucide-react";
@@ -10,7 +11,10 @@ export default async function () {
 	return (
 		<>
 			<TextbookNav read />
-			<main className="flex-1 px-6 md:px-10 lg:px-16 py-8 mx-auto max-w-3xl space-y-6">
+			<main
+				className="flex-1 px-6 md:px-10 lg:px-16 py-8 mx-auto max-w-3xl space-y-6"
+				id={Elements.TEXTBOOK_MAIN}
+			>
 				<MainMdx code={home.body.code} />
 				<div className="flex justify-center items-center">
 					<ContinueReading className="w-48" />

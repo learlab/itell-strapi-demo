@@ -4,7 +4,7 @@ import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/components/provider/session-provider";
-import { Condition, EventType } from "@/lib/constants";
+import { Condition, Elements, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -66,11 +66,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, []);
 
 	const exitChunk = () => {
-		const summaryEl = document.querySelector("#page-assignments");
+		const el = document.querySelector(Elements.PAGE_ASSIGNMENTS);
 		driverObj.destroy();
 
-		if (summaryEl) {
-			scrollToElement(summaryEl as HTMLDivElement);
+		if (el) {
+			scrollToElement(el as HTMLElement);
 		}
 	};
 

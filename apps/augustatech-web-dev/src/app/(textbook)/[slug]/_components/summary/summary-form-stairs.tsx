@@ -8,7 +8,7 @@ import {
 	useSession,
 	useSessionAction,
 } from "@/components/provider/session-provider";
-import { Condition } from "@/lib/constants";
+import { Condition, Elements } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -95,12 +95,12 @@ const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 };
 
 const exitQuestion = () => {
-	const summaryEl = document.querySelector("#page-assignments");
+	const summaryEl = document.querySelector(Elements.PAGE_ASSIGNMENTS);
 
 	driverObj.destroy();
 
 	if (summaryEl) {
-		scrollToElement(summaryEl as HTMLDivElement);
+		scrollToElement(summaryEl as HTMLElement);
 	}
 };
 

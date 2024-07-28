@@ -42,7 +42,7 @@ export default async function () {
 				</div>
 			</div>
 
-			<div id="page-content-wrapper" className="relative p-4 lg:p-8">
+			<div className="relative p-4 lg:p-8">
 				<PageTitle>{page.title}</PageTitle>
 
 				{arr.map((i) => (

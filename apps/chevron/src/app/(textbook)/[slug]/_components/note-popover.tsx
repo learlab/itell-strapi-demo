@@ -1,6 +1,7 @@
 "use client";
 import { createNoteAction } from "@/actions/note";
 import { Spinner } from "@/components/spinner";
+import { Elements } from "@/lib/constants";
 import {
 	defaultHighlightColor,
 	useNoteColor,
@@ -89,7 +90,7 @@ export const NotePopover = ({ pageSlug, userId }: Props) => {
 	} | null>(null);
 	const handler = (e: Event) => {
 		const selection = window.getSelection();
-		const target = document.getElementById("page-content");
+		const target = document.getElementById(Elements.PAGE_CONTENT);
 
 		if (!selection?.rangeCount) {
 			return setState(null);

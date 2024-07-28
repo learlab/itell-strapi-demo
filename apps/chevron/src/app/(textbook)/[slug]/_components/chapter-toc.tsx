@@ -3,7 +3,7 @@
 import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { isAdmin } from "@/lib/auth/role";
-import { isProduction } from "@/lib/constants";
+import { Elements, isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
@@ -126,7 +126,7 @@ export const ChapterToc = ({
 					<AnchorLink
 						icon={<PencilIcon className="size-4 xl:size-6" />}
 						text="Assignment"
-						href="#page-assignments"
+						href={`#${Elements.PAGE_ASSIGNMENTS}`}
 						aria-label="assignments for this page"
 					/>
 				)}

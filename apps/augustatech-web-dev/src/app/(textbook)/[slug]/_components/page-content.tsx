@@ -1,5 +1,6 @@
 import { MainMdx } from "@/components/mdx";
 import { SandboxProvider } from "@/components/provider/sandbox-provider";
+import { Elements } from "@/lib/constants";
 import { Runner } from "./sandbox/runner";
 
 export const PageContent = ({
@@ -9,7 +10,7 @@ export const PageContent = ({
 	return (
 		<SandboxProvider>
 			<Runner />
-			<MainMdx title={title} code={code} id="page-content" />
+			<MainMdx title={title} code={code} id={Elements.PAGE_CONTENT} />
 		</SandboxProvider>
 	);
 };

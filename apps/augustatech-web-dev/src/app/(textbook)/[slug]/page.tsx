@@ -2,7 +2,7 @@ import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assign
 import { PageProvider } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { getSession } from "@/lib/auth";
-import { Condition } from "@/lib/constants";
+import { Condition, Elements } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
@@ -61,7 +61,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageStatus={pageStatus}
 		>
 			<main
-				id="textbook-page-wrapper"
+				id={Elements.TEXTBOOK_MAIN_WRAPPER}
 				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6 flex-1"
 			>
 				<div className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
@@ -76,7 +76,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</div>
 
-				<div id="page-content-wrapper" className="relative p-4 lg:p-8 lg:pb-12">
+				<div
+					id={Elements.TEXTBOOK_MAIN}
+					className="relative p-4 lg:p-8 lg:pb-12"
+				>
 					<PageTitle>{page.title}</PageTitle>
 					<PageContent title={page.title} code={page.body.code} />
 					<NotePopover pageSlug={pageSlug} userId={userId} />

@@ -112,7 +112,7 @@ h5,
   display: none;
 }
 
-.driver-active #textbook-page-wrapper {
+.driver-active #textbook-main-wrapper {
   grid-template-columns: 1fr;
   max-width: 60%;
 }

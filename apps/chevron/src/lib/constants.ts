@@ -21,3 +21,10 @@ export const Condition = {
 	RANDOM_REREAD: "random_reread",
 	STAIRS: "stairs",
 };
+
+export const Elements = {
+	TEXTBOOK_MAIN: "textbook-main",
+	TEXTBOOK_MAIN_WRAPPER: "textbook-main-wrapper",
+	PAGE_CONTENT: "page-content",
+	PAGE_ASSIGNMENTS: "page-assignments",
+} as const;
