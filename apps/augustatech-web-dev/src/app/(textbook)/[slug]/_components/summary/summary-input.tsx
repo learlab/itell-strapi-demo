@@ -54,30 +54,31 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 				<p className="isolate text-sm font-light absolute right-2 bottom-2 opacity-70">
 					{pluralize("word", numOfWords(input), true)}
 				</p>
-				<label htmlFor="summary-input" className="sr-only">
-					summary text
+				<label>
+					<span className="sr-only">your summary</span>
+					<textarea
+						id="summary-input"
+						name="input"
+						ref={ref as ForwardedRef<HTMLTextAreaElement>}
+						value={input}
+						aria-disabled={disabled}
+						disabled={disabled}
+						placeholder={"Write your summary here"}
+						onChange={(e) => setInput(e.currentTarget.value)}
+						rows={10}
+						onPaste={(e) => {
+							if (isProduction && !isAdmin(userRole)) {
+								e.preventDefault();
+								toast.warning("Copy & Paste is not allowed");
+							}
+						}}
+						className={cn(
+							"flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+							"resize-none rounded-md shadow-md p-4 w-full ",
+						)}
+					/>
 				</label>
-				<textarea
-					id="summary-input"
-					name="input"
-					ref={ref as ForwardedRef<HTMLTextAreaElement>}
-					value={input}
-					aria-disabled={disabled}
-					disabled={disabled}
-					placeholder={"Write your summary here"}
-					onChange={(e) => setInput(e.currentTarget.value)}
-					rows={10}
-					onPaste={(e) => {
-						if (isProduction && !isAdmin(userRole)) {
-							e.preventDefault();
-							toast.warning("Copy & Paste is not allowed");
-						}
-					}}
-					className={cn(
-						"flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-						"resize-none rounded-md shadow-md p-4 w-full ",
-					)}
-				/>
+
 				{pending ? (
 					<div className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">
 						<SummaryProgress items={stages} />

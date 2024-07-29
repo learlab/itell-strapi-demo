@@ -27,10 +27,7 @@ export const ContinueReading = ({ text, ...rest }: Props) => {
 				startTransition(() => router.push(href));
 			}}
 		>
-			<span className="flex items-center gap-2">
-				<BookIcon className="size-4" />
-				{text ? text : url ? "Continue Reading" : "Start Reading"}
-			</span>
+			{text ? text : url ? "Continue Reading" : "Start Reading"}
 		</StatusButton>
 	);
 };

@@ -28,4 +28,5 @@ export const Elements = {
 	DASHBOARD_MAIN: "dashboard-main",
 	PAGE_CONTENT: "page-content",
 	PAGE_ASSIGNMENTS: "page-assignments",
+	SUMMARY_FORM: "summary-form",
 } as const;

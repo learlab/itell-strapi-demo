@@ -1,6 +1,6 @@
 import { MainMdx } from "@/components/mdx";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { Condition } from "@/lib/constants";
+import { Condition, Elements } from "@/lib/constants";
 import { allGuides } from "contentlayer/generated";
 
 export const SummaryDescription = ({ condition }: { condition: string }) => {
@@ -18,6 +18,9 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 			<h2 id="summary-guide" className="sr-only">
 				summary writing guide
 			</h2>
+			<a className="sr-only" href={`#${Elements.SUMMARY_FORM}`}>
+				skip to summary submission
+			</a>
 			<MainMdx
 				article={false}
 				components={{ AccordionItem, Accordion }}

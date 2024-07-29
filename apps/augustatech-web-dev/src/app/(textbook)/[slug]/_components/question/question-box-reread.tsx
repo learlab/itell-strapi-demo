@@ -168,21 +168,21 @@ export const QuestionBoxReread = ({
 					onSubmit={onSubmit}
 					className="w-full space-y-2"
 				>
-					<label htmlFor={`input-${chunkSlug}`} className="sr-only">
-						answer
+					<label>
+						<span className="sr-only">answer</span>
+						<TextArea
+							name="input"
+							rows={2}
+							className="max-w-lg mx-auto rounded-md shadow-md p-4"
+							onPaste={(e) => {
+								if (isProduction) {
+									e.preventDefault();
+									toast.warning("Copy & Paste is not allowed for question");
+								}
+							}}
+						/>
 					</label>
-					<TextArea
-						id={`input-${chunkSlug}`}
-						name="input"
-						rows={2}
-						className="max-w-lg mx-auto rounded-md shadow-md p-4"
-						onPaste={(e) => {
-							if (isProduction) {
-								e.preventDefault();
-								toast.warning("Copy & Paste is not allowed for question");
-							}
-						}}
-					/>
+
 					{state.error && (
 						<InternalError className="text-center">
 							<p>{state.error}</p>

@@ -88,11 +88,15 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 						placeholder="Tell us more about your experience and how we can improve iTELL AI."
 					/>
 					<div className="flex flex-col space-y-2">
+						<p className="sr-only">
+							Pick one or more tags that best describes the feedback you had
+							(Optional)
+						</p>
 						{allTags.map((tag) => (
-							<div className="flex items-center space-x-2" key={tag}>
-								<Checkbox id={tag} name={tag} />
-								<Label htmlFor={tag}> {tag}</Label>
-							</div>
+							<Label key={tag} className="inline-flex items-center gap-2">
+								<Checkbox name={tag} />
+								<span>{tag}</span>
+							</Label>
 						))}
 					</div>
 					{isError && (

@@ -269,21 +269,21 @@ export const QuestionBoxStairs = ({
 					onSubmit={onSubmit}
 					className="w-full space-y-2"
 				>
-					<label htmlFor={`input-${chunkSlug}`} className="sr-only">
-						answer
+					<label>
+						<span className="sr-only">your answer</span>
+						<TextArea
+							name="input"
+							rows={2}
+							className="max-w-lg mx-auto rounded-md shadow-md p-4"
+							onPaste={(e) => {
+								if (isProduction) {
+									e.preventDefault();
+									toast.warning("Copy & Paste is not allowed for question");
+								}
+							}}
+						/>
 					</label>
-					<TextArea
-						id={`input-${chunkSlug}`}
-						name="input"
-						rows={2}
-						className="max-w-lg mx-auto rounded-md shadow-md p-4"
-						onPaste={(e) => {
-							if (isProduction) {
-								e.preventDefault();
-								toast.warning("Copy & Paste is not allowed for question");
-							}
-						}}
-					/>
+
 					<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
 						{status !== StatusStairs.UNANSWERED && (
 							<HoverCard>

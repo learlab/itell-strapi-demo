@@ -6,7 +6,7 @@ import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
 import { useSessionAction } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
-import { Condition, EventType } from "@/lib/constants";
+import { Condition, Elements, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -221,7 +221,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
 			{portalNodes}
 
 			<div role="status">

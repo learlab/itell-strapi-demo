@@ -436,7 +436,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
 			{portalNodes}
 
 			{feedback && (
