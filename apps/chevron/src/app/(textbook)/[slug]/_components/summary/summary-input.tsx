@@ -6,9 +6,9 @@ import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
+import { Label } from "@itell/ui/client";
 import pluralize from "pluralize";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
-import { Label } from "recharts";
 import { toast } from "sonner";
 import { SummaryProgress } from "./summary-progress";
 
