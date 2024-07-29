@@ -60,7 +60,7 @@ export const JoinClassForm = ({ user }: Props) => {
 					defaultValue={join_class_code || ""}
 				/>
 				{isError && <InternalError />}
-				<Button disabled={isPending} aria-disabled={isPending} type="submit">
+				<Button disabled={isPending} type="submit">
 					<span className="flex items-center gap-2">
 						{isPending && <Spinner />}
 						Submit

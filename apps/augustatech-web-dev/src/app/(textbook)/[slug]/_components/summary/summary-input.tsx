@@ -62,7 +62,6 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 						name="input"
 						ref={ref as ForwardedRef<HTMLTextAreaElement>}
 						value={input}
-						aria-disabled={disabled}
 						disabled={disabled}
 						placeholder={"Write your summary here"}
 						onChange={(e) => setInput(e.currentTarget.value)}

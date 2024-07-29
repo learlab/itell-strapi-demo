@@ -1,10 +1,10 @@
 "use client";
 
 import { Spinner } from "@/components/spinner";
+import { BrandIcon } from "@/components/ui/brand-icon";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
 import { LogInIcon, LogOutIcon } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
@@ -43,12 +43,7 @@ export const GoogleLoginButton = () => {
 				{pending ? (
 					<Spinner className="size-4" />
 				) : (
-					<Image
-						alt="Google Icon"
-						src="/icons/google.png"
-						width={16}
-						height={16}
-					/>
+					<BrandIcon name="google/_/eee" width={16} height={16} />
 				)}
 				Google
 			</span>
@@ -75,12 +70,7 @@ export const OutlookLoginButton = () => {
 				{pending ? (
 					<Spinner className="size-4" />
 				) : (
-					<Image
-						alt="Outlook Icon"
-						src="/icons/outlook.png"
-						width={24}
-						height={24}
-					/>
+					<BrandIcon name="outlook" height={16} width={16} />
 				)}
 				Outlook
 			</span>
@@ -100,7 +90,6 @@ export const LoginButton = () => {
 				});
 			}}
 			variant={"outline"}
-			aria-disabled={pending}
 			disabled={pending}
 		>
 			<span className="flex items-center gap-2">
@@ -123,7 +112,6 @@ export const LogoutButton = () => {
 					router.push("/auth");
 				});
 			}}
-			aria-disabled={pending}
 			disabled={pending}
 			variant={"outline"}
 		>

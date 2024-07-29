@@ -97,7 +97,11 @@ export default async function ({ searchParams }: PageProps) {
 							{SiteConfig.title}
 						</p>
 					</div>
-					{error && <Warning>{errorMessage ? errorMessage : error}</Warning>}
+					{error && (
+						<Warning role="alert">
+							{errorMessage ? errorMessage : error}
+						</Warning>
+					)}
 					{user ? (
 						<div className="text-center space-y-2">
 							<p className="font-light">

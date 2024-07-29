@@ -2,10 +2,16 @@ import { cn } from "@itell/core/utils";
 import React from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
+	mainContentId?: string;
 	children: React.ReactNode;
 }
 
-export const SiteNav = ({ children, className, ...rest }: Props) => {
+export const SiteNav = ({
+	children,
+	className,
+	mainContentId,
+	...rest
+}: Props) => {
 	return (
 		<header
 			id="site-nav"
@@ -15,6 +21,11 @@ export const SiteNav = ({ children, className, ...rest }: Props) => {
 			)}
 			{...rest}
 		>
+			<div className="skip-links">
+				<a className="skip-link" href={`#${mainContentId}`}>
+					skip to main content
+				</a>
+			</div>
 			{children}
 		</header>
 	);

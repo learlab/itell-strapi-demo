@@ -73,6 +73,9 @@ export const ChapterToc = ({
 	return (
 		<>
 			<nav aria-label="textbook primary">
+				<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
+					skip to main content
+				</a>
 				<ol
 					aria-label="list of chapters"
 					className="space-y-2 leading-relaxed tracking-tight"

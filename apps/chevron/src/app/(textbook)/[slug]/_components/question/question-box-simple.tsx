@@ -79,12 +79,7 @@ export const QuestionBoxSimple = ({
 					className="w-full space-y-2"
 				>
 					<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-						<Button
-							type="submit"
-							variant={"outline"}
-							disabled={disabled}
-							aria-disabled={disabled}
-						>
+						<Button type="submit" variant={"outline"} disabled={disabled}>
 							Continue
 						</Button>
 					</div>

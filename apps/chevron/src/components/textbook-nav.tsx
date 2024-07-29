@@ -19,11 +19,8 @@ export const TextbookNav = async ({ scrollProgress, read }: Props) => {
 	const { user } = await getSession();
 
 	return (
-		<SiteNav>
+		<SiteNav mainContentId={Elements.TEXTBOOK_MAIN}>
 			<div className="flex h-16 px-6 items-center space-x-4 justify-between sm:space-x-0">
-				<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
-					skip to main content
-				</a>
 				<div className="flex gap-4 items-center">
 					<Image
 						src="/images/itell.svg"

@@ -18,6 +18,7 @@ html {
   scroll-behavior: smooth;
 }
 
+
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
   margin-top: 0;
@@ -34,17 +35,40 @@ html {
   transform: translate(-50%, -50%);
 }
 
-span.unhighlighted {
-  @apply font-normal !important;
+
+.note {
+  color: black;
 }
 
-span.highlight {
+.note.emphasized {
+  @apply font-bold !important;
+}
+
+.highlight {
   cursor: pointer !important;
   color: black;
 }
 
-span.emphasized {
-  @apply font-bold !important;
+
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: rect(0px, 0px, 0px, 0px);
+}
+
+.skip-link:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  clip-path: auto;
+  padding: 12px;
+  text-decoration: underline;
+  text-underline-offset: 0.4em;
+  text-decoration-color: hsl(var(--primary));
 }
 
 svg {
@@ -96,9 +120,7 @@ h5,
 }
 
 
-.note {
-  color: black;
-}
+
 
 .question-container {
   margin: 1em 0;
@@ -116,6 +138,8 @@ h5,
   grid-template-columns: 1fr;
   max-width: 60%;
 }
+
+
 
 
 .driver-popover {

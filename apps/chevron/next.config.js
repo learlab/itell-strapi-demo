@@ -6,10 +6,15 @@ const { withContentlayer } = require("next-contentlayer");
 const nextConfig = {
 	reactStrictMode: false,
 	images: {
+		dangerouslyAllowSVG: true,
 		remotePatterns: [
 			{
 				protocol: "https",
 				hostname: "nbjrajrmujlgxmcvqsge.supabase.co",
+			},
+			{
+				protocol: "https",
+				hostname: "cdn.simpleicons.org",
 			},
 		],
 	},

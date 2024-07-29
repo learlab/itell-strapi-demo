@@ -64,6 +64,7 @@ export const KnowledgeCard = ({
 								<Link
 									className="italic inline-flex items-center hover:underline"
 									href={href}
+									tabIndex={-1}
 								>
 									<span className="flex items-center gap-2">
 										<LinkIcon className="size-4" />

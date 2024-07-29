@@ -111,7 +111,9 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 					)}
 				</StatusButton>
 			</form>
-			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+			{isError && (
+				<Warning role="alert">{ErrorFeedback[ErrorType.INTERNAL]}</Warning>
+			)}
 			{isDelayed && <DelayMessage />}
 		</div>
 	);

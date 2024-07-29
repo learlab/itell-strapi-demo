@@ -1,3 +1,4 @@
+import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
 import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
@@ -5,7 +6,6 @@ import { SiteConfig } from "@/config/site";
 import { Elements } from "@/lib/constants";
 import { cn } from "@itell/core/utils";
 import { home } from "contentlayer/generated";
-import { GithubIcon } from "lucide-react";
 
 export default async function () {
 	return (
@@ -14,6 +14,7 @@ export default async function () {
 			<main
 				className="flex-1 px-6 md:px-10 lg:px-16 py-8 mx-auto max-w-3xl space-y-6"
 				id={Elements.TEXTBOOK_MAIN}
+				tabIndex={-1}
 			>
 				<MainMdx code={home.body.code} />
 				<div className="flex justify-center items-center">
@@ -37,7 +38,7 @@ const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
 				{SiteConfig.footer}
 			</p>
 			<a href="https://github.com/learlab/itell">
-				<GithubIcon />
+				<BrandIcon name="github/_/eee" />
 				<span className="sr-only">github repository</span>
 			</a>
 		</footer>

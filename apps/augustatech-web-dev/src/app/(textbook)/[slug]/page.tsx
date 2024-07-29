@@ -80,6 +80,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 					id={Elements.TEXTBOOK_MAIN}
 					className="relative p-4 lg:p-8 lg:pb-12"
 					aria-live="polite"
+					aria-atomic="true"
+					tabIndex={-1}
 				>
 					<PageTitle>{page.title}</PageTitle>
 					<PageContent title={page.title} code={page.body.code} />

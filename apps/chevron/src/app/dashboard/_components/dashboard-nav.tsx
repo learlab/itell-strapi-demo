@@ -17,9 +17,6 @@ export const DashboardNav = async (props: DashboardNavProps) => {
 
 	return (
 		<div className="flex gap-6 md:gap-10 justify-between h-16 px-8">
-			<a className="sr-only" href={`#${Elements.DASHBOARD_MAIN}`}>
-				skip to main content
-			</a>
 			<div className="flex gap-4 items-center">
 				<Image
 					src="/images/itell.svg"

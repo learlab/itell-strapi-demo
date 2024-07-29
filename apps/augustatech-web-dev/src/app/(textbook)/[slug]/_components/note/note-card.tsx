@@ -52,10 +52,6 @@ type EditDispatch =
 	| { type: "finish_upsert" }
 	| { type: "set_color"; payload: string };
 
-// existing notes are wrapped in <mark class = "highlight"> </mark>
-// on mouse enter, add class = "emphasize"
-// on delete add class = "unhighlighted"
-// styles are in global.css
 export const NoteCard = React.memo(
 	({
 		id,
@@ -172,12 +168,10 @@ export const NoteCard = React.memo(
 
 		const emphasizeNote = (element: HTMLElement) => {
 			element.classList.add("emphasized");
-			element.style.fontStyle = "bold";
 		};
 
 		const deemphasizeNote = (element: HTMLElement) => {
 			element.classList.remove("emphasized");
-			element.style.fontStyle = "normal";
 		};
 
 		const handleDelete = async () => {

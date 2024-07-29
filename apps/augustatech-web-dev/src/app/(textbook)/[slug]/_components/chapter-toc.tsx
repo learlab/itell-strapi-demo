@@ -3,7 +3,7 @@
 import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { isAdmin } from "@/lib/auth/role";
-import { isProduction } from "@/lib/constants";
+import { Elements, isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
@@ -73,6 +73,9 @@ export const ChapterToc = ({
 	return (
 		<>
 			<nav aria-label="textbook primary">
+				<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
+					skip to main content
+				</a>
 				<ol
 					aria-label="list of chapters"
 					className="space-y-2 leading-relaxed tracking-tight"

@@ -243,7 +243,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				className="space-y-4"
 				onSubmit={action}
 				aria-labelledby="summary-form-heading"
-				aria-disabled={!isSummaryReady || isPending}
 			>
 				<SummaryInput
 					disabled={!isSummaryReady}
@@ -253,7 +252,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					userRole={user.role}
 					ref={ref}
 				/>
-				{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+				{isError && (
+					<Warning role="alert">{ErrorFeedback[ErrorType.INTERNAL]}</Warning>
+				)}
 				{isDelayed && <DelayMessage />}
 				<div className="flex justify-end">
 					<StatusButton

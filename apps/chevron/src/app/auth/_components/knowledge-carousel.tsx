@@ -64,6 +64,8 @@ export const KnowledgeCard = ({
 								<Link
 									className="italic inline-flex items-center hover:underline"
 									href={href}
+									// fix for "aria-hidden elements contain focusable elements" (the parent container for this component is aria-hidden)
+									tabIndex={-1}
 								>
 									<span className="flex items-center gap-2">
 										<LinkIcon className="size-4" />

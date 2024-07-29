@@ -474,7 +474,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				className="mt-2 space-y-4"
 				onSubmit={action}
 				aria-labelledby="summary-form-heading"
-				aria-disabled={!isSummaryReady || isPending}
 			>
 				<SummaryInput
 					disabled={!isSummaryReady}
@@ -484,13 +483,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					userRole={user.role}
 					ref={ref}
 				/>
-				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
+				{state.error && (
+					<Warning role="alert">{ErrorFeedback[state.error]}</Warning>
+				)}
 				<div className="flex justify-end">
-					<Button
-						type="submit"
-						disabled={isPending || !isSummaryReady}
-						aria-disabled={isPending || !isSummaryReady}
-					>
+					<Button type="submit" disabled={isPending || !isSummaryReady}>
 						<span className="inline-flex items-center gap-2">
 							{isPending ? (
 								<Spinner />

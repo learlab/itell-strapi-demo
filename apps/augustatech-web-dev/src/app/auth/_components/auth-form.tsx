@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandIcon } from "@/components/brand-icon";
 import { Spinner } from "@/components/spinner";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
@@ -37,19 +38,13 @@ export const GoogleLoginButton = () => {
 			}}
 			variant={"outline"}
 			aria-label="log in via google"
-			aria-disabled={pending}
 			disabled={pending}
 		>
 			<span className="flex items-center gap-2">
 				{pending ? (
 					<Spinner className="size-4" />
 				) : (
-					<Image
-						alt="Google Icon"
-						src="/icons/google.png"
-						width={16}
-						height={16}
-					/>
+					<BrandIcon name="google/_/eee" width={16} height={16} />
 				)}
 				Google
 			</span>
@@ -70,19 +65,13 @@ export const OutlookLoginButton = () => {
 			}}
 			variant={"outline"}
 			aria-label="log in via outlook"
-			aria-disabled={pending}
 			disabled={pending}
 		>
 			<span className="flex items-center gap-2">
 				{pending ? (
 					<Spinner className="size-4" />
 				) : (
-					<Image
-						alt="Outlook Icon"
-						src="/icons/outlook.png"
-						width={24}
-						height={24}
-					/>
+					<BrandIcon name="outlook" height={16} width={16} />
 				)}
 				Outlook
 			</span>
@@ -102,7 +91,6 @@ export const LoginButton = () => {
 				});
 			}}
 			variant={"outline"}
-			aria-disabled={pending}
 			disabled={pending}
 		>
 			<span className="flex items-center gap-2">
@@ -125,7 +113,6 @@ export const LogoutButton = () => {
 					router.push("/auth");
 				});
 			}}
-			aria-disabled={pending}
 			disabled={pending}
 			variant={"outline"}
 		>

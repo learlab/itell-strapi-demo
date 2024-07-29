@@ -1,5 +1,6 @@
 "use client";
 
+import { Elements } from "@/lib/constants";
 import { cn } from "@itell/core/utils";
 import { BookmarkIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
@@ -61,6 +62,9 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 
 	return (
 		<div className="page-toc">
+			<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
+				skip to main content
+			</a>
 			<p className="font-semibold mb-4">
 				<span className="flex items-center gap-2">
 					<BookmarkIcon className="size-4" />

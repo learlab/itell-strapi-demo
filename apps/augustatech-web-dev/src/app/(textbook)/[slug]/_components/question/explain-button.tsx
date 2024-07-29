@@ -91,7 +91,9 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				How can I improve my answer?
 			</Button>
 
-			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+			{isError && (
+				<Warning role="alert">{ErrorFeedback[ErrorType.INTERNAL]}</Warning>
+			)}
 
 			{isDelayed && <DelayMessage />}
 		</div>

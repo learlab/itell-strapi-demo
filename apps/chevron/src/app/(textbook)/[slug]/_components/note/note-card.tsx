@@ -172,12 +172,10 @@ export const NoteCard = React.memo(
 
 		const emphasizeNote = (element: HTMLElement) => {
 			element.classList.add("emphasized");
-			element.style.fontStyle = "bold";
 		};
 
 		const deemphasizeNote = (element: HTMLElement) => {
 			element.classList.remove("emphasized");
-			element.style.fontStyle = "normal";
 		};
 
 		const handleDelete = async () => {

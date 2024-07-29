@@ -54,7 +54,7 @@ export default async function DashboardLayout({
 
 	return (
 		<>
-			<SiteNav>
+			<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
 				<DashboardNav items={dashboardConfig.mainNav} />
 			</SiteNav>
 			<main className="min-h-screen grid md:grid-cols-[200px_1fr] group">
@@ -64,6 +64,8 @@ export default async function DashboardLayout({
 					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
 					id={Elements.DASHBOARD_MAIN}
 					aria-live="polite"
+					aria-atomic="true"
+					tabIndex={-1}
 				>
 					{children}
 				</section>
