@@ -6,6 +6,7 @@ import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
+import { Label } from "@itell/ui/client";
 import pluralize from "pluralize";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -54,7 +55,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 				<p className="isolate text-sm font-light absolute right-2 bottom-2 opacity-70">
 					{pluralize("word", numOfWords(input), true)}
 				</p>
-				<label>
+				<Label>
 					<span className="sr-only">your summary</span>
 					<textarea
 						id="summary-input"
@@ -77,7 +78,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 							"resize-none rounded-md shadow-md p-4 w-full ",
 						)}
 					/>
-				</label>
+				</Label>
 
 				{pending ? (
 					<div className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">

@@ -8,6 +8,7 @@ import { makeInputKey } from "@/lib/utils";
 import { cn, numOfWords } from "@itell/core/utils";
 import pluralize from "pluralize";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { Label } from "recharts";
 import { toast } from "sonner";
 import { SummaryProgress } from "./summary-progress";
 
@@ -57,7 +58,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 				>
 					{pluralize("word", numOfWords(input), true)}
 				</p>
-				<label>
+				<Label>
 					<span className="sr-only">your summary</span>
 					<textarea
 						name="input"
@@ -79,7 +80,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 							"resize-none rounded-md shadow-md p-4 w-full ",
 						)}
 					/>
-				</label>
+				</Label>
 
 				{pending ? (
 					<div className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 animate-in animate-out gap-2 cursor-not-allowed">

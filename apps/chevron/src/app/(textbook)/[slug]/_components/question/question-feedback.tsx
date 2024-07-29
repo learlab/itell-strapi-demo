@@ -81,12 +81,16 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 						setPending(false);
 					}}
 				>
-					<TextArea
-						name="text"
-						className="mb-4"
-						rows={3}
-						placeholder="Tell us more about your experience and how we can improve iTELL AI."
-					/>
+					<Label>
+						<span className="sr-only">your feedback</span>
+						<TextArea
+							name="text"
+							className="mb-4"
+							rows={3}
+							placeholder="Tell us more about your experience and how we can improve iTELL AI."
+						/>
+					</Label>
+
 					<div className="flex flex-col space-y-2">
 						<p className="sr-only">
 							Pick one or more tags that best describes the feedback you had

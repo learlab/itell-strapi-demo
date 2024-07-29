@@ -81,18 +81,22 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 						setPending(false);
 					}}
 				>
-					<TextArea
-						name="text"
-						className="mb-4"
-						rows={3}
-						placeholder="Tell us more about your experience and how we can improve iTELL AI."
-					/>
+					<Label>
+						<span className="sr-only">your feedback</span>
+						<TextArea
+							name="text"
+							className="mb-4"
+							rows={3}
+							placeholder="Tell us more about your experience and how we can improve iTELL AI."
+						/>
+					</Label>
+
 					<div className="flex flex-col space-y-2">
 						{allTags.map((tag) => (
-							<div className="flex items-center space-x-2" key={tag}>
-								<Checkbox id={tag} name={tag} />
-								<Label htmlFor={tag}> {tag}</Label>
-							</div>
+							<Label key={tag} className="inline-flex items-center gap-2">
+								<Checkbox name={tag} />
+								<span>{tag}</span>
+							</Label>
 						))}
 					</div>
 					{isError && (

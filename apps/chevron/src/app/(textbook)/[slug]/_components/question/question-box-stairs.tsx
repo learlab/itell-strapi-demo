@@ -17,6 +17,7 @@ import {
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
+	Label,
 	StatusButton,
 	TextArea,
 } from "@itell/ui/client";
@@ -269,7 +270,7 @@ export const QuestionBoxStairs = ({
 					onSubmit={onSubmit}
 					className="w-full space-y-2"
 				>
-					<label>
+					<Label>
 						<span className="sr-only">your answer</span>
 						<TextArea
 							name="input"
@@ -282,7 +283,7 @@ export const QuestionBoxStairs = ({
 								}
 							}}
 						/>
-					</label>
+					</Label>
 
 					<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
 						{status !== StatusStairs.UNANSWERED && (

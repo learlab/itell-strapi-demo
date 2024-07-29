@@ -17,6 +17,7 @@ import {
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
+	Label,
 	StatusButton,
 	TextArea,
 } from "@itell/ui/client";
@@ -168,7 +169,7 @@ export const QuestionBoxReread = ({
 					onSubmit={onSubmit}
 					className="w-full space-y-2"
 				>
-					<label>
+					<Label>
 						<span className="sr-only">your answer</span>
 						<TextArea
 							name="input"
@@ -181,7 +182,7 @@ export const QuestionBoxReread = ({
 								}
 							}}
 						/>
-					</label>
+					</Label>
 
 					{state.error && (
 						<InternalError className="text-center">
