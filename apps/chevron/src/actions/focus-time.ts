@@ -23,11 +23,7 @@ import { authedProcedure } from "./utils";
  * - upsert record to the `focus_times` table, using page-user pair
  */
 export const createFocusTimeAction = authedProcedure
-	.createServerAction()
 	.input(CreateFocusTimeSchema.omit({ userId: true }))
-	.onError((err) => {
-		reportSentry("create focus time", { error: err });
-	})
 	.handler(async ({ input, ctx }) => {
 		if (isProduction) {
 			const userId = ctx.user.id;
@@ -89,10 +85,6 @@ export const createFocusTimeAction = authedProcedure
 	});
 
 export const getFocusTimeAction = authedProcedure
-	.createServerAction()
-	.onError((err) => {
-		reportSentry("get focus time", { error: err });
-	})
 	.input(z.object({ pageSlug: z.string() }))
 	.handler(async ({ input, ctx }) => {
 		return await getFocusTimeHandler(ctx.user.id, input.pageSlug);

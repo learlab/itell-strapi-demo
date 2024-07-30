@@ -25,7 +25,6 @@ import { authedProcedure } from "./utils";
  * Create dashboard_page_view event for page
  */
 export const incrementViewAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ pageSlug: z.string(), data: z.unknown() }))
 	.handler(async ({ input, ctx }) => {
 		if (isProduction) {
@@ -35,7 +34,6 @@ export const incrementViewAction = authedProcedure
 
 const incrementViewHandler = cache(
 	async (userId: string, pageSlug: string, data?: unknown) => {
-		noStore();
 		await db.insert(events).values({
 			type: "dashboard_page_view",
 			pageSlug,
@@ -49,7 +47,6 @@ const incrementViewHandler = cache(
  * Count user summaries with a start date for current user
  */
 export const countSummaryAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ startDate: z.date() }))
 	.output(z.number())
 	.handler(async ({ input, ctx }) => {
@@ -72,7 +69,6 @@ export const countSummaryAction = authedProcedure
  * Get data for reading time chart for current user
  */
 export const getReadingTimeAction = authedProcedure
-	.createServerAction()
 	.input(
 		z.object({
 			startDate: z.date(),
@@ -142,14 +138,9 @@ const getReadingTimeHandler = memoize(
 /**
  * Get user statistics for `<UserRadarChart />`
  */
-export const getUserStatsAction = authedProcedure
-	.createServerAction()
-	.onError((err) => {
-		reportSentry("get user stats", { error: err });
-	})
-	.handler(async ({ ctx }) => {
-		return await getUserStatsHandler(ctx.user.id);
-	});
+export const getUserStatsAction = authedProcedure.handler(async ({ ctx }) => {
+	return await getUserStatsHandler(ctx.user.id);
+});
 
 const getUserStatsHandler = memoize(
 	async (userId: string) => {
@@ -220,11 +211,7 @@ const getUserStatsHandler = memoize(
  * Get other users' statistics for `<UserRadarChart />`
  */
 export const getOtherStatsAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ ids: z.array(z.string()) }))
-	.onError((err) => {
-		reportSentry("get other stats", { error: err });
-	})
 	.handler(async ({ input }) => {
 		return await getOtherStatsHandler(input.ids);
 	});
@@ -322,14 +309,9 @@ export type OtherStats = Awaited<ReturnType<typeof getOtherStatsHandler>>;
  * - If user is in a class, get all other users in the class
  * - If user is not in a class, get all other users
  */
-export const getOtherUsersAction = authedProcedure
-	.createServerAction()
-	.onError((err) => {
-		reportSentry("get other users", { error: err });
-	})
-	.handler(async ({ ctx }) => {
-		return await getOtherUsersHandler(ctx.user);
-	});
+export const getOtherUsersAction = authedProcedure.handler(async ({ ctx }) => {
+	return await getOtherUsersHandler(ctx.user);
+});
 
 const getOtherUsersHandler = memoize(
 	async (user: User) => {
@@ -362,11 +344,7 @@ const getOtherUsersHandler = memoize(
  * Get students by classId, alongside with their summary count
  */
 export const getClassStudentsAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ classId: z.string() }))
-	.onError((err) => {
-		reportSentry("get class students", { error: err });
-	})
 	.handler(async ({ input }) => {
 		return await getClassStudentsHandler(input.classId);
 	});
@@ -401,7 +379,6 @@ const getClassStudentsHandler = memoize(
  * Get a user by id, current user must be a teacher and the user must be in the teacher's class
  */
 export const getStudent = authedProcedure
-	.createServerAction()
 	.input(z.object({ userId: z.string() }))
 	.handler(async ({ input, ctx }) => {
 		const user = await findUser(input.userId);
@@ -420,12 +397,8 @@ export const getStudent = authedProcedure
  * Count students in class
  */
 export const countStudentAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ classId: z.string() }))
 	.output(z.number())
-	.onError((err) => {
-		reportSentry("count student", { error: err });
-	})
 	.handler(async ({ input }) => {
 		return await countStudentHandler(input.classId);
 	});
@@ -456,11 +429,7 @@ const countStudentHandler = memoize(
  * Get the teacher for classId, then get the user account for the teacher
  */
 export const getTeacherByClassAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ classId: z.string() }))
-	.onError((err) => {
-		reportSentry("get teacher by class", { error: err });
-	})
 	.handler(async ({ input }) => {
 		return await getTeacherByClassHandler(input.classId);
 	});

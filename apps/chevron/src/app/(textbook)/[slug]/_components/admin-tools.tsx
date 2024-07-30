@@ -36,6 +36,7 @@ import {
 } from "@itell/ui/client";
 import { SettingsIcon } from "lucide-react";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 
 type Props = {
@@ -70,10 +71,11 @@ const RestartTextbook = () => {
 						disabled={isPending}
 						onClick={async () => {
 							const [data, err] = await execute();
-							if (!err) {
-								localStorage.clear();
-								window.location.href = makePageHref(data.pageSlug);
+							if (err) {
+								return toast.error(err.data);
 							}
+							localStorage.clear();
+							window.location.href = makePageHref(data.pageSlug);
 						}}
 					>
 						<span className="flex items-center gap-2">

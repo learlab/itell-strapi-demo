@@ -25,7 +25,6 @@ import { authedProcedure } from "./utils";
  * - Create keystroke events
  */
 export const createSummaryAction = authedProcedure
-	.createServerAction()
 	.input(
 		z.object({
 			summary: CreateSummarySchema.omit({ userId: true }),
@@ -35,9 +34,6 @@ export const createSummaryAction = authedProcedure
 			}),
 		}),
 	)
-	.onError((error) => {
-		reportSentry("create summary", { error });
-	})
 	.output(
 		z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() }),
 	)
@@ -117,11 +113,7 @@ export const createSummaryAction = authedProcedure
  * Get summary current user, if summary id is not provided, return all summaries
  */
 export const getSummariesAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ summaryId: z.number().optional() }))
-	.onError((error) => {
-		reportSentry("get summaries", { error });
-	})
 	.handler(async ({ input, ctx }) => {
 		return await getSummariesHandler(ctx.user.id, input.summaryId);
 	});
@@ -155,10 +147,6 @@ export const getSummariesHandler = memoize(
  * Count summaries by pass / fail for current user and page
  */
 export const countSummaryByPassingAction = authedProcedure
-	.createServerAction()
-	.onError((error) => {
-		reportSentry("count summary by passing", { error });
-	})
 	.input(z.object({ pageSlug: z.string() }))
 	.handler(async ({ input, ctx }) => {
 		const record = await db

@@ -11,11 +11,7 @@ import { authedProcedure } from "./utils";
  * Create a note
  */
 export const createNoteAction = authedProcedure
-	.createServerAction()
 	.input(CreateNoteSchema.omit({ userId: true }))
-	.onError((error) => {
-		reportSentry("create-note", { error });
-	})
 	.handler(async ({ input, ctx }) => {
 		const record = await db
 			.insert(notes)
@@ -32,11 +28,7 @@ export const createNoteAction = authedProcedure
  */
 
 export const updateNoteAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ id: z.number(), data: UpdateNoteSchema }))
-	.onError((error) => {
-		reportSentry("update-note", { error });
-	})
 	.handler(async ({ input }) => {
 		await db.update(notes).set(input.data).where(eq(notes.id, input.id));
 	});
@@ -45,11 +37,7 @@ export const updateNoteAction = authedProcedure
  * Get notes for page
  */
 export const getNotesAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ pageSlug: z.string() }))
-	.onError((error) => {
-		reportSentry("get-notes", { error });
-	})
 	.handler(async ({ input, ctx }) => {
 		return await db
 			.select()
@@ -63,11 +51,7 @@ export const getNotesAction = authedProcedure
  * Delete a note
  */
 export const deleteNoteAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ id: z.number() }))
-	.onError((error) => {
-		reportSentry("delete-note", { error });
-	})
 	.handler(async ({ input, ctx }) => {
 		return await db.delete(notes).where(eq(notes.id, input.id));
 	});

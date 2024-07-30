@@ -10,11 +10,7 @@ import { authedProcedure } from "./utils";
  * Get chat messages for page
  */
 export const getChatsAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ pageSlug: z.string() }))
-	.onError((err) => {
-		reportSentry("get-chat", err);
-	})
 	.handler(async ({ input, ctx }) => {
 		const record = first(
 			await db
@@ -48,16 +44,12 @@ export const getChatsAction = authedProcedure
  * Create chat messages to page, if the entry already exists, append messages to the existing `data` array
  */
 export const createChatsAction = authedProcedure
-	.createServerAction()
 	.input(
 		z.object({
 			pageSlug: z.string(),
 			messages: z.array(ChatMessageDataSchema),
 		}),
 	)
-	.onError((err) => {
-		reportSentry("create-chat", err);
-	})
 	.handler(async ({ input, ctx }) => {
 		const record = first(
 			await db

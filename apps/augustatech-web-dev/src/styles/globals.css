@@ -14,17 +14,17 @@
       0.9833 59.06%, 0.9915 68.74%, 1 100%);
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-
-textarea {
-  resize: none;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
-
-
-
 
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
@@ -42,8 +42,6 @@ textarea {
   transform: translate(-50%, -50%);
 }
 
-
-
 .note {
   color: black;
 }
@@ -55,10 +53,6 @@ textarea {
 .highlight {
   cursor: pointer !important;
   color: black;
-}
-
-svg {
-  transition: all 0.3s;
 }
 
 .skip-link {
@@ -82,7 +76,11 @@ svg {
   text-decoration-color: hsl(var(--primary));
 }
 
-
+@media (prefers-reduced-motion: no-preference) {
+  svg {
+    transition: all 0.3s;
+  }
+}
 
 #page-title,
 h2,
@@ -95,7 +93,12 @@ h5,
 
 .content-chunk {
   position: relative;
-  transition: filter 1s ease-in-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .content-chunk {
+    transition: filter 1s ease-in-out;
+  }
 }
 
 .page-toc-active {
@@ -127,9 +130,6 @@ h5,
   z-index: 1;
 }
 
-
-
-
 .question-container {
   margin: 1em 0;
 }
@@ -147,7 +147,6 @@ h5,
   max-width: 60%;
 }
 
-
 .driver-popover {
   @apply max-w-80 bg-background text-foreground !important;
 }
@@ -156,9 +155,6 @@ h5,
   user-select: none;
 }
 
-code,
-pre,
-table,
 #page-content button,
 #page-content .question-container,
 #page-content .pager,
@@ -167,75 +163,91 @@ table,
   user-select: none;
 }
 
-::view-transition-group(root) {
-  animation-duration: 0.7s;
-  animation-timing-function: var(--expo-out);
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(root) {
+    animation-duration: 0.7s;
+    animation-timing-function: var(--expo-out);
+  }
+
+  ::view-transition-new(root) {
+    animation-name: reveal-light;
+  }
+
+  ::view-transition-old(root),
+  .dark::view-transition-old(root) {
+    animation: none;
+    z-index: -1;
+  }
+
+  .dark::view-transition-new(root) {
+    animation-name: reveal-dark;
+  }
+
+  @keyframes reveal-dark {
+    from {
+      clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+    }
+
+    to {
+      clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+    }
+  }
+
+  @keyframes reveal-light {
+    from {
+      clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+    }
+
+    to {
+      clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+    }
+  }
+
+  .shake {
+    animation-name: shake;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 2;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+
+    20% {
+      transform: translateX(-10px);
+    }
+
+    40% {
+      transform: translateX(10px);
+    }
+
+    60% {
+      transform: translateX(-10px);
+    }
+
+    80% {
+      transform: translateX(10px);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
 }
 
-::view-transition-new(root) {
-  animation-name: reveal-light;
-}
+@media (prefers-reduced-motion: reduce) {
 
-::view-transition-old(root),
-.dark::view-transition-old(root) {
-  animation: none;
-  z-index: -1;
-}
-
-.dark::view-transition-new(root) {
-  animation-name: reveal-dark;
-}
-
-@keyframes reveal-dark {
-  from {
-    clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+  ::view-transition-group(root),
+  ::view-transition-new(root),
+  ::view-transition-old(root),
+  .dark::view-transition-old(root),
+  .dark::view-transition-new(root) {
+    animation: none;
   }
 
-  to {
-    clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
-  }
-}
-
-@keyframes reveal-light {
-  from {
-    clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
-  }
-
-  to {
-    clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
-  }
-}
-
-.shake {
-  animation-name: shake;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
-  animation-iteration-count: 2;
-}
-
-
-@keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-
-  20% {
-    transform: translateX(-10px);
-  }
-
-  40% {
-    transform: translateX(10px);
-  }
-
-  60% {
-    transform: translateX(-10px);
-  }
-
-  80% {
-    transform: translateX(10px);
-  }
-
-  100% {
-    transform: translateX(0);
+  .shake {
+    animation: none;
   }
 }

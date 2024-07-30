@@ -26,12 +26,8 @@ import { authedProcedure } from "./utils";
  * Check if user is a teacher
  */
 export const getTeacherAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ userId: z.string() }))
 	.output(TeacherSchema.nullable())
-	.onError((err) => {
-		reportSentry("get-teacher", err);
-	})
 	.handler(async ({ input }) => {
 		return await getTeacherActionHandler(input.userId);
 	});
@@ -53,7 +49,6 @@ const getTeacherActionHandler = memoize(
  * Update current user
  */
 export const updateUserAction = authedProcedure
-	.createServerAction()
 	.input(UpdateUserSchema)
 	.handler(async ({ input, ctx }) => {
 		return await db.update(users).set(input).where(eq(users.id, ctx.user.id));
@@ -62,7 +57,6 @@ export const updateUserAction = authedProcedure
  * Reset user progress, also deletes all user data, including summaries, answers, events, etc.
  */
 export const resetUserAction = authedProcedure
-	.createServerAction()
 	.output(z.object({ pageSlug: z.string() }))
 	.handler(async ({ ctx }) => {
 		const userId = ctx.user.id;
@@ -90,7 +84,6 @@ export const resetUserAction = authedProcedure
  * Get user by id
  */
 export const getUserAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ userId: z.string() }))
 	.handler(async ({ input }) => {
 		return await getUserActionHandler(input.userId);
@@ -167,7 +160,6 @@ export const createUserAction = createServerAction()
  */
 
 export const incrementUserPageSlugAction = authedProcedure
-	.createServerAction()
 	.input(z.object({ currentPageSlug: z.string() }))
 	.handler(async ({ input, ctx }) => {
 		const nextPageSlug = nextPage(input.currentPageSlug);
