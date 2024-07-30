@@ -1,7 +1,6 @@
-import { DefaultTheme, ThemeSchema } from "@itell/core/config";
-import type { Theme, ThemeColor } from "@itell/core/config";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import tailwind, { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
+import { DefaultTheme, ThemeColor, ThemeSchema } from "./theme";
 
 const camelToKebab = (str: string) => {
 	return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
@@ -17,7 +16,7 @@ const extractCssVariables = (obj: ThemeColor) => {
 };
 
 export default plugin(
-	({ addBase, config }) => {
+	({ addBase, theme, config }) => {
 		const themeConfig = config("itell.theme");
 		const themeParsed = ThemeSchema.safeParse(themeConfig);
 		let lightColors = {};
@@ -33,28 +32,30 @@ export default plugin(
 
 		// css variables
 		addBase({
-			":root": lightColors,
-			".dark": darkColors,
-		});
+			":root": {
+				"--nav-height": tailwind.spacing[16],
+				"--expo-out":
+					"linear(0 0%, 0.1684 2.66%, 0.3165 5.49%, 0.446 8.52%, 0.5581 11.78%, 0.6535 15.29%, 0.7341 19.11%, 0.8011 23.3%, 0.8557 27.93%, 0.8962 32.68%, 0.9283 38.01%, 0.9529 44.08%, 0.9711 51.14%, 0.9833 59.06%, 0.9915 68.74%, 1 100%)",
+				"*": {
+					"border-color": "hsl(var(--border))",
+				},
+				"--font-sans": "'Inter', sans-serif",
+				body: {
+					"@apply bg-background text-foreground": {},
+					fontFeatureSettings: '"rlig" 1, "calt" 1',
+				},
+				thead: {
+					"@apply px-4 text-left align-middle font-medium text-muted-foreground":
+						{},
+				},
+				"tr:hover": { "@apply bg-muted/50": {} },
+				tr: { "@apply border-b transition-colors": {} },
+				td: { "@apply p-4 align-middle": {} },
+				th: { "@apply max-w-[10rem]": {} },
+			},
 
-		// global styles
-		addBase({
-			"*": { "@apply border-border": {} },
-			html: { "--font-sans": "'Inter', sans-serif" },
-			":focus": { outline: "none" },
-			body: {
-				"@apply bg-background text-foreground": {},
-				fontFeatureSettings: '"rlig" 1, "calt" 1',
-				scrollBehavior: "smooth",
-			},
-			thead: {
-				"@apply px-4 text-left align-middle font-medium text-muted-foreground":
-					{},
-			},
-			"tr:hover": { "@apply bg-muted/50": {} },
-			tr: { "@apply border-b transition-colors": {} },
-			td: { "@apply p-4 align-middle": {} },
-			th: { "@apply max-w-[10rem]": {} },
+			".light": lightColors,
+			".dark": darkColors,
 		});
 	},
 	{

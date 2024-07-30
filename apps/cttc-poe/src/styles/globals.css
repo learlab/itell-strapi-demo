@@ -4,20 +4,7 @@
 
 @import url("@itell/ui/dist/style.css");
 
-:root {
-  --expo-out: linear(0 0%, 0.1684 2.66%, 0.3165 5.49%,
-      0.446 8.52%, 0.5581 11.78%,
-      0.6535 15.29%, 0.7341 19.11%,
-      0.8011 23.3%, 0.8557 27.93%,
-      0.8962 32.68%, 0.9283 38.01%,
-      0.9529 44.08%, 0.9711 51.14%,
-      0.9833 59.06%, 0.9915 68.74%, 1 100%);
-}
 
-
-html {
-  scroll-behavior: smooth;
-}
 
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
@@ -28,29 +15,41 @@ html {
   margin-top: 0;
 }
 
-.inset-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+.note {
+  color: black;
 }
 
-span.unhighlighted {
-  @apply font-normal !important;
+.note.emphasized {
+  @apply font-bold !important;
 }
 
-span.highlight {
+.highlight {
   cursor: pointer !important;
   color: black;
 }
 
-span.emphasized {
-  @apply font-bold !important;
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: rect(0px, 0px, 0px, 0px);
 }
 
-svg {
-  transition: all 0.3s;
+.skip-link:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  clip-path: auto;
+  padding: 12px;
+  text-decoration: underline;
+  text-underline-offset: 0.4em;
+  text-decoration-color: hsl(var(--primary));
 }
+
 
 
 #page-title,
@@ -59,12 +58,11 @@ h3,
 h4,
 h5,
 .content-chunk {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: calc(var(--nav-height) + 0.5rem)
 }
 
 .content-chunk {
   position: relative;
-  transition: filter 1s ease-in-out;
 }
 
 .page-toc-active {
@@ -96,11 +94,6 @@ h5,
   z-index: 1;
 }
 
-
-.note {
-  color: black;
-}
-
 .question-container {
   margin: 1em 0;
 }
@@ -113,11 +106,10 @@ h5,
   display: none;
 }
 
-.driver-active #textbook-page-wrapper {
+.driver-active #textbook-main-wrapper {
   grid-template-columns: 1fr;
   max-width: 60%;
 }
-
 
 .driver-popover {
   @apply max-w-80 bg-background text-foreground !important;
@@ -127,84 +119,109 @@ h5,
   user-select: none;
 }
 
-
 #page-content button,
 #page-content .question-container,
 #page-content .pager,
 #page-content .highlight,
 #page-content .note {
-  @apply no-select
-}
-
-::view-transition-group(root) {
-  animation-duration: 0.7s;
-  animation-timing-function: var(--expo-out);
-}
-
-::view-transition-new(root) {
-  animation-name: reveal-light;
-}
-
-::view-transition-old(root),
-.dark::view-transition-old(root) {
-  animation: none;
-  z-index: -1;
-}
-
-.dark::view-transition-new(root) {
-  animation-name: reveal-dark;
-}
-
-@keyframes reveal-dark {
-  from {
-    clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
-  }
-
-  to {
-    clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
-  }
-}
-
-@keyframes reveal-light {
-  from {
-    clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
-  }
-
-  to {
-    clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
-  }
-}
-
-.shake {
-  animation-name: shake;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
-  animation-iteration-count: 2;
+  user-select: none;
 }
 
 
-@keyframes shake {
-  0% {
-    transform: translateX(0);
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 
-  20% {
-    transform: translateX(-10px);
+
+  ::view-transition-group(root) {
+    animation-duration: 0.7s;
+    animation-timing-function: var(--expo-out);
   }
 
-  40% {
-    transform: translateX(10px);
+  ::view-transition-new(root) {
+    animation-name: reveal-light;
   }
 
-  60% {
-    transform: translateX(-10px);
+  ::view-transition-old(root),
+  .dark::view-transition-old(root) {
+    animation: none;
+    z-index: -1;
   }
 
-  80% {
-    transform: translateX(10px);
+  .dark::view-transition-new(root) {
+    animation-name: reveal-dark;
   }
 
-  100% {
-    transform: translateX(0);
+  @keyframes reveal-dark {
+    from {
+      clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+    }
+
+    to {
+      clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+    }
+  }
+
+  @keyframes reveal-light {
+    from {
+      clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+    }
+
+    to {
+      clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+    }
+  }
+
+  .shake {
+    animation-name: shake;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 2;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+
+    20% {
+      transform: translateX(-10px);
+    }
+
+    40% {
+      transform: translateX(10px);
+    }
+
+    60% {
+      transform: translateX(-10px);
+    }
+
+    80% {
+      transform: translateX(10px);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-new(root),
+  ::view-transition-old(root),
+  .dark::view-transition-old(root),
+  .dark::view-transition-new(root) {
+    animation: none;
+  }
+
+  .shake {
+    animation: none;
   }
 }

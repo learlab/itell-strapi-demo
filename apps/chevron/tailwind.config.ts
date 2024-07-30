@@ -1,6 +1,6 @@
-import type { Config } from "tailwindcss";
 import tailwindPreset from "@itell/tailwind";
-import { DefaultTheme } from "@itell/core/config";
+import { DefaultTheme } from "@itell/tailwind";
+import type { Config } from "tailwindcss";
 
 export default {
 	presets: [tailwindPreset],

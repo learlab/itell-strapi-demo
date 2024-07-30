@@ -1,5 +1,5 @@
-import { readYAML } from "./utils";
 import { SiteConfig, SiteConfigSchema } from "./schema";
+import { readYAML } from "./utils";
 
 export const DefaultSiteConfig: SiteConfig = {
 	title: "My iTELL Site",
@@ -12,7 +12,7 @@ export const DefaultSiteConfig: SiteConfig = {
 export const getSiteConfig = async (
 	configPath: string,
 ): Promise<SiteConfig> => {
-	let configData;
+	let configData: unknown;
 	try {
 		configData = await readYAML(configPath);
 	} catch (e) {

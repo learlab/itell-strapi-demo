@@ -53,7 +53,7 @@ const DashboardNav = async (props: DashboardNavProps) => {
 	const { user } = await getSession();
 
 	return (
-		<div className="flex gap-6 md:gap-10 justify-between h-16 px-8">
+		<div className="flex gap-6 md:gap-10 justify-between h-[var(--nav-height)] px-8">
 			<div className="flex gap-4 items-center">
 				<Image
 					src="/images/itell.svg"

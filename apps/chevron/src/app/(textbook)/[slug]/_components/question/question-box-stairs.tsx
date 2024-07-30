@@ -59,7 +59,6 @@ export const QuestionBoxStairs = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const ref = useRef<HTMLDivElement>(null);
 	const { chunkSlugs, shouldBlur, finishChunk } = useQuestion((state) => ({
 		chunkSlugs: state.chunkSlugs,
 		shouldBlur: state.shouldBlur,
@@ -133,7 +132,6 @@ export const QuestionBoxStairs = ({
 		}
 
 		if (score === 0) {
-			ref.current?.classList.add("shake");
 			setState({
 				status: StatusStairs.BOTH_INCORRECT,
 				error: null,
@@ -186,10 +184,10 @@ export const QuestionBoxStairs = ({
 	return (
 		<Card
 			className={cn(
-				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
+				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10 ",
 				`${borderColor}`,
+				{ shake: state.status === StatusStairs.BOTH_INCORRECT },
 			)}
-			ref={ref}
 		>
 			<Confetti active={status === StatusStairs.BOTH_CORRECT} />
 

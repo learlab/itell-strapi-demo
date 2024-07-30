@@ -4,27 +4,7 @@
 
 @import url("@itell/ui/dist/style.css");
 
-:root {
-  --expo-out: linear(0 0%, 0.1684 2.66%, 0.3165 5.49%,
-      0.446 8.52%, 0.5581 11.78%,
-      0.6535 15.29%, 0.7341 19.11%,
-      0.8011 23.3%, 0.8557 27.93%,
-      0.8962 32.68%, 0.9283 38.01%,
-      0.9529 44.08%, 0.9711 51.14%,
-      0.9833 59.06%, 0.9915 68.74%, 1 100%);
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
 
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
@@ -35,12 +15,6 @@
   margin-top: 0;
 }
 
-.inset-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
 .note {
   color: black;
@@ -76,29 +50,17 @@
   text-decoration-color: hsl(var(--primary));
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  svg {
-    transition: all 0.3s;
-  }
-}
-
 #page-title,
 h2,
 h3,
 h4,
 h5,
 .content-chunk {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: calc(var(--nav-height) + 0.5rem)
 }
 
 .content-chunk {
   position: relative;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .content-chunk {
-    transition: filter 1s ease-in-out;
-  }
 }
 
 .page-toc-active {
@@ -163,7 +125,13 @@ h5,
   user-select: none;
 }
 
+
 @media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+
   ::view-transition-group(root) {
     animation-duration: 0.7s;
     animation-timing-function: var(--expo-out);
@@ -238,6 +206,10 @@ h5,
 }
 
 @media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
 
   ::view-transition-group(root),
   ::view-transition-new(root),

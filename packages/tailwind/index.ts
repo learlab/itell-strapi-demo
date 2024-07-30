@@ -1,11 +1,14 @@
-import { Config } from "tailwindcss";
-// @ts-ignore
-import animatePlugin from "tailwindcss-animate";
 import typographyPlugin from "@tailwindcss/typography";
+import { Config } from "tailwindcss";
+import animatePlugin from "tailwindcss-animate";
 import plugin from "./plugin";
+import { DefaultTheme } from "./theme";
 
+export { DefaultTheme };
+
+// for using as a preset in the tailwind config for an app
 export default {
 	darkMode: "class",
 	content: [],
-	plugins: [plugin, animatePlugin, typographyPlugin],
+	plugins: [animatePlugin, typographyPlugin, plugin],
 } satisfies Config;

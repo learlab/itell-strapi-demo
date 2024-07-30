@@ -33,7 +33,7 @@ const app = async (): Promise<UserConfigExport> => {
 			},
 			emptyOutDir: true,
 			rollupOptions: {
-				external: ["react", "react-dom", "fs/promises", "fs"],
+				external: ["react", "react-dom", "node:fs/promises", "node:fs"],
 				output: {
 					globals: {
 						react: "React",

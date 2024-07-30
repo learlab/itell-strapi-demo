@@ -1,6 +1,56 @@
-import { readFileSync } from "fs";
-import { load } from "js-yaml";
-import { Theme, UserThemeSchema } from "./schema";
+import { z } from "zod";
+
+export const ThemeColorSchema = z.object({
+	background: z.string(),
+	foreground: z.string(),
+	muted: z.string(),
+	mutedForeground: z.string(),
+	popover: z.string(),
+	popoverForeground: z.string(),
+	card: z.string(),
+	cardForeground: z.string(),
+	border: z.string(),
+	input: z.string(),
+	primary: z.string(),
+	primaryForeground: z.string(),
+	secondary: z.string(),
+	secondaryForeground: z.string(),
+	accent: z.string(),
+	accentForeground: z.string(),
+	destructive: z.string(),
+	destructiveForeground: z.string(),
+	ring: z.string(),
+	radius: z.string(),
+	info: z.string(),
+	warning: z.string(),
+	"chart-1": z.string(),
+	"chart-2": z.string(),
+	"chart-3": z.string(),
+	"chart-4": z.string(),
+	"chart-5": z.string(),
+});
+
+export const UserColorSchema = ThemeColorSchema.strict().partial().optional();
+
+export type ThemeColor = z.infer<typeof ThemeColorSchema>;
+// entire object could be undefined, or any of the properties could be undefined
+export type UserColor = z.infer<typeof UserColorSchema>;
+
+export const ThemeSchema = z.object({
+	root: z.record(z.string()).optional(),
+	light: ThemeColorSchema,
+	dark: ThemeColorSchema,
+});
+export const UserThemeSchema = z
+	.object({
+		light: UserColorSchema,
+		dark: UserColorSchema,
+	})
+	.strict()
+	.optional();
+
+export type Theme = z.infer<typeof ThemeSchema>;
+export type UserTheme = z.infer<typeof UserThemeSchema>;
 
 export const DefaultTheme: Theme = {
 	light: {
@@ -61,43 +111,4 @@ export const DefaultTheme: Theme = {
 		"chart-4": "280 65% 60%",
 		"chart-5": "340 75% 55%",
 	},
-};
-
-// this has to be synchronous to use in tailwind config
-export const getSiteTheme = (themePath: string): Theme => {
-	let themeData: unknown;
-	try {
-		themeData = load(readFileSync(themePath, "utf-8"));
-	} catch (e) {
-		console.warn("site theme not found, fallback to default configurations");
-		return DefaultTheme;
-	}
-
-	const themeParsed = UserThemeSchema.safeParse(themeData);
-	// here we only warns that some configurations are invalid
-	// but the valid oneswill still be merged in the final output, as only known keys will be
-	if (!themeParsed.success) {
-		console.warn(
-			"site theme is not valid",
-			themeParsed.error,
-			"\nfallback to default configurations when necessary",
-		);
-	}
-
-	if (!(themeData instanceof Object)) {
-		return DefaultTheme;
-	}
-
-	return {
-		light: {
-			...DefaultTheme.light,
-			// @ts-ignore
-			...(themeData.light || {}),
-		},
-		dark: {
-			...DefaultTheme.dark,
-			// @ts-ignore
-			...(themeData.dark || {}),
-		},
-	};
 };
