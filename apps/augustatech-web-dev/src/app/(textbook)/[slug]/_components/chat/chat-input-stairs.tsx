@@ -3,7 +3,7 @@
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/interval-error";
 import { useChat } from "@/components/provider/page-provider";
-import { isProduction } from "@/lib/constants";
+import { Elements, isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { ChatHistory } from "@itell/core/chat";
 import { cn, parseEventStream } from "@itell/core/utils";
@@ -102,6 +102,13 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 					},
 				);
 
+				if (history.current.length === 3) {
+					const el = document.getElementById(Elements.STAIRS_RETURN_BUTTON);
+					if (el) {
+						el.focus();
+					}
+				}
+
 				if (!answered.current) {
 					execute({
 						pageSlug,
@@ -194,7 +201,7 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 							placeholder={
 								overMessageLimit
 									? "Please return to the summary"
-									: "Message ITELL AI..."
+									: "Answer the question"
 							}
 							className="disabled:opacity-50 disabled:pointer-events-none bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
 							onKeyDown={async (e) => {
@@ -226,11 +233,7 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 							aria-hidden="true"
 						/>
 					</div>
-				) : (
-					<p className="p-2">
-						Click on the "ready for question" button to start
-					</p>
-				)}
+				) : null}
 			</form>
 			{isError && (
 				<InternalError className="px-2">

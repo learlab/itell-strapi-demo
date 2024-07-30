@@ -1,6 +1,7 @@
 "use client";
 
 import { useChat } from "@/components/provider/page-provider";
+import { Elements } from "@/lib/constants";
 import { Button } from "@itell/ui/client";
 
 type Props = {
@@ -10,18 +11,15 @@ type Props = {
 export const StairsReadyButton = ({ onClick }: Props) => {
 	const ready = useChat((state) => state.stairsReady);
 	return (
-		<div className="space-y-2">
-			<p>When you are ready for the question, click the button below.</p>
-			<Button
-				size={"sm"}
-				variant={"outline"}
-				className="animate-out duration-200 ease-out bg-background text-foreground"
-				id="chunk-question-ready"
-				onClick={onClick}
-				disabled={ready}
-			>
-				I'm ready for question
-			</Button>
-		</div>
+		<Button
+			size={"sm"}
+			variant={"outline"}
+			className="animate-out duration-200 ease-out bg-background text-foreground"
+			id={Elements.STAIRS_READY_BUTTON}
+			onClick={onClick}
+			disabled={ready}
+		>
+			I'm ready for question
+		</Button>
 	);
 };

@@ -6,26 +6,18 @@ import { UserAvatar } from "@/components/user-avatar";
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chat";
 import { cn, relativeDate } from "@itell/core/utils";
-import { Button } from "@itell/ui/client";
+import { AvatarFallback, Button } from "@itell/ui/client";
 import { Avatar, AvatarImage } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 type Props = {
-	userName: string | null;
-	userImage: string | null;
 	isStairs: boolean;
 	data?: Message[];
 	updatedAt?: Date;
 };
 
-export const ChatMessages = ({
-	userName,
-	userImage,
-	isStairs,
-	data,
-	updatedAt,
-}: Props) => {
+export const ChatMessages = ({ isStairs, data, updatedAt }: Props) => {
 	const oldMessages = isStairs ? [] : data || [];
 	const newMessages = isStairs
 		? useChat((state) => state.stairsMessages)
@@ -37,16 +29,9 @@ export const ChatMessages = ({
 				"flex flex-col-reverse gap-3 px-2 py-3 flex-1 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch",
 			)}
 		>
-			<div className="flex-1 flex-grow space-y-2">
+			<div className="flex-1 flex-grow space-y-2" role="status">
 				{oldMessages.map((message) => {
-					return (
-						<MessageItem
-							key={message.id}
-							userName={userName}
-							userImage={userImage}
-							message={message}
-						/>
-					);
+					return <MessageItem key={message.id} message={message} />;
 				})}
 				{oldMessages.length > 0 && (
 					<div className="flex items-center justify-center gap-2 text-center text-sm text-muted-foreground my-4">
@@ -56,25 +41,14 @@ export const ChatMessages = ({
 					</div>
 				)}
 				{newMessages.map((message) => {
-					return (
-						<MessageItem
-							key={message.id}
-							userImage={userImage}
-							userName={userName}
-							message={message}
-						/>
-					);
+					return <MessageItem key={message.id} message={message} />;
 				})}
 			</div>
 		</div>
 	);
 };
 
-const MessageItem = ({
-	userName,
-	userImage,
-	message,
-}: { userName: string | null; userImage: string | null; message: Message }) => {
+const MessageItem = ({ message }: { message: Message }) => {
 	const activeMessageId = useChat((state) => state.activeMessageId);
 	const router = useRouter();
 	const context = "context" in message ? message.context : "";
@@ -93,6 +67,8 @@ const MessageItem = ({
 			className={cn("chat-message flex items-end", {
 				"justify-end": message.isUser,
 			})}
+			// only announce the message if it's not from the user
+			role={message.isUser ? "" : "status"}
 		>
 			<div
 				className={cn(
@@ -101,14 +77,11 @@ const MessageItem = ({
 				)}
 			>
 				{message.isUser ? (
-					<UserAvatar
-						image={userImage}
-						name={userName}
-						className="order-last"
-					/>
+					<UserAvatar className="order-last" alt={"user"} />
 				) : (
 					<Avatar className="rounded-none w-8 h-8">
-						<AvatarImage src="/images/itell-ai.svg" />
+						<AvatarImage src="/images/itell-ai.svg" alt={"itell ai says"} />
+						<AvatarFallback>AI</AvatarFallback>
 					</Avatar>
 				)}
 

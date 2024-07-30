@@ -70,7 +70,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 					className="flex items-center gap-1"
 					aria-label="user navigation menu"
 				>
-					<UserAvatar image={user.image} name={user.name} className="h-8 w-8" />
+					<UserAvatar className="h-8 w-8" />
 					{open ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
@@ -82,15 +82,14 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 					<div className="flex items-center justify-start gap-2 p-2">
 						<div className="flex flex-col space-y-1 leading-none">
 							{user.name && (
-								<p className="font-medium" aria-label="username">
+								<p className="font-medium">
+									<span className="sr-only">username</span>
 									{user.name}
 								</p>
 							)}
 							{user.email && (
-								<p
-									className="w-[200px] truncate text-sm text-muted-foreground"
-									aria-label="user email"
-								>
+								<p className="w-[200px] truncate text-sm text-muted-foreground">
+									<span className="sr-only">user email</span>
 									{user.email}
 								</p>
 							)}
@@ -112,8 +111,8 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 							key={item.href}
 						>
 							<button
-								type="button"
 								role="link"
+								type="button"
 								className="flex items-center gap-2 w-full"
 							>
 								{active === item.text ? <Spinner /> : item.icon}
@@ -137,8 +136,8 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 						}}
 					>
 						<button
-							type="button"
 							role="link"
+							type="button"
 							className="flex items-center gap-2 w-full"
 						>
 							{logoutPending ? <Spinner /> : <LogOutIcon className="size-4" />}

@@ -56,12 +56,7 @@ export default async function () {
 			>
 				<div className="sticky top-20 -mt-10 pt-4">
 					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
-						<p
-							id="page-toc-heading"
-							className="font-semibold mb-4"
-							role="heading"
-							aria-level={2}
-						>
+						<p className="font-semibold mb-4">
 							<span className="flex items-center gap-2">
 								<BookmarkIcon className="size-4" />
 								On this page

@@ -36,7 +36,7 @@ import {
 	validateSummary,
 } from "@itell/core/summary";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
-import { Button } from "@itell/ui/client";
+import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChatStairs } from "@textbook/chat-stairs";
 import { driver } from "driver.js";
@@ -84,46 +84,6 @@ type Action =
 	| { type: "stairs"; payload: StairsQuestion }
 	| { type: "finish"; payload: { canProceed: boolean } }
 	| { type: "set_prev_input"; payload: string };
-
-const driverObj = driver();
-
-const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
-	return {
-		isPassed: response.is_passed || false,
-		prompt: response.prompt || "",
-		promptDetails: response.prompt_details || [],
-		suggestedKeyphrases: response.suggested_keyphrases,
-	};
-};
-
-const exitQuestion = () => {
-	const summaryEl = document.querySelector(Elements.PAGE_ASSIGNMENTS);
-
-	driverObj.destroy();
-
-	if (summaryEl) {
-		scrollToElement(summaryEl as HTMLElement);
-	}
-};
-
-const goToQuestion = (question: StairsQuestion) => {
-	const el = getChunkElement(question.chunk);
-	if (el) {
-		scrollToElement(el);
-
-		driverObj.highlight({
-			element: el,
-			popover: {
-				description:
-					"Please re-read the highlighted section. After re-reading, you will be asked a question to assess your understanding. When you are finished, press the 'return to summary' button",
-			},
-		});
-	} else {
-		toast.warning(
-			"No question found, please revise your summary or move on to the next page",
-		);
-	}
-};
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
@@ -180,27 +140,27 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const requestBodyRef = useRef<string | null>(null);
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
+	const stairsAnsweredRef = useRef(false);
+	const stairsShowtimeRef = useRef(0);
 
 	useEffect(() => {
 		driverObj.setConfig({
 			smoothScroll: false,
 			animate: false,
+			allowClose: false,
 			onPopoverRender: (popover) => {
 				addNode(
 					<ChatStairs
-						userImage={user.image}
-						userName={user.name}
 						pageSlug={pageSlug}
 						RenderFooter={() => (
 							<FinishReadingButton
 								onClick={(time) => {
-									exitQuestion();
-									if (!stairsAnswered) {
-										createEventAction({
-											type: Condition.STAIRS,
-											pageSlug,
-											data: { stairs: stairsDataRef.current, time },
-										});
+									if (!stairsAnsweredRef.current) {
+										stairsShowtimeRef.current = time;
+									}
+
+									if (stairsDataRef.current) {
+										exitQuestion();
 									}
 								}}
 							/>
@@ -209,15 +169,51 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					popover.wrapper,
 				);
 			},
-			onDestroyStarted: () => {
-				if (!stairsAnswered) {
-					return toast.warning("Please answer the question to continue");
+			onHighlightStarted: (element) => {
+				if (element) {
+					element.setAttribute("tabIndex", "0");
+					element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
+
+					const link = document.createElement("a");
+					link.href = `#${Elements.STAIRS_READY_BUTTON}`;
+					link.textContent = "answer the question";
+					link.className = "sr-only";
+					link.id = Elements.STAIRS_ANSWER_LINK;
+					element.insertAdjacentElement("afterend", link);
+				}
+			},
+			onHighlighted: () => {
+				const chat = document.getElementById(Elements.STAIRS_CONTAINER);
+				if (chat) {
+					chat.focus();
+				}
+			},
+			onDestroyed: (element) => {
+				if (element) {
+					element.removeAttribute("tabIndex");
+					element.removeAttribute("id");
+
+					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
+					if (link) {
+						link.remove();
+					}
 				}
 
+				if (!stairsAnsweredRef.current) {
+					stairsAnsweredRef.current = true;
+					createEventAction({
+						type: Condition.STAIRS,
+						pageSlug,
+						data: {
+							stairs: stairsDataRef.current,
+							time: stairsShowtimeRef.current,
+						},
+					});
+				}
 				exitQuestion();
 			},
 		});
-	}, [stairsAnswered]);
+	}, []);
 
 	const {
 		action,
@@ -225,12 +221,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		isDelayed,
 		isError,
 		error,
-		status,
 	} = useActionStatus(
 		async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-			clearStages();
 
+			clearStages();
 			dispatch({ type: "submit" });
 			addStage("Scoring");
 
@@ -298,7 +293,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							dispatch({ type: "scored", payload: parsed.data });
 							finishStage("Scoring");
 						} else {
-							console.log("SummaryResults parse error", parsed.error);
 							clearStages();
 							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
@@ -423,7 +417,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	useEffect(() => {
 		if (isError) {
-			console.log("summary scoring", error);
 			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 			clearStages();
 			reportSentry("score summary stairs", {
@@ -503,7 +496,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						className="w-32"
 					>
 						<span className="flex items-center gap-2">
-							<SendHorizonalIcon className="size-4" />
+							<SendHorizontalIcon className="size-4" />
 							Submit
 						</span>
 					</StatusButton> */}
@@ -520,14 +513,12 @@ const FinishReadingButton = ({
 	const stairsAnswered = useChat((store) => store.stairsAnswered);
 	const { time, clearTimer } = useTimer();
 
-	if (!stairsAnswered) {
-		return null;
-	}
-
 	return (
 		<div className="flex justify-end mt-4">
 			<Button
 				size="sm"
+				disabled={!stairsAnswered}
+				id={Elements.STAIRS_RETURN_BUTTON}
 				onClick={() => {
 					onClick(time);
 					clearTimer();
@@ -537,4 +528,43 @@ const FinishReadingButton = ({
 			</Button>
 		</div>
 	);
+};
+
+const driverObj = driver();
+
+const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
+	return {
+		isPassed: response.is_passed || false,
+		prompt: response.prompt || "",
+		promptDetails: response.prompt_details || [],
+		suggestedKeyphrases: response.suggested_keyphrases,
+	};
+};
+
+const goToQuestion = (question: StairsQuestion) => {
+	const el = getChunkElement(question.chunk);
+	if (el) {
+		scrollToElement(el);
+
+		driverObj.highlight({
+			element: el,
+			popover: {
+				description: "",
+			},
+		});
+	} else {
+		toast.warning(
+			"No question found, please revise your summary or move on to the next page",
+		);
+	}
+};
+
+const exitQuestion = () => {
+	const summaryEl = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+
+	driverObj.destroy();
+
+	if (summaryEl) {
+		scrollToElement(summaryEl as HTMLDivElement);
+	}
 };

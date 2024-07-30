@@ -181,6 +181,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const requestBodyRef = useRef<string | null>(null);
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
+	const stairsShowTimeRef = useRef<number | null>(null);
+	const stairsAnsweredRef = useRef(false);
 
 	useEffect(() => {
 		driverObj.setConfig({
@@ -196,15 +198,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						RenderFooter={() => (
 							<FinishReadingButton
 								onClick={(time) => {
+									stairsShowTimeRef.current = time;
 									exitQuestion();
-									if (!stairsAnswered) {
-										createEvent({
-											type: Condition.STAIRS,
-											pageSlug,
-											userId: user.id,
-											data: { stairs: stairsDataRef.current, time },
-										});
-									}
 								}}
 							/>
 						)}
@@ -215,6 +210,20 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			onDestroyStarted: () => {
 				if (!stairsAnswered) {
 					return toast.warning("Please answer the question to continue");
+				}
+				// only create stairs event for first attempt
+				// can't use stairsAnswered here because it's always set to true before the button is shown
+				if (!stairsAnsweredRef.current) {
+					stairsAnsweredRef.current = true;
+					createEvent({
+						type: Condition.STAIRS,
+						pageSlug,
+						userId: user.id,
+						data: {
+							stairs: stairsDataRef.current,
+							time: stairsShowTimeRef.current,
+						},
+					});
 				}
 
 				exitQuestion();
@@ -305,7 +314,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							dispatch({ type: "scored", payload: parsed.data });
 							finishStage("Scoring");
 						} else {
-							console.log("SummaryResults parse error", parsed.error);
 							clearStages();
 							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
@@ -519,14 +527,11 @@ const FinishReadingButton = ({
 	const stairsAnswered = useChat((store) => store.stairsAnswered);
 	const { time, clearTimer } = useTimer();
 
-	if (!stairsAnswered) {
-		return null;
-	}
-
 	return (
 		<div className="flex justify-end mt-4">
 			<Button
 				size="sm"
+				disabled={!stairsAnswered}
 				onClick={() => {
 					onClick(time);
 					clearTimer();

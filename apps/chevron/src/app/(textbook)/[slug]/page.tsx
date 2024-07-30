@@ -115,6 +115,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</aside>
 			</main>
 
+			<Suspense fallback={<ChatLoader.Skeleton />}>
+				<ChatLoader user={user} pageSlug={pageSlug} />
+			</Suspense>
+
 			{page.summary && user && (
 				<PageAssignments
 					pageSlug={pageSlug}
@@ -131,9 +135,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 				condition={userCondition}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
-			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader pageSlug={pageSlug} condition={userCondition} />
-			</Suspense>
 		</PageProvider>
 	);
 }

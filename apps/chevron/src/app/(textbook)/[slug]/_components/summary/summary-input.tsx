@@ -58,6 +58,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 				>
 					{pluralize("word", numOfWords(input), true)}
 				</p>
+
 				<Label>
 					<span className="sr-only">your summary</span>
 					<textarea
@@ -75,7 +76,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 							}
 						}}
 						className={cn(
-							"flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+							"flex min-h-[80px] w-full font-normal rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
 							"resize-none rounded-md shadow-md p-4 w-full ",
 						)}
 					/>

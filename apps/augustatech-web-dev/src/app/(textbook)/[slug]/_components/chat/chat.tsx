@@ -10,20 +10,12 @@ import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
-	userName: string | null;
-	userImage: string | null;
 	pageSlug: string;
 	data: Message[];
 	updatedAt: Date;
 };
 
-export const Chat = async ({
-	userName,
-	userImage,
-	pageSlug,
-	data,
-	updatedAt,
-}: Props) => {
+export const Chat = async ({ pageSlug, data, updatedAt }: Props) => {
 	return (
 		<Accordion
 			type="single"
@@ -38,13 +30,7 @@ export const Chat = async ({
 
 				<AccordionContent className="">
 					<div className="flex flex-col h-96">
-						<ChatMessages
-							data={data}
-							userImage={userImage}
-							userName={userName}
-							isStairs={false}
-							updatedAt={updatedAt}
-						/>
+						<ChatMessages data={data} isStairs={false} updatedAt={updatedAt} />
 						<ChatInput pageSlug={pageSlug} />
 					</div>
 					<footer className="px-4 py-2 text-xs text-muted-foreground">

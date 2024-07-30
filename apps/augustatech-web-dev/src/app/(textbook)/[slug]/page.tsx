@@ -129,7 +129,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			/>
 			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
 			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader pageSlug={pageSlug} condition={userCondition} />
+				<ChatLoader pageSlug={pageSlug} user={user} />
 			</Suspense>
 		</PageProvider>
 	);

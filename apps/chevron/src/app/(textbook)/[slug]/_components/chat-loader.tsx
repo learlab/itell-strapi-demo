@@ -1,25 +1,18 @@
 import { getChatsAction } from "@/actions/chat";
 import { Spinner } from "@/components/spinner";
-import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
 import { Message } from "@itell/core/chat";
 import { Avatar, AvatarImage } from "@itell/ui/client";
+import { User } from "lucia";
 import { Chat } from "./chat/chat";
 
 type Props = {
+	user: User | null;
 	pageSlug: string;
-	condition: string;
 };
 
-export const ChatLoader = async ({ pageSlug, condition }: Props) => {
-	if (condition !== Condition.STAIRS) {
-		return null;
-	}
-
-	const { user } = await getSession();
-	if (!user) {
-		return null;
-	}
+export const ChatLoader = async ({ user, pageSlug }: Props) => {
+	if (!user || user.condition === Condition.STAIRS) return null;
 
 	const [chats, err] = await getChatsAction({ pageSlug });
 	if (!err) {
@@ -29,15 +22,7 @@ export const ChatLoader = async ({ pageSlug, condition }: Props) => {
 			id: crypto.randomUUID(),
 		})) as Message[];
 
-		return (
-			<Chat
-				pageSlug={pageSlug}
-				userName={user.name}
-				userImage={user.image}
-				data={messages}
-				updatedAt={updatedAt}
-			/>
-		);
+		return <Chat pageSlug={pageSlug} data={messages} updatedAt={updatedAt} />;
 	}
 
 	return null;

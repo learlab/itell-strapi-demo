@@ -29,4 +29,9 @@ export const Elements = {
 	PAGE_CONTENT: "page-content",
 	PAGE_ASSIGNMENTS: "page-assignments",
 	SUMMARY_FORM: "summary-form",
+	STAIRS_HIGHLIGHTED_CHUNK: "stairs-highlighted-chunk",
+	STAIRS_CONTAINER: "stairs-container",
+	STAIRS_ANSWER_LINK: "stairs-answer-link",
+	STAIRS_READY_BUTTON: "stairs-ready-button",
+	STAIRS_RETURN_BUTTON: "stairs-return-button",
 } as const;

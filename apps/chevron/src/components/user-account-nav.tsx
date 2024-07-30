@@ -70,7 +70,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 					className="flex items-center gap-1"
 					aria-label="user navigation menu"
 				>
-					<UserAvatar image={user.image} name={user.name} className="h-8 w-8" />
+					<UserAvatar className="h-8 w-8" />
 					{open ? (
 						<ChevronUpIcon className="size-4" />
 					) : (
