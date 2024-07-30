@@ -15,11 +15,11 @@ export const ChatStairs = ({ pageSlug, RenderFooter }: Props) => {
 			value="item-1"
 			className="rounded-md bg-background text-foreground border border-border z-30"
 			role="alert"
-			tabIndex={0}
+			tabIndex={-1}
 			id={Elements.STAIRS_CONTAINER}
 			aria-relevant="additions"
 		>
-			<p className="p-4 mb-4 tracking-tight leading-tight">
+			<p className="p-4 tracking-tight leading-tight">
 				Before continuing, you will be presented a question for the section that
 				is highlighted on the left side. When you are ready for the question,
 				click the button below.

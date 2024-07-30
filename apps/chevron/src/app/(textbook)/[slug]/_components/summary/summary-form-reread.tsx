@@ -28,7 +28,7 @@ import {
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
-import { Button, StatusButton } from "@itell/ui/client";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
@@ -50,8 +50,6 @@ type Props = {
 	pageStatus: PageStatus;
 };
 
-const driverObj = driver();
-
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const prevInput = useRef<string | undefined>();
@@ -67,15 +65,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
 
-	const exitChunk = () => {
-		const summaryEl = document.querySelector("#page-assignments");
-		driverObj.destroy();
-
-		if (summaryEl) {
-			scrollToElement(summaryEl as HTMLDivElement);
-		}
-	};
-
 	const { nodes: portalNodes, addNode } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const { updateUser } = useSessionAction();
@@ -90,8 +79,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			driverObj.highlight({
 				element: el,
 				popover: {
-					description:
-						'Please re-read the highlighted section. when you are finished, press the "I finished rereading" button.',
+					description: "",
 					side: "right",
 					align: "start",
 				},
@@ -103,32 +91,63 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		driverObj.setConfig({
 			animate: false,
 			smoothScroll: false,
+			allowClose: false,
+			onHighlightStarted: (element) => {
+				if (element) {
+					element.setAttribute("tabIndex", "0");
+					element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
+
+					// append link to jump to the finish reading button
+					const link = document.createElement("a");
+					link.href = `#${Elements.STAIRS_RETURN_BUTTON}`;
+					link.textContent = "go to the finish reading button";
+					link.className = "sr-only";
+					link.id = Elements.STAIRS_ANSWER_LINK;
+					element.insertAdjacentElement("afterend", link);
+				}
+			},
+			onHighlighted: () => {
+				// give popover time to render
+				setTimeout(() => {
+					const element = document.getElementById(Elements.STAIRS_CONTAINER);
+					if (element) {
+						element.focus();
+					}
+				}, 100);
+			},
 			onPopoverRender: (popover) => {
 				addNode(
 					<FinishReadingButton
 						onClick={(time) => {
 							exitChunk();
 
-							if (!pageStatus.unlocked) {
-								createEventAction({
-									type: EventType.RANDOM_REREAD,
-									pageSlug,
-									data: { chunkSlug: randomChunkSlug, time },
-								});
-							}
+							createEventAction({
+								type: EventType.RANDOM_REREAD,
+								pageSlug,
+								data: { chunkSlug: randomChunkSlug, time },
+							});
 						}}
 					/>,
 					popover.wrapper,
 				);
 			},
-			onDestroyStarted: () => {
-				return toast.warning("Please finish rereading before moving on");
+			onDestroyed: (element) => {
+				if (element) {
+					element.removeAttribute("tabIndex");
+					element.removeAttribute("id");
+
+					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
+					if (link) {
+						link.remove();
+					}
+				}
+
+				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
 			},
 		});
 	}, []);
 
 	const {
-		status,
 		isError,
 		isDelayed,
 		isPending: _isPending,
@@ -257,10 +276,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				)}
 				{isDelayed && <DelayMessage />}
 				<div className="flex justify-end">
-					<StatusButton
-						disabled={!isSummaryReady}
-						pending={isPending}
+					<Button
+						disabled={!isSummaryReady || isPending}
 						className="w-32"
+						type="submit"
 					>
 						<span className="flex items-center gap-2">
 							{isPending ? (
@@ -270,11 +289,22 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 							)}
 							Submit
 						</span>
-					</StatusButton>
+					</Button>
 				</div>
 			</form>
 		</div>
 	);
+};
+
+const driverObj = driver();
+
+const exitChunk = () => {
+	const element = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+
+	if (element) {
+		scrollToElement(element as HTMLElement);
+	}
+	driverObj.destroy();
 };
 
 const FinishReadingButton = ({
@@ -283,15 +313,25 @@ const FinishReadingButton = ({
 	const { time, clearTimer } = useTimer();
 
 	return (
-		<Button
-			onClick={() => {
-				onClick(time);
-				clearTimer();
-			}}
-			size="sm"
-			className="mt-4"
-		>
-			I finished rereading
-		</Button>
+		<div className="space-y-2" id={Elements.STAIRS_CONTAINER} tabIndex={-1}>
+			<p className="p-2 tracking-tight leading-tight">
+				Please re-read the highlighted section. when you are finished, press the
+				"I finished rereading" button.
+			</p>
+
+			<a className="sr-only" href={`#${Elements.STAIRS_HIGHLIGHTED_CHUNK}`}>
+				go to the relevant section
+			</a>
+			<Button
+				onClick={() => {
+					onClick(time);
+					clearTimer();
+				}}
+				size="sm"
+				id={Elements.STAIRS_RETURN_BUTTON}
+			>
+				I finished rereading
+			</Button>
+		</div>
 	);
 };

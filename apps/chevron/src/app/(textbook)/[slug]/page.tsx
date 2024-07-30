@@ -81,8 +81,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 					className="relative p-4 lg:p-8 lg:pb-12"
 					id={Elements.TEXTBOOK_MAIN}
 					tabIndex={-1}
-					aria-live="polite"
-					aria-atomic="true"
 				>
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&

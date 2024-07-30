@@ -99,9 +99,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const isTextbookFinished = session.user?.finished || false;
 
 	const pageSlug = page.page_slug;
-	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => {
+	const { addStairsQuestion, messages } = useChat((state) => {
 		return {
-			stairsAnswered: state.stairsAnswered,
 			addStairsQuestion: state.addStairsQuestion,
 			messages: state.stairsMessages,
 		};
@@ -183,10 +182,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				}
 			},
 			onHighlighted: () => {
-				const chat = document.getElementById(Elements.STAIRS_CONTAINER);
-				if (chat) {
-					chat.focus();
-				}
+				// give popover time to render
+				setTimeout(() => {
+					const element = document.getElementById(Elements.STAIRS_CONTAINER);
+					if (element) {
+						element.focus();
+					}
+				}, 100);
 			},
 			onDestroyed: (element) => {
 				if (element) {
@@ -211,6 +213,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					});
 				}
 				exitQuestion();
+
+				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
 			},
 		});
 	}, []);
@@ -560,11 +564,9 @@ const goToQuestion = (question: StairsQuestion) => {
 };
 
 const exitQuestion = () => {
-	const summaryEl = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-
-	driverObj.destroy();
-
-	if (summaryEl) {
-		scrollToElement(summaryEl as HTMLDivElement);
+	const element = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+	if (element) {
+		scrollToElement(element as HTMLElement);
 	}
+	driverObj.destroy();
 };

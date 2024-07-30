@@ -1,7 +1,7 @@
 "use client";
 
 import { isAdmin } from "@/lib/auth/role";
-import { isProduction } from "@/lib/constants";
+import { Elements, isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
@@ -62,6 +62,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 				<Label>
 					<span className="sr-only">your summary</span>
 					<textarea
+						id={Elements.SUMMARY_INPUT}
 						name="input"
 						ref={ref as ForwardedRef<HTMLTextAreaElement>}
 						value={input}
