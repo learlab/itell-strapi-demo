@@ -84,7 +84,7 @@ export const getSession = cache(
 				);
 			}
 		} catch (err) {
-			reportSentry("get session", { error: err });
+			console.log("get session error", err);
 		}
 		return result;
 	},
