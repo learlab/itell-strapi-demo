@@ -62,7 +62,8 @@ export async function GET(req: Request): Promise<Response> {
 					.select()
 					.from(users)
 					.where(isNotNull(users.prolificId))
-					.orderBy(desc(users.createdAt)),
+					.orderBy(desc(users.createdAt))
+					.limit(1),
 			);
 
 			if (!lastUser) {

@@ -45,7 +45,7 @@ export default async function DashboardLayout({
 				<SiteNav>
 					<DashboardNav items={dashboardConfig.mainNav} />
 				</SiteNav>
-				<div className="p-4" id={Elements.DASHBOARD_MAIN}>
+				<div className="p-4">
 					<p>data unavailable</p>
 				</div>
 			</div>
@@ -57,12 +57,14 @@ export default async function DashboardLayout({
 			<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
 				<DashboardNav items={dashboardConfig.mainNav} />
 			</SiteNav>
-			<main className="min-h-screen grid md:grid-cols-[200px_1fr] group">
+			<main
+				id={Elements.DASHBOARD_MAIN}
+				className="min-h-screen grid md:grid-cols-[200px_1fr] group"
+			>
 				<DashboardSidebar />
 				<section
 					aria-label="dashboard main panel"
 					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
-					id={Elements.DASHBOARD_MAIN}
 					aria-live="polite"
 					aria-atomic="true"
 					tabIndex={-1}

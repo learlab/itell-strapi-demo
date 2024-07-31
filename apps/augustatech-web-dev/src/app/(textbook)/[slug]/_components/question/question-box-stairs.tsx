@@ -57,7 +57,6 @@ export const QuestionBoxStairs = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const ref = useRef<HTMLDivElement>(null);
 	const { chunkSlugs, shouldBlur, finishChunk } = useQuestion((state) => ({
 		chunkSlugs: state.chunkSlugs,
 		shouldBlur: state.shouldBlur,
@@ -131,7 +130,6 @@ export const QuestionBoxStairs = ({
 		}
 
 		if (score === 0) {
-			ref.current?.classList.add("shake");
 			setState({
 				status: StatusStairs.BOTH_INCORRECT,
 				error: null,
@@ -184,10 +182,10 @@ export const QuestionBoxStairs = ({
 	return (
 		<Card
 			className={cn(
-				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
+				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10 ",
 				`${borderColor}`,
+				{ shake: state.status === StatusStairs.BOTH_INCORRECT },
 			)}
-			ref={ref}
 		>
 			<Confetti active={status === StatusStairs.BOTH_CORRECT} />
 
@@ -212,7 +210,7 @@ export const QuestionBoxStairs = ({
 			</CardHeader>
 
 			<CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
-				<div className="space-y-4" role="status">
+				<div role="status" className="spacey-y-4">
 					{status === StatusStairs.BOTH_INCORRECT && (
 						<div className="text-sm">
 							<p className="text-red-400">
@@ -269,7 +267,7 @@ export const QuestionBoxStairs = ({
 					className="w-full space-y-2"
 				>
 					<Label>
-						<span className="sr-only">answer</span>
+						<span className="sr-only">your answer</span>
 						<TextArea
 							name="input"
 							rows={2}

@@ -4,7 +4,6 @@ import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSessionAction } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
 import { Condition, Elements, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -30,8 +29,8 @@ import {
 } from "@itell/core/summary";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
+import { driver } from "itell-driverjs";
+import "itell-driverjs/dist/driver.css";
 import { User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -67,7 +66,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 	const { nodes: portalNodes, addNode } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
-	const { updateUser } = useSessionAction();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
@@ -210,12 +208,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			prevInput.current = input;
 
 			if (isLastPage(pageSlug)) {
-				updateUser({ finished: true });
 				toast.info("You have finished the entire textbook!");
 				return;
 			}
-
-			updateUser({ pageSlug: data.nextPageSlug });
 
 			// 25% random rereading if the page is not unlocked
 			if (!pageStatus.unlocked && Math.random() <= 0.25) {
@@ -276,11 +271,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				)}
 				{isDelayed && <DelayMessage />}
 				<div className="flex justify-end">
-					<Button
-						disabled={!isSummaryReady || isPending}
-						className="w-32"
-						type="submit"
-					>
+					<Button disabled={!isSummaryReady || isPending} type="submit">
 						<span className="flex items-center gap-2">
 							{isPending ? (
 								<Spinner />

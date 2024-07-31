@@ -1,7 +1,6 @@
 "use client";
 import { createEventAction } from "@/actions/event";
 import { DelayMessage } from "@/components/delay-message";
-import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
 import { EventType } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";

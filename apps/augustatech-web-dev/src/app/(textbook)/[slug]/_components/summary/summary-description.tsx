@@ -14,8 +14,8 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 	if (!guide) return null;
 
 	return (
-		<aside aria-labelledby="summary-guide-heading">
-			<h2 id="summary-guide-heading" className="sr-only">
+		<section aria-labelledby="summary-guide">
+			<h2 id="summary-guide" className="sr-only">
 				summary writing guide
 			</h2>
 			<a className="sr-only" href={`#${Elements.SUMMARY_FORM}`}>
@@ -26,6 +26,6 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 				components={{ AccordionItem, Accordion }}
 				code={guide.body.code}
 			/>
-		</aside>
+		</section>
 	);
 };

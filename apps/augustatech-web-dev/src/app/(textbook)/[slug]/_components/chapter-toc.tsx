@@ -103,7 +103,6 @@ export const ChapterToc = ({
 								<button
 									type="button"
 									onClick={() => navigatePage(p.page_slug)}
-									role="link"
 									disabled={(pending || !visible) && isProduction}
 									className={cn(
 										"w-full text-left text-balance inline-flex justify-between items-start text-lg xl:text-xl xl:gap-4",
@@ -111,6 +110,7 @@ export const ChapterToc = ({
 											"animate-pulse": pending,
 										},
 									)}
+									role="link"
 									aria-busy={pending}
 									aria-label={`${p.title} - ${
 										unlocked ? "Unlocked" : visible ? "Visible" : "Locked"
@@ -129,12 +129,12 @@ export const ChapterToc = ({
 			<div className="mt-12 space-y-2">
 				<p className="sr-only">page control</p>
 				{isAdmin(userRole) && <AdminTools condition={condition} />}
-				{currentPage.summary && condition !== Condition.SIMPLE && (
+				{currentPage.summary && (
 					<AnchorLink
 						icon={<PencilIcon className="size-4 xl:size-6" />}
 						text="Assignment"
-						href="#page-assignments"
-						aria-label="assignments this page"
+						href={`#${Elements.PAGE_ASSIGNMENTS}`}
+						aria-label="assignments for this page"
 					/>
 				)}
 				<RestartPageButton pageSlug={currentPage.page_slug} />

@@ -1,7 +1,7 @@
 "use client";
 
+import { BrandIcon } from "@/components/brand-icon";
 import { Spinner } from "@/components/spinner";
-import { BrandIcon } from "@/components/ui/brand-icon";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
 import { LogInIcon, LogOutIcon } from "lucide-react";

@@ -8,7 +8,7 @@ export const Profile = ({ user }: { user: User }) => {
 			<h3 className="mb-4 text-lg font-medium">Profile</h3>
 			<div className="space-y-2">
 				<div className="flex items-center gap-2">
-					<UserAvatar />
+					<UserAvatar user={user} />
 					<p className="leading-none font-semibold">{user.name}</p>
 				</div>
 				<p className="text-muted-foreground text-sm">

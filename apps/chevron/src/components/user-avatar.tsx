@@ -1,24 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@itell/ui/client";
-import { useSession } from "./provider/session-provider";
+import { User } from "lucia";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Avatar> {
+	user: User;
 	className?: string;
 	alt?: string;
 }
 
-export const UserAvatar = ({ className, alt, ...rest }: Props) => {
-	const session = useSession();
-	if (!session.user) return null;
-	const name = session.user.name?.[0]?.toUpperCase() || "User";
+export const UserAvatar = ({ user, className, alt, ...rest }: Props) => {
+	const name = user.name?.[0]?.toUpperCase() || "User";
 
 	return (
 		<Avatar className={className} {...rest}>
-			{session.user.image ? (
+			{user.image ? (
 				<>
-					<AvatarImage
-						src={session.user.image}
-						alt={alt || "user profile photo"}
-					/>
+					<AvatarImage src={user.image} alt={alt || "user profile photo"} />
 					<AvatarFallback>{name}</AvatarFallback>
 				</>
 			) : (

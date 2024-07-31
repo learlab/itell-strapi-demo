@@ -2,7 +2,6 @@
 import { incrementUserPageSlugAction } from "@/actions/user";
 import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSessionAction } from "@/components/provider/session-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { PageData, reportSentry } from "@/lib/utils";
@@ -10,7 +9,7 @@ import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
-import { ArrowRightIcon, CheckSquareIcon } from "lucide-react";
+import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -24,7 +23,6 @@ type Props = {
 export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
 	const router = useRouter();
-	const { updateUser } = useSessionAction();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 
 	const {
@@ -46,11 +44,11 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 			if (err) {
 				throw new Error(err.message);
 			}
-			if (!isLastPage(page.page_slug)) {
-				updateUser({ pageSlug: data.nextPageSlug });
-			} else {
-				updateUser({ finished: true });
-				toast.info("You have finished the entire textbook!");
+			if (isLastPage(page.page_slug)) {
+				toast.info("You have finished the entire textbook!", {
+					important: true,
+					duration: 100000,
+				});
 			}
 
 			setFinished(true);
@@ -100,7 +98,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 				>
 					{!finished ? (
 						<span className="inline-flex gap-1 items-center">
-							<CheckSquareIcon className="size-4" /> Mark as completed
+							<CheckSquare2Icon className="size-4" /> Mark as completed
 						</span>
 					) : page.nextPageSlug ? (
 						<span className="inline-flex gap-1 items-center">

@@ -1,7 +1,7 @@
+import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
 import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
-import { BrandIcon } from "@/components/ui/brand-icon";
 import { SiteConfig } from "@/config/site";
 import { Elements } from "@/lib/constants";
 import { cn } from "@itell/core/utils";

@@ -2,7 +2,6 @@
 import { incrementUserPageSlugAction } from "@/actions/user";
 import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSessionAction } from "@/components/provider/session-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { PageData, reportSentry } from "@/lib/utils";
@@ -24,7 +23,6 @@ type Props = {
 export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
 	const router = useRouter();
-	const { updateUser } = useSessionAction();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 
 	const {
@@ -46,10 +44,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 			if (err) {
 				throw new Error(err.message);
 			}
-			if (!isLastPage(page.page_slug)) {
-				updateUser({ pageSlug: data.nextPageSlug });
-			} else {
-				updateUser({ finished: true });
+			if (isLastPage(page.page_slug)) {
 				toast.info("You have finished the entire textbook!", {
 					important: true,
 					duration: 100000,

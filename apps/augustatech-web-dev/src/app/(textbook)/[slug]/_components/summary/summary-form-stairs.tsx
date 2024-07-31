@@ -5,10 +5,7 @@ import { getFocusTimeAction } from "@/actions/focus-time";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import { useChat, useQuestion } from "@/components/provider/page-provider";
-import {
-	useSession,
-	useSessionAction,
-} from "@/components/provider/session-provider";
+
 import { Spinner } from "@/components/spinner";
 import { Condition, Elements } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -39,8 +36,8 @@ import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { Button, StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChatStairs } from "@textbook/chat-stairs";
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
+import { driver } from "itell-driverjs";
+import "itell-driverjs/dist/driver.css";
 import { User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -94,9 +91,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		stairsQuestion: null,
 		canProceed: pageStatus.unlocked,
 	};
-	const { updateUser } = useSessionAction();
-	const session = useSession();
-	const isTextbookFinished = session.user?.finished || false;
 
 	const pageSlug = page.page_slug;
 	const { addStairsQuestion, messages } = useChat((state) => {
@@ -368,7 +362,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					},
 				});
 				if (err) {
-					throw new Error(err.message);
+					throw new Error(err.data);
 				}
 
 				clearKeystroke();
@@ -376,10 +370,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (data.canProceed) {
 					if (isLastPage(pageSlug)) {
-						updateUser({ finished: true });
 						toast.info("You have finished the entire textbook!");
 					} else {
-						updateUser({ pageSlug: data.nextPageSlug });
 						// check if we can already proceed to prevent excessive toasts
 						if (!state.canProceed) {
 							const title = feedback?.isPassed
@@ -440,9 +432,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				<SummaryFeedback
 					className={isPending ? "opacity-70" : ""}
 					feedback={feedback}
-					needRevision={
-						isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
-					}
+					needRevision={isLastPage(pageSlug) ? user.finished : state.canProceed}
 				/>
 			)}
 
@@ -557,9 +547,7 @@ const goToQuestion = (question: StairsQuestion) => {
 			},
 		});
 	} else {
-		toast.warning(
-			"No question found, please revise your summary or move on to the next page",
-		);
+		toast.warning("No question found, please revise your summary");
 	}
 };
 

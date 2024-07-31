@@ -1,5 +1,3 @@
-"use client";
-import { useSession } from "@/components/provider/session-provider";
 import { getPageStatus } from "@/lib/page-status";
 import {
 	Button,
@@ -7,14 +5,15 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@itell/ui/client";
+import { User } from "lucia";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 
 type Props = {
+	user: User | null;
 	pageSlug: string;
 };
 
-export const PageInfo = ({ pageSlug }: Props) => {
-	const { user } = useSession();
+export const PageInfo = ({ user, pageSlug }: Props) => {
 	const status = getPageStatus({
 		pageSlug,
 		userPageSlug: user?.pageSlug || null,

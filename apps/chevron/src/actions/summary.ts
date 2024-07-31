@@ -9,12 +9,13 @@ import {
 import {
 	EventType,
 	PAGE_SUMMARY_THRESHOLD,
+	Tags,
 	isProduction,
 } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { isLastPage, isPageAfter, nextPage } from "@/lib/pages";
-import { reportSentry } from "@/lib/utils";
 import { and, count, desc, eq, sql } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 import { authedProcedure } from "./utils";
@@ -38,6 +39,7 @@ export const createSummaryAction = authedProcedure
 		z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() }),
 	)
 	.handler(async ({ input, ctx }) => {
+		let shouldRevalidate = false;
 		const data = await db.transaction(async (tx) => {
 			// count
 			let canProceed =
@@ -90,6 +92,7 @@ export const createSummaryAction = authedProcedure
 			);
 
 			if (canProceed) {
+				shouldRevalidate = true;
 				await tx
 					.update(users)
 					.set({
@@ -106,6 +109,11 @@ export const createSummaryAction = authedProcedure
 				canProceed,
 			};
 		});
+
+		if (shouldRevalidate) {
+			revalidateTag(Tags.GET_SESSION);
+		}
+
 		return data;
 	});
 

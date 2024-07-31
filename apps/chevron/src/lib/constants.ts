@@ -36,3 +36,7 @@ export const Elements = {
 	STAIRS_READY_BUTTON: "stairs-ready-button",
 	STAIRS_RETURN_BUTTON: "stairs-return-button",
 } as const;
+
+export const Tags = {
+	GET_SESSION: "get-session",
+} as const;

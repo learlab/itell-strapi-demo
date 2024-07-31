@@ -5,7 +5,6 @@ import {
 	deleteNoteAction,
 	updateNoteAction,
 } from "@/actions/note";
-import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
 import { useNotesStore } from "@/lib/store/note";
 import { NoteCard as NoteCardType } from "@/lib/store/note";
@@ -52,6 +51,10 @@ type EditDispatch =
 	| { type: "finish_upsert" }
 	| { type: "set_color"; payload: string };
 
+// existing notes are wrapped in <mark class = "highlight"> </mark>
+// on mouse enter, add class = "emphasize"
+// on delete add class = "unhighlighted"
+// styles are in global.css
 export const NoteCard = React.memo(
 	({
 		id,
@@ -65,11 +68,6 @@ export const NoteCard = React.memo(
 		color,
 		local = false,
 	}: Props) => {
-		const { user } = useSession();
-		if (!user) {
-			return null;
-		}
-
 		const elements = useRef<HTMLElement[]>();
 		const [recordId, setRecordId] = useState<number | undefined>(
 			local ? undefined : id,

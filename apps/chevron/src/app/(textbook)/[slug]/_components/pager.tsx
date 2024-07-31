@@ -1,5 +1,3 @@
-"use client";
-import { useSession } from "@/components/provider/session-provider";
 import { allPagesSorted } from "@/lib/pages";
 import { PageData, getPageData } from "@/lib/utils";
 import { cn } from "@itell/core/utils";
@@ -73,14 +71,14 @@ const PageLink = ({
 };
 
 type Props = {
+	userPageSlug: string | null;
 	pageIndex: number;
 };
 
-export const Pager = ({ pageIndex }: Props) => {
-	const { user } = useSession();
+export const Pager = ({ userPageSlug, pageIndex }: Props) => {
 	const { prev, next } = getPagerLinks({
 		pageIndex,
-		userPageSlug: user?.pageSlug || null,
+		userPageSlug,
 	});
 	return (
 		<nav

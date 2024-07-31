@@ -65,21 +65,13 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 			<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
 				skip to main content
 			</a>
-			<p
-				id="page-toc-heading"
-				className="font-semibold mb-4"
-				role="heading"
-				aria-level={2}
-			>
+			<p className="font-semibold mb-4">
 				<span className="flex items-center gap-2">
 					<BookmarkIcon className="size-4" />
 					On this page
 				</span>
 			</p>
-			<ol
-				className="flex flex-col mt-2 list-none text-foreground/70 tracking-tight"
-				aria-labelledby="page-toc-heading"
-			>
+			<ol className="mt-2 list-none text-foreground/70 tracking-tight">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
