@@ -10,7 +10,13 @@ type Props = {
 };
 
 export const getSurveyLink = (user: User) => {
-	return `https://peabody.az1.qualtrics.com/jfe/form/SV_eJPTJopcoMm0NCe?PROLIFIC_PID=${user.prolificId}`;
+	const url = new URL(
+		"https://peabody.az1.qualtrics.com/jfe/form/SV_eJPTJopcoMm0NCe",
+	);
+	url.searchParams.append("PROLIFIC_PID", user.prolificId || "not_prolific");
+	url.searchParams.append("CONDITION", user.condition);
+
+	return url.toString();
 };
 
 export const SurveyLink = ({ user }: Props) => {
