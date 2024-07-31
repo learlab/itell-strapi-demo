@@ -8,7 +8,6 @@ import {
 	constructed_responses_feedback,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
-import { reportSentry } from "@/lib/utils";
 import { count, eq } from "drizzle-orm";
 import { authedProcedure } from "./utils";
 

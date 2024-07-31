@@ -77,7 +77,10 @@ const MessageItem = ({ message }: { message: Message }) => {
 				)}
 			>
 				{message.isUser ? (
-					<UserAvatar className="order-last" alt={"user"} />
+					<Avatar className="rounded-none w-8 h-8 order-last">
+						<AvatarImage src="/images/user.svg" />
+						<AvatarFallback>User</AvatarFallback>
+					</Avatar>
 				) : (
 					<Avatar className="rounded-none w-8 h-8">
 						<AvatarImage src="/images/itell-ai.svg" alt={"itell ai says"} />

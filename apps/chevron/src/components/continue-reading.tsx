@@ -3,7 +3,6 @@
 import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
 import { firstPage } from "@/lib/pages";
 import { Button, StatusButton } from "@itell/ui/client";
-import { BookIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 

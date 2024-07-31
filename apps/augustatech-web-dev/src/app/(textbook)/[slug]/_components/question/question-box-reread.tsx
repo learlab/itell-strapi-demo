@@ -3,7 +3,6 @@
 import { createQuestionAnswerAction } from "@/actions/question";
 import { InternalError } from "@/components/interval-error";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSession } from "@/components/provider/session-provider";
 import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
@@ -170,7 +169,7 @@ export const QuestionBoxReread = ({
 					className="w-full space-y-2"
 				>
 					<Label>
-						<span className="sr-only">answer</span>
+						<span className="sr-only">your answer</span>
 						<TextArea
 							name="input"
 							rows={2}

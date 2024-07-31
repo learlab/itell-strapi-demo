@@ -1,20 +1,13 @@
 "use client";
 
-import { SessionProvider } from "@/components/provider/session-provider";
-import type { Session } from "@/lib/auth/actions";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 
-export const RootProvider = ({
-	children,
-	session,
-}: { children: React.ReactNode; session: Session }) => {
+export const RootProvider = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<SessionProvider session={session}>
-			<ThemeProvider attribute="class" defaultTheme="light">
-				{children}
-				<Toaster richColors closeButton />
-			</ThemeProvider>
-		</SessionProvider>
+		<ThemeProvider attribute="class" defaultTheme="light">
+			{children}
+			<Toaster richColors closeButton />
+		</ThemeProvider>
 	);
 };

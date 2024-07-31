@@ -87,7 +87,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
 					<PageContent title={page.title} code={page.body.code} />
 					<NotePopover pageSlug={pageSlug} userId={userId} />
-					<Pager pageIndex={pageIndex} />
+					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />
 				</div>
 
 				<aside
@@ -99,7 +99,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
 								<PageToc headings={page.headings} />
 								<div className="mt-8 flex flex-col gap-1">
-									<PageInfo pageSlug={pageSlug} />
+									<PageInfo pageSlug={pageSlug} user={user} />
 									<NoteCount />
 								</div>
 							</div>

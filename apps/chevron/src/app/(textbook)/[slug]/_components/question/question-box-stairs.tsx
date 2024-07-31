@@ -2,8 +2,6 @@
 
 import { createQuestionAnswerAction } from "@/actions/question";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSession } from "@/components/provider/session-provider";
-import { Spinner } from "@/components/spinner";
 import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";

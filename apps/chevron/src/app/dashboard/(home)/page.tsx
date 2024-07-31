@@ -2,7 +2,7 @@ import { incrementViewAction } from "@/actions/dashboard";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
-import { delay, redirectWithSearchParams } from "@/lib/utils";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";
 import { UserStatistics } from "@dashboard/user-statistics";

@@ -38,11 +38,11 @@ export const UserDetails = async ({ user }: Props) => {
 	]);
 
 	if (err1) {
-		throw new Error(err1.message);
+		throw new Error(err1.data);
 	}
 
 	if (err2) {
-		throw new Error(err2.message);
+		throw new Error(err2.data);
 	}
 
 	const pageIndex = getPageData(user.pageSlug)?.index;

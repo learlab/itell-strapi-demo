@@ -13,11 +13,13 @@ export default async function () {
 	const result = sessionId ? await lucia.validateSession(sessionId) : null;
 	const userPageSlug = result?.user?.pageSlug || null;
 	const headersList = headers();
-	const pathname = headersList.get("x-pathname") as string;
-	const split = pathname.split("/");
+	const pathname = headersList.get("x-pathname");
 	let pageSlug: string | null = null;
-	if (split.length === 2) {
-		pageSlug = split[1];
+	if (pathname !== null) {
+		const split = pathname.split("/");
+		if (split.length === 2) {
+			pageSlug = split[1];
+		}
 	}
 
 	// if this is not found, 404 will be throw at page.tsx

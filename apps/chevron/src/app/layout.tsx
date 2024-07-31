@@ -41,8 +41,6 @@ const fontSerif = FontSerif({
 export default async function RootLayout({
 	children,
 }: { children: React.ReactNode }) {
-	const session = await getSession();
-
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
@@ -63,7 +61,7 @@ export default async function RootLayout({
 					fontSerif.variable,
 				)}
 			>
-				<RootProvider session={session}>
+				<RootProvider>
 					<TailwindIndicator />
 					{children}
 				</RootProvider>

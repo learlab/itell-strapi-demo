@@ -63,7 +63,7 @@ export default async function RootLayout({
 					fontSerif.variable,
 				)}
 			>
-				<RootProvider session={session}>
+				<RootProvider>
 					<TailwindIndicator />
 					{children}
 				</RootProvider>

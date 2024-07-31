@@ -13,10 +13,10 @@ import {
 	summaries,
 	users,
 } from "@/drizzle/schema";
-import { isProduction } from "@/lib/constants";
+import { Tags, isProduction } from "@/lib/constants";
 import { firstPage, isLastPage, isPageAfter, nextPage } from "@/lib/pages";
-import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 import { createServerAction } from "zsa";
@@ -51,7 +51,8 @@ const getTeacherActionHandler = memoize(
 export const updateUserAction = authedProcedure
 	.input(UpdateUserSchema)
 	.handler(async ({ input, ctx }) => {
-		return await db.update(users).set(input).where(eq(users.id, ctx.user.id));
+		await db.update(users).set(input).where(eq(users.id, ctx.user.id));
+		revalidateTag(Tags.GET_SESSION);
 	});
 /**
  * Reset user progress, also deletes all user data, including summaries, answers, events, etc.
@@ -174,6 +175,8 @@ export const incrementUserPageSlugAction = authedProcedure
 				finished: isLastPage(input.currentPageSlug),
 			})
 			.where(eq(users.id, ctx.user.id));
+
+		revalidateTag(Tags.GET_SESSION);
 
 		return {
 			nextPageSlug: shouldUpdateUserPageSlug ? nextPageSlug : ctx.user.pageSlug,

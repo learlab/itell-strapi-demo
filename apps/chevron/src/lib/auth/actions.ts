@@ -1,15 +1,17 @@
 "use server";
-import { reportSentry } from "@/lib/utils";
 import { User, Session as _Session } from "lucia";
 import { cookies } from "next/headers";
-import { cache } from "react";
+import { memoize } from "nextjs-better-unstable-cache";
 import "server-only";
+import { Tags } from "../constants";
 import { lucia } from "./lucia";
 
-export const getSession = cache(
-	async (): Promise<
-		{ user: User; session: _Session } | { user: null; session: null }
-	> => {
+export type GetSessionData =
+	| { user: User; session: _Session }
+	| { user: null; session: null };
+
+export const getSession = memoize(
+	async (): Promise<GetSessionData> => {
 		const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
 		if (!sessionId) {
 			return {
@@ -37,13 +39,15 @@ export const getSession = cache(
 				);
 			}
 		} catch (err) {
-			reportSentry("get session", { error: err });
+			console.log("get session", err);
 		}
 		return result;
 	},
+	{
+		persist: false,
+		revalidateTags: [Tags.GET_SESSION],
+	},
 );
-
-export type Session = Awaited<ReturnType<typeof getSession>>;
 
 export const logout = async () => {
 	const { session } = await getSession();

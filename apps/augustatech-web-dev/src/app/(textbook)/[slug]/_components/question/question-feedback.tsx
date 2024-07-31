@@ -92,6 +92,10 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 					</Label>
 
 					<div className="flex flex-col space-y-2">
+						<p className="sr-only">
+							Pick one or more tags that best describes the feedback you had
+							(Optional)
+						</p>
 						{allTags.map((tag) => (
 							<Label key={tag} className="inline-flex items-center gap-2">
 								<Checkbox name={tag} />

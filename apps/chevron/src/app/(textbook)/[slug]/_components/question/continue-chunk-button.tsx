@@ -2,7 +2,6 @@
 
 import { createEventAction } from "@/actions/event";
 import { useQuestion } from "@/components/provider/page-provider";
-import { useSession } from "@/components/provider/session-provider";
 import { EventType } from "@/lib/constants";
 import { LoginButton } from "@auth/auth-form";
 import { cn } from "@itell/core/utils";
