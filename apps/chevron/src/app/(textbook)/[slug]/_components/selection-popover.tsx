@@ -1,13 +1,13 @@
 "use client";
 import { useAddChat, useChat } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { Elements } from "@/lib/constants";
 import { useCreateNote } from "@/lib/store/note-store";
+import { Elements } from "@itell/core/constants";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { User } from "lucia";
-import { BotIcon, PencilIcon, SparklesIcon } from "lucide-react";
+import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";

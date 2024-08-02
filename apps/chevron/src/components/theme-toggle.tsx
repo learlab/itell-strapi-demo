@@ -1,6 +1,7 @@
 "use client";
 
 import { updateUserPrefsAction } from "@/actions/user";
+import { isProduction } from "@/lib/constants";
 import { Button } from "@itell/ui/client";
 import {
 	DropdownMenu,
@@ -19,7 +20,9 @@ export const ThemeToggle = () => {
 	const setTheme = (theme: string) => {
 		if (!document.startViewTransition) _setTheme(theme);
 		document.startViewTransition(() => {
-			execute({ preferences: { theme } });
+			if (isProduction) {
+				execute({ preferences: { theme } });
+			}
 			_setTheme(theme);
 		});
 	};

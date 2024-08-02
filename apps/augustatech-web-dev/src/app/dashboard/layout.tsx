@@ -2,11 +2,12 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
-import { Condition, Elements } from "@/lib/constants";
+import { Condition } from "@/lib/constants";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { dashboardConfig } from "@dashboard/config";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
+import { Elements } from "@itell/core/constants";
 
 export const generateMetadata = () => {
 	const title = "Dashboard";

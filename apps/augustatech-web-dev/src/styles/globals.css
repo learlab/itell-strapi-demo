@@ -5,7 +5,6 @@
 @import url("@itell/ui/dist/style.css");
 
 
-
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
   margin-top: 0;
@@ -98,8 +97,8 @@ h5,
   margin: 1em 0;
 }
 
-.driver-active .toc-sidebar,
-.driver-active .chapter-sidebar,
+.driver-active #page-nav,
+.driver-active #textbook-nav,
 .driver-active #site-nav,
 .driver-active .question-container,
 .driver-active .chatbot {

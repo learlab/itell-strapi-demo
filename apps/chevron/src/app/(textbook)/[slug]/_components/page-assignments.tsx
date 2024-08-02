@@ -1,6 +1,7 @@
-import { Condition, Elements } from "@/lib/constants";
+import { Condition } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
+import { Elements } from "@itell/core/constants";
 import { User } from "lucia";
 import { Suspense } from "react";
 import { SummaryCount } from "./summary/summary-count";

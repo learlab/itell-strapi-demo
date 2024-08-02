@@ -2,11 +2,12 @@ import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assign
 import { SelectionPopover } from "@/app/(textbook)/[slug]/_components/selection-popover";
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
-import { Condition, Elements } from "@/lib/constants";
+import { Condition } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
+import { Elements } from "@itell/core/constants";
 import { ScrollArea } from "@itell/ui/client";
 import { Info } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
@@ -64,7 +65,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 				id={Elements.TEXTBOOK_MAIN_WRAPPER}
 				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6 flex-1"
 			>
-				<div className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+				<div
+					id={Elements.TEXTBOOK_NAV}
+					className="top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2"
+				>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
 							currentPage={page}
@@ -90,8 +94,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</div>
 
 				<aside
+					id={Elements.PAGE_NAV}
 					aria-label="table of contents"
-					className="toc-sidebar hidden md:block"
+					className=" hidden md:block"
 				>
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">

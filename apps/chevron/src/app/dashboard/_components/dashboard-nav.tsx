@@ -1,8 +1,8 @@
 import { ContinueReading } from "@/components/continue-reading";
 import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import { Elements } from "@/lib/constants";
 import { DashboardNavMenu } from "@dashboard/nav";
+import { Elements } from "@itell/core/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { DashboardNavItem } from "./config";

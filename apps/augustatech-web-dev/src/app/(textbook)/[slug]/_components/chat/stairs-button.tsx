@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@/components/provider/page-provider";
-import { Elements } from "@/lib/constants";
+import { Elements } from "@itell/core/constants";
 import { Button } from "@itell/ui/client";
 
 type Props = {

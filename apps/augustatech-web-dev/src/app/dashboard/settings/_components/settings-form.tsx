@@ -4,7 +4,7 @@ import { updateUserAction, updateUserPrefsAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
 import { UserPreferences } from "@/drizzle/schema";
-import { darkColors, lightColors } from "@/lib/constants";
+import { darkColors, lightColors } from "@itell/core/constants";
 import { cn } from "@itell/core/utils";
 import {
 	Button,

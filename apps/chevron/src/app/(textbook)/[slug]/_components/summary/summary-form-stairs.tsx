@@ -7,7 +7,7 @@ import { DelayMessage } from "@/components/delay-message";
 import { useChat, useQuestion } from "@/components/provider/page-provider";
 
 import { Spinner } from "@/components/spinner";
-import { Condition, Elements } from "@/lib/constants";
+import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -18,6 +18,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
+import { Elements } from "@itell/core/constants";
 import {
 	useDebounce,
 	useKeystroke,
@@ -32,11 +33,11 @@ import {
 	validateSummary,
 } from "@itell/core/summary";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
-import { Button, StatusButton } from "@itell/ui/client";
+import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+import "@itell/driver.js/dist/driver.css";
+import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
 import { ChatStairs } from "@textbook/chat-stairs";
-import { driver } from "itell-driverjs";
-import "itell-driverjs/dist/driver.css";
 import { User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -134,84 +135,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
 	const stairsAnsweredRef = useRef(false);
-	const stairsShowtimeRef = useRef(0);
-
-	useEffect(() => {
-		driverObj.setConfig({
-			smoothScroll: false,
-			animate: false,
-			allowClose: false,
-			onPopoverRender: (popover) => {
-				addNode(
-					<ChatStairs
-						pageSlug={pageSlug}
-						RenderFooter={() => (
-							<FinishReadingButton
-								onClick={(time) => {
-									if (!stairsAnsweredRef.current) {
-										stairsShowtimeRef.current = time;
-									}
-
-									if (stairsDataRef.current) {
-										exitQuestion();
-									}
-								}}
-							/>
-						)}
-					/>,
-					popover.wrapper,
-				);
-			},
-			onHighlightStarted: (element) => {
-				if (element) {
-					element.setAttribute("tabIndex", "0");
-					element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
-
-					const link = document.createElement("a");
-					link.href = `#${Elements.STAIRS_READY_BUTTON}`;
-					link.textContent = "answer the question";
-					link.className = "sr-only";
-					link.id = Elements.STAIRS_ANSWER_LINK;
-					element.insertAdjacentElement("afterend", link);
-				}
-			},
-			onHighlighted: () => {
-				// give popover time to render
-				setTimeout(() => {
-					const element = document.getElementById(Elements.STAIRS_CONTAINER);
-					if (element) {
-						element.focus();
-					}
-				}, 100);
-			},
-			onDestroyed: (element) => {
-				if (element) {
-					element.removeAttribute("tabIndex");
-					element.removeAttribute("id");
-
-					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
-					if (link) {
-						link.remove();
-					}
-				}
-
-				if (!stairsAnsweredRef.current) {
-					stairsAnsweredRef.current = true;
-					createEventAction({
-						type: Condition.STAIRS,
-						pageSlug,
-						data: {
-							stairs: stairsDataRef.current,
-							time: stairsShowtimeRef.current,
-						},
-					});
-				}
-				exitQuestion();
-
-				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
-			},
-		});
-	}, []);
 
 	const {
 		action,
@@ -408,8 +331,84 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		},
 		{ delayTimeout: 20000 },
 	);
-
 	const isPending = useDebounce(_isPending, 100);
+
+	useEffect(() => {
+		driverObj.setConfig({
+			smoothScroll: false,
+			animate: false,
+			allowClose: false,
+			onPopoverRender: (popover) => {
+				addNode(
+					<ChatStairs
+						id={Elements.STAIRS_CONTAINER}
+						pageSlug={pageSlug}
+						RenderFooter={() => (
+							<FinishReadingButton
+								onClick={(time) => {
+									if (!stairsAnsweredRef.current) {
+										stairsAnsweredRef.current = true;
+										createEventAction({
+											type: Condition.STAIRS,
+											pageSlug,
+											data: {
+												stairs: stairsDataRef.current,
+												time,
+											},
+										});
+									}
+
+									exitQuestion();
+								}}
+							/>
+						)}
+					/>,
+					popover.wrapper,
+				);
+
+				setTimeout(() => {
+					document.getElementById(Elements.STAIRS_CONTAINER)?.focus();
+				}, 100);
+			},
+			onHighlightStarted: (element) => {
+				if (element) {
+					element.setAttribute("tabIndex", "0");
+					element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
+
+					const link = document.createElement("a");
+					link.href = `#${Elements.STAIRS_READY_BUTTON}`;
+					link.textContent = "answer the question";
+					link.className = "sr-only";
+					link.id = Elements.STAIRS_ANSWER_LINK;
+					element.insertAdjacentElement("afterend", link);
+				}
+			},
+			onHighlighted: () => {
+				if (stairsDataRef.current?.chunk) {
+					setInertBackground(stairsDataRef.current.chunk);
+				}
+			},
+			onDestroyed: (element) => {
+				removeInert();
+				if (element) {
+					element.removeAttribute("tabIndex");
+					element.removeAttribute("id");
+
+					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
+					if (link) {
+						link.remove();
+					}
+				}
+
+				const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+				if (assignments) {
+					scrollToElement(element as HTMLElement);
+				}
+
+				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
+			},
+		});
+	}, []);
 
 	useEffect(() => {
 		if (isError) {
@@ -552,9 +551,5 @@ const goToQuestion = (question: StairsQuestion) => {
 };
 
 const exitQuestion = () => {
-	const element = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-	if (element) {
-		scrollToElement(element as HTMLElement);
-	}
 	driverObj.destroy();
 };

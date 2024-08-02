@@ -15,7 +15,6 @@ export const ChatLoader = async ({ user, pageSlug }: Props) => {
 	if (!user || user.condition === Condition.STAIRS) return null;
 
 	const [chats, err] = await getChatsAction({ pageSlug });
-	console.log("fetch!");
 	if (!err) {
 		const { data, updatedAt } = chats;
 		const messages = data.map((d) => ({

@@ -1,8 +1,8 @@
 import { db } from "@/actions/db";
 import { UserPreferences, sessions, users } from "@/drizzle/schema";
+import { DefaultPreferences } from "@itell/core/constants";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
-import { DefaultPreferences } from "../constants";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 

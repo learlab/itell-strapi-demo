@@ -1,10 +1,11 @@
 "use client";
 
 import { isAdmin } from "@/lib/auth/role";
-import { Elements, isProduction } from "@/lib/constants";
+import { isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
+import { Elements } from "@itell/core/constants";
 import { cn, numOfWords } from "@itell/core/utils";
 import { Label } from "@itell/ui/client";
 import pluralize from "pluralize";

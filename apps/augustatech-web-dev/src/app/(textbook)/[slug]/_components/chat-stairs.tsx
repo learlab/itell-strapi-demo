@@ -1,22 +1,23 @@
-import { Elements } from "@/lib/constants";
+import { Elements } from "@itell/core/constants";
 import { Accordion, AccordionContent, AccordionItem } from "@itell/ui/client";
 import { ChatInputStairs } from "./chat/chat-input-stairs";
 import { ChatMessages } from "./chat/chat-messages";
 
-type Props = {
+interface Props {
 	pageSlug: string;
 	RenderFooter: () => JSX.Element;
-};
+	id?: string;
+}
 
-export const ChatStairs = ({ pageSlug, RenderFooter }: Props) => {
+export const ChatStairs = ({ pageSlug, RenderFooter, id }: Props) => {
 	return (
 		<Accordion
+			id={id}
 			type="single"
 			value="item-1"
 			className="rounded-md bg-background text-foreground border border-border z-30"
 			role="alert"
 			tabIndex={-1}
-			id={Elements.STAIRS_CONTAINER}
 			aria-relevant="additions"
 		>
 			<p className="p-4 tracking-tight leading-tight">

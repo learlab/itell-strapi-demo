@@ -1,6 +1,6 @@
 "use client";
 
-import { Elements } from "@/lib/constants";
+import { Elements } from "@itell/core/constants";
 import { cn } from "@itell/core/utils";
 import { BookmarkIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";

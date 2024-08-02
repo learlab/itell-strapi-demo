@@ -5,7 +5,7 @@ import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import { useQuestion } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
-import { Condition, Elements, EventType } from "@/lib/constants";
+import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -15,6 +15,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
+import { Elements } from "@itell/core/constants";
 import {
 	useDebounce,
 	useKeystroke,
@@ -27,10 +28,10 @@ import {
 	SummaryResponse,
 	SummaryResponseSchema,
 } from "@itell/core/summary";
+import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
-import { driver } from "itell-driverjs";
-import "itell-driverjs/dist/driver.css";
 import { User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -69,81 +70,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
-
-	const goToRandomChunk = () => {
-		const el = getChunkElement(randomChunkSlug);
-		if (el) {
-			scrollToElement(el);
-			driverObj.highlight({
-				element: el,
-				popover: {
-					description: "",
-					side: "right",
-					align: "start",
-				},
-			});
-		}
-	};
-
-	useEffect(() => {
-		driverObj.setConfig({
-			animate: false,
-			smoothScroll: false,
-			allowClose: false,
-			onHighlightStarted: (element) => {
-				if (element) {
-					element.setAttribute("tabIndex", "0");
-					element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
-
-					// append link to jump to the finish reading button
-					const link = document.createElement("a");
-					link.href = `#${Elements.STAIRS_RETURN_BUTTON}`;
-					link.textContent = "go to the finish reading button";
-					link.className = "sr-only";
-					link.id = Elements.STAIRS_ANSWER_LINK;
-					element.insertAdjacentElement("afterend", link);
-				}
-			},
-			onHighlighted: () => {
-				// give popover time to render
-				setTimeout(() => {
-					const element = document.getElementById(Elements.STAIRS_CONTAINER);
-					if (element) {
-						element.focus();
-					}
-				}, 100);
-			},
-			onPopoverRender: (popover) => {
-				addNode(
-					<FinishReadingButton
-						onClick={(time) => {
-							exitChunk();
-
-							createEventAction({
-								type: EventType.RANDOM_REREAD,
-								pageSlug,
-								data: { chunkSlug: randomChunkSlug, time },
-							});
-						}}
-					/>,
-					popover.wrapper,
-				);
-			},
-			onDestroyed: (element) => {
-				if (element) {
-					element.removeAttribute("tabIndex");
-					element.removeAttribute("id");
-
-					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
-					if (link) {
-						link.remove();
-					}
-				}
-
-				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
-			},
-		});
-	}, []);
 
 	const {
 		isError,
@@ -214,12 +140,71 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			// 25% random rereading if the page is not unlocked
 			if (!pageStatus.unlocked && Math.random() <= 0.25) {
-				goToRandomChunk();
+				goToRandomChunk(randomChunkSlug);
 			}
 		},
 		{ delayTimeout: 10000 },
 	);
 	const isPending = useDebounce(_isPending, 100);
+
+	useEffect(() => {
+		driverObj.setConfig({
+			animate: false,
+			smoothScroll: false,
+			allowClose: false,
+			onHighlightStarted: (element) => {
+				if (element) {
+					element.setAttribute("tabIndex", "0");
+					element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
+
+					// append link to jump to the finish reading button
+					const link = document.createElement("a");
+					link.href = `#${Elements.STAIRS_RETURN_BUTTON}`;
+					link.textContent = "go to the finish reading button";
+					link.className = "sr-only";
+					link.id = Elements.STAIRS_ANSWER_LINK;
+					element.insertAdjacentElement("afterend", link);
+				}
+			},
+			onHighlighted: () => {
+				setInertBackground(randomChunkSlug);
+			},
+			onPopoverRender: (popover) => {
+				addNode(
+					<FinishReadingButton
+						onClick={(time) => {
+							exitChunk();
+
+							createEventAction({
+								type: EventType.RANDOM_REREAD,
+								pageSlug,
+								data: { chunkSlug: randomChunkSlug, time },
+							});
+						}}
+					/>,
+					popover.wrapper,
+				);
+			},
+			onDestroyed: (element) => {
+				removeInert();
+				if (element) {
+					element.removeAttribute("tabIndex");
+					element.removeAttribute("id");
+
+					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
+					if (link) {
+						link.remove();
+					}
+				}
+
+				const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+				if (assignments) {
+					scrollToElement(element as HTMLElement);
+				}
+				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
+			},
+		});
+	}, []);
 
 	useEffect(() => {
 		if (isError) {
@@ -290,11 +275,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 const driverObj = driver();
 
 const exitChunk = () => {
-	const element = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-
-	if (element) {
-		scrollToElement(element as HTMLElement);
-	}
 	driverObj.destroy();
 };
 
@@ -302,9 +282,19 @@ const FinishReadingButton = ({
 	onClick,
 }: { onClick: (time: number) => void }) => {
 	const { time, clearTimer } = useTimer();
+	const ref = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		ref.current?.focus();
+	}, []);
 
 	return (
-		<div className="space-y-2" id={Elements.STAIRS_CONTAINER} tabIndex={-1}>
+		<div
+			ref={ref}
+			className="space-y-2"
+			id={Elements.STAIRS_CONTAINER}
+			tabIndex={-1}
+		>
 			<p className="p-2 tracking-tight leading-tight">
 				Please re-read the highlighted section. when you are finished, press the
 				"I finished rereading" button.
@@ -325,4 +315,19 @@ const FinishReadingButton = ({
 			</Button>
 		</div>
 	);
+};
+
+const goToRandomChunk = (chunkSlug: string) => {
+	const el = getChunkElement(chunkSlug);
+	if (el) {
+		scrollToElement(el);
+		driverObj.highlight({
+			element: el,
+			popover: {
+				description: "",
+				side: "right",
+				align: "start",
+			},
+		});
+	}
 };

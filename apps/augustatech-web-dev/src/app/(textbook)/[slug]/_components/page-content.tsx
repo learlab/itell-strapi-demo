@@ -1,6 +1,6 @@
 import { MainMdx } from "@/components/mdx";
 import { SandboxProvider } from "@/components/provider/sandbox-provider";
-import { Elements } from "@/lib/constants";
+import { Elements } from "@itell/core/constants";
 import { Runner } from "./sandbox/runner";
 
 export const PageContent = ({

@@ -41,6 +41,10 @@
 		"./chat": {
 			"require": "./dist/chat.cjs.js",
 			"import": "./dist/chat.es.js"
+		},
+		"./constants": {
+			"require": "./dist/constants.cjs.js",
+			"import": "./dist/constants.es.js"
 		}
 	},
 	"typings": "./index.d.ts",
@@ -54,7 +58,8 @@
 		"question.d.ts",
 		"chat.d.ts",
 		"config.d.ts",
-		"summary.d.ts"
+		"summary.d.ts",
+		"constants.d.ts"
 	],
 	"scripts": {
 		"build": "vite build",

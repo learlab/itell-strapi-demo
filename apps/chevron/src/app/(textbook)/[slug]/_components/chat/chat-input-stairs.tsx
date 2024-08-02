@@ -3,9 +3,10 @@
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/interval-error";
 import { useChat } from "@/components/provider/page-provider";
-import { Elements, isProduction } from "@/lib/constants";
+import { isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { ChatHistory } from "@itell/core/chat";
+import { Elements } from "@itell/core/constants";
 import { cn, parseEventStream } from "@itell/core/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";

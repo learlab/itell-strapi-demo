@@ -1,14 +1,14 @@
 "use client";
 import { useSandbox } from "@/components/provider/sandbox-provider";
 import { Spinner } from "@/components/spinner";
+import { LogMessage } from "@itell/react-console-viewer";
+import { Console as LogOutput } from "@itell/react-console-viewer";
 import { Button } from "@itell/ui/client";
 import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
 import { editor } from "monaco-editor";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { LogMessage } from "react-console-viewer";
-import { Console as LogOutput } from "react-console-viewer";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const Editor = dynamic(
 	() => import("@monaco-editor/react").then((mod) => mod.Editor),

@@ -3,7 +3,7 @@ import { ContinueReading } from "@/components/continue-reading";
 import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
-import { Elements } from "@/lib/constants";
+import { Elements } from "@itell/core/constants";
 import { cn } from "@itell/core/utils";
 import { home } from "contentlayer/generated";
 
@@ -29,6 +29,7 @@ export default async function () {
 const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
 	return (
 		<footer
+			id={Elements.SITE_FOOTER}
 			className={cn(
 				"flex items-center justify-between px-16 lg:px-32 py-8 flex-row border-t-2 border-border",
 				className,
