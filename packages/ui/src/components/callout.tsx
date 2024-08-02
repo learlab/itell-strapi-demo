@@ -1,4 +1,4 @@
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { AlertCircleIcon, AlertTriangleIcon, InfoIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Card, CardContent } from "./card";

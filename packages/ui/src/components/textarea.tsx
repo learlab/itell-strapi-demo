@@ -1,9 +1,26 @@
 "use client";
 
-import { useAutosizeTextArea } from "@itell/core/hooks";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { BanIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
+
+export const useAutosizeTextArea = (
+	textAreaRef: HTMLTextAreaElement | null,
+	value: string,
+	enabled: boolean,
+) => {
+	useEffect(() => {
+		if (textAreaRef && enabled) {
+			// We need to reset the height momentarily to get the correct scrollHeight for the textarea
+			textAreaRef.style.height = "0px";
+			const scrollHeight = textAreaRef.scrollHeight;
+
+			// We then set the height directly, outside of the render loop
+			// Trying to set this with state or a ref will product an incorrect value.
+			textAreaRef.style.height = `${scrollHeight}px`;
+		}
+	}, [textAreaRef, value]);
+};
 
 interface TextAreaProps
 	extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {

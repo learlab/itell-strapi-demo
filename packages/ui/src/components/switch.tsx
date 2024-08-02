@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
 

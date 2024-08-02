@@ -1,4 +1,4 @@
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./button";

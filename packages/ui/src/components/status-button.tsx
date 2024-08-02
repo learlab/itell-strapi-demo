@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { Button } from "./button";
 import { Spinner } from "./spinner";
 

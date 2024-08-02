@@ -1,4 +1,4 @@
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 
 interface Props extends React.ComponentPropsWithoutRef<"figure"> {
 	children: React.ReactNode;

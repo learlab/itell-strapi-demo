@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
+import * as React from "react";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 
 const HoverCard = HoverCardPrimitive.Root;
 

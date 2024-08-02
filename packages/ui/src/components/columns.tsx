@@ -1,4 +1,4 @@
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 
 type Props = {
 	className?: string;

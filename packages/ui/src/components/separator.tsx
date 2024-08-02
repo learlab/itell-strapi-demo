@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
+import * as React from "react";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 
 const Separator = React.forwardRef<
 	React.ElementRef<typeof SeparatorPrimitive.Root>,

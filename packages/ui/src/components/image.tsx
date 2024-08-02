@@ -1,4 +1,4 @@
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { ExpandIcon } from "lucide-react";
 import NextImage from "next/image";
 import { useState } from "react";
