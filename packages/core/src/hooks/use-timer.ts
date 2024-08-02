@@ -1,43 +1,46 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useTimer = () => {
-	const time = useRef<number>(0);
-	const interval = useRef<NodeJS.Timeout | null>(null);
+	const [time, setTime] = useState<number>(0);
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
+	const isRunning = useRef<boolean>(true);
 
 	const clearTimer = useCallback(() => {
-		if (interval.current) {
-			clearInterval(interval.current);
-			interval.current = null;
+		if (intervalRef.current) {
+			clearInterval(intervalRef.current);
+			intervalRef.current = null;
 		}
+		isRunning.current = false;
 	}, []);
 
-	// after clearTimer is called, visibility change should not restart or pause timer
-	const handleVisibilityChange = () => {
-		if (interval.current) {
+	const handleVisibilityChange = useCallback(() => {
+		if (isRunning.current) {
 			if (document.hidden) {
-				clearInterval(interval.current);
+				if (intervalRef.current) {
+					clearInterval(intervalRef.current);
+				}
 			} else {
-				interval.current = setInterval(() => {
-					time.current += 1;
+				intervalRef.current = setInterval(() => {
+					setTime((prevTime) => prevTime + 1);
 				}, 1000);
 			}
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		document.addEventListener("visibilitychange", handleVisibilityChange);
 
-		interval.current = setInterval(() => {
-			time.current += 1;
+		intervalRef.current = setInterval(() => {
+			setTime((prevTime) => prevTime + 1);
 		}, 1000);
 
 		return () => {
 			clearTimer();
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
-	}, []);
+	}, [handleVisibilityChange, clearTimer]);
 
-	return { time: time.current, clearTimer };
+	return { time, clearTimer };
 };

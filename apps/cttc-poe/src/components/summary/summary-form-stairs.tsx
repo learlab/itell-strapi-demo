@@ -133,11 +133,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const isTextbookFinished = session.user?.finished || false;
 
 	const pageSlug = page.page_slug;
-	const { stairsAnswered, addStairsQuestion, messages } = useChat((state) => {
+	const { addStairsQuestion, messages, stairsAnswered } = useChat((state) => {
 		return {
-			stairsAnswered: state.stairsAnswered,
 			addStairsQuestion: state.addStairsQuestion,
 			messages: state.stairsMessages,
+			stairsAnswered: state.stairsAnswered,
 		};
 	});
 	const getExcludedChunks = useConstructedResponse(
@@ -188,6 +188,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		driverObj.setConfig({
 			smoothScroll: false,
 			animate: false,
+			allowClose: false,
 			onPopoverRender: (popover) => {
 				addNode(
 					<ChatStairs
@@ -198,7 +199,20 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						RenderFooter={() => (
 							<FinishReadingButton
 								onClick={(time) => {
-									stairsShowTimeRef.current = time;
+									// only create stairs event for first attempt
+									// can't use stairsAnswered here because it's always set to true before the button is shown
+									if (!stairsAnsweredRef.current) {
+										stairsAnsweredRef.current = true;
+										createEvent({
+											type: Condition.STAIRS,
+											pageSlug,
+											userId: user.id,
+											data: {
+												stairs: stairsDataRef.current,
+												time,
+											},
+										});
+									}
 									exitQuestion();
 								}}
 							/>
@@ -207,29 +221,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					popover.wrapper,
 				);
 			},
-			onDestroyStarted: () => {
-				if (!stairsAnswered) {
-					return toast.warning("Please answer the question to continue");
-				}
-				// only create stairs event for first attempt
-				// can't use stairsAnswered here because it's always set to true before the button is shown
-				if (!stairsAnsweredRef.current) {
-					stairsAnsweredRef.current = true;
-					createEvent({
-						type: Condition.STAIRS,
-						pageSlug,
-						userId: user.id,
-						data: {
-							stairs: stairsDataRef.current,
-							time: stairsShowTimeRef.current,
-						},
-					});
-				}
-
-				exitQuestion();
-			},
 		});
-	}, [stairsAnswered]);
+	}, []);
 
 	const {
 		action,
@@ -237,7 +230,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		isDelayed,
 		isError,
 		error,
-		status,
 	} = useActionStatus(
 		async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
@@ -506,7 +498,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 				<div className="flex justify-end">
 					<StatusButton disabled={!isSummaryReady} pending={isPending}>
-						{status === "idle" ? "Submit" : "Resubmit"}
+						Submit
 					</StatusButton>
 				</div>
 			</form>
