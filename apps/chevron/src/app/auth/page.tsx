@@ -67,7 +67,8 @@ export const generateMetadata = async ({
 };
 
 export default async function ({ searchParams }: PageProps) {
-	const { error } = routes.auth.$parseSearchParams(searchParams);
+	const { error, join_class_code } =
+		routes.auth.$parseSearchParams(searchParams);
 	const { user } = await getSession();
 	let errorMessage: string | null = null;
 	if (error) {
@@ -111,7 +112,7 @@ export default async function ({ searchParams }: PageProps) {
 							<LogoutButton />
 						</div>
 					) : (
-						<AuthForm />
+						<AuthForm joinClassCode={join_class_code} />
 					)}
 				</main>
 			</div>

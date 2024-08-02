@@ -54,6 +54,47 @@ export const updateUserAction = authedProcedure
 		await db.update(users).set(input).where(eq(users.id, ctx.user.id));
 		revalidateTag(Tags.GET_SESSION);
 	});
+
+export const updateUserPrefsAction = authedProcedure
+	.input(
+		z.object({
+			preferences: z.object({
+				theme: z.string().optional(),
+				note_color_light: z.string().optional(),
+				note_color_dark: z.string().optional(),
+			}),
+		}),
+	)
+	.handler(async ({ input, ctx }) => {
+		await db.transaction(async (tx) => {
+			const user = first(
+				await tx.select().from(users).where(eq(users.id, ctx.user.id)),
+			);
+			if (user) {
+				const prefs = user.preferences || {};
+				if (input.preferences.theme) {
+					prefs.theme = input.preferences.theme;
+				}
+
+				if (input.preferences.note_color_light) {
+					prefs.note_color_light = input.preferences.note_color_light;
+				}
+
+				if (input.preferences.note_color_dark) {
+					prefs.note_color_dark = input.preferences.note_color_dark;
+				}
+
+				if (Object.keys(prefs).length === 0) {
+					return;
+				}
+
+				await tx
+					.update(users)
+					.set({ preferences: prefs })
+					.where(eq(users.id, ctx.user.id));
+			}
+		});
+	});
 /**
  * Reset user progress, also deletes all user data, including summaries, answers, events, etc.
  */

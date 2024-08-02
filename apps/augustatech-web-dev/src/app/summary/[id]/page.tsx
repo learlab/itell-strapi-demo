@@ -74,7 +74,10 @@ export default async function ({ params }: PageProps) {
 						{`Created at ${relativeDate(summary.createdAt)}`}
 					</p>
 
-					<p aria-label="summary text">{summary.text}</p>
+					<div>
+						<p className="sr-only">summary text</p>
+						<p>{summary.text}</p>
+					</div>
 					<div className="flex justify-end">
 						<SummaryReviseButton
 							pageSlug={summary.pageSlug}

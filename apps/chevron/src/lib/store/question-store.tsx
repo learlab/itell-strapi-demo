@@ -52,13 +52,11 @@ export const createQuestionStore = (
 	return createStore<QuestionState>()(
 		persist(
 			(set, get) => ({
-				currentChunk: chunkSlugs[chunkSlugs.length - 1],
+				currentChunk: chunkSlugs[0],
 				chunkSlugs,
 				chunkData,
-				isSummaryReady: true as boolean,
-				shouldBlur: false,
-				// isSummaryReady: pageStatus.unlocked,
-				// shouldBlur: !pageStatus.unlocked,
+				isSummaryReady: pageStatus.unlocked,
+				shouldBlur: !pageStatus.unlocked,
 
 				finishChunk: (slug: string, passed?: boolean) => {
 					const newData = { ...get().chunkData };

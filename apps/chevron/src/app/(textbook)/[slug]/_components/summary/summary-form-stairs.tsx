@@ -11,7 +11,6 @@ import { Condition, Elements } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { getChatHistory } from "@/lib/store/chat";
 import {
 	PageData,
 	getChunkElement,
@@ -93,10 +92,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	};
 
 	const pageSlug = page.page_slug;
-	const { addStairsQuestion, messages } = useChat((state) => {
+	const { addStairsQuestion, messages, getHistory } = useChat((state) => {
 		return {
 			addStairsQuestion: state.addStairsQuestion,
 			messages: state.stairsMessages,
+			getHistory: state.getHistory,
 		};
 	});
 	const getExcludedChunks = useQuestion((state) => state.getExcludedChunks);
@@ -250,7 +250,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
-				chat_history: getChatHistory(messages),
+				chat_history: getHistory({ isStairs: true }),
 				excluded_chunks: getExcludedChunks(),
 			});
 			requestBodyRef.current = body;

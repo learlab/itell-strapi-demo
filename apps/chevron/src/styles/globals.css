@@ -17,6 +17,7 @@
 
 
 .note {
+  position: relative;
   color: black;
 }
 
@@ -25,6 +26,7 @@
 }
 
 .highlight {
+  position: relative;
   cursor: pointer !important;
   color: black;
 }
@@ -126,6 +128,7 @@ h5,
 }
 
 
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -168,6 +171,20 @@ h5,
 
     to {
       clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+    }
+  }
+
+  [popover] {
+    animation: popover 0.2s ease-out;
+  }
+
+  @keyframes popover {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
     }
   }
 
@@ -220,6 +237,10 @@ h5,
   }
 
   .shake {
+    animation: none;
+  }
+
+  [popover] {
     animation: none;
   }
 }

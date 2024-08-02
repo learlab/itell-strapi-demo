@@ -17,13 +17,12 @@ const extractCssVariables = (obj: ThemeColor) => {
 
 export default plugin(
 	({ addBase, theme, config }) => {
-		const themeConfig = config("itell.theme");
-		const themeParsed = ThemeSchema.safeParse(themeConfig);
-		let lightColors = {};
-		let darkColors = {};
+		const themeParsed = ThemeSchema.safeParse(config("itell.theme"));
+		let lightColors: Record<string, string> = {};
+		let darkColors: Record<string, string> = {};
 		if (themeParsed.success) {
-			lightColors = extractCssVariables(themeConfig.light);
-			darkColors = extractCssVariables(themeConfig.dark);
+			lightColors = extractCssVariables(themeParsed.data.light);
+			darkColors = extractCssVariables(themeParsed.data.dark);
 		} else {
 			console.warn("site theme is not valid for tailwind, using default theme");
 			lightColors = DefaultTheme.light;
@@ -36,23 +35,26 @@ export default plugin(
 				"--nav-height": tailwind.spacing[16],
 				"--expo-out":
 					"linear(0 0%, 0.1684 2.66%, 0.3165 5.49%, 0.446 8.52%, 0.5581 11.78%, 0.6535 15.29%, 0.7341 19.11%, 0.8011 23.3%, 0.8557 27.93%, 0.8962 32.68%, 0.9283 38.01%, 0.9529 44.08%, 0.9711 51.14%, 0.9833 59.06%, 0.9915 68.74%, 1 100%)",
-				"*": {
-					"border-color": "hsl(var(--border))",
-				},
+
+				"--foreground-light": lightColors["--foreground"],
+				"--foreground-dark": darkColors["--foreground"],
 				"--font-sans": "'Inter', sans-serif",
-				body: {
-					"@apply bg-background text-foreground": {},
-					fontFeatureSettings: '"rlig" 1, "calt" 1',
-				},
-				thead: {
-					"@apply px-4 text-left align-middle font-medium text-muted-foreground":
-						{},
-				},
-				"tr:hover": { "@apply bg-muted/50": {} },
-				tr: { "@apply border-b transition-colors": {} },
-				td: { "@apply p-4 align-middle": {} },
-				th: { "@apply max-w-[10rem]": {} },
 			},
+			"*": {
+				"border-color": "hsl(var(--border))",
+			},
+			body: {
+				"@apply bg-background text-foreground": {},
+				fontFeatureSettings: '"rlig" 1, "calt" 1',
+			},
+			thead: {
+				"@apply px-4 text-left align-middle font-medium text-muted-foreground":
+					{},
+			},
+			"tr:hover": { "@apply bg-muted/50": {} },
+			tr: { "@apply border-b transition-colors": {} },
+			td: { "@apply p-4 align-middle": {} },
+			th: { "@apply max-w-[10rem]": {} },
 
 			".light": lightColors,
 			".dark": darkColors,
@@ -118,6 +120,7 @@ export default plugin(
 					"chart-3": "hsl(var(--chart-3))",
 					"chart-4": "hsl(var(--chart-4))",
 					"chart-5": "hsl(var(--chart-5))",
+					"note-popover": "hsl(var(--note-popover))",
 				},
 				typography: {
 					DEFAULT: {

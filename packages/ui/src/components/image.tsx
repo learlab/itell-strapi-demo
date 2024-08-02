@@ -44,7 +44,6 @@ export const Figure = ({
 				"md:float-right md:ml-4": floatRight,
 			})}
 		>
-			{/* rome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 			<div className="relative flex justify-center items-center">
 				<NextImage
 					className={cn("object-cover", {
@@ -60,7 +59,7 @@ export const Figure = ({
 						variant="outline"
 						className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out "
 						onClick={onExpandClick}
-						aria-label="expand"
+						aria-label="expand image"
 					>
 						<ExpandIcon className="size-4 fill-primary" />
 					</Button>

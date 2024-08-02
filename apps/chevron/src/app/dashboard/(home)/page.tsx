@@ -41,7 +41,11 @@ export default async function ({ searchParams }: Props) {
 						<UserProgress pageSlug={user.pageSlug} finished={user.finished} />
 					</div>
 
-					<UserStatistics user={user} readingTimeLevel={readingTimeLevel} />
+					<UserStatistics
+						classId={user.classId}
+						pageSlug={user.pageSlug}
+						readingTimeLevel={readingTimeLevel}
+					/>
 				</CardContent>
 			</Card>
 		</DashboardShell>

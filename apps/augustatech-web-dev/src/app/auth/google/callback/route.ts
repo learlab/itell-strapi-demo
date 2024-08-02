@@ -1,7 +1,11 @@
 import { createUserAction, getUserByProviderAction } from "@/actions/user";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth/lucia";
-import { googleProvider, readGoogleOAuthState } from "@/lib/auth/provider";
+import {
+	googleProvider,
+	readGoogleOAuthState,
+	readJoinClassCode,
+} from "@/lib/auth/provider";
 import { Condition } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { generateIdFromEntropySize } from "lucia";
@@ -20,6 +24,7 @@ export async function GET(req: Request) {
 	const state = url.searchParams.get("state");
 	const code = url.searchParams.get("code");
 	const err = url.searchParams.get("error");
+
 	if (err === "access_denied") {
 		return new Response(null, {
 			status: 302,
@@ -31,6 +36,7 @@ export async function GET(req: Request) {
 
 	const { state: storedState, codeVerifier: storedCodeVerifier } =
 		readGoogleOAuthState();
+	const join_class_code = readJoinClassCode();
 
 	if (
 		!code ||
@@ -94,6 +100,16 @@ export async function GET(req: Request) {
 			sessionCookie.value,
 			sessionCookie.attributes,
 		);
+
+		if (join_class_code !== null) {
+			return new Response(null, {
+				status: 302,
+				headers: {
+					Location: `/dashboard/settings?join_class_code=${join_class_code}`,
+				},
+			});
+		}
+
 		return new Response(null, {
 			status: 302,
 			headers: {

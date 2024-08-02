@@ -3,9 +3,9 @@
 import { updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
+import { reportSentry } from "@/lib/utils";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -14,28 +14,27 @@ import {
 	AlertDialogTitle,
 	Button,
 } from "@itell/ui/client";
-import { User } from "lucia";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 
 type Props = {
 	userClassId: string | null;
-	teacher: User;
+	teacherName: string | null;
 	classId: string;
 };
 
 export const JoinClassModal = ({
 	userClassId,
-	teacher: teacherToJoin,
+	teacherName,
 	classId,
 }: Props) => {
 	const router = useRouter();
 	const [open, setOpen] = useState(true);
 	const { isPending, execute, isError, error } =
 		useServerAction(updateUserAction);
-	const canJoinClass = !userClassId && teacherToJoin;
+	const canJoinClass = !userClassId && teacherName;
 
 	const joinClass = async () => {
 		const [_, err] = await execute({ classId });
@@ -47,7 +46,13 @@ export const JoinClassModal = ({
 			}, 1000);
 		}
 	};
-	console.log(error);
+
+	useEffect(() => {
+		if (isError) {
+			toast.error("Can't join class now, please try again later.");
+			reportSentry("join class", { error });
+		}
+	}, [isError]);
 
 	return (
 		<AlertDialog open={open} onOpenChange={setOpen}>
@@ -64,18 +69,16 @@ export const JoinClassModal = ({
 										are already in a class. Contact lear.lab.vu@gmail.com if you
 										believe this is a mistake.
 									</p>
-								) : teacherToJoin ? (
+								) : teacherName ? (
 									<p>
 										You are about to join a class taught by{" "}
-										<span className="font-semibold">{teacherToJoin.name}</span>.
-										Click the confirm button to join.
+										<span className="font-semibold">{teacherName}</span>. Click
+										the confirm button to join.
 									</p>
 								) : (
-									<p>
-										It looks like you are trying to enroll in a class, But{" "}
-										<span className="font-semibold">{classId}</span> is not a
-										valid class code. Make sure you enter the correct invitation
-										link from your teacher.
+									<p className="text-sm text-muted-foreground">
+										No teacher found associated with the code, please make sure
+										you are using the exact code received from your teacher.
 									</p>
 								)}
 							</div>

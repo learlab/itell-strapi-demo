@@ -8,10 +8,7 @@ type Props = {
 export const NoteLoader = async ({ pageSlug }: Props) => {
 	const [data, err] = await getNotesAction({ pageSlug });
 	if (!err) {
-		const notes = data.filter((note) => note.noteText !== null);
-		const highlights = data.filter((note) => note.noteText === null);
-
-		return <NoteList data={{ notes, highlights }} pageSlug={pageSlug} />;
+		return <NoteList notes={data} pageSlug={pageSlug} />;
 	}
 
 	return null;

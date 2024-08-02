@@ -2,30 +2,23 @@
 
 import { db } from "@/actions/db";
 import { CreateNoteSchema, UpdateNoteSchema, notes } from "@/drizzle/schema";
-import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { authedProcedure } from "./utils";
 
-/**
- * Create a note
- */
 export const createNoteAction = authedProcedure
 	.input(CreateNoteSchema.omit({ userId: true }))
 	.handler(async ({ input, ctx }) => {
-		const record = await db
-			.insert(notes)
-			.values({
-				...input,
-				userId: ctx.user.id,
-			})
-			.returning();
-		return record[0];
+		return (
+			await db
+				.insert(notes)
+				.values({
+					...input,
+					userId: ctx.user.id,
+				})
+				.returning()
+		)[0];
 	});
-
-/**
- * Update a note
- */
 
 export const updateNoteAction = authedProcedure
 	.input(z.object({ id: z.number(), data: UpdateNoteSchema }))

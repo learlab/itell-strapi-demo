@@ -1,7 +1,11 @@
 import { createUserAction, getUserByProviderAction } from "@/actions/user";
 import { env } from "@/env.mjs";
 import { lucia } from "@/lib/auth/lucia";
-import { azureProvider, readAzureOAuthState } from "@/lib/auth/provider";
+import {
+	azureProvider,
+	readAzureOAuthState,
+	readJoinClassCode,
+} from "@/lib/auth/provider";
 import { Condition } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { jwtDecode } from "jwt-decode";
@@ -20,6 +24,8 @@ export const GET = async (req: Request) => {
 	const url = new URL(req.url);
 	const state = url.searchParams.get("state");
 	const code = url.searchParams.get("code");
+
+	const join_class_code = readJoinClassCode();
 	const { state: storedState, codeVerifier: storedCodeVerifier } =
 		readAzureOAuthState();
 
@@ -75,6 +81,15 @@ export const GET = async (req: Request) => {
 			sessionCookie.value,
 			sessionCookie.attributes,
 		);
+		if (join_class_code !== null) {
+			return new Response(null, {
+				status: 302,
+				headers: {
+					Location: `/dashboard/settings?join_class_code=${join_class_code}`,
+				},
+			});
+		}
+
 		return new Response(null, {
 			status: 302,
 			headers: {

@@ -29,6 +29,20 @@
       "when": 1721259983624,
       "tag": "0003_fixed_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1722479705520,
+      "tag": "0004_wakeful_phil_sheldon",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1722533643861,
+      "tag": "0005_faithful_madame_masque",
+      "breakpoints": true
     }
   ]
 }

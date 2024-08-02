@@ -1,6 +1,6 @@
 "use client";
 
-import { useNotesStore } from "@/lib/store/note";
+import { useNoteCount } from "@/lib/store/note-store";
 import {
 	Button,
 	HoverCard,
@@ -10,23 +10,19 @@ import {
 import pluralize from "pluralize";
 
 export const NoteCount = () => {
-	const { highlights, notes } = useNotesStore();
+	const count = useNoteCount();
 
 	return (
 		<HoverCard>
 			<HoverCardTrigger>
 				<Button variant={"link"} className="text-sm px-0 text-left">
-					<span>
-						{`${pluralize("note", notes.length, true)}, ${pluralize(
-							"highlight",
-							highlights.length,
-							true,
-						)}`}
-					</span>
+					<span>{`${pluralize("note", count, true)}`}</span>
 				</Button>
 			</HoverCardTrigger>
 			<HoverCardContent className="w-48 text-sm">
-				<p>Leave a note or highlight by selecting the text</p>
+				<p>
+					You can take note by selecting text and click the "take note" button.
+				</p>
 			</HoverCardContent>
 		</HoverCard>
 	);

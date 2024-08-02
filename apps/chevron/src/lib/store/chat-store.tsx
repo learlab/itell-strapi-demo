@@ -4,6 +4,7 @@ import { createStore } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 interface ChatProps {
+	open: boolean;
 	messages: Message[];
 	activeMessageId: string | null;
 	stairsAnswered: boolean;
@@ -14,6 +15,7 @@ interface ChatProps {
 }
 
 export interface ChatState extends ChatProps {
+	setOpen: (value: boolean) => void;
 	addUserMessage: (text: string, isStairs?: boolean) => string;
 	addBotMessage: (text: string, isStairs?: boolean, context?: string) => string;
 	addBotMessageElement: (comp: () => JSX.Element) => void;
@@ -26,24 +28,16 @@ export interface ChatState extends ChatProps {
 	setActiveMessageId: (id: string | null) => void;
 	setStairsAnswered: (value: boolean) => void;
 	addStairsQuestion: (value: StairsQuestion) => void;
+	getHistory: (input: { isStairs: boolean }) => ChatHistory;
 }
 
-const id = crypto.randomUUID();
+const initialId = crypto.randomUUID();
 
-export const getChatHistory = (messages: Message[]): ChatHistory => {
-	return messages
-		.filter((m) => "text" in m && m.id === id)
-		.map((m) => ({
-			agent: m.isUser ? "user" : "bot",
-			// @ts-ignore
-			text: m.text,
-		}));
-};
 export type ChatStore = ReturnType<typeof createChatStore>;
 
 export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 	const welcomeMessage: BotMessage = {
-		id,
+		id: initialId,
 		isUser: false,
 		Node: (
 			<p>
@@ -55,6 +49,7 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 
 	return createStore<ChatState>()(
 		immer((set, get) => ({
+			open: false,
 			messages: [welcomeMessage],
 			activeMessageId: null,
 			stairsReady: false,
@@ -62,6 +57,12 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 			stairsAnswered: false,
 			stairsQuestion: null,
 			stairsTimestamp: null,
+
+			setOpen: (value) => {
+				set((state) => {
+					state.open = value;
+				});
+			},
 
 			setActiveMessageId: (id) => {
 				set((state) => {
@@ -155,6 +156,18 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 						}
 					}
 				});
+			},
+
+			getHistory: ({ isStairs }: { isStairs: boolean }) => {
+				const data = isStairs ? get().stairsMessages : get().messages;
+
+				return data
+					.filter((m) => "text" in m && m.id !== initialId)
+					.map((m) => ({
+						agent: m.isUser ? "user" : "bot",
+						// @ts-ignore
+						text: m.text,
+					}));
 			},
 
 			setStairsAnswered: (value) => {

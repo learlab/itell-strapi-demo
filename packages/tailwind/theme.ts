@@ -28,6 +28,7 @@ export const ThemeColorSchema = z.object({
 	"chart-3": z.string(),
 	"chart-4": z.string(),
 	"chart-5": z.string(),
+	"note-popover": z.string(),
 });
 
 export const UserColorSchema = ThemeColorSchema.strict().partial().optional();
@@ -81,6 +82,7 @@ export const DefaultTheme: Theme = {
 		"chart-3": "197 37% 24%",
 		"chart-4": "43 74% 66%",
 		"chart-5": "27 87% 67%",
+		"note-popover": "53.88 98% 80.4%",
 	},
 	dark: {
 		background: "224 71% 4%",
@@ -110,5 +112,6 @@ export const DefaultTheme: Theme = {
 		"chart-3": "30 80% 55%",
 		"chart-4": "280 65% 60%",
 		"chart-5": "340 75% 55%",
+		"note-popover": "193 79% 21%",
 	},
 };

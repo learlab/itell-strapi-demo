@@ -1,3 +1,5 @@
+"use client";
+import { useChat } from "@/components/provider/page-provider";
 import { Message } from "@itell/core/chat";
 import {
 	Accordion,
@@ -15,15 +17,20 @@ type Props = {
 	updatedAt: Date;
 };
 
-export const Chat = async ({ pageSlug, data, updatedAt }: Props) => {
+export const Chat = ({ pageSlug, data, updatedAt }: Props) => {
+	const { open, setOpen } = useChat((state) => ({
+		open: state.open,
+		setOpen: state.setOpen,
+	}));
 	return (
 		<Accordion
 			type="single"
-			defaultValue={undefined}
+			value={open ? "chat" : ""}
+			onValueChange={(value) => setOpen(value === "chat")}
 			collapsible
 			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30 chatbot"
 		>
-			<AccordionItem value="item-1" className="overflow-hidden">
+			<AccordionItem value="chat" className="overflow-hidden">
 				<AccordionTrigger className="border border-border px-6">
 					<ChatHeader />
 				</AccordionTrigger>
