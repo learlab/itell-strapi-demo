@@ -7,7 +7,7 @@ import { isProduction } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { ChatHistory } from "@itell/core/chat";
 import { Elements } from "@itell/core/constants";
-import { cn, parseEventStream } from "@itell/core/utils";
+import { cn, parseEventStream } from "@itell/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";

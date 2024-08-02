@@ -6,7 +6,8 @@ import {
 import { createNote } from "@/lib/note/actions";
 import { useNotesStore } from "@/lib/store/note";
 import { serializeRange } from "@itell/core/note";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { Button } from "@itell/ui/client";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";

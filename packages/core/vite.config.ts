@@ -4,11 +4,7 @@ import dts from "vite-plugin-dts";
 
 const app = async (): Promise<UserConfigExport> => {
 	return defineConfig({
-		plugins: [
-			dts({
-				insertTypesEntry: true,
-			}),
-		],
+		plugins: [dts()],
 		resolve: {
 			alias: {
 				"@/": `${path.resolve(__dirname, "src")}/`,
@@ -19,7 +15,6 @@ const app = async (): Promise<UserConfigExport> => {
 				entry: {
 					index: path.resolve(__dirname, "src/index.ts"),
 					hooks: path.resolve(__dirname, "src/hooks/index.ts"),
-					utils: path.resolve(__dirname, "src/utils.ts"),
 					config: path.resolve(__dirname, "src/config/index.ts"),
 					note: path.resolve(__dirname, "src/note/index.ts"),
 					dashboard: path.resolve(__dirname, "src/dashboard/index.ts"),

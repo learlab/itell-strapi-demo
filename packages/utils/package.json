@@ -1,0 +1,35 @@
+{
+	"name": "@itell/utils",
+	"version": "0.0.1",
+	"type": "module",
+	"main": "./dist/index.umd.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.umd.cjs"
+		}
+	},
+	"scripts": {
+		"build": "vite build"
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"itell"
+	],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"clsx": "^2.1.1",
+		"tailwind-merge": "^2.4.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.1.0",
+		"typescript": "^5.5.4",
+		"vite": "^5.3.5",
+		"vite-plugin-dts": "4.0.0-beta.2"
+	}
+}

@@ -7,7 +7,8 @@ import { RootProvider } from "@/components/provider/root-provider";
 import { getSiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { isProduction } from "@/lib/constants";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import {
 	Accordion as BaseAccordion,
 	AccordionContent as BaseAccordionContent,

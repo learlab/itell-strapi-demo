@@ -5,7 +5,6 @@ import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
 import { UserPreferences } from "@/drizzle/schema";
 import { darkColors, lightColors } from "@itell/core/constants";
-import { cn } from "@itell/core/utils";
 import {
 	Button,
 	Label,
@@ -18,6 +17,7 @@ import {
 	TabsTrigger,
 } from "@itell/ui/client";
 import { Input } from "@itell/ui/server";
+import { cn } from "@itell/utils";
 import { User } from "lucia";
 import { Paintbrush } from "lucide-react";
 import { useTheme } from "next-themes";

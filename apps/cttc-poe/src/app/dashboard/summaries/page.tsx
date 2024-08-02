@@ -4,10 +4,10 @@ import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstSummaryPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
+import { groupBy } from "es-toolkit";
 import { redirect } from "next/navigation";
 
 export default async function () {
@@ -56,7 +56,7 @@ export default async function () {
 		})
 		.filter((s) => s !== undefined);
 
-	const summariesByChapter = groupby(summaries, (summary) => summary.chapter);
+	const summariesByChapter = groupBy(summaries, (summary) => summary.chapter);
 
 	const summariesByPassing = summaries.reduce(
 		(acc, summary) => {
@@ -104,7 +104,6 @@ export default async function () {
 					/>
 					<SummaryList
 						summariesByChapter={summariesByChapter}
-						userTimeZone={user.timeZone}
 					/>
 				</CardContent>
 			</Card>

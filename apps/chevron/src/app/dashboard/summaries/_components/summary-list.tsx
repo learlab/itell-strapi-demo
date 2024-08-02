@@ -1,7 +1,7 @@
 "use client";
 import { Summary } from "@/drizzle/schema";
-import { cn, keyof } from "@itell/core/utils";
 import { Skeleton, buttonVariants } from "@itell/ui/server";
+import { cn, keyof } from "@itell/utils";
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";

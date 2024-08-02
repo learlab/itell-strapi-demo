@@ -14,6 +14,7 @@ export const EventType = {
 	STAIRS: "stairs",
 	RANDOM_REREAD: "random_reread",
 	SIMPLE: "simple",
+	RUN_CODE: "run-code",
 } as const;
 
 export const Condition = {

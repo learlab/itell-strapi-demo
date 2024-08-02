@@ -3,7 +3,6 @@ import { getSummariesAction } from "@/actions/summary";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages";
-import { relativeDate } from "@itell/core/utils";
 import { Badge } from "@itell/ui/server";
 import { SummaryBackButton } from "@summary/summary-back-button";
 import { SummaryOperations } from "@summary/summary-operations";
@@ -71,7 +70,7 @@ export default async function ({ params }: PageProps) {
 					</div>
 
 					<p className="text-sm text-muted-foreground text-center">
-						{`Created at ${relativeDate(summary.createdAt)}`}
+						Created at <time>{summary.createdAt.toLocaleTimeString()}</time>
 					</p>
 
 					<div>

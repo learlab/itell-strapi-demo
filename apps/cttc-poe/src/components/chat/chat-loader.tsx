@@ -3,23 +3,17 @@ import { getChatMessages } from "@/lib/chat";
 import { Condition } from "@/lib/control/condition";
 import { Message } from "@itell/core/chat";
 import { Avatar, AvatarImage } from "@itell/ui/client";
+import { User } from "lucia";
 import { Spinner } from "../spinner";
 import { Chat } from "./chat";
 
 type Props = {
 	pageSlug: string;
-	condition: string;
+	user: User | null;
 };
 
-export const ChatLoader = async ({ pageSlug, condition }: Props) => {
-	if (condition !== Condition.STAIRS) {
-		return null;
-	}
-
-	const { user } = await getSession();
-	if (!user) {
-		return null;
-	}
+export const ChatLoader = async ({ pageSlug, user }: Props) => {
+	if (!user || user.condition !== Condition.STAIRS) return null;
 
 	const { data, updatedAt } = await getChatMessages(user.id, pageSlug);
 

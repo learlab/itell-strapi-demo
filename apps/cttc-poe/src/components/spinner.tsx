@@ -1,4 +1,5 @@
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { Loader2 } from "lucide-react";
 
 type Props = {

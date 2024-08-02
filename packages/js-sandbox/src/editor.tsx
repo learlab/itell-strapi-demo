@@ -1,6 +1,4 @@
 "use client";
-import { useSandbox } from "@/components/provider/sandbox-provider";
-import { Spinner } from "@/components/spinner";
 import { LogMessage } from "@itell/react-console-viewer";
 import { Console as LogOutput } from "@itell/react-console-viewer";
 import { Button } from "@itell/ui/client";
@@ -9,6 +7,8 @@ import { editor } from "monaco-editor";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSandbox } from "./provider";
+import { Spinner } from "./spinner";
 
 const Editor = dynamic(
 	() => import("@monaco-editor/react").then((mod) => mod.Editor),

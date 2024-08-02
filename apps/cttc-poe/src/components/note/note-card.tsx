@@ -11,8 +11,8 @@ import {
 	getElementsByNoteId,
 	removeNotes,
 } from "@itell/core/note";
-import { cn, relativeDate } from "@itell/core/utils";
 import { Button, TextArea } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 import { EditIcon } from "lucide-react";
 import { ForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -301,9 +301,12 @@ export const NoteCard = React.memo(
 									/>
 								</form>
 
-								{(updatedAt || createdAt) && (
+								{updatedAt && (
 									<p className="text-xs text-right mt-2 mb-0">
-										updated at {relativeDate((updatedAt || createdAt) as Date)}
+										last updated at{" "}
+										<time>
+											{(updatedAt || new Date())?.toLocaleTimeString()}
+										</time>
 									</p>
 								)}
 							</div>

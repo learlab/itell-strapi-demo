@@ -16,6 +16,7 @@
 		"@itell/driver.js": "workspace:^",
 		"@itell/tailwind": "workspace:^",
 		"@itell/ui": "workspace:*",
+		"@itell/utils": "workspace:^",
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@sentry/nextjs": "^7.105.0",
 		"@tanstack/react-table": "^8.9.10",

@@ -15,7 +15,6 @@ import {
 	deserializeRange,
 	removeNotes,
 } from "@itell/core/note";
-import { cn, relativeDate } from "@itell/core/utils";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -26,9 +25,9 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
 	Label,
 } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 import { PaletteIcon, StickyNoteIcon, TrashIcon } from "lucide-react";
 import { ForwardIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -326,12 +325,12 @@ export const NotePopover = React.memo(
 					{!recordId ? (
 						<p className="text-sm text-muted-foreground">unsaved</p>
 					) : (
-						<time className="text-sm text-muted-foreground">
+						<p className="text-sm text-muted-foreground">
 							last updated at{" "}
-							{relativeDate(
-								updatedAt ? updatedAt : createdAt ? createdAt : new Date(),
-							)}
-						</time>
+							<time>
+								{(updatedAt ? updatedAt : new Date()).toLocaleString()}
+							</time>
+						</p>
 					)}
 					{creationFailed && (
 						<p className="text-sm text-muted-foreground">

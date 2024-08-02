@@ -3,7 +3,6 @@ import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
-import { relativeDate } from "@itell/core/utils";
 import { Badge } from "@itell/ui/server";
 import { SummaryBackButton } from "@summary/summary-back-button";
 import { SummaryOperations } from "@summary/summary-operations";
@@ -71,9 +70,12 @@ export default async function ({ params }: PageProps) {
 						<TextbookPageModal page={page} />
 					</div>
 
-					<p className="text-sm text-muted-foreground text-center">
-						{`Created at ${relativeDate(summary.createdAt)}`}
-					</p>
+					<time
+						className="text-sm text-muted-foreground text-center"
+						aria-label="created at"
+					>
+						{summary.createdAt.toLocaleDateString()}
+					</time>
 					<div className="max-w-2xl mx-auto">
 						<p>{summary.text}</p>
 						<div className="flex justify-end">

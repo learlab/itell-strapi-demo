@@ -1,7 +1,8 @@
 "use client";
 
 import { useSession } from "@/lib/auth/context";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { buttonVariants } from "@itell/ui/server";
 import { User } from "lucia";
 

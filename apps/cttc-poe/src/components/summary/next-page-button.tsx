@@ -1,6 +1,7 @@
 "use client";
 import { makePageHref } from "@/lib/utils";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { buttonVariants } from "@itell/ui/server";
 import { AnimatePresence, type AnimationProps, motion } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";

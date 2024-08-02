@@ -1,8 +1,9 @@
+export const runnerId = "runner";
 export const Runner = () => {
 	return (
 		<iframe
 			title={"runner"}
-			id={"runner"}
+			id={runnerId}
 			sandbox="allow-scripts"
 			className="hidden"
 			srcDoc={srcDoc}

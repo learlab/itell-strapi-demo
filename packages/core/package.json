@@ -18,10 +18,6 @@
 			"require": "./dist/note.cjs.js",
 			"import": "./dist/note.es.js"
 		},
-		"./utils": {
-			"require": "./dist/utils.cjs.js",
-			"import": "./dist/utils.es.js"
-		},
 		"./config": {
 			"require": "./dist/config.cjs.js",
 			"import": "./dist/config.es.js"
@@ -53,7 +49,6 @@
 		"index.d.ts",
 		"hooks.d.ts",
 		"note.d.ts",
-		"utils.d.ts",
 		"dashboard.d.ts",
 		"question.d.ts",
 		"chat.d.ts",
@@ -69,13 +64,10 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"clsx": "^1.2.1",
-		"date-fns": "2.29.3",
-		"date-fns-tz": "^2.0.0",
+		"@itell/utils": "workspace:^",
 		"github-slugger": "^2.0.0",
 		"js-yaml": "^4.1.0",
 		"range-serializer": "^0.0.2",
-		"tailwind-merge": "^1.14.0",
 		"zod": "^3.22.2"
 	},
 	"peerDependencies": {

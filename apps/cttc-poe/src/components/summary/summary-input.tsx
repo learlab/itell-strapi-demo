@@ -5,7 +5,7 @@ import { isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
-import { cn, numOfWords } from "@itell/core/utils";
+import { cn, numOfWords } from "@itell/utils";
 import pluralize from "pluralize";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { toast } from "sonner";

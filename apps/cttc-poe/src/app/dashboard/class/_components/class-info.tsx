@@ -2,7 +2,6 @@ import { Spinner } from "@/components/spinner";
 import { getClassStudentStats } from "@/lib/dashboard/class";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { getPageData } from "@/lib/utils";
-import { median } from "@itell/core/utils";
 import { Progress } from "@itell/ui/client";
 import {
 	Card,
@@ -12,6 +11,7 @@ import {
 	CardTitle,
 	Skeleton,
 } from "@itell/ui/server";
+import { median } from "@itell/utils";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ClassBadges } from "./class-badges";

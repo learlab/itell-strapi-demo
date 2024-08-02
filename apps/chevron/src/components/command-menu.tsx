@@ -1,7 +1,6 @@
 "use client";
 
 import { allPagesSorted } from "@/lib/pages";
-import { cn } from "@itell/core/utils";
 import {
 	Button,
 	CommandDialog,
@@ -12,6 +11,7 @@ import {
 	CommandList,
 	CommandSeparator,
 } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";

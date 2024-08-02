@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { MdxComponents } from "./mdx-components";
 

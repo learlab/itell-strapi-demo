@@ -24,6 +24,4 @@
         @apply ml-[-50px] mt-[-4px];
         content: counter(step);
     }
-
-
 }

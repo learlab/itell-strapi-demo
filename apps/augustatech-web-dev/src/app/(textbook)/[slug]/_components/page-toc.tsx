@@ -1,9 +1,9 @@
 "use client";
 
 import { Elements } from "@itell/core/constants";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { BookmarkIcon } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 type Heading = {
 	level: "one" | "two" | "three" | "four" | "other";
@@ -71,7 +71,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 					On this page
 				</span>
 			</p>
-			<ol className="mt-2 list-none text-foreground/70 tracking-tight">
+			<ol className="flex flex-col mt-2 list-none text-foreground/70 tracking-tight">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (

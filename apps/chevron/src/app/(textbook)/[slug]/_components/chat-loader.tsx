@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const ChatLoader = async ({ user, pageSlug }: Props) => {
-	if (!user || user.condition === Condition.STAIRS) return null;
+	if (!user || user.condition !== Condition.STAIRS) return null;
 
 	const [chats, err] = await getChatsAction({ pageSlug });
 	if (!err) {

@@ -7,7 +7,6 @@ import {
 	getReadingTimeChartData,
 } from "@itell/core/dashboard";
 import { ReadingTimeChartParams } from "@itell/core/dashboard";
-import { getDatesBetween } from "@itell/core/utils";
 import {
 	Button,
 	HoverCard,
@@ -22,6 +21,7 @@ import {
 	CardTitle,
 	Skeleton,
 } from "@itell/ui/server";
+import { getDatesBetween } from "@itell/utils";
 import { format, subDays } from "date-fns";
 import { and, count, eq, gte, sql } from "drizzle-orm";
 import { InfoIcon } from "lucide-react";

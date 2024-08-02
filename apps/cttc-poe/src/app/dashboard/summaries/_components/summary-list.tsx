@@ -1,8 +1,7 @@
 "use client";
 import { Summary } from "@/drizzle/schema";
-import { DEFAULT_TIME_ZONE } from "@/lib/constants";
-import { cn, keyof, relativeDate } from "@itell/core/utils";
 import { Skeleton, buttonVariants } from "@itell/ui/server";
+import { cn, keyof } from "@itell/utils";
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";
@@ -12,11 +11,9 @@ import { ChapterSelect } from "./chapter-select";
 type SummaryData = Summary & { pageTitle: string };
 
 export const SummaryList = ({
-	userTimeZone,
 	summariesByChapter,
 }: {
 	summariesByChapter: Record<string, SummaryData[]>;
-	userTimeZone: string | null;
 }) => {
 	const chapters = keyof(summariesByChapter);
 	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
@@ -37,11 +34,7 @@ export const SummaryList = ({
 
 			<div className="divide-y divide-border rounded-md border mt-4">
 				{chapterSummaries.map((summary) => (
-					<SummaryItem
-						summary={summary}
-						key={summary.id}
-						timeZone={userTimeZone || DEFAULT_TIME_ZONE}
-					/>
+					<SummaryItem summary={summary} key={summary.id} />
 				))}
 			</div>
 		</div>
@@ -50,10 +43,9 @@ export const SummaryList = ({
 
 interface SummaryItemProps {
 	summary: SummaryData;
-	timeZone: string;
 }
 
-export const SummaryItem = ({ summary, timeZone }: SummaryItemProps) => {
+export const SummaryItem = ({ summary }: SummaryItemProps) => {
 	return (
 		<Link
 			href={`/summary/${summary.id}`}
@@ -67,7 +59,9 @@ export const SummaryItem = ({ summary, timeZone }: SummaryItemProps) => {
 					{summary.pageTitle}
 				</p>
 
-				<p>{relativeDate(summary.createdAt, timeZone)}</p>
+				<time aria-label="created at">
+					{summary.createdAt.toLocaleDateString()}
+				</time>
 			</header>
 			<div className="flex items-center justify-between">
 				<p className="line-clamp-2">{summary.text}</p>

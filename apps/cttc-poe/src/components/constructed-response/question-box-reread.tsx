@@ -6,7 +6,8 @@ import { Condition } from "@/lib/control/condition";
 import { getQAScore } from "@/lib/question";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import {
 	Button,
 	HoverCard,

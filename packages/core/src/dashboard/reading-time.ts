@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import { formatDate } from "../utils";
 import { ReadingTimeChartLevel, ReadingTimeChartParams } from "./schema";
 
 export const PrevDaysLookup = {
@@ -15,6 +13,14 @@ export type ReadingTimeEntry = {
 	createdAt: Date;
 };
 
+const formatDate = (date: Date) => {
+	return new Intl.DateTimeFormat("en-US", {
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	}).format(date);
+};
+
 export const getGroupedReadingTime = async (
 	data: ReadingTimeEntry[],
 	intervalDates: Date[],
@@ -27,7 +33,7 @@ export const getGroupedReadingTime = async (
 		const thresholdDate = intervalDates.find((date) => entryDate <= date);
 
 		if (thresholdDate) {
-			const formattedDate = formatDate(thresholdDate, "yyyy-MM-dd");
+			const formattedDate = formatDate(thresholdDate);
 			acc.set(
 				formattedDate,
 				(acc.get(formattedDate) || 0) + entry.totalViewTime,
@@ -35,7 +41,7 @@ export const getGroupedReadingTime = async (
 		} else {
 			// when the entry date is greater than the last date in intervalDates, group it with the last date
 			const lastDate = intervalDates[intervalDates.length - 1];
-			const formattedDate = formatDate(lastDate, "yyyy-MM-dd");
+			const formattedDate = formatDate(lastDate);
 			acc.set(
 				formattedDate,
 				(acc.get(formattedDate) || 0) + entry.totalViewTime,
@@ -48,6 +54,28 @@ export const getGroupedReadingTime = async (
 	return readingTimeByGroup;
 };
 
+const format = (date: Date) => {
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = months[date.getMonth()];
+
+	return `${month} ${day}`;
+};
+
 export const getReadingTimeChartData = (
 	groupedReadingTime: Map<string, number>,
 	intervalDates: Date[],
@@ -57,7 +85,7 @@ export const getReadingTimeChartData = (
 	let totalViewTime = 0;
 
 	for (const [i, date] of intervalDates.entries()) {
-		const formattedDate = formatDate(date, "yyyy-MM-dd");
+		const formattedDate = formatDate(date);
 		totalViewTime += groupedReadingTime.get(formattedDate) || 0;
 
 		const value = (groupedReadingTime.get(formattedDate) || 0) / 60;
@@ -66,18 +94,18 @@ export const getReadingTimeChartData = (
 		// when it's other time spans, format the date as a range: "Jan 1-7", "Jan 8-14", etc.
 		let name: string;
 		if (params.level === ReadingTimeChartLevel.week_1) {
-			name = format(new Date(date), "LLL, dd");
+			name = format(new Date(date));
 		} else {
-			const start = format(new Date(date), "LLL, dd");
+			const start = format(new Date(date));
 			let end: string;
 			if (i === intervalDates.length - 1) {
 				end = "Now";
 			} else {
 				const nextDate = new Date(intervalDates[i + 1]);
 				if (nextDate.getMonth() !== date.getMonth()) {
-					end = format(nextDate, "LLL, dd");
+					end = format(nextDate);
 				} else {
-					end = format(nextDate, "dd");
+					end = date.getDate().toString().padStart(2, "0");
 				}
 			}
 			name = `${start}-${end}`;

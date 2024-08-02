@@ -6,9 +6,8 @@ import { Roboto_Slab as FontSerif } from "next/font/google";
 import { RootProvider } from "@/components/provider/root-provider";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
-import { getSession } from "@/lib/auth";
 import { isProduction } from "@/lib/constants";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {

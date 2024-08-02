@@ -6,9 +6,10 @@ import { getSession } from "@/lib/auth";
 import { getAllQuestions } from "@/lib/question";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { cn, groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
+import { cn } from "@itell/utils";
 import { QuestionChart } from "@questions/question-chart";
+import { groupBy } from "es-toolkit";
 import pluralize from "pluralize";
 
 export default async function () {
@@ -27,7 +28,7 @@ export default async function () {
 		throw new Error(err.message);
 	}
 	const { records, byScore } = data;
-	const byChapter = groupby(records, (d) => d.pageSlug);
+	const byChapter = groupBy(records, (d) => d.pageSlug);
 	const chapters = Object.keys(byChapter)
 		.map((k) => getPageData(k))
 		.filter(Boolean);

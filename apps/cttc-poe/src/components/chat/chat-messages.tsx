@@ -2,9 +2,9 @@
 
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chat";
-import { cn, relativeDate } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { Avatar, AvatarImage } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useChat } from "../provider/page-provider";
@@ -51,7 +51,7 @@ export const ChatMessages = ({
 				{oldMessages.length > 0 && (
 					<div className="flex items-center justify-center gap-2 text-center text-sm text-muted-foreground my-4">
 						<div className="w-16 h-1 bg-muted" />
-						{updatedAt && `Last visited at ${relativeDate(updatedAt)}`}
+						{updatedAt && `Last visited at ${updatedAt.toLocaleTimeString()}`}
 						<div className="w-16 h-1 bg-muted" />
 					</div>
 				)}

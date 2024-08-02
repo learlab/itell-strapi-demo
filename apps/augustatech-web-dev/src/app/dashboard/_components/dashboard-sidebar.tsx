@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { ArrowRightIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";

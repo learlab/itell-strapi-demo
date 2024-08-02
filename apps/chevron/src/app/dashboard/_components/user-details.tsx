@@ -6,10 +6,9 @@ import {
 } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { User } from "@/drizzle/schema";
 import { getPageData } from "@/lib/utils";
-import { cn, median } from "@itell/core/utils";
 import { DashboardBadge, Skeleton } from "@itell/ui/server";
+import { cn, median } from "@itell/utils";
 import {
 	FileTextIcon,
 	FlagIcon,

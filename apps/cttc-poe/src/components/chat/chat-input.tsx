@@ -4,7 +4,7 @@ import { createChatMessage } from "@/lib/chat/actions";
 import { isProduction } from "@/lib/constants";
 import { getChatHistory } from "@/lib/store/chat";
 import { reportSentry } from "@/lib/utils";
-import { cn, parseEventStream } from "@itell/core/utils";
+import { cn, parseEventStream } from "@itell/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 import TextArea from "react-textarea-autosize";

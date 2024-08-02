@@ -9,7 +9,6 @@ import { getQAScore } from "@/lib/question";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
-import { cn } from "@itell/core/utils";
 import {
 	Button,
 	HoverCard,
@@ -26,6 +25,7 @@ import {
 	CardHeader,
 	Warning,
 } from "@itell/ui/server";
+import { cn } from "@itell/utils";
 import { AlertTriangle, KeyRoundIcon, PencilIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";

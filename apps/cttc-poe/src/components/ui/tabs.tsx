@@ -1,6 +1,7 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import {
 	Tabs as BaseTabs,
 	TabsContent as BaseTabsContent,

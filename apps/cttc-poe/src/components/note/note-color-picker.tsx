@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
-import { useState } from "react";
+import { cn } from "@itell/utils";
+
 import { TwitterPicker } from "@hello-pangea/color-picker";
 import { useClickOutside } from "@itell/core/hooks";
+import { useState } from "react";
 
 type Props = {
 	color: string;

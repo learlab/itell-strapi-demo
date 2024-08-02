@@ -11,9 +11,8 @@ import {
 	createQuestionStore,
 } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import { parseEventStream } from "@itell/core/utils";
+import { parseEventStream } from "@itell/utils";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 import { useStore } from "zustand";
 

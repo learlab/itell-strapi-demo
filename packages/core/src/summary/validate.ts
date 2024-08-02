@@ -1,5 +1,5 @@
 import offensiveWords from "@/assets/offensive-words.json";
-import { numOfWords } from "@/utils";
+import { numOfWords } from "@itell/utils";
 
 export enum ErrorType {
 	LANGUAGE_NOT_EN = "LANGUAGE_NOT_EN",

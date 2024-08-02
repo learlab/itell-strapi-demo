@@ -5,10 +5,10 @@ import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
+import { groupBy } from "es-toolkit";
 import { redirect } from "next/navigation";
 
 export default async function () {
@@ -63,7 +63,7 @@ export default async function () {
 		})
 		.filter((s) => s !== undefined);
 
-	const summariesByChapter = groupby(
+	const summariesByChapter = groupBy(
 		summariesWithPage,
 		(summary) => summary.chapter,
 	);

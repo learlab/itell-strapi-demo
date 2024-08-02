@@ -9,7 +9,8 @@ import { Condition } from "@/lib/control/condition";
 import { getPageStatus } from "@/lib/page-status";
 import { tocChapters } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import {
 	Button,
 	Collapsible,

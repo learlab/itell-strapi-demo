@@ -2,9 +2,9 @@
 import { createEvent } from "@/lib/event/actions";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
-import { parseEventStream } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { parseEventStream } from "@itell/utils";
 import { HelpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";

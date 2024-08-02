@@ -4,7 +4,7 @@ import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
 import { Elements } from "@itell/core/constants";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import { home } from "contentlayer/generated";
 
 export default async function () {

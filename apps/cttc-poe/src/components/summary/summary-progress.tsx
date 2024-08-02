@@ -1,6 +1,7 @@
 "use client";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { motion } from "framer-motion";
 import React, { ComponentProps } from "react";
 import { Spinner } from "../spinner";

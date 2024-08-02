@@ -2,7 +2,8 @@ import { ContinueReading } from "@/components/continue-reading";
 import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
 import { getSiteConfig } from "@/config/site";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { home } from "contentlayer/generated";
 import { GithubIcon } from "lucide-react";
 

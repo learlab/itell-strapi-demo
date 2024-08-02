@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @import url("@itell/ui/dist/style.css");
-
+@import url("@itell/js-sandbox/dist/style.css");
 
 .columns .column figure:first-child,
 .columns .column figure:first-child img {

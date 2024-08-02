@@ -6,12 +6,13 @@ import { incrementView } from "@/lib/dashboard/actions";
 import { db } from "@/lib/db";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { cn, groupby } from "@itell/core/utils";
 import { Card, CardContent } from "@itell/ui/server";
+import { cn } from "@itell/utils";
+import { QuestionChart } from "@questions/question-chart";
 import { count, eq } from "drizzle-orm";
+import { groupBy } from "es-toolkit";
 import { FrownIcon, LaughIcon, LightbulbIcon, MehIcon } from "lucide-react";
 import pluralize from "pluralize";
-import { QuestionChart } from "@questions/question-chart";
 
 export const metadata = Meta.questions;
 
@@ -27,7 +28,7 @@ export default async function () {
 		getAnswers(user.id),
 		getScoreCount(user.id),
 	]);
-	const byChapter = groupby(records, (d) => d.pageSlug);
+	const byChapter = groupBy(records, (d) => d.pageSlug);
 	const chapters = Object.keys(byChapter)
 		.map((k) => getPageData(k))
 		.filter(Boolean);

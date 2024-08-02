@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
 import {
 	Tabs as BaseTabs,
 	TabsContent as BaseTabsContent,
 	TabsList as BaseTabsList,
 	TabsTrigger as BaseTabsTrigger,
 } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 
 export const Tab = ({
 	children,

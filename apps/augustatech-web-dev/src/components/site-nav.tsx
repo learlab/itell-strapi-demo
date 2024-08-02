@@ -1,5 +1,5 @@
 import { Elements } from "@itell/core/constants";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
 import React from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {

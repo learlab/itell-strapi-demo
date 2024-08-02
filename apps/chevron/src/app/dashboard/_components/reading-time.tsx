@@ -2,7 +2,6 @@ import { countSummaryAction, getReadingTimeAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { PrevDaysLookup, getReadingTimeChartData } from "@itell/core/dashboard";
 import { ReadingTimeChartParams } from "@itell/core/dashboard";
-import { getDatesBetween } from "@itell/core/utils";
 import {
 	Button,
 	HoverCard,
@@ -17,6 +16,7 @@ import {
 	CardTitle,
 	Skeleton,
 } from "@itell/ui/server";
+import { getDatesBetween } from "@itell/utils";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
 import pluralize from "pluralize";

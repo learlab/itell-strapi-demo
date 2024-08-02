@@ -7,6 +7,7 @@ import {
 	useEffect,
 	useRef,
 } from "react";
+import { runnerId } from "./runner";
 
 type RegisterOptions = {
 	editor: editor.IStandaloneCodeEditor;
@@ -54,7 +55,7 @@ export const SandboxProvider = ({ children }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		runner.current = document.querySelector("#runner") as HTMLIFrameElement;
+		runner.current = document.getElementById(runnerId) as HTMLIFrameElement;
 	}, []);
 
 	return (

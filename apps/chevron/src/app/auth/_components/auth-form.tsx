@@ -44,7 +44,6 @@ export const GoogleLoginButton = () => {
 			onClick={() => {
 				startTransition(() => {
 					const url = new URL("/auth/google", window.location.href);
-					console.log("search params", searchParams);
 					if (searchParams) {
 						for (const [key, value] of searchParams) {
 							url.searchParams.set(key, value);

@@ -11,7 +11,6 @@ import {
 	YoutubeVideo,
 } from "@itell/ui/server";
 
-import { Sandbox } from "@/app/(textbook)/[slug]/_components/sandbox";
 import {
 	Tab,
 	TabPanel,
@@ -19,6 +18,7 @@ import {
 	TabsBody,
 	TabsHeader,
 } from "@/components/ui/tabs";
+import { Sandbox } from "@itell/js-sandbox/sandbox";
 import { Image } from "@itell/ui/client";
 import { Accordion, AccordionItem } from "./ui/accordion";
 

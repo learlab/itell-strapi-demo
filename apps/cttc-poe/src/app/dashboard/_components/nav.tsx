@@ -4,7 +4,8 @@ import { CommandMenu } from "@/components/command-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserAccountNav } from "@/components/user-account-nav";
 import { useLockBody } from "@itell/core/hooks";
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { User } from "lucia";
 import { ArrowRightIcon, MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";

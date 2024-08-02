@@ -1,6 +1,7 @@
 "use client";
 
-import { cn } from "@itell/core/utils";
+import { cn } from "@itell/utils";
+
 import { BookmarkIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
 

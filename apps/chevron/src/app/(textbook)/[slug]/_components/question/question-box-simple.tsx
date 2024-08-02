@@ -4,9 +4,9 @@ import { createEventAction } from "@/actions/event";
 import { useQuestion } from "@/components/provider/page-provider";
 import { Condition, EventType } from "@/lib/constants";
 import { LoginButton } from "@auth//auth-form";
-import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
 import { Card, CardContent, Warning } from "@itell/ui/server";
+import { cn } from "@itell/utils";
 
 type Props = {
 	userId: string | null;

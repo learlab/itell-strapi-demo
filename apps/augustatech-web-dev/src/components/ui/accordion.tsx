@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 
-import { cn } from "@itell/core/utils";
 import {
 	Accordion as BaseAccordion,
 	AccordionContent as BaseAccordionContent,
 	AccordionItem as BaseAccordionItem,
 	AccordionTrigger as BaseAccordionTrigger,
 } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 
 type AccordionProps = {
 	className?: string;

@@ -1,13 +1,14 @@
 "use client";
 import { useAddChat, useChat } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
+import { Condition } from "@/lib/constants";
 import { useCreateNote } from "@/lib/store/note-store";
 import { Elements } from "@itell/core/constants";
 import { serializeRange } from "@itell/core/note";
-import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
+import { cn } from "@itell/utils";
 import { User } from "lucia";
-import { BotIcon, PencilIcon, SparklesIcon } from "lucide-react";
+import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -25,40 +26,44 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 	const setChatOpen = useChat((state) => state.setOpen);
 	const { action: addChat } = useAddChat();
 
-	const commands = [
-		{
-			label: "Ask AI",
-			icon: <SparklesIcon className="size-5" />,
-			action: async () => {
-				if (state) {
-					setChatOpen(true);
-					const text = `Can you explain the following text\n\n"${state.text}"`;
-					addChat({ text, pageSlug });
-				}
-			},
+	const askAction = {
+		label: "Ask AI",
+		icon: <SparklesIcon className="size-5" />,
+		action: async () => {
+			if (state) {
+				setChatOpen(true);
+				const text = `Can you explain the following text\n\n"${state.text}"`;
+				addChat({ text, pageSlug });
+			}
 		},
-		{
-			label: "Take Note",
-			icon: <PencilIcon className="size-5" />,
-			action: async () => {
-				if (state && user) {
-					const noteColor =
-						theme === "light"
-							? user.preferences.note_color_light
-							: user.preferences.note_color_dark;
-					const newNote: NoteData = {
-						id: randomNumber(),
-						highlightedText: state.text,
-						noteText: "",
-						local: true,
-						color: noteColor,
-						range: serializeRange(state.range),
-					};
-					createNote(newNote);
-				}
-			},
+	} as const;
+
+	const takeNoteAction = {
+		label: "Take Note",
+		icon: <PencilIcon className="size-5" />,
+		action: async () => {
+			if (state && user) {
+				const noteColor =
+					theme === "light"
+						? user.preferences.note_color_light
+						: user.preferences.note_color_dark;
+				const newNote: NoteData = {
+					id: randomNumber(),
+					highlightedText: state.text,
+					noteText: "",
+					local: true,
+					color: noteColor,
+					range: serializeRange(state.range),
+				};
+				createNote(newNote);
+			}
 		},
-	] as const;
+	};
+
+	const commands =
+		user?.condition === Condition.STAIRS
+			? [askAction, takeNoteAction]
+			: [takeNoteAction];
 	type cmd = (typeof commands)[number];
 	const [pending, setPending] = useState<cmd["label"] | undefined>();
 
