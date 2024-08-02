@@ -1,0 +1,33 @@
+{
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"rules": {
+			"complexity": {
+				"noForEach": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "warn"
+			},
+			"a11y": {
+				"useButtonType": "warn"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "warn",
+				"noExplicitAny": "warn",
+				"noEmptyInterface": "warn"
+			},
+			"style": {
+				"noUselessElse": "warn",
+				"noParameterAssign": "warn",
+				"useImportType": "off"
+			}
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true
+		}
+	}
+}
