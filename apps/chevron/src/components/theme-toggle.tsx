@@ -1,5 +1,6 @@
 "use client";
 
+import { updateUserPrefsAction } from "@/actions/user";
 import { Button } from "@itell/ui/client";
 import {
 	DropdownMenu,
@@ -9,13 +10,16 @@ import {
 } from "@itell/ui/client";
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useServerAction } from "zsa-react";
 
 export const ThemeToggle = () => {
 	const { setTheme: _setTheme } = useTheme();
+	const { execute } = useServerAction(updateUserPrefsAction);
 
 	const setTheme = (theme: string) => {
 		if (!document.startViewTransition) _setTheme(theme);
 		document.startViewTransition(() => {
+			execute({ preferences: { theme } });
 			_setTheme(theme);
 		});
 	};

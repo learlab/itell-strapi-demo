@@ -20,7 +20,9 @@ export const JoinClassForm = ({ user }: Props) => {
 	const { execute, isPending, isError } = useServerAction(
 		getTeacherByClassAction,
 	);
-	const [teacher, setTeacher] = useState<User | null>(null);
+	const [teacherName, setTeacherName] = useState<string | null | undefined>(
+		undefined,
+	);
 	const [classId, setClassId] = useState<string>(join_class_code || "");
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,8 +34,12 @@ export const JoinClassForm = ({ user }: Props) => {
 			classId: code,
 		});
 		if (!err) {
-			setTeacher(teacher);
-			setClassId(code);
+			if (teacher) {
+				setTeacherName(teacher.name);
+				setClassId(code);
+			} else {
+				setTeacherName(null);
+			}
 		}
 	};
 
@@ -68,13 +74,20 @@ export const JoinClassForm = ({ user }: Props) => {
 				</Button>
 			</form>
 			{/* dialog to confirm joining a class */}
-			{teacher && (
+			{teacherName && (
 				<JoinClassModal
 					userClassId={user.classId}
-					teacher={teacher}
+					teacherName={teacherName}
 					classId={classId}
 				/>
 			)}
+			{teacherName === null && (
+				<p className="text-sm text-muted-foreground">
+					No teacher found associated with the code, please make sure you are
+					using the exact code received from your teacher.
+				</p>
+			)}
+			{isError && <InternalError />}
 		</div>
 	);
 };

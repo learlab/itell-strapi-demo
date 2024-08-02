@@ -1,6 +1,6 @@
 import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assignments";
+import { SelectionPopover } from "@/app/(textbook)/[slug]/_components/selection-popover";
 import { PageProvider } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { getSession } from "@/lib/auth";
 import { Condition, Elements } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
@@ -12,9 +12,7 @@ import { Info } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
-import { NotePopover } from "@textbook/note-popover";
 import { NoteCount } from "@textbook/note/note-count";
-import { NoteLoader } from "@textbook/note/note-loader";
 import { PageContent } from "@textbook/page-content";
 import { PageInfo } from "@textbook/page-info";
 import { PageStatusModal } from "@textbook/page-status-modal";
@@ -24,6 +22,7 @@ import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { NoteLoader } from "./_components/note/note-loader";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const { slug } = routes.textbook.$parseParams(params);
@@ -86,13 +85,13 @@ export default async function ({ params }: { params: { slug: string } }) {
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
 					<PageContent title={page.title} code={page.body.code} />
-					<NotePopover pageSlug={pageSlug} userId={userId} />
+					<SelectionPopover user={user} pageSlug={pageSlug} />
 					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />
 				</div>
 
 				<aside
 					aria-label="table of contents"
-					className="toc-sidebar hidden md:block relative"
+					className="toc-sidebar hidden md:block"
 				>
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">
@@ -105,11 +104,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 							</div>
 						</ScrollArea>
 					</div>
-					{user && (
-						<Suspense fallback={<Spinner className="mt-8" />}>
-							<NoteLoader pageSlug={pageSlug} />
-						</Suspense>
-					)}
 				</aside>
 			</main>
 
@@ -117,6 +111,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<ChatLoader user={user} pageSlug={pageSlug} />
 			</Suspense>
 
+			{user && <NoteLoader pageSlug={pageSlug} />}
 			{page.summary && user && (
 				<PageAssignments
 					pageSlug={pageSlug}

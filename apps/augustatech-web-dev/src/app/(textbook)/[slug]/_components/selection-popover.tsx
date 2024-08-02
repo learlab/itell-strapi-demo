@@ -1,86 +1,66 @@
 "use client";
-import { createNoteAction } from "@/actions/note";
+import { useAddChat, useChat } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { Elements } from "@/lib/constants";
-import {
-	defaultHighlightColor,
-	useNoteColor,
-} from "@/lib/hooks/use-note-color";
-import { useNotesStore } from "@/lib/store/note";
+import { useCreateNote } from "@/lib/store/note-store";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/core/utils";
 import { Button } from "@itell/ui/client";
-import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
+import { User } from "lucia";
+import { BotIcon, PencilIcon, SparklesIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { NoteData } from "./note/note-popover";
 
 type Props = {
 	pageSlug: string;
-	userId: string | null;
+	user: User | null;
 };
 
-export const NotePopover = ({ pageSlug, userId }: Props) => {
-	const noteColor = useNoteColor();
+export const SelectionPopover = ({ user, pageSlug }: Props) => {
+	const { theme } = useTheme();
+	const createNote = useCreateNote();
+	const setChatOpen = useChat((state) => state.setOpen);
+	const { action: addChat } = useAddChat();
+
 	const commands = [
 		{
-			label: "Note",
+			label: "Ask AI",
+			icon: <SparklesIcon className="size-5" />,
+			action: async () => {
+				if (state) {
+					setChatOpen(true);
+					const text = `Can you explain the following text\n\n"${state.text}"`;
+					addChat({ text, pageSlug });
+				}
+			},
+		},
+		{
+			label: "Take Note",
 			icon: <PencilIcon className="size-5" />,
 			action: async () => {
-				if (state) {
-					const id = randomNumber();
-					createNoteLocal({
-						id,
-						y: state.top,
+				if (state && user) {
+					const noteColor =
+						theme === "light"
+							? user.preferences.note_color_light
+							: user.preferences.note_color_dark;
+					const newNote: NoteData = {
+						id: randomNumber(),
 						highlightedText: state.text,
+						noteText: "",
+						local: true,
 						color: noteColor,
 						range: serializeRange(state.range),
-					});
-				}
-			},
-		},
-		{
-			label: "Highlight",
-			icon: <HighlighterIcon className="size-5" />,
-			action: async () => {
-				if (state) {
-					if (userId) {
-						const serializedRange = serializeRange(state.range);
-						const [data, err] = await createNoteAction({
-							y: state.top,
-							highlightedText: state.text,
-							pageSlug,
-							color: defaultHighlightColor,
-							range: serializedRange,
-						});
-						if (err) {
-							return toast.error("Failed to create highlight");
-						}
-
-						createHighlightLocal({
-							id: data.id,
-							color: defaultHighlightColor,
-							range: serializedRange,
-						});
-					}
-				}
-			},
-		},
-		{
-			label: "Copy",
-			icon: <CopyIcon className="size-5" />,
-			action: async () => {
-				if (state) {
-					await navigator.clipboard.writeText(state.text);
-					toast.success("Copied to clipboard");
+					};
+					createNote(newNote);
 				}
 			},
 		},
 	] as const;
 	type cmd = (typeof commands)[number];
 	const [pending, setPending] = useState<cmd["label"] | undefined>();
-	const { createNote: createNoteLocal, createHighlight: createHighlightLocal } =
-		useNotesStore();
 
 	const [state, setState] = useState<{
 		top: number;
@@ -88,6 +68,7 @@ export const NotePopover = ({ pageSlug, userId }: Props) => {
 		text: string;
 		range: Range;
 	} | null>(null);
+
 	const handler = (e: Event) => {
 		const selection = window.getSelection();
 		const target = document.getElementById(Elements.PAGE_CONTENT);
@@ -146,9 +127,9 @@ export const NotePopover = ({ pageSlug, userId }: Props) => {
 					<Button
 						variant="ghost"
 						color="blue-gray"
-						className="flex items-center gap-2 p-2"
+						className="flex items-center gap-2 p-2 w-28"
 						onClick={async () => {
-							if (!userId) {
+							if (!user) {
 								toast.warning("Please login to use this feature");
 								return;
 							}
@@ -173,7 +154,9 @@ export const NotePopover = ({ pageSlug, userId }: Props) => {
 };
 
 const randomNumber = () => {
-	const array = new Uint32Array(1);
-	window.crypto.getRandomValues(array);
-	return array[0];
+	const MIN_SERIAL = 1;
+	const MAX_SERIAL = 2147483647;
+
+	// Generate a random number within the SERIAL range
+	return Math.floor(Math.random() * (MAX_SERIAL - MIN_SERIAL + 1)) + MIN_SERIAL;
 };

@@ -1,7 +1,8 @@
 import { db } from "@/actions/db";
-import { sessions, users } from "@/drizzle/schema";
+import { UserPreferences, sessions, users } from "@/drizzle/schema";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
+import { DefaultPreferences } from "../constants";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
@@ -23,7 +24,15 @@ export const lucia = new Lucia(adapter, {
 			finished: attributes.finished,
 			classId: attributes.classId,
 			pageSlug: attributes.pageSlug,
-			timeZone: attributes.timeZone,
+			preferences: {
+				note_color_light:
+					attributes.preferences?.note_color_light ??
+					DefaultPreferences.note_color_light,
+				note_color_dark:
+					attributes.preferences?.note_color_dark ??
+					DefaultPreferences.note_color_dark,
+				theme: attributes.preferences?.theme ?? DefaultPreferences.theme,
+			},
 		};
 	},
 });
@@ -46,7 +55,7 @@ interface DatabaseUserAttributes {
 	finished: boolean;
 	classId: string | null;
 	pageSlug: string | null;
-	timeZone: string | null;
+	preferences: UserPreferences;
 }
 
 interface DatabaseSessionAttributes {}

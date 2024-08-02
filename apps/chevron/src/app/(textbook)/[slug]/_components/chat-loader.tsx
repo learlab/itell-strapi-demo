@@ -15,11 +15,14 @@ export const ChatLoader = async ({ user, pageSlug }: Props) => {
 	if (!user || user.condition === Condition.STAIRS) return null;
 
 	const [chats, err] = await getChatsAction({ pageSlug });
+	console.log("fetch!");
 	if (!err) {
 		const { data, updatedAt } = chats;
 		const messages = data.map((d) => ({
-			...d,
 			id: crypto.randomUUID(),
+			text: d.text,
+			isUser: d.is_user,
+			context: d.context,
 		})) as Message[];
 
 		return <Chat pageSlug={pageSlug} data={messages} updatedAt={updatedAt} />;

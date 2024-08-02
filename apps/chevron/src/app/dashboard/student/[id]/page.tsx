@@ -124,7 +124,11 @@ const StudentProfile = ({
 				</div>
 			</CardHeader>
 			<CardContent>
-				<UserStatistics user={student} readingTimeLevel={readingTimeLevel} />
+				<UserStatistics
+					classId={student.classId}
+					pageSlug={student.pageSlug}
+					readingTimeLevel={readingTimeLevel}
+				/>
 			</CardContent>
 		</Card>
 	);

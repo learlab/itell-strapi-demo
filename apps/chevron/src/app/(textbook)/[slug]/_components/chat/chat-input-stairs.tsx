@@ -115,25 +115,25 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 						messages: [
 							{
 								text: String(stairsQuestion?.text),
-								isUser: false,
+								is_user: false,
 								timestamp: Number(stairsTimestamp),
-								isStairs: true,
-								stairsData: {
+								is_stairs: true,
+								stairs_data: {
 									chunk: String(stairsQuestion?.chunk),
 									question_type: String(stairsQuestion?.question_type),
 								},
 							},
 							{
 								text,
-								isUser: true,
+								is_user: true,
 								timestamp: userTimestamp,
-								isStairs: true,
+								is_stairs: true,
 							},
 							{
 								text: botText,
-								isUser: false,
+								is_user: false,
 								timestamp: botTimestamp,
-								isStairs: true,
+								is_stairs: true,
 							},
 						],
 					});
@@ -144,15 +144,15 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 						messages: [
 							{
 								text,
-								isUser: true,
+								is_user: true,
 								timestamp: userTimestamp,
-								isStairs: true,
+								is_stairs: true,
 							},
 							{
 								text: botText,
-								isUser: false,
+								is_user: false,
 								timestamp: botTimestamp,
-								isStairs: true,
+								is_stairs: true,
 							},
 						],
 					});

@@ -1,36 +1,38 @@
 "use client";
 
 import { Note } from "@/drizzle/schema";
-import { useNotesStore } from "@/lib/store/note";
+import { useInitNotes, useNotes } from "@/lib/store/note-store";
 import { useEffect } from "react";
-import { Highlight } from "./highlight";
-import { NoteCard } from "./note-card";
+import { NotePopover } from "./note-popover";
 
 type Props = {
-	data: { notes: Note[]; highlights: Note[] };
+	notes: Note[];
 	pageSlug: string;
 };
 
-export const NoteList = ({ data, pageSlug }: Props) => {
-	const { init, notes, highlights } = useNotesStore();
+export const NoteList = ({ notes, pageSlug }: Props) => {
+	const init = useInitNotes();
+	const data = useNotes();
 
 	useEffect(() => {
-		init(data.notes, data.highlights);
-	}, []);
+		init(notes);
+	}, [notes]);
 
-	return (
-		<>
-			{notes.map((note) => (
-				<NoteCard
-					key={note.id}
-					{...note}
-					noteText={note.noteText || ""}
-					pageSlug={pageSlug}
-				/>
-			))}
-			{highlights.map((highlight) => (
-				<Highlight key={highlight.id} {...highlight} />
-			))}
-		</>
-	);
+	if (data) {
+		return (
+			<div className="note-list flex flex-row gap-2">
+				<p className="sr-only">list of notes</p>
+				{data.map((note) => (
+					<NotePopover
+						key={note.id}
+						local={false}
+						{...note}
+						pageSlug={pageSlug}
+					/>
+				))}
+			</div>
+		);
+	}
+
+	return null;
 };

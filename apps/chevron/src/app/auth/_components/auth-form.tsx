@@ -5,12 +5,22 @@ import { Spinner } from "@/components/spinner";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
 import { LogInIcon, LogOutIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 
-export const AuthForm = () => {
+type Props = {
+	joinClassCode?: string;
+};
+
+export const AuthForm = ({ joinClassCode }: Props) => {
 	return (
 		<div className="grid gap-4 px-4">
+			{joinClassCode && (
+				<p className="font-light tracking-tight leading-relaxed">
+					To join your class, please first log in via one of the following
+					options.
+				</p>
+			)}
 			<div className="relative">
 				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
 					<p>Social Login</p>
@@ -27,12 +37,20 @@ export const AuthForm = () => {
 export const GoogleLoginButton = () => {
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
+	const searchParams = useSearchParams();
 
 	return (
 		<Button
 			onClick={() => {
 				startTransition(() => {
-					router.push("/auth/google");
+					const url = new URL("/auth/google", window.location.href);
+					console.log("search params", searchParams);
+					if (searchParams) {
+						for (const [key, value] of searchParams) {
+							url.searchParams.set(key, value);
+						}
+					}
+					router.push(url.toString());
 				});
 			}}
 			aria-label="log in via google"
@@ -43,7 +61,12 @@ export const GoogleLoginButton = () => {
 				{pending ? (
 					<Spinner className="size-4" />
 				) : (
-					<BrandIcon name="google/_/eee" width={16} height={16} />
+					<BrandIcon
+						name="google/_/eee"
+						alt="log in via google"
+						width={16}
+						height={16}
+					/>
 				)}
 				Google
 			</span>
@@ -54,12 +77,19 @@ export const GoogleLoginButton = () => {
 export const OutlookLoginButton = () => {
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
+	const searchParams = useSearchParams();
 
 	return (
 		<Button
 			onClick={() => {
 				startTransition(() => {
-					router.push("/auth/azure");
+					if (searchParams) {
+						const url = new URL("/auth/azure", window.location.href);
+						for (const [key, value] of searchParams) {
+							url.searchParams.set(key, value);
+						}
+						router.push(url.toString());
+					}
 				});
 			}}
 			aria-label="log in via outlook"
@@ -70,7 +100,12 @@ export const OutlookLoginButton = () => {
 				{pending ? (
 					<Spinner className="size-4" />
 				) : (
-					<BrandIcon name="outlook" height={16} width={16} />
+					<BrandIcon
+						name="outlook"
+						alt="log in via outlook"
+						height={16}
+						width={16}
+					/>
 				)}
 				Outlook
 			</span>

@@ -31,6 +31,17 @@ const cookieOptions: Partial<ResponseCookie> = {
 	sameSite: "lax",
 };
 
+export const setJoinClassCode = (join_class_code: string | null) => {
+	if (join_class_code !== null) {
+		cookies().set("join_class_code", join_class_code);
+	}
+};
+
+export const readJoinClassCode = () => {
+	const join_class_code = cookies().get("join_class_code")?.value ?? null;
+	return join_class_code;
+};
+
 export const setAzureOAuthState = () => {
 	const state = generateState();
 	const codeVerifier = generateCodeVerifier();

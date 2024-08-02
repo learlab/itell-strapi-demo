@@ -115,10 +115,7 @@ export default async function () {
 						endDate={summariesByPassing.endDate.toLocaleDateString()}
 						totalCount={summaries.length}
 					/>
-					<SummaryList
-						summariesByChapter={summariesByChapter}
-						userTimeZone={user.timeZone}
-					/>
+					<SummaryList data={summariesByChapter} />
 				</CardContent>
 			</Card>
 		</DashboardShell>

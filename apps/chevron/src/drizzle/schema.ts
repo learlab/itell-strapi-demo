@@ -89,20 +89,32 @@ export const users = pgTable("users", {
 	name: text("name"),
 	image: text("image"),
 	pageSlug: text("page_slug"),
-	timeZone: text("time_zone"),
 	email: text("email"),
 	role: text("role").default("user").notNull(),
 	condition: text("condition").notNull(),
 	classId: text("class_id"),
 	finished: boolean("finished").default(false).notNull(),
+	preferences: jsonb("preferences").$type<UserPreferences>(),
 	createdAt: CreatedAt,
 	updatedAt: UpdatedAt,
 });
 
 export type User = InferSelectModel<typeof users>;
 export type CreateUserInput = InferInsertModel<typeof users>;
-export const CreateUserSchema = createInsertSchema(users);
-export const UpdateUserSchema = createInsertSchema(users).partial();
+export const UserPreferencesSchema = z
+	.object({
+		theme: z.string(),
+		note_color_light: z.string(),
+		note_color_dark: z.string(),
+	})
+	.partial();
+
+export const CreateUserSchema = createInsertSchema(users, {
+	preferences: UserPreferencesSchema.optional(),
+});
+export const UpdateUserSchema = CreateUserSchema.partial();
+
+export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
 
 export const sessions = pgTable(
 	"sessions",
@@ -207,11 +219,10 @@ export const notes = pgTable(
 		userId: text("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-		y: doublePrecision("y").notNull(),
-		noteText: text("note_text"),
+		noteText: text("note_text").notNull(),
 		highlightedText: text("highlighted_text").notNull(),
 		pageSlug: text("page_slug").notNull(),
-		color: text("color").default("#3730a3").notNull(),
+		color: text("color").notNull(),
 		range: text("range").notNull(),
 		createdAt: CreatedAt,
 		updatedAt: UpdatedAt,
@@ -333,10 +344,10 @@ export const chat_messages = pgTable(
 );
 export const ChatMessageDataSchema = z.object({
 	text: z.string(),
-	isUser: z.boolean(),
-	isStairs: z.boolean(),
+	is_user: z.boolean(),
+	is_stairs: z.boolean(),
 	timestamp: z.number(),
-	stairsData: z
+	stairs_data: z
 		.object({
 			chunk: z.string(),
 			question_type: z.string(),

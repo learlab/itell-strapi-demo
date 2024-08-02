@@ -1,8 +1,16 @@
-import { googleProvider, setGoogleOAuthState } from "@/lib/auth/provider";
+import {
+	googleProvider,
+	setGoogleOAuthState,
+	setJoinClassCode,
+} from "@/lib/auth/provider";
 
-export async function GET(): Promise<Response> {
+export async function GET(req: Request): Promise<Response> {
+	const searchParams = new URL(req.url).searchParams;
 	const { state, codeVerifier } = setGoogleOAuthState();
+	setJoinClassCode(searchParams.get("join_class_code"));
+
 	const url = googleProvider.createAuthorizationURL(state, codeVerifier);
 	url.addScopes("openid", "profile", "email");
+
 	return Response.redirect(url);
 }

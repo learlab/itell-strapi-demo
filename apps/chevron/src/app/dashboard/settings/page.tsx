@@ -2,8 +2,11 @@ import {
 	getTeacherByClassAction,
 	incrementViewAction,
 } from "@/actions/dashboard";
+import { updateUserAction } from "@/actions/user";
+import { SettingsForm } from "@/app/dashboard/settings/_components/settings-form";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
+import { isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { JoinClassModal } from "@dashboard/join-class-modal";
@@ -19,7 +22,6 @@ import {
 import { JoinClassForm } from "@settings/join-class";
 import { Profile } from "@settings/profile";
 import { QuitClass } from "@settings/quit-class";
-import { WebsiteSettings } from "@settings/website";
 import { User } from "lucia";
 
 type Props = {
@@ -28,7 +30,7 @@ type Props = {
 
 export default async function ({ searchParams }: Props) {
 	const { user } = await getSession();
-	const classId =
+	const join_class_code =
 		routes.settings.$parseSearchParams(searchParams).join_class_code;
 
 	if (!user) {
@@ -37,13 +39,49 @@ export default async function ({ searchParams }: Props) {
 
 	incrementViewAction({ pageSlug: Meta.settings.slug, data: searchParams });
 
-	let teacher: User | null = null;
+	let teacherName: string | null = null;
+	let userClassId: string | null = user.classId;
+
 	if (user.classId) {
-		const [res, err] = await getTeacherByClassAction({ classId: user.classId });
+		const [data, err] = await getTeacherByClassAction({
+			classId: user.classId,
+		});
 		if (err) {
 			throw new Error(err.message);
 		}
-		teacher = res;
+		if (data) {
+			teacherName = data.name;
+		} else {
+			const [_, err] = await updateUserAction({ id: user.id, classId: null });
+			if (err) {
+				throw new Error(err.message);
+			}
+			userClassId = null;
+		}
+	} else {
+		if (join_class_code) {
+			const [data, err] = await getTeacherByClassAction({
+				classId: join_class_code,
+			});
+			if (err) {
+				throw new Error(err.message);
+			}
+			if (data) {
+				teacherName = data.name;
+			}
+		}
+	}
+
+	if (user.classId) {
+		const [data, err] = await getTeacherByClassAction({
+			classId: user.classId,
+		});
+		if (err) {
+			throw new Error(err.message);
+		}
+		if (data) {
+			teacherName = data.name;
+		}
 	}
 
 	return (
@@ -60,15 +98,15 @@ export default async function ({ searchParams }: Props) {
 				<CardContent className="space-y-4">
 					<Profile user={user} />
 					<Separator />
-					<WebsiteSettings user={user} />
+					<SettingsForm user={user} />
 					<Separator />
-					{teacher ? (
+					{teacherName ? (
 						<div className="grid gap-2 items-start justify-items-start">
 							<h3 className="text-lg font-medium">Class Information</h3>
 							<p className="text-muted-foreground text-sm max-w-lg">
-								You are enrolled in a class taught by {teacher.name}.
+								You are enrolled in a class taught by {teacherName}.
 							</p>
-							<QuitClass />
+							{!isProduction && <QuitClass />}
 						</div>
 					) : (
 						<div className="space-y-4" id="enroll">
@@ -78,11 +116,11 @@ export default async function ({ searchParams }: Props) {
 					)}
 				</CardContent>
 			</Card>
-			{classId && teacher && (
+			{join_class_code && !userClassId && (
 				<JoinClassModal
 					userClassId={user.classId}
-					teacher={teacher}
-					classId={classId}
+					teacherName={teacherName}
+					classId={join_class_code}
 				/>
 			)}
 		</DashboardShell>

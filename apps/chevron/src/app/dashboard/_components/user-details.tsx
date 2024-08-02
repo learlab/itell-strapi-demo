@@ -6,10 +6,10 @@ import {
 } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
+import { User } from "@/drizzle/schema";
 import { getPageData } from "@/lib/utils";
 import { cn, median } from "@itell/core/utils";
 import { DashboardBadge, Skeleton } from "@itell/ui/server";
-import { User } from "lucia";
 import {
 	FileTextIcon,
 	FlagIcon,
@@ -23,10 +23,11 @@ import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
 
 type Props = {
-	user: User;
+	classId: string | null;
+	pageSlug: string | null;
 };
 
-export const UserDetails = async ({ user }: Props) => {
+export const UserDetails = async ({ classId, pageSlug }: Props) => {
 	const [otherUsers, err] = await getOtherUsersAction();
 	if (err) {
 		throw new Error(err.message);
@@ -45,10 +46,10 @@ export const UserDetails = async ({ user }: Props) => {
 		throw new Error(err2.message);
 	}
 
-	const pageIndex = getPageData(user.pageSlug)?.index;
+	const pageIndex = getPageData(pageSlug)?.index;
 	const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
 	const otherProgress = otherUsers.map((user) => {
-		const pageIndex = getPageData(user.pageSlug)?.index;
+		const pageIndex = getPageData(pageSlug)?.index;
 		return pageIndex !== undefined ? pageIndex + 1 : 0;
 	});
 
@@ -82,11 +83,11 @@ export const UserDetails = async ({ user }: Props) => {
 			<p aria-hidden="true" className="text-center text-muted-foreground">
 				percentages are relative to the median
 			</p>
-			{user.classId ? (
+			{classId ? (
 				<p className="text-center text-muted-foreground">
 					comparing with{" "}
 					<Suspense fallback={<Spinner className="inline" />}>
-						<StudentCount classId={user.classId} />
+						<StudentCount classId={classId} />
 					</Suspense>{" "}
 					from the same class
 				</p>

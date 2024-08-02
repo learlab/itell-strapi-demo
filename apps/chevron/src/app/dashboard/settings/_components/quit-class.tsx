@@ -22,9 +22,6 @@ import { useServerAction } from "zsa-react";
 export const QuitClass = () => {
 	const router = useRouter();
 	const { execute, isPending, isError } = useServerAction(updateUserAction);
-	if (isProduction) {
-		return null;
-	}
 
 	return (
 		<AlertDialog>

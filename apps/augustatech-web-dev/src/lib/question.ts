@@ -75,7 +75,6 @@ export const getQAScore = async ({
 			chunkSlug: chunk_slug,
 			answer: input,
 		}),
-		cache: "force-cache",
 	});
 
 	const data = await response.json();
