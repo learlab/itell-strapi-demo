@@ -36,7 +36,7 @@ import {
 	Switch,
 } from "@itell/ui/client";
 import { SettingsIcon } from "lucide-react";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 type Props = {
 	userId: string;
@@ -80,9 +80,31 @@ const RestartTextbook = ({ userId }: { userId: string }) => {
 	);
 };
 
+const conditions = [
+	{
+		label: "Simple",
+		description:
+			"No question and summary. Workers will read short questions and their correct answers and read professional summaries of the chapter. Workers will also read about strategies that can increase text comprehension.",
+		value: Condition.SIMPLE,
+	},
+	{
+		label: "Random rereading",
+		description:
+			"With question and summary, but no feedback on correctness. Can revise question answer. After writing a summary, workers will receive a random chunk to reread without stairs.",
+		value: Condition.RANDOM_REREAD,
+	},
+	{
+		label: "Stairs",
+		description:
+			"With question and summary, and feedback on correctness. User will interact with stairs for failing summaries.",
+		value: Condition.STAIRS,
+	},
+];
+
 export const AdminTools = ({ userId, condition }: Props) => {
 	const finishPage = useConstructedResponse((state) => state.finishPage);
 	const [pending, startTransition] = useTransition();
+	const [open, setOpen] = useState(false);
 
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -113,7 +135,7 @@ export const AdminTools = ({ userId, condition }: Props) => {
 	};
 
 	return (
-		<Sheet>
+		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
@@ -122,110 +144,89 @@ export const AdminTools = ({ userId, condition }: Props) => {
 					<SettingsIcon className="size-4" /> Admin tools
 				</Button>
 			</SheetTrigger>
-			<SheetContent>
+			<SheetContent className="overflow-y-scroll">
 				<SheetHeader>
 					<SheetTitle>Configure ITELL</SheetTitle>
-					<SheetDescription>
+					<SheetDescription className="text-left">
 						You can view this because you are recognized as an admin. Apply the
 						configuration by clicking "Save Changes". Unsaved changes will be
 						lost.
 					</SheetDescription>
 				</SheetHeader>
 				<form className="grid gap-8 py-4" onSubmit={onSubmit}>
-					<div className="flex flex-col gap-4">
-						<Label htmlFor="condition">AI feedback</Label>
+					<fieldset className="flex flex-col border p-4">
+						<legend className="font-semibold">Feedback</legend>
 						<RadioGroup
-							id="condition"
+							className="space-y-4"
 							name="condition"
 							defaultValue={condition}
+							aria-label="Select feedback type"
 						>
-							<div className="flex items-baseline space-x-2">
-								<RadioGroupItem
-									className="shrink-0"
-									value={Condition.SIMPLE}
-									id={Condition.SIMPLE}
-								/>
-								<div>
-									<Label htmlFor={Condition.SIMPLE}>Simple</Label>
-									<p className="text-sm text-muted-foreground">
-										No question and summary. Workers will read short questions
-										and their correct answers and read professional summaries of
-										the chapter. Workers will also read about strategies that
-										can increase text comprehension.
-									</p>
-								</div>
-							</div>
-
-							<div className="flex items-baseline space-x-2">
-								<RadioGroupItem
-									className="shrink-0"
-									value={Condition.RANDOM_REREAD}
-									id={Condition.RANDOM_REREAD}
-								/>
-								<div>
-									<Label htmlFor={Condition.RANDOM_REREAD}>
-										Random rereading
-									</Label>
-									<p className="text-sm text-muted-foreground">
-										With question and summary, but no feedback on correctness.
-										Can revise question answer. After writing a summary, workers
-										will receive a random chunk to reread without stairs.
-									</p>
-								</div>
-							</div>
-
-							<div className="flex items-baseline space-x-2">
-								<RadioGroupItem
-									className="shrink-0"
-									value={Condition.STAIRS}
-									id={Condition.STAIRS}
-								/>
-								<div>
-									<Label htmlFor={Condition.STAIRS}>Stairs</Label>
-									<p className="text-sm text-muted-foreground">
-										With question and summary, and feedback on correctness. User
-										will interact with stairs for failing summaries.
-									</p>
-								</div>
-							</div>
+							{conditions.map(({ label, description, value }) => (
+								<Label
+									key={label}
+									className="flex items-center justify-between gap-6 font-normal"
+								>
+									<div className="text-balance space-y-2">
+										<p className="font-semibold">{label}</p>
+										<p
+											className="text-sm text-muted-foreground"
+											id={`desc-${value}`}
+										>
+											{description}
+										</p>
+									</div>
+									<RadioGroupItem
+										className="shrink-0"
+										value={value}
+										aria-describedby={`desc-${value}`}
+									/>
+								</Label>
+							))}
 						</RadioGroup>
-					</div>
-					<div className="flex flex-col gap-4">
-						<Label htmlFor="page-progress">Set your progress to a page</Label>
-						<Select name="page-progress">
-							<SelectTrigger className="text-left h-fit">
-								<SelectValue placeholder="Set progress" />
-							</SelectTrigger>
-							<SelectContent id="page-progress">
-								<SelectGroup>
-									<SelectLabel>Page</SelectLabel>
-									{allSummaryPagesSorted.map((page) => (
-										<SelectItem key={page.page_slug} value={page.page_slug}>
-											{page.title}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-					</div>
-					<div className="flex flex-col gap-2">
-						<div className="flex flex-row items-center justify-between">
-							<Label htmlFor="page-unblur">Unblur current page</Label>
-							<Switch id="page-unblur" name="page-unblur" />
-						</div>
-						<p className="text-muted-foreground text-sm">
-							Unblur all chunks from the current page and unlock summary
-							submission
-						</p>
-					</div>
-					<div>
+					</fieldset>
+
+					<fieldset className="flex flex-col gap-4 border p-4">
+						<legend className="font-semibold">Progress</legend>
+						<Label className="flex flex-col gap-2 font-normal">
+							<p className="font-semibold">Set your progress to a page</p>
+							<Select name="page-progress">
+								<SelectTrigger className="text-left h-fit">
+									<SelectValue placeholder="Select page" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectLabel>Page</SelectLabel>
+										{allSummaryPagesSorted.map((page) => (
+											<SelectItem key={page.page_slug} value={page.page_slug}>
+												{page.title}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</Label>
+						<Label className="flex gap-6 items-center justify-between font-normal">
+							<div className="flex flex-col gap-2 text-balance">
+								<p className="font-semibold">Unblur current page</p>
+								<p className="text-muted-foreground text-sm" id="unblur-desc">
+									Unblur all chunks from the current page and unlock summary
+									submission
+								</p>
+							</div>
+							<Switch name="page-unblur" aria-describedby="unblur-desc" />
+						</Label>
 						<RestartTextbook userId={userId} />
-					</div>
-					<SheetClose asChild>
+					</fieldset>
+
+					<footer className="flex justify-end">
 						<Button type="submit" disabled={pending}>
-							{pending && <Spinner className="size-4 mr-2" />} Save changes
+							<span className="flex items-center gap-2">
+								{pending && <Spinner className="size-4" />}
+								Save changes
+							</span>
 						</Button>
-					</SheetClose>
+					</footer>
 				</form>
 			</SheetContent>
 		</Sheet>

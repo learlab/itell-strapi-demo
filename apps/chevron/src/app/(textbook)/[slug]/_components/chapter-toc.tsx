@@ -31,7 +31,7 @@ const AnchorLink = ({ text, href, icon, className, ...rest }: LinkProps) => {
 			href={href}
 			className={cn(
 				buttonVariants({ variant: "ghost" }),
-				"flex items-center justify-start  px-1 py-2 xl:text-lg",
+				"flex items-center justify-start px-1 py-2 xl:text-lg",
 				className,
 			)}
 			{...rest}
