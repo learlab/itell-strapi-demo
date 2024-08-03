@@ -5,7 +5,6 @@
 @import url("@itell/ui/dist/style.css");
 
 
-
 .columns .column figure:first-child,
 .columns .column figure:first-child img {
   margin-top: 0;
@@ -25,6 +24,7 @@
 }
 
 .highlight {
+  position: relative;
   cursor: pointer !important;
   color: black;
 }
@@ -49,8 +49,6 @@
   text-underline-offset: 0.4em;
   text-decoration-color: hsl(var(--primary));
 }
-
-
 
 #page-title,
 h2,
@@ -98,8 +96,8 @@ h5,
   margin: 1em 0;
 }
 
-.driver-active .toc-sidebar,
-.driver-active .chapter-sidebar,
+.driver-active #page-nav,
+.driver-active #textbook-nav,
 .driver-active #site-nav,
 .driver-active .question-container,
 .driver-active .chatbot {
@@ -126,6 +124,7 @@ h5,
 #page-content .note {
   user-select: none;
 }
+
 
 
 @media (prefers-reduced-motion: no-preference) {

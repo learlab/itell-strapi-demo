@@ -1,6 +1,7 @@
 import { Condition } from "@/lib/control/condition";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
+import { Elements } from "@itell/core/constants";
 import { User } from "lucia";
 import { Suspense } from "react";
 import { SummaryCount } from "./summary-count";
@@ -29,8 +30,11 @@ export const PageSummary = async ({
 	}
 
 	return (
-		<div className="mt-10 border-t-2 py-4 mb-20 space-y-2 p-4 lg:p-8">
-			<div className="grid gird-cols-1 lg:grid-cols-3 gap-8" id="page-summary">
+		<div
+			className="mt-10 border-t-2 py-4 mb-20 space-y-2 p-4 lg:p-8"
+			id={Elements.PAGE_ASSIGNMENTS}
+		>
+			<div className="grid gird-cols-1 lg:grid-cols-3 gap-8">
 				{condition === Condition.SIMPLE ? (
 					<div className="col-span-full max-w-2xl mx-auto space-y-4">
 						<SurveyLink user={user} />

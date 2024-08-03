@@ -14,6 +14,7 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
+import { Elements } from "@itell/core/constants";
 import { ScrollArea } from "@itell/ui/client";
 import { Info } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
@@ -63,10 +64,13 @@ export default async function ({ params }: { params: { slug: string } }) {
 			pageStatus={pageStatus}
 		>
 			<main
-				id="textbook-page-wrapper"
+				id={Elements.TEXTBOOK_MAIN_WRAPPER}
 				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6"
 			>
-				<div className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+				<div
+					id={Elements.TEXTBOOK_NAV}
+					className="fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2"
+				>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
 							userId={userId}
@@ -79,7 +83,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</div>
 
-				<div id="page-content-wrapper" className="relative p-4 lg:p-8">
+				<div id={Elements.TEXTBOOK_MAIN} className="relative p-4 lg:p-8">
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
@@ -89,6 +93,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</div>
 
 				<aside
+					id={Elements.PAGE_NAV}
 					aria-label="table of contents"
 					className="toc-sidebar hidden md:block relative"
 				>
