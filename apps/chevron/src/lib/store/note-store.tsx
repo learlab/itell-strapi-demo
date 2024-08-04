@@ -1,19 +1,5 @@
-import { Note } from "@/drizzle/schema";
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
-
-export type CreateNoteInput = {
-	id: number;
-	highlightedText: string;
-	color: string;
-	range: string;
-};
-
-export type UpdateNoteInput = {
-	newId?: number;
-	noteText?: string;
-	color?: string;
-};
+import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
+import produce from "immer";
 
 export type NoteData = {
 	id: number;
@@ -21,75 +7,63 @@ export type NoteData = {
 	highlightedText: string;
 	color: string;
 	range: string;
+	chunkSlug: string | null;
 	updatedAt?: Date;
-	createdAt?: Date;
 	local?: boolean;
 };
 
-export type Highlight = {
+export type CreateNoteInput = {
 	id: number;
+	highlightedText: string;
 	color: string;
 	range: string;
+	chunkSlug: string | null;
 };
 
-type State = {
-	data: NoteData[];
+export type UpdateNoteInput = {
+	noteText?: string;
+	color?: string;
 };
 
-type Actions = {
-	init: (notes: Note[]) => void;
-	createNote: (note: CreateNoteInput, theme?: string) => void;
-	updateNote: (id: number, input: UpdateNoteInput) => void;
-	deleteNote: (id: number) => void;
-};
-
-const useNotesStore = create(
-	immer<State & Actions>((set) => ({
-		data: [],
-		highlights: [],
-		init: (notes) =>
-			set((state) => {
-				state.data = notes;
-			}),
-		createNote: ({ id, highlightedText, color, range }) =>
-			set((state) => {
-				state.data.push({
-					id,
-					highlightedText,
-					noteText: "",
-					color,
-					range,
-					local: true,
-				});
-			}),
-		updateNote: (id, { noteText, color, newId }) =>
-			set((state) => {
-				const index = state.data.findIndex((n) => n.id === id);
-				if (index !== -1) {
-					if (noteText) {
-						state.data[index].noteText = noteText;
-					}
-					if (color) {
-						state.data[index].color = color;
-					}
-					if (newId) {
-						state.data[index].id = newId;
-					}
+type NoteStore = typeof noteStore;
+export const noteStore = createStoreWithProducer(
+	produce,
+	{
+		notes: [] as NoteData[],
+	},
+	{
+		initialize: (context, event: { data: NoteData[] }) => {
+			context.notes = event.data;
+		},
+		create: (context, event: CreateNoteInput) => {
+			context.notes.push({
+				id: event.id,
+				highlightedText: event.highlightedText,
+				noteText: "",
+				color: event.color,
+				range: event.range,
+				chunkSlug: event.chunkSlug,
+				local: true,
+			});
+		},
+		update: (context, event: { id: number; data: UpdateNoteInput }) => {
+			const note = context.notes.find((n) => n.id === event.id);
+			if (note) {
+				if (event.data.noteText) {
+					note.noteText = event.data.noteText;
 				}
-			}),
-		deleteNote: (id) =>
-			set((state) => {
-				const index = state.data.findIndex((n) => n.id === id);
-				if (index !== -1) {
-					state.data.splice(index, 1);
+				if (event.data.color) {
+					note.color = event.data.color;
 				}
-			}),
-	})),
+			}
+		},
+		delete: (context, event: { id: number }) => {
+			context.notes = context.notes.filter((n) => n.id !== event.id);
+		},
+	},
 );
 
-export const useNotes = () => useNotesStore((state) => state.data);
-export const useCreateNote = () => useNotesStore((state) => state.createNote);
-export const useUpdateNote = () => useNotesStore((state) => state.updateNote);
-export const useDeleteNote = () => useNotesStore((state) => state.deleteNote);
-export const useInitNotes = () => useNotesStore((state) => state.init);
-export const useNoteCount = () => useNotesStore((state) => state.data.length);
+type Selector<T> = (state: SnapshotFromStore<NoteStore>) => T;
+export const SelectNotes: Selector<NoteData[]> = (state) => state.context.notes;
+export const SelectNoteCount: Selector<number> = (state) =>
+	state.context.notes.length;

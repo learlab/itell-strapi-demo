@@ -9,12 +9,7 @@ import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import {
-	PageData,
-	getChunkElement,
-	reportSentry,
-	scrollToElement,
-} from "@/lib/utils";
+import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/core/constants";
 import {
 	useDebounce,
@@ -32,6 +27,7 @@ import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { getChunkElement } from "@itell/utils";
 import { User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";

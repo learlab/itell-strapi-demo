@@ -4,16 +4,16 @@ import { createEventAction } from "@/actions/event";
 import { getFocusTimeAction } from "@/actions/focus-time";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
-import { useChat, useQuestion } from "@/components/provider/page-provider";
+import { useChatStore, useQuestion } from "@/components/provider/page-provider";
 
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
+import { SelectStairsAnswered, getHistory } from "@/lib/store/chat-store";
 import {
 	PageData,
-	getChunkElement,
 	makePageHref,
 	reportSentry,
 	scrollToElement,
@@ -37,7 +37,9 @@ import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { getChunkElement } from "@itell/utils";
 import { ChatStairs } from "@textbook/chat-stairs";
+import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -79,10 +81,11 @@ type Action =
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "stairs"; payload: StairsQuestion }
-	| { type: "finish"; payload: { canProceed: boolean } }
+	| { type: "finish"; payload: { canProceed: boolean; input: string } }
 	| { type: "set_prev_input"; payload: string };
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
+	const chat = useChatStore();
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const initialState: State = {
 		prevInput: undefined,
@@ -93,13 +96,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	};
 
 	const pageSlug = page.page_slug;
-	const { addStairsQuestion, messages, getHistory } = useChat((state) => {
-		return {
-			addStairsQuestion: state.addStairsQuestion,
-			messages: state.stairsMessages,
-			getHistory: state.getHistory,
-		};
-	});
+
 	const getExcludedChunks = useQuestion((state) => state.getExcludedChunks);
 	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
 		switch (action.type) {
@@ -121,6 +118,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				break;
 			case "finish":
 				draft.canProceed = action.payload.canProceed;
+				draft.prevInput = action.payload.input;
 				break;
 		}
 	}, initialState);
@@ -162,9 +160,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				return;
 			}
 
-			// set prev input here so we are not comparing consecutive error summaries
-			dispatch({ type: "set_prev_input", payload: input });
-
 			const [focusTime, err] = await getFocusTimeAction({ pageSlug });
 			if (err) {
 				throw new Error(err.message);
@@ -173,7 +168,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
-				chat_history: getHistory({ isStairs: true }),
+				chat_history: getHistory(chat, { isStairs: true }),
 				excluded_chunks: getExcludedChunks(),
 			});
 			requestBodyRef.current = body;
@@ -253,7 +248,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						const stairsData = JSON.parse(stairsString) as StairsQuestion;
 						stairsDataRef.current = stairsData;
 						finishStage("Analyzing");
-						addStairsQuestion(stairsData);
+						chat.send({ type: "setStairsQuestion", data: stairsData });
 					} else {
 						throw new Error("invalid stairs chunk");
 					}
@@ -317,7 +312,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					}
 					dispatch({
 						type: "finish",
-						payload: { canProceed: !isLastPage(pageSlug) },
+						payload: { canProceed: !isLastPage(pageSlug), input },
 					});
 				}
 
@@ -503,7 +498,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 const FinishReadingButton = ({
 	onClick,
 }: { onClick: (val: number) => void }) => {
-	const stairsAnswered = useChat((store) => store.stairsAnswered);
+	const store = useChatStore();
+	const stairsAnswered = useSelector(store, SelectStairsAnswered);
 	const { time, clearTimer } = useTimer();
 
 	return (

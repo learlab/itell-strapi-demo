@@ -1,16 +1,17 @@
+import { Elements } from "@/constants";
 import * as rs from "range-serializer";
 
-export const serializeRange = (range: Range) => {
+export const serializeRange = (range: Range, ref?: Element) => {
 	return rs.serializeRange(
 		range,
-		document.getElementById("page-content") || undefined,
+		ref || document.getElementById(ref || Elements.PAGE_CONTENT) || undefined,
 	);
 };
 
-export const deserializeRange = (serializedRange: string) => {
+export const deserializeRange = (serializedRange: string, ref?: Element) => {
 	return rs.deserializeRange(
 		serializedRange,
-		document.getElementById("page-content") || undefined,
+		ref || document.getElementById(Elements.PAGE_CONTENT) || undefined,
 	);
 };
 

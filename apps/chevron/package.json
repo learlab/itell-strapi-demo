@@ -20,6 +20,7 @@
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@sentry/nextjs": "^7.105.0",
 		"@tanstack/react-table": "^8.9.10",
+		"@xstate/store": "^2.0.0",
 		"arctic": "2.0.0-next.1",
 		"cmdk": "^0.2.0",
 		"contentlayer": "^0.3.4",

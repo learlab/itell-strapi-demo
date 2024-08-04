@@ -56,7 +56,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	return (
 		<PageProvider
 			pageSlug={pageSlug}
-			pageTitle={page.title}
 			chunks={chunks}
 			questions={questions}
 			pageStatus={pageStatus}
@@ -113,7 +112,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			</main>
 
 			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader user={user} pageSlug={pageSlug} />
+				<ChatLoader user={user} pageSlug={pageSlug} pageTitle={page.title} />
 			</Suspense>
 
 			{user && <NoteLoader pageSlug={pageSlug} />}

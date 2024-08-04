@@ -60,13 +60,13 @@ importers:
         version: 8.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       arctic:
         specifier: 2.0.0-next.1
-        version: 2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)
+        version: 2.0.0-next.1(@types/node@22.1.0)(happy-dom@10.11.2)(lightningcss@1.24.1)
       cmdk:
         specifier: ^0.2.0
         version: 0.2.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       contentlayer:
         specifier: ^0.3.4
-        version: 0.3.4(esbuild@0.19.12)
+        version: 0.3.4(esbuild@0.21.5)
       drizzle-orm:
         specifier: ^0.30.10
         version: 0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
@@ -105,7 +105,7 @@ importers:
         version: 14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-contentlayer:
         specifier: ^0.3.4
-        version: 0.3.4(contentlayer@0.3.4(esbuild@0.19.12))(esbuild@0.19.12)(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.3.4(contentlayer@0.3.4(esbuild@0.21.5))(esbuild@0.21.5)(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4)
@@ -217,7 +217,7 @@ importers:
         version: 1.11.1
       tailwindcss:
         specifier: ^3.4.0
-        version: 3.4.3(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.0-beta))
+        version: 3.4.3(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.0-beta))
       typescript:
         specifier: 5.5.0-beta
         version: 5.5.0-beta
@@ -447,15 +447,18 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@xstate/store':
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
       arctic:
         specifier: 2.0.0-next.1
-        version: 2.0.0-next.1(@types/node@22.1.0)(happy-dom@10.11.2)(lightningcss@1.24.1)
+        version: 2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)
       cmdk:
         specifier: ^0.2.0
         version: 0.2.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       contentlayer:
         specifier: ^0.3.4
-        version: 0.3.4(esbuild@0.21.5)
+        version: 0.3.4(esbuild@0.19.12)
       drizzle-orm:
         specifier: ^0.30.10
         version: 0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
@@ -491,7 +494,7 @@ importers:
         version: 14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-contentlayer:
         specifier: ^0.3.4
-        version: 0.3.4(contentlayer@0.3.4(esbuild@0.21.5))(esbuild@0.21.5)(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.3.4(contentlayer@0.3.4(esbuild@0.19.12))(esbuild@0.19.12)(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4)
@@ -594,7 +597,7 @@ importers:
         version: 1.0.1
       tailwindcss:
         specifier: ^3.4.0
-        version: 3.4.3(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.0-beta))
+        version: 3.4.3(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.0-beta))
       typescript:
         specifier: 5.5.0-beta
         version: 5.5.0-beta
@@ -5176,6 +5179,14 @@ packages:
 
   '@vue/shared@3.4.35':
     resolution: {integrity: sha512-hvuhBYYDe+b1G8KHxsQ0diDqDMA8D9laxWZhNAjE83VZb5UDaXl9Xnz7cGdDSyiHM90qqI/CyGMcpBpiDy6VVQ==}
+
+  '@xstate/store@2.0.0':
+    resolution: {integrity: sha512-zb/UmsJGUvhoPJnrvA1yFAu9MKMGH3XLHBGQhhcU0DuQcC7WJMR9j0nS2Y+jBi7a5br83g2fjJtIDLgXHlSYbw==}
+    peerDependencies:
+      react: ^18.2.0
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   abortcontroller-polyfill@1.7.5:
     resolution: {integrity: sha512-JMJ5soJWP18htbbxJjG7bG6yuI6pRhgJ0scHHTfkUjf6wjP912xZWvM+A4sJK3gqd9E8fcPbDnOefbA9Th/FIQ==}
@@ -13665,6 +13676,10 @@ snapshots:
       typescript: 5.5.4
 
   '@vue/shared@3.4.35': {}
+
+  '@xstate/store@2.0.0(react@18.3.1)':
+    optionalDependencies:
+      react: 18.3.1
 
   abortcontroller-polyfill@1.7.5: {}
 

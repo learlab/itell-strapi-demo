@@ -2,12 +2,20 @@
 
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/interval-error";
-import { useChat } from "@/components/provider/page-provider";
+import { useChatStore } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
+import {
+	SelectStairsAnswered,
+	SelectStairsMessages,
+	SelectStairsQuestion,
+	SelectStairsReady,
+	SelectStairsTimestamp,
+} from "@/lib/store/chat-store";
 import { reportSentry } from "@/lib/utils";
-import { ChatHistory } from "@itell/core/chat";
+import type { ChatHistory } from "@itell/core/chat";
 import { Elements } from "@itell/core/constants";
 import { cn, parseEventStream } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes, useRef, useState } from "react";
 import TextArea from "react-textarea-autosize";
@@ -19,20 +27,16 @@ interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
-	const {
-		addUserMessage,
-		addBotMessage,
-		updateBotMessage,
-		setStairsAnswered,
-		stairsTimestamp,
-		stairsAnswered,
-		stairsReady,
-		setActiveMessageId,
-		stairsQuestion,
-		stairsMessages,
-	} = useChat((state) => state);
+	const store = useChatStore();
+	const messages = useSelector(store, SelectStairsMessages);
+	const stairsQuestion = useSelector(store, SelectStairsQuestion);
+	const stairsAnswered = useSelector(store, SelectStairsAnswered);
+	const stairsTimestamp = useSelector(store, SelectStairsTimestamp);
+	const stairsReady = useSelector(store, SelectStairsReady);
 	const [pending, setPending] = useState(false);
-	const overMessageLimit = stairsMessages.length > 6;
+
+	const { isError, execute } = useServerAction(createChatsAction);
+	const overMessageLimit = messages.length > 6;
 	const answered = useRef(false);
 	const history = useRef<ChatHistory>([
 		{
@@ -40,23 +44,50 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 			text: String(stairsQuestion?.text),
 		},
 	]);
-	const { isError, execute } = useServerAction(createChatsAction);
 
 	const onMessage = async (text: string) => {
 		setPending(true);
 		const userTimestamp = Date.now();
-		// add messages to both normal chat and stairs chat
-		addBotMessage(String(stairsQuestion?.text), false);
-		addUserMessage(text, true);
-		addUserMessage(text, false);
+
+		// add the question to normal chat
+		store.send({
+			type: "addMessage",
+			text: stairsQuestion?.text || "",
+			isUser: false,
+			isStairs: false,
+		});
+
+		store.send({
+			type: "addMessage",
+			text,
+			isUser: true,
+			isStairs: true,
+		});
+
+		store.send({
+			type: "addMessage",
+			text,
+			isUser: true,
+			isStairs: false,
+		});
 
 		if (!stairsAnswered) {
-			setStairsAnswered(true);
+			store.send({
+				type: "setStairsAnswered",
+				value: true,
+			});
 		}
 
 		// init response message
-		const botMessageId = addBotMessage("", true);
-		setActiveMessageId(botMessageId);
+		const botMessageId = crypto.randomUUID();
+		store.send({
+			type: "addMessage",
+			id: botMessageId,
+			text: "",
+			isUser: false,
+			isStairs: true,
+			active: true,
+		});
 
 		try {
 			const response = await fetch("/api/itell/chat", {
@@ -70,7 +101,10 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 					history: history.current,
 				}),
 			});
-			setActiveMessageId(null);
+			store.send({
+				type: "setActive",
+				id: null,
+			});
 
 			if (response.ok && response.body) {
 				let botText = "";
@@ -82,7 +116,12 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 								text: string;
 							};
 							botText = text;
-							updateBotMessage(botMessageId, botText, true);
+							store.send({
+								type: "updateMessage",
+								id: botMessageId,
+								text: botText,
+								isStairs: true,
+							});
 						} catch (err) {
 							console.log("invalid json", data);
 						}
@@ -91,7 +130,13 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 
 				const botTimestamp = Date.now();
 				// also add the final bot message to the normal chat
-				addBotMessage(botText, false);
+				store.send({
+					type: "addMessage",
+					id: botMessageId,
+					text: botText,
+					isUser: false,
+					isStairs: false,
+				});
 				history.current.push(
 					{
 						agent: "user",
@@ -168,11 +213,12 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 				input: text,
 				pageSlug,
 			});
-			updateBotMessage(
-				botMessageId,
-				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
-				true,
-			);
+			store.send({
+				type: "updateMessage",
+				id: botMessageId,
+				text: "Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
+				isStairs: false,
+			});
 		}
 
 		setPending(false);

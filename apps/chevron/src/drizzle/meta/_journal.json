@@ -43,6 +43,13 @@
       "when": 1722533643861,
       "tag": "0005_faithful_madame_masque",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1722713471054,
+      "tag": "0006_secret_mauler",
+      "breakpoints": true
     }
   ]
 }

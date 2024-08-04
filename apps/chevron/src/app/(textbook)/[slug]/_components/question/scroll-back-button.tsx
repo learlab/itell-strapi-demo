@@ -1,8 +1,9 @@
 "use client";
 
 import { useQuestion } from "@/components/provider/page-provider";
-import { getChunkElement, scrollToElement } from "@/lib/utils";
+import { scrollToElement } from "@/lib/utils";
 import { Button } from "@itell/ui/client";
+import { getChunkElement } from "@itell/utils";
 import { MoveUpIcon } from "lucide-react";
 
 export const ScrollBackButton = () => {

@@ -57,17 +57,6 @@ export const getPageData = (slug: string | null): PageData | null => {
 	};
 };
 
-export const getChunkElement = (chunkSlug: string): HTMLElement | null => {
-	const el = document.querySelector(
-		`section[data-subsection-id='${chunkSlug}']`,
-	);
-	if (el instanceof HTMLElement) {
-		return el;
-	}
-
-	return null;
-};
-
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== undefined;
 }

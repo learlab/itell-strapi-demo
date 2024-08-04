@@ -3,8 +3,8 @@
 import { useQuestion } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
-import { getChunkElement } from "@/lib/utils";
 import { usePortal } from "@itell/core/hooks";
+import { getChunkElement } from "@itell/utils";
 import { useEffect } from "react";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";

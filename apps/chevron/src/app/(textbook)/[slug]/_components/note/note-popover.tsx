@@ -6,7 +6,7 @@ import {
 	updateNoteAction,
 } from "@/actions/note";
 import { Spinner } from "@/components/spinner";
-import { useDeleteNote, useUpdateNote } from "@/lib/store/note-store";
+import { NoteData, noteStore } from "@/lib/store/note-store";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { TwitterPicker } from "@hello-pangea/color-picker";
 import { useDebounce } from "@itell/core/hooks";
@@ -14,6 +14,7 @@ import {
 	createNoteElements,
 	deserializeRange,
 	removeNotes,
+	serializeRange,
 } from "@itell/core/note";
 import {
 	AlertDialog,
@@ -27,23 +28,13 @@ import {
 	AlertDialogTrigger,
 	Label,
 } from "@itell/ui/client";
-import { cn } from "@itell/utils";
+import { cn, getChunkElement } from "@itell/utils";
 import { PaletteIcon, StickyNoteIcon, TrashIcon } from "lucide-react";
 import { ForwardIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 import Textarea from "react-textarea-autosize";
 import { toast } from "sonner";
-
-export interface NoteData {
-	id: number;
-	noteText: string;
-	highlightedText: string;
-	color: string;
-	range: string;
-	updatedAt?: Date;
-	local?: boolean;
-}
 
 interface Props extends NoteData {
 	pageSlug: string;
@@ -55,13 +46,14 @@ export const NotePopover = React.memo(
 		highlightedText,
 		noteText,
 		pageSlug,
+		chunkSlug,
 		updatedAt,
 		range,
 		color,
 		local = false,
 	}: Props) => {
 		const elements = useRef<HTMLElement[]>();
-		const [creationFailed, setCreationFailed] = useState<boolean | undefined>(
+		const [positionFailed, setPositionFailed] = useState(
 			local ? false : undefined,
 		);
 		const [noteColor, setNoteColor] = useState(color);
@@ -81,8 +73,6 @@ export const NotePopover = React.memo(
 		// this state is only used for focusing the textarea and does not control the popover state
 		const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 		const [recordId, setRecordId] = useState<number | null>(local ? null : id);
-		const deleteNote = useDeleteNote();
-		const updateNote = useUpdateNote();
 		const [pending, setPending] = useState(false);
 		const pendingDebounced = useDebounce(pending, 500);
 
@@ -101,7 +91,7 @@ export const NotePopover = React.memo(
 			setPending(true);
 			popoverRef.current?.hidePopover();
 			removeNotes(id);
-			deleteNote(id);
+			noteStore.send({ type: "delete", id });
 			if (recordId) {
 				// delete note in database
 				await deleteNoteAction({ id });
@@ -117,9 +107,13 @@ export const NotePopover = React.memo(
 			const noteText = getInput();
 			if (shouldUpdate) {
 				if (recordId) {
-					updateNote(id, {
-						noteText,
-						color: noteColor,
+					noteStore.send({
+						type: "update",
+						id,
+						data: {
+							noteText,
+							color: noteColor,
+						},
 					});
 					const [_, err] = await updateNoteAction({
 						id: recordId,
@@ -138,6 +132,7 @@ export const NotePopover = React.memo(
 					highlightedText,
 					pageSlug,
 					color: noteColor,
+					chunkSlug,
 					range,
 				});
 				if (err) {
@@ -150,27 +145,42 @@ export const NotePopover = React.memo(
 		};
 
 		useEffect(() => {
-			createNoteElements({
-				id,
-				range: deserializeRange(range),
-				color,
-			})
-				.then(async (result) => {
-					elements.current = result;
-					setAnchor(result[0]);
-					setCreationFailed(false);
-				})
-				.catch((err) => {
-					setCreationFailed(true);
+			const setup = async () => {
+				try {
+					const els = await createNoteElements({
+						id,
+						range: deserializeRange(
+							range,
+							getChunkElement(chunkSlug) || undefined,
+						),
+						color,
+					});
+					elements.current = els;
+					setAnchor(els[els.length - 1]);
+					setPositionFailed(false);
+				} catch (err) {
 					console.error(err);
-				});
+					if (!chunkSlug) {
+						setPositionFailed(true);
+					} else {
+						const chunk = getChunkElement(chunkSlug);
+						if (chunk) {
+							setAnchor(chunk);
+						} else {
+							setPositionFailed(true);
+						}
+					}
+				}
+			};
+
+			setup();
 		}, []);
 
 		useEffect(() => {
 			if (anchor && triggerRef.current) {
 				const button = triggerRef.current;
 				computePosition(anchor, button, {
-					placement: "top-end",
+					placement: "bottom-end",
 					middleware: [flip(), shift({ padding: 5 }), offset(3)],
 				}).then(({ x, y }) => {
 					if (triggerRef.current) {
@@ -222,7 +232,7 @@ export const NotePopover = React.memo(
 			}
 		}, [noteColor]);
 
-		if (creationFailed === undefined) {
+		if (positionFailed === undefined) {
 			return null;
 		}
 
@@ -231,12 +241,12 @@ export const NotePopover = React.memo(
 				<button
 					id={triggerId}
 					className={cn("note-trigger p-1", {
-						"absolute z-10 ": !creationFailed,
+						"absolute z-10 ": !positionFailed,
 					})}
 					style={{
 						// @ts-ignore
 						anchorName,
-						border: creationFailed ? `2px solid ${noteColor}` : undefined,
+						border: positionFailed ? `2px solid ${noteColor}` : undefined,
 					}}
 					type="button"
 					aria-label="toggle note"
@@ -245,7 +255,7 @@ export const NotePopover = React.memo(
 				>
 					{pendingDebounced ? (
 						<Spinner className="size-4" />
-					) : creationFailed ? (
+					) : positionFailed ? (
 						<span>Note</span>
 					) : (
 						<StickyNoteIcon className="fill-warning hover:fill-accent" />
@@ -329,7 +339,7 @@ export const NotePopover = React.memo(
 							</time>
 						</p>
 					)}
-					{creationFailed && (
+					{positionFailed && (
 						<p className="text-sm text-muted-foreground">
 							can't find reference text for this note
 						</p>

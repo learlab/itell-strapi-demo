@@ -121,3 +121,17 @@ export const createFetchWithBearerToken = (bearerToken?: string) => {
 		});
 	};
 };
+
+export const getChunkElement = (chunkSlug: string | null) => {
+	if (!chunkSlug) {
+		return null;
+	}
+	const el = document.querySelector(
+		`section[data-subsection-id='${chunkSlug}']`,
+	);
+	if (el instanceof HTMLElement) {
+		return el;
+	}
+
+	return null;
+};

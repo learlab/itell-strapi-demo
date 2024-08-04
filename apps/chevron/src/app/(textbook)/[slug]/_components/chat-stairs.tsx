@@ -1,7 +1,7 @@
 import { Elements } from "@itell/core/constants";
 import { Accordion, AccordionContent, AccordionItem } from "@itell/ui/client";
 import { ChatInputStairs } from "./chat/chat-input-stairs";
-import { ChatMessages } from "./chat/chat-messages";
+import { ChatMessagesStairs } from "./chat/chat-messages-stairs";
 
 interface Props {
 	pageSlug: string;
@@ -30,7 +30,7 @@ export const ChatStairs = ({ pageSlug, RenderFooter, id }: Props) => {
 			</a>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionContent className="flex flex-col h-96">
-					<ChatMessages isStairs={true} />
+					<ChatMessagesStairs />
 					<ChatInputStairs pageSlug={pageSlug} />
 					<RenderFooter />
 					<footer className="px-4 py-2 text-xs text-muted-foreground">

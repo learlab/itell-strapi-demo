@@ -4,12 +4,16 @@ import { createChatsAction } from "@/actions/chat";
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
-import { ChatState, ChatStore, createChatStore } from "@/lib/store/chat-store";
+import { ChatStore, createChatStore, getHistory } from "@/lib/store/chat-store";
 import {
 	QuestionState,
 	QuestionStore,
 	createQuestionStore,
 } from "@/lib/store/question-store";
+import {
+	QuestionStore2,
+	createQuestionStore2,
+} from "@/lib/store/question-store-2";
 import { reportSentry } from "@/lib/utils";
 import { parseEventStream } from "@itell/utils";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
@@ -19,7 +23,6 @@ import { useStore } from "zustand";
 type Props = {
 	children: React.ReactNode;
 	pageSlug: string;
-	pageTitle: string;
 	chunks: string[];
 	questions: SelectedQuestions;
 	pageStatus: PageStatus;
@@ -27,13 +30,13 @@ type Props = {
 
 const PageContext = createContext<{
 	questionStore: QuestionStore;
+	questionStore2: QuestionStore2;
 	chatStore: ChatStore;
 } | null>(null);
 
 export const PageProvider = ({
 	children,
 	pageSlug,
-	pageTitle,
 	chunks,
 	questions,
 	pageStatus,
@@ -50,15 +53,25 @@ export const PageProvider = ({
 		);
 	}
 
+	const questionStoreRef2 = useRef<QuestionStore2>();
+	if (!questionStoreRef2.current) {
+		questionStoreRef2.current = createQuestionStore2({
+			chunks,
+			pageStatus,
+			selectedQuestions: questions,
+		});
+	}
+
 	const chatStoreRef = useRef<ChatStore>();
 	if (!chatStoreRef.current) {
-		chatStoreRef.current = createChatStore({ pageTitle });
+		chatStoreRef.current = createChatStore();
 	}
 
 	return (
 		<PageContext.Provider
 			value={{
 				questionStore: questionStoreRef.current,
+				questionStore2: questionStoreRef2.current,
 				chatStore: chatStoreRef.current,
 			}}
 		>
@@ -67,32 +80,24 @@ export const PageProvider = ({
 	);
 };
 
+export const useChatStore = () => {
+	const value = useContext(PageContext);
+	if (!value) return {} as ChatStore;
+	return value.chatStore;
+};
 export function useQuestion<T>(selector: (state: QuestionState) => T): T {
 	const value = useContext(PageContext);
 	if (!value) return {} as T;
 	return useStore(value.questionStore, selector);
 }
-
-export function useChat<T>(selector: (state: ChatState) => T): T {
+export const useQuestionStore2 = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as T;
-	return useStore(value.chatStore, selector);
-}
+	if (!value) return {} as QuestionStore2;
+	return value.questionStore2;
+};
 
 export const useAddChat = () => {
-	const {
-		addUserMessage,
-		addBotMessage,
-		updateBotMessage,
-		setActiveMessageId,
-		getHistory,
-	} = useChat((state) => ({
-		addUserMessage: state.addUserMessage,
-		addBotMessage: state.addBotMessage,
-		updateBotMessage: state.updateBotMessage,
-		setActiveMessageId: state.setActiveMessageId,
-		getHistory: state.getHistory,
-	}));
+	const store = useChatStore();
 	const [pending, setPending] = useState(false);
 
 	const { execute, isError, error } = useServerAction(createChatsAction);
@@ -103,9 +108,22 @@ export const useAddChat = () => {
 	}: { text: string; pageSlug: string }) => {
 		setPending(true);
 		const userTimestamp = Date.now();
-		addUserMessage(text, false);
-		const botMessageId = addBotMessage("", false);
-		setActiveMessageId(botMessageId);
+		store.send({
+			type: "addMessage",
+			text,
+			isUser: true,
+			isStairs: false,
+		});
+
+		const botMessageId = crypto.randomUUID();
+		store.send({
+			type: "addMessage",
+			id: botMessageId,
+			text: "",
+			isUser: false,
+			isStairs: false,
+			active: true,
+		});
 
 		try {
 			// init response message
@@ -117,11 +135,11 @@ export const useAddChat = () => {
 				body: JSON.stringify({
 					page_slug: pageSlug,
 					message: text,
-					history: getHistory({ isStairs: false }),
+					history: getHistory(store, { isStairs: false }),
 				}),
 			});
 
-			setActiveMessageId(null);
+			store.send({ type: "setActive", id: null });
 
 			let data = {} as { text: string; context?: string[] };
 
@@ -130,14 +148,25 @@ export const useAddChat = () => {
 					if (!done) {
 						try {
 							data = JSON.parse(d) as typeof data;
-							updateBotMessage(botMessageId, data.text, false);
+							store.send({
+								type: "updateMessage",
+								id: botMessageId,
+								text: data.text,
+								isStairs: false,
+							});
 						} catch (err) {
 							console.log("invalid json", data);
 						}
 					}
 				});
 
-				updateBotMessage(botMessageId, data.text, false, data.context?.at(0));
+				store.send({
+					type: "updateMessage",
+					id: botMessageId,
+					isStairs: false,
+					text: data.text,
+					context: data.context?.at(0),
+				});
 
 				const botTimestamp = Date.now();
 				execute({
@@ -164,11 +193,12 @@ export const useAddChat = () => {
 			}
 		} catch (err) {
 			reportSentry("eval chat", { error: err, input: text, pageSlug });
-			updateBotMessage(
-				botMessageId,
-				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
-				false,
-			);
+			store.send({
+				type: "updateMessage",
+				id: botMessageId,
+				text: "Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
+				isStairs: false,
+			});
 		}
 
 		setPending(false);
