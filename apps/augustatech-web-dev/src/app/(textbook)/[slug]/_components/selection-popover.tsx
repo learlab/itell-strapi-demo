@@ -1,19 +1,20 @@
 "use client";
-import { useAddChat, useChat } from "@/components/provider/page-provider";
+import { useAddChat, useChatStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
-import { useCreateNote } from "@/lib/store/note-store";
-import { Elements } from "@itell/core/constants";
+import { SelectOpen } from "@/lib/store/chat-store";
+import { noteStore } from "@/lib/store/note-store";
+import { DefaultPreferences, Elements } from "@itell/constants";
 import { serializeRange } from "@itell/core/note";
 import { Button } from "@itell/ui/client";
-import { cn } from "@itell/utils";
+import { cn, getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
-import { NoteData } from "./note/note-popover";
 
 type Props = {
 	pageSlug: string;
@@ -22,16 +23,23 @@ type Props = {
 
 export const SelectionPopover = ({ user, pageSlug }: Props) => {
 	const { theme } = useTheme();
-	const createNote = useCreateNote();
-	const setChatOpen = useChat((state) => state.setOpen);
+	const store = useChatStore();
+	const open = useSelector(store, SelectOpen);
 	const { action: addChat } = useAddChat();
+	const noteColor =
+		theme === "light"
+			? user?.preferences.note_color_light ??
+				DefaultPreferences.note_color_light
+			: user?.preferences.note_color_dark ?? DefaultPreferences.note_color_dark;
 
 	const askAction = {
 		label: "Ask AI",
 		icon: <SparklesIcon className="size-5" />,
 		action: async () => {
 			if (state) {
-				setChatOpen(true);
+				if (!open) {
+					store.send({ type: "setOpen", value: true });
+				}
 				const text = `Can you explain the following text\n\n"${state.text}"`;
 				addChat({ text, pageSlug });
 			}
@@ -43,19 +51,18 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 		icon: <PencilIcon className="size-5" />,
 		action: async () => {
 			if (state && user) {
-				const noteColor =
-					theme === "light"
-						? user.preferences.note_color_light
-						: user.preferences.note_color_dark;
-				const newNote: NoteData = {
+				const chunkSlug = findParentChunk(state.range);
+				noteStore.send({
+					type: "create",
 					id: randomNumber(),
 					highlightedText: state.text,
-					noteText: "",
-					local: true,
 					color: noteColor,
-					range: serializeRange(state.range),
-				};
-				createNote(newNote);
+					chunkSlug,
+					range: serializeRange(
+						state.range,
+						getChunkElement(chunkSlug) || undefined,
+					),
+				});
 			}
 		},
 	};
@@ -165,3 +172,24 @@ const randomNumber = () => {
 	// Generate a random number within the SERIAL range
 	return Math.floor(Math.random() * (MAX_SERIAL - MIN_SERIAL + 1)) + MIN_SERIAL;
 };
+
+function findParentChunk(range: Range) {
+	let node: Node | null = range.commonAncestorContainer;
+
+	// If the node is a text node, get its parent element
+	if (node.nodeType === Node.TEXT_NODE) {
+		node = node.parentElement;
+	}
+
+	while (node && node !== document.body) {
+		if (
+			node instanceof HTMLElement &&
+			node.classList.contains("content-chunk")
+		) {
+			return node.dataset.subsectionId as string;
+		}
+		node = node.parentElement;
+	}
+
+	return null;
+}

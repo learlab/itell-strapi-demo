@@ -1,12 +1,14 @@
 "use client";
 
 import { createEventAction } from "@/actions/event";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Condition, EventType } from "@/lib/constants";
+import { SelectCurrentChunk } from "@/lib/store/question-store";
 import { LoginButton } from "@auth//auth-form";
 import { Button } from "@itell/ui/client";
 import { Card, CardContent, Warning } from "@itell/ui/server";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 
 type Props = {
 	userId: string | null;
@@ -23,10 +25,8 @@ export const QuestionBoxSimple = ({
 	pageSlug,
 	chunkSlug,
 }: Props) => {
-	const { advanceChunk, currentChunk } = useQuestion((state) => ({
-		advanceChunk: state.advanceChunk,
-		currentChunk: state.currentChunk,
-	}));
+	const store = useQuestionStore();
+	const currentChunk = useSelector(store, SelectCurrentChunk);
 	const disabled = currentChunk !== chunkSlug;
 
 	if (!userId) {
@@ -65,7 +65,7 @@ export const QuestionBoxSimple = ({
 					aria-labelledby="question-form-heading"
 					onSubmit={(e) => {
 						e.preventDefault();
-						advanceChunk(chunkSlug);
+						store.send({ type: "advanceChunk", chunkSlug });
 						createEventAction({
 							type: EventType.CHUNK_REVEAL_QUESTION,
 							pageSlug,

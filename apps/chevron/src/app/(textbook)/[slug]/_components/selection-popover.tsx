@@ -2,11 +2,13 @@
 import { useAddChat, useChatStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
+import { SelectOpen } from "@/lib/store/chat-store";
 import { noteStore } from "@/lib/store/note-store";
-import { DefaultPreferences, Elements } from "@itell/core/constants";
+import { DefaultPreferences, Elements } from "@itell/constants";
 import { serializeRange } from "@itell/core/note";
 import { Button } from "@itell/ui/client";
 import { cn, getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -22,6 +24,7 @@ type Props = {
 export const SelectionPopover = ({ user, pageSlug }: Props) => {
 	const { theme } = useTheme();
 	const store = useChatStore();
+	const open = useSelector(store, SelectOpen);
 	const { action: addChat } = useAddChat();
 	const noteColor =
 		theme === "light"
@@ -34,7 +37,9 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 		icon: <SparklesIcon className="size-5" />,
 		action: async () => {
 			if (state) {
-				store.send({ type: "setOpen", value: true });
+				if (!open) {
+					store.send({ type: "setOpen", value: true });
+				}
 				const text = `Can you explain the following text\n\n"${state.text}"`;
 				addChat({ text, pageSlug });
 			}

@@ -12,8 +12,8 @@ import {
 	SelectStairsTimestamp,
 } from "@/lib/store/chat-store";
 import { reportSentry } from "@/lib/utils";
+import { Elements } from "@itell/constants";
 import type { ChatHistory } from "@itell/core/chat";
-import { Elements } from "@itell/core/constants";
 import { cn, parseEventStream } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { CornerDownLeft } from "lucide-react";

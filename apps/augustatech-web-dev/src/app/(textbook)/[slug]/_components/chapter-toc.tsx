@@ -1,13 +1,13 @@
 "use client";
 
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";
@@ -15,7 +15,7 @@ import { clearSummaryLocal } from "@textbook/summary/summary-input";
 import type { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon, RotateCcwIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useOptimistic, useState, useTransition } from "react";
+import React, { useOptimistic, useTransition } from "react";
 import { AdminTools } from "./admin-tools";
 
 interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
@@ -30,7 +30,7 @@ const AnchorLink = ({ text, href, icon, className, ...rest }: LinkProps) => {
 			href={href}
 			className={cn(
 				buttonVariants({ variant: "ghost" }),
-				"flex items-center justify-start  px-1 py-2 xl:text-lg",
+				"flex items-center justify-start px-1 py-2 xl:text-lg",
 				className,
 			)}
 			{...rest}
@@ -151,14 +151,14 @@ export const ChapterToc = ({
 
 const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 	const [pending, startTransition] = useTransition();
-	const resetPage = useQuestion((state) => state.resetPage);
+	const store = useQuestionStore();
 	return (
 		<Button
 			className="flex items-center justify-start w-full p-0 xl:text-lg"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
-					resetPage();
+					store.send({ type: "resetPage" });
 					clearSummaryLocal(pageSlug);
 					window.location.reload();
 				});

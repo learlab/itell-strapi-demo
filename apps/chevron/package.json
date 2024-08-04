@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@floating-ui/dom": "^1.6.8",
 		"@hello-pangea/color-picker": "^3.2.2",
+		"@itell/constants": "workspace:^",
 		"@itell/core": "workspace:^",
 		"@itell/driver.js": "workspace:^",
 		"@itell/tailwind": "workspace:^",

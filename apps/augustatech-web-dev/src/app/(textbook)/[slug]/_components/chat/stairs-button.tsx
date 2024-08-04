@@ -1,15 +1,18 @@
 "use client";
 
-import { useChat } from "@/components/provider/page-provider";
-import { Elements } from "@itell/core/constants";
+import { useChatStore } from "@/components/provider/page-provider";
+import { SelectStairsReady } from "@/lib/store/chat-store";
+import { Elements } from "@itell/constants";
 import { Button } from "@itell/ui/client";
+import { useSelector } from "@xstate/store/react";
 
 type Props = {
 	onClick: () => void;
 };
 
 export const StairsReadyButton = ({ onClick }: Props) => {
-	const ready = useChat((state) => state.stairsReady);
+	const store = useChatStore();
+	const ready = useSelector(store, SelectStairsReady);
 	return (
 		<Button
 			size={"sm"}

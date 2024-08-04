@@ -1,5 +1,6 @@
 "use client";
-import { useChat } from "@/components/provider/page-provider";
+import { useChatStore } from "@/components/provider/page-provider";
+import { SelectOpen } from "@/lib/store/chat-store";
 import { Message } from "@itell/core/chat";
 import {
 	Accordion,
@@ -7,26 +8,28 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@itell/ui/client";
+import { useSelector } from "@xstate/store/react";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";
 
 type Props = {
+	pageTitle: string;
 	pageSlug: string;
-	data: Message[];
 	updatedAt: Date;
+	data: Message[];
 };
 
-export const Chat = ({ pageSlug, data, updatedAt }: Props) => {
-	const { open, setOpen } = useChat((state) => ({
-		open: state.open,
-		setOpen: state.setOpen,
-	}));
+export const Chat = ({ pageSlug, pageTitle, updatedAt, data }: Props) => {
+	const store = useChatStore();
+	const open = useSelector(store, SelectOpen);
 	return (
 		<Accordion
 			type="single"
 			value={open ? "chat" : ""}
-			onValueChange={(value) => setOpen(value === "chat")}
+			onValueChange={(val) =>
+				store.send({ type: "setOpen", value: val === "chat" })
+			}
 			collapsible
 			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30 chatbot"
 		>
@@ -37,7 +40,11 @@ export const Chat = ({ pageSlug, data, updatedAt }: Props) => {
 
 				<AccordionContent className="">
 					<div className="flex flex-col h-96">
-						<ChatMessages data={data} isStairs={false} updatedAt={updatedAt} />
+						<ChatMessages
+							updatedAt={updatedAt}
+							data={data}
+							pageTitle={pageTitle}
+						/>
 						<ChatInput pageSlug={pageSlug} />
 					</div>
 					<footer className="px-4 py-2 text-xs text-muted-foreground">

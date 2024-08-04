@@ -5,7 +5,7 @@ import { isProduction } from "@/lib/constants";
 import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { Label } from "@itell/ui/client";
 import { cn, numOfWords } from "@itell/utils";
 import pluralize from "pluralize";

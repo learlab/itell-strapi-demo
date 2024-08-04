@@ -4,21 +4,37 @@ import { createEventAction } from "@/actions/event";
 import { getFocusTimeAction } from "@/actions/focus-time";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
-import { useChat, useQuestion } from "@/components/provider/page-provider";
+import {
+	useChatStore,
+	useQuestionStore,
+	useSummaryStore,
+} from "@/components/provider/page-provider";
 
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
+import { SelectStairsAnswered, getHistory } from "@/lib/store/chat-store";
+import {
+	SelectSummaryReady,
+	getExcludedChunks,
+} from "@/lib/store/question-store";
+import {
+	SelectError,
+	SelectIsNextPageVisible,
+	SelectPrevInput,
+	SelectResponse,
+	SelectStairs,
+	StairsQuestion,
+} from "@/lib/store/summary-store";
 import {
 	PageData,
-	getChunkElement,
 	makePageHref,
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import {
 	useDebounce,
 	useKeystroke,
@@ -37,7 +53,9 @@ import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { getChunkElement } from "@itell/utils";
 import { ChatStairs } from "@textbook/chat-stairs";
+import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -45,7 +63,6 @@ import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { useImmerReducer } from "use-immer";
 import { SummaryFeedback } from "./summary-feedback";
 import {
 	SummaryInput,
@@ -60,81 +77,32 @@ type Props = {
 	pageStatus: PageStatus;
 };
 
-type StairsQuestion = {
-	text: string;
-	chunk: string;
-	question_type: string;
-};
-
-type State = {
-	prevInput: string | undefined;
-	error: ErrorType | null;
-	response: SummaryResponse | null;
-	stairsQuestion: StairsQuestion | null;
-	canProceed: boolean;
-};
-
-type Action =
-	| { type: "submit" }
-	| { type: "fail"; payload: ErrorType }
-	| { type: "scored"; payload: SummaryResponse }
-	| { type: "stairs"; payload: StairsQuestion }
-	| { type: "finish"; payload: { canProceed: boolean } }
-	| { type: "set_prev_input"; payload: string };
-
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
-	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
-	const initialState: State = {
-		prevInput: undefined,
-		error: null,
-		response: null,
-		stairsQuestion: null,
-		canProceed: pageStatus.unlocked,
-	};
-
 	const pageSlug = page.page_slug;
-	const { addStairsQuestion, messages, getHistory } = useChat((state) => {
-		return {
-			addStairsQuestion: state.addStairsQuestion,
-			messages: state.stairsMessages,
-			getHistory: state.getHistory,
-		};
-	});
-	const getExcludedChunks = useQuestion((state) => state.getExcludedChunks);
-	const [state, dispatch] = useImmerReducer<State, Action>((draft, action) => {
-		switch (action.type) {
-			case "submit":
-				draft.error = null;
-				break;
-			case "fail":
-				draft.error = action.payload;
-				draft.response = null;
-				break;
-			case "scored":
-				draft.response = action.payload;
-				break;
-			case "stairs":
-				draft.stairsQuestion = action.payload;
-				break;
-			case "set_prev_input":
-				draft.prevInput = action.payload;
-				break;
-			case "finish":
-				draft.canProceed = action.payload.canProceed;
-				break;
-		}
-	}, initialState);
-
 	const { nodes: portalNodes, addNode } = usePortal();
-	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
-	const feedback = state.response ? getFeedback(state.response) : null;
 
+	// for debugging purposes
+	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const requestBodyRef = useRef<string | null>(null);
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
 	const stairsAnsweredRef = useRef(false);
+
+	// stores
+	const chatStore = useChatStore();
+	const questionStore = useQuestionStore();
+	const summaryStore = useSummaryStore();
+
+	// states
+	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
+	const response = useSelector(summaryStore, SelectResponse);
+	const prevInput = useSelector(summaryStore, SelectPrevInput);
+	const isNextPageVisible = useSelector(summaryStore, SelectIsNextPageVisible);
+	const stairsQuestion = useSelector(summaryStore, SelectStairs);
+	const submissionError = useSelector(summaryStore, SelectError);
+	const feedback = response ? getFeedback(response) : null;
 
 	const {
 		action,
@@ -147,23 +115,19 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			e.preventDefault();
 
 			clearStages();
-			dispatch({ type: "submit" });
+			summaryStore.send({ type: "submit" });
 			addStage("Scoring");
 
 			const formData = new FormData(e.currentTarget);
-			const input = String(formData.get("input")).replaceAll("\u0000", "");
+			const input = String(formData.get("input")).trim();
 
 			saveSummaryLocal(pageSlug, input);
-
-			const error = validateSummary(input, state.prevInput);
+			const error = validateSummary(input, prevInput);
 
 			if (error) {
-				dispatch({ type: "fail", payload: error });
+				summaryStore.send({ type: "fail", error });
 				return;
 			}
-
-			// set prev input here so we are not comparing consecutive error summaries
-			dispatch({ type: "set_prev_input", payload: input });
 
 			const [focusTime, err] = await getFocusTimeAction({ pageSlug });
 			if (err) {
@@ -173,8 +137,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
-				chat_history: getHistory({ isStairs: true }),
-				excluded_chunks: getExcludedChunks(),
+				chat_history: getHistory(chatStore, { isStairs: true }),
+				excluded_chunks: getExcludedChunks(questionStore),
 			});
 			requestBodyRef.current = body;
 			const response = await fetch("/api/itell/score/stairs", {
@@ -211,11 +175,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						);
 						if (parsed.success) {
 							summaryResponseRef.current = parsed.data;
-							dispatch({ type: "scored", payload: parsed.data });
+							summaryStore.send({ type: "scored", response: parsed.data });
 							finishStage("Scoring");
 						} else {
 							clearStages();
-							dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+							summaryStore.send({ type: "fail", error: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
 							reportSentry("parse summary stairs", {
 								body,
@@ -253,7 +217,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						const stairsData = JSON.parse(stairsString) as StairsQuestion;
 						stairsDataRef.current = stairsData;
 						finishStage("Analyzing");
-						addStairsQuestion(stairsData);
+						chatStore.send({ type: "setStairsQuestion", data: stairsData });
 					} else {
 						throw new Error("invalid stairs chunk");
 					}
@@ -278,9 +242,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						contentScore: scores.content,
 					},
 					keystroke: {
-						start: state.prevInput
-							? state.prevInput
-							: getSummaryLocal(pageSlug) || "",
+						start: prevInput || getSummaryLocal(pageSlug) || "",
 						data: keystrokes,
 					},
 				});
@@ -296,7 +258,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						toast.info("You have finished the entire textbook!");
 					} else {
 						// check if we can already proceed to prevent excessive toasts
-						if (!state.canProceed) {
+						if (isNextPageVisible) {
 							const title = feedback?.isPassed
 								? "Good job summarizing 🎉"
 								: "You can now move on 👏";
@@ -315,14 +277,22 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							});
 						}
 					}
-					dispatch({
-						type: "finish",
-						payload: { canProceed: !isLastPage(pageSlug) },
-					});
 				}
 
+				summaryStore.send({
+					type: "finish",
+					isNextPageVisible: data.canProceed
+						? !isLastPage(pageSlug)
+						: undefined,
+					input,
+				});
+
 				if (stairsDataRef.current) {
-					dispatch({ type: "stairs", payload: stairsDataRef.current });
+					summaryStore.send({
+						type: "stairs",
+						data: stairsDataRef.current,
+					});
+
 					if (!data.canProceed && !pageStatus.unlocked) {
 						goToQuestion(stairsDataRef.current);
 					}
@@ -412,7 +382,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	useEffect(() => {
 		if (isError) {
-			dispatch({ type: "fail", payload: ErrorType.INTERNAL });
+			summaryStore.send({ type: "fail", error: ErrorType.INTERNAL });
 			clearStages();
 			reportSentry("score summary stairs", {
 				body: requestBodyRef.current,
@@ -431,18 +401,20 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				<SummaryFeedback
 					className={isPending ? "opacity-70" : ""}
 					feedback={feedback}
-					needRevision={isLastPage(pageSlug) ? user.finished : state.canProceed}
+					needRevision={
+						isLastPage(pageSlug) ? !user.finished : !isNextPageVisible
+					}
 				/>
 			)}
 
 			<div className="flex gap-2 items-center">
-				{state.canProceed && page.nextPageSlug && (
+				{isNextPageVisible && page.nextPageSlug && (
 					<NextPageButton pageSlug={page.nextPageSlug} />
 				)}
-				{state.stairsQuestion && (
+				{stairsQuestion && (
 					<Button
 						variant={"outline"}
-						onClick={() => goToQuestion(state.stairsQuestion as StairsQuestion)}
+						onClick={() => goToQuestion(stairsQuestion as StairsQuestion)}
 					>
 						<span className="flex items-center gap-2">
 							<FileQuestionIcon className="size-4" />
@@ -469,8 +441,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					userRole={user.role}
 					ref={ref}
 				/>
-				{state.error && (
-					<Warning role="alert">{ErrorFeedback[state.error]}</Warning>
+				{submissionError && (
+					<Warning role="alert">{ErrorFeedback[submissionError]}</Warning>
 				)}
 				<div className="flex justify-end">
 					<Button type="submit" disabled={isPending || !isSummaryReady}>
@@ -503,7 +475,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 const FinishReadingButton = ({
 	onClick,
 }: { onClick: (val: number) => void }) => {
-	const stairsAnswered = useChat((store) => store.stairsAnswered);
+	const store = useChatStore();
+	const stairsAnswered = useSelector(store, SelectStairsAnswered);
 	const { time, clearTimer } = useTimer();
 
 	return (

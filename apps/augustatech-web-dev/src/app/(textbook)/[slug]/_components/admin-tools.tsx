@@ -1,7 +1,7 @@
 "use client";
 import { resetUserAction, updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { allSummaryPagesSorted } from "@/lib/pages";
@@ -35,7 +35,7 @@ import {
 	Switch,
 } from "@itell/ui/client";
 import { SettingsIcon } from "lucide-react";
-import { useState, useTransition } from "react";
+import { startTransition, useState } from "react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 
@@ -65,7 +65,7 @@ const conditions = [
 ];
 
 export const AdminTools = ({ condition }: Props) => {
-	const finishPage = useQuestion((state) => state.finishPage);
+	const store = useQuestionStore();
 	const [open, setOpen] = useState(false);
 	const { execute, isPending, isError } = useServerAction(updateUserAction);
 
@@ -79,7 +79,9 @@ export const AdminTools = ({ condition }: Props) => {
 				: undefined;
 
 		if (formData.get("page-unblur") === "on") {
-			finishPage();
+			startTransition(() => {
+				store.send({ type: "finishPage" });
+			});
 		}
 
 		const [_, err] = await execute({

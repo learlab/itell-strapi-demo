@@ -1,6 +1,6 @@
 import { allPagesSorted } from "@/lib/pages";
 import { PageData, getPageData } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";

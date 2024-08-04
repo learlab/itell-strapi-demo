@@ -1,209 +1,131 @@
-import { BotMessage, ChatHistory, Message } from "@itell/core/chat";
-import { StairsReadyButton } from "@textbook/chat/stairs-button";
-import { createStore } from "zustand";
-import { immer } from "zustand/middleware/immer";
-
-interface ChatProps {
-	open: boolean;
-	messages: Message[];
-	activeMessageId: string | null;
-	stairsAnswered: boolean;
-	stairsReady: boolean;
-	stairsTimestamp: number | null;
-	stairsQuestion: StairsQuestion | null;
-	stairsMessages: Message[];
-}
-
-export interface ChatState extends ChatProps {
-	setOpen: (value: boolean) => void;
-	addUserMessage: (text: string, isStairs?: boolean) => string;
-	addBotMessage: (text: string, isStairs?: boolean, context?: string) => string;
-	addBotMessageElement: (comp: () => JSX.Element) => void;
-	updateBotMessage: (
-		id: string,
-		text: string,
-		isStairs?: boolean,
-		context?: string,
-	) => void;
-	setActiveMessageId: (id: string | null) => void;
-	setStairsAnswered: (value: boolean) => void;
-	addStairsQuestion: (value: StairsQuestion) => void;
-	getHistory: (input: { isStairs: boolean }) => ChatHistory;
-}
-
-const initialId = crypto.randomUUID();
-
-export type ChatStore = ReturnType<typeof createChatStore>;
-
-export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
-	const welcomeMessage: BotMessage = {
-		id: initialId,
-		isUser: false,
-		Node: (
-			<p>
-				Hello, how can I help you with{" "}
-				<span className="font-semibold italic">{pageTitle}</span> ?
-			</p>
-		),
-	};
-
-	return createStore<ChatState>()(
-		immer((set, get) => ({
-			open: false,
-			messages: [welcomeMessage],
-			activeMessageId: null,
-			stairsReady: false,
-			stairsMessages: [],
-			stairsAnswered: false,
-			stairsQuestion: null,
-			stairsTimestamp: null,
-
-			setOpen: (value) => {
-				set((state) => {
-					state.open = value;
-				});
-			},
-
-			setActiveMessageId: (id) => {
-				set((state) => {
-					state.activeMessageId = id;
-				});
-			},
-
-			addUserMessage: (text, isStairs) => {
-				const id = crypto.randomUUID();
-				if (isStairs) {
-					set((state) => {
-						state.stairsMessages.push({
-							id,
-							text,
-							isUser: true,
-						});
-					});
-				} else {
-					set((state) => {
-						state.messages.push({
-							id,
-							text,
-							isUser: true,
-						});
-					});
-				}
-
-				return id;
-			},
-			addBotMessage: (text, isStairs, context) => {
-				const id = crypto.randomUUID();
-				if (isStairs) {
-					set((state) => {
-						state.stairsMessages.push({
-							id,
-							text,
-							isUser: false,
-							context,
-						});
-					});
-				} else {
-					set((state) => {
-						state.messages.push({
-							id,
-							text,
-							isUser: false,
-							context,
-						});
-					});
-				}
-
-				return id;
-			},
-			addBotMessageElement: (Comp) => {
-				set((state) => {
-					state.stairsMessages.push({
-						id: crypto.randomUUID(),
-						isUser: false,
-						Node: <Comp />,
-					});
-				});
-			},
-
-			updateBotMessage: (id, text, isStairs, context) => {
-				set((state) => {
-					if (isStairs) {
-						const messageIndex = state.stairsMessages.findIndex(
-							(message) => message.id === id,
-						);
-						if (messageIndex !== -1) {
-							const message = state.stairsMessages[messageIndex];
-							if ("text" in message) {
-								message.text = text;
-							}
-							if (!message.isUser) {
-								message.context = context;
-							}
-						}
-					} else {
-						const messageIndex = state.messages.findIndex(
-							(message) => message.id === id,
-						);
-						if (messageIndex !== -1) {
-							const message = state.messages[messageIndex];
-							if ("text" in message) {
-								message.text = text;
-							}
-							if (!message.isUser && context) {
-								message.context = context;
-							}
-						}
-					}
-				});
-			},
-
-			getHistory: ({ isStairs }: { isStairs: boolean }) => {
-				const data = isStairs ? get().stairsMessages : get().messages;
-
-				return data
-					.filter((m) => "text" in m && m.id !== initialId)
-					.map((m) => ({
-						agent: m.isUser ? "user" : "bot",
-						// @ts-ignore
-						text: m.text,
-					}));
-			},
-
-			setStairsAnswered: (value) => {
-				set((state) => {
-					state.stairsAnswered = value;
-				});
-			},
-			addStairsQuestion: (value) => {
-				set((state) => {
-					state.stairsQuestion = value;
-					state.stairsReady = false;
-					state.stairsMessages = [
-						{
-							id: crypto.randomUUID(),
-							isUser: false,
-							Node: (
-								<StairsReadyButton
-									onClick={() => {
-										set((state) => {
-											state.stairsReady = true;
-											state.stairsTimestamp = Date.now();
-										});
-										get().addBotMessageElement(() => <p>{value.text}</p>);
-									}}
-								/>
-							),
-						},
-					];
-				});
-			},
-		})),
-	);
-};
+import { Message } from "@itell/core/chat";
+import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
+import { produce } from "immer";
 
 type StairsQuestion = {
 	text: string;
 	chunk: string;
 	question_type: string;
 };
+
+export type ChatStore = ReturnType<typeof createChatStore>;
+export const createChatStore = () => {
+	return createStoreWithProducer(
+		produce,
+		{
+			open: false as boolean,
+			messages: [] as Message[],
+			stairsMessages: [] as Message[],
+			activeMessageId: null as string | null,
+			stairsReady: false as boolean,
+			stairsAnswered: false as boolean,
+			stairsQuestion: null as StairsQuestion | null,
+			stairsTimestamp: null as number | null,
+		},
+		{
+			setOpen: (context, event: { value: boolean }) => {
+				context.open = event.value;
+			},
+			setActive: (context, event: { id: string | null }) => {
+				context.activeMessageId = event.id;
+			},
+			addMessage: (
+				context,
+				event: {
+					id?: string;
+					text: string;
+					isStairs: boolean;
+					isUser: boolean;
+					active?: boolean;
+				},
+			) => {
+				if (event.isStairs) {
+					context.stairsMessages.push({
+						id: event.id || crypto.randomUUID(),
+						text: event.text,
+						isUser: event.isUser,
+					} as Message);
+				} else {
+					context.messages.push({
+						id: event.id,
+						text: event.text,
+						isUser: event.isUser,
+					} as Message);
+				}
+
+				if (event.active && event.id) {
+					context.activeMessageId = event.id;
+				}
+			},
+			updateMessage: (
+				context,
+				event: {
+					id: string;
+					text: string;
+					isStairs: boolean;
+					context?: string;
+				},
+			) => {
+				const data = event.isStairs ? context.stairsMessages : context.messages;
+				const message = data.find((m) => m.id === event.id);
+				if (message && "text" in message) {
+					message.text = event.text;
+				}
+				if (message && !message.isUser) {
+					message.context = event.context;
+				}
+			},
+			setStairsAnswered: (context, event: { value: boolean }) => {
+				context.stairsAnswered = event.value;
+			},
+
+			setStairsReady: (context) => {
+				context.stairsReady = true;
+				context.stairsTimestamp = Date.now();
+				context.stairsMessages.push({
+					id: crypto.randomUUID(),
+					isUser: false,
+					text: context.stairsQuestion?.text || "",
+				});
+			},
+
+			setStairsQuestion: (context, event: { data: StairsQuestion }) => {
+				context.stairsQuestion = event.data;
+				context.stairsReady = false;
+			},
+		},
+	);
+};
+
+export const getHistory = (
+	store: ChatStore,
+	{ isStairs }: { isStairs: boolean },
+) => {
+	const snap = store.getSnapshot();
+	const data = isStairs ? snap.context.stairsMessages : snap.context.messages;
+
+	return data
+		.filter((m) => "text" in m)
+		.map((m) => ({
+			agent: m.isUser ? "user" : "bot",
+			text: m.text,
+		}));
+};
+
+type Selector<T> = (state: SnapshotFromStore<ChatStore>) => T;
+
+export const SelectStairsMessages: Selector<Message[]> = (state) =>
+	state.context.stairsMessages;
+export const SelectMessages: Selector<Message[]> = (state) =>
+	state.context.messages;
+export const SelectActiveMessageId: Selector<string | null> = (state) =>
+	state.context.activeMessageId;
+export const SelectStairsReady: Selector<boolean> = (state) =>
+	state.context.stairsReady;
+export const SelectStairsAnswered: Selector<boolean> = (state) =>
+	state.context.stairsAnswered;
+export const SelectStairsQuestion: Selector<StairsQuestion | null> = (state) =>
+	state.context.stairsQuestion;
+export const SelectStairsTimestamp: Selector<number | null> = (state) =>
+	state.context.stairsTimestamp;
+export const SelectOpen: Selector<boolean> = (state) => state.context.open;

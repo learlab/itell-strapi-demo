@@ -7,7 +7,7 @@ import { redirectWithSearchParams } from "@/lib/utils";
 import { dashboardConfig } from "@dashboard/config";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 
 export const generateMetadata = () => {
 	const title = "Dashboard";

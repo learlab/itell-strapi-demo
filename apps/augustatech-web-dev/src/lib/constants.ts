@@ -14,7 +14,6 @@ export const EventType = {
 	STAIRS: "stairs",
 	RANDOM_REREAD: "random_reread",
 	SIMPLE: "simple",
-	RUN_CODE: "run-code",
 } as const;
 
 export const Condition = {
@@ -22,7 +21,6 @@ export const Condition = {
 	RANDOM_REREAD: "random_reread",
 	STAIRS: "stairs",
 };
-
 export const Tags = {
 	GET_SESSION: "get-session",
 } as const;

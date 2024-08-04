@@ -70,7 +70,7 @@ export default async function ({ params }: PageProps) {
 					</div>
 
 					<p className="text-sm text-muted-foreground text-center">
-						Created at <time>{summary.createdAt.toLocaleTimeString()}</time>
+						Created at <time>{summary.createdAt.toLocaleDateString()}</time>
 					</p>
 
 					<div>

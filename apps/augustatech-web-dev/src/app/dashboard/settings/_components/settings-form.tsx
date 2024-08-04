@@ -1,10 +1,9 @@
 "use client";
 
-import { updateUserAction, updateUserPrefsAction } from "@/actions/user";
+import { updateUserPrefsAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
-import { UserPreferences } from "@/drizzle/schema";
-import { darkColors, lightColors } from "@itell/core/constants";
+import { darkColors, lightColors } from "@itell/constants";
 import {
 	Button,
 	Label,

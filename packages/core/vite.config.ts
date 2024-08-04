@@ -21,7 +21,6 @@ const app = async (): Promise<UserConfigExport> => {
 					summary: path.resolve(__dirname, "src/summary/index.ts"),
 					question: path.resolve(__dirname, "src/question/index.ts"),
 					chat: path.resolve(__dirname, "src/chat/index.ts"),
-					constants: path.resolve(__dirname, "src/constants.ts"),
 				},
 				name: "core",
 				formats: ["es", "cjs"],

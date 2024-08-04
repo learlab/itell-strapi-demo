@@ -1,4 +1,4 @@
-import { Elements } from "@/constants";
+import { Elements } from "@itell/constants";
 import * as rs from "range-serializer";
 
 export const serializeRange = (range: Range, ref?: Element) => {

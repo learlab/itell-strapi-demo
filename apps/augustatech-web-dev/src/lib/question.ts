@@ -137,7 +137,6 @@ export const getAllQuestions = async () => {
 	});
 
 	const endpoint = `https://itell-strapi-um5h.onrender.com/api/pages?${q}`;
-	console.log(endpoint);
 	try {
 		const response = await (await fetch(endpoint)).json();
 		const parsed = PageQuestionsSchema.safeParse(response);

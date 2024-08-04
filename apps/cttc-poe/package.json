@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@hello-pangea/color-picker": "^3.2.2",
+		"@itell/constants": "workspace:^",
 		"@itell/core": "workspace:^",
 		"@itell/tailwind": "workspace:^",
 		"@itell/ui": "workspace:*",

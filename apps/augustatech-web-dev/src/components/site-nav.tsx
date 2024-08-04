@@ -1,4 +1,4 @@
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
 import React from "react";
 

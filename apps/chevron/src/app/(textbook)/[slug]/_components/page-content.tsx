@@ -1,5 +1,5 @@
 import { MainMdx } from "@/components/mdx";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 
 export const PageContent = ({
 	code,

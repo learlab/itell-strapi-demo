@@ -39,7 +39,6 @@ export const setJoinClassCode = (join_class_code: string | null) => {
 
 export const readJoinClassCode = () => {
 	const join_class_code = cookies().get("join_class_code")?.value ?? null;
-
 	cookies().delete("join_class_code");
 
 	return join_class_code;

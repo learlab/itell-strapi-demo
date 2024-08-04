@@ -9,9 +9,10 @@ import { Chat } from "./chat/chat";
 type Props = {
 	user: User | null;
 	pageSlug: string;
+	pageTitle: string;
 };
 
-export const ChatLoader = async ({ user, pageSlug }: Props) => {
+export const ChatLoader = async ({ user, pageSlug, pageTitle }: Props) => {
 	if (!user || user.condition !== Condition.STAIRS) return null;
 
 	const [chats, err] = await getChatsAction({ pageSlug });
@@ -24,7 +25,14 @@ export const ChatLoader = async ({ user, pageSlug }: Props) => {
 			context: d.context,
 		})) as Message[];
 
-		return <Chat pageSlug={pageSlug} data={messages} updatedAt={updatedAt} />;
+		return (
+			<Chat
+				pageSlug={pageSlug}
+				updatedAt={new Date(updatedAt)}
+				data={messages}
+				pageTitle={pageTitle}
+			/>
+		);
 	}
 
 	return null;

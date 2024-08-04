@@ -2,7 +2,6 @@ import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
-import "@/styles/code.css";
 
 export const generateStaticParams = async () => {
 	return allPagesSorted.map((page) => {

@@ -7,7 +7,7 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { ScrollArea } from "@itell/ui/client";
 import { Info } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
@@ -56,7 +56,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	return (
 		<PageProvider
 			pageSlug={pageSlug}
-			pageTitle={page.title}
 			chunks={chunks}
 			questions={questions}
 			pageStatus={pageStatus}
@@ -67,7 +66,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			>
 				<div
 					id={Elements.TEXTBOOK_NAV}
-					className="fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2"
+					className="top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2"
 				>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
@@ -96,7 +95,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<aside
 					id={Elements.PAGE_NAV}
 					aria-label="table of contents"
-					className="hidden md:block"
+					className=" hidden md:block"
 				>
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">
@@ -113,7 +112,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			</main>
 
 			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader user={user} pageSlug={pageSlug} />
+				<ChatLoader user={user} pageSlug={pageSlug} pageTitle={page.title} />
 			</Suspense>
 
 			{user && <NoteLoader pageSlug={pageSlug} />}

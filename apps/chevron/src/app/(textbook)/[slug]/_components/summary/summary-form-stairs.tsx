@@ -34,7 +34,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import {
 	useDebounce,
 	useKeystroke,

@@ -1,16 +1,17 @@
 "use client";
 
-import { useNoteCount } from "@/lib/store/note-store";
+import { SelectNoteCount, noteStore } from "@/lib/store/note-store";
 import {
 	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@itell/ui/client";
+import { useSelector } from "@xstate/store/react";
 import pluralize from "pluralize";
 
 export const NoteCount = () => {
-	const count = useNoteCount();
+	const count = useSelector(noteStore, SelectNoteCount);
 
 	return (
 		<HoverCard>

@@ -3,19 +3,15 @@
 import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import {
-	PageData,
-	getChunkElement,
-	reportSentry,
-	scrollToElement,
-} from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { SelectChunks, SelectSummaryReady } from "@/lib/store/question-store";
+import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
+import { Elements } from "@itell/constants";
 import {
 	useDebounce,
 	useKeystroke,
@@ -32,6 +28,8 @@ import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -55,9 +53,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const prevInput = useRef<string | undefined>();
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
-	const { chunks } = useQuestion((state) => ({
-		chunks: state.chunkSlugs,
-	}));
+	const questionStore = useQuestionStore();
+	const chunks = useSelector(questionStore, SelectChunks);
+	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
 
 	const randomChunkSlug = useMemo(() => {
 		// skip first chunk, which is typically learning objectives
@@ -69,7 +67,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
-	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
 
 	const {
 		isError,

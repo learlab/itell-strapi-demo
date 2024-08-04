@@ -222,6 +222,7 @@ export const notes = pgTable(
 		noteText: text("note_text").notNull(),
 		highlightedText: text("highlighted_text").notNull(),
 		pageSlug: text("page_slug").notNull(),
+		chunkSlug: text("chunk_slug"),
 		color: text("color").notNull(),
 		range: text("range").notNull(),
 		createdAt: CreatedAt,

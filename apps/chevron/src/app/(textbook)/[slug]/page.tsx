@@ -7,7 +7,7 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { ScrollArea } from "@itell/ui/client";
 import { Info } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";

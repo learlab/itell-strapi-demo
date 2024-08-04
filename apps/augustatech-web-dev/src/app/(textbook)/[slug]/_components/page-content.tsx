@@ -1,5 +1,6 @@
 import { MainMdx } from "@/components/mdx";
-import { Elements } from "@itell/core/constants";
+import "@/styles/code.css";
+import { Elements } from "@itell/constants";
 import { SandboxProvider } from "@itell/js-sandbox/provider";
 import { Runner } from "@itell/js-sandbox/runner";
 

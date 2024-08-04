@@ -1,6 +1,6 @@
 import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { CommandMenu } from "./command-menu";

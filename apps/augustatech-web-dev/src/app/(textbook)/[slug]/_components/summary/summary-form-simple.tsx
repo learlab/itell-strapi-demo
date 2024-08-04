@@ -1,14 +1,16 @@
 "use client";
 import { incrementUserPageSlugAction } from "@/actions/user";
 import { DelayMessage } from "@/components/delay-message";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
+import { SelectSummaryReady } from "@/lib/store/question-store";
 import { PageData, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { StatusButton } from "@itell/ui/client";
 import { Warning } from "@itell/ui/server";
+import { useSelector } from "@xstate/store/react";
 import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -21,7 +23,9 @@ type Props = {
 };
 
 export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
-	const isSummaryReady = useQuestion((state) => state.isSummaryReady);
+	const questionStore = useQuestionStore();
+	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
+
 	const router = useRouter();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 

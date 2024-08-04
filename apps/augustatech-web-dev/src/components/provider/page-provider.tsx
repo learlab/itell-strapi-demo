@@ -4,22 +4,23 @@ import { createChatsAction } from "@/actions/chat";
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
-import { ChatState, ChatStore, createChatStore } from "@/lib/store/chat-store";
+import { ChatStore, createChatStore, getHistory } from "@/lib/store/chat-store";
+
 import {
-	QuestionState,
+	QuestionSnapshot,
 	QuestionStore,
 	createQuestionStore,
 } from "@/lib/store/question-store";
+import { SummaryStore, createSummaryStore } from "@/lib/store/summary-store";
 import { reportSentry } from "@/lib/utils";
+import { useLocalStorage } from "@itell/core/hooks";
 import { parseEventStream } from "@itell/utils";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useServerAction } from "zsa-react";
-import { useStore } from "zustand";
 
 type Props = {
 	children: React.ReactNode;
 	pageSlug: string;
-	pageTitle: string;
 	chunks: string[];
 	questions: SelectedQuestions;
 	pageStatus: PageStatus;
@@ -28,31 +29,46 @@ type Props = {
 const PageContext = createContext<{
 	questionStore: QuestionStore;
 	chatStore: ChatStore;
+	summaryStore: SummaryStore;
 } | null>(null);
 
 export const PageProvider = ({
 	children,
 	pageSlug,
-	pageTitle,
 	chunks,
 	questions,
 	pageStatus,
 }: Props) => {
 	useTrackLastVisitedPage();
 
+	const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
+		`question-store-${pageSlug}`,
+		undefined,
+	);
 	const questionStoreRef = useRef<QuestionStore>();
 	if (!questionStoreRef.current) {
 		questionStoreRef.current = createQuestionStore(
-			pageSlug,
-			chunks,
-			questions,
-			pageStatus,
+			{
+				chunks,
+				pageStatus,
+				selectedQuestions: questions,
+			},
+			snapshot,
 		);
+
+		questionStoreRef.current.subscribe((state) => {
+			setSnapshot(state.context);
+		});
 	}
 
 	const chatStoreRef = useRef<ChatStore>();
 	if (!chatStoreRef.current) {
-		chatStoreRef.current = createChatStore({ pageTitle });
+		chatStoreRef.current = createChatStore();
+	}
+
+	const summaryStoreRef = useRef<SummaryStore>();
+	if (!summaryStoreRef.current) {
+		summaryStoreRef.current = createSummaryStore({ pageStatus });
 	}
 
 	return (
@@ -60,6 +76,7 @@ export const PageProvider = ({
 			value={{
 				questionStore: questionStoreRef.current,
 				chatStore: chatStoreRef.current,
+				summaryStore: summaryStoreRef.current,
 			}}
 		>
 			{children}
@@ -67,32 +84,26 @@ export const PageProvider = ({
 	);
 };
 
-export function useQuestion<T>(selector: (state: QuestionState) => T): T {
+export const useSummaryStore = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as T;
-	return useStore(value.questionStore, selector);
-}
+	if (!value) return {} as SummaryStore;
+	return value.summaryStore;
+};
 
-export function useChat<T>(selector: (state: ChatState) => T): T {
+export const useChatStore = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as T;
-	return useStore(value.chatStore, selector);
-}
+	if (!value) return {} as ChatStore;
+	return value.chatStore;
+};
+
+export const useQuestionStore = () => {
+	const value = useContext(PageContext);
+	if (!value) return {} as QuestionStore;
+	return value.questionStore;
+};
 
 export const useAddChat = () => {
-	const {
-		addUserMessage,
-		addBotMessage,
-		updateBotMessage,
-		setActiveMessageId,
-		getHistory,
-	} = useChat((state) => ({
-		addUserMessage: state.addUserMessage,
-		addBotMessage: state.addBotMessage,
-		updateBotMessage: state.updateBotMessage,
-		setActiveMessageId: state.setActiveMessageId,
-		getHistory: state.getHistory,
-	}));
+	const store = useChatStore();
 	const [pending, setPending] = useState(false);
 
 	const { execute, isError, error } = useServerAction(createChatsAction);
@@ -103,9 +114,22 @@ export const useAddChat = () => {
 	}: { text: string; pageSlug: string }) => {
 		setPending(true);
 		const userTimestamp = Date.now();
-		addUserMessage(text, false);
-		const botMessageId = addBotMessage("", false);
-		setActiveMessageId(botMessageId);
+		store.send({
+			type: "addMessage",
+			text,
+			isUser: true,
+			isStairs: false,
+		});
+
+		const botMessageId = crypto.randomUUID();
+		store.send({
+			type: "addMessage",
+			id: botMessageId,
+			text: "",
+			isUser: false,
+			isStairs: false,
+			active: true,
+		});
 
 		try {
 			// init response message
@@ -117,11 +141,11 @@ export const useAddChat = () => {
 				body: JSON.stringify({
 					page_slug: pageSlug,
 					message: text,
-					history: getHistory({ isStairs: false }),
+					history: getHistory(store, { isStairs: false }),
 				}),
 			});
 
-			setActiveMessageId(null);
+			store.send({ type: "setActive", id: null });
 
 			let data = {} as { text: string; context?: string[] };
 
@@ -130,14 +154,25 @@ export const useAddChat = () => {
 					if (!done) {
 						try {
 							data = JSON.parse(d) as typeof data;
-							updateBotMessage(botMessageId, data.text, false);
+							store.send({
+								type: "updateMessage",
+								id: botMessageId,
+								text: data.text,
+								isStairs: false,
+							});
 						} catch (err) {
 							console.log("invalid json", data);
 						}
 					}
 				});
 
-				updateBotMessage(botMessageId, data.text, false, data.context?.at(0));
+				store.send({
+					type: "updateMessage",
+					id: botMessageId,
+					isStairs: false,
+					text: data.text,
+					context: data.context?.at(0),
+				});
 
 				const botTimestamp = Date.now();
 				execute({
@@ -164,11 +199,12 @@ export const useAddChat = () => {
 			}
 		} catch (err) {
 			reportSentry("eval chat", { error: err, input: text, pageSlug });
-			updateBotMessage(
-				botMessageId,
-				"Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
-				false,
-			);
+			store.send({
+				type: "updateMessage",
+				id: botMessageId,
+				text: "Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
+				isStairs: false,
+			});
 		}
 
 		setPending(false);

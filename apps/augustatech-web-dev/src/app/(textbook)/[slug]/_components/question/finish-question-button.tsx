@@ -1,9 +1,11 @@
 "use client";
 
 import { createEventAction } from "@/actions/event";
-import { useQuestion } from "@/components/provider/page-provider";
-import { Condition, EventType } from "@/lib/constants";
+import { useQuestionStore } from "@/components/provider/page-provider";
+import { EventType } from "@/lib/constants";
+import { SelectCurrentChunk } from "@/lib/store/question-store";
 import { Button } from "@itell/ui/client";
+import { useSelector } from "@xstate/store/react";
 
 type Props = {
 	chunkSlug: string;
@@ -18,10 +20,8 @@ export const FinishQuestionButton = ({
 	isLastQuestion,
 	condition,
 }: Props) => {
-	const { currentChunk, advanceChunk } = useQuestion((state) => ({
-		advanceChunk: state.advanceChunk,
-		currentChunk: state.currentChunk,
-	}));
+	const store = useQuestionStore();
+	const currentChunk = useSelector(store, SelectCurrentChunk);
 	const text = isLastQuestion ? "Unlock summary" : "Continue reading";
 	const disabled = currentChunk !== chunkSlug;
 
@@ -29,7 +29,7 @@ export const FinishQuestionButton = ({
 		<Button
 			disabled={disabled}
 			onClick={() => {
-				advanceChunk(chunkSlug);
+				store.send({ type: "advanceChunk", chunkSlug });
 				createEventAction({
 					pageSlug,
 					type: EventType.CHUNK_REVEAL_QUESTION,

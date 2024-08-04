@@ -1,5 +1,6 @@
 import { allPagesSorted } from "@/lib/pages";
 import { PageData, getPageData } from "@/lib/utils";
+import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
@@ -86,6 +87,7 @@ export const Pager = ({ userPageSlug, pageIndex }: Props) => {
 				"justify-end": next && !prev,
 				"justify-start": prev && !next,
 			})}
+			id={Elements.PAGE_PAGER}
 			aria-label="pagination"
 		>
 			{prev && (

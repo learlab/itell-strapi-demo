@@ -2,7 +2,7 @@
 
 import { useChatStore } from "@/components/provider/page-provider";
 import { SelectStairsReady } from "@/lib/store/chat-store";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { Button } from "@itell/ui/client";
 import { useSelector } from "@xstate/store/react";
 

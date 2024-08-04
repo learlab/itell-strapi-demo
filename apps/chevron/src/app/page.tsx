@@ -3,7 +3,7 @@ import { ContinueReading } from "@/components/continue-reading";
 import { MainMdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
 import { home } from "contentlayer/generated";
 

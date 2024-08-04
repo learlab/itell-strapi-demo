@@ -11,7 +11,7 @@ import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { SelectChunks, SelectSummaryReady } from "@/lib/store/question-store";
 import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import {
 	useDebounce,
 	useKeystroke,

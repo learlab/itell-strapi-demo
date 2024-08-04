@@ -1,5 +1,4 @@
 import { cn } from "@itell/utils";
-
 export const DashboardShell = ({
 	children,
 	className,

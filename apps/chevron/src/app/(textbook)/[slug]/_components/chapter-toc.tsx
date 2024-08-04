@@ -7,7 +7,7 @@ import { isProduction } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";

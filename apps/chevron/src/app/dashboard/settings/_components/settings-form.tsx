@@ -3,7 +3,7 @@
 import { updateUserPrefsAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { Spinner } from "@/components/spinner";
-import { darkColors, lightColors } from "@itell/core/constants";
+import { darkColors, lightColors } from "@itell/constants";
 import {
 	Button,
 	Label,
