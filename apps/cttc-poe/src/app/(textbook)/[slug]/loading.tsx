@@ -1,6 +1,7 @@
 import { lucia } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { allPagesSorted } from "@/lib/pages";
+import { Elements } from "@itell/constants";
 import { Skeleton } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
 import { PageTitle } from "@textbook/page-title";
@@ -29,8 +30,8 @@ export default async function () {
 	const arr = Array.from(Array(10).keys());
 
 	return (
-		<div className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6">
-			<div className="chapter-sidebar fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2">
+		<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
+			<div id={Elements.TEXTBOOK_NAV}>
 				<div className="h-full w-full px-6 py-6 lg:py-8">
 					<ChapterToc
 						userId={null}
@@ -43,7 +44,7 @@ export default async function () {
 				</div>
 			</div>
 
-			<div id="page-content-wrapper" className="relative p-4 lg:p-8">
+			<div id={Elements.TEXTBOOK_MAIN}>
 				<PageTitle>{page.title}</PageTitle>
 
 				{arr.map((i) => (
@@ -51,10 +52,7 @@ export default async function () {
 				))}
 			</div>
 
-			<aside
-				aria-label="table of contents"
-				className="toc-sidebar hidden md:block relative"
-			>
+			<aside id={Elements.PAGE_NAV} aria-label="table of contents">
 				<div className="sticky top-20 -mt-10 pt-4">
 					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
 						<p
@@ -76,6 +74,6 @@ export default async function () {
 					</div>
 				</div>
 			</aside>
-		</div>
+		</main>
 	);
 }

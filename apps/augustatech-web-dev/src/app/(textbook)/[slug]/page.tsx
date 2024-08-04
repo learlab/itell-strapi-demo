@@ -9,7 +9,7 @@ import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
 import { Elements } from "@itell/constants";
 import { ScrollArea } from "@itell/ui/client";
-import { Info } from "@itell/ui/server";
+import { Info, PageTitle } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
@@ -17,7 +17,6 @@ import { NoteCount } from "@textbook/note/note-count";
 import { PageContent } from "@textbook/page-content";
 import { PageInfo } from "@textbook/page-info";
 import { PageStatusModal } from "@textbook/page-status-modal";
-import { PageTitle } from "@textbook/page-title";
 import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
@@ -60,14 +59,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 			questions={questions}
 			pageStatus={pageStatus}
 		>
-			<main
-				id={Elements.TEXTBOOK_MAIN_WRAPPER}
-				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6 flex-1"
-			>
-				<div
-					id={Elements.TEXTBOOK_NAV}
-					className="top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2"
-				>
+			<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
+				<div id={Elements.TEXTBOOK_NAV}>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
 							currentPage={page}
@@ -79,11 +72,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</div>
 
-				<div
-					className="relative p-4 lg:p-8 lg:pb-12"
-					id={Elements.TEXTBOOK_MAIN}
-					tabIndex={-1}
-				>
+				<div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
@@ -92,11 +81,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />
 				</div>
 
-				<aside
-					id={Elements.PAGE_NAV}
-					aria-label="table of contents"
-					className=" hidden md:block"
-				>
+				<aside id={Elements.PAGE_NAV} aria-label="table of contents">
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">

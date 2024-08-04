@@ -63,14 +63,8 @@ export default async function ({ params }: { params: { slug: string } }) {
 			questions={questions}
 			pageStatus={pageStatus}
 		>
-			<main
-				id={Elements.TEXTBOOK_MAIN_WRAPPER}
-				className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6"
-			>
-				<div
-					id={Elements.TEXTBOOK_NAV}
-					className="fixed top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2"
-				>
+			<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
+				<div id={Elements.TEXTBOOK_NAV}>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<ChapterToc
 							userId={userId}
@@ -83,7 +77,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					</ScrollArea>
 				</div>
 
-				<div id={Elements.TEXTBOOK_MAIN} className="relative p-4 lg:p-8">
+				<div id={Elements.TEXTBOOK_MAIN}>
 					<PageTitle>{page.title}</PageTitle>
 					{user?.condition === Condition.SIMPLE &&
 						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
@@ -92,11 +86,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<Pager pageIndex={pageIndex} />
 				</div>
 
-				<aside
-					id={Elements.PAGE_NAV}
-					aria-label="table of contents"
-					className="toc-sidebar hidden md:block relative"
-				>
+				<aside id={Elements.PAGE_NAV} aria-label="table of contents">
 					<div className="sticky top-20 -mt-10 pt-4">
 						<ScrollArea className="pb-10">
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">

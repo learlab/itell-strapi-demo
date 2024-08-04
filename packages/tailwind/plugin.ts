@@ -1,3 +1,4 @@
+import { Elements } from "@itell/constants";
 import tailwind, { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 import { DefaultTheme, ThemeColor, ThemeSchema } from "./theme";
@@ -43,9 +44,19 @@ export default plugin(
 			"*": {
 				"border-color": "hsl(var(--border))",
 			},
+
 			body: {
 				"@apply bg-background text-foreground": {},
 				fontFeatureSettings: '"rlig" 1, "calt" 1',
+			},
+			table: {
+				userSelect: "none",
+			},
+			pre: {
+				userSelect: "none",
+			},
+			code: {
+				userSelect: "none",
 			},
 			thead: {
 				"@apply px-4 text-left align-middle font-medium text-muted-foreground":
@@ -55,9 +66,75 @@ export default plugin(
 			tr: { "@apply border-b transition-colors": {} },
 			td: { "@apply p-4 align-middle": {} },
 			th: { "@apply max-w-[10rem]": {} },
+			"h1, h2, h3, h4, h5": {
+				scrollMarginTop: "calc(var(--nav-height) + 0.5rem)",
+			},
 
 			".light": lightColors,
 			".dark": darkColors,
+			".content-chunk": {
+				position: "relative",
+			},
+			".skip-link": {
+				position: "absolute",
+				width: "1px",
+				height: "1px",
+				margin: "-1px",
+				overflow: "hidden",
+				clipPath: "rect(0px, 0px, 0px, 0px)",
+			},
+			".skip-link:focus": {
+				position: "static",
+				width: "auto",
+				height: "auto",
+				overflow: "auto",
+				clipPath: "auto",
+				padding: "12px",
+				textDecoration: "underline",
+				textUnderlineOffset: "0.4em",
+				textDecorationColor: "hsl(var(--primary))",
+			},
+			".no-select": {
+				"@apply select-none": {},
+			},
+
+			".blurred>*:not(.continue-reading-button-container, .scroll-back-button-container)":
+				{
+					filter: "blur(4px)",
+					"user-select": "none",
+				},
+			".continue-reading-button-container": {
+				position: "absolute",
+				top: "min(4rem, 20%)",
+				left: "50%",
+				transform: "translate(-50%, -50%)",
+				"z-index": "1",
+			},
+			".scroll-back-button-container": {
+				display: "flex",
+				width: "100%",
+				"justify-content": "center",
+				"align-items": "center",
+				gap: "8px",
+				position: "absolute",
+				bottom: "min(4rem, 20%)",
+				transform: "translateX(-50%, -50%)",
+				"z-index": "1",
+			},
+			[`#${Elements.TEXTBOOK_MAIN_WRAPPER}`]: {
+				"@apply grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6 flex-1":
+					{},
+			},
+			[`#${Elements.TEXTBOOK_NAV}`]: {
+				"@apply top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2":
+					{},
+			},
+			[`#${Elements.TEXTBOOK_MAIN}`]: {
+				"@apply relative p-4 lg:p-8 lg:pb-12": {},
+			},
+			[`#${Elements.PAGE_NAV}`]: {
+				"@apply hidden md:block": {},
+			},
 		});
 	},
 	{

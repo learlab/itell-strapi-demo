@@ -30,7 +30,7 @@ const app = async (): Promise<UserConfigExport> => {
 				fileName: (format, name) => `${name}.${format}.js`,
 			},
 			rollupOptions: {
-				external: ["react", "react-dom", "tailwindcss", "next"],
+				external: ["react", "react-dom", "tailwindcss", "next", "lucide-react"],
 				output: {
 					globals: {
 						react: "React",

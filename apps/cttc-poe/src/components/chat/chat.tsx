@@ -1,3 +1,4 @@
+import { Elements } from "@itell/constants";
 import { Message } from "@itell/core/chat";
 import {
 	Accordion,
@@ -28,10 +29,11 @@ export const Chat = async ({
 }: Props) => {
 	return (
 		<Accordion
+			id={Elements.CHATBOT_CONTAINER}
 			type="single"
 			defaultValue={undefined}
 			collapsible
-			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30 chatbot"
+			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30"
 		>
 			<AccordionItem value="item-1" className="overflow-hidden">
 				<AccordionTrigger className="border border-border px-6">

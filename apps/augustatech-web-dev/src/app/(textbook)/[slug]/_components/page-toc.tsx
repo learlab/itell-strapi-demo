@@ -24,19 +24,19 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				if (entry.intersectionRatio > 0) {
 					document
 						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-						?.classList.add("page-toc-active");
+						?.classList.add(Elements.PAGE_NAV_ACTIVE);
 					if (isUsingMostRecentHeading) {
 						document
 							.querySelector(
 								`div.page-toc ol li a[href="#${mostRecentHeading}"]`,
 							)
-							?.classList.remove("page-toc-active");
+							?.classList.remove(Elements.PAGE_NAV_ACTIVE);
 					}
 					mostRecentHeading = id;
 				} else {
 					document
 						.querySelector(`div.page-toc ol li a[href="#${id}"]`)
-						?.classList.remove("page-toc-active");
+						?.classList.remove(Elements.PAGE_NAV_ACTIVE);
 				}
 			});
 			if (
@@ -47,7 +47,7 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 				isUsingMostRecentHeading = true;
 				document
 					.querySelector(`div.page-toc ol li a[href="#${mostRecentHeading}"]`)
-					?.classList.add("page-toc-active");
+					?.classList.add(Elements.PAGE_NAV_ACTIVE);
 			}
 		});
 

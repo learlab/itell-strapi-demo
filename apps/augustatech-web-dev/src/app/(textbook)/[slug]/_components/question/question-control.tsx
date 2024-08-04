@@ -9,6 +9,7 @@ import {
 	SelectCurrentChunk,
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
+import { Elements } from "@itell/constants";
 import { usePortal } from "@itell/core/hooks";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
@@ -85,7 +86,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		answer: string,
 	) => {
 		const questionContainer = document.createElement("div");
-		questionContainer.className = "question-container";
+		questionContainer.className = Elements.QUESTION_CONTAINER;
 		questionContainer.ariaLabel = "a question for the text above";
 		el.appendChild(questionContainer);
 

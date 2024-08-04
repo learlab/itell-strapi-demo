@@ -1,6 +1,7 @@
 "use client";
 import { useChatStore } from "@/components/provider/page-provider";
 import { SelectOpen } from "@/lib/store/chat-store";
+import { Elements } from "@itell/constants";
 import { Message } from "@itell/core/chat";
 import {
 	Accordion,
@@ -25,13 +26,14 @@ export const Chat = ({ pageSlug, pageTitle, updatedAt, data }: Props) => {
 	const open = useSelector(store, SelectOpen);
 	return (
 		<Accordion
+			id={Elements.CHATBOT_CONTAINER}
 			type="single"
 			value={open ? "chat" : ""}
 			onValueChange={(val) =>
 				store.send({ type: "setOpen", value: val === "chat" })
 			}
 			collapsible
-			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30 chatbot"
+			className="fixed right-8 bottom-12 w-80 lg:w-96 rounded-md bg-background text-foreground border border-border z-30"
 		>
 			<AccordionItem value="chat" className="overflow-hidden">
 				<AccordionTrigger className="border border-border px-6">

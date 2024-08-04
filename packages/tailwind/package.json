@@ -6,15 +6,18 @@
 	"scripts": {
 		"build": "tsc"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"dependencies": {
+		"@itell/constants": "workspace:^",
 		"zod": "^3.23.4"
 	},
 	"devDependencies": {
-		"postcss": "^8.4.29",
-		"autoprefixer": "^10.4.15",
-		"tailwindcss": "^3.4.0",
 		"@tailwindcss/typography": "^0.5.10",
+		"autoprefixer": "^10.4.15",
+		"postcss": "^8.4.29",
+		"tailwindcss": "^3.4.0",
 		"tailwindcss-animate": "^1.0.7",
 		"typescript": "^5.2.2"
 	}

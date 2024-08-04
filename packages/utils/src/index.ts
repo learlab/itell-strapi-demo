@@ -135,3 +135,7 @@ export const getChunkElement = (chunkSlug: string | null) => {
 
 	return null;
 };
+
+export const getChunkSlug = (el: HTMLElement) => {
+	return el.dataset.subsectionId || null;
+};
