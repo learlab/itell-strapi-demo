@@ -94,7 +94,7 @@ export const NotePopover = React.memo(
 			noteStore.send({ type: "delete", id });
 			if (recordId) {
 				// delete note in database
-				await deleteNoteAction({ id });
+				await deleteNoteAction({ id: recordId });
 				setPending(false);
 			} else {
 				setPending(false);
@@ -181,7 +181,7 @@ export const NotePopover = React.memo(
 				const button = triggerRef.current;
 				computePosition(anchor, button, {
 					placement: "bottom-end",
-					middleware: [flip(), shift({ padding: 5 }), offset(1)],
+					middleware: [flip(), shift({ padding: 5 }), offset(3)],
 				}).then(({ x, y }) => {
 					if (triggerRef.current) {
 						button.style.left = `${x}px`;
@@ -258,7 +258,7 @@ export const NotePopover = React.memo(
 					) : positionFailed ? (
 						<span>Note</span>
 					) : (
-						<StickyNoteIcon className="fill-warning hover:fill-accent" />
+						<StickyNoteIcon className="fill-warning opacity-50 hover:fill-accent hover:opacity-100" />
 					)}
 				</button>
 				<div
@@ -285,6 +285,13 @@ export const NotePopover = React.memo(
 								color={noteColor}
 								onChange={(value) => {
 									setNoteColor(value);
+
+									if (recordId) {
+										updateNoteAction({
+											id: recordId,
+											data: { color: value },
+										});
+									}
 								}}
 							/>
 							<AlertDialog>

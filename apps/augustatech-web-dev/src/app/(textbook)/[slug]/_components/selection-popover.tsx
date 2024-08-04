@@ -40,7 +40,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 				if (!open) {
 					store.send({ type: "setOpen", value: true });
 				}
-				const text = `Can you explain the following text\n\n"${state.text}"`;
+				const text = `Can you explain the following sentence in the text\n\n"${state.text}"`;
 				addChat({ text, pageSlug });
 			}
 		},
