@@ -14,6 +14,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
+import { Elements } from "@itell/constants";
 import {
 	useDebounce,
 	useKeystroke,
@@ -67,7 +68,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, []);
 
 	const exitChunk = () => {
-		const summaryEl = document.querySelector("#page-summary");
+		const summaryEl = document.getElementById(Elements.PAGE_ASSIGNMENTS);
 		driverObj.destroy();
 
 		if (summaryEl) {

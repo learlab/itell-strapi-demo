@@ -11,6 +11,7 @@ import { tocChapters } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/utils";
 
+import { Elements } from "@itell/constants";
 import {
 	Button,
 	Collapsible,
@@ -162,13 +163,13 @@ export const ChapterToc = ({
 					<AnchorLink
 						icon={<PencilIcon className="size-4" />}
 						text="Write a summary"
-						href="#page-summary"
+						href={`#${Elements.PAGE_ASSIGNMENTS}`}
 					/>
 				)}
 				<AnchorLink
 					icon={<ArrowUpIcon className="size-4" />}
 					text="Back to top"
-					href="#page-title"
+					href={"#page-title"}
 				/>
 			</div>
 		</>

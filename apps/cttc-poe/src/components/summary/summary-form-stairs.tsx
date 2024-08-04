@@ -22,6 +22,7 @@ import {
 	reportSentry,
 	scrollToElement,
 } from "@/lib/utils";
+import { Elements } from "@itell/constants";
 import {
 	useDebounce,
 	useKeystroke,
@@ -93,10 +94,8 @@ type Action =
 const driverObj = driver();
 
 const exitQuestion = () => {
-	const summaryEl = document.querySelector("#page-summary");
-
 	driverObj.destroy();
-
+	const summaryEl = document.getElementById(Elements.PAGE_ASSIGNMENTS);
 	if (summaryEl) {
 		scrollToElement(summaryEl as HTMLDivElement);
 	}
@@ -423,7 +422,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				dispatch({
 					type: "finish",
 					payload: {
-						canProceed: state.canProceed ? !isLastPage(pageSlug) : undefined,
+						canProceed: shouldUpdateUser ? !isLastPage(pageSlug) : undefined,
 						prevInput: input,
 					},
 				});
