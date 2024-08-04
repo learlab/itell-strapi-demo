@@ -1,4 +1,4 @@
-import { Elements } from "@itell/core/constants";
+import { Elements } from "@itell/constants";
 import { getConfig } from "./config";
 import { setState } from "./state";
 

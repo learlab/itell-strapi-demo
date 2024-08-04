@@ -1422,9 +1422,9 @@ importers:
 
   packages/driverjs:
     dependencies:
-      '@itell/core':
+      '@itell/constants':
         specifier: workspace:^
-        version: link:../core
+        version: link:../constants
     devDependencies:
       '@types/jsdom':
         specifier: ^21.1.2

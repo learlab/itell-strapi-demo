@@ -24,10 +24,7 @@
 		"test": "vitest",
 		"format": "prettier . --write"
 	},
-	"files": [
-		"dist/**/*",
-		"!dist/**/*.js.map"
-	],
+	"files": ["dist/**/*", "!dist/**/*.js.map"],
 	"devDependencies": {
 		"@types/jsdom": "^21.1.2",
 		"@types/node": "^20.5.9",
@@ -41,10 +38,8 @@
 		"vite": "^4.4.9",
 		"vitest": "^0.34.3"
 	},
-	"keywords": [
-		"itell"
-	],
+	"keywords": ["itell"],
 	"dependencies": {
-		"@itell/core": "workspace:^"
+		"@itell/constants": "workspace:^"
 	}
 }
