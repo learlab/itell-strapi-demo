@@ -258,7 +258,7 @@ export const NotePopover = React.memo(
 					) : positionFailed ? (
 						<span>Note</span>
 					) : (
-						<StickyNoteIcon className="fill-warning opacity-50 hover:fill-accent hover:opacity-100" />
+						<StickyNoteIcon className="fill-warning opacity-60 hover:fill-accent hover:opacity-100" />
 					)}
 				</button>
 				<div
