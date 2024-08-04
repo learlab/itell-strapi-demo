@@ -84,9 +84,11 @@ type Action =
 	| { type: "fail"; payload: ErrorType }
 	| { type: "scored"; payload: SummaryResponse }
 	| { type: "stairs"; payload: StairsQuestion }
-	| { type: "finish"; payload: { canProceed: boolean } }
-	| { type: "set_passed"; payload: boolean }
-	| { type: "set_prev_input"; payload: string };
+	| {
+			type: "finish";
+			payload: { canProceed: boolean | undefined; prevInput: string };
+	  }
+	| { type: "set_passed"; payload: boolean };
 
 const driverObj = driver();
 
@@ -161,11 +163,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			case "stairs":
 				draft.stairsQuestion = action.payload;
 				break;
-			case "set_prev_input":
-				draft.prevInput = action.payload;
-				break;
 			case "finish":
-				draft.canProceed = action.payload.canProceed;
+				if (action.payload.canProceed !== undefined) {
+					draft.canProceed = action.payload.canProceed;
+				}
+				draft.prevInput = action.payload.prevInput;
 				break;
 		}
 	}, initialState);
@@ -251,8 +253,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				return;
 			}
 
-			// set prev input here so we are not comparing consecutive error summaries
-			dispatch({ type: "set_prev_input", payload: input });
 			const summaryCount = await countUserPageSummary(userId, pageSlug);
 			const isEnoughSummary = summaryCount + 1 >= PAGE_SUMMARY_THRESHOLD;
 
@@ -351,7 +351,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					}
 				}
 			} else {
-				throw new Error(await response.text());
+				throw new Error("invalid response");
 			}
 
 			if (summaryResponseRef.current) {
@@ -418,11 +418,15 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							});
 						}
 					}
-					dispatch({
-						type: "finish",
-						payload: { canProceed: !isLastPage(pageSlug) },
-					});
 				}
+
+				dispatch({
+					type: "finish",
+					payload: {
+						canProceed: state.canProceed ? !isLastPage(pageSlug) : undefined,
+						prevInput: input,
+					},
+				});
 
 				if (stairsDataRef.current) {
 					dispatch({ type: "stairs", payload: stairsDataRef.current });
@@ -458,7 +462,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				className={isPending ? "opacity-70" : ""}
 				feedback={feedback}
 				needRevision={
-					isLastPage(pageSlug) ? isTextbookFinished : state.canProceed
+					isLastPage(pageSlug) ? !isTextbookFinished : !state.canProceed
 				}
 			/>
 

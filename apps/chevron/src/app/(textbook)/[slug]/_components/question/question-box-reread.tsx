@@ -2,11 +2,12 @@
 
 import { createQuestionAnswerAction } from "@/actions/question";
 import { InternalError } from "@/components/interval-error";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
+import { SelectShouldBlur } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
@@ -21,6 +22,7 @@ import {
 } from "@itell/ui/client";
 import { Card, CardContent, Warning } from "@itell/ui/server";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { KeyRoundIcon, PencilIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -49,10 +51,8 @@ export const QuestionBoxReread = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { shouldBlur, finishChunk } = useQuestion((state) => ({
-		shouldBlur: state.shouldBlur,
-		finishChunk: state.finishChunk,
-	}));
+	const store = useQuestionStore();
+	const shouldBlur = useSelector(store, SelectShouldBlur);
 
 	const [state, setState] = useState<State>({
 		error: null,
@@ -82,7 +82,8 @@ export const QuestionBoxReread = ({
 		});
 
 		const score = response.score as QuestionScore;
-		finishChunk(chunkSlug, false);
+
+		store.send({ type: "finishChunk", chunkSlug, passed: false });
 
 		setState((state) => ({
 			...state,

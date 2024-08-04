@@ -35,8 +35,8 @@ export const SummaryFeedback = ({
 			<header className="space-y-2">
 				<p>
 					{needRevision
-						? "You have completed all the assessments on this page, but you are still welcome to summarize the text."
-						: feedback?.prompt}
+						? feedback?.prompt
+						: "You have completed all assessments on this page, but you are still welcome to summarize the text."}
 				</p>
 				{feedback && !feedback.isPassed && (
 					<p>

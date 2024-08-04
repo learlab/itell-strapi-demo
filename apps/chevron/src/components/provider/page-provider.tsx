@@ -5,20 +5,18 @@ import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
 import { ChatStore, createChatStore, getHistory } from "@/lib/store/chat-store";
+
 import {
-	QuestionState,
+	QuestionSnapshot,
 	QuestionStore,
 	createQuestionStore,
 } from "@/lib/store/question-store";
-import {
-	QuestionStore2,
-	createQuestionStore2,
-} from "@/lib/store/question-store-2";
+import { SummaryStore, createSummaryStore } from "@/lib/store/summary-store";
 import { reportSentry } from "@/lib/utils";
+import { useLocalStorage } from "@itell/core/hooks";
 import { parseEventStream } from "@itell/utils";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useServerAction } from "zsa-react";
-import { useStore } from "zustand";
 
 type Props = {
 	children: React.ReactNode;
@@ -30,8 +28,8 @@ type Props = {
 
 const PageContext = createContext<{
 	questionStore: QuestionStore;
-	questionStore2: QuestionStore2;
 	chatStore: ChatStore;
+	summaryStore: SummaryStore;
 } | null>(null);
 
 export const PageProvider = ({
@@ -43,22 +41,23 @@ export const PageProvider = ({
 }: Props) => {
 	useTrackLastVisitedPage();
 
+	const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
+		`question-store-${pageSlug}`,
+		undefined,
+	);
 	const questionStoreRef = useRef<QuestionStore>();
 	if (!questionStoreRef.current) {
 		questionStoreRef.current = createQuestionStore(
-			pageSlug,
-			chunks,
-			questions,
-			pageStatus,
+			{
+				chunks,
+				pageStatus,
+				selectedQuestions: questions,
+			},
+			snapshot,
 		);
-	}
 
-	const questionStoreRef2 = useRef<QuestionStore2>();
-	if (!questionStoreRef2.current) {
-		questionStoreRef2.current = createQuestionStore2({
-			chunks,
-			pageStatus,
-			selectedQuestions: questions,
+		questionStoreRef.current.subscribe((state) => {
+			setSnapshot(state.context);
 		});
 	}
 
@@ -67,12 +66,17 @@ export const PageProvider = ({
 		chatStoreRef.current = createChatStore();
 	}
 
+	const summaryStoreRef = useRef<SummaryStore>();
+	if (!summaryStoreRef.current) {
+		summaryStoreRef.current = createSummaryStore({ pageStatus });
+	}
+
 	return (
 		<PageContext.Provider
 			value={{
 				questionStore: questionStoreRef.current,
-				questionStore2: questionStoreRef2.current,
 				chatStore: chatStoreRef.current,
+				summaryStore: summaryStoreRef.current,
 			}}
 		>
 			{children}
@@ -80,20 +84,22 @@ export const PageProvider = ({
 	);
 };
 
+export const useSummaryStore = () => {
+	const value = useContext(PageContext);
+	if (!value) return {} as SummaryStore;
+	return value.summaryStore;
+};
+
 export const useChatStore = () => {
 	const value = useContext(PageContext);
 	if (!value) return {} as ChatStore;
 	return value.chatStore;
 };
-export function useQuestion<T>(selector: (state: QuestionState) => T): T {
+
+export const useQuestionStore = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as T;
-	return useStore(value.questionStore, selector);
-}
-export const useQuestionStore2 = () => {
-	const value = useContext(PageContext);
-	if (!value) return {} as QuestionStore2;
-	return value.questionStore2;
+	if (!value) return {} as QuestionStore;
+	return value.questionStore;
 };
 
 export const useAddChat = () => {

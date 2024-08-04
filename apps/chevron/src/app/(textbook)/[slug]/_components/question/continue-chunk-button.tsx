@@ -1,12 +1,14 @@
 "use client";
 
 import { createEventAction } from "@/actions/event";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { EventType } from "@/lib/constants";
+import { SelectChunkStatus } from "@/lib/store/question-store";
 import { LoginButton } from "@auth/auth-form";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
 
@@ -44,16 +46,13 @@ export const ContinueChunkButton = ({
 	pageSlug,
 	condition,
 }: Props) => {
-	const { advancedChunk, chunkData } = useQuestion((state) => ({
-		advancedChunk: state.advanceChunk,
-		chunkData: state.chunkData,
-		currentChunk: state.currentChunk,
-	}));
-	const currentData = chunkData[chunkSlug];
-	const disabled = currentData?.question && !currentData.status;
+	const store = useQuestionStore();
+	const status = useSelector(store, SelectChunkStatus);
+	const currentData = status[chunkSlug];
+	const disabled = currentData.question && !currentData.status;
 
 	const onSubmit = async () => {
-		advancedChunk(chunkSlug);
+		store.send({ type: "advanceChunk", chunkSlug });
 
 		createEventAction({
 			type: EventType.CHUNK_REVEAL,

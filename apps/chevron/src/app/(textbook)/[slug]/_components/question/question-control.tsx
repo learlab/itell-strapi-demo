@@ -1,10 +1,17 @@
 "use client";
 
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
+import {
+	SelectChunkStatus,
+	SelectChunks,
+	SelectCurrentChunk,
+	SelectShouldBlur,
+} from "@/lib/store/question-store";
 import { usePortal } from "@itell/core/hooks";
 import { getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { useEffect } from "react";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
@@ -19,14 +26,11 @@ type Props = {
 };
 
 export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
-	const { currentChunk, chunkSlugs, chunkData, shouldBlur } = useQuestion(
-		(state) => ({
-			currentChunk: state.currentChunk,
-			chunkSlugs: state.chunkSlugs,
-			chunkData: state.chunkData,
-			shouldBlur: state.shouldBlur,
-		}),
-	);
+	const store = useQuestionStore();
+	const currentChunk = useSelector(store, SelectCurrentChunk);
+	const chunks = useSelector(store, SelectChunks);
+	const status = useSelector(store, SelectChunkStatus);
+	const shouldBlur = useSelector(store, SelectShouldBlur);
 
 	const { nodes, addNode } = usePortal();
 	const hideNextChunkButton = (el: HTMLElement) => {
@@ -125,15 +129,15 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		}
 	};
 
-	// reveal chunk unblurs a chunk when current chunk advances
+	// unblur a chunk when current chunk advances
 	// and controls the visibility of the "next-chunk" button
 	const revealChunk = (currentChunk: string) => {
-		const idx = chunkSlugs.indexOf(currentChunk);
+		const idx = chunks.indexOf(currentChunk);
 		if (idx === -1) {
 			return;
 		}
 
-		const currentChunkSlug = chunkSlugs.at(idx);
+		const currentChunkSlug = chunks.at(idx);
 		if (currentChunkSlug) {
 			const currentChunkElement = getChunkElement(currentChunkSlug);
 			if (currentChunkElement) {
@@ -141,8 +145,8 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 				hideNextChunkButton(currentChunkElement);
 
 				// add next button to next chunk, if the current chunk does not contain a question
-				if (shouldBlur && !chunkData[currentChunkSlug].question) {
-					const nextChunkSlug = chunkSlugs.at(idx + 1);
+				if (shouldBlur && !status[currentChunkSlug].question) {
+					const nextChunkSlug = chunks.at(idx + 1);
 					if (nextChunkSlug) {
 						const nextChunkElement = getChunkElement(nextChunkSlug);
 						if (nextChunkElement) {
@@ -154,20 +158,20 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		}
 
 		// when the last chunk is revealed, hide the scroll back button
-		if (idx === chunkSlugs.length - 1) {
+		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
 		}
 	};
 
 	useEffect(() => {
-		chunkSlugs.forEach((chunkSlug, chunkIndex) => {
+		chunks.forEach((chunkSlug, chunkIndex) => {
 			const el = getChunkElement(chunkSlug);
 			if (!el) {
 				return;
 			}
 
 			// insert questions
-			const data = chunkData[chunkSlug];
+			const data = status[chunkSlug];
 			if (data?.question) {
 				insertQuestion(
 					el,
@@ -178,7 +182,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 			}
 			// blur chunks
 			if (shouldBlur) {
-				const currentIndex = chunkSlugs.indexOf(currentChunk);
+				const currentIndex = chunks.indexOf(currentChunk);
 				const isChunkUnvisited =
 					currentIndex === -1 || chunkIndex > currentIndex;
 
@@ -189,7 +193,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		});
 
 		if (shouldBlur) {
-			const lastChunk = chunkSlugs[chunkSlugs.length - 1];
+			const lastChunk = chunks[chunks.length - 1];
 			const lastChunkElement = getChunkElement(lastChunk);
 			if (lastChunkElement) {
 				insertScrollBackButton(lastChunkElement);
@@ -201,12 +205,12 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		revealChunk(currentChunk);
 
 		if (!isProduction) {
-			chunkSlugs.forEach((slug, idx) => {
+			chunks.forEach((slug, idx) => {
 				const el = getChunkElement(slug);
 				if (!el) {
 					return;
 				}
-				const currentIndex = chunkSlugs.indexOf(currentChunk);
+				const currentIndex = chunks.indexOf(currentChunk);
 				const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
 
 				if (shouldBlur) {

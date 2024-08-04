@@ -1,9 +1,110 @@
-import { PageStatus } from "@/lib/page-status";
-import { Question, SelectedQuestions } from "@/lib/question";
-import { createStore } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
+import produce from "immer";
+import { PageStatus } from "../page-status";
+import { Question, SelectedQuestions } from "../question";
 
-type ChunkData = Record<
+export type QuestionStore = ReturnType<typeof createQuestionStore>;
+export type QuestionSnapshot = {
+	currentChunk: string;
+	chunks: string[];
+	chunkStatus: ChunkStatus;
+	isSummaryReady: boolean;
+	shouldBlur: boolean;
+};
+
+export const createQuestionStore = (
+	{
+		pageStatus,
+		chunks,
+		selectedQuestions,
+	}: {
+		pageStatus: PageStatus;
+		chunks: string[];
+		selectedQuestions: SelectedQuestions;
+	},
+	snapshot?: QuestionSnapshot,
+) => {
+	const isLastChunkWithQuestion = selectedQuestions.has(
+		chunks[chunks.length - 1],
+	);
+
+	const defaultSnapshot: QuestionSnapshot = {
+		currentChunk: chunks[0],
+		chunks,
+		chunkStatus: Object.fromEntries(
+			chunks.map((slug) => [
+				slug,
+				{
+					question: selectedQuestions.get(slug),
+					status: pageStatus.unlocked ? "completed" : undefined,
+				},
+			]),
+		),
+		isSummaryReady: pageStatus.unlocked,
+		shouldBlur: !pageStatus.unlocked,
+	};
+
+	return createStoreWithProducer(produce, snapshot || defaultSnapshot, {
+		finishChunk: (context, event: { chunkSlug: string; passed?: boolean }) => {
+			context.chunkStatus[event.chunkSlug].status = event.passed
+				? "passed"
+				: "completed";
+		},
+
+		advanceChunk: (context, event: { chunkSlug: string }) => {
+			const currentIndex = context.chunks.indexOf(event.chunkSlug);
+			let nextIndex = currentIndex;
+
+			if (currentIndex + 1 < context.chunks.length) {
+				nextIndex = currentIndex + 1;
+				context.currentChunk = context.chunks[nextIndex];
+			}
+
+			// the next chunk is the last chunk, which does not have a question
+			// finish the page
+			if (!isLastChunkWithQuestion && nextIndex === context.chunks.length - 1) {
+				context.isSummaryReady = true;
+				context.shouldBlur = false;
+			}
+
+			// user is on the last chunk, and it has a question
+			// this happens when user clicks on next-chunk-button of the question box of the last chunk
+			const isLastQuestion = event.chunkSlug === context.chunks.at(-1);
+			if (isLastQuestion) {
+				context.isSummaryReady = true;
+				context.shouldBlur = false;
+			}
+		},
+		finishPage: (context) => {
+			context.isSummaryReady = true;
+			context.shouldBlur = false;
+			context.currentChunk = context.chunks[context.chunks.length - 1];
+		},
+		resetPage: (context) => {
+			context.isSummaryReady = false;
+			context.shouldBlur = true;
+			context.currentChunk = context.chunks[0];
+			context.chunkStatus = Object.fromEntries(
+				context.chunks.map((slug) => [
+					slug,
+					{
+						question: selectedQuestions.get(slug),
+						status: undefined,
+					},
+				]),
+			);
+		},
+	});
+};
+
+export const getExcludedChunks = (store: QuestionStore) => {
+	const snap = store.getSnapshot();
+	return snap.context.chunks.filter(
+		(slug) => snap.context.chunkStatus[slug].status !== "passed",
+	);
+};
+
+type ChunkStatus = Record<
 	string,
 	{
 		question: Question | undefined;
@@ -12,108 +113,14 @@ type ChunkData = Record<
 	}
 >;
 
-interface Props {
-	currentChunk: string;
-	chunkData: ChunkData;
-	chunkSlugs: string[];
-	isSummaryReady: boolean;
-	shouldBlur: boolean;
-}
+type Selector<T> = (state: SnapshotFromStore<QuestionStore>) => T;
 
-export interface QuestionState extends Props {
-	advanceChunk: (slug: string) => void;
-	finishChunk: (slug: string, passed?: boolean) => void;
-	finishPage: () => void;
-	resetPage: () => void;
-	getExcludedChunks: () => string[];
-}
-
-export type QuestionStore = ReturnType<typeof createQuestionStore>;
-
-export const createQuestionStore = (
-	pageSlug: string,
-	chunkSlugs: string[],
-	selectedQuestions: SelectedQuestions,
-	pageStatus: PageStatus,
-) => {
-	const isLastChunkWithQuestion = selectedQuestions.has(
-		chunkSlugs[chunkSlugs.length - 1],
-	);
-
-	const chunkData: ChunkData = {};
-	chunkSlugs.forEach((slug) => {
-		const q = selectedQuestions.get(slug);
-		chunkData[slug] = {
-			question: q,
-			status: pageStatus.unlocked ? "completed" : undefined,
-		};
-	});
-
-	return createStore<QuestionState>()(
-		persist(
-			(set, get) => ({
-				currentChunk: chunkSlugs[0],
-				chunkSlugs,
-				chunkData,
-				isSummaryReady: pageStatus.unlocked,
-				shouldBlur: !pageStatus.unlocked,
-
-				finishChunk: (slug: string, passed?: boolean) => {
-					const newData = { ...get().chunkData };
-					newData[slug].status = passed ? "passed" : "completed";
-					set({ chunkData: newData });
-				},
-
-				advanceChunk: (slug: string) => {
-					const currentIndex = chunkSlugs.indexOf(slug);
-					let nextIndex = currentIndex;
-
-					if (currentIndex + 1 < chunkSlugs.length) {
-						nextIndex = currentIndex + 1;
-						set({ currentChunk: chunkSlugs[nextIndex] });
-					}
-
-					// the next chunk is the last chunk, which does not have a question
-					// finish the page
-					if (!isLastChunkWithQuestion && nextIndex === chunkSlugs.length - 1) {
-						set({ isSummaryReady: true, shouldBlur: false });
-					}
-
-					// user is on the last chunk, and it has a question
-					// this happens when user clicks on next-chunk-button of the question box of the last chunk
-					const isLastQuestion = slug === chunkSlugs.at(-1);
-					if (isLastQuestion) {
-						set({ isSummaryReady: true, shouldBlur: false });
-					}
-				},
-				finishPage: () => {
-					set({
-						isSummaryReady: true,
-						shouldBlur: false,
-						currentChunk: chunkSlugs.at(-1),
-					});
-				},
-				resetPage: () => {
-					set({
-						currentChunk: chunkSlugs[0],
-						isSummaryReady: false,
-						shouldBlur: true,
-					});
-				},
-				getExcludedChunks: () => {
-					const excludedChunks: string[] = [];
-					for (const [slug, data] of Object.entries(get().chunkData)) {
-						if (data.status === "passed") {
-							excludedChunks.push(slug);
-						}
-					}
-					return excludedChunks;
-				},
-			}),
-			{
-				name: `constructed-response-store-${pageSlug}`,
-				storage: createJSONStorage(() => localStorage),
-			},
-		),
-	);
-};
+export const SelectChunkStatus: Selector<ChunkStatus> = (state) =>
+	state.context.chunkStatus;
+export const SelectChunks: Selector<string[]> = (state) => state.context.chunks;
+export const SelectShouldBlur: Selector<boolean> = (state) =>
+	state.context.shouldBlur;
+export const SelectCurrentChunk: Selector<string> = (state) =>
+	state.context.currentChunk;
+export const SelectSummaryReady: Selector<boolean> = (state) =>
+	state.context.isSummaryReady;

@@ -1,11 +1,12 @@
 "use client";
 
 import { createQuestionAnswerAction } from "@/actions/question";
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
+import { SelectChunks, SelectShouldBlur } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
@@ -26,8 +27,9 @@ import {
 	Warning,
 } from "@itell/ui/server";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { AlertTriangle, KeyRoundIcon, PencilIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { ExplainButton } from "./explain-button";
@@ -57,11 +59,9 @@ export const QuestionBoxStairs = ({
 	chunkSlug,
 	pageSlug,
 }: Props) => {
-	const { chunkSlugs, shouldBlur, finishChunk } = useQuestion((state) => ({
-		chunkSlugs: state.chunkSlugs,
-		shouldBlur: state.shouldBlur,
-		finishChunk: state.finishChunk,
-	}));
+	const store = useQuestionStore();
+	const chunks = useSelector(store, SelectChunks);
+	const shouldBlur = useSelector(store, SelectShouldBlur);
 	const [state, setState] = useState<State>({
 		status: StatusStairs.UNANSWERED,
 		error: null,
@@ -108,7 +108,7 @@ export const QuestionBoxStairs = ({
 		// if answer is correct, mark chunk as finished
 		// this will add the chunk to the list of finished chunks that gets excluded from stairs question
 		if (score === 2) {
-			finishChunk(chunkSlug, true);
+			store.send({ type: "finishChunk", chunkSlug, passed: true });
 
 			setState({
 				status: StatusStairs.BOTH_CORRECT,
@@ -157,7 +157,7 @@ export const QuestionBoxStairs = ({
 		}
 	}, [isError]);
 
-	const isLastQuestion = chunkSlug === chunkSlugs.at(-1);
+	const isLastQuestion = chunkSlug === chunks.at(-1);
 
 	if (!userId) {
 		return (

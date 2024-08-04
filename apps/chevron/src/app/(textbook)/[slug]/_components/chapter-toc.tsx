@@ -1,10 +1,9 @@
 "use client";
 
-import { useQuestion } from "@/components/provider/page-provider";
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
-import { Condition } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
@@ -16,7 +15,7 @@ import { clearSummaryLocal } from "@textbook/summary/summary-input";
 import type { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon, RotateCcwIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useOptimistic, useState, useTransition } from "react";
+import React, { useOptimistic, useTransition } from "react";
 import { AdminTools } from "./admin-tools";
 
 interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
@@ -152,14 +151,14 @@ export const ChapterToc = ({
 
 const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 	const [pending, startTransition] = useTransition();
-	const resetPage = useQuestion((state) => state.resetPage);
+	const store = useQuestionStore();
 	return (
 		<Button
 			className="flex items-center justify-start w-full p-0 xl:text-lg"
 			variant={"ghost"}
 			onClick={() => {
 				startTransition(() => {
-					resetPage();
+					store.send({ type: "resetPage" });
 					clearSummaryLocal(pageSlug);
 					window.location.reload();
 				});
