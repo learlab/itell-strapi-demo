@@ -12,7 +12,7 @@ import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 
@@ -26,6 +26,8 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 	const store = useChatStore();
 	const open = useSelector(store, SelectOpen);
 	const { action: addChat } = useAddChat();
+	const target = useRef<HTMLElement | null>(null);
+
 	const noteColor =
 		theme === "light"
 			? user?.preferences.note_color_light ??
@@ -40,10 +42,20 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 				if (!open) {
 					store.send({ type: "setOpen", value: true });
 				}
-				const chunkSlug = findParentChunk(state.range);
+				const range = normalizeRange(state.range.cloneRange());
+				const chunkSlug = findParentChunk(range);
+				const content = range.cloneContents().textContent;
 
-				const text = `Please explain the following:\n\n <blockquote>${state.text}</blockquote> `;
+				const text = `Please explain the following:\n\n <blockquote>${content}</blockquote> `;
 				addChat({ text, pageSlug, transform: true, currentChunk: chunkSlug });
+
+				setTimeout(() => {
+					const selection = window.getSelection();
+					if (selection) {
+						selection.removeAllRanges();
+						selection.addRange(range);
+					}
+				}, 100);
 			}
 		},
 	} as const;
@@ -53,17 +65,16 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 		icon: <PencilIcon className="size-5" />,
 		action: async () => {
 			if (state && user) {
-				const chunkSlug = findParentChunk(state.range);
+				const range = normalizeRange(state.range.cloneRange());
+				const text = range.cloneContents().textContent as string;
+				const chunkSlug = findParentChunk(range);
 				noteStore.send({
 					type: "create",
 					id: randomNumber(),
-					highlightedText: state.text,
+					highlightedText: text,
 					color: noteColor,
 					chunkSlug,
-					range: serializeRange(
-						state.range,
-						getChunkElement(chunkSlug) || undefined,
-					),
+					range: serializeRange(range, getChunkElement(chunkSlug) || undefined),
 				});
 			}
 		},
@@ -79,26 +90,23 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 	const [state, setState] = useState<{
 		top: number;
 		left: number;
-		text: string;
 		range: Range;
 	} | null>(null);
 
 	const handler = (e: Event) => {
 		const selection = window.getSelection();
-		const target = document.getElementById(Elements.PAGE_CONTENT);
 
 		if (!selection?.rangeCount) {
 			return setState(null);
 		}
 
 		const range = selection.getRangeAt(0);
-		const text = range.cloneContents().textContent;
-		if (!range || !text) {
+		if (!range || range.collapsed) {
 			return setState(null);
 		}
 
 		const el = range.commonAncestorContainer;
-		if (!el || !target?.contains(el)) {
+		if (!el || !target?.current?.contains(el)) {
 			return setState(null);
 		}
 
@@ -107,17 +115,15 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 			return setState(null);
 		}
 
-		normalizeRange(range);
-
 		setState({
 			top: rect.top + window.scrollY,
 			left: rect.left,
-			text,
 			range,
 		});
 	};
 
 	useEffect(() => {
+		target.current = document.getElementById(Elements.PAGE_CONTENT);
 		document.addEventListener("selectionchange", handler);
 		window.addEventListener("resize", handler);
 
@@ -144,7 +150,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 						variant="ghost"
 						color="blue-gray"
 						className="flex items-center gap-2 p-2 w-28"
-						onClick={async () => {
+						onClick={async (e) => {
 							if (!user) {
 								toast.warning("Please login to use this feature");
 								return;
@@ -200,6 +206,8 @@ const normalizeRange = (range: Range) => {
 			range.setEnd(endNode, wordEnd === -1 ? endText.length : wordEnd);
 		}
 	}
+
+	return range;
 };
 
 function findParentChunk(range: Range) {
