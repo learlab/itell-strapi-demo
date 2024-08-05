@@ -110,6 +110,10 @@ export default plugin(
 				transform: "translate(-50%, -50%)",
 				"z-index": "1",
 			},
+			".unlock-summary-button-container": {
+				"@apply flex justify-center items-center p-4": {},
+			},
+
 			".scroll-back-button-container": {
 				display: "flex",
 				width: "100%",

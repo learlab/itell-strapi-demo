@@ -3,40 +3,34 @@
 import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Condition, EventType } from "@/lib/constants";
-import { SelectCurrentChunk } from "@/lib/store/question-store";
-import { LoginButton } from "@auth//auth-form";
+import {
+	SelectCurrentChunk,
+	SelectSummaryReady,
+} from "@/lib/store/question-store";
 import { Button } from "@itell/ui/client";
-import { Card, CardContent, Warning } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 
 type Props = {
-	userId: string | null;
 	question: string;
 	answer: string;
 	pageSlug: string;
 	chunkSlug: string;
+	isLastQuestion: boolean;
 };
 
 export const QuestionBoxSimple = ({
-	userId,
 	question,
 	answer,
 	pageSlug,
 	chunkSlug,
+	isLastQuestion,
 }: Props) => {
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
-	const disabled = currentChunk !== chunkSlug;
-
-	if (!userId) {
-		return (
-			<Warning>
-				<p>You need to be logged in to view this question and move forward</p>
-				<LoginButton />
-			</Warning>
-		);
-	}
+	const isSummaryReady = useSelector(store, SelectSummaryReady);
+	const disabled = isSummaryReady || currentChunk !== chunkSlug;
 
 	return (
 		<Card
@@ -65,7 +59,11 @@ export const QuestionBoxSimple = ({
 					aria-labelledby="question-form-heading"
 					onSubmit={(e) => {
 						e.preventDefault();
-						store.send({ type: "advanceChunk", chunkSlug });
+						if (isLastQuestion) {
+							store.send({ type: "finishPage" });
+						} else {
+							store.send({ type: "advanceChunk", chunkSlug });
+						}
 						createEventAction({
 							type: EventType.CHUNK_REVEAL_QUESTION,
 							pageSlug,

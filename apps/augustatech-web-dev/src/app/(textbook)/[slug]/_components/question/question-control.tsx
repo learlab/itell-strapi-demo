@@ -9,8 +9,10 @@ import {
 	SelectCurrentChunk,
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
+import { LoginButton } from "@auth/auth-form";
 import { Elements } from "@itell/constants";
 import { usePortal } from "@itell/core/hooks";
+import { Warning } from "@itell/ui/server";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { useEffect } from "react";
@@ -19,6 +21,7 @@ import { QuestionBoxReread } from "./question-box-reread";
 import { QuestionBoxSimple } from "./question-box-simple";
 import { QuestionBoxStairs } from "./question-box-stairs";
 import { ScrollBackButton } from "./scroll-back-button";
+import { UnlockSummaryButton } from "./unlock-summary-button";
 
 type Props = {
 	userId: string | null;
@@ -34,15 +37,6 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const shouldBlur = useSelector(store, SelectShouldBlur);
 
 	const { nodes, addNode } = usePortal();
-	const hideNextChunkButton = (el: HTMLElement) => {
-		const button = el.querySelector(
-			":scope .continue-reading-button-container",
-		) as HTMLDivElement;
-
-		if (button) {
-			button.remove();
-		}
-	};
 
 	const insertScrollBackButton = (el: HTMLElement) => {
 		const buttonContainer = document.createElement("div");
@@ -62,21 +56,48 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		button?.remove();
 	};
 
-	const insertContinueReadingButton = (el: HTMLElement, chunkSlug: string) => {
-		// insert button container
+	const hideContinueButton = (el: HTMLElement) => {
+		const button = el.querySelector(
+			":scope .continue-reading-button-container",
+		) as HTMLDivElement;
+
+		if (button) {
+			button.remove();
+		}
+	};
+
+	const insertContinueButton = (el: HTMLElement, chunkSlug: string) => {
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className = "continue-reading-button-container";
-		el.prepend(buttonContainer);
+		if (!userId) {
+			addNode(<LoginButton />, buttonContainer);
+			el.prepend(buttonContainer);
+			return;
+		}
 
 		addNode(
 			<ContinueChunkButton
-				userId={userId}
 				chunkSlug={chunkSlug}
 				pageSlug={pageSlug}
 				condition={condition}
 			/>,
 			buttonContainer,
 		);
+		el.prepend(buttonContainer);
+	};
+
+	const insertUnlockSummaryButton = (el: HTMLElement, chunkSlug: string) => {
+		const buttonContainer = document.createElement("div");
+		buttonContainer.className = "unlock-summary-button-container";
+		addNode(
+			<UnlockSummaryButton
+				pageSlug={pageSlug}
+				chunkSlug={chunkSlug}
+				condition={condition}
+			/>,
+			buttonContainer,
+		);
+		el.appendChild(buttonContainer);
 	};
 
 	const insertQuestion = (
@@ -86,47 +107,62 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		answer: string,
 	) => {
 		const questionContainer = document.createElement("div");
+		const isLastQuestion = chunkSlug === chunks.at(-1);
 		questionContainer.className = Elements.QUESTION_CONTAINER;
 		questionContainer.ariaLabel = "a question for the text above";
 		el.appendChild(questionContainer);
 
+		if (!userId) {
+			addNode(
+				<Warning>
+					<p>You need to be logged in to view this question and move forward</p>
+					<LoginButton />
+				</Warning>,
+				questionContainer,
+			);
+			return;
+		}
+
 		if (condition === Condition.SIMPLE) {
 			addNode(
 				<QuestionBoxSimple
-					userId={userId}
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					question={question}
 					answer={answer}
+					isLastQuestion={isLastQuestion}
 				/>,
 				questionContainer,
 			);
+			return;
 		}
 
 		if (condition === Condition.RANDOM_REREAD) {
 			addNode(
 				<QuestionBoxReread
-					userId={userId}
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
 					question={question}
 					answer={answer}
+					isLastQuestion={isLastQuestion}
 				/>,
 				questionContainer,
 			);
+			return;
 		}
 
 		if (condition === Condition.STAIRS) {
 			addNode(
 				<QuestionBoxStairs
-					userId={userId}
 					question={question}
 					answer={answer}
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
+					isLastQuestion={isLastQuestion}
 				/>,
 				questionContainer,
 			);
+			return;
 		}
 	};
 
@@ -138,29 +174,31 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 			return;
 		}
 
-		const currentChunkSlug = chunks.at(idx);
-		if (currentChunkSlug) {
-			const currentChunkElement = getChunkElement(currentChunkSlug);
-			if (currentChunkElement) {
-				currentChunkElement.classList.remove("blurred");
-				hideNextChunkButton(currentChunkElement);
-
-				// add next button to next chunk, if the current chunk does not contain a question
-				if (shouldBlur && !status[currentChunkSlug].question) {
-					const nextChunkSlug = chunks.at(idx + 1);
-					if (nextChunkSlug) {
-						const nextChunkElement = getChunkElement(nextChunkSlug);
-						if (nextChunkElement) {
-							insertContinueReadingButton(nextChunkElement, currentChunk);
-						}
-					}
-				}
-			}
-		}
-
 		// when the last chunk is revealed, hide the scroll back button
+		const currentChunkSlug = chunks.at(idx);
+		if (!currentChunkSlug) return;
+		const currentChunkElement = getChunkElement(currentChunkSlug);
+		if (!currentChunkElement) return;
+
+		currentChunkElement.classList.remove("blurred");
+		hideContinueButton(currentChunkElement);
+
+		const hasQuestion = status[currentChunkSlug]?.question;
+
 		if (idx === chunks.length - 1) {
 			hideScrollBackButton();
+			if (!hasQuestion) {
+				insertUnlockSummaryButton(currentChunkElement, currentChunkSlug);
+			}
+		} else {
+			// add next button to next chunk, if the current chunk does not contain a question
+			if (shouldBlur && !hasQuestion) {
+				const nextChunkSlug = chunks[idx + 1];
+				const nextChunkElement = getChunkElement(nextChunkSlug);
+				if (nextChunkElement) {
+					insertContinueButton(nextChunkElement, currentChunk);
+				}
+			}
 		}
 	};
 
@@ -205,25 +243,25 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	useEffect(() => {
 		revealChunk(currentChunk);
 
-		if (!isProduction) {
-			chunks.forEach((slug, idx) => {
-				const el = getChunkElement(slug);
-				if (!el) {
-					return;
-				}
-				const currentIndex = chunks.indexOf(currentChunk);
-				const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
+		// if (!isProduction) {
+		// 	chunks.forEach((slug, idx) => {
+		// 		const el = getChunkElement(slug);
+		// 		if (!el) {
+		// 			return;
+		// 		}
+		// 		const currentIndex = chunks.indexOf(currentChunk);
+		// 		const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
 
-				if (shouldBlur) {
-					if (idx !== 0 && isChunkUnvisited) {
-						el.classList.add("blurred");
-					} else {
-						el.classList.remove("blurred");
-						hideNextChunkButton(el);
-					}
-				}
-			});
-		}
+		// 		if (shouldBlur) {
+		// 			if (idx !== 0 && isChunkUnvisited) {
+		// 				el.classList.add("blurred");
+		// 			} else {
+		// 				el.classList.remove("blurred");
+		// 				hideContinueButton(el);
+		// 			}
+		// 		}
+		// 	});
+		// }
 	}, [currentChunk]);
 
 	return nodes;

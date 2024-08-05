@@ -6,7 +6,11 @@ import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
-import { SelectChunks, SelectShouldBlur } from "@/lib/store/question-store";
+import {
+	SelectChunks,
+	SelectCurrentChunk,
+	SelectShouldBlur,
+} from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
@@ -38,11 +42,11 @@ import { QuestionFeedback } from "./question-feedback";
 import { QuestionScore, StatusStairs, borderColors } from "./types";
 
 type Props = {
-	userId: string | null;
 	question: string;
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
+	isLastQuestion: boolean;
 };
 
 type State = {
@@ -53,15 +57,15 @@ type State = {
 };
 
 export const QuestionBoxStairs = ({
-	userId,
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
+	isLastQuestion,
 }: Props) => {
 	const store = useQuestionStore();
-	const chunks = useSelector(store, SelectChunks);
 	const shouldBlur = useSelector(store, SelectShouldBlur);
+	const currentChunk = useSelector(store, SelectCurrentChunk);
 	const [state, setState] = useState<State>({
 		status: StatusStairs.UNANSWERED,
 		error: null,
@@ -156,17 +160,6 @@ export const QuestionBoxStairs = ({
 			reportSentry("evaluate constructed response", { error });
 		}
 	}, [isError]);
-
-	const isLastQuestion = chunkSlug === chunks.at(-1);
-
-	if (!userId) {
-		return (
-			<Warning>
-				<p>You need to be logged in to view this question and move forward</p>
-				<LoginButton />
-			</Warning>
-		);
-	}
 
 	if (!state.show) {
 		return (
@@ -313,7 +306,7 @@ export const QuestionBoxStairs = ({
 									<StatusButton
 										pending={isPending}
 										type="submit"
-										disabled={isPending}
+										disabled={isPending || currentChunk !== chunkSlug}
 										variant={"outline"}
 										className="w-32"
 									>

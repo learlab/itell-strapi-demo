@@ -2,9 +2,8 @@
 
 import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { EventType } from "@/lib/constants";
+import { EventType, animationProps } from "@/lib/constants";
 import { SelectChunkStatus } from "@/lib/store/question-store";
-import { LoginButton } from "@auth/auth-form";
 import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";
@@ -12,36 +11,13 @@ import { useSelector } from "@xstate/store/react";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
 
-const animationProps = {
-	initial: { "--x": "100%", scale: 0.8 },
-	animate: { "--x": "-100%", scale: 1 },
-	whileTap: { scale: 0.95 },
-	transition: {
-		repeat: Number.POSITIVE_INFINITY,
-		repeatType: "loop",
-		repeatDelay: 1,
-		type: "spring",
-		stiffness: 20,
-		damping: 15,
-		mass: 2,
-		scale: {
-			type: "spring",
-			stiffness: 200,
-			damping: 5,
-			mass: 0.5,
-		},
-	},
-} as AnimationProps;
-
 interface Props extends React.ComponentPropsWithRef<typeof Button> {
-	userId: string | null;
 	chunkSlug: string;
 	pageSlug: string;
 	condition: string;
 }
 
 export const ContinueChunkButton = ({
-	userId,
 	chunkSlug,
 	pageSlug,
 	condition,
@@ -63,10 +39,6 @@ export const ContinueChunkButton = ({
 			},
 		});
 	};
-
-	if (!userId) {
-		return <LoginButton />;
-	}
 
 	return (
 		<motion.button

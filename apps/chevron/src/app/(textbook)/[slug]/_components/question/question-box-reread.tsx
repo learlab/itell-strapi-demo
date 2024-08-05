@@ -7,7 +7,10 @@ import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
-import { SelectShouldBlur } from "@/lib/store/question-store";
+import {
+	SelectCurrentChunk,
+	SelectShouldBlur,
+} from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
@@ -31,11 +34,11 @@ import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionScore, StatusReread } from "./types";
 
 type Props = {
-	userId: string | null;
 	question: string;
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
+	isLastQuestion: boolean;
 };
 
 type State = {
@@ -45,14 +48,15 @@ type State = {
 };
 
 export const QuestionBoxReread = ({
-	userId,
 	question,
 	answer,
 	chunkSlug,
 	pageSlug,
+	isLastQuestion,
 }: Props) => {
 	const store = useQuestionStore();
 	const shouldBlur = useSelector(store, SelectShouldBlur);
+	const currentChunk = useSelector(store, SelectCurrentChunk);
 
 	const [state, setState] = useState<State>({
 		error: null,
@@ -113,17 +117,6 @@ export const QuestionBoxReread = ({
 			reportSentry("evaluate constructed response", { error });
 		}
 	}, [isError]);
-
-	const isLastQuestion = chunkSlug === chunkSlug.at(-1);
-
-	if (!userId) {
-		return (
-			<Warning>
-				<p>You need to be logged in to view this question and move forward</p>
-				<LoginButton />
-			</Warning>
-		);
-	}
 
 	if (!state.show) {
 		return (
@@ -214,7 +207,7 @@ export const QuestionBoxReread = ({
 						<StatusButton
 							pending={isPending}
 							type="submit"
-							disabled={isPending}
+							disabled={isPending || currentChunk !== chunkSlug}
 							variant={"outline"}
 							className="w-32"
 						>
