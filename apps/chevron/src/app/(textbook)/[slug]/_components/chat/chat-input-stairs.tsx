@@ -10,6 +10,8 @@ import {
 	SelectStairsQuestion,
 	SelectStairsReady,
 	SelectStairsTimestamp,
+	botMessage,
+	userMessage,
 } from "@/lib/store/chat-store";
 import { reportSentry } from "@/lib/utils";
 import { Elements } from "@itell/constants";
@@ -52,23 +54,26 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 		// add the question to normal chat
 		store.send({
 			type: "addMessage",
-			text: stairsQuestion?.text || "",
-			isUser: false,
-			isStairs: false,
+			data: botMessage({
+				text: stairsQuestion?.text || "",
+				isStairs: false,
+			}),
 		});
 
 		store.send({
 			type: "addMessage",
-			text,
-			isUser: true,
-			isStairs: true,
+			data: userMessage({
+				text,
+				isStairs: true,
+			}),
 		});
 
 		store.send({
 			type: "addMessage",
-			text,
-			isUser: true,
-			isStairs: false,
+			data: userMessage({
+				text,
+				isStairs: false,
+			}),
 		});
 
 		if (!stairsAnswered) {
@@ -82,11 +87,12 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 		const botMessageId = crypto.randomUUID();
 		store.send({
 			type: "addMessage",
-			id: botMessageId,
-			text: "",
-			isUser: false,
-			isStairs: true,
-			active: true,
+			data: botMessage({
+				id: botMessageId,
+				text: "",
+				isStairs: true,
+			}),
+			setActive: true,
 		});
 
 		try {
@@ -99,6 +105,7 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 					page_slug: pageSlug,
 					message: text,
 					history: history.current,
+					current_chunk: stairsQuestion?.chunk,
 				}),
 			});
 			store.send({
@@ -106,20 +113,16 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 				id: null,
 			});
 
+			let data = {} as { text: string; context?: string[] };
 			if (response.ok && response.body) {
-				let botText = "";
-				await parseEventStream(response.body, (data, done) => {
+				await parseEventStream(response.body, (d, done) => {
 					if (!done) {
 						try {
-							const { text } = JSON.parse(data) as {
-								request_id: string;
-								text: string;
-							};
-							botText = text;
+							data = JSON.parse(d) as typeof data;
 							store.send({
 								type: "updateMessage",
 								id: botMessageId,
-								text: botText,
+								text: data.text,
 								isStairs: true,
 							});
 						} catch (err) {
@@ -128,14 +131,24 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 					}
 				});
 
+				const context = data.context?.at(0);
+				store.send({
+					type: "updateMessage",
+					id: botMessageId,
+					isStairs: true,
+					text: data.text,
+					context,
+				});
+
 				const botTimestamp = Date.now();
 				// also add the final bot message to the normal chat
 				store.send({
 					type: "addMessage",
-					id: botMessageId,
-					text: botText,
-					isUser: false,
-					isStairs: false,
+					data: botMessage({
+						text: data.text,
+						isStairs: false,
+						context,
+					}),
 				});
 				history.current.push(
 					{
@@ -144,7 +157,7 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 					},
 					{
 						agent: "bot",
-						text: botText,
+						text: data.text,
 					},
 				);
 
@@ -176,10 +189,11 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 								is_stairs: true,
 							},
 							{
-								text: botText,
+								text: data.text,
 								is_user: false,
 								timestamp: botTimestamp,
 								is_stairs: true,
+								context,
 							},
 						],
 					});
@@ -195,10 +209,11 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 								is_stairs: true,
 							},
 							{
-								text: botText,
+								text: data.text,
 								is_user: false,
 								timestamp: botTimestamp,
 								is_stairs: true,
+								context,
 							},
 						],
 					});

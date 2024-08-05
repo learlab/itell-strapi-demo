@@ -22,7 +22,6 @@ import {
 import { JoinClassForm } from "@settings/join-class";
 import { Profile } from "@settings/profile";
 import { QuitClass } from "@settings/quit-class";
-import { User } from "lucia";
 
 type Props = {
 	searchParams?: Record<string, string>;

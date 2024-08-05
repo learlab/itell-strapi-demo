@@ -3,6 +3,7 @@
 import { InternalError } from "@/components/interval-error";
 import { useAddChat } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
+import { Label } from "@itell/ui/client";
 import { cn } from "@itell/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes } from "react";
@@ -32,29 +33,32 @@ export const ChatInput = ({
 					e.currentTarget.input.value = "";
 				}}
 			>
-				<TextArea
-					name="input"
-					rows={2}
-					maxRows={4}
-					autoFocus
-					disabled={pending}
-					placeholder="Message ITELL AI..."
-					className="disabled:opacity-50 disabled:pointer-events-none bg-background/90 rounded-md border border-border pr-14 resize-none block w-full  px-4 py-1.5 focus:ring-0 text-sm sm:leading-6"
-					onKeyDown={async (e) => {
-						if (e.key === "Enter" && !e.shiftKey) {
-							e.preventDefault();
-							const input = e.currentTarget.value.trim();
-							action({ text: input, pageSlug });
-							e.currentTarget.value = "";
-						}
-					}}
-					onPaste={(e) => {
-						if (isProduction) {
-							e.preventDefault();
-							toast.warning("Copy & Paste is not allowed");
-						}
-					}}
-				/>
+				<Label>
+					<span className="sr-only">Enter your message here</span>
+					<TextArea
+						name="input"
+						rows={2}
+						maxRows={4}
+						autoFocus
+						disabled={pending}
+						placeholder="Message ITELL AI..."
+						className="font-normal leading-5 disabled:opacity-50 disabled:pointer-events-none bg-background/90 rounded-md border border-border pr-14 resize-none block w-full px-4 py-1.5 focus:ring-0 text-sm"
+						onKeyDown={async (e) => {
+							if (e.key === "Enter" && !e.shiftKey) {
+								e.preventDefault();
+								const input = e.currentTarget.value.trim();
+								action({ text: input, pageSlug });
+								e.currentTarget.value = "";
+							}
+						}}
+						onPaste={(e) => {
+							if (isProduction) {
+								e.preventDefault();
+								toast.warning("Copy & Paste is not allowed");
+							}
+						}}
+					/>
+				</Label>
 
 				<div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
 					<button type="submit" disabled={pending}>

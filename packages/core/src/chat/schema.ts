@@ -3,26 +3,17 @@ import { z } from "zod";
 export type ChatHistoryItem = { agent: "user" | "bot"; text: string };
 export type ChatHistory = ChatHistoryItem[];
 
-export type UserMessage = {
+export type Message = {
 	id: string;
-	isUser: true;
+	isUser: boolean;
 	text: string;
+	transform?: boolean;
+	context?: string;
+	node?: React.ReactNode;
 };
-export type BotMessage =
-	| {
-			id: string;
-			isUser: false;
-			text: string;
-			context?: string;
-	  }
-	| {
-			id: string;
-			isUser: false;
-			context?: string;
-			Node: React.ReactNode;
-	  };
+export type UserMessage = Message & { isUser: true };
+export type BotMessage = Message & { isUser: false };
 
-export type Message = UserMessage | BotMessage;
 export type Messages = Message[];
 
 export const ChatResponseSchema = z.object({

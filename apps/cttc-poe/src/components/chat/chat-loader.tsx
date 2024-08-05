@@ -1,4 +1,3 @@
-import { getSession } from "@/lib/auth";
 import { getChatMessages } from "@/lib/chat";
 import { Condition } from "@/lib/control/condition";
 import { Message } from "@itell/core/chat";
@@ -37,7 +36,7 @@ export const ChatLoader = async ({ pageSlug, user }: Props) => {
 };
 
 ChatLoader.Skeleton = () => (
-	<div className="flex items-center gap-2 fixed right-8 bottom-12 w-48 lg:w-64 rounded-lg shadow-lg bg-background border border-border z-30 p-4">
+	<div className="flex items-center gap-2 fixed right-8 bottom-12 w-80 lg:w-96  rounded-lg shadow-lg bg-background border border-border z-30 p-4">
 		<Avatar className="rounded-none w-8 h-8">
 			<AvatarImage src="/images/itell-ai.svg" />
 		</Avatar>

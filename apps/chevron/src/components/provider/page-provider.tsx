@@ -4,7 +4,13 @@ import { createChatsAction } from "@/actions/chat";
 import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
-import { ChatStore, createChatStore, getHistory } from "@/lib/store/chat-store";
+import {
+	ChatStore,
+	botMessage,
+	createChatStore,
+	getHistory,
+	userMessage,
+} from "@/lib/store/chat-store";
 
 import {
 	QuestionSnapshot,
@@ -111,24 +117,30 @@ export const useAddChat = () => {
 	const action = async ({
 		text,
 		pageSlug,
-	}: { text: string; pageSlug: string }) => {
+		transform,
+		currentChunk,
+	}: {
+		text: string;
+		pageSlug: string;
+		transform?: boolean;
+		currentChunk?: string | null;
+	}) => {
 		setPending(true);
 		const userTimestamp = Date.now();
 		store.send({
 			type: "addMessage",
-			text,
-			isUser: true,
-			isStairs: false,
+			data: userMessage({ text, transform, isStairs: false }),
 		});
 
 		const botMessageId = crypto.randomUUID();
 		store.send({
 			type: "addMessage",
-			id: botMessageId,
-			text: "",
-			isUser: false,
-			isStairs: false,
-			active: true,
+			data: botMessage({
+				id: botMessageId,
+				text: "",
+				isStairs: false,
+			}),
+			setActive: true,
 		});
 
 		try {
@@ -142,6 +154,7 @@ export const useAddChat = () => {
 					page_slug: pageSlug,
 					message: text,
 					history: getHistory(store, { isStairs: false }),
+					current_chunk: currentChunk,
 				}),
 			});
 
@@ -183,6 +196,7 @@ export const useAddChat = () => {
 							is_user: true,
 							timestamp: userTimestamp,
 							is_stairs: false,
+							transform,
 						},
 						{
 							text: data.text,
@@ -190,6 +204,7 @@ export const useAddChat = () => {
 							timestamp: botTimestamp,
 							is_stairs: false,
 							context: data.context?.at(0),
+							transform,
 						},
 					],
 				});

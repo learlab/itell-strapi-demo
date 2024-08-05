@@ -355,6 +355,7 @@ export const ChatMessageDataSchema = z.object({
 		})
 		.optional(),
 	context: z.string().optional(),
+	transform: z.boolean().optional(),
 });
 
 export type ChatMessageData = z.infer<typeof ChatMessageDataSchema>;

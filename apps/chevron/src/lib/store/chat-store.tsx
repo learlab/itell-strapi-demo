@@ -1,13 +1,14 @@
-import { Message } from "@itell/core/chat";
+import { BotMessage, Message, UserMessage } from "@itell/core/chat";
 import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
 import { produce } from "immer";
+import React from "react";
 
 type StairsQuestion = {
 	text: string;
 	chunk: string;
 	question_type: string;
 };
-
+export type StoreMessage = Message & { isStairs: boolean };
 export type ChatStore = ReturnType<typeof createChatStore>;
 export const createChatStore = () => {
 	return createStoreWithProducer(
@@ -32,29 +33,29 @@ export const createChatStore = () => {
 			addMessage: (
 				context,
 				event: {
-					id?: string;
-					text: string;
-					isStairs: boolean;
-					isUser: boolean;
-					active?: boolean;
+					data: {
+						id?: string;
+						text: string;
+						isStairs: boolean;
+						isUser: boolean;
+						transform?: boolean;
+						node?: React.ReactNode;
+						context?: string;
+					};
+					setActive?: boolean;
 				},
 			) => {
-				if (event.isStairs) {
-					context.stairsMessages.push({
-						id: event.id || crypto.randomUUID(),
-						text: event.text,
-						isUser: event.isUser,
-					} as Message);
+				const message = event.data.isUser
+					? userMessage(event.data)
+					: botMessage(event.data);
+				if (message.isStairs) {
+					context.stairsMessages.push(message);
 				} else {
-					context.messages.push({
-						id: event.id,
-						text: event.text,
-						isUser: event.isUser,
-					} as Message);
+					context.messages.push(message);
 				}
 
-				if (event.active && event.id) {
-					context.activeMessageId = event.id;
+				if (event.setActive && event.data.id) {
+					context.activeMessageId = event.data.id;
 				}
 			},
 			updateMessage: (
@@ -97,6 +98,50 @@ export const createChatStore = () => {
 	);
 };
 
+export type CreateUserMessageInput = {
+	id?: string;
+	text: string;
+	isStairs: boolean;
+	transform?: boolean;
+};
+export const userMessage = ({
+	id,
+	text,
+	transform,
+	isStairs,
+}: CreateUserMessageInput): StoreMessage => ({
+	id: id || crypto.randomUUID(),
+	isUser: true,
+	transform,
+	isStairs,
+	text,
+});
+
+export type CreateBotMessageInput = {
+	id?: string;
+	text: string;
+	isStairs: boolean;
+	transform?: boolean;
+	node?: React.ReactNode;
+	context?: string;
+};
+export const botMessage = ({
+	id,
+	text,
+	isStairs,
+	transform,
+	node,
+	context,
+}: CreateBotMessageInput): StoreMessage => ({
+	id: id || crypto.randomUUID(),
+	isUser: false,
+	isStairs,
+	transform,
+	text,
+	node,
+	context,
+});
+
 export const getHistory = (
 	store: ChatStore,
 	{ isStairs }: { isStairs: boolean },
@@ -104,12 +149,10 @@ export const getHistory = (
 	const snap = store.getSnapshot();
 	const data = isStairs ? snap.context.stairsMessages : snap.context.messages;
 
-	return data
-		.filter((m) => "text" in m)
-		.map((m) => ({
-			agent: m.isUser ? "user" : "bot",
-			text: m.text,
-		}));
+	return data.map((m) => ({
+		agent: m.isUser ? "user" : "bot",
+		text: m.text,
+	}));
 };
 
 type Selector<T> = (state: SnapshotFromStore<ChatStore>) => T;

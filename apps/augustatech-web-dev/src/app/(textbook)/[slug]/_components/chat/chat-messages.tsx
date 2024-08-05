@@ -1,8 +1,12 @@
 "use client";
 
 import { useChatStore } from "@/components/provider/page-provider";
-import { SelectMessages } from "@/lib/store/chat-store";
-import { BotMessage, Message } from "@itell/core/chat";
+import {
+	SelectMessages,
+	StoreMessage,
+	botMessage,
+} from "@/lib/store/chat-store";
+import { Message } from "@itell/core/chat";
 import { useSelector } from "@xstate/store/react";
 import { useMemo } from "react";
 import { ChatItems } from "./chat-items";
@@ -17,17 +21,18 @@ export const ChatMessages = ({ data, updatedAt, pageTitle }: Props) => {
 	const store = useChatStore();
 	const messages = useSelector(store, SelectMessages);
 
-	const welcomeMessage = useMemo<BotMessage>(
-		() => ({
-			id: crypto.randomUUID(),
-			isUser: false,
-			Node: (
-				<p>
-					Hello, how can I help you with{" "}
-					<span className="font-semibold italic">{pageTitle}</span> ?
-				</p>
-			),
-		}),
+	const welcomeMessage = useMemo<StoreMessage>(
+		() =>
+			botMessage({
+				text: "",
+				isStairs: false,
+				node: (
+					<p>
+						Hello, how can I help you with{" "}
+						<span className="font-semibold italic">{pageTitle}</span> ?
+					</p>
+				),
+			}),
 		[],
 	);
 

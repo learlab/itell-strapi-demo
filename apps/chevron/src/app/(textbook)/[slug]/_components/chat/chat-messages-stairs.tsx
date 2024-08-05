@@ -14,7 +14,8 @@ export const ChatMessagesStairs = () => {
 		() => ({
 			id: crypto.randomUUID(),
 			isUser: false,
-			Node: (
+			text: "",
+			node: (
 				<StairsReadyButton
 					onClick={() => {
 						store.send({ type: "setStairsReady" });

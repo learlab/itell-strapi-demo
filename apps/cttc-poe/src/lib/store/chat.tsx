@@ -51,7 +51,8 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 	const welcomeMessage: BotMessage = {
 		id,
 		isUser: false,
-		Node: (
+		text: "",
+		node: (
 			<p>
 				Hello, how can I help you with{" "}
 				<span className="font-semibold italic">{pageTitle}</span> ?
@@ -126,7 +127,8 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 					state.stairsMessages.push({
 						id: crypto.randomUUID(),
 						isUser: false,
-						Node: <Comp />,
+						text: "",
+						node: <Comp />,
 					});
 				});
 			},
@@ -176,7 +178,8 @@ export const createChatStore = ({ pageTitle }: { pageTitle: string }) => {
 						{
 							id: crypto.randomUUID(),
 							isUser: false,
-							Node: (
+							text: "",
+							node: (
 								<StairsReadyButton
 									onClick={() => {
 										set((state) => {

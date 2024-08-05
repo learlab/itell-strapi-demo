@@ -121,7 +121,7 @@ const MessageItem = ({
 							"bg-accent text-foreground/80": !message.isUser,
 						})}
 					>
-						{"text" in message ? <p>{message.text}</p> : message.Node}
+						{"node" in message ? message.node : <p>{message.text}</p>}
 						{context && (
 							<Button
 								size={"sm"}

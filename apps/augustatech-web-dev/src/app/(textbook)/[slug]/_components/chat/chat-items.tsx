@@ -7,6 +7,7 @@ import { AvatarFallback, Button } from "@itell/ui/client";
 import { Avatar, AvatarImage } from "@itell/ui/client";
 import { cn, getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
+import htmr from "htmr";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -49,20 +50,21 @@ export const ChatItems = ({
 	);
 };
 
+const Blockquote = ({ children }: { children?: React.ReactNode }) => {
+	return (
+		<blockquote className="border-l-4 border-primary pl-4 mt-2 bg-accent italic">
+			{children}
+		</blockquote>
+	);
+};
+
+const components = {
+	blockquote: Blockquote,
+};
+
 const MessageItem = ({ message }: { message: Message }) => {
 	const store = useChatStore();
 	const activeMessageId = useSelector(store, SelectActiveMessageId);
-	const router = useRouter();
-	const context = "context" in message ? message.context : "";
-	let formattedSlug = "";
-	// Get div where data-subsection-id is message.context
-	if (context) {
-		if (context === "[User Guide]") {
-			formattedSlug = "User Guide";
-		} else {
-			formattedSlug = context.split("-").slice(0, -1).join(" ");
-		}
-	}
 
 	return (
 		<div
@@ -95,39 +97,70 @@ const MessageItem = ({ message }: { message: Message }) => {
 				) : (
 					<div
 						className={cn("px-4 py-2 rounded-lg", {
-							"bg-secondary-foreground text-background": message.isUser,
-							"bg-accent text-foreground/80": !message.isUser,
+							"border-2 bg-primary-foreground": !message.isUser,
+							"bg-accent": message.isUser,
 						})}
 					>
-						{"text" in message ? <p>{message.text}</p> : message.Node}
-						{context && (
-							<Button
-								size={"sm"}
-								variant={"outline"}
-								className="mt-1"
-								onClick={() => {
-									if (context === "[User Guide]") {
-										router.push("/guide");
-									} else {
-										const element = getChunkElement(context);
-										if (element) {
-											scrollToElement(element);
-											return;
-										}
-
-										toast.warning("Source not found");
-									}
-								}}
-							>
-								Source:{" "}
-								{formattedSlug.length > 25
-									? `${formattedSlug.slice(0, 22)}...`
-									: formattedSlug}
-							</Button>
-						)}
+						<Transform message={message} />
 					</div>
 				)}
 			</div>
 		</div>
+	);
+};
+
+const Transform = ({ message }: { message: Message }) => {
+	const router = useRouter();
+
+	if (message.node) {
+		return (
+			<>
+				{message.text !== "" && <p>{message.text}</p>}
+				{message.node}
+			</>
+		);
+	}
+
+	// Get div where data-subsection-id is message.context
+	if (message.context !== undefined) {
+		const formattedSlug =
+			message.context === "[User Guide]"
+				? "User Guide"
+				: message.context.split("-").slice(0, -1).join(" ");
+
+		return (
+			<>
+				<p>{message.text}</p>
+				<Button
+					size={"sm"}
+					variant={"outline"}
+					className="mt-1"
+					onClick={() => {
+						if (message.context === "[User Guide]") {
+							router.push("/guide");
+						} else {
+							const element = getChunkElement(message.context || null);
+							if (element) {
+								scrollToElement(element);
+								return;
+							}
+
+							toast.warning("Source not found");
+						}
+					}}
+				>
+					Source:{" "}
+					{formattedSlug.length > 25
+						? `${formattedSlug.slice(0, 25)}...`
+						: formattedSlug}
+				</Button>
+			</>
+		);
+	}
+
+	return message.transform ? (
+		htmr(message.text, { transform: components })
+	) : (
+		<p>{message.text}</p>
 	);
 };

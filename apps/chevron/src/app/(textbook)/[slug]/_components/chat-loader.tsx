@@ -23,6 +23,7 @@ export const ChatLoader = async ({ user, pageSlug, pageTitle }: Props) => {
 			text: d.text,
 			isUser: d.is_user,
 			context: d.context,
+			transform: d.transform,
 		})) as Message[];
 
 		return (
@@ -39,7 +40,7 @@ export const ChatLoader = async ({ user, pageSlug, pageTitle }: Props) => {
 };
 
 ChatLoader.Skeleton = () => (
-	<div className="flex items-center gap-2 fixed right-8 bottom-12 w-48 lg:w-64 rounded-lg shadow-lg bg-background border border-border z-30 p-4">
+	<div className="flex items-center gap-2 fixed right-8 bottom-12 w-80 lg:w-96  rounded-lg shadow-lg bg-background border border-border z-30 p-4">
 		<Avatar className="rounded-none w-8 h-8">
 			<AvatarImage src="/images/itell-ai.svg" />
 		</Avatar>

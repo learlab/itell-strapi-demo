@@ -40,8 +40,10 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 				if (!open) {
 					store.send({ type: "setOpen", value: true });
 				}
-				const text = `Can you explain the following sentence in the text\n\n"${state.text}"`;
-				addChat({ text, pageSlug });
+				const chunkSlug = findParentChunk(state.range);
+
+				const text = `Please explain the following:\n\n <blockquote>${state.text}</blockquote> `;
+				addChat({ text, pageSlug, transform: true, currentChunk: chunkSlug });
 			}
 		},
 	} as const;
@@ -105,6 +107,8 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 			return setState(null);
 		}
 
+		normalizeRange(range);
+
 		setState({
 			top: rect.top + window.scrollY,
 			left: rect.left,
@@ -145,6 +149,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 								toast.warning("Please login to use this feature");
 								return;
 							}
+
 							setPending(command.label);
 							await command.action();
 							setPending(undefined);
@@ -171,6 +176,30 @@ const randomNumber = () => {
 
 	// Generate a random number within the SERIAL range
 	return Math.floor(Math.random() * (MAX_SERIAL - MIN_SERIAL + 1)) + MIN_SERIAL;
+};
+
+const normalizeRange = (range: Range) => {
+	const startNode = range.startContainer;
+	const endNode = range.endContainer;
+
+	// Snap to word boundaries
+	if (startNode.nodeType === Node.TEXT_NODE) {
+		const startOffset = range.startOffset;
+		const startText = startNode.textContent;
+		if (startText) {
+			const wordStart = startText.lastIndexOf(" ", startOffset) + 1;
+			range.setStart(startNode, wordStart);
+		}
+	}
+
+	if (endNode.nodeType === Node.TEXT_NODE) {
+		const endOffset = range.endOffset;
+		const endText = endNode.textContent;
+		if (endText) {
+			const wordEnd = endText.indexOf(" ", endOffset);
+			range.setEnd(endNode, wordEnd === -1 ? endText.length : wordEnd);
+		}
+	}
 };
 
 function findParentChunk(range: Range) {

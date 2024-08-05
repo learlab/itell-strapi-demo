@@ -111,24 +111,36 @@ export const useAddChat = () => {
 	const action = async ({
 		text,
 		pageSlug,
-	}: { text: string; pageSlug: string }) => {
+		transform,
+		currentChunk,
+	}: {
+		text: string;
+		pageSlug: string;
+		transform?: boolean;
+		currentChunk?: string | null;
+	}) => {
 		setPending(true);
 		const userTimestamp = Date.now();
 		store.send({
 			type: "addMessage",
-			text,
-			isUser: true,
-			isStairs: false,
+			data: {
+				text,
+				isUser: true,
+				transform,
+				isStairs: false,
+			},
 		});
 
 		const botMessageId = crypto.randomUUID();
 		store.send({
 			type: "addMessage",
-			id: botMessageId,
-			text: "",
-			isUser: false,
-			isStairs: false,
-			active: true,
+			data: {
+				id: botMessageId,
+				text: "",
+				isUser: false,
+				isStairs: false,
+			},
+			setActive: true,
 		});
 
 		try {
@@ -142,6 +154,7 @@ export const useAddChat = () => {
 					page_slug: pageSlug,
 					message: text,
 					history: getHistory(store, { isStairs: false }),
+					current_chunk: currentChunk,
 				}),
 			});
 
@@ -183,6 +196,7 @@ export const useAddChat = () => {
 							is_user: true,
 							timestamp: userTimestamp,
 							is_stairs: false,
+							transform,
 						},
 						{
 							text: data.text,
@@ -190,6 +204,7 @@ export const useAddChat = () => {
 							timestamp: botTimestamp,
 							is_stairs: false,
 							context: data.context?.at(0),
+							transform,
 						},
 					],
 				});
