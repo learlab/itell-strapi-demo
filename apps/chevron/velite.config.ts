@@ -7,7 +7,6 @@ import remarkHeadingId from "remark-heading-id";
 import { defineCollection, defineConfig, defineSchema, s } from "velite";
 
 const execAsync = promisify(exec);
-
 const timestamp = defineSchema(() =>
 	s
 		.custom<string | undefined>((i) => i === undefined || typeof i === "string")
@@ -34,7 +33,7 @@ const pages = defineCollection({
 		.object({
 			title: s.string(),
 			description: s.string().optional(),
-			page_slug: s.string(),
+			page_slug: s.slug(),
 			code: s.mdx(),
 			summary: s.boolean(),
 			reference_summary: s.string().optional(),
