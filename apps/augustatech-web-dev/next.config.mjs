@@ -1,4 +1,12 @@
-const { withContentlayer } = require("next-contentlayer");
+import { withSentryConfig } from "@sentry/nextjs";
+
+const isDev = process.argv.indexOf("dev") !== -1;
+const isBuild = process.argv.indexOf("build") !== -1;
+if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
+	process.env.VELITE_STARTED = "1";
+	const { build } = await import("velite");
+	await build({ watch: isDev, clean: !isDev });
+}
 
 /**
  * @type {import('next').NextConfig}
@@ -67,14 +75,8 @@ const securityHeaders = [
 	},
 ];
 
-module.exports = withContentlayer(nextConfig);
-
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
-
-module.exports = withSentryConfig(
-	module.exports,
+export default withSentryConfig(
+	nextConfig,
 	{
 		// For all available options, see:
 		// https://github.com/getsentry/sentry-webpack-plugin#options

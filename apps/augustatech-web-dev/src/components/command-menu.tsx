@@ -127,7 +127,7 @@ const config = {
 	textbookPages: allPagesSorted.map((s) => {
 		return {
 			title: `${s.title}`,
-			href: s.url,
+			href: s.href,
 		};
 	}),
 	tools: [

@@ -81,7 +81,7 @@ export async function GET(req: Request) {
 					image: googleUser.picture,
 					email: googleUser.email,
 					condition: Condition.STAIRS,
-					role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
+					role: env.ADMINS?.includes(googleUser.email) ? "admin": "user",
 				},
 				provider_id: "google",
 				provider_user_id: googleUser.id,

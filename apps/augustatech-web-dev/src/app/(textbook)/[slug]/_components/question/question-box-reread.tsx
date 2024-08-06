@@ -104,6 +104,7 @@ export const QuestionBoxReread = ({
 		});
 	});
 	const isPending = useDebounce(_isPending, 100);
+	const disabled = isPending || currentChunk !== chunkSlug;
 
 	const isNextButtonDisplayed =
 		shouldBlur && state.status === StatusReread.ANSWERED;
@@ -207,7 +208,7 @@ export const QuestionBoxReread = ({
 						<StatusButton
 							pending={isPending}
 							type="submit"
-							disabled={isPending || currentChunk !== chunkSlug}
+							disabled={disabled}
 							variant={"outline"}
 							className="w-32"
 						>

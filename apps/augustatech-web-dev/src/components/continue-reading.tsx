@@ -1,6 +1,6 @@
 "use client";
 
-import { useLastVisitedPageUrl } from "@/lib/hooks/use-last-visited-page";
+import { useLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { firstPage } from "@/lib/pages";
 import { Button, StatusButton } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
@@ -11,11 +11,9 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
 }
 
 export const ContinueReading = ({ text, ...rest }: Props) => {
-	const url = useLastVisitedPageUrl();
-	const href = url || firstPage.url;
+	const href = useLastVisitedPage();
 	const router = useRouter();
 	const [pending, startTransition] = useTransition();
-
 	return (
 		<StatusButton
 			pending={pending}
@@ -23,10 +21,11 @@ export const ContinueReading = ({ text, ...rest }: Props) => {
 			size={"lg"}
 			{...rest}
 			onClick={() => {
-				startTransition(() => router.push(href));
+				const dst = href || firstPage.href;
+				startTransition(() => router.push(dst));
 			}}
 		>
-			{text ? text : url ? "Continue Reading" : "Start Reading"}
+			{text || href ? "Continue Reading" : "Start Reading"}
 		</StatusButton>
 	);
 };

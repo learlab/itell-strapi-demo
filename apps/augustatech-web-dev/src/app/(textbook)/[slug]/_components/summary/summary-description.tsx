@@ -1,8 +1,8 @@
-import { MainMdx } from "@/components/mdx";
+import { Mdx } from "@/components/mdx";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { Condition } from "@/lib/constants";
 import { Elements } from "@itell/constants";
-import { allGuides } from "contentlayer/generated";
+import { guides } from "velite/generated";
 
 export const SummaryDescription = ({ condition }: { condition: string }) => {
 	const guideCondition =
@@ -11,7 +11,7 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 			: condition === Condition.RANDOM_REREAD
 				? "summary_description_reread"
 				: undefined;
-	const guide = allGuides.find((g) => g.condition === guideCondition);
+	const guide = guides.find((g) => g.condition === guideCondition);
 	if (!guide) return null;
 
 	return (
@@ -22,11 +22,7 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 			<a className="sr-only" href={`#${Elements.SUMMARY_FORM}`}>
 				skip to summary submission
 			</a>
-			<MainMdx
-				article={false}
-				components={{ AccordionItem, Accordion }}
-				code={guide.body.code}
-			/>
+			<Mdx components={{ AccordionItem, Accordion }} code={guide.code} />
 		</section>
 	);
 };

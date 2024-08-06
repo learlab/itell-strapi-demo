@@ -21,6 +21,9 @@ type Props = {
 	user: User | null;
 };
 
+const abort = new AbortController();
+const { signal } = abort;
+
 export const SelectionPopover = ({ user, pageSlug }: Props) => {
 	const { theme } = useTheme();
 	const store = useChatStore();
@@ -124,12 +127,11 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 
 	useEffect(() => {
 		target.current = document.getElementById(Elements.PAGE_CONTENT);
-		document.addEventListener("selectionchange", handler);
-		window.addEventListener("resize", handler);
+		document.addEventListener("selectionchange", handler, { signal });
+		window.addEventListener("resize", handler, { signal });
 
 		return () => {
-			document.removeEventListener("selectionchange", handler);
-			window.removeEventListener("resize", handler);
+			abort.abort();
 		};
 	}, []);
 

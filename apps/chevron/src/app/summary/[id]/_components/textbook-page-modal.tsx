@@ -1,8 +1,8 @@
-import { MainMdx } from "@/components/mdx";
+import { TextbookMdx } from "@/components/mdx";
 import { PageLink } from "@/components/page-link";
 import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
-import { Page } from "contentlayer/generated";
+import { Page } from "velite/generated";
 
 export const TextbookPageModal = ({
 	page,
@@ -22,7 +22,7 @@ export const TextbookPageModal = ({
 					</PageLink>
 				</div>
 
-				<MainMdx code={page.body.code} />
+				<TextbookMdx code={page.code} />
 			</DialogContent>
 		</Dialog>
 	);

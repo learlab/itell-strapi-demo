@@ -38,8 +38,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.page_slug;
 
-	const chunks = getPageChunks(page.body.raw);
-
 	const questions = await getRandomPageQuestions(pageSlug);
 	const userRole = user?.role || "user";
 	const userId = user?.id || null;
@@ -55,7 +53,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 	return (
 		<PageProvider
 			pageSlug={pageSlug}
-			chunks={chunks}
+			chunks={page.chunks}
 			questions={questions}
 			pageStatus={pageStatus}
 		>
@@ -74,11 +72,14 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 				<div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
 					<PageTitle>{page.title}</PageTitle>
-					{user?.condition === Condition.SIMPLE &&
-						page._raw.sourceFileName === "index.mdx" && <ReadingStrategy />}
-					<PageContent title={page.title} code={page.body.code} />
+					{user?.condition === Condition.SIMPLE && <ReadingStrategy />}
+					<PageContent title={page.title} code={page.code} />
 					<SelectionPopover user={user} pageSlug={pageSlug} />
 					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />
+					<p className="text-right text-sm text-muted-foreground">
+						<span>Last updated at </span>
+						<time>{page.last_modified}</time>
+					</p>
 				</div>
 
 				<aside id={Elements.PAGE_NAV} aria-label="table of contents">
@@ -116,7 +117,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				condition={userCondition}
 			/>
-			{user && <EventTracker pageSlug={pageSlug} chunks={chunks} />}
+			{user && <EventTracker pageSlug={pageSlug} chunks={page.chunks} />}
 		</PageProvider>
 	);
 }
@@ -153,19 +154,4 @@ const ReadingStrategy = () => {
 			</p>
 		</Info>
 	);
-};
-const getPageChunks = (raw: string) => {
-	const contentChunkRegex =
-		/<section(?=\s)(?=[\s\S]*?\bclassName="content-chunk")(?=[\s\S]*?\bdata-subsection-id="([^"]+)")[\s\S]*?>/g;
-	const chunks: string[] = [];
-
-	const matches = raw.matchAll(contentChunkRegex);
-
-	for (const match of matches) {
-		if (match[1]) {
-			chunks.push(match[1]);
-		}
-	}
-
-	return chunks;
 };

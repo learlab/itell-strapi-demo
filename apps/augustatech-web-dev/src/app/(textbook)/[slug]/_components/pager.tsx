@@ -32,7 +32,7 @@ const getPageLink = (
 	const disabled = userPage ? userPage.index < index : index !== 0 && index > 1;
 	return {
 		text: page.title,
-		href: page.url,
+		href: page.href,
 		disabled,
 	};
 };

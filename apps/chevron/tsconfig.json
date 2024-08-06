@@ -27,7 +27,7 @@
 			"@auth/*": ["./src/app/auth/_components/*"],
 			"@summary/*": ["./src/app/summary/[id]/_components/*"],
 			"react": ["./node_modules/@types/react"],
-			"contentlayer/generated": [".contentlayer/generated"]
+			"velite/generated": [".velite"]
 		},
 		"plugins": [
 			{
@@ -40,7 +40,7 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		".contentlayer/generated",
+		".velite",
 		".next/types/**/*.ts",
 		"src/env.mjs",
 		"tailwind.config.cjs",

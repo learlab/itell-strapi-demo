@@ -1,11 +1,11 @@
 import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
-import { MainMdx } from "@/components/mdx";
+import { Mdx } from "@/components/mdx";
 import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
 import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
-import { home } from "contentlayer/generated";
+import { home } from "velite/generated";
 
 export default async function () {
 	return (
@@ -16,7 +16,7 @@ export default async function () {
 				id={Elements.TEXTBOOK_MAIN}
 				tabIndex={-1}
 			>
-				<MainMdx code={home.body.code} />
+				<Mdx code={home.code} />
 				<div className="flex justify-center items-center">
 					<ContinueReading className="w-48" />
 				</div>

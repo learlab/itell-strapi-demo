@@ -1,7 +1,7 @@
 "use client";
 
 import { createChatsAction } from "@/actions/chat";
-import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
+import { useLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
 import {
@@ -45,7 +45,7 @@ export const PageProvider = ({
 	questions,
 	pageStatus,
 }: Props) => {
-	useTrackLastVisitedPage();
+	useLastVisitedPage();
 
 	const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
 		`question-store-${pageSlug}`,

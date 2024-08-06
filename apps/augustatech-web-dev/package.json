@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"build": "next build",
-		"clean": "rm -rf .next .turbo .contentlayer",
+		"clean": "rm -rf .next .turbo .velite",
 		"dev": "next dev -p 3000",
 		"start": "next start",
 		"test": "vitest"
@@ -27,7 +27,6 @@
 		"@xstate/store": "^2.0.0",
 		"arctic": "2.0.0-next.1",
 		"cmdk": "^0.2.0",
-		"contentlayer": "^0.3.4",
 		"drizzle-orm": "^0.30.10",
 		"drizzle-zod": "^0.5.1",
 		"es-toolkit": "^1.13.1",
@@ -41,7 +40,6 @@
 		"lucide-react": "^0.414.0",
 		"monaco-editor": "^0.50.0",
 		"next": "14.2.3",
-		"next-contentlayer": "^0.3.4",
 		"next-safe-navigation": "^0.3.2",
 		"next-themes": "^0.2.1",
 		"nextjs-better-unstable-cache": "^1.1.0",
@@ -76,11 +74,12 @@
 		"postcss": "^8.4.29",
 		"rehype-pretty-code": "^0.13.2",
 		"rehype-slug": "^5.1.0",
-		"remark-gfm": "^3.0.1",
+		"remark-gfm": "^4.0.0",
 		"remark-heading-id": "^1.0.1",
 		"shiki": "^1.11.1",
 		"tailwindcss": "^3.4.0",
 		"typescript": "5.5.0-beta",
+		"velite": "^0.1.1",
 		"vitest": "^0.31.4"
 	}
 }

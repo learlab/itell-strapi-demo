@@ -1,10 +1,16 @@
 "use client";
 
 import { createChatsAction } from "@/actions/chat";
-import { useTrackLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
+import { useLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
 import { PageStatus } from "@/lib/page-status";
 import { SelectedQuestions } from "@/lib/question";
-import { ChatStore, createChatStore, getHistory } from "@/lib/store/chat-store";
+import {
+	ChatStore,
+	botMessage,
+	createChatStore,
+	getHistory,
+	userMessage,
+} from "@/lib/store/chat-store";
 
 import {
 	QuestionSnapshot,
@@ -39,7 +45,7 @@ export const PageProvider = ({
 	questions,
 	pageStatus,
 }: Props) => {
-	useTrackLastVisitedPage();
+	useLastVisitedPage();
 
 	const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
 		`question-store-${pageSlug}`,
@@ -123,23 +129,17 @@ export const useAddChat = () => {
 		const userTimestamp = Date.now();
 		store.send({
 			type: "addMessage",
-			data: {
-				text,
-				isUser: true,
-				transform,
-				isStairs: false,
-			},
+			data: userMessage({ text, transform, isStairs: false }),
 		});
 
 		const botMessageId = crypto.randomUUID();
 		store.send({
 			type: "addMessage",
-			data: {
+			data: botMessage({
 				id: botMessageId,
 				text: "",
-				isUser: false,
 				isStairs: false,
-			},
+			}),
 			setActive: true,
 		});
 

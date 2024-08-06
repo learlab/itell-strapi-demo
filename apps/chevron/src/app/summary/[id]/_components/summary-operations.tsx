@@ -10,10 +10,10 @@ import { CircleEllipsisIcon } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
-	pageUrl: string;
+	pageHref: string;
 };
 
-export const SummaryOperations = ({ pageUrl }: Props) => {
+export const SummaryOperations = ({ pageHref }: Props) => {
 	return (
 		<>
 			<DropdownMenu>
@@ -23,7 +23,7 @@ export const SummaryOperations = ({ pageUrl }: Props) => {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
 					<DropdownMenuItem className="flex cursor-pointer items-center">
-						<Link href={pageUrl}>Go to page</Link>
+						<Link href={pageHref}>Go to page</Link>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

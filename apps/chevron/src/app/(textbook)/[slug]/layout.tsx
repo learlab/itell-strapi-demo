@@ -20,7 +20,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 	}
 
 	const title = page.title;
-	const description = page.description || page.body.raw.slice(0, 100);
+	const description = page.description || page.excerpt;
 	const ogUrl = new URL(`${env.HOST}/og`);
 	ogUrl.searchParams.set("title", page.title);
 	ogUrl.searchParams.set("slug", page.page_slug);

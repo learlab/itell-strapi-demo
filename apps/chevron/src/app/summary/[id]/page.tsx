@@ -50,7 +50,7 @@ export default async function ({ params }: PageProps) {
 				<div className="flex items-center space-x-10">
 					<SummaryBackButton />
 				</div>
-				<SummaryOperations pageUrl={page.url} />
+				<SummaryOperations pageHref={page.href} />
 			</header>
 			<main className="grid gap-12 md:grid-cols-[200px_1fr] mt-4">
 				<div className="w-[200px] space-y-4">

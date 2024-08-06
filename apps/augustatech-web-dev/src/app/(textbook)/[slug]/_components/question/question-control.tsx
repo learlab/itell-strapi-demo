@@ -29,11 +29,6 @@ type Props = {
 	condition: string;
 };
 
-type PortalIds = {
-	scrollBack: string;
-	continueReading: string;
-};
-
 export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
@@ -237,4 +232,9 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	}, [currentChunk]);
 
 	return <PortalContainer portals={portals} />;
+};
+
+type PortalIds = {
+	scrollBack: string;
+	continueReading: string;
 };

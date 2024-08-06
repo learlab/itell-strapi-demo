@@ -99,7 +99,7 @@ export const updateUserPrefsAction = authedProcedure
  * Reset user progress, also deletes all user data, including summaries, answers, events, etc.
  */
 export const resetUserAction = authedProcedure
-	.output(z.object({ pageSlug: z.string() }))
+	.output(z.object({ pageSlug: z.string().nullable() }))
 	.handler(async ({ ctx }) => {
 		const userId = ctx.user.id;
 		return await db.transaction(async (tx) => {

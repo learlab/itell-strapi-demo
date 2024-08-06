@@ -12,10 +12,10 @@ import { Button } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { clearSummaryLocal } from "@textbook/summary/summary-input";
-import type { Page } from "contentlayer/generated";
 import { ArrowUpIcon, PencilIcon, RotateCcwIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useOptimistic, useTransition } from "react";
+import { Page } from "velite/generated";
 import { AdminTools } from "./admin-tools";
 
 interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {

@@ -1,7 +1,7 @@
-import { allPages } from "contentlayer/generated";
 import { groupBy } from "es-toolkit";
+import { pages } from "velite/generated";
 
-export const allPagesSorted = allPages.sort((a, b) => {
+export const allPagesSorted = pages.sort((a, b) => {
 	return a.chapter - b.chapter;
 });
 

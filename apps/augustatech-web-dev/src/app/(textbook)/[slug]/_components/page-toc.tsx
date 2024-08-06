@@ -6,7 +6,7 @@ import { BookmarkIcon } from "lucide-react";
 import { useEffect } from "react";
 
 type Heading = {
-	level: "one" | "two" | "three" | "four" | "other";
+	level: "one" | "two" | "three" | "four" | "other" | string;
 	text: string | undefined;
 	slug: string | undefined;
 };

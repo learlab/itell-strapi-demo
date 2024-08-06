@@ -40,7 +40,6 @@ export default async function () {
 						>
 							{firstPage.title}
 						</PageLink>
-						!
 					</CardContent>
 				</Card>
 			</DashboardShell>

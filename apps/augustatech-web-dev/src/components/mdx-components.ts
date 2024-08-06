@@ -22,7 +22,7 @@ import { Image } from "@itell/ui/client";
 import { Sandbox } from "@textbook/sandbox";
 import { Accordion, AccordionItem } from "./ui/accordion";
 
-export const MdxComponents = {
+export const TextbookComponents = {
 	YoutubeVideo,
 	Image,
 	Blockquote,

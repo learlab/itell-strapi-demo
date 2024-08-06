@@ -47,7 +47,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 			: null;
 
 	return {
-		id: page._id,
+		id: page.title,
 		index,
 		title: page.title,
 		page_slug: page.page_slug,

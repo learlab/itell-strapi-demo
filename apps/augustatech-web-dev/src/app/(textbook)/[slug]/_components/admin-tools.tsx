@@ -233,7 +233,9 @@ const RestartTextbook = () => {
 								return toast.error(err.data);
 							}
 							localStorage.clear();
-							window.location.href = makePageHref(data.pageSlug);
+							window.location.href = data.pageSlug
+								? makePageHref(data.pageSlug)
+								: "/";
 						}}
 					>
 						<span className="flex items-center gap-2">
