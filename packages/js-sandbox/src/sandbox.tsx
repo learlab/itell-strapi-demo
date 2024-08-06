@@ -1,48 +1,33 @@
 import React from "react";
 import { CodeEditor } from "./editor";
 
-type Props = {
-	height?: number;
-	id?: string;
-	code?: string;
-	children: React.ReactNode;
+export type SandboxProps = {
+	id: string;
+	code: string;
 	dependencies?: string[];
-};
-
-const hash = async (code: string) => {
-	const encoder = new TextEncoder();
-	const data = encoder.encode(code);
-	const hash = await crypto.subtle.digest("SHA-256", data);
-	const hashArray = Array.from(new Uint8Array(hash));
-	const hashHex = hashArray
-		.map((b) => b.toString(16).padStart(2, "0"))
-		.join("");
-	return hashHex;
+	height?: number;
+	onRun?: (code: string, same: boolean) => void;
 };
 
 export const Sandbox = async ({
 	id,
 	code,
 	height,
-	children,
 	dependencies,
-}: Props) => {
-	const editorCode =
-		code || React.Children.toArray(children).join("").trim() || "";
-
-	const editorId = id || (await hash(editorCode)).slice(0, 8);
-
+	onRun,
+}: SandboxProps) => {
 	return (
 		<div
 			className="flex flex-col my-4 sandbox"
-			id={editorId}
+			id={id}
 			aria-label="code exercise"
 		>
 			<CodeEditor
-				id={editorId}
-				code={editorCode}
+				id={id}
+				code={code}
 				height={height}
 				dependencies={dependencies}
+				onRun={onRun}
 			/>
 		</div>
 	);

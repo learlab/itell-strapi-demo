@@ -6,6 +6,7 @@ export const PAGE_SUMMARY_THRESHOLD = 2;
 export const isProduction = process.env.NODE_ENV === "production";
 
 export const EventType = {
+	RUN_CODE: "run-code",
 	KEYSTROKE: "keystroke",
 	CLICK: "click",
 	FOCUS_TIME: "focus-time",

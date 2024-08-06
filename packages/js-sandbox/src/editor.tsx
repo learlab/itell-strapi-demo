@@ -32,14 +32,22 @@ type Props = {
 	code: string;
 	dependencies?: string[];
 	height?: number;
+	onRun?: (code: string, same: boolean) => void;
 };
 
-export const CodeEditor = ({ id, code, dependencies, ...props }: Props) => {
+export const CodeEditor = ({
+	id,
+	code,
+	dependencies,
+	onRun,
+	...props
+}: Props) => {
 	const { theme } = useTheme();
 	const [height, setHeight] = useState(props.height || minHeight);
 	const { register, run } = useSandbox();
 	const [logs, setLogs] = useState<LogMessage[]>([]);
 	const editor = useRef<editor.IStandaloneCodeEditor | null>(null);
+	const prevCode = useRef("");
 
 	const reset = useCallback(() => {
 		if (editor.current) {
@@ -66,8 +74,8 @@ export const CodeEditor = ({ id, code, dependencies, ...props }: Props) => {
 	}, [handleMessage]);
 
 	return (
-		<>
-			<div className="flex gap-1">
+		<div className="relative">
+			<div className="flex gap-1 absolute top-2 right-4 z-10">
 				<Button
 					variant={"outline"}
 					size={"sm"}
@@ -75,6 +83,9 @@ export const CodeEditor = ({ id, code, dependencies, ...props }: Props) => {
 					onClick={() => {
 						setLogs([]);
 						run(id);
+						const code = editor.current?.getValue() || "";
+						onRun?.(code, prevCode.current === code);
+						prevCode.current = code;
 					}}
 					aria-label="Run code"
 				>
@@ -171,6 +182,6 @@ export const CodeEditor = ({ id, code, dependencies, ...props }: Props) => {
 				// @ts-ignore
 				styles={{ BASE_FONT_SIZE: "14px" }}
 			/>
-		</>
+		</div>
 	);
 };

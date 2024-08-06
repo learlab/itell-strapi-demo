@@ -18,8 +18,8 @@ import {
 	TabsBody,
 	TabsHeader,
 } from "@/components/ui/tabs";
-import { Sandbox } from "@itell/js-sandbox/sandbox";
 import { Image } from "@itell/ui/client";
+import { Sandbox } from "@textbook/sandbox";
 import { Accordion, AccordionItem } from "./ui/accordion";
 
 export const MdxComponents = {
