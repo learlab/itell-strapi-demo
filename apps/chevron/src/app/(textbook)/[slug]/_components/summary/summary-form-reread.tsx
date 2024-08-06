@@ -123,7 +123,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				},
 			});
 			if (err) {
-				throw new Error(err.message);
+				throw new Error("create summary action", { cause: err });
 			}
 
 			clearKeystroke();
@@ -212,7 +212,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			reportSentry("score summary reread", {
 				body: requestBodyRef.current,
 				response: summaryResponseRef.current,
-				error,
+				error: error?.cause,
 			});
 		}
 	}, [isError]);

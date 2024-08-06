@@ -132,7 +132,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 			const [focusTime, err] = await getFocusTimeAction({ pageSlug });
 			if (err) {
-				throw new Error(err.message);
+				throw new Error("get focus time action", { cause: err });
 			}
 			const body = JSON.stringify({
 				summary: input,
@@ -220,11 +220,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						finishStage("Analyzing");
 						chatStore.send({ type: "setStairsQuestion", data: stairsData });
 					} else {
-						throw new Error("invalid stairs chunk");
+						throw new Error("invalid stairs chunk", { cause: stairsChunk });
 					}
 				}
 			} else {
-				throw new Error(await response.text());
+				throw new Error("fetch score summary stairs", {
+					cause: await response.text(),
+				});
 			}
 
 			if (summaryResponseRef.current) {
@@ -248,7 +250,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					},
 				});
 				if (err) {
-					throw new Error(err.data);
+					throw new Error("create summary action", { cause: err });
 				}
 
 				clearKeystroke();
@@ -382,17 +384,17 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		if (isError) {
+		if (error) {
 			summaryStore.send({ type: "fail", error: ErrorType.INTERNAL });
 			clearStages();
 			reportSentry("score summary stairs", {
 				body: requestBodyRef.current,
 				summaryResponse: summaryResponseRef.current,
 				stairsData: stairsDataRef.current,
-				error,
+				error: error?.cause,
 			});
 		}
-	}, [isError]);
+	}, [error]);
 
 	return (
 		<>

@@ -52,7 +52,7 @@ export const GET = async (req: Request) => {
 			provider_user_id: azureUser.oid,
 		});
 		if (err) {
-			throw new Error(err?.message);
+			throw new Error("azure callback", { cause: err });
 		}
 
 		if (!user) {
@@ -68,7 +68,7 @@ export const GET = async (req: Request) => {
 				provider_user_id: azureUser.oid,
 			});
 			if (err) {
-				throw new Error(err?.message);
+				throw new Error("azure callback", { cause: err });
 			}
 
 			user = newUser;

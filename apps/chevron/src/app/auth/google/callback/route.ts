@@ -70,7 +70,7 @@ export async function GET(req: Request) {
 			provider_user_id: googleUser.id,
 		});
 		if (err) {
-			throw new Error(err?.message);
+			throw new Error("google auth", { cause: err });
 		}
 
 		if (!user) {
@@ -87,7 +87,7 @@ export async function GET(req: Request) {
 				provider_user_id: googleUser.id,
 			});
 			if (err) {
-				throw new Error(err?.message);
+				throw new Error("google auth", { cause: err });
 			}
 
 			user = newUser;

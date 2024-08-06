@@ -201,9 +201,7 @@ export const QuestionBoxReread = ({
 								</HoverCard>
 							)}
 
-							<SubmitButton
-								answered={answerStatus === AnswerStatusReread.ANSWERED}
-							/>
+							<SubmitButton chunkSlug={chunkSlug} />
 
 							{answerStatus !== AnswerStatusReread.UNANSWERED &&
 								isNextButtonDisplayed && (

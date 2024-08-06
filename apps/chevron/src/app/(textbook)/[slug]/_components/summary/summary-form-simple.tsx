@@ -46,7 +46,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 				currentPageSlug: page.page_slug,
 			});
 			if (err) {
-				throw new Error(err.message);
+				throw new Error("increment user page slug action", { cause: err });
 			}
 			if (isLastPage(page.page_slug)) {
 				toast.info("You have finished the entire textbook!", {
@@ -65,7 +65,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 		if (isError) {
 			reportSentry("summary simple", {
 				pageSlug: page.page_slug,
-				error,
+				error: error?.cause,
 			});
 		}
 	}, [isError]);

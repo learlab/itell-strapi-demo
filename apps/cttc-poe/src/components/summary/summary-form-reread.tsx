@@ -275,8 +275,12 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 						</p>
 					)}
 					<div className="flex justify-end">
-						<StatusButton disabled={!isSummaryReady} pending={isPending}>
-							{status === "idle" ? "Submit" : "Resubmit"}
+						<StatusButton
+							disabled={!isSummaryReady}
+							pending={isPending}
+							className="w-36"
+						>
+							Submit
 						</StatusButton>
 					</div>
 				</form>
