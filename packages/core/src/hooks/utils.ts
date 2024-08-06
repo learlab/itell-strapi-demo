@@ -1,6 +1,7 @@
 import {
 	ReactNode,
 	RefObject,
+	useCallback,
 	useEffect,
 	useLayoutEffect,
 	useRef,
@@ -129,13 +130,28 @@ export function useDebounce<T>(value: T, delay?: number): T {
 	return debouncedValue;
 }
 
+export type PortalElement = {
+	id: string;
+	element: React.ReactPortal;
+};
+
 export const usePortal = () => {
-	const [nodes, setNodes] = useState<ReactNode[]>([]);
+	const [portals, setPortals] = useState<PortalElement[]>([]);
 
-	const addNode = (children: ReactNode, container: Element) => {
-		// @ts-ignore
-		setNodes((prevNodes) => [...prevNodes, createPortal(children, container)]);
-	};
+	const addPortal = useCallback(
+		(children: React.ReactNode, container: Element) => {
+			const id = Math.random().toString(36).slice(2, 9);
+			const portal = createPortal(children, container);
+			setPortals((prev) => [...prev, { id, element: portal }]);
 
-	return { nodes, addNode };
+			return id;
+		},
+		[],
+	);
+
+	const removePortal = useCallback((id: string) => {
+		setPortals((prev) => prev.filter((portal) => portal.id !== id));
+	}, []);
+
+	return { portals, addPortal, removePortal };
 };

@@ -7,12 +7,10 @@ import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
 import {
-	SelectChunks,
 	SelectCurrentChunk,
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
 import {
 	Button,
@@ -28,7 +26,6 @@ import {
 	CardContent,
 	CardDescription,
 	CardHeader,
-	Warning,
 } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";

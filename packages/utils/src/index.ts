@@ -97,7 +97,7 @@ export const numOfWords = (str: string): number => {
 	if (str.trim() === "") {
 		return 0;
 	}
-	const strWithoutSpace = str.replace(/[\s\t]+/g, " ");
+	const strWithoutSpace = str.replace(/\s+/g, " ").trim();
 	return strWithoutSpace.split(" ").length;
 };
 

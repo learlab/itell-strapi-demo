@@ -324,9 +324,7 @@ export const QuestionBoxStairs = ({
 							// when answer is not all correct
 							<>
 								{formState.answerStatus !== AnswerStatusStairs.BOTH_CORRECT && (
-									<SubmitButton
-										answered={answerStatus !== AnswerStatusStairs.UNANSWERED}
-									/>
+									<SubmitButton chunkSlug={chunkSlug} />
 								)}
 
 								{answerStatus !== AnswerStatusStairs.UNANSWERED &&

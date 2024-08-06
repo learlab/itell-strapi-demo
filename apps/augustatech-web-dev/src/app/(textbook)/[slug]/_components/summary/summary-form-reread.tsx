@@ -12,6 +12,7 @@ import { isLastPage } from "@/lib/pages";
 import { SelectChunks, SelectSummaryReady } from "@/lib/store/question-store";
 import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
+import { PortalContainer } from "@itell/core";
 import {
 	useDebounce,
 	useKeystroke,
@@ -63,7 +64,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
 
-	const { nodes: portalNodes, addNode } = usePortal();
+	const { addPortal, portals } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -105,7 +106,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			const scores = parsed.data;
 			summaryResponseRef.current = scores;
 
-			const [data, err] = await createSummaryAction({
+			const [_, err] = await createSummaryAction({
 				summary: {
 					text: input,
 					pageSlug,
@@ -167,7 +168,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setInertBackground(randomChunkSlug);
 			},
 			onPopoverRender: (popover) => {
-				addNode(
+				addPortal(
 					<FinishReadingButton
 						onClick={(time) => {
 							exitChunk();
@@ -217,55 +218,56 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
-			{portalNodes}
-
-			<div role="status">
-				{finished && page.nextPageSlug && (
-					<div className="space-y-2 space-x-2">
-						<p>
-							You have finished this page and can move on. You are still welcome
-							to improve the summary.
-						</p>
-						<NextPageButton pageSlug={page.nextPageSlug} />
-					</div>
-				)}
-			</div>
-
-			<h2 id="summary-form-heading" className="sr-only">
-				submit summary
-			</h2>
-			<form
-				className="space-y-4"
-				onSubmit={action}
-				aria-labelledby="summary-form-heading"
-			>
-				<SummaryInput
-					disabled={!isSummaryReady}
-					pageSlug={pageSlug}
-					pending={isPending}
-					stages={stages}
-					userRole={user.role}
-					ref={ref}
-				/>
-				{isError && (
-					<Warning role="alert">{ErrorFeedback[ErrorType.INTERNAL]}</Warning>
-				)}
-				{isDelayed && <DelayMessage />}
-				<div className="flex justify-end">
-					<Button disabled={!isSummaryReady || isPending} type="submit">
-						<span className="flex items-center gap-2">
-							{isPending ? (
-								<Spinner />
-							) : (
-								<SendHorizontalIcon className="size-4" />
-							)}
-							Submit
-						</span>
-					</Button>
+		<>
+			<PortalContainer portals={portals} />
+			<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
+				<div role="status">
+					{finished && page.nextPageSlug && (
+						<div className="space-y-2 space-x-2">
+							<p>
+								You have finished this page and can move on. You are still
+								welcome to improve the summary.
+							</p>
+							<NextPageButton pageSlug={page.nextPageSlug} />
+						</div>
+					)}
 				</div>
-			</form>
-		</div>
+
+				<h2 id="summary-form-heading" className="sr-only">
+					submit summary
+				</h2>
+				<form
+					className="space-y-4"
+					onSubmit={action}
+					aria-labelledby="summary-form-heading"
+				>
+					<SummaryInput
+						disabled={!isSummaryReady}
+						pageSlug={pageSlug}
+						pending={isPending}
+						stages={stages}
+						userRole={user.role}
+						ref={ref}
+					/>
+					{isError && (
+						<Warning role="alert">{ErrorFeedback[ErrorType.INTERNAL]}</Warning>
+					)}
+					{isDelayed && <DelayMessage />}
+					<div className="flex justify-end">
+						<Button disabled={!isSummaryReady || isPending} type="submit">
+							<span className="flex items-center gap-2">
+								{isPending ? (
+									<Spinner />
+								) : (
+									<SendHorizontalIcon className="size-4" />
+								)}
+								Submit
+							</span>
+						</Button>
+					</div>
+				</form>
+			</div>
+		</>
 	);
 };
 

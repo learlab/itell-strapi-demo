@@ -1,3 +1,4 @@
 import { EventTracker } from "./event-tracker";
+import { PortalContainer } from "./portal-container";
 
-export { EventTracker };
+export { EventTracker, PortalContainer };

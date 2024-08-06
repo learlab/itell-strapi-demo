@@ -3,8 +3,10 @@
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getChunkElement } from "@/lib/utils";
+import { PortalContainer } from "@itell/core";
 import { usePortal } from "@itell/core/hooks";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useConstructedResponse } from "../provider/page-provider";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
@@ -31,16 +33,8 @@ export const ConstructedResponseControl = ({
 			shouldBlur: state.shouldBlur,
 		}));
 
-	const { nodes, addNode } = usePortal();
-	const hideNextChunkButton = (el: HTMLElement) => {
-		const button = el.querySelector(
-			":scope .continue-reading-button-container",
-		) as HTMLDivElement;
-
-		if (button) {
-			button.remove();
-		}
-	};
+	const { addPortal, portals, removePortal } = usePortal();
+	const portalIds = useRef<PortalIds>({} as PortalIds);
 
 	const insertScrollBackButton = (el: HTMLElement) => {
 		const buttonContainer = document.createElement("div");
@@ -49,15 +43,10 @@ export const ConstructedResponseControl = ({
 		// note this the scroll back button is inserted as a sibling to the content chunk
 		// so it won't be blurred as a children
 		el.prepend(buttonContainer);
-		addNode(<ScrollBackButton />, buttonContainer);
-	};
-
-	const hideScrollBackButton = () => {
-		const button = document.querySelector(
-			".scroll-back-button-container",
-		) as HTMLDivElement;
-
-		button?.remove();
+		portalIds.current.scrollBack = addPortal(
+			<ScrollBackButton />,
+			buttonContainer,
+		);
 	};
 
 	const insertContinueReadingButton = (el: HTMLElement, chunkSlug: string) => {
@@ -66,7 +55,7 @@ export const ConstructedResponseControl = ({
 		buttonContainer.className = "continue-reading-button-container";
 		el.prepend(buttonContainer);
 
-		addNode(
+		portalIds.current.continueReading = addPortal(
 			<ContinueChunkButton
 				userId={userId}
 				chunkSlug={chunkSlug}
@@ -88,7 +77,7 @@ export const ConstructedResponseControl = ({
 		el.appendChild(questionContainer);
 
 		if (condition === Condition.SIMPLE) {
-			addNode(
+			addPortal(
 				<QuestionBoxSimple
 					userId={userId}
 					chunkSlug={chunkSlug}
@@ -101,7 +90,7 @@ export const ConstructedResponseControl = ({
 		}
 
 		if (condition === Condition.RANDOM_REREAD) {
-			addNode(
+			addPortal(
 				<QuestionBoxReread
 					userId={userId}
 					chunkSlug={chunkSlug}
@@ -114,7 +103,7 @@ export const ConstructedResponseControl = ({
 		}
 
 		if (condition === Condition.STAIRS) {
-			addNode(
+			addPortal(
 				<QuestionBoxStairs
 					userId={userId}
 					question={question}
@@ -140,7 +129,7 @@ export const ConstructedResponseControl = ({
 			const currentChunkElement = getChunkElement(currentChunkSlug);
 			if (currentChunkElement) {
 				currentChunkElement.classList.remove("blurred");
-				hideNextChunkButton(currentChunkElement);
+				removePortal(portalIds.current.continueReading);
 
 				// add next button to next chunk, if the current chunk does not contain a question
 				if (shouldBlur && !chunkData[currentChunkSlug].question) {
@@ -157,7 +146,7 @@ export const ConstructedResponseControl = ({
 
 		// when the last chunk is revealed, hide the scroll back button
 		if (idx === chunkSlugs.length - 1) {
-			hideScrollBackButton();
+			removePortal(portalIds.current.scrollBack);
 		}
 	};
 
@@ -202,26 +191,30 @@ export const ConstructedResponseControl = ({
 	useEffect(() => {
 		revealChunk(currentChunk);
 
-		if (!isProduction) {
-			chunkSlugs.forEach((slug, idx) => {
-				const el = getChunkElement(slug);
-				if (!el) {
-					return;
-				}
-				const currentIndex = chunkSlugs.indexOf(currentChunk);
-				const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
+		// if (!isProduction) {
+		// 	chunkSlugs.forEach((slug, idx) => {
+		// 		const el = getChunkElement(slug);
+		// 		if (!el) {
+		// 			return;
+		// 		}
+		// 		const currentIndex = chunkSlugs.indexOf(currentChunk);
+		// 		const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
 
-				if (shouldBlur) {
-					if (idx !== 0 && isChunkUnvisited) {
-						el.classList.add("blurred");
-					} else {
-						el.classList.remove("blurred");
-						hideNextChunkButton(el);
-					}
-				}
-			});
-		}
+		// 		if (shouldBlur) {
+		// 			if (idx !== 0 && isChunkUnvisited) {
+		// 				el.classList.add("blurred");
+		// 			} else {
+		// 				el.classList.remove("blurred");
+		// 				removePortal(portalIds.current.continueReading);
+		// 			}
+		// 		}
+		// 	});
+		// }
 	}, [currentChunk]);
 
-	return nodes;
+	return <PortalContainer portals={portals} />;
+};
+type PortalIds = {
+	scrollBack: string;
+	continueReading: string;
 };

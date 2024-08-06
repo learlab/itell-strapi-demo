@@ -23,6 +23,7 @@ import {
 	scrollToElement,
 } from "@/lib/utils";
 import { Elements } from "@itell/constants";
+import { PortalContainer } from "@itell/core";
 import {
 	useDebounce,
 	useKeystroke,
@@ -171,7 +172,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	}, initialState);
 
-	const { nodes: portalNodes, addNode } = usePortal();
+	const { portals, addPortal } = usePortal();
 	const isSummaryReady = useConstructedResponse(
 		(state) => state.isSummaryReady,
 	);
@@ -191,7 +192,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			animate: false,
 			allowClose: false,
 			onPopoverRender: (popover) => {
-				addNode(
+				addPortal(
 					<ChatStairs
 						userId={user.id}
 						userImage={user.image}
@@ -454,65 +455,68 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<div className="space-y-2">
-			{portalNodes}
+		<>
+			<PortalContainer portals={portals} />
+			<div className="space-y-2">
+				<SummaryFeedback
+					className={isPending ? "opacity-70" : ""}
+					feedback={feedback}
+					needRevision={
+						isLastPage(pageSlug) ? !isTextbookFinished : !state.canProceed
+					}
+				/>
 
-			<SummaryFeedback
-				className={isPending ? "opacity-70" : ""}
-				feedback={feedback}
-				needRevision={
-					isLastPage(pageSlug) ? !isTextbookFinished : !state.canProceed
-				}
-			/>
+				<div className="flex gap-2 items-center">
+					{state.canProceed && page.nextPageSlug && (
+						<NextPageButton pageSlug={page.nextPageSlug} />
+					)}
+					{state.stairsQuestion && (
+						<Button
+							variant={"outline"}
+							onClick={() =>
+								goToQuestion(state.stairsQuestion as StairsQuestion)
+							}
+						>
+							<span>See question</span>
+							<FileQuestionIcon className="size-4 ml-2" />
+						</Button>
+					)}
+				</div>
 
-			<div className="flex gap-2 items-center">
-				{state.canProceed && page.nextPageSlug && (
-					<NextPageButton pageSlug={page.nextPageSlug} />
-				)}
-				{state.stairsQuestion && (
-					<Button
-						variant={"outline"}
-						onClick={() => goToQuestion(state.stairsQuestion as StairsQuestion)}
-					>
-						<span>See question</span>
-						<FileQuestionIcon className="size-4 ml-2" />
-					</Button>
+				<Confetti active={feedback?.isPassed || false} />
+
+				<h2 className="sr-only" id="summarization-form-heading">
+					summarization
+				</h2>
+				<form
+					aria-labelledby="summarization-form-heading"
+					className="mt-2 space-y-4"
+					onSubmit={action}
+				>
+					<SummaryInput
+						disabled={!isSummaryReady}
+						pageSlug={pageSlug}
+						pending={isPending}
+						stages={stages}
+						userRole={user.role}
+						ref={ref}
+					/>
+					{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
+					<div className="flex justify-end">
+						<StatusButton disabled={!isSummaryReady} pending={isPending}>
+							Submit
+						</StatusButton>
+					</div>
+				</form>
+				{isDelayed && (
+					<p className="text-sm">
+						The request is taking longer than usual, if this keeps loading
+						without a response, please try refreshing the page. If the problem
+						persists, please report to lear.lab.vu@gmail.com.
+					</p>
 				)}
 			</div>
-
-			<Confetti active={feedback?.isPassed || false} />
-
-			<h2 className="sr-only" id="summarization-form-heading">
-				summarization
-			</h2>
-			<form
-				aria-labelledby="summarization-form-heading"
-				className="mt-2 space-y-4"
-				onSubmit={action}
-			>
-				<SummaryInput
-					disabled={!isSummaryReady}
-					pageSlug={pageSlug}
-					pending={isPending}
-					stages={stages}
-					userRole={user.role}
-					ref={ref}
-				/>
-				{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
-				<div className="flex justify-end">
-					<StatusButton disabled={!isSummaryReady} pending={isPending}>
-						Submit
-					</StatusButton>
-				</div>
-			</form>
-			{isDelayed && (
-				<p className="text-sm">
-					The request is taking longer than usual, if this keeps loading without
-					a response, please try refreshing the page. If the problem persists,
-					please report to lear.lab.vu@gmail.com.
-				</p>
-			)}
-		</div>
+		</>
 	);
 };
 

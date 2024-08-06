@@ -7,12 +7,10 @@ import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
 import {
-	SelectChunks,
 	SelectCurrentChunk,
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
 import {
 	Button,
@@ -28,7 +26,6 @@ import {
 	CardContent,
 	CardDescription,
 	CardHeader,
-	Warning,
 } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
@@ -143,7 +140,9 @@ export const QuestionBoxStairs = ({
 			return;
 		}
 	});
+
 	const isPending = useDebounce(_isPending, 100);
+	const disabled = isPending || currentChunk !== chunkSlug;
 
 	const status = state.status;
 	const isNextButtonDisplayed =
@@ -306,7 +305,7 @@ export const QuestionBoxStairs = ({
 									<StatusButton
 										pending={isPending}
 										type="submit"
-										disabled={isPending || currentChunk !== chunkSlug}
+										disabled={disabled}
 										variant={"outline"}
 										className="w-32"
 									>

@@ -35,6 +35,7 @@ import {
 	scrollToElement,
 } from "@/lib/utils";
 import { Elements } from "@itell/constants";
+import { PortalContainer } from "@itell/core";
 import {
 	useDebounce,
 	useKeystroke,
@@ -79,7 +80,7 @@ type Props = {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
-	const { nodes: portalNodes, addNode } = usePortal();
+	const { portals, addPortal } = usePortal();
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -309,7 +310,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			animate: false,
 			allowClose: false,
 			onPopoverRender: (popover) => {
-				addNode(
+				addPortal(
 					<ChatStairs
 						id={Elements.STAIRS_CONTAINER}
 						pageSlug={pageSlug}
@@ -394,68 +395,68 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
-			{portalNodes}
-
-			{feedback && (
-				<SummaryFeedback
-					className={isPending ? "opacity-70" : ""}
-					feedback={feedback}
-					needRevision={
-						isLastPage(pageSlug) ? !user.finished : !isNextPageVisible
-					}
-				/>
-			)}
-
-			<div className="flex gap-2 items-center">
-				{isNextPageVisible && page.nextPageSlug && (
-					<NextPageButton pageSlug={page.nextPageSlug} />
+		<>
+			<PortalContainer portals={portals} />
+			<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
+				{feedback && (
+					<SummaryFeedback
+						className={isPending ? "opacity-70" : ""}
+						feedback={feedback}
+						needRevision={
+							isLastPage(pageSlug) ? !user.finished : !isNextPageVisible
+						}
+					/>
 				)}
-				{stairsQuestion && (
-					<Button
-						variant={"outline"}
-						onClick={() => goToQuestion(stairsQuestion as StairsQuestion)}
-					>
-						<span className="flex items-center gap-2">
-							<FileQuestionIcon className="size-4" />
-							See question
-						</span>
-					</Button>
-				)}
-			</div>
 
-			<Confetti active={feedback?.isPassed || false} />
-			<h2 id="summary-form-heading" className="sr-only">
-				submit summary
-			</h2>
-			<form
-				className="mt-2 space-y-4"
-				onSubmit={action}
-				aria-labelledby="summary-form-heading"
-			>
-				<SummaryInput
-					disabled={!isSummaryReady}
-					pageSlug={pageSlug}
-					pending={isPending}
-					stages={stages}
-					userRole={user.role}
-					ref={ref}
-				/>
-				{submissionError && (
-					<Warning role="alert">{ErrorFeedback[submissionError]}</Warning>
-				)}
-				<div className="flex justify-end">
-					<Button type="submit" disabled={isPending || !isSummaryReady}>
-						<span className="inline-flex items-center gap-2">
-							{isPending ? (
-								<Spinner />
-							) : (
-								<SendHorizontalIcon className="size-4" />
-							)}
-							Submit
-						</span>
-					</Button>
-					{/* <StatusButton
+				<div className="flex gap-2 items-center">
+					{isNextPageVisible && page.nextPageSlug && (
+						<NextPageButton pageSlug={page.nextPageSlug} />
+					)}
+					{stairsQuestion && (
+						<Button
+							variant={"outline"}
+							onClick={() => goToQuestion(stairsQuestion as StairsQuestion)}
+						>
+							<span className="flex items-center gap-2">
+								<FileQuestionIcon className="size-4" />
+								See question
+							</span>
+						</Button>
+					)}
+				</div>
+
+				<Confetti active={feedback?.isPassed || false} />
+				<h2 id="summary-form-heading" className="sr-only">
+					submit summary
+				</h2>
+				<form
+					className="mt-2 space-y-4"
+					onSubmit={action}
+					aria-labelledby="summary-form-heading"
+				>
+					<SummaryInput
+						disabled={!isSummaryReady}
+						pageSlug={pageSlug}
+						pending={isPending}
+						stages={stages}
+						userRole={user.role}
+						ref={ref}
+					/>
+					{submissionError && (
+						<Warning role="alert">{ErrorFeedback[submissionError]}</Warning>
+					)}
+					<div className="flex justify-end">
+						<Button type="submit" disabled={isPending || !isSummaryReady}>
+							<span className="inline-flex items-center gap-2">
+								{isPending ? (
+									<Spinner />
+								) : (
+									<SendHorizontalIcon className="size-4" />
+								)}
+								Submit
+							</span>
+						</Button>
+						{/* <StatusButton
 						disabled={!isSummaryReady}
 						pending={isPending}
 						className="w-32"
@@ -465,10 +466,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							Submit
 						</span>
 					</StatusButton> */}
-				</div>
-			</form>
-			{isDelayed && <DelayMessage />}
-		</div>
+					</div>
+				</form>
+				{isDelayed && <DelayMessage />}
+			</div>
+		</>
 	);
 };
 

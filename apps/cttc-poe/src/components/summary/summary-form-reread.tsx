@@ -15,6 +15,7 @@ import {
 	scrollToElement,
 } from "@/lib/utils";
 import { Elements } from "@itell/constants";
+import { PortalContainer } from "@itell/core";
 import {
 	useDebounce,
 	useKeystroke,
@@ -76,7 +77,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		}
 	};
 
-	const { nodes: portalNodes, addNode } = usePortal();
+	const { portals, addPortal } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const { updateUser } = useSessionAction();
 	const requestBodyRef = useRef<string>("");
@@ -106,7 +107,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			animate: false,
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
-				addNode(
+				addPortal(
 					<FinishReadingButton
 						onClick={(time) => {
 							exitChunk();
@@ -236,49 +237,51 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	}, [isError]);
 
 	return (
-		<div className="space-y-2">
-			{portalNodes}
-			{finished && page.nextPageSlug && (
-				<div className="space-y-2 space-x-2">
-					<p>
-						You have finished this page. You can choose to refine your summary
-						or move on to the next page.
-					</p>
-					<NextPageButton pageSlug={page.nextPageSlug} />
-				</div>
-			)}
-
-			<h2 className="sr-only" id="summarization-form-heading">
-				summarization
-			</h2>
-			<form
-				aria-labelledby="summarization-form-heading"
-				className="space-y-4"
-				onSubmit={action}
-			>
-				<SummaryInput
-					disabled={isPending || !isSummaryReady}
-					pageSlug={pageSlug}
-					pending={isPending}
-					stages={stages}
-					userRole={user.role}
-					ref={ref}
-				/>
-				{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
-				{isDelayed && (
-					<p className="text-sm">
-						The request is taking longer than usual, if this keeps loading
-						without a response, please try refreshing the page. If the problem
-						persists, please report to lear.lab.vu@gmail.com.
-					</p>
+		<>
+			<PortalContainer portals={portals} />
+			<div className="space-y-2">
+				{finished && page.nextPageSlug && (
+					<div className="space-y-2 space-x-2">
+						<p>
+							You have finished this page. You can choose to refine your summary
+							or move on to the next page.
+						</p>
+						<NextPageButton pageSlug={page.nextPageSlug} />
+					</div>
 				)}
-				<div className="flex justify-end">
-					<StatusButton disabled={!isSummaryReady} pending={isPending}>
-						{status === "idle" ? "Submit" : "Resubmit"}
-					</StatusButton>
-				</div>
-			</form>
-		</div>
+
+				<h2 className="sr-only" id="summarization-form-heading">
+					summarization
+				</h2>
+				<form
+					aria-labelledby="summarization-form-heading"
+					className="space-y-4"
+					onSubmit={action}
+				>
+					<SummaryInput
+						disabled={isPending || !isSummaryReady}
+						pageSlug={pageSlug}
+						pending={isPending}
+						stages={stages}
+						userRole={user.role}
+						ref={ref}
+					/>
+					{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+					{isDelayed && (
+						<p className="text-sm">
+							The request is taking longer than usual, if this keeps loading
+							without a response, please try refreshing the page. If the problem
+							persists, please report to lear.lab.vu@gmail.com.
+						</p>
+					)}
+					<div className="flex justify-end">
+						<StatusButton disabled={!isSummaryReady} pending={isPending}>
+							{status === "idle" ? "Submit" : "Resubmit"}
+						</StatusButton>
+					</div>
+				</form>
+			</div>
+		</>
 	);
 };
 

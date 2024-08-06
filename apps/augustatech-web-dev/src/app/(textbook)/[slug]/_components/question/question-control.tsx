@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import {
 	SelectChunkStatus,
@@ -11,11 +10,12 @@ import {
 } from "@/lib/store/question-store";
 import { LoginButton } from "@auth/auth-form";
 import { Elements } from "@itell/constants";
+import { PortalContainer } from "@itell/core";
 import { usePortal } from "@itell/core/hooks";
 import { Warning } from "@itell/ui/server";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";
 import { QuestionBoxSimple } from "./question-box-simple";
@@ -29,6 +29,11 @@ type Props = {
 	condition: string;
 };
 
+type PortalIds = {
+	scrollBack: string;
+	continueReading: string;
+};
+
 export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
@@ -36,7 +41,9 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const status = useSelector(store, SelectChunkStatus);
 	const shouldBlur = useSelector(store, SelectShouldBlur);
 
-	const { nodes, addNode } = usePortal();
+	const { portals, addPortal, removePortal } = usePortal();
+
+	const portalIds = useRef<PortalIds>({} as PortalIds);
 
 	const insertScrollBackButton = (el: HTMLElement) => {
 		const buttonContainer = document.createElement("div");
@@ -45,37 +52,22 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		// note this the scroll back button is inserted as a sibling to the content chunk
 		// so it won't be blurred as a children
 		el.prepend(buttonContainer);
-		addNode(<ScrollBackButton />, buttonContainer);
-	};
-
-	const hideScrollBackButton = () => {
-		const button = document.querySelector(
-			".scroll-back-button-container",
-		) as HTMLDivElement;
-
-		button?.remove();
-	};
-
-	const hideContinueButton = (el: HTMLElement) => {
-		const button = el.querySelector(
-			":scope .continue-reading-button-container",
-		) as HTMLDivElement;
-
-		if (button) {
-			button.remove();
-		}
+		portalIds.current.scrollBack = addPortal(
+			<ScrollBackButton />,
+			buttonContainer,
+		);
 	};
 
 	const insertContinueButton = (el: HTMLElement, chunkSlug: string) => {
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className = "continue-reading-button-container";
 		if (!userId) {
-			addNode(<LoginButton />, buttonContainer);
+			addPortal(<LoginButton />, buttonContainer);
 			el.prepend(buttonContainer);
 			return;
 		}
 
-		addNode(
+		portalIds.current.continueReading = addPortal(
 			<ContinueChunkButton
 				chunkSlug={chunkSlug}
 				pageSlug={pageSlug}
@@ -89,7 +81,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const insertUnlockSummaryButton = (el: HTMLElement, chunkSlug: string) => {
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className = "unlock-summary-button-container";
-		addNode(
+		addPortal(
 			<UnlockSummaryButton
 				pageSlug={pageSlug}
 				chunkSlug={chunkSlug}
@@ -113,7 +105,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		el.appendChild(questionContainer);
 
 		if (!userId) {
-			addNode(
+			addPortal(
 				<Warning>
 					<p>You need to be logged in to view this question and move forward</p>
 					<LoginButton />
@@ -124,7 +116,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		}
 
 		if (condition === Condition.SIMPLE) {
-			addNode(
+			addPortal(
 				<QuestionBoxSimple
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
@@ -138,7 +130,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		}
 
 		if (condition === Condition.RANDOM_REREAD) {
-			addNode(
+			addPortal(
 				<QuestionBoxReread
 					chunkSlug={chunkSlug}
 					pageSlug={pageSlug}
@@ -152,7 +144,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		}
 
 		if (condition === Condition.STAIRS) {
-			addNode(
+			addPortal(
 				<QuestionBoxStairs
 					question={question}
 					answer={answer}
@@ -181,12 +173,12 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		if (!currentChunkElement) return;
 
 		currentChunkElement.classList.remove("blurred");
-		hideContinueButton(currentChunkElement);
+		removePortal(portalIds.current.continueReading);
 
 		const hasQuestion = status[currentChunkSlug]?.question;
 
 		if (idx === chunks.length - 1) {
-			hideScrollBackButton();
+			removePortal(portalIds.current.scrollBack);
 			if (!hasQuestion) {
 				insertUnlockSummaryButton(currentChunkElement, currentChunkSlug);
 			}
@@ -242,27 +234,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 
 	useEffect(() => {
 		revealChunk(currentChunk);
-
-		// if (!isProduction) {
-		// 	chunks.forEach((slug, idx) => {
-		// 		const el = getChunkElement(slug);
-		// 		if (!el) {
-		// 			return;
-		// 		}
-		// 		const currentIndex = chunks.indexOf(currentChunk);
-		// 		const isChunkUnvisited = currentIndex === -1 || idx > currentIndex;
-
-		// 		if (shouldBlur) {
-		// 			if (idx !== 0 && isChunkUnvisited) {
-		// 				el.classList.add("blurred");
-		// 			} else {
-		// 				el.classList.remove("blurred");
-		// 				hideContinueButton(el);
-		// 			}
-		// 		}
-		// 	});
-		// }
 	}, [currentChunk]);
 
-	return nodes;
+	return <PortalContainer portals={portals} />;
 };

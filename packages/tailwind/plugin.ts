@@ -102,6 +102,7 @@ export default plugin(
 				{
 					filter: "blur(4px)",
 					"user-select": "none",
+					"pointer-events": "none",
 				},
 			".continue-reading-button-container": {
 				position: "absolute",

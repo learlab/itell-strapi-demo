@@ -25,8 +25,6 @@ export const validateSummary = (
 	prevInput?: string,
 ): ErrorType | null => {
 	const wordCount = numOfWords(input);
-
-	// check word count
 	if (wordCount < 50 || wordCount > 200) {
 		return ErrorType.WORD_COUNT;
 	}
@@ -48,7 +46,7 @@ export const validateSummary = (
 };
 
 const levenshteinDistance = (a: string, b: string) => {
-	let tmp;
+	let tmp: string | number;
 	if (a.length === 0) {
 		return b.length;
 	}
@@ -63,7 +61,7 @@ const levenshteinDistance = (a: string, b: string) => {
 
 	let i: number;
 	let j: number;
-	let res: number = 0;
+	let res = 0;
 	const row = Array(a.length);
 	for (i = 0; i <= a.length; i++) {
 		row[i] = i;

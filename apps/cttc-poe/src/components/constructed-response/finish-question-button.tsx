@@ -18,12 +18,15 @@ export const FinishQuestionButton = ({
 	isLastQuestion: boolean;
 	condition: Condition;
 }) => {
-	const { currentChunk, advanceChunk } = useConstructedResponse((state) => ({
-		advanceChunk: state.advanceChunk,
-		currentChunk: state.currentChunk,
-	}));
+	const { currentChunk, advanceChunk, isSummaryReady } = useConstructedResponse(
+		(state) => ({
+			advanceChunk: state.advanceChunk,
+			currentChunk: state.currentChunk,
+			isSummaryReady: state.isSummaryReady,
+		}),
+	);
 	const text = isLastQuestion ? "Unlock summary" : "Continue reading";
-	const disabled = currentChunk !== chunkSlug;
+	const disabled = isSummaryReady || currentChunk !== chunkSlug;
 
 	return (
 		<Button
