@@ -14,18 +14,19 @@ export const ContinueReading = ({ text, ...rest }: Props) => {
 	const href = useLastVisitedPage();
 	const router = useRouter();
 	const [pending, startTransition] = useTransition();
+	console.log(text || href ? "Continue Reading" : "Start Reading");
 	return (
 		<StatusButton
 			pending={pending}
 			disabled={pending}
 			size={"lg"}
-			{...rest}
 			onClick={() => {
 				const dst = href || firstPage.href;
 				startTransition(() => router.push(dst));
 			}}
+			{...rest}
 		>
-			{text || href ? "Continue Reading" : "Start Reading"}
+			{text || (href ? "Continue Reading" : "Start Reading")}
 		</StatusButton>
 	);
 };
