@@ -411,12 +411,12 @@ This asks for a function of two arguments—the number of cows and the number of
  while (cowString.length < 3) {
    cowString = "0" + cowString;
  }
- console.log(`${cowString} Cows`);
+ console.log(\`\${cowString} Cows\`);
  let chickenString = String(chickens);
  while (chickenString.length < 3) {
    chickenString = "0" + chickenString;
  }
- console.log(`${chickenString} Chickens`);
+ console.log(\`\${chickenString} Chickens\`);
 }
 printFarmInventory(7, 11);`}/>
 
@@ -431,7 +431,7 @@ We sure can. But just as we’re in the process of copying and pasting those fou
  while (numberString.length < 3) {
    numberString = "0" + numberString;
  }
- console.log(`${numberString} ${label}`);
+ console.log(\`\${numberString} \${label}\`);
 }
 
 function printFarmInventory(cows, chickens, pigs) {
@@ -457,9 +457,9 @@ Instead of lifting out the repeated part of our program wholesale, let’s try t
 }
 
 function printFarmInventory(cows, chickens, pigs) {
- console.log(`${zeroPad(cows, 3)} Cows`);
- console.log(`${zeroPad(chickens, 3)} Chickens`);
- console.log(`${zeroPad(pigs, 3)} Pigs`);
+ console.log(\`\${zeroPad(cows, 3)} Cows\`);
+ console.log(\`\${zeroPad(chickens, 3)} Chickens\`);
+ console.log(\`\${zeroPad(pigs, 3)} Pigs\`);
 }
 
 printFarmInventory(7, 16, 3);`}/>
