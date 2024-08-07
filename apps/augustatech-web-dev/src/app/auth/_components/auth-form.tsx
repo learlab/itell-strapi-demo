@@ -61,7 +61,7 @@ export const GoogleLoginButton = () => {
 					<Spinner className="size-4" />
 				) : (
 					<BrandIcon
-						name="google/_/eee"
+						name="google"
 						alt="log in via google"
 						width={16}
 						height={16}

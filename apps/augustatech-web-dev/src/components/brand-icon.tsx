@@ -21,19 +21,30 @@ export const BrandIcon = ({
 		return (
 			<Image
 				src="/images/outlook.png"
-				// @ts-ignore
-				alt={alt || null}
+				alt={alt || ""}
 				width={width}
 				height={height}
 				{...rest}
 			/>
 		);
 	}
+
+	if (name === "google") {
+		return (
+			<Image
+				src="/images/google.svg"
+				alt={alt || ""}
+				width={width}
+				height={height}
+				{...rest}
+			/>
+		);
+	}
+
 	return (
 		<Image
 			src={`https://cdn.simpleicons.org/${name}`}
-			// @ts-ignore
-			alt={alt || null}
+			alt={alt || ""}
 			width={width}
 			height={height}
 			{...rest}
