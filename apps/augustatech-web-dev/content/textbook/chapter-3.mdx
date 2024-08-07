@@ -432,7 +432,7 @@ Using `countBy`, we can write the function that tells us which scripts are used 
   if (total == 0) return "No scripts found";
 
   return scripts.map(({name, count}) => {
-    return `${Math.round(count * 100 / total)}% ${name}`;
+    return \`\${Math.round(count * 100 / total)}% \${name}\`;
   }).join(", ");
 }
 

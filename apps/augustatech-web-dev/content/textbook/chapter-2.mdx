@@ -8,8 +8,8 @@ quiz: false
 <h2 className="sr-only" id="Introduction-795t">Introduction</h2>
 
 > People think that computer science is the art of geniuses but the actual reality is the opposite, just many people doing things that build on each other, like a wall of mini stones.
-
-\-\- Donald Knuth
+> 
+> \-\- Donald Knuth
 
 Functions are one of the most central tools in JavaScript programming. The concept of wrapping a piece of program in a value has many uses. It gives us a way to structure larger programs, to reduce repetition, to associate names with subprograms, and to isolate these subprograms from each other.
 
@@ -349,8 +349,8 @@ Here is a recursive solution:
    } else if (current > target) {
      return null;
    } else {
-     return find(current + 5, `(${history} + 5)`) ??
-            find(current * 3, `(${history} * 3)`);
+     return find(current + 5, \`(${history} + 5)\`) ??
+            find(current * 3, \`(${history} * 3)\`);
    }
  }
  return find(1, "1");
