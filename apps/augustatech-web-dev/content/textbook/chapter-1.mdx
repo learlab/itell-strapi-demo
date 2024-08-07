@@ -50,7 +50,7 @@ console.log(ten * ten);
 // → 100
 ```
 
-When a binding points at a value, that does not mean it is tied to that value forever. The = operator can be used at any time on existing bindings to disconnect them from their current value and have them point to a new one:
+When a binding points at a value, that does not mean it is tied to that value forever. The `=` operator can be used at any time on existing bindings to disconnect them from their current value and have them point to a new one:
 
 <Sandbox code = {`let mood = "light";
 console.log(mood);
@@ -124,11 +124,9 @@ The collection of bindings and their values that exist at a given time is called
 ## Functions \{#Functions-779t}
 A lot of the values provided in the default environment have the type function. A function is a piece of program wrapped in a value. Such values can be applied in order to run the wrapped program. For example, in a browser environment, the binding prompt holds a function that shows a little dialog asking for user input. It is used like this:
 
-```javascript
-prompt("Enter passcode");
-```
+<Sandbox code = {`prompt("Enter passcode");`}/>
 
-![1.1.png](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/1.1.png-e1cb314dd72c8b8360d0cdddc949b81f.png)
+![A prompt dialog that says 'enter passcode'](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-1-prompt.png-8ceb654c4df66a176f3138ca78a5ea19.png)
 
 Executing a function is called invoking, calling, or applying it. You can call a function by putting parentheses after an expression that produces a function value. Usually you’ll directly use the name of the binding that holds the function. The values between the parentheses are given to the program inside the function. In the example, the prompt function uses the string that we give it as the text to show in the dialog box. Values given to functions are called arguments. Different functions might need a different number or different types of arguments.
 
@@ -141,7 +139,7 @@ In the examples, I used console.log to output values. Most JavaScript systems (i
 
 When running the examples (or your own code) on the pages of this book, console.log output will be shown after the example, instead of in the browser’s JavaScript console.
 
-```javascript
+```javascript 
 let x = 30;
 console.log("the value of x is", x);
 // → the value of x is 30
@@ -154,14 +152,14 @@ Though binding names cannot contain period characters, console.log does have one
 ## Return Values \{#Return-Values-781t}
 Showing a dialog box or writing text to the screen is a side effect. Many functions are useful because of the side effects they produce. Functions may also produce values, in which case they don’t need to have a side effect to be useful. For example, the function Math.max takes any amount of number arguments and gives back the greatest.
 
-```javascript
+```javascript 
 console.log(Math.max(2, 4));
 // → 4
 ```
 
 When a function produces a value, it is said to return that value. Anything that produces a value is an expression in JavaScript, which means that function calls can be used within larger expressions. In the following code, a call to Math.min, which is the opposite of Math.max, is used as part of a plus expression:
 
-```javascript
+```javascript 
 console.log(Math.min(2, 4) + 100);
 // → 102
 ```
@@ -173,7 +171,7 @@ Chapter 3 will explain how to write your own functions.
 ## Control Flow \{#Control-Flow-782t}
 When your program contains more than one statement, the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the square of that number:
 
-```javascript
+```javascript 
 let theNumber = Number(prompt("Pick a number"));
 console.log("Your number is the square root of " +
            theNumber * theNumber);
@@ -185,18 +183,18 @@ The function Number converts a value to a number. We need that conversion becaus
 
 Here is the rather trivial schematic representation of straight-line control flow:
 
-![2-2-controlflow-straight.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-2-controlflow-straight.svg-a3e3034abbe58c2c59ada45b67e9964e.svg)
+![Diagram showing a straight arrow](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-2-controlflow-straight.svg-a3e3034abbe58c2c59ada45b67e9964e.svg)
 </section>
 
 <section className="content-chunk" aria-labelledby="Conditional-Execution-785t" data-subsection-id="Conditional-Execution-785t" data-show-header="true">
 ## Conditional Execution \{#Conditional-Execution-785t}
 Not all programs are straight roads. We may, for example, want to create a branching road where the program takes the proper branch based on the situation at hand. This is called conditional execution.
 
-![2-3-controlflow-if.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-3-controlflow-if.svg-ee294c8069b422f4f4f349d52cc2f89f.svg)
+![alt="Diagram of an arrow that splits in two, and then rejoins again"](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-3-controlflow-if.svg-ee294c8069b422f4f4f349d52cc2f89f.svg)
 
 Conditional execution is created with the if keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
 
-```javascript
+```javascript 
 let theNumber = Number(prompt("Pick a number"));
 if (!Number.isNaN(theNumber)) {
  console.log("Your number is the square root of " +
@@ -214,7 +212,7 @@ The Number.isNaN function is a standard JavaScript function that returns true on
 
 The statement after the if is wrapped in braces ({ and }) in this example. The braces can be used to group any number of statements into a single statement, called a block. You could also have omitted them in this case, since they hold only a single statement, but to avoid having to think about whether they are needed, most JavaScript programmers use them in every wrapped statement like this. We’ll mostly follow that convention in this book, except for the occasional one-liner.
 
-```javascript
+```javascript 
 if (1 + 1 == 2) console.log("It's true");
 // → It's true
 ```
@@ -223,7 +221,7 @@ if (1 + 1 == 2) console.log("It's true");
 
 You often won’t just have code that executes when a condition holds true, but also code that handles the other case. This alternate path is represented by the second arrow in the diagram. You can use the else keyword, together with if, to create two separate, alternative execution paths:
 
-```javascript
+```javascript 
 let theNumber = Number(prompt("Pick a number"));
 if (!Number.isNaN(theNumber)) {
  console.log("Your number is the square root of " +
@@ -237,16 +235,14 @@ if (!Number.isNaN(theNumber)) {
 
 If you have more than two paths to choose from, you can “chain” multiple if/else pairs together. Here’s an example:
 
-```javascript
-let num = Number(prompt("Pick a number"));
+<Sandbox code = {`let num = Number(prompt("Pick a number"));
 if (num < 10) {
  console.log("Small");
 } else if (num < 100) {
  console.log("Medium");
 } else {
  console.log("Large");
-}
-```
+}`}/>
 
 
 
@@ -254,14 +250,14 @@ The program will first check whether num is less than 10. If it is, it chooses t
 
 The schema for this program looks something like this:
 
-![2-4-controlflow-nested-if.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-4-controlflow-nested-if.svg-9a871b16fe2e8b548cadd147eb11bd2a.svg)
+![alt="Diagram showing arrow that splits in two, with on the branches splitting again, before all branches rejoin again"](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-4-controlflow-nested-if.svg-9a871b16fe2e8b548cadd147eb11bd2a.svg)
 </section>
 
 <section className="content-chunk" aria-labelledby="while-and-do-Loops-789t" data-subsection-id="while-and-do-Loops-789t" data-show-header="true">
 ## while and do Loops \{#while-and-do-Loops-789t}
 Consider a program that outputs all even numbers from 0 to 12. One way to write this is as follows:
 
-```javascript
+```javascript 
 console.log(0);
 console.log(2);
 console.log(4);
@@ -269,27 +265,21 @@ console.log(6);
 console.log(8);
 console.log(10);
 console.log(12);
-
 ```
 
 
 
 That works, but the idea of writing a program is to make something less work, not more. If we needed all even numbers less than 1,000, this approach would be unworkable. What we need is a way to run a piece of code multiple times. This form of control flow is called a loop.
 
-![2-5-controlflow-loop.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-5-controlflow-loop.svg-7d489d1b98224d28fec7d0cdad6d7997.svg)
+![Diagram showing an arrow to a point which has a cyclic arrow going back to itself and another arrow going further](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-5-controlflow-loop.svg-7d489d1b98224d28fec7d0cdad6d7997.svg)
 
 Looping control flow allows us to go back to some point in the program where we were before and repeat it with our current program state. If we combine this with a binding that counts, we can do something like this:
 
-```javascript
-let number = 0;
+<Sandbox code = {`let number = 0;
 while (number <= 12) {
  console.log(number);
  number = number + 2;
-}
-// → 0
-// → 2
-//   … etcetera
-```
+}`}/>
 
 
 
@@ -299,16 +289,13 @@ The number binding demonstrates the way a binding can track the progress of a pr
 
 As an example that actually does something useful, we can now write a program that calculates and shows the value of 210 (2 to the 10th power). We use two bindings: one to keep track of our result and one to count how often we have multiplied this result by 2. The loop tests whether the second binding has reached 10 yet and, if not, updates both bindings.
 
-```javascript
-let result = 1;
+<Sandbox code = {`let result = 1;
 let counter = 0;
 while (counter < 10) {
  result = result * 2;
  counter = counter + 1;
 }
-console.log(result);
-// → 1024
-```
+console.log(result);`}/>
 
 
 
@@ -318,13 +305,11 @@ Note that JavaScript also has an operator for exponentiation (2 ** 10), which yo
 
 A do loop is a control structure similar to a while loop. It differs only on one point: a do loop always executes its body at least once, and it starts testing whether it should stop only after that first execution. To reflect this, the test appears after the body of the loop:
 
-```javascript
-let yourName;
+<Sandbox code = {`let yourName;
 do {
  yourName = prompt("Who are you?");
 } while (!yourName);
-console.log("Hello " + yourName);
-```
+console.log("Hello " + yourName);`}/>
 
 
 
@@ -337,7 +322,7 @@ In the examples, I’ve been adding spaces in front of statements that are part 
 
 The role of this indentation inside blocks is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use tab characters. The important thing is that each new block adds the same amount of space.
 
-```javascript
+```javascript 
 if (false != true) {
  console.log("That makes sense.");
  if (1 < 2) {
@@ -357,14 +342,9 @@ Many loops follow the pattern shown in the while examples. First a “counter”
 
 Because this pattern is so common, JavaScript and similar languages provide a slightly shorter and more comprehensive form, the for loop:
 
-```javascript
-for (let number = 0; number <= 12; number = number + 2) {
+<Sandbox code = {`for (let number = 0; number <= 12; number = number + 2) {
  console.log(number);
-}
-// → 0
-// → 2
-//   … etcetera
-```
+}`}/>
 
 
 
@@ -374,29 +354,23 @@ The parentheses after a for keyword must contain two semicolons. The part before
 
 This is the code that computes 210 using for instead of while:
 
-```javascript
-let result = 1;
+<Sandbox code = {`let result = 1;
 for (let counter = 0; counter < 10; counter = counter + 1) {
  result = result * 2;
 }
-console.log(result);
-// → 1024
-```
+console.log(result);`}/>
 </section>
 
 <section className="content-chunk" aria-labelledby="Breaking-Out-of-a-Loop-788t" data-subsection-id="Breaking-Out-of-a-Loop-788t" data-show-header="true">
 ## Breaking Out of a Loop \{#Breaking-Out-of-a-Loop-788t}
 Having the looping condition produce false is not the only way a loop can finish. The break statement has the effect of immediately jumping out of the enclosing loop. Its use is demonstrated in the following program, which finds the first number that is both greater than or equal to 20 and divisible by 7:
 
-```javascript
-for (let current = 20; ; current = current + 1) {
+<Sandbox code = {`for (let current = 20; ; current = current + 1) {
  if (current % 7 == 0) {
    console.log(current);
    break;
  }
-}
-// → 21
-```
+}`}/>
 
 
 
@@ -415,7 +389,7 @@ The continue keyword is similar to break in that it influences the progress of a
 ## Updating Bindings Succinctly \{#Updating-Bindings-Succinctly-787t}
 Especially when looping, a program often needs to “update” a binding to hold a value based on that binding’s previous value.
 
-```javascript
+```javascript 
 counter = counter + 1;
 ```
 
@@ -423,7 +397,7 @@ counter = counter + 1;
 
 JavaScript provides a shortcut for this:
 
-```javascript
+```javascript 
 counter += 1;
 ```
 
@@ -433,7 +407,7 @@ Similar shortcuts work for many other operators, such as result *= 2 to double r
 
 This allows us to further shorten our counting example:
 
-```javascript
+```javascript 
 for (let number = 0; number <= 12; number += 2) {
  console.log(number);
 }
@@ -448,7 +422,7 @@ For counter += 1 and counter -= 1, there are even shorter equivalents: counter++
 ## Dispatching on a Value with Switch \{#Dispatching-on-a-Value-with-Switch-786t}
 It is not uncommon for code to look like this:
 
-```javascript
+```javascript 
 if (x == "value1") action1();
 else if (x == "value2") action2();
 else if (x == "value3") action3();
@@ -459,7 +433,7 @@ else defaultAction();
 
 There is a construct called switch that is intended to express such a “dispatch” in a more direct way. Unfortunately, the syntax JavaScript uses for this (which it inherited from the C/Java line of programming languages) is somewhat awkward—a chain of if statements may look better. Here is an example:
 
-```javascript
+```javascript 
 switch (prompt("What is the weather like?")) {
  case "rainy":
    console.log("Remember to bring an umbrella.");
@@ -484,7 +458,7 @@ You may put any number of case labels inside the block opened by switch. The pro
 ## Capitalization \{#Capitalization-790t}
 Binding names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the binding represents. These are pretty much your choices for writing a binding name with several words in it:
 
-```javascript
+```javascript 
 fuzzylittleturtle
 fuzzy_little_turtle
 FuzzyLittleTurtle
@@ -504,7 +478,7 @@ Often, raw code does not convey all the information you want a program to convey
 
 A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (//) and then the comment text after it:
 
-```javascript
+```javascript 
 let accountBalance = calculateBalance(account);
 // It's a green hollow where a river sings
 accountBalance.adjust();
@@ -513,12 +487,11 @@ let report = new Report();
 // Where the sun on the proud mountain rings:
 addToReport(accountBalance, report);
 // It's a little valley, foaming like light in a glass.
-
 ```
 
 A // comment goes only to the end of the line. A section of text between /* and */ will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
 
-```javascript
+```javascript 
 /*
  I first found this number scrawled on the back of an old
  notebook. Since then, it has often dropped by, showing up in
@@ -547,23 +520,15 @@ Write a loop that makes seven calls to `console.log` to output the following tri
 
 It may be useful to know that you can find the length of a string by writing `.length` after it.
 
-1
-
-2
-
-3
-
+```javascript 
 let abc = "abc";
 
 console.log(abc.length);
 
 // → 3
+```
 
 Most exercises contain a piece of code that you can modify to solve the exercise. Remember that you can click code blocks to edit them.
-
-1
-
-// Your code here.
 
 You can start with a program that prints out the numbers 1 to 7, which you can derive by making a few modifications to the [even number printing example](https://eloquentjavascript.net/02_program_structure.html#loops)given earlier in the chapter, where the `for` loop was introduced.
 
@@ -576,10 +541,6 @@ Write a program that uses `console.log` to print all the numbers from 1 to 100, 
 When you have that working, modify your program to print `"FizzBuzz"` for numbers that are divisible by both 3 and 5 (and still print `"Fizz"` or `"Buzz"`for numbers divisible by only one of those).
 
 (This is actually an interview question that has been claimed to weed out a significant percentage of programmer candidates. So if you solved it, your labor market value just went up.)
-
-1
-
-// Your code here.
 
 Going over the numbers is clearly a looping job, and selecting what to print is a matter of conditional execution. Remember the trick of using the remainder (`%`) operator for checking whether a number is divisible by another number (has a remainder of zero).
 
@@ -605,10 +566,6 @@ Passing this string to `console.log` should show something like this:
 ```
 
 When you have a program that generates this pattern, define a binding `size = 8` and change the program so that it works for any `size`, outputting a grid of the given width and height.
-
-```
-// Your code here.
-```
 
 You can build the string by starting with an empty one (`""`) and repeatedly adding characters. A newline character is written `"\n"`.
 
