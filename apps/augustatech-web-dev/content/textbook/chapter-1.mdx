@@ -34,7 +34,7 @@ In some cases, JavaScript allows you to omit the semicolon at the end of a state
 ## Bindings \{#Bindings-776t}
 How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a binding, or variable.
 
-```javascript
+```javascript 
 let caught = 5 * 5;
 ```
 
@@ -44,7 +44,7 @@ The example creates a binding called caught and uses it to grab hold of the numb
 
 After a binding has been defined, its name can be used as an expression. The value of such an expression is the value the binding currently holds. Here’s an example:
 
-```javascript
+```javascript 
 let ten = 10;
 console.log(ten * ten);
 // → 100
@@ -78,7 +78,7 @@ console.log(one + two);
 
 The words var and const can also be used to create bindings, in a similar fashion to let.
 
-```javascript
+```javascript 
 var name = "Ayda";
 const greeting = "Hello ";
 console.log(greeting + name);
@@ -96,6 +96,16 @@ Binding names can be any sequence of one or more letters. Digits can be part of 
 
 Words with a special meaning, such as let, are keywords, and may not be used as binding names. There are also a number of words that are “reserved for use” in future versions of JavaScript, which also can’t be used as binding names. The full list of keywords and reserved words is rather long:
 
+```javascript 
+break     case     catch     class     const     continue  debugger  default
+delete    do       else      enum      export    extends   false     finally
+for       function if        implements import    interface in       instanceof
+let       new      package   private   protected public    return    static
+super     switch   this      throw     true      try       typeof    var
+void      while    with      yield
+```
+
+
 
 Don’t worry about memorizing this list. When creating a binding produces an unexpected syntax error, check whether you’re trying to define a reserved word.
 </section>
@@ -110,8 +120,14 @@ The collection of bindings and their values that exist at a given time is called
 A lot of the values provided in the default environment have the type function. A function is a piece of program wrapped in a value. Such values can be applied in order to run the wrapped program. For example, in a browser environment, the binding prompt holds a function that shows a little dialog asking for user input. It is used like this:
 
 <Sandbox code = {`prompt("Enter passcode");`}/>
+<Image
+  style="aspect-ratio:442/173;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-1-prompt.png-8ceb654c4df66a176f3138ca78a5ea19.png"
+  alt="A prompt dialog that says 'enter passcode'"
+  width="442"
+  height="173">
 
-![A prompt dialog that says 'enter passcode'](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-1-prompt.png-8ceb654c4df66a176f3138ca78a5ea19.png)
+</Image>
 
 Executing a function is called invoking, calling, or applying it. You can call a function by putting parentheses after an expression that produces a function value. Usually you’ll directly use the name of the binding that holds the function. The values between the parentheses are given to the program inside the function. In the example, the prompt function uses the string that we give it as the text to show in the dialog box. Values given to functions are called arguments. Different functions might need a different number or different types of arguments.
 
@@ -124,7 +140,7 @@ In the examples, I used `console.log` to output values. Most JavaScript systems 
 
 When running the examples (or your own code) on the pages of this book, console.log output will be shown after the example, instead of in the browser’s JavaScript console.
 
-```javascript
+```javascript 
 let x = 30;
 console.log("the value of x is", x);
 // → the value of x is 30
@@ -137,14 +153,14 @@ Though binding names cannot contain period characters, `console.lo`g does have o
 ## Return Values \{#Return-Values-781t}
 Showing a dialog box or writing text to the screen is a side effect. Many functions are useful because of the side effects they produce. Functions may also produce values, in which case they don’t need to have a side effect to be useful. For example, the function Math.max takes any amount of number arguments and gives back the greatest.
 
-```javascript
+```javascript 
 console.log(Math.max(2, 4));
 // → 4
 ```
 
 When a function produces a value, it is said to return that value. Anything that produces a value is an expression in JavaScript, which means that function calls can be used within larger expressions. In the following code, a call to Math.min, which is the opposite of Math.max, is used as part of a plus expression:
 
-```javascript
+```javascript 
 console.log(Math.min(2, 4) + 100);
 // → 102
 ```
@@ -173,7 +189,14 @@ Here is the rather trivial schematic representation of straight-line control flo
 ## Conditional Execution \{#Conditional-Execution-785t}
 Not all programs are straight roads. We may, for example, want to create a branching road where the program takes the proper branch based on the situation at hand. This is called conditional execution.
 
-![alt="Diagram of an arrow that splits in two, and then rejoins again"](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-3-controlflow-if.svg-ee294c8069b422f4f4f349d52cc2f89f.svg)
+<Image
+  style="aspect-ratio:205/86;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-3-controlflow-if.svg-ee294c8069b422f4f4f349d52cc2f89f.svg"
+  alt="alt="Diagram of an arrow that splits in two, and then rejoins again""
+  width="205"
+  height="86">
+
+</Image>
 
 Conditional execution is created with the if keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
 
@@ -193,7 +216,7 @@ The Number.isNaN function is a standard JavaScript function that returns true on
 
 The statement after the if is wrapped in braces (`{` and `}`) in this example. The braces can be used to group any number of statements into a single statement, called a block. You could also have omitted them in this case, since they hold only a single statement, but to avoid having to think about whether they are needed, most JavaScript programmers use them in every wrapped statement like this. We’ll mostly follow that convention in this book, except for the occasional one-liner.
 
-```javascript
+```javascript 
 if (1 + 1 == 2) console.log("It's true");
 // → It's true
 ```
@@ -229,14 +252,21 @@ The program will first check whether num is less than 10. If it is, it chooses t
 
 The schema for this program looks something like this:
 
-![alt="Diagram showing arrow that splits in two, with on the branches splitting again, before all branches rejoin again"](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-4-controlflow-nested-if.svg-9a871b16fe2e8b548cadd147eb11bd2a.svg)
+<Image
+  style="aspect-ratio:238/104;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-4-controlflow-nested-if.svg-9a871b16fe2e8b548cadd147eb11bd2a.svg"
+  alt="alt="Diagram showing arrow that splits in two, with on the branches splitting again, before all branches rejoin again""
+  width="238"
+  height="104">
+
+</Image>
 </section>
 
 <section className="content-chunk" aria-labelledby="while-and-do-Loops-789t" data-subsection-id="while-and-do-Loops-789t" data-show-header="true">
 ## while and do Loops \{#while-and-do-Loops-789t}
 Consider a program that outputs all even numbers from 0 to 12. One way to write this is as follows:
 
-```javascript
+```javascript 
 console.log(0);
 console.log(2);
 console.log(4);
@@ -250,7 +280,16 @@ console.log(12);
 
 That works, but the idea of writing a program is to make something less work, not more. If we needed all even numbers less than 1,000, this approach would be unworkable. What we need is a way to run a piece of code multiple times. This form of control flow is called a loop.
 
-![Diagram showing an arrow to a point which has a cyclic arrow going back to itself and another arrow going further](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-5-controlflow-loop.svg-7d489d1b98224d28fec7d0cdad6d7997.svg)
+<Image
+  style="aspect-ratio:206/72;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-5-controlflow-loop.svg-7d489d1b98224d28fec7d0cdad6d7997.svg"
+  alt="Diagram showing an arrow to a point which has a cyclic arrow going back to itself and another arrow going further"
+  width="206"
+  height="72">
+
+</Image>
+
+
 
 Looping control flow allows us to go back to some point in the program where we were before and repeat it with our current program state. If we combine this with a binding that counts, we can do something like this:
 
@@ -301,7 +340,7 @@ In the examples, I’ve been adding spaces in front of statements that are part 
 
 The role of this indentation inside blocks is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use tab characters. The important thing is that each new block adds the same amount of space.
 
-```javascript
+```javascript 
 if (false != true) {
  console.log("That makes sense.");
  if (1 < 2) {
@@ -368,7 +407,7 @@ The continue keyword is similar to break in that it influences the progress of a
 ## Updating Bindings Succinctly \{#Updating-Bindings-Succinctly-787t}
 Especially when looping, a program often needs to “update” a binding to hold a value based on that binding’s previous value.
 
-```javascript
+```javascript 
 counter = counter + 1;
 ```
 
@@ -376,7 +415,7 @@ counter = counter + 1;
 
 JavaScript provides a shortcut for this:
 
-```javascript
+```javascript 
 counter += 1;
 ```
 
@@ -386,7 +425,7 @@ Similar shortcuts work for many other operators, such as `result *= 2` to double
 
 This allows us to further shorten our counting example:
 
-```javascript
+```javascript 
 for (let number = 0; number <= 12; number += 2) {
  console.log(number);
 }
@@ -401,7 +440,7 @@ For `counter += 1` and `counter -= 1`, there are even shorter equivalents: `coun
 ## Dispatching on a Value with Switch \{#Dispatching-on-a-Value-with-Switch-786t}
 It is not uncommon for code to look like this:
 
-```javascript
+```javascript 
 if (x == "value1") action1();
 else if (x == "value2") action2();
 else if (x == "value3") action3();
@@ -435,7 +474,7 @@ You may put any number of case labels inside the block opened by switch. The pro
 ## Capitalization \{#Capitalization-790t}
 Binding names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the binding represents. These are pretty much your choices for writing a binding name with several words in it:
 
-```javascript
+```javascript 
 fuzzylittleturtle
 fuzzy_little_turtle
 FuzzyLittleTurtle
@@ -455,7 +494,7 @@ Often, raw code does not convey all the information you want a program to convey
 
 A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (`//`) and then the comment text after it:
 
-```javascript
+```javascript 
 let accountBalance = calculateBalance(account);
 // It's a green hollow where a river sings
 accountBalance.adjust();
@@ -468,7 +507,7 @@ addToReport(accountBalance, report);
 
 A // comment goes only to the end of the line. A section of text between `/*` and `*/` will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
 
-```javascript
+```javascript 
 /*
  I first found this number scrawled on the back of an old
  notebook. Since then, it has often dropped by, showing up in
@@ -497,7 +536,7 @@ Write a loop that makes seven calls to `console.log` to output the following tri
 
 It may be useful to know that you can find the length of a string by writing `.length` after it.
 
-```javascript
+```javascript 
 let abc = "abc";
 
 console.log(abc.length);
@@ -533,11 +572,11 @@ Passing this string to `console.log` should show something like this:
 
 ```
  # # # #
-# # # #
+# # # # 
  # # # #
-# # # #
+# # # # 
  # # # #
-# # # #
+# # # # 
  # # # #
 # # # #
 ```
