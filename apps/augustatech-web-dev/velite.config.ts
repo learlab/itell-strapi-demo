@@ -86,6 +86,7 @@ export default defineConfig({
 						dark: "one-dark-pro",
 						light: "github-light",
 					},
+					defaultLang: "js",
 				}),
 		],
 	},
