@@ -171,11 +171,9 @@ Chapter 3 will explain how to write your own functions.
 ## Control Flow \{#Control-Flow-782t}
 When your program contains more than one statement, the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the square of that number:
 
-```javascript 
-let theNumber = Number(prompt("Pick a number"));
+<Sandbox code = {`let theNumber = Number(prompt("Pick a number"));
 console.log("Your number is the square root of " +
-           theNumber * theNumber);
-```
+           theNumber * theNumber);`}/>
 
 
 
@@ -194,13 +192,11 @@ Not all programs are straight roads. We may, for example, want to create a branc
 
 Conditional execution is created with the if keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
 
-```javascript 
-let theNumber = Number(prompt("Pick a number"));
+<Sandbox code = {`let theNumber = Number(prompt("Pick a number"));
 if (!Number.isNaN(theNumber)) {
  console.log("Your number is the square root of " +
              theNumber * theNumber);
-}
-```
+}`}/>
 
 
 
@@ -221,15 +217,13 @@ if (1 + 1 == 2) console.log("It's true");
 
 You often won’t just have code that executes when a condition holds true, but also code that handles the other case. This alternate path is represented by the second arrow in the diagram. You can use the else keyword, together with if, to create two separate, alternative execution paths:
 
-```javascript 
-let theNumber = Number(prompt("Pick a number"));
+<Sandbox code = {`let theNumber = Number(prompt("Pick a number"));
 if (!Number.isNaN(theNumber)) {
  console.log("Your number is the square root of " +
              theNumber * theNumber);
 } else {
  console.log("Hey. Why didn't you give me a number?");
-}
-```
+}`}/>
 
 
 
@@ -299,9 +293,9 @@ console.log(result);`}/>
 
 
 
-The counter could also have started at 1 and checked for <= 10, but for reasons that will become apparent in Chapter 4, it is a good idea to get used to counting from 0.
+The counter could also have started at 1 and checked for `<= 10`, but for reasons that will become apparent in Chapter 4, it is a good idea to get used to counting from 0.
 
-Note that JavaScript also has an operator for exponentiation (2 ** 10), which you would use to compute this in real code—but that would have ruined the example.
+Note that JavaScript also has an operator for exponentiation (`2 ** 10`), which you would use to compute this in real code—but that would have ruined the example.
 
 A do loop is a control structure similar to a while loop. It differs only on one point: a do loop always executes its body at least once, and it starts testing whether it should stop only after that first execution. To reflect this, the test appears after the body of the loop:
 
@@ -403,7 +397,7 @@ counter += 1;
 
 
 
-Similar shortcuts work for many other operators, such as result *= 2 to double result or counter -= 1 to count downward.
+Similar shortcuts work for many other operators, such as `result *= 2` to double result or `counter -= 1` to count downward.
 
 This allows us to further shorten our counting example:
 
@@ -415,7 +409,7 @@ for (let number = 0; number <= 12; number += 2) {
 
 
 
-For counter += 1 and counter -= 1, there are even shorter equivalents: counter++ and counter--.
+For `counter += 1` and `counter -= 1`, there are even shorter equivalents: `counter++` and `counter--`.
 </section>
 
 <section className="content-chunk" aria-labelledby="Dispatching-on-a-Value-with-Switch-786t" data-subsection-id="Dispatching-on-a-Value-with-Switch-786t" data-show-header="true">
@@ -433,8 +427,7 @@ else defaultAction();
 
 There is a construct called switch that is intended to express such a “dispatch” in a more direct way. Unfortunately, the syntax JavaScript uses for this (which it inherited from the C/Java line of programming languages) is somewhat awkward—a chain of if statements may look better. Here is an example:
 
-```javascript 
-switch (prompt("What is the weather like?")) {
+<Sandbox code = {`switch (prompt("What is the weather like?")) {
  case "rainy":
    console.log("Remember to bring an umbrella.");
    break;
@@ -446,8 +439,7 @@ switch (prompt("What is the weather like?")) {
  default:
    console.log("Unknown weather type!");
    break;
-}
-```
+}`}/>
 
 
 
@@ -476,7 +468,7 @@ In a few cases, such as the Number function, the first letter of a binding is al
 ## Comments \{#Comments-791t}
 Often, raw code does not convey all the information you want a program to convey to human readers, or it conveys it in such a cryptic way that people might not understand it. At other times, you might just want to include some related thoughts as part of your program. This is what comments are for.
 
-A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (//) and then the comment text after it:
+A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (`//`) and then the comment text after it:
 
 ```javascript 
 let accountBalance = calculateBalance(account);
@@ -489,7 +481,7 @@ addToReport(accountBalance, report);
 // It's a little valley, foaming like light in a glass.
 ```
 
-A // comment goes only to the end of the line. A section of text between /* and */ will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
+A // comment goes only to the end of the line. A section of text between `/*` and `*/` will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
 
 ```javascript 
 /*
