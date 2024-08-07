@@ -1,0 +1,533 @@
+---
+title: "5. Higher-order Functions"
+page_slug: 5-higher-order-functions
+summary: true
+quiz: false
+---
+<section className="content-chunk" aria-labelledby="Quote-228pt" data-subsection-id="Quote-228pt" data-show-header="false">
+<h2 className="sr-only" id="Quote-228pt">Quote</h2>
+
+"There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies."
+
+C.A.R. Hoare, _1980 ACM Turing Award Lecture_
+
+![5-1-chapter-picture.jpg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/5-1-chapter-picture.jpg-61ec19af81012d31cf22cc809086f6b5.jpg)
+</section>
+
+<section className="content-chunk" aria-labelledby="Introduction-832t" data-subsection-id="Introduction-832t" data-show-header="false">
+<h2 className="sr-only" id="Introduction-832t">Introduction</h2>
+
+A large program is a costly program, and not just because of the time it takes to build. Size almost always involves complexity, and complexity confuses programmers. Confused programmers, in turn, introduce mistakes (_bugs_) into programs. A large program then provides a lot of space for these bugs to hide, making them hard to find.
+
+Let’s briefly go back to the final two example programs in the introduction. The first is self contained and six lines long.
+
+let total = 0, count = 1;
+while (count <= 10) {
+  total += count;
+  count += 1;
+}
+console.log(total);
+
+The second relies on two external functions and is one line long.
+
+console.log(sum(range(1, 10)));
+
+Which one is more likely to contain a bug?
+
+If we count the size of the definitions of <Notebook code = {`sum`}/> and <Notebook code = {`range`}/>, the second program is also big—even bigger than the first. But still, I’d argue that it is more likely to be correct.
+
+This is because the solution is expressed in a vocabulary that corresponds to the problem being solved. Summing a range of numbers isn’t about loops and counters. It is about ranges and sums.
+
+The definitions of this vocabulary (the functions <Notebook code = {`sum`}/> and <Notebook code = {`range`}/>) will still involve loops, counters, and other incidental details. But because they are expressing simpler concepts than the program as a whole, they are easier to get right.
+</section>
+
+<section className="content-chunk" aria-labelledby="Abstraction-833t" data-subsection-id="Abstraction-833t" data-show-header="true">
+## Abstraction \{#Abstraction-833t}
+In the context of programming, these kinds of vocabularies are usually called _abstractions_. Abstractions give us the ability to talk about problems at a higher (or more abstract) level, without getting sidetracked by uninteresting details.
+
+As an analogy, compare these two recipes for pea soup. The first goes like this:
+
+<Blockquote style="-webkit-text-stroke-width:0px;caret-color:rgb(0, 0, 0);color:rgb(0, 0, 0);font-family:Georgia, "Nimbus Roman No9 L", "Century Schoolbook L", serif;font-size:17px;font-style:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;margin:0px 0px 0px 3em;orphans:auto;padding:0px;position:relative;text-align:start;text-decoration:none;text-indent:0px;text-transform:none;white-space:normal;widows:auto;word-spacing:0px;">
+
+
+Put 1 cup of dried peas per person into a container. Add water until the peas are well covered. Leave the peas in water for at least 12 hours. Take the peas out of the water and put them in a cooking pan. Add 4 cups of water per person. Cover the pan and keep the peas simmering for two hours. Take half an onion per person. Cut it into pieces with a knife. Add it to the peas. Take a stalk of celery per person. Cut it into pieces with a knife. Add it to the peas. Take a carrot per person. Cut it into pieces. With a knife! Add it to the peas. Cook for 10 more minutes.
+
+
+</Blockquote>
+
+And this is the second recipe:
+
+<Blockquote style="-webkit-text-stroke-width:0px;caret-color:rgb(0, 0, 0);color:rgb(0, 0, 0);font-family:Georgia, "Nimbus Roman No9 L", "Century Schoolbook L", serif;font-size:17px;font-style:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;margin:0px 0px 0px 3em;orphans:auto;padding:0px;position:relative;text-align:start;text-decoration:none;text-indent:0px;text-transform:none;white-space:normal;widows:auto;word-spacing:0px;">
+
+
+Per person: 1 cup dried split peas, 4 cups of water, half a chopped onion, a stalk of celery, and a carrot.
+
+Soak peas for 12 hours. Simmer for 2 hours. Chop and add vegetables. Cook for 10 more minutes.
+
+
+</Blockquote>
+
+The second is shorter and easier to interpret. But you do need to understand a few more cooking-related words such as _soak_, _simmer_, _chop_, and, I guess, _vegetable_.
+
+When programming, we can’t rely on all the words we need to be waiting for us in the dictionary. Thus, we might fall into the pattern of the first recipe—work out the precise steps the computer has to perform, one by one, blind to the higher-level concepts they express.
+
+It is a useful skill, in programming, to notice when you are working at too low a level of abstraction.
+</section>
+
+<section className="content-chunk" aria-labelledby="Abstracting-Repetition-834t" data-subsection-id="Abstracting-Repetition-834t" data-show-header="true">
+## Abstracting Repetition \{#Abstracting-Repetition-834t}
+Plain functions, as we’ve seen them so far, are a good way to build abstractions. But sometimes they fall short.
+
+It is common for a program to do something a given number of times. You can write a <Notebook code = {`for`}/> loop for that, like this:
+
+for (let i = 0; i < 10; i++) {
+  console.log(i);
+}
+
+Can we abstract “doing something _N_ times” as a function? Well, it’s easy to write a function that calls <Notebook code = {`console.log`}/> _N_ times.
+
+function repeatLog(n) {
+  for (let i = 0; i < n; i++) {
+    console.log(i);
+  }
+}
+
+But what if we want to do something other than logging the numbers? Since “doing something” can be represented as a function and functions are just values, we can pass our action as a function value.
+
+function repeat(n, action) {
+  for (let i = 0; i < n; i++) {
+    action(i);
+  }
+}
+
+repeat(3, console.log);
+// → 0
+// → 1
+// → 2
+
+We don’t have to pass a predefined function to <Notebook code = {`repeat`}/>. Often, it is easier to create a function value on the spot instead.
+
+let labels = \[\];
+repeat(5, i =\> {
+  labels.push(`Unit ${i + 1}`);
+});
+console.log(labels);
+// → \["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5"\]
+
+This is structured a little like a <Notebook code = {`for`}/> loop—it first describes the kind of loop and then provides a body. However, the body is now written as a function value, which is wrapped in the parentheses of the call to <Notebook code = {`repeat`}/>. This is why it has to be closed with the closing brace _and_ closing parenthesis. In cases like this example, where the body is a single small expression, you could also omit the braces and write the loop on a single line.
+</section>
+
+<section className="content-chunk" aria-labelledby="Higher-order-Functions-835t" data-subsection-id="Higher-order-Functions-835t" data-show-header="true">
+## Higher-order Functions \{#Higher-order-Functions-835t}
+Functions that operate on other functions, either by taking them as arguments or by returning them, are called _higher-order functions_. Since we have already seen that functions are regular values, there is nothing particularly remarkable about the fact that such functions exist. The term comes from mathematics, where the distinction between functions and other values is taken more seriously.
+
+Higher-order functions allow us to abstract over _actions_, not just values. They come in several forms. For example, we can have functions that create new functions.
+
+function greaterThan(n) {
+  return m =\> m > n;
+}
+let greaterThan10 = greaterThan(10);
+console.log(greaterThan10(11));
+// → true
+
+We can also have functions that change other functions.
+
+function noisy(f) {
+  return (...args) =\> {
+    console.log("calling with", args);
+    let result = f(...args);
+    console.log("called with", args, ", returned", result);
+    return result;
+  };
+}
+noisy(Math.min)(3, 2, 1);
+// → calling with \[3, 2, 1\]
+// → called with \[3, 2, 1\] , returned 1
+
+We can even write functions that provide new types of control flow.
+
+function unless(test, then) {
+  if (!test) then();
+}
+
+repeat(3, n =\> {
+  unless(n % 2 == 1, () =\> {
+    console.log(n, "is even");
+  });
+});
+// → 0 is even
+// → 2 is even
+
+There is a built-in array method, <Notebook code = {`forEach`}/>, that provides something like a <Notebook code = {`for`}/>/<Notebook code = {`of`}/> loop as a higher-order function.
+
+\["A", "B"\].forEach(l =\> console.log(l));
+// → A
+// → B
+</section>
+
+<section className="content-chunk" aria-labelledby="Script-Dataset-837t" data-subsection-id="Script-Dataset-837t" data-show-header="true">
+## Script Dataset \{#Script-Dataset-837t}
+One area where higher-order functions shine is data processing. To process data, we’ll need some actual example data. This chapter will use a dataset about scripts—writing systems such as Latin, Cyrillic, or Arabic.
+
+Remember Unicode, the system that assigns a number to each character in written language, from [Chapter 1](https://eloquentjavascript.net/01_values.html#unicode)? Most of these characters are associated with a specific script. The standard contains 140 different scripts, of which 81 are still in use today and 59 are historic.
+
+Though I can fluently read only Latin characters, I appreciate the fact that people are writing texts in at least 80 other writing systems, many of which I wouldn’t even recognize. For example, here’s a sample of Tamil handwriting:
+
+![5-2.png](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/5-2.png-c7bb8846296e2e7d34c84ef4da5f1595.png)
+
+The example dataset contains some pieces of information about the 140 scripts defined in Unicode. It is available in the [coding sandbox](https://eloquentjavascript.net/code#5) for this chapter as the <Notebook code = {`SCRIPTS`}/> binding. The binding contains an array of objects, each of which describes a script.
+
+{
+  name: "Coptic",
+  ranges: \[\[994, 1008\], \[11392, 11508\], \[11513, 11520\]\],
+  direction: "ltr",
+  year: -200,
+  living: false,
+  link: "https://en.wikipedia.org/wiki/Coptic_alphabet"
+}
+
+Such an object tells us the name of the script, the Unicode ranges assigned to it, the direction in which it is written, the (approximate) origin time, whether it is still in use, and a link to more information. The direction may be <Notebook code = {`"ltr"`}/> for left to right, <Notebook code = {`"rtl"`}/> for right to left (the way Arabic and Hebrew text are written), or <Notebook code = {`"ttb"`}/> for top to bottom (as with Mongolian writing).
+
+The <Notebook code = {`ranges`}/> property contains an array of Unicode character ranges, each of which is a two-element array containing a lower bound and an upper bound. Any character codes within these ranges are assigned to the script. The lower bound is inclusive (code 994 is a Coptic character) and the upper bound is noninclusive (code 1008 isn’t).
+
+
+
+
+</section>
+
+<section className="content-chunk" aria-labelledby="Filtering-Arrays-836t" data-subsection-id="Filtering-Arrays-836t" data-show-header="true">
+## Filtering Arrays \{#Filtering-Arrays-836t}
+If we want to find the scripts in the dataset that are still in use, the following function might be helpful. It filters out elements in an array that don’t pass a test.
+
+function filter(array, test) {
+  let passed = \[\];
+  for (let element of array) {
+    if (test(element)) {
+      passed.push(element);
+    }
+  }
+  return passed;
+}
+
+console.log(filter(SCRIPTS, script =\> script.living));
+// → \[{name: "Adlam", …}, …\]
+
+The function uses the argument named <Notebook code = {`test`}/>, a function value, to fill a “gap” in the computation—the process of deciding which elements to collect.
+
+Note how the <Notebook code = {`filter`}/> function, rather than deleting elements from the existing array, builds up a new array with only the elements that pass the test. This function is _pure_. It does not modify the array it is given.
+
+Like <Notebook code = {`forEach`}/>, <Notebook code = {`filter`}/> is a standard array method. The example defined the function only to show what it does internally. From now on, we’ll use it like this instead:
+
+console.log(SCRIPTS.filter(s =\> s.direction == "ttb"));
+// → \[{name: "Mongolian", …}, …\]
+</section>
+
+<section className="content-chunk" aria-labelledby="Transforming-With-Map-838t" data-subsection-id="Transforming-With-Map-838t" data-show-header="true">
+## Transforming With Map \{#Transforming-With-Map-838t}
+Say we have an array of objects representing scripts, produced by filtering the <Notebook code = {`SCRIPTS`}/> array somehow. We want an array of names instead, which is easier to inspect.
+
+The <Notebook code = {`map`}/> method transforms an array by applying a function to all of its elements and building a new array from the returned values. The new array will have the same length as the input array, but its content will have been _mapped_ to a new form by the function.
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+function map(array, transform) {
+
+let mapped = \[\];
+
+for (let element of array) {
+
+mapped.push(transform(element));
+
+}
+
+return mapped;
+
+}
+
+let rtlScripts = SCRIPTS.filter(s => s.direction == "rtl");
+
+console.log(map(rtlScripts, s => s.name));
+
+// → \["Adlam", "Arabic", "Imperial Aramaic", …\]
+
+Like <Notebook code = {`forEach`}/> and <Notebook code = {`filter`}/>, <Notebook code = {`map`}/> is a standard array method.
+</section>
+
+<section className="content-chunk" aria-labelledby="Summarizing-With-Reduce-839t" data-subsection-id="Summarizing-With-Reduce-839t" data-show-header="true">
+## Summarizing With Reduce \{#Summarizing-With-Reduce-839t}
+Another common thing to do with arrays is to compute a single value from them. Our recurring example, summing a collection of numbers, is an instance of this. Another example is finding the script with the most characters.
+
+The higher-order operation that represents this pattern is called _reduce_(sometimes also called _fold_). It builds a value by repeatedly taking a single element from the array and combining it with the current value. When summing numbers, you’d start with the number zero and, for each element, add that to the sum.
+
+The parameters to <Notebook code = {`reduce`}/> are, apart from the array, a combining function and a start value. This function is a little less straightforward than <Notebook code = {`filter`}/> and <Notebook code = {`map`}/>, so take a close look at it:
+
+function reduce(array, combine, start) {
+  let current = start;
+  for (let element of array) {
+    current = combine(current, element);
+  }
+  return current;
+}
+
+console.log(reduce(\[1, 2, 3, 4\], (a, b) =\> a + b, 0));
+// → 10
+
+The standard array method <Notebook code = {`reduce`}/>, which of course corresponds to this function, has an added convenience. If your array contains at least one element, you are allowed to leave off the <Notebook code = {`start`}/> argument. The method will take the first element of the array as its start value and start reducing at the second element.
+
+console.log(\[1, 2, 3, 4\].reduce((a, b) =\> a + b));
+// → 10
+
+To use <Notebook code = {`reduce`}/> (twice) to find the script with the most characters, we can write something like this:
+
+function characterCount(script) {
+  return script.ranges.reduce((count, \[from, to\]) =\> {
+    return count + (to - from);
+  }, 0);
+}
+
+console.log(SCRIPTS.reduce((a, b) =\> {
+  return characterCount(a) < characterCount(b) ? b : a;
+}));
+// → {name: "Han", …}
+
+The <Notebook code = {`characterCount`}/> function reduces the ranges assigned to a script by summing their sizes. Note the use of destructuring in the parameter list of the reducer function. The second call to <Notebook code = {`reduce`}/> then uses this to find the largest script by repeatedly comparing two scripts and returning the larger one.
+
+The Han script has more than 89,000 characters assigned to it in the Unicode standard, making it by far the biggest writing system in the dataset. Han is a script sometimes used for Chinese, Japanese, and Korean text. Those languages share a lot of characters, though they tend to write them differently. The (US-based) Unicode Consortium decided to treat them as a single writing system to save character codes. This is called _Han unification_ and still makes some people very angry.
+</section>
+
+<section className="content-chunk" aria-labelledby="Composability-840t" data-subsection-id="Composability-840t" data-show-header="true">
+## Composability \{#Composability-840t}
+Consider how we would have written the previous example (finding the biggest script) without higher-order functions. The code is not that much worse.
+
+let biggest = null;
+for (let script of SCRIPTS) {
+  if (biggest == null ||
+      characterCount(biggest) < characterCount(script)) {
+    biggest = script;
+  }
+}
+console.log(biggest);
+// → {name: "Han", …}
+
+There are a few more bindings, and the program is four lines longer, but it is still very readable.
+
+The abstractions these functions provide really shine when you need to _compose_ operations. As an example, let’s write code that finds the average year of origin for living and dead scripts in the dataset.
+
+function average(array) {
+  return array.reduce((a, b) =\> a + b) / array.length;
+}
+
+console.log(Math.round(average(
+  SCRIPTS.filter(s =\> s.living).map(s =\> s.year))));
+// → 1165
+console.log(Math.round(average(
+  SCRIPTS.filter(s =\> !s.living).map(s =\> s.year))));
+// → 204
+
+As you can see, the dead scripts in Unicode are, on average, older than the living ones. This is not a terribly meaningful or surprising statistic. But I hope you’ll agree that the code used to compute it isn’t hard to read. You can see it as a pipeline: we start with all scripts, filter out the living (or dead) ones, take the years from those, average them, and round the result.
+
+You could definitely also write this computation as one big loop.
+
+let total = 0, count = 0;
+for (let script of SCRIPTS) {
+  if (script.living) {
+    total += script.year;
+    count += 1;
+  }
+}
+console.log(Math.round(total / count));
+// → 1165
+
+However, it is harder to see what was being computed and how. And because intermediate results aren’t represented as coherent values, it’d be a lot more work to extract something like <Notebook code = {`average`}/> into a separate function.
+
+In terms of what the computer is actually doing, these two approaches are also quite different. The first will build up new arrays when running <Notebook code = {`filter`}/> and <Notebook code = {`map`}/>, whereas the second computes only some numbers, doing less work. You can usually afford the readable approach, but if you’re processing huge arrays and doing so many times, the less abstract style might be worth the extra speed.
+</section>
+
+<section className="content-chunk" aria-labelledby="Strings-And-Character-Codes-841t" data-subsection-id="Strings-And-Character-Codes-841t" data-show-header="true">
+## Strings And Character Codes \{#Strings-And-Character-Codes-841t}
+One interesting use of this dataset would be figuring out what script a piece of text is using. Let’s go through a program that does this.
+
+Remember that each script has an array of character code ranges associated with it. Given a character code, we could use a function like this to find the corresponding script (if any):
+
+function characterScript(code) {
+  for (let script of SCRIPTS) {
+    if (script.ranges.some((\[from, to\]) =\> {
+      return code >= from && code < to;
+    })) {
+      return script;
+    }
+  }
+  return null;
+}
+
+console.log(characterScript(121));
+// → {name: "Latin", …}
+
+The <Notebook code = {`some`}/> method is another higher-order function. It takes a test function and tells you whether that function returns true for any of the elements in the array.
+
+But how do we get the character codes in a string?
+
+In [Chapter 1](https://eloquentjavascript.net/01_values.html) I mentioned that JavaScript strings are encoded as a sequence of 16-bit numbers. These are called _code units_. A Unicode character code was initially supposed to fit within such a unit (which gives you a little over 65,000 characters). When it became clear that wasn’t going to be enough, many people balked at the need to use more memory per character. To address these concerns, UTF-16, the format also used by JavaScript strings, was invented. It describes most common characters using a single 16-bit code unit but uses a pair of two such units for others.
+
+UTF-16 is generally considered a bad idea today. It seems almost intentionally designed to invite mistakes. It’s easy to write programs that pretend code units and characters are the same thing. And if your language doesn’t use two-unit characters, that will appear to work just fine. But as soon as someone tries to use such a program with some less common Chinese characters, it breaks. Fortunately, with the advent of emoji, everybody has started using two-unit characters, and the burden of dealing with such problems is more fairly distributed.
+
+Unfortunately, obvious operations on JavaScript strings, such as getting their length through the <Notebook code = {`length`}/> property and accessing their content using square brackets, deal only with code units.
+
+// Two emoji characters, horse and shoe
+let horseShoe = "🐴👟";
+console.log(horseShoe.length);
+// → 4
+console.log(horseShoe\[0\]);
+// → (Invalid half-character)
+console.log(horseShoe.charCodeAt(0));
+// → 55357 (Code of the half-character)
+console.log(horseShoe.codePointAt(0));
+// → 128052 (Actual code for horse emoji)
+
+JavaScript’s <Notebook code = {`charCodeAt`}/> method gives you a code unit, not a full character code. The <Notebook code = {`codePointAt`}/> method, added later, does give a full Unicode character, so we could use that to get characters from a string. But the argument passed to <Notebook code = {`codePointAt`}/> is still an index into the sequence of code units. To run over all characters in a string, we’d still need to deal with the question of whether a character takes up one or two code units.
+
+In the [previous chapter](https://eloquentjavascript.net/04_data.html#for_of_loop), I mentioned that a <Notebook code = {`for`}/>/<Notebook code = {`of`}/> loop can also be used on strings. Like <Notebook code = {`codePointAt`}/>, this type of loop was introduced at a time when people were acutely aware of the problems with UTF-16. When you use it to loop over a string, it gives you real characters, not code units.
+
+let roseDragon = "🌹🐉";
+for (let char of roseDragon) {
+  console.log(char);
+}
+// → 🌹
+// → 🐉
+
+If you have a character (which will be a string of one or two code units), you can use <Notebook code = {`codePointAt(0)`}/> to get its code.
+</section>
+
+<section className="content-chunk" aria-labelledby="Recognizing-Text-842t" data-subsection-id="Recognizing-Text-842t" data-show-header="true">
+## Recognizing Text \{#Recognizing-Text-842t}
+We have a <Notebook code = {`characterScript`}/> function and a way to correctly loop over characters. The next step is to count the characters that belong to each script. The following counting abstraction will be useful there:
+
+function countBy(items, groupName) {
+  let counts = \[\];
+  for (let item of items) {
+    let name = groupName(item);
+    let known = counts.find(c =\> c.name == name);
+    if (!known) {
+      counts.push({name, count: 1});
+    } else {
+      known.count++;
+    }
+  }
+  return counts;
+}
+
+console.log(countBy(\[1, 2, 3, 4, 5\], n =\> n > 2));
+// → \[{name: false, count: 2}, {name: true, count: 3}\]
+
+The <Notebook code = {`countBy`}/> function expects a collection (anything that we can loop over with <Notebook code = {`for`}/>/<Notebook code = {`of`}/>) and a function that computes a group name for a given element. It returns an array of objects, each of which names a group and tells you the number of elements that were found in that group.
+
+It uses another array method, <Notebook code = {`find`}/>, which goes over the elements in the array and returns the first one for which a function returns true. It returns <Notebook code = {`undefined`}/> when it finds no such element.
+
+Using <Notebook code = {`countBy`}/>, we can write the function that tells us which scripts are used in a piece of text.
+
+function textScripts(text) {
+  let scripts = countBy(text, char =\> {
+    let script = characterScript(char.codePointAt(0));
+    return script ? script.name : "none";
+  }).filter(({name}) => name != "none");
+
+  let total = scripts.reduce((n, {count}) => n + count, 0);
+  if (total == 0) return "No scripts found";
+
+  return scripts.map(({name, count}) => {
+    return `${Math.round(count * 100 / total)}% ${name}`;
+  }).join(", ");
+}
+
+console.log(textScripts('英国的狗说"woof", 俄罗斯的狗说"тяв"'));
+// → 61% Han, 22% Latin, 17% Cyrillic
+
+The function first counts the characters by name, using <Notebook code = {`characterScript`}/> to assign them a name and falling back to the string <Notebook code = {`"none"`}/> for characters that aren’t part of any script. The <Notebook code = {`filter`}/> call drops the entry for <Notebook code = {`"none"`}/> from the resulting array, since we aren’t interested in those characters.
+
+To be able to compute percentages, we first need the total number of characters that belong to a script, which we can compute with <Notebook code = {`reduce`}/>. If we find no such characters, the function returns a specific string. Otherwise, it transforms the counting entries into readable strings with <Notebook code = {`map`}/> and then combines them with <Notebook code = {`join`}/>.
+</section>
+
+<section className="content-chunk" aria-labelledby="Exercises-227pt" data-subsection-id="Exercises-227pt" data-show-header="true">
+## Exercises \{#Exercises-227pt}
+### **Flattening**
+
+Use the <Notebook code = {`reduce`}/> method in combination with the <Notebook code = {`concat`}/> method to “flatten” an array of arrays into a single array that has all the elements of the original arrays.
+
+let arrays = \[\[1, 2, 3\], \[4, 5\], \[6\]\];
+// Your code here.
+// → \[1, 2, 3, 4, 5, 6\]
+
+### **Your own loop**
+
+Write a higher-order function <Notebook code = {`loop`}/> that provides something like a <Notebook code = {`for`}/> loop statement. It should take a value, a test function, an update function, and a body function. Each iteration, it should first run the test function on the current loop value and stop if that returns <Notebook code = {`false`}/>. It should then call the body function, giving it the current value, and finally call the update function to create a new value and start over from the beginning.
+
+When defining the function, you can use a regular loop to do the actual looping.
+
+// Your code here.
+
+loop(3, n =\> n > 0, n =\> n - 1, console.log);
+// → 3
+// → 2
+// → 1
+
+### **Everything**
+
+Arrays also have an <Notebook code = {`every`}/> method analogous to the <Notebook code = {`some`}/> method. This method returns <Notebook code = {`true`}/> when the given function returns <Notebook code = {`true`}/> for _every_ element in the array. In a way, <Notebook code = {`some`}/> is a version of the <Notebook code = {`||`}/> operator that acts on arrays, and <Notebook code = {`every`}/> is like the <Notebook code = {`&&`}/> operator.
+
+Implement <Notebook code = {`every`}/> as a function that takes an array and a predicate function as parameters. Write two versions, one using a loop and one using the <Notebook code = {`some`}/>method.
+
+function every(array, test) {
+  // Your code here.
+}
+
+console.log(every(\[1, 3, 5\], n =\> n < 10));
+// → true
+console.log(every(\[2, 4, 16\], n =\> n < 10));
+// → false
+console.log(every(\[\], n =\> n < 10));
+// → true
+
+Like the <Notebook code = {`&&`}/> operator, the <Notebook code = {`every`}/> method can stop evaluating further elements as soon as it has found one that doesn’t match. So the loop-based version can jump out of the loop—with <Notebook code = {`break`}/> or <Notebook code = {`return`}/>—as soon as it runs into an element for which the predicate function returns <Notebook code = {`false`}/>. If the loop runs to its end without finding such an element, we know that all elements matched and we should return <Notebook code = {`true`}/>.
+
+To build <Notebook code = {`every`}/> on top of <Notebook code = {`some`}/>, we can apply _De Morgan’s laws_, which state that <Notebook code = {`a && b`}/> equals <Notebook code = {`!(!a || !b)`}/>. This can be generalized to arrays, where all elements in the array match if there is no element in the array that does not match.
+
+### **Dominant writing direction**
+
+Write a function that computes the dominant writing direction in a string of text. Remember that each script object has a <Notebook code = {`direction`}/> property that can be <Notebook code = {`"ltr"`}/> (left to right), <Notebook code = {`"rtl"`}/> (right to left), or <Notebook code = {`"ttb"`}/> (top to bottom).
+
+The dominant direction is the direction of a majority of the characters that have a script associated with them. The <Notebook code = {`characterScript`}/> and <Notebook code = {`countBy`}/>functions defined earlier in the chapter are probably useful here.
+
+function dominantDirection(text) {
+  // Your code here.
+}
+
+console.log(dominantDirection("Hello!"));
+// → ltr
+console.log(dominantDirection("Hey, مساء الخير"));
+// → rtl
+
+Your solution might look a lot like the first half of the <Notebook code = {`textScripts`}/> example. You again have to count characters by a criterion based on <Notebook code = {`characterScript`}/>and then filter out the part of the result that refers to uninteresting (script-less) characters.
+
+Finding the direction with the highest character count can be done with <Notebook code = {`reduce`}/>. If it’s not clear how, refer to the example earlier in the chapter, where <Notebook code = {`reduce`}/> was used to find the script with the most characters.
+</section>
+
