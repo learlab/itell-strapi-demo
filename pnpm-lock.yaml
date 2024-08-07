@@ -66,7 +66,7 @@ importers:
         version: 2.0.0(react@18.3.1)
       arctic:
         specifier: 2.0.0-next.1
-        version: 2.0.0-next.1(@types/node@22.1.0)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
+        version: 2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
       cmdk:
         specifier: ^0.2.0
         version: 0.2.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -217,7 +217,7 @@ importers:
         version: 1.11.1
       tailwindcss:
         specifier: ^3.4.0
-        version: 3.4.3(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.0-beta))
+        version: 3.4.3(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.0-beta))
       typescript:
         specifier: 5.5.0-beta
         version: 5.5.0-beta
@@ -1477,6 +1477,12 @@ importers:
       '@monaco-editor/react':
         specifier: ^4.6.0
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@xstate/store':
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
+      immer:
+        specifier: ^9.0.21
+        version: 9.0.21
       lucide-react:
         specifier: ^0.424.0
         version: 0.424.0(react@18.3.1)
@@ -14419,6 +14425,26 @@ snapshots:
     dependencies:
       oslo: 1.2.0
 
+  arctic@2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3):
+    dependencies:
+      '@oslojs/encoding': 0.3.0
+      '@oslojs/oauth2': 0.3.0
+      vitest: 1.6.0(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   arctic@2.0.0-next.1(@types/node@22.1.0)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3):
     dependencies:
       '@oslojs/encoding': 0.3.0
@@ -17780,7 +17806,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(@babel/core@7.24.4)(react@18.3.1)
+      styled-jsx: 5.1.1(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.3
       '@next/swc-darwin-x64': 14.2.3
@@ -19251,6 +19277,11 @@ snapshots:
       client-only: 0.0.1
       react: 18.2.0
 
+  styled-jsx@5.1.1(react@18.3.1):
+    dependencies:
+      client-only: 0.0.1
+      react: 18.3.1
+
   stylis@4.2.0: {}
 
   sucrase@3.35.0:
@@ -20130,6 +20161,23 @@ snapshots:
       - supports-color
       - terser
 
+  vite-node@1.6.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3):
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.4
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      vite: 5.3.5(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   vite-node@1.6.0(@types/node@22.1.0)(lightningcss@1.24.1)(terser@5.31.3):
     dependencies:
       cac: 6.7.14
@@ -20363,6 +20411,40 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@vitest/ui': 0.33.0(vitest@0.34.6)
+      happy-dom: 10.11.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vitest@1.6.0(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3):
+    dependencies:
+      '@vitest/expect': 1.6.0
+      '@vitest/runner': 1.6.0
+      '@vitest/snapshot': 1.6.0
+      '@vitest/spy': 1.6.0
+      '@vitest/utils': 1.6.0
+      acorn-walk: 8.3.2
+      chai: 4.4.1
+      debug: 4.3.4
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      tinybench: 2.8.0
+      tinypool: 0.8.4
+      vite: 5.3.5(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
+      vite-node: 1.6.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
+      why-is-node-running: 2.2.2
+    optionalDependencies:
+      '@types/node': 20.14.10
       happy-dom: 10.11.2
     transitivePeerDependencies:
       - less

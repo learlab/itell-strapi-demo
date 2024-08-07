@@ -1,5 +1,3 @@
-"use client";
-
 import { Image } from "@itell/ui/client";
 import { cn } from "@itell/utils";
 import React from "react";

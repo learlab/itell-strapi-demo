@@ -44,6 +44,51 @@ const srcDoc = `
             return arg;
         }
 
+        window.alert = (message) => {
+            window.parent.postMessage({
+                type: "alert",
+                message,
+                id: currentId
+            }, "*");
+        };
+
+        window.prompt = (message, defaultValue) => {
+            return new Promise((resolve) => {
+                window.parent.postMessage({
+                    type: "prompt",
+                    message,
+                    defaultValue,
+                    id: currentId
+                }, "*");
+
+                const handleResponse = (event) => {
+                    if (event.data.type === "prompt-response" && event.data.id === currentId) {
+                        window.removeEventListener("message", handleResponse);
+                        resolve(event.data.response);
+                    }
+                };
+                window.addEventListener("message", handleResponse);
+            });
+        };
+
+        window.confirm = (message) => {
+            return new Promise((resolve) => {
+                window.parent.postMessage({
+                    type: "confirm",
+                    message,
+                    id: currentId
+                }, "*");
+
+                const handleResponse = (event) => {
+                    if (event.data.type === "confirm-response" && event.data.id === currentId) {
+                        window.removeEventListener("message", handleResponse);
+                        resolve(event.data.response);
+                    }
+                };
+                window.addEventListener("message", handleResponse);
+            });
+        };
+
         window.addEventListener("message", async (event) => {
             if (event.data.type === "run-code") {
                 const { code, id, source } = event.data;
@@ -54,7 +99,7 @@ const srcDoc = `
                 }
 
                 try {
-                    const result = eval?.(code);
+                    const result = await eval?.(code);
                     if (result !== undefined && result !== "use strict") {
                         postLogToParent("return", [serializeArg(result)], id);
                     }

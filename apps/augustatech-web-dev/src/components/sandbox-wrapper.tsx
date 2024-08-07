@@ -1,10 +1,7 @@
 import { createEventAction } from "@/actions/event";
 import { EventType } from "@/lib/constants";
-import {
-	Sandbox as BaseSandbox,
-	SandboxProps,
-} from "@itell/js-sandbox/sandbox";
 import React from "react";
+import { Sandbox, SandboxProps } from "./sandbox";
 
 type Props = SandboxProps & {
 	id?: string;
@@ -13,7 +10,7 @@ type Props = SandboxProps & {
 	code?: string;
 };
 
-export const Sandbox = async ({
+export const SandboxWrapper = async ({
 	id,
 	code,
 	children,
@@ -26,11 +23,12 @@ export const Sandbox = async ({
 	const editorId = id || (await hash(editorCode)).slice(0, 8);
 
 	return (
-		<BaseSandbox
+		<Sandbox
 			{...rest}
 			id={editorId}
 			code={editorCode}
-			onRun={(code, same) => {
+			onRun={async (code, same) => {
+				"use server";
 				if (!same) {
 					createEventAction({
 						type: EventType.RUN_CODE,

@@ -19,7 +19,7 @@ import {
 	TabsHeader,
 } from "@/components/ui/tabs";
 import { Image } from "@itell/ui/client";
-import { Sandbox } from "@textbook/sandbox";
+import { SandboxWrapper } from "./sandbox-wrapper";
 import { Accordion, AccordionItem } from "./ui/accordion";
 
 export const TextbookComponents = {
@@ -36,7 +36,7 @@ export const TextbookComponents = {
 	Steps,
 	Columns,
 	Column,
-	Sandbox,
+	Sandbox: SandboxWrapper,
 	// tab related
 	Tabs,
 	TabsHeader,

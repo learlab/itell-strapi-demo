@@ -1,4 +1,3 @@
-import React from "react";
 import { CodeEditor } from "./editor";
 
 export type SandboxProps = {
@@ -9,7 +8,7 @@ export type SandboxProps = {
 	onRun?: (code: string, same: boolean) => void;
 };
 
-export const Sandbox = async ({
+export const Sandbox = ({
 	id,
 	code,
 	height,

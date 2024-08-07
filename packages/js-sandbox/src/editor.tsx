@@ -1,14 +1,15 @@
 "use client";
-import { LogMessage } from "@itell/react-console-viewer";
 import { Console as LogOutput } from "@itell/react-console-viewer";
 import { Button } from "@itell/ui/client";
+import { useSelector } from "@xstate/store/react";
 import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
 import { editor } from "monaco-editor";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useSandbox } from "./provider";
 import { Spinner } from "./spinner";
+import { store } from "./store";
 
 const Editor = dynamic(
 	() => import("@monaco-editor/react").then((mod) => mod.Editor),
@@ -43,35 +44,17 @@ export const CodeEditor = ({
 	...props
 }: Props) => {
 	const { theme } = useTheme();
+	const { run } = useSandbox();
 	const [height, setHeight] = useState(props.height || minHeight);
-	const { register, run } = useSandbox();
-	const [logs, setLogs] = useState<LogMessage[]>([]);
+	const data = useSelector(store, (state) => state.context.entities[id]);
 	const editor = useRef<editor.IStandaloneCodeEditor | null>(null);
 	const prevCode = useRef("");
 
 	const reset = useCallback(() => {
 		if (editor.current) {
-			setLogs([]);
 			editor.current.setValue(code);
 		}
-	}, []);
-
-	const handleMessage = useCallback((event: MessageEvent) => {
-		if (event.data && event.data.id === id && event.data.type === "log") {
-			if (Array.isArray(event.data.log)) {
-				setLogs((prevLogs) => [...prevLogs, ...event.data.log]);
-			} else {
-				setLogs((prevLogs) => [...prevLogs, event.data.log]);
-			}
-		}
-	}, []);
-
-	useEffect(() => {
-		window.addEventListener("message", handleMessage);
-		return () => {
-			window.removeEventListener("message", handleMessage);
-		};
-	}, [handleMessage]);
+	}, [code]);
 
 	return (
 		<div className="relative">
@@ -81,7 +64,6 @@ export const CodeEditor = ({
 					size={"sm"}
 					type="button"
 					onClick={() => {
-						setLogs([]);
 						run(id);
 						const code = editor.current?.getValue() || "";
 						onRun?.(code, prevCode.current === code);
@@ -138,7 +120,7 @@ export const CodeEditor = ({
 				theme={theme === "dark" ? "vs-dark" : "light"}
 				defaultValue={code}
 				onMount={(e) => {
-					register(id, { editor: e, dependencies });
+					store.send({ type: "register", id, editor: e });
 					editor.current = e;
 
 					if (!props.height) {
@@ -175,13 +157,15 @@ export const CodeEditor = ({
 					cursorStyle: "line",
 				}}
 			/>
-			<LogOutput
-				logs={logs}
-				id="output"
-				variant={theme === "dark" ? "dark" : "light"}
-				// @ts-ignore
-				styles={{ BASE_FONT_SIZE: "14px" }}
-			/>
+			{data?.logs && data.logs.length > 0 && (
+				<LogOutput
+					logs={data.logs}
+					id="output"
+					variant={theme === "dark" ? "dark" : "light"}
+					// @ts-ignore
+					styles={{ BASE_FONT_SIZE: "14px" }}
+				/>
+			)}
 		</div>
 	);
 };
