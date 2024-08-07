@@ -1,629 +1,547 @@
 ---
-title: "6. The Secret Life of Objects"
-page_slug: 6-the-secret-life-of-objects
+title: "2. Program Structure"
+page_slug: 2-program-structure
 summary: true
 quiz: false
 ---
-<section className="content-chunk" aria-labelledby="Introduction-817t" data-subsection-id="Introduction-817t" data-show-header="true">
-## Introduction \{#Introduction-817t}
-An abstract data type is realized by writing a special kind of program \[…\] which defines the type in terms of the operations which can be performed on it.
+<section className="content-chunk" aria-labelledby="Introduction-203pt" data-subsection-id="Introduction-203pt" data-show-header="false">
+<h2 className="sr-only" id="Introduction-203pt">Introduction</h2>
 
-\-\- Barbara Liskov, _Programming with Abstract Data Types_
-
-![6.1.png](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/6.1.png-573430901e85c902387b704f70e6be87.png)
-
-[Chapter 4](https://eloquentjavascript.net/04_data.html) introduced JavaScript’s objects as containers that hold other data. In programming culture, __object-oriented programming__ is a set of techniques that use objects as the central principle of program organization. Though no one really agrees on its precise definition, object-oriented programming has shaped the design of many programming languages, including JavaScript. This chapter describes the way these ideas can be applied in JavaScript.
+In this chapter, we will start to do things that can actually be called _programming_. We will expand our command of the JavaScript language beyond the nouns and sentence fragments we’ve seen so far to the point where we can express meaningful prose.
 </section>
 
-<section className="content-chunk" aria-labelledby="Abstract-Data-Types-818t" data-subsection-id="Abstract-Data-Types-818t" data-show-header="true">
-## Abstract Data Types \{#Abstract-Data-Types-818t}
-The main idea in object-oriented programming is to use objects, or rather _types_ of objects, as the unit of program organization. Setting up a program as a number of strictly separated object types provides a way to think about its structure and thus to enforce some kind of discipline, preventing everything from becoming entangled.
+<section className="content-chunk" aria-labelledby="Expressions-and-Statements-775t" data-subsection-id="Expressions-and-Statements-775t" data-show-header="true">
+## Expressions and Statements \{#Expressions-and-Statements-775t}
+In Chapter 1, we made values and applied operators to them to get new values. Creating values like this is the main substance of any JavaScript program. But that substance has to be framed in a larger structure to be useful. That’s what we’ll cover in this chapter.
 
-The way to do this is to think of objects somewhat like you’d think of an electric mixer or other consumer appliance. The people who design and assemble a mixer have to do specialized work requiring material science and understanding of electricity. They cover all that up in a smooth plastic shell so that the people who only want to mix pancake batter don’t have to worry about all that—they have to understand only the few knobs that the mixer can be operated with.
+A fragment of code that produces a value is called an expression. Every value that is written literally (such as 22 or "psychoanalysis") is an expression. An expression between parentheses is also an expression, as is a binary operator applied to two expressions or a unary operator applied to one.
 
-Similarly, an _abstract data type_, or _object class_, is a subprogram that may contain arbitrarily complicated code but exposes a limited set of methods and properties that people working with it are supposed to use. This allows large programs to be built up out of a number of appliance types, limiting the degree to which these different parts are entangled by requiring them to only interact with each other in specific ways.
+This shows part of the beauty of a language-based interface. Expressions can contain other expressions in a way similar to how subsentences in human languages are nested—a subsentence can contain its own subsentences, and so on. This allows us to build expressions that describe arbitrarily complex computations.
 
-If a problem is found in one such object class, it can often be repaired or even completely rewritten without impacting the rest of the program. Even better, it may be possible to use object classes in multiple different programs, avoiding the need to recreate their functionality from scratch. You can think of JavaScript’s built-in data structures, such as arrays and strings, as such reusable abstract data types.
+If an expression corresponds to a sentence fragment, a JavaScript statement corresponds to a full sentence. A program is a list of statements.
 
-Each abstract data type has an _interface_, the collection of operations that external code can perform on it. Any details beyond that interface are _encapsulated_, treated as internal to the type and of no concern to the rest of the program.
+The simplest kind of statement is an expression with a semicolon after it. This is a program:
 
-Even basic things like numbers can be thought of as an abstract data type whose interface allows us to add them, multiply them, compare them, and so on. In fact, the fixation on single _objects_ as the main unit of organization in classical object-oriented programming is somewhat unfortunate since useful pieces of functionality often involve a group of different object classes working closely together.
+<Notebook code = {`1;
+!false`}/>
+
+It is a useless program, though. An expression can be content to just produce a value, which can then be used by the enclosing code. However, a statement stands on its own, so if it doesn’t affect the world, it’s useless. It may display something on the screen, as with console.log, or change the state of the machine in a way that will affect the statements that come after it. These changes are called side effects. The statements in the previous example just produce the values 1 and true and then immediately throw them away. This leaves no impression on the world at all. When you run this program, nothing observable happens.
+
+In some cases, JavaScript allows you to omit the semicolon at the end of a statement. In other cases, it has to be there, or the next line will be treated as part of the same statement. The rules for when it can be safely omitted are somewhat complex and error prone. So in this book, every statement that needs a semicolon will always get one. I recommend you do the same, at least until you’ve learned more about the subtleties of missing semicolons.
 </section>
 
-<section className="content-chunk" aria-labelledby="Methods-819t" data-subsection-id="Methods-819t" data-show-header="true">
-## Methods \{#Methods-819t}
-In JavaScript, methods are nothing more than properties that hold function values. This is a simple method:
+<section className="content-chunk" aria-labelledby="Bindings-776t" data-subsection-id="Bindings-776t" data-show-header="true">
+## Bindings \{#Bindings-776t}
+How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a binding, or variable.
 
-<Notebook code = {`function speak(line) {
-  console.log(`The ${this.type} rabbit says '${line}'`);
-}
-let whiteRabbit = {type: "white", speak};
-let hungryRabbit = {type: "hungry", speak};
+<Notebook code = {`let caught = 5 * 5;`}/>
 
-whiteRabbit.speak("Oh my fur and whiskers");
-// → The white rabbit says 'Oh my fur and whiskers'
-hungryRabbit.speak("Got any carrots?");
-// → The hungry rabbit says 'Got any carrots?'`}/>
+That gives us a second kind of statement. The special word (keyword) let indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an = operator and an expression.
 
-<Notebook code = {`xxxxxx`}/>
+The example creates a binding called caught and uses it to grab hold of the number that is produced by multiplying 5 by 5.
 
-Typically a method needs to do something with the object on which it was called. When a function is called as a method—looked up as a property and immediately called, as in <Notebook code = {`object.method()`}/>—the binding called <Notebook code = {`this`}/> in its body automatically points at the object on which it was called.
+After a binding has been defined, its name can be used as an expression. The value of such an expression is the value the binding currently holds. Here’s an example:
 
-You can think of <Notebook code = {`this`}/> as an extra parameter that is passed to the function in a different way than regular parameters. If you want to provide it explicitly, you can use a function’s <Notebook code = {`call`}/> method, which takes the <Notebook code = {`this`}/> value as its first argument and treats further arguments as normal parameters.
-
-<Notebook code = {`speak.call(whiteRabbit, "Hurry");
-// → The white rabbit says 'Hurry'`}/>
-
-Since each function has its own <Notebook code = {`this`}/> binding whose value depends on the way it is called, you cannot refer to the <Notebook code = {`this`}/> of the wrapping scope in a regular function defined with the <Notebook code = {`function`}/> keyword.
-
-Arrow functions are different—they do not bind their own <Notebook code = {`this`}/> but can see the <Notebook code = {`this`}/> binding of the scope around them. Thus, you can do something like the following code, which references <Notebook code = {`this`}/> from inside a local function:
-
-<Notebook code = {`let finder = {
-  find(array) {
-    return array.some(v => v == this.value);
-  },
-  value: 5
-};
-console.log(finder.find([4, 5]));
-// → true`}/>
-
-A property like <Notebook code = {`find(array)`}/> in an object expression is a shorthand way of defining a method. It creates a property called <Notebook code = {`find`}/> and gives it a function as its value.
-
-If I had written the argument to <Notebook code = {`some`}/> using the <Notebook code = {`function`}/> keyword, this code wouldn’t work.
-</section>
-
-<section className="content-chunk" aria-labelledby="Prototypes-820t" data-subsection-id="Prototypes-820t" data-show-header="true">
-## Prototypes \{#Prototypes-820t}
-One way to create a rabbit object type with a <Notebook code = {`speak`}/> method would be to create a helper function that has a rabbit type as its parameter and returns an object holding that as its <Notebook code = {`type`}/> property and our speak function in its <Notebook code = {`speak`}/> property.
-
-All rabbits share that same method. Especially for types with many methods, it would be nice if there were a way to keep a type’s methods in a single place, rather than adding them to each object individually.
-
-In JavaScript, _prototypes_ are the way to do that. Objects can be linked to other objects, to magically get all the properties that other object has. Plain old objects created with <Notebook code = {`{}`}/> notation are linked to an object called <Notebook code = {`Object.prototype`}/>.
-
-<Notebook code = {`let empty = {};
-console.log(empty.toString);
-// → function toString(){…}
-console.log(empty.toString());
-// → [object Object]`}/>
-
-It looks like we just pulled a property out of an empty object. But in fact, <Notebook code = {`toString`}/> is a method stored in <Notebook code = {`Object.prototype`}/>, meaning it is available in most objects.
-
-When an object gets a request for a property that it doesn’t have, its prototype will be searched for the property. If that doesn’t have it, the _prototype’s_ prototype is searched, and so on until an object without prototype is reached (<Notebook code = {`Object.prototype`}/> is such an object).
-
-<Notebook code = {`console.log(Object.getPrototypeOf({}) == Object.prototype);
-// → true
-console.log(Object.getPrototypeOf(Object.prototype));
-// → null`}/>
-
-As you’d guess, <Notebook code = {`Object.getPrototypeOf`}/> returns the prototype of an object.
-
-Many objects don’t directly have <Notebook code = {`Object.prototype`}/> as their prototype but instead have another object that provides a different set of default properties. Functions derive from <Notebook code = {`Function.prototype`}/> and arrays derive from <Notebook code = {`Array.prototype`}/>.
-
-<Notebook code = {`console.log(Object.getPrototypeOf(Math.max) ==
-            Function.prototype);
-// → true
-console.log(Object.getPrototypeOf([]) == Array.prototype);
-// → true`}/>
-
-Such a prototype object will itself have a prototype, often <Notebook code = {`Object.prototype`}/>, so that it still indirectly provides methods like <Notebook code = {`toString`}/>.
-
-You can use <Notebook code = {`Object.create`}/> to create an object with a specific prototype.
-
-<Notebook code = {`let protoRabbit = {
-  speak(line) {
-    console.log(`The ${this.type} rabbit says '${line}'`);
-  }
-};
-let blackRabbit = Object.create(protoRabbit);
-blackRabbit.type = "black";
-blackRabbit.speak("I am fear and darkness");
-// → The black rabbit says 'I am fear and darkness'`}/>
-
-The “proto” rabbit acts as a container for the properties shared by all rabbits. An individual rabbit object, like the black rabbit, contains properties that apply only to itself—in this case its type—and derives shared properties from its prototype.
-</section>
-
-<section className="content-chunk" aria-labelledby="Classes-826t" data-subsection-id="Classes-826t" data-show-header="true">
-## Classes \{#Classes-826t}
-JavaScript’s prototype system can be interpreted as a somewhat free-form take on abstract data types or classes. A _class_ defines the shape of a type of object—what methods and properties it has. Such an object is called an _instance_ of the class.
-
-Prototypes are useful for defining properties for which all instances of a class share the same value. Properties that differ per instance, such as our rabbits’ <Notebook code = {`type`}/> property, need to be stored directly in the objects themselves.
-
-To create an instance of a given class, you have to make an object that derives from the proper prototype, but you _also_ have to make sure it itself has the properties that instances of this class are supposed to have. This is what a _constructor_ function does.
-
-<Notebook code = {`function makeRabbit(type) {
-  let rabbit = Object.create(protoRabbit);
-  rabbit.type = type;
-  return rabbit;
-}`}/>
-
-JavaScript’s class notation makes it easier to define this type of function, along with a prototype object.
-
-<Notebook code = {`class Rabbit {
-  constructor(type) {
-    this.type = type;
-  }
-  speak(line) {
-    console.log(`The ${this.type} rabbit says '${line}'`);
-  }
-}`}/>
-
-The <Notebook code = {`class`}/> keyword starts a class declaration, which allows us to define a constructor and a set of methods together. Any number of methods may be written inside the declaration’s braces. This code has the effect of defining a binding called <Notebook code = {`Rabbit`}/>, which holds a function that runs the code in <Notebook code = {`constructor`}/> and has a <Notebook code = {`prototype`}/> property that holds the <Notebook code = {`speak`}/> method.
-
-This function cannot be called like a normal function. Constructors, in JavaScript, are called by putting the keyword <Notebook code = {`new`}/> in front of them. Doing so creates a fresh instance object whose prototype is the object from the function’s <Notebook code = {`prototype`}/> property, then runs the function with <Notebook code = {`this`}/> bound to the new object, and finally returns the object.
-
-<Notebook code = {`let killerRabbit = new Rabbit("killer");`}/>
-
-In fact, <Notebook code = {`class`}/> was only introduced in the 2015 edition of JavaScript. Any function can be used as a constructor, and before 2015, the way to define a class was to write a regular function and then manipulate its <Notebook code = {`prototype`}/> property.
-
-<Notebook code = {`function ArchaicRabbit(type) {
-  this.type = type;
-}
-ArchaicRabbit.prototype.speak = function(line) {
-  console.log(`The ${this.type} rabbit says '${line}'`);
-};
-let oldSchoolRabbit = new ArchaicRabbit("old school");`}/>
-
-For this reason, all non-arrow functions start with a <Notebook code = {`prototype`}/> property holding an empty object.
-
-By convention, the names of constructors are capitalized so that they can easily be distinguished from other functions.
-
-It is important to understand the distinction between the way a prototype is associated with a constructor (through its <Notebook code = {`prototype`}/> property) and the way objects _have_ a prototype (which can be found with <Notebook code = {`Object.getPrototypeOf`}/>). The actual prototype of a constructor is <Notebook code = {`Function.prototype`}/> since constructors are functions. The constructor function’s <Notebook code = {`prototype`}/> _property_ holds the prototype used for instances created through it.
-
-<Notebook code = {`console.log(Object.getPrototypeOf(Rabbit) ==
-            Function.prototype);
-// → true
-console.log(Object.getPrototypeOf(killerRabbit) ==
-            Rabbit.prototype);
-// → true`}/>
-
-Constructors will typically add some per-instance properties to <Notebook code = {`this`}/>. It is also possible to declare properties directly in the class declaration. Unlike methods, such properties are added to instance objects and not the prototype.
-
-<Notebook code = {`class Particle {
-  speed = 0;
-  constructor(position) {
-    this.position = position;
-  }
-}`}/>
-
-Like <Notebook code = {`function`}/>, <Notebook code = {`class`}/> can be used both in statements and in expressions. When used as an expression, it doesn’t define a binding but just produces the constructor as a value. You are allowed to omit the class name in a class expression.
-
-<Notebook code = {`let object = new class { getWord() { return "hello"; } };
-console.log(object.getWord());
-// → hello`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Private-Properties-823t" data-subsection-id="Private-Properties-823t" data-show-header="true">
-## Private Properties \{#Private-Properties-823t}
-It is common for classes to define some properties and methods for internal use that are not part of their interface. These are called _private_ properties, as opposed to _public_ ones, which are part of the object’s external interface.
-
-To declare a private method, put a <Notebook code = {`#`}/> sign in front of its name. Such methods can be called only from inside the <Notebook code = {`class`}/> declaration that defines them.
-
-<Notebook code = {`class SecretiveObject {
-  #getSecret() {
-    return "I ate all the plums";
-  }
-  interrogate() {
-    let shallISayIt = this.#getSecret();
-    return "never";
-  }
-}`}/>
-
-When a class does not declare a constructor, it will automatically get an empty one.
-
-If you try to call <Notebook code = {`#getSecret`}/> from outside the class, you get an error. Its existence is entirely hidden inside the class declaration.
-
-To use private instance properties, you must declare them. Regular properties can be created by just assigning to them, but private properties _must_ be declared in the class declaration to be available at all.
-
-This class implements an appliance for getting a random whole number below a given maximum number. It has only one public property: <Notebook code = {`getNumber`}/>.
-
-<Notebook code = {`class RandomSource {
-  #max;
-  constructor(max) {
-    this.#max = max;
-  }
-  getNumber() {
-    return Math.floor(Math.random() * this.#max);
-  }
-}`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Overriding-derived-properties-822t" data-subsection-id="Overriding-derived-properties-822t" data-show-header="true">
-## Overriding derived properties \{#Overriding-derived-properties-822t}
-When you add a property to an object, whether it is present in the prototype or not, the property is added to the object __itself__. If there was already a property with the same name in the prototype, this property will no longer affect the object, as it is now hidden behind the object’s own property.
-
-<Notebook code = {`Rabbit.prototype.teeth = "small";
-console.log(killerRabbit.teeth);
-// → small
-killerRabbit.teeth = "long, sharp, and bloody";
-console.log(killerRabbit.teeth);
-// → long, sharp, and bloody
-console.log((new Rabbit("basic")).teeth);
-// → small
-console.log(Rabbit.prototype.teeth);
-// → small`}/>
-
-The following diagram sketches the situation after this code has run. The <Notebook code = {`Rabbit`}/> and <Notebook code = {`Object`}/> prototypes lie behind <Notebook code = {`killerRabbit`}/> as a kind of backdrop, where properties that are not found in the object itself can be looked up.
-
-![6.2.png](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/6.2.png-ff3a71907caf658d3d6ff752c0ede7d0.png)
-
-Overriding properties that exist in a prototype can be a useful thing to do. As the rabbit teeth example shows, overriding can be used to express exceptional properties in instances of a more generic class of objects while letting the nonexceptional objects take a standard value from their prototype.
-
-Overriding is also used to give the standard function and array prototypes a different <Notebook code = {`toString`}/> method than the basic object prototype.
-
-<Notebook code = {`console.log(Array.prototype.toString ==
-            Object.prototype.toString);
-// → false
-console.log([1, 2].toString());
-// → 1,2`}/>
-
-Calling <Notebook code = {`toString`}/> on an array gives a result similar to calling <Notebook code = {`.join(",")`}/> on it—it puts commas between the values in the array. Directly calling <Notebook code = {`Object.prototype.toString`}/> with an array produces a different string. That function doesn’t know about arrays, so it simply puts the word __object__ and the name of the type between square brackets.
-
-<Notebook code = {`console.log(Object.prototype.toString.call([1, 2]));
-// → [object Array]`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="MAPS-821t" data-subsection-id="MAPS-821t" data-show-header="true">
-## MAPS \{#MAPS-821t}
-We saw the word _map_ used in the [previous chapter](https://eloquentjavascript.net/05_higher_order.html#map) for an operation that transforms a data structure by applying a function to its elements. Confusing as it is, in programming the same word is used for a related but rather different thing.
-
-A _map_ (noun) is a data structure that associates values (the keys) with other values. For example, you might want to map names to ages. It is possible to use objects for this.
-
-<Notebook code = {`let ages = {
-  Boris: 39,
-  Liang: 22,
-  Júlia: 62
-};
-
-console.log(`Júlia is ${ages["Júlia"]}`);
-// → Júlia is 62
-console.log("Is Jack's age known?", "Jack" in ages);
-// → Is Jack's age known? false
-console.log("Is toString's age known?", "toString" in ages);
-// → Is toString's age known? true`}/>
-
-Here, the object’s property names are the people’s names and the property values are their ages. But we certainly didn’t list anybody named toString in our map. Yet because plain objects derive from <Notebook code = {`Object.prototype`}/>, it looks like the property is there.
-
-For this reason, using plain objects as maps is dangerous. There are several possible ways to avoid this problem. First, you can create objects with _no_ prototype. If you pass <Notebook code = {`null`}/> to <Notebook code = {`Object.create`}/>, the resulting object will not derive from <Notebook code = {`Object.prototype`}/> and can be safely used as a map.
-
-<Notebook code = {`console.log("toString" in Object.create(null));
-// → false`}/>
-
-Object property names must be strings. If you need a map whose keys can’t easily be converted to strings—such as objects—you cannot use an object as your map.
-
-Fortunately, JavaScript comes with a class called <Notebook code = {`Map`}/> that is written for this exact purpose. It stores a mapping and allows any type of keys.
-
-<Notebook code = {`let ages = new Map();
-ages.set("Boris", 39);
-ages.set("Liang", 22);
-ages.set("Júlia", 62);
-
-console.log(`Júlia is ${ages.get("Júlia")}`);
-// → Júlia is 62
-console.log("Is Jack's age known?", ages.has("Jack"));
-// → Is Jack's age known? false
-console.log(ages.has("toString"));
-// → false`}/>
-
-The methods <Notebook code = {`set`}/>, <Notebook code = {`get`}/>, and <Notebook code = {`has`}/> are part of the interface of the <Notebook code = {`Map`}/> object. Writing a data structure that can quickly update and search a large set of values isn’t easy, but we don’t have to worry about that. Someone else did it for us, and we can go through this simple interface to use their work.
-
-If you do have a plain object that you need to treat as a map for some reason, it is useful to know that <Notebook code = {`Object.keys`}/> returns only an object’s _own_ keys, not those in the prototype. As an alternative to the <Notebook code = {`in`}/> operator, you can use the <Notebook code = {`Object.hasOwn`}/> function, which ignores the object’s prototype.
-
-<Notebook code = {`console.log(Object.hasOwn({x: 1}, "x"));
-// → true
-console.log(Object.hasOwn({x: 1}, "toString"));
-// → false`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Polymorphism-824t" data-subsection-id="Polymorphism-824t" data-show-header="true">
-## Polymorphism \{#Polymorphism-824t}
-When you call the <Notebook code = {`String`}/> function (which converts a value to a string) on an object, it will call the <Notebook code = {`toString`}/> method on that object to try to create a meaningful string from it. I mentioned that some of the standard prototypes define their own version of <Notebook code = {`toString`}/> so they can create a string that contains more useful information than <Notebook code = {`"[object Object]"`}/>. You can also do that yourself.
-
-<Notebook code = {`Rabbit.prototype.toString = function() {
-  return `a ${this.type} rabbit`;
-};
-
-console.log(String(killerRabbit));
-// → a killer rabbit`}/>
-
-This is a simple instance of a powerful idea. When a piece of code is written to work with objects that have a certain interface—in this case, a <Notebook code = {`toString`}/> method—any kind of object that happens to support this interface can be plugged into the code and will be able to work with it.
-
-This technique is called _polymorphism_. Polymorphic code can work with values of different shapes, as long as they support the interface it expects.
-
-An example of a widely used interface is that of array-like objects that have a <Notebook code = {`length`}/> property holding a number and numbered properties for each of their elements. Both arrays and strings support this interface, as do various other objects, some of which we’ll see later in the chapters about the browser. Our implementation of <Notebook code = {`forEach`}/> from [Chapter 5](https://eloquentjavascript.net/05_higher_order.html) works on anything that provides this interface. In fact, so does <Notebook code = {`Array.prototype.forEach`}/>.
-
-<Notebook code = {`Array.prototype.forEach.call({
-  length: 2,
-  0: "A",
-  1: "B"
-}, elt => console.log(elt));
-// → A
-// → B`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Getters,-setters,-and-statics-825t" data-subsection-id="Getters,-setters,-and-statics-825t" data-show-header="true">
-## Getters, setters, and statics \{#Getters,-setters,-and-statics-825t}
-Interfaces often contain plain properties, not just methods. For example, <Notebook code = {`Map`}/> objects have a <Notebook code = {`size`}/> property that tells you how many keys are stored in them.
-
-It is not necessary for such an object to compute and store such a property directly in the instance. Even properties that are accessed directly may hide a method call. Such methods are called _getters_ and are defined by writing <Notebook code = {`get`}/> in front of the method name in an object expression or class declaration.
-
-<Notebook code = {`let varyingSize = {
-  get size() {
-    return Math.floor(Math.random() * 100);
-  }
-};
-
-console.log(varyingSize.size);
-// → 73
-console.log(varyingSize.size);
-// → 49`}/>
-
-Whenever someone reads from this object’s <Notebook code = {`size`}/> property, the associated method is called. You can do a similar thing when a property is written to, using a __setter__.
-
-<Notebook code = {`class Temperature {
-  constructor(celsius) {
-    this.celsius = celsius;
-  }
-  get fahrenheit() {
-    return this.celsius * 1.8 + 32;
-  }
-  set fahrenheit(value) {
-    this.celsius = (value - 32) / 1.8;
-  }
-
-  static fromFahrenheit(value) {
-    return new Temperature((value - 32) / 1.8);
-  }
-}
-
-let temp = new Temperature(22);
-console.log(temp.fahrenheit);
-// → 71.6
-temp.fahrenheit = 86;
-console.log(temp.celsius);
-// → 30`}/>
-
-The <Notebook code = {`Temperature`}/> class allows you to read and write the temperature in either degrees Celsius or degrees Fahrenheit, but internally it stores only Celsius and automatically converts to and from Celsius in the <Notebook code = {`fahrenheit`}/> getter and setter.
-
-Sometimes you want to attach some properties directly to your constructor function rather than to the prototype. Such methods won’t have access to a class instance but can, for example, be used to provide additional ways to create instances.
-
-Inside a class declaration, methods or properties that have <Notebook code = {`static`}/> written before their name are stored on the constructor. For example, the <Notebook code = {`Temperature`}/> class allows you to write <Notebook code = {`Temperature.fromFahrenheit(100)`}/> to create a temperature using degrees Fahrenheit.
-
-<Notebook code = {`let boil = Temperature.fromFahrenheit(212);
-console.log(boil.celsius);
+<Notebook code = {`let ten = 10;
+console.log(ten * ten);
 // → 100`}/>
-</section>
 
-<section className="content-chunk" aria-labelledby="Symbols-827t" data-subsection-id="Symbols-827t" data-show-header="true">
-## Symbols \{#Symbols-827t}
-I mentioned in [Chapter 4](https://eloquentjavascript.net/04_data.html#for_of_loop) that a <Notebook code = {`for`}/>/<Notebook code = {`of`}/> loop can loop over several kinds of data structures. This is another case of polymorphism—such loops expect the data structure to expose a specific interface, which arrays and strings do. And we can also add this interface to our own objects! But before we can do that, we need to briefly take a look at the symbol type.
+When a binding points at a value, that does not mean it is tied to that value forever. The = operator can be used at any time on existing bindings to disconnect them from their current value and have them point to a new one:
 
-It is possible for multiple interfaces to use the same property name for different things. For example, on array-like objects, <Notebook code = {`length`}/> refers to the number of elements in the collection. But an object interface describing a hiking route could use <Notebook code = {`length`}/> to provide the length of the route in meters. It would not be possible for an object to conform to both these interfaces.
+<Notebook code = {`let mood = "light";
+console.log(mood);
+// → light
+mood = "dark";
+console.log(mood);
+// → dark`}/>
 
-An object trying to be a route and array-like (maybe to enumerate its waypoints) is somewhat far-fetched, and this kind of problem isn’t that common in practice. For things like the iteration protocol, though, the language designers needed a type of property that _really_ doesn’t conflict with any others. So in 2015, _symbols_ were added to the language.
+You should imagine bindings as tentacles rather than boxes. They do not contain values; they grasp them—two bindings can refer to the same value. A program can access only the values to which it still has a reference. When you need to remember something, you either grow a tentacle to hold on to it or reattach one of your existing tentacles to it.
 
-Most properties, including all those we have seen so far, are named with strings. But it is also possible to use symbols as property names. Symbols are values created with the <Notebook code = {`Symbol`}/> function. Unlike strings, newly created symbols are unique—you cannot create the same symbol twice.
+Let’s look at another example. To remember the number of dollars that Luigi still owes you, you create a binding. When he pays back $35, you give this binding a new value.
 
-<Notebook code = {`let sym = Symbol("name");
-console.log(sym == Symbol("name"));
-// → false
-Rabbit.prototype[sym] = 55;
-console.log(killerRabbit[sym]);
-// → 55`}/>
+<Notebook code = {`let luigisDebt = 140;
+luigisDebt = luigisDebt - 35;
+console.log(luigisDebt);
+// → 105`}/> 
 
-The string you pass to <Notebook code = {`Symbol`}/> is included when you convert it to a string and can make it easier to recognize a symbol when, for example, showing it in the console. But it has no meaning beyond that—multiple symbols may have the same name.
+When you define a binding without giving it a value, the tentacle has nothing to grasp, so it ends in thin air. If you ask for the value of an empty binding, you’ll get the value undefined.
 
-Being both unique and usable as property names makes symbols suitable for defining interfaces that can peacefully live alongside other properties, no matter what their names are.
+A single let statement may define multiple bindings. The definitions must be separated by commas:
 
-<Notebook code = {`const length = Symbol("length");
-Array.prototype[length] = 0;
-
-console.log([1, 2].length);
-// → 2
-console.log([1, 2][length]);
-// → 0`}/>
-
-It is possible to include symbol properties in object expressions and classes by using square brackets around the property name. That causes the expression between the brackets to be evaluated to produce the property name, analogous to the square bracket property access notation.
-
-<Notebook code = {`let myTrip = {
-  length: 2,
-  0: "Lankwitz",
-  1: "Babelsberg",
-  [length]: 21500
-};
-console.log(myTrip[length], myTrip.length);
-// → 21500 2`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="The-iterator-interface-828t" data-subsection-id="The-iterator-interface-828t" data-show-header="true">
-## The iterator interface \{#The-iterator-interface-828t}
-The object given to a <Notebook code = {`for`}/>/<Notebook code = {`of`}/> loop is expected to be _iterable_. This means it has a method named with the <Notebook code = {`Symbol.iterator`}/> symbol (a symbol value defined by the language, stored as a property of the <Notebook code = {`Symbol`}/> function).
-
-When called, that method should return an object that provides a second interface, _iterator_. This is the actual thing that iterates. It has a <Notebook code = {`next`}/> method that returns the next result. That result should be an object with a <Notebook code = {`value`}/> property that provides the next value, if there is one, and a <Notebook code = {`done`}/> property, which should be true when there are no more results and false otherwise.
-
-Note that the <Notebook code = {`next`}/>, <Notebook code = {`value`}/>, and <Notebook code = {`done`}/> property names are plain strings, not symbols. Only <Notebook code = {`Symbol.iterator`}/>, which is likely to be added to a _lot_ of different objects, is an actual symbol.
-
-We can directly use this interface ourselves.
-
-<Notebook code = {`let okIterator = "OK"[Symbol.iterator]();
-console.log(okIterator.next());
-// → {value: "O", done: false}
-console.log(okIterator.next());
-// → {value: "K", done: false}
-console.log(okIterator.next());
-// → {value: undefined, done: true}`}/>
-
-Let’s implement an iterable data structure similar to the linked list from the exercise in [Chapter 4](https://eloquentjavascript.net/04_data.html). We’ll write the list as a class this time.
-
-<Notebook code = {`class List {
-  constructor(value, rest) {
-    this.value = value;
-    this.rest = rest;
-  }
-
-  get length() {
-    return 1 + (this.rest ? this.rest.length : 0);
-  }
-
-  static fromArray(array) {
-    let result = null;
-    for (let i = array.length - 1; i >= 0; i--) {
-      result = new this(array[i], result);
-    }
-    return result;
-  }
-}`}/>
-
-Note that <Notebook code = {`this`}/>, in a static method, points at the constructor of the class, not an instance—there is no instance around when a static method is called.
-
-Iterating over a list should return all the list’s elements from start to end. We’ll write a separate class for the iterator.
-
-<Notebook code = {`class ListIterator {
-  constructor(list) {
-    this.list = list;
-  }
-
-  next() {
-    if (this.list == null) {
-      return {done: true};
-    }
-    let value = this.list.value;
-    this.list = this.list.rest;
-    return {value, done: false};
-  }
-}`}/>
-
-The class tracks the progress of iterating through the list by updating its <Notebook code = {`list`}/> property to move to the next list object whenever a value is returned and reports that it is done when that list is empty (null).
-
-Let’s set up the <Notebook code = {`List`}/> class to be iterable. Throughout this book, I’ll occasionally use after-the-fact prototype manipulation to add methods to classes so that the individual pieces of code remain small and self contained. In a regular program, where there is no need to split the code into small pieces, you’d declare these methods directly in the class instead.
-
-<Notebook code = {`List.prototype[Symbol.iterator] = function() {
-  return new ListIterator(this);
-};`}/>
-
-We can now loop over a list with <Notebook code = {`for`}/>/<Notebook code = {`of`}/>.
-
-<Notebook code = {`let list = List.fromArray([1, 2, 3]);
-for (let element of list) {
-  console.log(element);
-}
-// → 1
-// → 2
+<Notebook code = {`let one = 1, two = 2;
+console.log(one + two);
 // → 3`}/>
 
-The <Notebook code = {`...`}/> syntax in array notation and function calls similarly works with any iterable object. For example, you can use <Notebook code = {`[...value]`}/> to create an array containing the elements in an arbitrary iterable object.
+The words var and const can also be used to create bindings, in a similar fashion to let.
 
-<Notebook code = {`console.log([..."PCI"]);
-// → ["P", "C", "I"]`}/>
+<Notebook code = {`var name = "Ayda";
+const greeting = "Hello ";
+console.log(greeting + name);
+// → Hello Ayda`}/>
+
+The first of these, var (short for “variable”), is the way bindings were declared in pre-2015 JavaScript, when let didn’t exist yet. I’ll get back to the precise way it differs from let in the next chapter. For now, remember that it mostly does the same thing, but we’ll rarely use it in this book because it behaves oddly in some situations.
+
+The word const stands for constant. It defines a constant binding, which points at the same value for as long as it lives. This is useful for bindings that just give a name to a value so that you can easily refer to it later.
 </section>
 
-<section className="content-chunk" aria-labelledby="Inheritance-829t" data-subsection-id="Inheritance-829t" data-show-header="true">
-## Inheritance \{#Inheritance-829t}
-Imagine we need a list type much like the <Notebook code = {`List`}/> class we saw before, but because we will be asking for its length all the time, we don’t want it to have to scan through its <Notebook code = {`rest`}/> every time. Instead, we want to store the length in every instance for efficient access.
+<section className="content-chunk" aria-labelledby="Binding-Names-777t" data-subsection-id="Binding-Names-777t" data-show-header="true">
+## Binding Names \{#Binding-Names-777t}
+Binding names can be any sequence of one or more letters. Digits can be part of binding names—catch22 is a valid name, for example—but the name must not start with a digit. A binding name may include dollar signs ($) or underscores (_) but no other punctuation or special characters.
 
-JavaScript’s prototype system makes it possible to create a _new_ class, much like the old class, but with new definitions for some of its properties. The prototype for the new class derives from the old prototype but adds a new definition for, say, the <Notebook code = {`length`}/> getter.
+Words with a special meaning, such as let, are keywords, and may not be used as binding names. There are also a number of words that are “reserved for use” in future versions of JavaScript, which also can’t be used as binding names. The full list of keywords and reserved words is rather long:
 
-In object-oriented programming terms, this is called _inheritance_. The new class inherits properties and behavior from the old class.
+<Notebook code = {`break case catch class const continue debugger default
+delete do else enum export extends false finally for
+function if implements import interface in instanceof let
+new package private protected public return static super
+switch this throw true try typeof var void while with yield`}/>
 
-<Notebook code = {`class LengthList extends List {
-  #length;
-
-  constructor(value, rest) {
-    super(value, rest);
-    this.#length = super.length;
-  }
-
-  get length() {
-    return this.#length;
-  }
-}
-
-console.log(LengthList.fromArray([1, 2, 3]).length);
-// → 3`}/>
-
-The use of the word <Notebook code = {`extends`}/> indicates that this class shouldn’t be directly based on the default <Notebook code = {`Object`}/> prototype but on some other class. This is called the _superclass_. The derived class is the _subclass_.
-
-To initialize a <Notebook code = {`LengthList`}/> instance, the constructor calls the constructor of its superclass through the <Notebook code = {`super`}/> keyword. This is necessary because if this new object is to behave (roughly) like a <Notebook code = {`List`}/>, it is going to need the instance properties that lists have.
-
-The constructor then stores the list’s length in a private property. If we had written <Notebook code = {`this.length`}/> there, the class’s own getter would have been called, which doesn’t work yet since <Notebook code = {`#length`}/> hasn’t been filled in yet. We can use <Notebook code = {`super.something`}/> to call methods and getters on the superclass’s prototype, which is often useful.
-
-Inheritance allows us to build slightly different data types from existing data types with relatively little work. It is a fundamental part of the object-oriented tradition, alongside encapsulation and polymorphism. But while the latter two are now generally regarded as wonderful ideas, inheritance is more controversial.
-
-Whereas encapsulation and polymorphism can be used to _separate_ pieces of code from one another, reducing the tangledness of the overall program, inheritance fundamentally ties classes together, creating _more_ tangle. When inheriting from a class, you usually have to know more about how it works than when simply using it. Inheritance can be a useful tool to make some types of programs more succinct, but it shouldn’t be the first tool you reach for, and you probably shouldn’t actively go looking for opportunities to construct class hierarchies (family trees of classes).
+Don’t worry about memorizing this list. When creating a binding produces an unexpected syntax error, check whether you’re trying to define a reserved word.
 </section>
 
-<section className="content-chunk" aria-labelledby="The-instance-of-operator-830t" data-subsection-id="The-instance-of-operator-830t" data-show-header="true">
-## The instance of operator \{#The-instance-of-operator-830t}
-It is occasionally useful to know whether an object was derived from a specific class. For this, JavaScript provides a binary operator called <Notebook code = {`instanceof`}/>.
-
-<Notebook code = {`console.log(
-  new LengthList(1, null) instanceof LengthList);
-// → true
-console.log(new LengthList(2, null) instanceof List);
-// → true
-console.log(new List(3, null) instanceof LengthList);
-// → false
-console.log([1] instanceof Array);
-// → true`}/>
-
-The operator will see through inherited types, so a <Notebook code = {`LengthList`}/> is an instance of <Notebook code = {`List`}/>. The operator can also be applied to standard constructors like <Notebook code = {`Array`}/>. Almost every object is an instance of <Notebook code = {`Object`}/>.
+<section className="content-chunk" aria-labelledby="The-Environment-778t" data-subsection-id="The-Environment-778t" data-show-header="true">
+## The Environment \{#The-Environment-778t}
+The collection of bindings and their values that exist at a given time is called the environment. When a program starts up, this environment is not empty. It always contains bindings that are part of the language standard, and most of the time, it also has bindings that provide ways to interact with the surrounding system. For example, in a browser, there are functions to interact with the currently loaded website and to read mouse and keyboard input.
 </section>
 
-<section className="content-chunk" aria-labelledby="Exercises-222pt" data-subsection-id="Exercises-222pt" data-show-header="true">
-## Exercises \{#Exercises-222pt}
-### **A vector type**
+<section className="content-chunk" aria-labelledby="Functions-779t" data-subsection-id="Functions-779t" data-show-header="true">
+## Functions \{#Functions-779t}
+A lot of the values provided in the default environment have the type function. A function is a piece of program wrapped in a value. Such values can be applied in order to run the wrapped program. For example, in a browser environment, the binding prompt holds a function that shows a little dialog asking for user input. It is used like this:
 
-Write a class <Notebook code = {`Vec`}/> that represents a vector in two-dimensional space. It takes <Notebook code = {`x`}/> and <Notebook code = {`y`}/> parameters (numbers), that it saves to properties of the same name.
+<Notebook code = {`prompt("Enter passcode");`}/>
 
-Give the <Notebook code = {`Vec`}/> prototype two methods, <Notebook code = {`plus`}/> and <Notebook code = {`minus`}/>, that take another vector as a parameter and return a new vector that has the sum or difference of the two vectors’ (<Notebook code = {`this`}/> and the parameter) _x_ and _y_ values.
+![1.1.png](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/1.1.png-e1cb314dd72c8b8360d0cdddc949b81f.png)
 
-Add a getter property <Notebook code = {`length`}/> to the prototype that computes the length of the vector—that is, the distance of the point (_x_, _y_) from the origin (0, 0).
+Executing a function is called invoking, calling, or applying it. You can call a function by putting parentheses after an expression that produces a function value. Usually you’ll directly use the name of the binding that holds the function. The values between the parentheses are given to the program inside the function. In the example, the prompt function uses the string that we give it as the text to show in the dialog box. Values given to functions are called arguments. Different functions might need a different number or different types of arguments.
 
-<Notebook code = {`console.log(new Vec(1, 2).plus(new Vec(2, 3)));
-// → Vec{x: 3, y: 5}
-console.log(new Vec(1, 2).minus(new Vec(2, 3)));
-// → Vec{x: -1, y: -1}
-console.log(new Vec(3, 4).length);
-// → 5`}/>
+The prompt function isn’t used much in modern web programming, mostly because you have no control over the way the resulting dialog looks, but it can be helpful in toy programs and experiments.
+</section>
 
-### **Groups**
+<section className="content-chunk" aria-labelledby="The-consolelog-Function-780t" data-subsection-id="The-consolelog-Function-780t" data-show-header="true">
+## The console.log Function \{#The-consolelog-Function-780t}
+In the examples, I used console.log to output values. Most JavaScript systems (including all modern web browsers and Node.js) provide a console.log function that writes out its arguments to some text output device. In browsers, the output lands in the JavaScript console. This part of the browser interface is hidden by default, but most browsers open it when you press F12 or, on a Mac, command-option-I. If that does not work, search through the menus for an item named Developer Tools or similar.
 
-The standard JavaScript environment provides another data structure called <Notebook code = {`Set`}/>. Like an instance of <Notebook code = {`Map`}/>, a set holds a collection of values. Unlike <Notebook code = {`Map`}/>, it does not associate other values with those—it just tracks which values are part of the set. A value can be part of a set only once—adding it again doesn’t have any effect.
+When running the examples (or your own code) on the pages of this book, console.log output will be shown after the example, instead of in the browser’s JavaScript console.
 
-Write a class called <Notebook code = {`Group`}/> (since <Notebook code = {`Set`}/> is already taken). Like <Notebook code = {`Set`}/>, it has <Notebook code = {`add`}/>, <Notebook code = {`delete`}/>, and <Notebook code = {`has`}/> methods. Its constructor creates an empty group, <Notebook code = {`add`}/> adds a value to the group (but only if it isn’t already a member), <Notebook code = {`delete`}/> removes its argument from the group (if it was a member), and <Notebook code = {`has`}/> returns a Boolean value indicating whether its argument is a member of the group.
+<Notebook code = {`let x = 30;
+console.log("the value of x is", x);
+// → the value of x is 30`}/>
 
-Use the <Notebook code = {`===`}/> operator, or something equivalent such as <Notebook code = {`indexOf`}/>, to determine whether two values are the same.
+Though binding names cannot contain period characters, console.log does have one. This is because console.log isn’t a simple binding, but an expression that retrieves the log property from the value held by the console binding. We’ll find out exactly what this means in Chapter 4.
+</section>
 
-Give the class a static <Notebook code = {`from`}/> method that takes an iterable object as its argument and creates a group that contains all the values produced by iterating over it.
+<section className="content-chunk" aria-labelledby="Return-Values-781t" data-subsection-id="Return-Values-781t" data-show-header="true">
+## Return Values \{#Return-Values-781t}
+Showing a dialog box or writing text to the screen is a side effect. Many functions are useful because of the side effects they produce. Functions may also produce values, in which case they don’t need to have a side effect to be useful. For example, the function Math.max takes any amount of number arguments and gives back the greatest.
 
-<Notebook code = {`class Group {
-  // Your code here.
+<Notebook code = {`console.log(Math.max(2, 4));
+// → 4`}/>
+
+When a function produces a value, it is said to return that value. Anything that produces a value is an expression in JavaScript, which means that function calls can be used within larger expressions. In the following code, a call to Math.min, which is the opposite of Math.max, is used as part of a plus expression:
+
+<Notebook code = {`console.log(Math.min(2, 4) + 100);
+// → 102`}/>
+
+Chapter 3 will explain how to write your own functions.
+</section>
+
+<section className="content-chunk" aria-labelledby="Control-Flow-782t" data-subsection-id="Control-Flow-782t" data-show-header="true">
+## Control Flow \{#Control-Flow-782t}
+When your program contains more than one statement, the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the square of that number:
+
+<Notebook code = {`let theNumber = Number(prompt("Pick a number"));
+console.log("Your number is the square root of " +
+           theNumber * theNumber);`}/>
+
+
+
+The function Number converts a value to a number. We need that conversion because the result of prompt is a string value, and we want a number. There are similar functions called String and Boolean that convert values to those types.
+
+Here is the rather trivial schematic representation of straight-line control flow:
+
+![2-2-controlflow-straight.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-2-controlflow-straight.svg-a3e3034abbe58c2c59ada45b67e9964e.svg)
+</section>
+
+<section className="content-chunk" aria-labelledby="Conditional-Execution-785t" data-subsection-id="Conditional-Execution-785t" data-show-header="true">
+## Conditional Execution \{#Conditional-Execution-785t}
+Not all programs are straight roads. We may, for example, want to create a branching road where the program takes the proper branch based on the situation at hand. This is called conditional execution.
+
+![2-3-controlflow-if.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-3-controlflow-if.svg-ee294c8069b422f4f4f349d52cc2f89f.svg)
+
+Conditional execution is created with the if keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
+
+<Notebook code = {`let theNumber = Number(prompt("Pick a number"));
+if (!Number.isNaN(theNumber)) {
+ console.log("Your number is the square root of " +
+             theNumber * theNumber);
+}`}/>
+
+
+
+With this modification, if you enter “parrot”, no output is shown.
+
+The if keyword executes or skips a statement depending on the value of a Boolean expression. The deciding expression is written after the keyword, between parentheses, followed by the statement to execute.
+
+The Number.isNaN function is a standard JavaScript function that returns true only if the argument it is given is NaN. The Number function happens to return NaN when you give it a string that doesn’t represent a valid number. Thus, the condition translates to “unless theNumber is not-a-number, do this”.
+
+The statement after the if is wrapped in braces ({ and }) in this example. The braces can be used to group any number of statements into a single statement, called a block. You could also have omitted them in this case, since they hold only a single statement, but to avoid having to think about whether they are needed, most JavaScript programmers use them in every wrapped statement like this. We’ll mostly follow that convention in this book, except for the occasional one-liner.
+
+<Notebook code = {`if (1 + 1 == 2) console.log("It's true");
+// → It's true`}/>
+
+
+
+You often won’t just have code that executes when a condition holds true, but also code that handles the other case. This alternate path is represented by the second arrow in the diagram. You can use the else keyword, together with if, to create two separate, alternative execution paths:
+
+<Notebook code = {`let theNumber = Number(prompt("Pick a number"));
+if (!Number.isNaN(theNumber)) {
+ console.log("Your number is the square root of " +
+             theNumber * theNumber);
+} else {
+ console.log("Hey. Why didn't you give me a number?");
+}`}/>
+
+
+
+If you have more than two paths to choose from, you can “chain” multiple if/else pairs together. Here’s an example:
+
+<Notebook code = {`let num = Number(prompt("Pick a number"));
+if (num < 10) {
+ console.log("Small");
+} else if (num < 100) {
+ console.log("Medium");
+} else {
+ console.log("Large");
+}`}/>
+
+
+
+The program will first check whether num is less than 10. If it is, it chooses that branch, shows "Small", and is done. If it isn’t, it takes the else branch, which itself contains a second if. If the second condition (< 100) holds, that means the number is at least 10 but below 100, and "Medium" is shown. If it doesn’t, the second and last else branch is chosen.
+
+The schema for this program looks something like this:
+
+![2-4-controlflow-nested-if.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-4-controlflow-nested-if.svg-9a871b16fe2e8b548cadd147eb11bd2a.svg)
+</section>
+
+<section className="content-chunk" aria-labelledby="while-and-do-Loops-789t" data-subsection-id="while-and-do-Loops-789t" data-show-header="true">
+## while and do Loops \{#while-and-do-Loops-789t}
+Consider a program that outputs all even numbers from 0 to 12. One way to write this is as follows:
+
+<Notebook code = {`console.log(0);
+console.log(2);
+console.log(4);
+console.log(6);
+console.log(8);
+console.log(10);
+console.log(12);`}/> 
+
+
+
+That works, but the idea of writing a program is to make something less work, not more. If we needed all even numbers less than 1,000, this approach would be unworkable. What we need is a way to run a piece of code multiple times. This form of control flow is called a loop.
+
+![2-5-controlflow-loop.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-5-controlflow-loop.svg-7d489d1b98224d28fec7d0cdad6d7997.svg)
+
+Looping control flow allows us to go back to some point in the program where we were before and repeat it with our current program state. If we combine this with a binding that counts, we can do something like this:
+
+<Notebook code = {`let number = 0;
+while (number <= 12) {
+ console.log(number);
+ number = number + 2;
 }
+// → 0
+// → 2
+//   … etcetera`}/>
 
-let group = Group.from([10, 20]);
-console.log(group.has(10));
-// → true
-console.log(group.has(30));
-// → false
-group.add(10);
-group.delete(10);
-console.log(group.has(10));
-// → false`}/>
 
-### **Iterable groups**
 
-Make the <Notebook code = {`Group`}/> class from the previous exercise iterable. Refer to the section about the iterator interface earlier in the chapter if you aren’t clear on the exact form of the interface anymore.
+A statement starting with the keyword while creates a loop. The word while is followed by an expression in parentheses and then a statement, much like if. The loop keeps entering that statement as long as the expression produces a value that gives true when converted to Boolean.
 
-If you used an array to represent the group’s members, don’t just return the iterator created by calling the <Notebook code = {`Symbol.iterator`}/> method on the array. That would work, but it defeats the purpose of this exercise.
+The number binding demonstrates the way a binding can track the progress of a program. Every time the loop repeats, number gets a value that is 2 more than its previous value. At the beginning of every repetition, it is compared with the number 12 to decide whether the program’s work is finished.
 
-It is okay if your iterator behaves strangely when the group is modified during iteration.
+As an example that actually does something useful, we can now write a program that calculates and shows the value of 210 (2 to the 10th power). We use two bindings: one to keep track of our result and one to count how often we have multiplied this result by 2. The loop tests whether the second binding has reached 10 yet and, if not, updates both bindings.
 
-<Notebook code = {`// Your code here (and the code from the previous exercise)
-
-for (let value of Group.from(["a", "b", "c"])) {
-  console.log(value);
+<Notebook code = {`let result = 1;
+let counter = 0;
+while (counter < 10) {
+ result = result * 2;
+ counter = counter + 1;
 }
-// → a
-// → b
-// → c`}/>
+console.log(result);
+// → 1024`}/>
+
+
+
+The counter could also have started at 1 and checked for <= 10, but for reasons that will become apparent in Chapter 4, it is a good idea to get used to counting from 0.
+
+Note that JavaScript also has an operator for exponentiation (2 ** 10), which you would use to compute this in real code—but that would have ruined the example.
+
+A do loop is a control structure similar to a while loop. It differs only on one point: a do loop always executes its body at least once, and it starts testing whether it should stop only after that first execution. To reflect this, the test appears after the body of the loop:
+
+<Notebook code = {`let yourName;
+do {
+ yourName = prompt("Who are you?");
+} while (!yourName);
+console.log("Hello " + yourName);`}/>
+
+
+
+This program will force you to enter a name. It will ask again and again until it gets something that is not an empty string. Applying the ! operator will convert a value to Boolean type before negating it, and all strings except "" convert to true. This means the loop continues going round until you provide a non-empty name.
+</section>
+
+<section className="content-chunk" aria-labelledby="Indenting-Code-784t" data-subsection-id="Indenting-Code-784t" data-show-header="true">
+## Indenting Code \{#Indenting-Code-784t}
+In the examples, I’ve been adding spaces in front of statements that are part of some larger statement. These spaces are not required—the computer will accept the program just fine without them. In fact, even the line breaks in programs are optional. You could write a program as a single long line if you felt like it.
+
+The role of this indentation inside blocks is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use tab characters. The important thing is that each new block adds the same amount of space.
+
+<Notebook code = {`if (false != true) {
+ console.log("That makes sense.");
+ if (1 < 2) {
+   console.log("No surprise there.");
+ }
+}`}/>
+
+
+
+Most code editor programs (including the one in this book) will help by automatically indenting new lines the proper amount.
+</section>
+
+<section className="content-chunk" aria-labelledby="for-Loops-783t" data-subsection-id="for-Loops-783t" data-show-header="true">
+## for Loops \{#for-Loops-783t}
+Many loops follow the pattern shown in the while examples. First a “counter” binding is created to track the progress of the loop. Then comes a while loop, usually with a test expression that checks whether the counter has reached its end value. At the end of the loop body, the counter is updated to track progress.
+
+Because this pattern is so common, JavaScript and similar languages provide a slightly shorter and more comprehensive form, the for loop:
+
+<Notebook code = {`for (let number = 0; number <= 12; number = number + 2) {
+ console.log(number);
+}
+// → 0
+// → 2
+//   … etcetera`}/>
+
+
+
+This program is exactly equivalent to the earlier even-number-printing example. The only change is that all the statements that are related to the “state” of the loop are grouped together after for.
+
+The parentheses after a for keyword must contain two semicolons. The part before the first semicolon initializes the loop, usually by defining a binding. The second part is the expression that checks whether the loop must continue. The final part updates the state of the loop after every iteration. In most cases, this is shorter and clearer than a while construct.
+
+This is the code that computes 210 using for instead of while:
+
+<Notebook code = {`let result = 1;
+for (let counter = 0; counter < 10; counter = counter + 1) {
+ result = result * 2;
+}
+console.log(result);
+// → 1024`}/>
+</section>
+
+<section className="content-chunk" aria-labelledby="Breaking-Out-of-a-Loop-788t" data-subsection-id="Breaking-Out-of-a-Loop-788t" data-show-header="true">
+## Breaking Out of a Loop \{#Breaking-Out-of-a-Loop-788t}
+Having the looping condition produce false is not the only way a loop can finish. The break statement has the effect of immediately jumping out of the enclosing loop. Its use is demonstrated in the following program, which finds the first number that is both greater than or equal to 20 and divisible by 7:
+
+<Notebook code = {`for (let current = 20; ; current = current + 1) {
+ if (current % 7 == 0) {
+   console.log(current);
+   break;
+ }
+}
+// → 21`}/>
+
+
+
+Using the remainder (%) operator is an easy way to test whether a number is divisible by another number. If it is, the remainder of their division is zero.
+
+The for construct in the example does not have a part that checks for the end of the loop. This means that the loop will never stop unless the break statement inside is executed.
+
+If you were to remove that break statement or you accidentally write an end condition that always produces true, your program would get stuck in an infinite loop. A program stuck in an infinite loop will never finish running, which is usually a bad thing.
+
+If you create an infinite loop in one of the examples on these pages, you’ll usually be asked whether you want to stop the script after a few seconds. If that fails, you will have to close the tab that you’re working in to recover.
+
+The continue keyword is similar to break in that it influences the progress of a loop. When continue is encountered in a loop body, control jumps out of the body and continues with the loop’s next iteration.
+</section>
+
+<section className="content-chunk" aria-labelledby="Updating-Bindings-Succinctly-787t" data-subsection-id="Updating-Bindings-Succinctly-787t" data-show-header="true">
+## Updating Bindings Succinctly \{#Updating-Bindings-Succinctly-787t}
+Especially when looping, a program often needs to “update” a binding to hold a value based on that binding’s previous value.
+
+<Notebook code = {`counter = counter + 1;`}/>
+
+
+
+JavaScript provides a shortcut for this:
+
+<Notebook code = {`counter += 1;`}/>
+
+
+
+Similar shortcuts work for many other operators, such as result *= 2 to double result or counter -= 1 to count downward.
+
+This allows us to further shorten our counting example:
+
+<Notebook code = {`for (let number = 0; number <= 12; number += 2) {
+ console.log(number);
+}`}/>
+
+
+
+For counter += 1 and counter -= 1, there are even shorter equivalents: counter++ and counter--.
+</section>
+
+<section className="content-chunk" aria-labelledby="Dispatching-on-a-Value-with-Switch-786t" data-subsection-id="Dispatching-on-a-Value-with-Switch-786t" data-show-header="true">
+## Dispatching on a Value with Switch \{#Dispatching-on-a-Value-with-Switch-786t}
+It is not uncommon for code to look like this:
+
+<Notebook code = {`if (x == "value1") action1();
+else if (x == "value2") action2();
+else if (x == "value3") action3();
+else defaultAction();`}/>
+
+
+
+There is a construct called switch that is intended to express such a “dispatch” in a more direct way. Unfortunately, the syntax JavaScript uses for this (which it inherited from the C/Java line of programming languages) is somewhat awkward—a chain of if statements may look better. Here is an example:
+
+<Notebook code = {`switch (prompt("What is the weather like?")) {
+ case "rainy":
+   console.log("Remember to bring an umbrella.");
+   break;
+ case "sunny":
+   console.log("Dress lightly.");
+ case "cloudy":
+   console.log("Go outside.");
+   break;
+ default:
+   console.log("Unknown weather type!");
+   break;
+}`}/>
+
+
+
+You may put any number of case labels inside the block opened by switch. The program will start executing at the label that corresponds to the value that switch was given, or at default if no matching value is found. It will continue executing, even across other labels, until it reaches a break statement. In some cases, such as the "sunny" case in the example, this can be used to share some code between cases (it recommends going outside for both sunny and cloudy weather). Be careful, though—it is easy to forget such a break, which will cause the program to execute code you do not want executed.
+</section>
+
+<section className="content-chunk" aria-labelledby="Capitalization-790t" data-subsection-id="Capitalization-790t" data-show-header="true">
+## Capitalization \{#Capitalization-790t}
+Binding names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the binding represents. These are pretty much your choices for writing a binding name with several words in it:
+
+<Notebook code = {`fuzzylittleturtle
+fuzzy_little_turtle
+FuzzyLittleTurtle
+fuzzyLittleTurtle`}/>
+
+
+
+The first style can be hard to read. I rather like the look of the underscores, though that style is a little painful to type. The standard JavaScript functions, and most JavaScript programmers, follow the final style—they capitalize every word except the first. It is not hard to get used to little things like that, and code with mixed naming styles can be jarring to read, so we follow this convention.
+
+In a few cases, such as the Number function, the first letter of a binding is also capitalized. This was done to mark this function as a constructor. It will become clear what a constructor is in Chapter 6. For now, the important thing is to not be bothered by this apparent lack of consistency.
+</section>
+
+<section className="content-chunk" aria-labelledby="Comments-791t" data-subsection-id="Comments-791t" data-show-header="true">
+## Comments \{#Comments-791t}
+Often, raw code does not convey all the information you want a program to convey to human readers, or it conveys it in such a cryptic way that people might not understand it. At other times, you might just want to include some related thoughts as part of your program. This is what comments are for.
+
+A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (//) and then the comment text after it:
+
+<Notebook code = {`let accountBalance = calculateBalance(account);
+// It's a green hollow where a river sings
+accountBalance.adjust();
+// Madly catching white tatters in the grass.
+let report = new Report();
+// Where the sun on the proud mountain rings:
+addToReport(accountBalance, report);
+// It's a little valley, foaming like light in a glass.`}/> 
+
+A // comment goes only to the end of the line. A section of text between /* and */ will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
+
+<Notebook code = {`/*
+ I first found this number scrawled on the back of an old
+ notebook. Since then, it has often dropped by, showing up in
+ phone numbers and the serial numbers of products that I've
+ bought. It obviously likes me, so I've decided to keep it.
+*/
+const myNumber = 11213;`}/>
+</section>
+
+<section className="content-chunk" aria-labelledby="Exercises-235pt" data-subsection-id="Exercises-235pt" data-show-header="true">
+## Exercises \{#Exercises-235pt}
+### **Looping a triangle**
+
+Write a loop that makes seven calls to <Notebook code = {`console.log`}/> to output the following triangle:
+
+#
+##
+###
+####
+#####
+######
+#######
+
+It may be useful to know that you can find the length of a string by writing <Notebook code = {`.length`}/> after it.
+
+1
+
+2
+
+3
+
+let abc = "abc";
+
+console.log(abc.length);
+
+// → 3
+
+Most exercises contain a piece of code that you can modify to solve the exercise. Remember that you can click code blocks to edit them.
+
+1
+
+// Your code here.
+
+You can start with a program that prints out the numbers 1 to 7, which you can derive by making a few modifications to the [even number printing example](https://eloquentjavascript.net/02_program_structure.html#loops)given earlier in the chapter, where the <Notebook code = {`for`}/> loop was introduced.
+
+Now consider the equivalence between numbers and strings of hash characters. You can go from 1 to 2 by adding 1 (<Notebook code = {`+= 1`}/>). You can go from <Notebook code = {`"#"`}/> to <Notebook code = {`"##"`}/> by adding a character (<Notebook code = {`+= "#"`}/>). Thus, your solution can closely follow the number-printing program.
+
+### **FizzBuzz**
+
+Write a program that uses <Notebook code = {`console.log`}/> to print all the numbers from 1 to 100, with two exceptions. For numbers divisible by 3, print <Notebook code = {`"Fizz"`}/> instead of the number, and for numbers divisible by 5 (and not 3), print <Notebook code = {`"Buzz"`}/> instead.
+
+When you have that working, modify your program to print <Notebook code = {`"FizzBuzz"`}/> for numbers that are divisible by both 3 and 5 (and still print <Notebook code = {`"Fizz"`}/> or <Notebook code = {`"Buzz"`}/>for numbers divisible by only one of those).
+
+(This is actually an interview question that has been claimed to weed out a significant percentage of programmer candidates. So if you solved it, your labor market value just went up.)
+
+1
+
+// Your code here.
+
+Going over the numbers is clearly a looping job, and selecting what to print is a matter of conditional execution. Remember the trick of using the remainder (<Notebook code = {`%`}/>) operator for checking whether a number is divisible by another number (has a remainder of zero).
+
+In the first version, there are three possible outcomes for every number, so you’ll have to create an <Notebook code = {`if`}/>/<Notebook code = {`else if`}/>/<Notebook code = {`else`}/> chain.
+
+The second version of the program has a straightforward solution and a clever one. The simple solution is to add another conditional “branch” to precisely test the given condition. For the clever solution, build up a string containing the word or words to output and print either this word or the number if there is no word, potentially by making good use of the <Notebook code = {`||`}/> operator.
+
+### **Chessboard**
+
+Write a program that creates a string that represents an 8×8 grid, using newline characters to separate lines. At each position of the grid there is either a space or a "#" character. The characters should form a chessboard.
+
+Passing this string to <Notebook code = {`console.log`}/> should show something like this:
+
+ # # # #
+\# # # # 
+ # # # #
+\# # # # 
+ # # # #
+\# # # # 
+ # # # #
+\# # # #
+
+When you have a program that generates this pattern, define a binding <Notebook code = {`size = 8`}/> and change the program so that it works for any <Notebook code = {`size`}/>, outputting a grid of the given width and height.
+
+// Your code here.
+
+You can build the string by starting with an empty one (<Notebook code = {`""`}/>) and repeatedly adding characters. A newline character is written <Notebook code = {`"\n"`}/>.
+
+To work with two dimensions, you will need a loop inside of a loop. Put braces around the bodies of both loops to make it easy to see where they start and end. Try to properly indent these bodies. The order of the loops must follow the order in which we build up the string (line by line, left to right, top to bottom). So the outer loop handles the lines, and the inner loop handles the characters on a line.
+
+You’ll need two bindings to track your progress. To know whether to put a space or a hash sign at a given position, you could test whether the sum of the two counters is even (<Notebook code = {`% 2`}/>).
+
+Terminating a line by adding a newline character must happen after the line has been built up, so do this after the inner loop but inside the outer loop.
 </section>
 

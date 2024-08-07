@@ -1,547 +1,452 @@
 ---
-title: "2. Program Structure"
-page_slug: 2-program-structure
+title: "Functions"
+page_slug: functions-1
 summary: true
 quiz: false
 ---
-<section className="content-chunk" aria-labelledby="Introduction-203pt" data-subsection-id="Introduction-203pt" data-show-header="false">
-<h2 className="sr-only" id="Introduction-203pt">Introduction</h2>
+<section className="content-chunk" aria-labelledby="Introduction-795t" data-subsection-id="Introduction-795t" data-show-header="false">
+<h2 className="sr-only" id="Introduction-795t">Introduction</h2>
 
-In this chapter, we will start to do things that can actually be called _programming_. We will expand our command of the JavaScript language beyond the nouns and sentence fragments we’ve seen so far to the point where we can express meaningful prose.
+"People think that computer science is the art of geniuses but the actual reality is the opposite, just many people doing things that build on each other, like a wall of mini stones."
+
+     --Donald Knuth
+
+Functions are one of the most central tools in JavaScript programming. The concept of wrapping a piece of program in a value has many uses. It gives us a way to structure larger programs, to reduce repetition, to associate names with subprograms, and to isolate these subprograms from each other.
+
+The most obvious application of functions is defining new vocabulary. Creating new words in prose is usually bad style, but in programming, it is indispensable.
+
+Typical adult English speakers have some 20,000 words in their vocabulary. Few programming languages come with 20,000 commands built in. And the vocabulary that is available tends to be more precisely defined, and thus less flexible, than in human language. Therefore, we have to introduce new words to avoid excessive verbosity.
 </section>
 
-<section className="content-chunk" aria-labelledby="Expressions-and-Statements-775t" data-subsection-id="Expressions-and-Statements-775t" data-show-header="true">
-## Expressions and Statements \{#Expressions-and-Statements-775t}
-In Chapter 1, we made values and applied operators to them to get new values. Creating values like this is the main substance of any JavaScript program. But that substance has to be framed in a larger structure to be useful. That’s what we’ll cover in this chapter.
+<section className="content-chunk" aria-labelledby="Defining-a-Function-796t" data-subsection-id="Defining-a-Function-796t" data-show-header="true">
+## Defining a Function \{#Defining-a-Function-796t}
+A function definition is a regular binding where the value of the binding is a function. For example, this code defines square to refer to a function that produces the square of a given number:
 
-A fragment of code that produces a value is called an expression. Every value that is written literally (such as 22 or "psychoanalysis") is an expression. An expression between parentheses is also an expression, as is a binary operator applied to two expressions or a unary operator applied to one.
+<Notebook code = {`const square = function(x) {
+  return x * x;
+};
+console.log(square(10));`}/>
 
-This shows part of the beauty of a language-based interface. Expressions can contain other expressions in a way similar to how subsentences in human languages are nested—a subsentence can contain its own subsentences, and so on. This allows us to build expressions that describe arbitrarily complex computations.
+A function is created with an expression that starts with the keyword <Notebook code = {`function`}/>. Functions have a set of _parameters_ (in this case, only <Notebook code = {`x`}/>) and a _body_, which contains the statements that are to be executed when the function is called. The body of a function created this way must always be wrapped in braces, even when it consists of only a single statement.
 
-If an expression corresponds to a sentence fragment, a JavaScript statement corresponds to a full sentence. A program is a list of statements.
+A function can have multiple parameters or no parameters at all. In the following example, <Notebook code = {`makeNoise`}/> does not list any parameter names, whereas <Notebook code = {`roundTo`}/> (which rounds n to the nearest multiple of <Notebook code = {`step`}/>) lists two:
 
-The simplest kind of statement is an expression with a semicolon after it. This is a program:
+<Notebook code = {`const makeNoise = function() {
+  console.log("Pling!");
+};
 
-<Notebook code = {`1;
-!false`}/>
+makeNoise();
+// → Pling!
 
-It is a useless program, though. An expression can be content to just produce a value, which can then be used by the enclosing code. However, a statement stands on its own, so if it doesn’t affect the world, it’s useless. It may display something on the screen, as with console.log, or change the state of the machine in a way that will affect the statements that come after it. These changes are called side effects. The statements in the previous example just produce the values 1 and true and then immediately throw them away. This leaves no impression on the world at all. When you run this program, nothing observable happens.
+const roundTo = function(n, step) {
+  let remainder = n % step;
+  return n - remainder + (remainder < step / 2 ? 0 : step);
+};
 
-In some cases, JavaScript allows you to omit the semicolon at the end of a statement. In other cases, it has to be there, or the next line will be treated as part of the same statement. The rules for when it can be safely omitted are somewhat complex and error prone. So in this book, every statement that needs a semicolon will always get one. I recommend you do the same, at least until you’ve learned more about the subtleties of missing semicolons.
+console.log(roundTo(23, 10));
+// → 20`}/>
+
+Some functions, such as <Notebook code = {`roundTo`}/> and <Notebook code = {`square`}/>, produce a value, and some don’t, such as <Notebook code = {`makeNoise`}/>, whose only result is a side effect. A <Notebook code = {`return`}/> statement determines the value the function returns. When control comes across such a statement, it immediately jumps out of the current function and gives the returned value to the code that called the function. A <Notebook code = {`return`}/> keyword without an expression after it will cause the function to return <Notebook code = {`undefined`}/>. Functions that don’t have a return statement at all, such as <Notebook code = {`makeNoise`}/>, similarly return <Notebook code = {`undefined`}/>.
+
+Parameters to a function behave like regular bindings, but their initial values are given by the _caller_ of the function, not the code in the function itself.
 </section>
 
-<section className="content-chunk" aria-labelledby="Bindings-776t" data-subsection-id="Bindings-776t" data-show-header="true">
-## Bindings \{#Bindings-776t}
-How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a binding, or variable.
+<section className="content-chunk" aria-labelledby="Bindings-and-Scopes-797t" data-subsection-id="Bindings-and-Scopes-797t" data-show-header="true">
+## Bindings and Scopes \{#Bindings-and-Scopes-797t}
+Each binding has a _scope_, which is the part of the program in which the binding is visible. For bindings defined outside of any function, block, or module (see Chapter 10), the scope is the whole program—you can refer to such bindings wherever you want. These are called _global_.
 
-<Notebook code = {`let caught = 5 * 5;`}/>
+Bindings created for function parameters or declared inside a function can be referenced only in that function, so they are known as _local_ bindings. Every time the function is called, new instances of these bindings are created. This provides some isolation between functions—each function call acts in its own little world (its local environment) and can often be understood without knowing a lot about what’s going on in the global environment.
 
-That gives us a second kind of statement. The special word (keyword) let indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an = operator and an expression.
+Bindings declared with <Notebook code = {`let`}/> and <Notebook code = {`const`}/> are in fact local to the _block_ in which they are declared, so if you create one of those inside of a loop, the code before and after the loop cannot “see” it. In pre-2015 JavaScript, only functions created new scopes, so old-style bindings, created with the var keyword, are visible throughout the whole function in which they appear—or throughout the global scope, if they are not in a function.
 
-The example creates a binding called caught and uses it to grab hold of the number that is produced by multiplying 5 by 5.
+<Notebook code = {`let x = 10;   // global
+if (true) {
+  let y = 20; // local to block
+  var z = 30; // also global
+}`}/>
 
-After a binding has been defined, its name can be used as an expression. The value of such an expression is the value the binding currently holds. Here’s an example:
+Each scope can “look out” into the scope around it, so <Notebook code = {`x`}/> is visible inside the block in the example. The exception is when multiple bindings have the same name—in that case, code can see only the innermost one. For example, when the code inside the <Notebook code = {`halve`}/> function refers to <Notebook code = {`n`}/>, it is seeing its _own_ <Notebook code = {`n`}/>, not the global <Notebook code = {`n`}/>.
 
-<Notebook code = {`let ten = 10;
-console.log(ten * ten);
-// → 100`}/>
+<Notebook code = {`const halve = function(n) {
+  return n / 2;
+};
 
-When a binding points at a value, that does not mean it is tied to that value forever. The = operator can be used at any time on existing bindings to disconnect them from their current value and have them point to a new one:
-
-<Notebook code = {`let mood = "light";
-console.log(mood);
-// → light
-mood = "dark";
-console.log(mood);
-// → dark`}/>
-
-You should imagine bindings as tentacles rather than boxes. They do not contain values; they grasp them—two bindings can refer to the same value. A program can access only the values to which it still has a reference. When you need to remember something, you either grow a tentacle to hold on to it or reattach one of your existing tentacles to it.
-
-Let’s look at another example. To remember the number of dollars that Luigi still owes you, you create a binding. When he pays back $35, you give this binding a new value.
-
-<Notebook code = {`let luigisDebt = 140;
-luigisDebt = luigisDebt - 35;
-console.log(luigisDebt);
-// → 105`}/> 
-
-When you define a binding without giving it a value, the tentacle has nothing to grasp, so it ends in thin air. If you ask for the value of an empty binding, you’ll get the value undefined.
-
-A single let statement may define multiple bindings. The definitions must be separated by commas:
-
-<Notebook code = {`let one = 1, two = 2;
-console.log(one + two);
-// → 3`}/>
-
-The words var and const can also be used to create bindings, in a similar fashion to let.
-
-<Notebook code = {`var name = "Ayda";
-const greeting = "Hello ";
-console.log(greeting + name);
-// → Hello Ayda`}/>
-
-The first of these, var (short for “variable”), is the way bindings were declared in pre-2015 JavaScript, when let didn’t exist yet. I’ll get back to the precise way it differs from let in the next chapter. For now, remember that it mostly does the same thing, but we’ll rarely use it in this book because it behaves oddly in some situations.
-
-The word const stands for constant. It defines a constant binding, which points at the same value for as long as it lives. This is useful for bindings that just give a name to a value so that you can easily refer to it later.
+let n = 10;
+console.log(halve(100));
+// → 50
+console.log(n);
+// → 10`}/>
 </section>
 
-<section className="content-chunk" aria-labelledby="Binding-Names-777t" data-subsection-id="Binding-Names-777t" data-show-header="true">
-## Binding Names \{#Binding-Names-777t}
-Binding names can be any sequence of one or more letters. Digits can be part of binding names—catch22 is a valid name, for example—but the name must not start with a digit. A binding name may include dollar signs ($) or underscores (_) but no other punctuation or special characters.
+<section className="content-chunk" aria-labelledby="Nested-Scope-798t" data-subsection-id="Nested-Scope-798t" data-show-header="true">
+## Nested Scope \{#Nested-Scope-798t}
+JavaScript distinguishes not just global and local bindings. Blocks and functions can be created inside other blocks and functions, producing multiple degrees of locality.
 
-Words with a special meaning, such as let, are keywords, and may not be used as binding names. There are also a number of words that are “reserved for use” in future versions of JavaScript, which also can’t be used as binding names. The full list of keywords and reserved words is rather long:
+For example, this function—which outputs the ingredients needed to make a batch of hummus—has another function inside it:
 
-<Notebook code = {`break case catch class const continue debugger default
-delete do else enum export extends false finally for
-function if implements import interface in instanceof let
-new package private protected public return static super
-switch this throw true try typeof var void while with yield`}/>
+<Notebook code = {`const hummus = function(factor) {
+  const ingredient = function(amount, unit, name) {
+    let ingredientAmount = amount * factor;
+    if (ingredientAmount > 1) {
+      unit += "s";
+    }
+    console.log(`${ingredientAmount} ${unit} ${name}`);
+  };
+  ingredient(1, "can", "chickpeas");
+  ingredient(0.25, "cup", "tahini");
+  ingredient(0.25, "cup", "lemon juice");
+  ingredient(1, "clove", "garlic");
+  ingredient(2, "tablespoon", "olive oil");
+  ingredient(0.5, "teaspoon", "cumin");
+};`}/>
 
-Don’t worry about memorizing this list. When creating a binding produces an unexpected syntax error, check whether you’re trying to define a reserved word.
+The code inside the <Notebook code = {`ingredient`}/> function can see the <Notebook code = {`factor`}/> binding from the outer function, but its local bindings, such as <Notebook code = {`unit`}/> or <Notebook code = {`ingredientAmount`}/>, are not visible in the outer function.
+
+The set of bindings visible inside a block is determined by the place of that block in the program text. Each local scope can also see all the local scopes that contain it, and all scopes can see the global scope. This approach to binding visibility is called _lexical_ scoping.
 </section>
 
-<section className="content-chunk" aria-labelledby="The-Environment-778t" data-subsection-id="The-Environment-778t" data-show-header="true">
-## The Environment \{#The-Environment-778t}
-The collection of bindings and their values that exist at a given time is called the environment. When a program starts up, this environment is not empty. It always contains bindings that are part of the language standard, and most of the time, it also has bindings that provide ways to interact with the surrounding system. For example, in a browser, there are functions to interact with the currently loaded website and to read mouse and keyboard input.
+<section className="content-chunk" aria-labelledby="Functions-as-Values-799t" data-subsection-id="Functions-as-Values-799t" data-show-header="true">
+## Functions as Values \{#Functions-as-Values-799t}
+A function binding usually simply acts as a name for a specific piece of the program. Such a binding is defined once and never changed. This makes it easy to confuse the function and its name.
+
+But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary expressions, not just call it. It is possible to store a function value in a new binding, pass it as an argument to a function, and so on. Similarly, a binding that holds a function is still just a regular binding and can, if not constant, be assigned a new value, like so:
+
+<Notebook code = {`let launchMissiles = function() {
+  missileSystem.launch("now");
+};
+if (safeMode) {
+  launchMissiles = function() {/* do nothing */};
+}`}/>
+
+In Chapter 5, we’ll discuss the interesting things that we can do by passing around function values to other functions.
 </section>
 
-<section className="content-chunk" aria-labelledby="Functions-779t" data-subsection-id="Functions-779t" data-show-header="true">
-## Functions \{#Functions-779t}
-A lot of the values provided in the default environment have the type function. A function is a piece of program wrapped in a value. Such values can be applied in order to run the wrapped program. For example, in a browser environment, the binding prompt holds a function that shows a little dialog asking for user input. It is used like this:
+<section className="content-chunk" aria-labelledby="Declaration-Notation-800t" data-subsection-id="Declaration-Notation-800t" data-show-header="true">
+## Declaration Notation \{#Declaration-Notation-800t}
+There is a slightly shorter way to create a function binding. When the <Notebook code = {`function`}/> keyword is used at the start of a statement, it works differently:
 
-<Notebook code = {`prompt("Enter passcode");`}/>
+<Notebook code = {`function square(x) {
+  return x * x;
+}`}/>
 
-![1.1.png](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/1.1.png-e1cb314dd72c8b8360d0cdddc949b81f.png)
+This is a function _declaration_. The statement defines the binding <Notebook code = {`square`}/> and points it at the given function. It is slightly easier to write and doesn’t require a semicolon after the function.
 
-Executing a function is called invoking, calling, or applying it. You can call a function by putting parentheses after an expression that produces a function value. Usually you’ll directly use the name of the binding that holds the function. The values between the parentheses are given to the program inside the function. In the example, the prompt function uses the string that we give it as the text to show in the dialog box. Values given to functions are called arguments. Different functions might need a different number or different types of arguments.
+There is one subtlety with this form of function definition.
 
-The prompt function isn’t used much in modern web programming, mostly because you have no control over the way the resulting dialog looks, but it can be helpful in toy programs and experiments.
+<Notebook code = {`console.log("The future says:", future());
+
+function future() {
+  return "You'll never have flying cars";
+}`}/>
+
+The preceding code works, even though the function is defined _below_ the code that uses it. Function declarations are not part of the regular top-to-bottom flow of control. They are conceptually moved to the top of their scope and can be used by all the code in that scope. This is sometimes useful because it offers the freedom to order code in a way that seems the clearest, without worrying about having to define all functions before they are used.
 </section>
 
-<section className="content-chunk" aria-labelledby="The-consolelog-Function-780t" data-subsection-id="The-consolelog-Function-780t" data-show-header="true">
-## The console.log Function \{#The-consolelog-Function-780t}
-In the examples, I used console.log to output values. Most JavaScript systems (including all modern web browsers and Node.js) provide a console.log function that writes out its arguments to some text output device. In browsers, the output lands in the JavaScript console. This part of the browser interface is hidden by default, but most browsers open it when you press F12 or, on a Mac, command-option-I. If that does not work, search through the menus for an item named Developer Tools or similar.
+<section className="content-chunk" aria-labelledby="Arrow-Functions-801t" data-subsection-id="Arrow-Functions-801t" data-show-header="true">
+## Arrow Functions \{#Arrow-Functions-801t}
+There’s a third notation for functions, which looks very different from the others. Instead of the <Notebook code = {`function`}/> keyword, it uses an arrow (=>) made up of an equal sign and a greater-than character (not to be confused with the greater-than-or-equal operator, which is written >=):
 
-When running the examples (or your own code) on the pages of this book, console.log output will be shown after the example, instead of in the browser’s JavaScript console.
+<Notebook code = {`const roundTo = (n, step) => {
+  let remainder = n % step;
+  return n - remainder + (remainder < step / 2 ? 0 : step);
+};`}/>
 
-<Notebook code = {`let x = 30;
-console.log("the value of x is", x);
-// → the value of x is 30`}/>
+The arrow comes _after_ the list of parameters and is followed by the function’s body. It expresses something like “this input (the parameters) produces this result (the body)”.
 
-Though binding names cannot contain period characters, console.log does have one. This is because console.log isn’t a simple binding, but an expression that retrieves the log property from the value held by the console binding. We’ll find out exactly what this means in Chapter 4.
+When there is only one parameter name, you can omit the parentheses around the parameter list. If the body is a single expression rather than a block in braces, that expression will be returned from the function. So, these two definitions of <Notebook code = {`square`}/> do the same thing:
+
+<Notebook code = {`const square1 = (x) => { return x * x; };
+const square2 = x => x * x;`}/>
+
+When an arrow function has no parameters at all, its parameter list is just an empty set of parentheses.
+
+<Notebook code = {`const horn = () => {
+  console.log("Toot");
+};`}/>
+
+There’s no deep reason to have both arrow functions and <Notebook code = {`function`}/> expressions in the language. Apart from a minor detail, which we’ll discuss in Chapter 6, they do the same thing. Arrow functions were added in 2015, mostly to make it possible to write small function expressions in a less verbose way. We’ll use them often in Chapter 5.
 </section>
 
-<section className="content-chunk" aria-labelledby="Return-Values-781t" data-subsection-id="Return-Values-781t" data-show-header="true">
-## Return Values \{#Return-Values-781t}
-Showing a dialog box or writing text to the screen is a side effect. Many functions are useful because of the side effects they produce. Functions may also produce values, in which case they don’t need to have a side effect to be useful. For example, the function Math.max takes any amount of number arguments and gives back the greatest.
+<section className="content-chunk" aria-labelledby="The-Call-Stack-804t" data-subsection-id="The-Call-Stack-804t" data-show-header="true">
+## The Call Stack \{#The-Call-Stack-804t}
+The way control flows through functions is somewhat involved. Let’s take a closer look at it. Here is a simple program that makes a few function calls:
 
-<Notebook code = {`console.log(Math.max(2, 4));
+<Notebook code = {`function greet(who) {
+	console.log("Hello " + who);
+}
+greet("Harry");
+console.log("Bye");`}/>
+
+A run through this program goes roughly like this: the call to <Notebook code = {`greet`}/> causes control to jump to the start of that function (line 2). The function calls <Notebook code = {`console.log`}/>, which takes control, does its job, and then returns control to line 2. There, it reaches the end of the <Notebook code = {`greet`}/> function, so it returns to the place that called it—line 4. The line after that calls <Notebook code = {`console.log`}/> again. After that returns, the program reaches its end.
+
+We could show the flow of control schematically like this:
+
+<Notebook code = {`not in function
+  in greet
+    in console.log
+  in greet
+not in function
+  in console.log
+not in function`}/>
+
+
+
+Because a function has to jump back to the place that called it when it returns, the computer must remember the context from which the call happened. In one case, <Notebook code = {`console.log`}/> has to return to the <Notebook code = {`greet`}/> function when it is done. In the other case, it returns to the end of the program.
+
+The place where the computer stores this context is the _call stack_. Every time a function is called, the current context is stored on top of this stack. When a function returns, it removes the top context from the stack and uses that context to continue execution.
+
+Storing this stack requires space in the computer’s memory. When the stack grows too big, the computer will fail with a message like “out of stack space” or “too much recursion”. The following code illustrates this by asking the computer a really hard question that causes an infinite back-and-forth between two functions. Or rather, it would be infinite, if the computer had an infinite stack. As it is, we will run out of space, or “blow the stack”.
+
+<Notebook code = {`function chicken() {
+  return egg();
+}
+function egg() {
+  return chicken();
+}
+console.log(chicken() + " came first.");
+// → ??`}/>
+</section>
+
+<section className="content-chunk" aria-labelledby="Optional-Arguments-803t" data-subsection-id="Optional-Arguments-803t" data-show-header="true">
+## Optional Arguments \{#Optional-Arguments-803t}
+The following code is allowed and executes without any problem:
+
+<Notebook code = {`function square(x) { return x * x; }
+console.log(square(4, true, "hedgehog"));
+// → 16`}/>
+
+We defined <Notebook code = {`square`}/> with only one parameter. Yet when we call it with three, the language doesn’t complain. It ignores the extra arguments and computes the square of the first one.
+
+JavaScript is extremely broad-minded about the number of arguments you can pass to a function. If you pass too many, the extra ones are ignored. If you pass too few, the missing parameters are assigned the value <Notebook code = {`undefined`}/>.
+
+The downside of this is that it is possible—likely, even—that you’ll accidentally pass the wrong number of arguments to functions. And no one will tell you about it. The upside is that you can use this behavior to allow a function to be called with different numbers of arguments. For example, this <Notebook code = {`minus`}/> function tries to imitate the - operator by acting on either one or two arguments:
+
+<Notebook code = {`function minus(a, b) {
+ if (b === undefined) return -a;
+ else return a - b;
+}
+console.log(minus(10));
+// → -10
+console.log(minus(10, 5));
+// → 5`}/>
+
+If you write an = operator after a parameter, followed by an expression, the value of that expression will replace the argument when it is not given. For example, this version of <Notebook code = {`roundTo`}/> makes its second argument optional. If you don’t provide it or pass the value <Notebook code = {`undefined`}/>, it will default to one:
+
+<Notebook code = {`function roundTo(n, step = 1) {
+ let remainder = n % step;
+ return n - remainder + (remainder < step / 2 ? 0 : step);
+};
+console.log(roundTo(4.5));
+// → 5
+console.log(roundTo(4.5, 2));
 // → 4`}/>
 
-When a function produces a value, it is said to return that value. Anything that produces a value is an expression in JavaScript, which means that function calls can be used within larger expressions. In the following code, a call to Math.min, which is the opposite of Math.max, is used as part of a plus expression:
+The next chapter will introduce a way in which a function body can get at the whole list of arguments it was passed. This is helpful because it allows a function to accept any number of arguments. For example, <Notebook code = {`console.log`}/> does this, outputting all the values it is given:
 
-<Notebook code = {`console.log(Math.min(2, 4) + 100);
-// → 102`}/>
-
-Chapter 3 will explain how to write your own functions.
+<Notebook code = {`console.log("C", "O", 2);
+// → C O 2`}/>
 </section>
 
-<section className="content-chunk" aria-labelledby="Control-Flow-782t" data-subsection-id="Control-Flow-782t" data-show-header="true">
-## Control Flow \{#Control-Flow-782t}
-When your program contains more than one statement, the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the square of that number:
+<section className="content-chunk" aria-labelledby="Closure-805t" data-subsection-id="Closure-805t" data-show-header="true">
+## Closure \{#Closure-805t}
+The ability to treat functions as values, combined with the fact that local bindings are re-created every time a function is called, brings up an interesting question: What happens to local bindings when the function call that created them is no longer active?
 
-<Notebook code = {`let theNumber = Number(prompt("Pick a number"));
-console.log("Your number is the square root of " +
-           theNumber * theNumber);`}/>
+The following code shows an example of this. It defines a function, <Notebook code = {`wrapValue`}/>, that creates a local binding. It then returns a function that accesses and returns this local binding.
 
-
-
-The function Number converts a value to a number. We need that conversion because the result of prompt is a string value, and we want a number. There are similar functions called String and Boolean that convert values to those types.
-
-Here is the rather trivial schematic representation of straight-line control flow:
-
-![2-2-controlflow-straight.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-2-controlflow-straight.svg-a3e3034abbe58c2c59ada45b67e9964e.svg)
-</section>
-
-<section className="content-chunk" aria-labelledby="Conditional-Execution-785t" data-subsection-id="Conditional-Execution-785t" data-show-header="true">
-## Conditional Execution \{#Conditional-Execution-785t}
-Not all programs are straight roads. We may, for example, want to create a branching road where the program takes the proper branch based on the situation at hand. This is called conditional execution.
-
-![2-3-controlflow-if.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-3-controlflow-if.svg-ee294c8069b422f4f4f349d52cc2f89f.svg)
-
-Conditional execution is created with the if keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
-
-<Notebook code = {`let theNumber = Number(prompt("Pick a number"));
-if (!Number.isNaN(theNumber)) {
- console.log("Your number is the square root of " +
-             theNumber * theNumber);
-}`}/>
-
-
-
-With this modification, if you enter “parrot”, no output is shown.
-
-The if keyword executes or skips a statement depending on the value of a Boolean expression. The deciding expression is written after the keyword, between parentheses, followed by the statement to execute.
-
-The Number.isNaN function is a standard JavaScript function that returns true only if the argument it is given is NaN. The Number function happens to return NaN when you give it a string that doesn’t represent a valid number. Thus, the condition translates to “unless theNumber is not-a-number, do this”.
-
-The statement after the if is wrapped in braces ({ and }) in this example. The braces can be used to group any number of statements into a single statement, called a block. You could also have omitted them in this case, since they hold only a single statement, but to avoid having to think about whether they are needed, most JavaScript programmers use them in every wrapped statement like this. We’ll mostly follow that convention in this book, except for the occasional one-liner.
-
-<Notebook code = {`if (1 + 1 == 2) console.log("It's true");
-// → It's true`}/>
-
-
-
-You often won’t just have code that executes when a condition holds true, but also code that handles the other case. This alternate path is represented by the second arrow in the diagram. You can use the else keyword, together with if, to create two separate, alternative execution paths:
-
-<Notebook code = {`let theNumber = Number(prompt("Pick a number"));
-if (!Number.isNaN(theNumber)) {
- console.log("Your number is the square root of " +
-             theNumber * theNumber);
-} else {
- console.log("Hey. Why didn't you give me a number?");
-}`}/>
-
-
-
-If you have more than two paths to choose from, you can “chain” multiple if/else pairs together. Here’s an example:
-
-<Notebook code = {`let num = Number(prompt("Pick a number"));
-if (num < 10) {
- console.log("Small");
-} else if (num < 100) {
- console.log("Medium");
-} else {
- console.log("Large");
-}`}/>
-
-
-
-The program will first check whether num is less than 10. If it is, it chooses that branch, shows "Small", and is done. If it isn’t, it takes the else branch, which itself contains a second if. If the second condition (< 100) holds, that means the number is at least 10 but below 100, and "Medium" is shown. If it doesn’t, the second and last else branch is chosen.
-
-The schema for this program looks something like this:
-
-![2-4-controlflow-nested-if.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-4-controlflow-nested-if.svg-9a871b16fe2e8b548cadd147eb11bd2a.svg)
-</section>
-
-<section className="content-chunk" aria-labelledby="while-and-do-Loops-789t" data-subsection-id="while-and-do-Loops-789t" data-show-header="true">
-## while and do Loops \{#while-and-do-Loops-789t}
-Consider a program that outputs all even numbers from 0 to 12. One way to write this is as follows:
-
-<Notebook code = {`console.log(0);
-console.log(2);
-console.log(4);
-console.log(6);
-console.log(8);
-console.log(10);
-console.log(12);`}/> 
-
-
-
-That works, but the idea of writing a program is to make something less work, not more. If we needed all even numbers less than 1,000, this approach would be unworkable. What we need is a way to run a piece of code multiple times. This form of control flow is called a loop.
-
-![2-5-controlflow-loop.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-5-controlflow-loop.svg-7d489d1b98224d28fec7d0cdad6d7997.svg)
-
-Looping control flow allows us to go back to some point in the program where we were before and repeat it with our current program state. If we combine this with a binding that counts, we can do something like this:
-
-<Notebook code = {`let number = 0;
-while (number <= 12) {
- console.log(number);
- number = number + 2;
+<Notebook code = {`function wrapValue(n) {
+ let local = n;
+ return () => local;
 }
-// → 0
-// → 2
-//   … etcetera`}/>
+let wrap1 = wrapValue(1);
+let wrap2 = wrapValue(2);
+console.log(wrap1());
+// → 1
+console.log(wrap2());
+// → 2`}/>
 
+This is allowed and works as you’d hope—both instances of the binding can still be accessed. This situation is a good demonstration of the fact that local bindings are created anew for every call, and different calls don’t affect each other’s local bindings.
 
+This feature—being able to reference a specific instance of a local binding in an enclosing scope—is called _closure_. A function that references bindings from local scopes around it is called a closure. This behavior not only frees you from having to worry about the lifetimes of bindings but also makes it possible to use function values in some creative ways.
 
-A statement starting with the keyword while creates a loop. The word while is followed by an expression in parentheses and then a statement, much like if. The loop keeps entering that statement as long as the expression produces a value that gives true when converted to Boolean.
+With a slight change, we can turn the previous example into a way to create functions that multiply by an arbitrary amount.
 
-The number binding demonstrates the way a binding can track the progress of a program. Every time the loop repeats, number gets a value that is 2 more than its previous value. At the beginning of every repetition, it is compared with the number 12 to decide whether the program’s work is finished.
-
-As an example that actually does something useful, we can now write a program that calculates and shows the value of 210 (2 to the 10th power). We use two bindings: one to keep track of our result and one to count how often we have multiplied this result by 2. The loop tests whether the second binding has reached 10 yet and, if not, updates both bindings.
-
-<Notebook code = {`let result = 1;
-let counter = 0;
-while (counter < 10) {
- result = result * 2;
- counter = counter + 1;
+<Notebook code = {`function multiplier(factor) {
+ return number => number * factor;
 }
-console.log(result);
-// → 1024`}/>
+let twice = multiplier(2);
+console.log(twice(5));
+// → 10`}/>
 
+The explicit <Notebook code = {`local`}/> binding from the <Notebook code = {`wrapValue`}/> example isn’t really needed since a parameter is itself a local binding.
 
+Thinking about programs like this takes some practice. A good mental model is to think of function values as containing both the code in their body and the environment in which they are created. When called, the function body sees the environment in which it was created, not the environment in which it is called.
 
-The counter could also have started at 1 and checked for <= 10, but for reasons that will become apparent in Chapter 4, it is a good idea to get used to counting from 0.
-
-Note that JavaScript also has an operator for exponentiation (2 ** 10), which you would use to compute this in real code—but that would have ruined the example.
-
-A do loop is a control structure similar to a while loop. It differs only on one point: a do loop always executes its body at least once, and it starts testing whether it should stop only after that first execution. To reflect this, the test appears after the body of the loop:
-
-<Notebook code = {`let yourName;
-do {
- yourName = prompt("Who are you?");
-} while (!yourName);
-console.log("Hello " + yourName);`}/>
-
-
-
-This program will force you to enter a name. It will ask again and again until it gets something that is not an empty string. Applying the ! operator will convert a value to Boolean type before negating it, and all strings except "" convert to true. This means the loop continues going round until you provide a non-empty name.
+In the previous example, <Notebook code = {`multiplier`}/> is called and creates an environment in which its <Notebook code = {`factor`}/> parameter is bound to 2. The function value it returns, which is stored in <Notebook code = {`twice`}/>, remembers this environment so that when that is called, it multiplies its argument by 2.
 </section>
 
-<section className="content-chunk" aria-labelledby="Indenting-Code-784t" data-subsection-id="Indenting-Code-784t" data-show-header="true">
-## Indenting Code \{#Indenting-Code-784t}
-In the examples, I’ve been adding spaces in front of statements that are part of some larger statement. These spaces are not required—the computer will accept the program just fine without them. In fact, even the line breaks in programs are optional. You could write a program as a single long line if you felt like it.
+<section className="content-chunk" aria-labelledby="Recursion-806t" data-subsection-id="Recursion-806t" data-show-header="true">
+## Recursion \{#Recursion-806t}
+It is perfectly okay for a function to call itself, as long as it doesn’t do it so often that it overflows the stack. A function that calls itself is called recursive. Recursion allows some functions to be written in a different style. Take, for example, this <Notebook code = {`power`}/> function, which does the same as the ** (exponentiation) operator:
 
-The role of this indentation inside blocks is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use tab characters. The important thing is that each new block adds the same amount of space.
-
-<Notebook code = {`if (false != true) {
- console.log("That makes sense.");
- if (1 < 2) {
-   console.log("No surprise there.");
- }
-}`}/>
-
-
-
-Most code editor programs (including the one in this book) will help by automatically indenting new lines the proper amount.
-</section>
-
-<section className="content-chunk" aria-labelledby="for-Loops-783t" data-subsection-id="for-Loops-783t" data-show-header="true">
-## for Loops \{#for-Loops-783t}
-Many loops follow the pattern shown in the while examples. First a “counter” binding is created to track the progress of the loop. Then comes a while loop, usually with a test expression that checks whether the counter has reached its end value. At the end of the loop body, the counter is updated to track progress.
-
-Because this pattern is so common, JavaScript and similar languages provide a slightly shorter and more comprehensive form, the for loop:
-
-<Notebook code = {`for (let number = 0; number <= 12; number = number + 2) {
- console.log(number);
-}
-// → 0
-// → 2
-//   … etcetera`}/>
-
-
-
-This program is exactly equivalent to the earlier even-number-printing example. The only change is that all the statements that are related to the “state” of the loop are grouped together after for.
-
-The parentheses after a for keyword must contain two semicolons. The part before the first semicolon initializes the loop, usually by defining a binding. The second part is the expression that checks whether the loop must continue. The final part updates the state of the loop after every iteration. In most cases, this is shorter and clearer than a while construct.
-
-This is the code that computes 210 using for instead of while:
-
-<Notebook code = {`let result = 1;
-for (let counter = 0; counter < 10; counter = counter + 1) {
- result = result * 2;
-}
-console.log(result);
-// → 1024`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Breaking-Out-of-a-Loop-788t" data-subsection-id="Breaking-Out-of-a-Loop-788t" data-show-header="true">
-## Breaking Out of a Loop \{#Breaking-Out-of-a-Loop-788t}
-Having the looping condition produce false is not the only way a loop can finish. The break statement has the effect of immediately jumping out of the enclosing loop. Its use is demonstrated in the following program, which finds the first number that is both greater than or equal to 20 and divisible by 7:
-
-<Notebook code = {`for (let current = 20; ; current = current + 1) {
- if (current % 7 == 0) {
-   console.log(current);
-   break;
+<Notebook code = {`function power(base, exponent) {
+ if (exponent == 0) {
+   return 1;
+ } else {
+   return base * power(base, exponent - 1);
  }
 }
-// → 21`}/>
+console.log(power(2, 3));
+// → 8`}/>
 
+This is rather close to the way mathematicians define exponentiation and arguably describes the concept more clearly than the loop we used in Chapter 2. The function calls itself multiple times with ever smaller exponents to achieve the repeated multiplication.
 
+However, this implementation has one problem: in typical JavaScript implementations, it’s about three times slower than a version using a <Notebook code = {`for`}/> loop. Running through a simple loop is generally cheaper than calling a function multiple times.
 
-Using the remainder (%) operator is an easy way to test whether a number is divisible by another number. If it is, the remainder of their division is zero.
+The dilemma of speed versus elegance is an interesting one. You can see it as a kind of continuum between human-friendliness and machine-friendliness. Almost any program can be made faster by making it bigger and more convoluted. The programmer has to find an appropriate balance.
 
-The for construct in the example does not have a part that checks for the end of the loop. This means that the loop will never stop unless the break statement inside is executed.
+In the case of the <Notebook code = {`power`}/> function, an inelegant (looping) version is still fairly simple and easy to read. It doesn’t make much sense to replace it with a recursive function. Often, though, a program deals with such complex concepts that giving up some efficiency in order to make the program more straightforward is helpful.
 
-If you were to remove that break statement or you accidentally write an end condition that always produces true, your program would get stuck in an infinite loop. A program stuck in an infinite loop will never finish running, which is usually a bad thing.
+Worrying about efficiency can be a distraction. It’s yet another factor that complicates program design, and when you’re doing something that’s already difficult, that extra thing to worry about can be paralyzing.
 
-If you create an infinite loop in one of the examples on these pages, you’ll usually be asked whether you want to stop the script after a few seconds. If that fails, you will have to close the tab that you’re working in to recover.
+Therefore, you should generally start by writing something that’s correct and easy to understand. If you’re worried that it’s too slow—which it usually isn’t since most code simply isn’t executed often enough to take any significant amount of time—you can measure afterward and improve it if necessary.
 
-The continue keyword is similar to break in that it influences the progress of a loop. When continue is encountered in a loop body, control jumps out of the body and continues with the loop’s next iteration.
+Recursion is not always just an inefficient alternative to looping. Some problems really are easier to solve with recursion than with loops. Most often these are problems that require exploring or processing several “branches”, each of which might branch out again into even more branches.
+
+Consider this puzzle: by starting from the number 1 and repeatedly either adding 5 or multiplying by 3, an infinite set of numbers can be produced. How would you write a function that, given a number, tries to find a sequence of such additions and multiplications that produces that number? For example, the number 13 could be reached by first multiplying by 3 and then adding 5 twice, whereas the number 15 cannot be reached at all.
+
+Here is a recursive solution:
+
+<Notebook code = {`function findSolution(target) {
+ function find(current, history) {
+   if (current == target) {
+     return history;
+   } else if (current > target) {
+     return null;
+   } else {
+     return find(current + 5, `(${history} + 5)`) ??
+            find(current * 3, `(${history} * 3)`);
+   }
+ }
+ return find(1, "1");
+}
+console.log(findSolution(24));
+// → (((1 * 3) + 5) * 3)`}/>
+
+Note that this program doesn’t necessarily find the <Notebook code = {`shortest`}/> sequence of operations. It is satisfied when it finds any sequence at all.
+
+It’s okay if you don’t see how this code works right away. Let’s work through it since it makes for a great exercise in recursive thinking.
+
+The inner function <Notebook code = {`find`}/> does the actual recursing. It takes two arguments: the current number and a string that records how we reached this number. If it finds a solution, it returns a string that shows how to get to the target. If it can find no solution starting from this number, it returns <Notebook code = {`null`}/>.
+
+To do this, the function performs one of three actions. If the current number is the target number, the current history is a way to reach that target, so it is returned. If the current number is greater than the target, there’s no sense in further exploring this branch because both adding and multiplying will only make the number bigger, so it returns <Notebook code = {`null`}/>. Finally, if we’re still below the target number, the function tries both possible paths that start from the current number by calling itself twice, once for addition and once for multiplication. If the first call returns something that is not <Notebook code = {`null`}/>, it is returned. Otherwise, the second call is returned, regardless of whether it produces a string or <Notebook code = {`null`}/>.
+
+To better understand how this function produces the effect we’re looking for, let’s look at all the calls to <Notebook code = {`find`}/> that are made when searching for a solution for the number 13:
+
+<Notebook code = {`find(1, "1")
+ find(6, "(1 + 5)")
+   find(11, "((1 + 5) + 5)")
+     find(16, "(((1 + 5) + 5) + 5)")
+       too big
+     find(33, "(((1 + 5) + 5) * 3)")
+       too big
+   find(18, "((1 + 5) * 3)")
+     too big
+ find(3, "(1 * 3)")
+   find(8, "((1 * 3) + 5)")
+     find(13, "(((1 * 3) + 5) + 5)")
+       found!`}/>
+
+The indentation indicates the depth of the call stack. The first time <Notebook code = {`find`}/> is called, the function starts by calling itself to explore the solution that starts with <Notebook code = {`(1 + 5).`}/> That call will further recurse to explore _every_ continued solution that yields a number less than or equal to the target number. Since it doesn’t find one that hits the target, it returns <Notebook code = {`null`}/> back to the first call. There the <Notebook code = {`??`}/> operator causes the call that explores <Notebook code = {`(1 * 3)`}/> to happen. This search has more luck—its first recursive call, through yet _another_ recursive call, hits upon the target number. That innermost call returns a string, and each of the <Notebook code = {`??`}/> operators in the intermediate calls passes that string along, ultimately returning the solution.
 </section>
 
-<section className="content-chunk" aria-labelledby="Updating-Bindings-Succinctly-787t" data-subsection-id="Updating-Bindings-Succinctly-787t" data-show-header="true">
-## Updating Bindings Succinctly \{#Updating-Bindings-Succinctly-787t}
-Especially when looping, a program often needs to “update” a binding to hold a value based on that binding’s previous value.
+<section className="content-chunk" aria-labelledby="Growing-Functions-802t" data-subsection-id="Growing-Functions-802t" data-show-header="true">
+## Growing Functions \{#Growing-Functions-802t}
+There are two more or less natural ways for functions to be introduced into programs.
 
-<Notebook code = {`counter = counter + 1;`}/>
+The first occurs when you find yourself writing similar code multiple times. You’d prefer not to do that, as having more code means more space for mistakes to hide and more material to read for people trying to understand the program. So you take the repeated functionality, find a good name for it, and put it into a function.
 
+The second way is that you find you need some functionality that you haven’t written yet and that sounds like it deserves its own function. You start by naming the function, and then write its body. You might even start writing code that uses the function before you actually define the function itself.
 
+How difficult it is to find a good name for a function is a good indication of how clear a concept it is that you’re trying to wrap. Let’s go through an example.
 
-JavaScript provides a shortcut for this:
+We want to write a program that prints two numbers: the numbers of cows and chickens on a farm, with the words <Notebook code = {`Cows`}/> and <Notebook code = {`Chickens`}/> after them and zeros padded before both numbers so that they are always three digits long:
 
-<Notebook code = {`counter += 1;`}/>
+<Notebook code = {`007 Cows
+011 Chickens`}/>
 
+This asks for a function of two arguments—the number of cows and the number of chickens. Let’s get coding.
 
+<Notebook code = {`function printFarmInventory(cows, chickens) {
+ let cowString = String(cows);
+ while (cowString.length < 3) {
+   cowString = "0" + cowString;
+ }
+ console.log(`${cowString} Cows`);
+ let chickenString = String(chickens);
+ while (chickenString.length < 3) {
+   chickenString = "0" + chickenString;
+ }
+ console.log(`${chickenString} Chickens`);
+}
+printFarmInventory(7, 11);`}/> 
 
-Similar shortcuts work for many other operators, such as result *= 2 to double result or counter -= 1 to count downward.
+Writing <Notebook code = {`.length`}/> after a string expression will give us the length of that string. Thus, the <Notebook code = {`while`}/> loops keep adding zeros in front of the number strings until they are at least three characters long.
 
-This allows us to further shorten our counting example:
+Mission accomplished! But just as we are about to send the farmer the code (along with a hefty invoice), she calls and tells us she’s also started keeping pigs, and couldn’t we please extend the software to also print pigs?
 
-<Notebook code = {`for (let number = 0; number <= 12; number += 2) {
- console.log(number);
-}`}/>
+We sure can. But just as we’re in the process of copying and pasting those four lines one more time, we stop and reconsider. There has to be a better way. Here’s a first attempt:
 
+<Notebook code = {`function printZeroPaddedWithLabel(number, label) {
+ let numberString = String(number);
+ while (numberString.length < 3) {
+   numberString = "0" + numberString;
+ }
+ console.log(`${numberString} ${label}`);
+}
 
+function printFarmInventory(cows, chickens, pigs) {
+ printZeroPaddedWithLabel(cows, "Cows");
+ printZeroPaddedWithLabel(chickens, "Chickens");
+ printZeroPaddedWithLabel(pigs, "Pigs");
+}
 
-For counter += 1 and counter -= 1, there are even shorter equivalents: counter++ and counter--.
+printFarmInventory(7, 11, 3);`}/> 
+
+It works! But that name, <Notebook code = {`printZeroPaddedWithLabel`}/>, is a little awkward. It conflates three things—printing, zero-padding, and adding a label—into a single function.
+
+Instead of lifting out the repeated part of our program wholesale, let’s try to pick out a single _concept_:
+
+<Notebook code = {`function zeroPad(number, width) {
+ let string = String(number);
+ while (string.length < width) {
+   string = "0" + string;
+ }
+ return string;
+}
+
+function printFarmInventory(cows, chickens, pigs) {
+ console.log(`${zeroPad(cows, 3)} Cows`);
+ console.log(`${zeroPad(chickens, 3)} Chickens`);
+ console.log(`${zeroPad(pigs, 3)} Pigs`);
+}
+
+printFarmInventory(7, 16, 3);`}/>
+
+A function with a nice, obvious name like <Notebook code = {`zeroPad`}/> makes it easier for someone who reads the code to figure out what it does. Such a function is also useful in more situations than just this specific program. For example, you could use it to help print nicely aligned tables of numbers.
+
+How smart and versatile _should_ our function be? We could write anything, from a terribly simple function that can only pad a number to be three characters wide to a complicated generalized number-formatting system that handles fractional numbers, negative numbers, alignment of decimal dots, padding with different characters, and so on.
+
+A useful principle is to refrain from adding cleverness unless you are absolutely sure you’re going to need it. It can be tempting to write general “frameworks” for every bit of functionality you come across. Resist that urge. You won’t get any real work done—you’ll be too busy writing code that you never use.
 </section>
 
-<section className="content-chunk" aria-labelledby="Dispatching-on-a-Value-with-Switch-786t" data-subsection-id="Dispatching-on-a-Value-with-Switch-786t" data-show-header="true">
-## Dispatching on a Value with Switch \{#Dispatching-on-a-Value-with-Switch-786t}
-It is not uncommon for code to look like this:
+<section className="content-chunk" aria-labelledby="Functions-and-Side-Effects-807t" data-subsection-id="Functions-and-Side-Effects-807t" data-show-header="true">
+## Functions and Side Effects \{#Functions-and-Side-Effects-807t}
+Functions can be roughly divided into those that are called for their side effects and those that are called for their return value (though it is also possible to both have side effects and return a value).
 
-<Notebook code = {`if (x == "value1") action1();
-else if (x == "value2") action2();
-else if (x == "value3") action3();
-else defaultAction();`}/>
+The first helper function in the farm example, <Notebook code = {`printZeroPaddedWithLabel`}/>, is called for its side effect: it prints a line. The second version, <Notebook code = {`zeroPad`}/>, is called for its return value. It is no coincidence that the second is useful in more situations than the first. Functions that create values are easier to combine in new ways than functions that directly perform side effects.
 
+A _pure_ function is a specific kind of value-producing function that not only has no side effects but also doesn’t rely on side effects from other code—for example, it doesn’t read global bindings whose value might change. A pure function has the pleasant property that, when called with the same arguments, it always produces the same value (and doesn’t do anything else). A call to such a function can be substituted by its return value without changing the meaning of the code. When you are not sure that a pure function is working correctly, you can test it by simply calling it and know that if it works in that context, it will work in any context. Nonpure functions tend to require more scaffolding to test.
 
-
-There is a construct called switch that is intended to express such a “dispatch” in a more direct way. Unfortunately, the syntax JavaScript uses for this (which it inherited from the C/Java line of programming languages) is somewhat awkward—a chain of if statements may look better. Here is an example:
-
-<Notebook code = {`switch (prompt("What is the weather like?")) {
- case "rainy":
-   console.log("Remember to bring an umbrella.");
-   break;
- case "sunny":
-   console.log("Dress lightly.");
- case "cloudy":
-   console.log("Go outside.");
-   break;
- default:
-   console.log("Unknown weather type!");
-   break;
-}`}/>
-
-
-
-You may put any number of case labels inside the block opened by switch. The program will start executing at the label that corresponds to the value that switch was given, or at default if no matching value is found. It will continue executing, even across other labels, until it reaches a break statement. In some cases, such as the "sunny" case in the example, this can be used to share some code between cases (it recommends going outside for both sunny and cloudy weather). Be careful, though—it is easy to forget such a break, which will cause the program to execute code you do not want executed.
-</section>
-
-<section className="content-chunk" aria-labelledby="Capitalization-790t" data-subsection-id="Capitalization-790t" data-show-header="true">
-## Capitalization \{#Capitalization-790t}
-Binding names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the binding represents. These are pretty much your choices for writing a binding name with several words in it:
-
-<Notebook code = {`fuzzylittleturtle
-fuzzy_little_turtle
-FuzzyLittleTurtle
-fuzzyLittleTurtle`}/>
-
-
-
-The first style can be hard to read. I rather like the look of the underscores, though that style is a little painful to type. The standard JavaScript functions, and most JavaScript programmers, follow the final style—they capitalize every word except the first. It is not hard to get used to little things like that, and code with mixed naming styles can be jarring to read, so we follow this convention.
-
-In a few cases, such as the Number function, the first letter of a binding is also capitalized. This was done to mark this function as a constructor. It will become clear what a constructor is in Chapter 6. For now, the important thing is to not be bothered by this apparent lack of consistency.
-</section>
-
-<section className="content-chunk" aria-labelledby="Comments-791t" data-subsection-id="Comments-791t" data-show-header="true">
-## Comments \{#Comments-791t}
-Often, raw code does not convey all the information you want a program to convey to human readers, or it conveys it in such a cryptic way that people might not understand it. At other times, you might just want to include some related thoughts as part of your program. This is what comments are for.
-
-A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (//) and then the comment text after it:
-
-<Notebook code = {`let accountBalance = calculateBalance(account);
-// It's a green hollow where a river sings
-accountBalance.adjust();
-// Madly catching white tatters in the grass.
-let report = new Report();
-// Where the sun on the proud mountain rings:
-addToReport(accountBalance, report);
-// It's a little valley, foaming like light in a glass.`}/> 
-
-A // comment goes only to the end of the line. A section of text between /* and */ will be ignored in its entirety, regardless of whether it contains line breaks. This is useful for adding blocks of information about a file or a chunk of program:
-
-<Notebook code = {`/*
- I first found this number scrawled on the back of an old
- notebook. Since then, it has often dropped by, showing up in
- phone numbers and the serial numbers of products that I've
- bought. It obviously likes me, so I've decided to keep it.
-*/
-const myNumber = 11213;`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Exercises-235pt" data-subsection-id="Exercises-235pt" data-show-header="true">
-## Exercises \{#Exercises-235pt}
-### **Looping a triangle**
-
-Write a loop that makes seven calls to <Notebook code = {`console.log`}/> to output the following triangle:
-
-#
-##
-###
-####
-#####
-######
-#######
-
-It may be useful to know that you can find the length of a string by writing <Notebook code = {`.length`}/> after it.
-
-1
-
-2
-
-3
-
-let abc = "abc";
-
-console.log(abc.length);
-
-// → 3
-
-Most exercises contain a piece of code that you can modify to solve the exercise. Remember that you can click code blocks to edit them.
-
-1
-
-// Your code here.
-
-You can start with a program that prints out the numbers 1 to 7, which you can derive by making a few modifications to the [even number printing example](https://eloquentjavascript.net/02_program_structure.html#loops)given earlier in the chapter, where the <Notebook code = {`for`}/> loop was introduced.
-
-Now consider the equivalence between numbers and strings of hash characters. You can go from 1 to 2 by adding 1 (<Notebook code = {`+= 1`}/>). You can go from <Notebook code = {`"#"`}/> to <Notebook code = {`"##"`}/> by adding a character (<Notebook code = {`+= "#"`}/>). Thus, your solution can closely follow the number-printing program.
-
-### **FizzBuzz**
-
-Write a program that uses <Notebook code = {`console.log`}/> to print all the numbers from 1 to 100, with two exceptions. For numbers divisible by 3, print <Notebook code = {`"Fizz"`}/> instead of the number, and for numbers divisible by 5 (and not 3), print <Notebook code = {`"Buzz"`}/> instead.
-
-When you have that working, modify your program to print <Notebook code = {`"FizzBuzz"`}/> for numbers that are divisible by both 3 and 5 (and still print <Notebook code = {`"Fizz"`}/> or <Notebook code = {`"Buzz"`}/>for numbers divisible by only one of those).
-
-(This is actually an interview question that has been claimed to weed out a significant percentage of programmer candidates. So if you solved it, your labor market value just went up.)
-
-1
-
-// Your code here.
-
-Going over the numbers is clearly a looping job, and selecting what to print is a matter of conditional execution. Remember the trick of using the remainder (<Notebook code = {`%`}/>) operator for checking whether a number is divisible by another number (has a remainder of zero).
-
-In the first version, there are three possible outcomes for every number, so you’ll have to create an <Notebook code = {`if`}/>/<Notebook code = {`else if`}/>/<Notebook code = {`else`}/> chain.
-
-The second version of the program has a straightforward solution and a clever one. The simple solution is to add another conditional “branch” to precisely test the given condition. For the clever solution, build up a string containing the word or words to output and print either this word or the number if there is no word, potentially by making good use of the <Notebook code = {`||`}/> operator.
-
-### **Chessboard**
-
-Write a program that creates a string that represents an 8×8 grid, using newline characters to separate lines. At each position of the grid there is either a space or a "#" character. The characters should form a chessboard.
-
-Passing this string to <Notebook code = {`console.log`}/> should show something like this:
-
- # # # #
-\# # # # 
- # # # #
-\# # # # 
- # # # #
-\# # # # 
- # # # #
-\# # # #
-
-When you have a program that generates this pattern, define a binding <Notebook code = {`size = 8`}/> and change the program so that it works for any <Notebook code = {`size`}/>, outputting a grid of the given width and height.
-
-// Your code here.
-
-You can build the string by starting with an empty one (<Notebook code = {`""`}/>) and repeatedly adding characters. A newline character is written <Notebook code = {`"\n"`}/>.
-
-To work with two dimensions, you will need a loop inside of a loop. Put braces around the bodies of both loops to make it easy to see where they start and end. Try to properly indent these bodies. The order of the loops must follow the order in which we build up the string (line by line, left to right, top to bottom). So the outer loop handles the lines, and the inner loop handles the characters on a line.
-
-You’ll need two bindings to track your progress. To know whether to put a space or a hash sign at a given position, you could test whether the sum of the two counters is even (<Notebook code = {`% 2`}/>).
-
-Terminating a line by adding a newline character must happen after the line has been built up, so do this after the inner loop but inside the outer loop.
+Still, there’s no need to feel bad when writing functions that are not pure. Side effects are often useful. There’s no way to write a pure version of <Notebook code = {`console.log`}/>, for example, and <Notebook code = {`console.log`}/> is good to have. Some operations are also easier to express in an efficient way when we use side effects.
 </section>
 
