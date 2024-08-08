@@ -142,7 +142,7 @@ There are, of course, situations where you want a backslash in a string to be ju
 
 Strings, too, have to be modeled as a series of bits to be able to exist inside the computer. The way JavaScript does this is based on the _Unicode_ standard. This standard assigns a number to virtually every character you would ever need, including characters from Greek, Arabic, Japanese, Armenian, and so on. If we have a number for every character, a string can be described by a sequence of numbers. And that’s what JavaScript does.
 
-There’s a complication though: JavaScript’s representation uses 16 bits per string element, which can describe up to 216 different characters. However, Unicode defines more characters than that—about twice as many, at this point. So some characters, such as many emoji, take up two “character positions” in JavaScript strings. We’ll come back to this in [Chapter 5](https://eloquentjavascript.net/05_higher_order.html#code_units).
+There’s a complication though: JavaScript’s representation uses 16 bits per string element, which can describe up to 216 different characters. However, Unicode defines more characters than that—about twice as many, at this point. So some characters, such as many emoji, take up two “character positions” in JavaScript strings. We’ll come back to this in [Higher-Order functions](/5-higher-order-functions).
 
 Strings cannot be divided, multiplied, or subtracted. The `+` operator _can_ be used on them, not to add, but to _concatenate_—to glue two strings together. The following line will produce the string `"concatenate"`:
 
@@ -150,7 +150,7 @@ Strings cannot be divided, multiplied, or subtracted. The `+` operator _can_ be 
 "con" + "cat" + "e" + "nate"
 ```
 
-String values have a number of associated functions (_methods_) that can be used to perform other operations on them. I’ll say more about these in [Chapter 4](https://eloquentjavascript.net/04_data.html#methods).
+String values have a number of associated functions (_methods_) that can be used to perform other operations on them. I’ll say more about these in [Data Structures](/4-data-structures-objects-and-arrays).
 
 Strings written with single or double quotes behave very much the same—the only difference lies in which type of quote you need to escape inside of them. Backtick-quoted strings, usually called _template literals_, can do a few more tricks. Apart from being able to span lines, they can also embed other values.
 
@@ -174,7 +174,7 @@ Below a code sandbox for running JavaScript code directly in your browser. Compa
 console.log(typeof "x")
 // → string`}/>
 
-We will use `console.log` in example code to indicate that we want to see the result of evaluating something. (More about that in the [next chapter](https://eloquentjavascript.net/02_program_structure.html).)
+We will use `console.log` in example code to indicate that we want to see the result of evaluating something. (More about that in the [next chapter](/2-program-structure).)
 
 The other operators shown so far in this chapter all operated on two values, but `typeof` takes only one. Operators that use two values are called _binary_ operators, while those that take one are called _unary_ operators. The minus operator (`-`) can be used both as a binary operator and as a unary operator.
 

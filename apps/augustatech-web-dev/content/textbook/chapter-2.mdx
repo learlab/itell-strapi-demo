@@ -57,13 +57,13 @@ Parameters to a function behave like regular bindings, but their initial values 
 
 <section className="content-chunk" aria-labelledby="Bindings-and-Scopes-797t" data-subsection-id="Bindings-and-Scopes-797t" data-show-header="true">
 ## Bindings and Scopes \{#Bindings-and-Scopes-797t}
-Each binding has a _scope_, which is the part of the program in which the binding is visible. For bindings defined outside of any function, block, or module (see Chapter 10), the scope is the whole program—you can refer to such bindings wherever you want. These are called _global_.
+Each binding has a _scope_, which is the part of the program in which the binding is visible. For bindings defined outside of any function, block, or module (see [Modules](/10-modules)), the scope is the whole program—you can refer to such bindings wherever you want. These are called _global_.
 
 Bindings created for function parameters or declared inside a function can be referenced only in that function, so they are known as _local_ bindings. Every time the function is called, new instances of these bindings are created. This provides some isolation between functions—each function call acts in its own little world (its local environment) and can often be understood without knowing a lot about what’s going on in the global environment.
 
-Bindings declared with `let` and `const` are in fact local to the _block_ in which they are declared, so if you create one of those inside of a loop, the code before and after the loop cannot “see” it. In pre-2015 JavaScript, only functions created new scopes, so old-style bindings, created with the var keyword, are visible throughout the whole function in which they appear—or throughout the global scope, if they are not in a function.
+Bindings declared with `let` and `const` are in fact local to the _block_ in which they are declared, so if you create one of those inside of a loop, the code before and after the loop cannot “see” it. In pre-2015 JavaScript, only functions created new scopes, so old-style bindings, created with the `var` keyword, are visible throughout the whole function in which they appear—or throughout the global scope, if they are not in a function.
 
-```javascript 
+```javascript caption="let and const bindings are local to the block in which they are declared, whereas var variables created outside of functions are global"
 let x = 10;   // global
 if (true) {
   let y = 20; // local to block
