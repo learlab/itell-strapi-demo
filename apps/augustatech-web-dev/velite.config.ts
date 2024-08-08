@@ -93,16 +93,26 @@ export default defineConfig({
 });
 
 const getHeadingsFromRawBody = (doc: string) => {
+	// Remove code blocks (both indented and fenced)
+	const codeBlockRegex = /(```[\s\S]*?```|`[^`\n]+`| {4}[^*\n]+|\t[^*\n]+)/g;
+	const cleanedDoc = doc.replace(codeBlockRegex, "");
+
 	// Updated regex to capture the heading content and potential ID separately
 	const regXHeader = /\n(#{1,6})\s+(.+?)(?:\s+\\{#(.+)\})?$/gm;
 
 	const slugger = new GithubSlugger();
 
 	const headings: Array<{ level: string; text: string; slug: string }> = [];
-	for (const match of doc.matchAll(regXHeader)) {
+
+	const stripMarkdown = (text: string) => {
+		return text.replace(/(\*\*|__|\*|_|~~|`)/g, ""); // Removes bold, italic, strikethrough, and inline code markdown
+	};
+
+	for (const match of cleanedDoc.matchAll(regXHeader)) {
 		const flag = match[1];
-		const content = match[2].trim(); // This now excludes the custom ID part
+		let content = match[2].trim(); // This now excludes the custom ID part
 		const customId = match[3]; // Capture the custom ID if present
+		content = stripMarkdown(content); // Strip markdown from the content
 		if (content && content !== "null") {
 			headings.push({
 				level:
