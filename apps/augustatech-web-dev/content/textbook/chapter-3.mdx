@@ -578,22 +578,26 @@ When such a function is called, the _rest parameter_ is bound to an array contai
 
 You can use a similar three-dot notation to _call_ a function with an array of arguments.
 
-```
-let numbers = [5, 1, 7];console.log(max(...numbers));// → 7
-```
+<Sandbox pageSlug="test-page-no-chunks" code={`let numbers = [5, 1, 7];
+console.log(max(...numbers));
+// → 7`}/>
 
 This “spreads” out the array into the function call, passing its elements as separate arguments. It is possible to include an array like that along with other arguments, as in `max(9, ...numbers, 2)`.
 
 Square bracket array notation similarly allows the triple-dot operator to spread another array into the new array:
 
-```
-let words = ["never", "fully"];console.log(["will", ...words, "understand"]);// → ["will", "never", "fully", "understand"]
+```javascript caption="use the spread operator to concatenate arrays"
+let words = ["never", "fully"];
+console.log(["will", ...words, "understand"]);
+// → ["will", "never", "fully", "understand"]
 ```
 
 This works even in curly brace objects, where it adds all properties from another object. If a property is added multiple times, the last value to be added wins:
 
-```
-let coordinates = {x: 10, y: 0};console.log({...coordinates, y: 5, z: 1});// → {x: 10, y: 5, z: 1}
+```javascript caption="use the spread operator to merge objects"
+let coordinates = {x: 10, y: 0};
+console.log({...coordinates, y: 5, z: 1});
+// → {x: 10, y: 5, z: 1}
 ```
 </section>
 
