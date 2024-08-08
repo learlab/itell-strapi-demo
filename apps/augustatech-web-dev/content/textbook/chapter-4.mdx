@@ -42,7 +42,7 @@ Even basic things like numbers can be thought of as an abstract data type whose 
 In JavaScript, methods are nothing more than properties that hold function values. This is a simple method:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function speak(line) {
-  console.log(`The ${this.type} rabbit says '${line}'`);
+  console.log(\`The \${this.type} rabbit says '\${line}'\`);
 }
 let whiteRabbit = {type: "white", speak};
 let hungryRabbit = {type: "hungry", speak};
