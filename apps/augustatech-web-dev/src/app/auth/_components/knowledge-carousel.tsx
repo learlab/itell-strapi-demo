@@ -55,7 +55,7 @@ export const KnowledgeCard = ({
 							/>
 						</svg>
 						<blockquote className="border-none">
-							<p className="leading-snug font-light text-lg text-muted-foreground">
+							<p className="leading-snug font-light text-lg text-muted-foreground ">
 								{text}
 							</p>
 						</blockquote>
@@ -67,7 +67,7 @@ export const KnowledgeCard = ({
 									// fix for "aria-hidden elements contain focusable elements" (the parent container for this component is aria-hidden)
 									tabIndex={-1}
 								>
-									<span className="flex items-center gap-2">
+									<span className="flex items-center gap-2 ">
 										<LinkIcon className="size-4" />
 										{source}
 									</span>

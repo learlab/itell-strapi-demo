@@ -1,16 +1,10 @@
 "use client";
 import { useSelector } from "@xstate/store/react";
-import React, {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useRef,
-} from "react";
+import React, { createContext, useContext, useEffect, useRef } from "react";
 import { store } from "./store";
 
 type State = {
-	run: (id: string) => void;
+	run: (id: string, code: string) => void;
 };
 
 type Props = {
@@ -43,12 +37,11 @@ const serializeArg = (arg: any) => {
 
 // biome-ignore lint/security/noGlobalEval: <explanation>
 const eval2 = eval;
-const addLog = (method: string, args: any[], getId: () => string) => {
-	store.send({ type: "addLog", id: getId(), log: { method, data: args } });
+const addLog = (method: string, args: any[], id: string) => {
+	store.send({ type: "addLog", id, log: { method, data: args } });
 };
 
 export const SandboxProvider = ({ children }: Props) => {
-	const entities = useSelector(store, (state) => state.context.entities);
 	const activeId = useRef<string | null>(null);
 
 	useEffect(() => {
@@ -59,39 +52,40 @@ export const SandboxProvider = ({ children }: Props) => {
 			console[method] = (...args: any[]) => {
 				originalConsole[method].apply(console, args);
 				if (activeId.current) {
-					addLog(
-						method,
-						args.map(serializeArg),
-						() => activeId.current as string,
-					);
+					addLog(method, args.map(serializeArg), activeId.current);
 				}
 			};
 		});
 	}, []);
 
-	const run = async (id: string) => {
-		const data = entities[id];
-		if (data) {
-			activeId.current = id;
-			const code = data.editor.getValue();
-			store.send({ type: "clearLogs", id });
+	const run = async (id: string, code: string) => {
+		activeId.current = id;
+		let clear = true;
+		store.send({ type: "clearLogs", id });
 
-			try {
-				const result = eval2(code);
-				addLog("return", [result], () => id);
-			} catch (error) {
-				if (error instanceof Error) {
-					if (error.stack) {
-						addLog("error", [error.stack], () => id);
-					} else {
-						addLog("error", [`${error.name}: ${error.message}`], () => id);
-					}
+		try {
+			const result = eval2(code);
+			if (result instanceof Promise) {
+				clear = false;
+				await result;
+				activeId.current = null;
+			}
+			addLog("return", [result], id);
+		} catch (error) {
+			if (error instanceof Error) {
+				if (error.stack) {
+					addLog("error", [error.stack], id);
 				} else {
-					addLog("error", [String(error)], () => id);
+					addLog("error", [`${error.name}: ${error.message}`], id);
 				}
+			} else {
+				addLog("error", [String(error)], id);
+			}
+		} finally {
+			if (clear) {
+				activeId.current = null;
 			}
 		}
-		activeId.current = null;
 	};
 
 	return <Context.Provider value={{ run }}>{children}</Context.Provider>;

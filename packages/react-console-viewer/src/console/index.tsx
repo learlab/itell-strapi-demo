@@ -2,7 +2,7 @@ import { ThemeProvider } from "@emotion/react";
 import { getStyles } from "./theme";
 import "../styles.css";
 
-import { deepEqual, shallowEqual } from "fast-equals";
+import { shallowEqual } from "fast-equals";
 import { Options } from "linkifyjs/html";
 import { cn } from "../utils";
 import { LogItem } from "./log-item";
@@ -79,7 +79,10 @@ export const Console = ({
 
 	return (
 		<ThemeProvider theme={theme}>
-			<div className={cn("break-words w-full", className)} {...rest}>
+			<div
+				className={cn("console-viewer break-words w-full", className)}
+				{...rest}
+			>
 				{logs.map((log, i) => (
 					<LogItem
 						log={log}

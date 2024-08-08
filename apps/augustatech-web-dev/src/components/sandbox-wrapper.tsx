@@ -17,8 +17,8 @@ export const SandboxWrapper = async ({
 	pageSlug,
 	...rest
 }: Props) => {
-	const editorCode =
-		code || React.Children.toArray(children).join("").trim() || "";
+	// @ts-ignore
+	const editorCode = code || children.props.children.trim() || "";
 
 	const editorId = id || (await hash(editorCode)).slice(0, 8);
 

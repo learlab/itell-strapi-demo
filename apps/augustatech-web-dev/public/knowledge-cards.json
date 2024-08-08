@@ -1,7 +1,17 @@
 [
 	{
-		"text": "Openings large enough to allow a person to enter a permit-required confined space and is readily accessible under normal conditions, shall be visibly identified as a confided space when the attendant is not present. (e.g., signage or other effective means of communication)",
-		"source": "Confined Space Entry OE Standard",
-		"href": "/confined-space-entry"
+		"text": "When an operator is applied to the “wrong” type of value, JavaScript will quietly convert that value to the type it needs, using a set of rules that often aren’t what you want or expect. This is called type coercion.",
+		"source": "1. Values, Types, and Operators",
+		"href": "/values-types-and-operators"
+	},
+	{
+		"text": "Functions that operate on other functions, either by taking them as arguments or by returning them, are called higher-order functions. Higher-order functions allow us to abstract over actions, not just values.",
+		"source": "5. Higher-order Functions",
+		"href": "/5-higher-order-functions"
+	},
+	{
+		"text": "It is common for classes to define some properties and methods for internal use that are not part of their interface. These are called private properties, as opposed to public ones, which are part of the object's external interface. To declare a private method, put a `#` sign in front of its name. ",
+		"source": "6. The Secret Life of Objects",
+		"href": "/6-the-secret-life-of-objects"
 	}
 ]

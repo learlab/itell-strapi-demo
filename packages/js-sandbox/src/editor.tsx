@@ -4,7 +4,6 @@ import { Button } from "@itell/ui/client";
 import { useSelector } from "@xstate/store/react";
 import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
 import { editor } from "monaco-editor";
-import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import { useCallback, useRef, useState } from "react";
 import { useSandbox } from "./provider";
@@ -31,6 +30,7 @@ const minHeight = 60;
 type Props = {
 	id: string;
 	code: string;
+	theme?: string;
 	dependencies?: string[];
 	height?: number;
 	onRun?: (code: string, same: boolean) => void;
@@ -39,11 +39,11 @@ type Props = {
 export const CodeEditor = ({
 	id,
 	code,
+	theme = "light",
 	dependencies,
 	onRun,
 	...props
 }: Props) => {
-	const { theme } = useTheme();
 	const { run } = useSandbox();
 	const [height, setHeight] = useState(props.height || minHeight);
 	const data = useSelector(store, (state) => state.context.entities[id]);
@@ -64,8 +64,8 @@ export const CodeEditor = ({
 					size={"sm"}
 					type="button"
 					onClick={() => {
-						run(id);
 						const code = editor.current?.getValue() || "";
+						run(id, code);
 						onRun?.(code, prevCode.current === code);
 						prevCode.current = code;
 					}}
@@ -120,7 +120,7 @@ export const CodeEditor = ({
 				theme={theme === "dark" ? "vs-dark" : "light"}
 				defaultValue={code}
 				onMount={(e) => {
-					store.send({ type: "register", id, editor: e });
+					store.send({ type: "register", id });
 					editor.current = e;
 
 					if (!props.height) {
@@ -157,7 +157,7 @@ export const CodeEditor = ({
 					cursorStyle: "line",
 				}}
 			/>
-			{data?.logs && data.logs.length > 0 && (
+			{data?.logs.length > 0 && (
 				<LogOutput
 					logs={data.logs}
 					id="output"

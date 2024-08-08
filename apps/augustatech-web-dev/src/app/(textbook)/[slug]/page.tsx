@@ -2,7 +2,7 @@ import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assign
 import { SelectionPopover } from "@/app/(textbook)/[slug]/_components/selection-popover";
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
-import { Condition } from "@/lib/constants";
+import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
@@ -112,7 +112,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				/>
 			)}
 
-			<PageStatusModal user={user} pageStatus={pageStatus} />
+			{isProduction && <PageStatusModal user={user} pageStatus={pageStatus} />}
 			<QuestionControl
 				userId={userId}
 				pageSlug={pageSlug}

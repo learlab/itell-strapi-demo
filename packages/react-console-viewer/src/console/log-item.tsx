@@ -18,10 +18,6 @@ type Props = {
 };
 
 export class LogItem extends React.Component<Props, any> {
-	shouldComponentUpdate(nextProps) {
-		return this.props.log.amount !== nextProps.log.amount;
-	}
-
 	theme = (theme: Theme) => ({
 		...theme,
 		method: this.props.log.method,

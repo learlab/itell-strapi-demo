@@ -5,6 +5,7 @@ export type SandboxProps = {
 	code: string;
 	dependencies?: string[];
 	height?: number;
+	theme?: string;
 	onRun?: (code: string, same: boolean) => void;
 };
 
@@ -14,6 +15,7 @@ export const Sandbox = ({
 	height,
 	dependencies,
 	onRun,
+	theme = "light",
 }: SandboxProps) => {
 	return (
 		<div
@@ -27,6 +29,7 @@ export const Sandbox = ({
 				height={height}
 				dependencies={dependencies}
 				onRun={onRun}
+				theme={theme}
 			/>
 		</div>
 	);

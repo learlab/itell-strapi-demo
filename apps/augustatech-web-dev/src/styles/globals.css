@@ -5,6 +5,9 @@
 @import url("@itell/ui/dist/style.css");
 @import url("@itell/js-sandbox/dist/style.css");
 
+.console-viewer {
+  user-select: none;
+}
 
 .page-nav-active {
   @apply text-primary font-semibold
