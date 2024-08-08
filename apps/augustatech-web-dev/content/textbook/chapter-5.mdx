@@ -4,17 +4,21 @@ page_slug: 10-modules
 summary: true
 quiz: false
 ---
-<section className="content-chunk" aria-labelledby="Quote-230pt" data-subsection-id="Quote-230pt" data-show-header="true">
-## Quote \{#Quote-230pt}
-"Write code that is easy to delete, not easy to extend."
-
-Tef, _programming is terrible_
-
-![10-1.jpg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/10-1.jpg-0e97ff8968e37fafbcb99ec449d05f02.jpg)
-</section>
-
 <section className="content-chunk" aria-labelledby="Introduction-843t" data-subsection-id="Introduction-843t" data-show-header="false">
 <h2 className="sr-only" id="Introduction-843t">Introduction</h2>
+
+> "Write code that is easy to delete, not easy to extend."
+> 
+> \-\- Tef, _programming is terrible_
+
+<Image
+  style="aspect-ratio:490/310;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/10-1.jpg-0e97ff8968e37fafbcb99ec449d05f02.jpg"
+  alt="Illustration of a complicated building built from modular pieces"
+  width="490"
+  height="310">
+
+</Image>
 
 Ideally, a program has a clear, straightforward structure. The way it works is easy to explain, and each part plays a well-defined role.
 
@@ -40,54 +44,66 @@ When the ways in which modules interact with each other are explicit, a system b
 ## ES modules \{#ES-modules-845t}
 The original JavaScript language did not have any concept of a module. All scripts ran in the same scope, and accessing a function defined in another script was done by referencing the global bindings created by that script. This actively encouraged accidental, hard-to-see entanglement of code and invited problems like unrelated scripts trying to use the same binding name.
 
-Since ECMAScript 2015, JavaScript supports two different types of programs. _Scripts_ behave in the old way: their bindings are defined in the global scope, and they have no way to directly reference other scripts. _Modules_ get their own separate scope and support the <Notebook code = {`import`}/> and <Notebook code = {`export`}/> keywords, which aren’t available in scripts, to declare their dependencies and interface. This module system is usually called _ES modules_ (where _ES_ stands for ECMAScript).
+Since ECMAScript 2015, JavaScript supports two different types of programs. _Scripts_ behave in the old way: their bindings are defined in the global scope, and they have no way to directly reference other scripts. _Modules_ get their own separate scope and support the `import` and `export` keywords, which aren’t available in scripts, to declare their dependencies and interface. This module system is usually called _ES modules_ (where _ES_ stands for ECMAScript).
 
 A modular program is composed of a number of such modules, wired together via their imports and exports.
 
-The following example module converts between day names and numbers (as returned by <Notebook code = {`Date`}/>’s <Notebook code = {`getDay`}/> method). It defines a constant that is not part of its interface, and two functions that are. It has no dependencies.
+The following example module converts between day names and numbers (as returned by `Date`’s `getDay` method). It defines a constant that is not part of its interface, and two functions that are. It has no dependencies.
 
-const names = \["Sunday", "Monday", "Tuesday", "Wednesday",
-               "Thursday", "Friday", "Saturday"\];
+```javascript {4,7} caption="use the export keyword to expose functions to other modules"
+const names = ["Sunday", "Monday", "Tuesday", "Wednesday",
+               "Thursday", "Friday", "Saturday"];
 
 export function dayName(number) {
-  return names\[number\];
+  return names[number];
 }
 export function dayNumber(name) {
   return names.indexOf(name);
 }
+```
 
-The <Notebook code = {`export`}/> keyword can be put in front of a function, class, or binding definition to indicate that that binding is part of the module’s interface. This makes it possible for other modules to use that binding by importing it.
+The `export` keyword can be put in front of a function, class, or binding definition to indicate that that binding is part of the module’s interface. This makes it possible for other modules to use that binding by importing it.
 
+```javascript {1}
 import {dayName} from "./dayname.js";
 let now = new Date();
 console.log(`Today is ${dayName(now.getDay())}`);
 // → Today is Monday
+```
 
-The <Notebook code = {`import`}/> keyword, followed by a list of binding names in braces, makes bindings from another module available in the current module. Modules are identified by quoted strings.
+The `import` keyword, followed by a list of binding names in braces, makes bindings from another module available in the current module. Modules are identified by quoted strings.
 
 How such a module name is resolved to an actual program differs by platform. The browser treats them as web addresses, whereas Node.js resolves them to files. When you run a module, all the other modules it depends on—and the modules _those_ depend on—are loaded, and the exported bindings are made available to the modules that import them.
 
 Import and export declarations cannot appear inside of functions, loops, or other blocks. They are immediately resolved when the module is loaded, regardless of how the code in the module executes. To reflect this, they must appear only in the outer module body.
 
-A module’s interface thus consists of a collection of named bindings, which other modules that depend on the module can access. Imported bindings can be renamed to give them a new local name using <Notebook code = {`as`}/> after their name.
+A module’s interface thus consists of a collection of named bindings, which other modules that depend on the module can access. Imported bindings can be renamed to give them a new local name using `as` after their name.
 
+```javascript {1} caption="import function as alias"
 import {dayName as nomDeJour} from "./dayname.js";
 console.log(nomDeJour(3));
 // → Wednesday
+```
 
-A module may also have a special export named <Notebook code = {`default`}/>, which is often used for modules that only export a single binding. To define a default export, you write <Notebook code = {`export default`}/> before an expression, a function declaration, or a class declaration.
+A module may also have a special export named `default`, which is often used for modules that only export a single binding. To define a default export, you write `export default` before an expression, a function declaration, or a class declaration.
 
-export default \["Winter", "Spring", "Summer", "Autumn"\];
+```javascript 
+export default ["Winter", "Spring", "Summer", "Autumn"];
+```
 
 Such a binding is imported by omitting the braces around the name of the import.
 
+```javascript 
 import seasonNames from "./seasonname.js";
+```
 
-To import all bindings from a module at the same time, you can use <Notebook code = {`import *`}/>. You provide a name, and that name will be bound to an object holding all the module’s exports. This can be useful when you are using a lot of different exports.
+To import all bindings from a module at the same time, you can use `import *`. You provide a name, and that name will be bound to an object holding all the module’s exports. This can be useful when you are using a lot of different exports.
 
+```javascript {1} caption="bind all exports to a name via the * symbol"
 import * as dayName from "./dayname.js";
 console.log(dayName.dayName(3));
 // → Wednesday
+```
 
 
 
@@ -98,19 +114,19 @@ console.log(dayName.dayName(3));
 ## Packages \{#Packages-848t}
 One of the advantages of building a program out of separate pieces and being able to run some of those pieces on their own is that you might be able to use the same piece in different programs.
 
-But how do you set this up? Say I want to use the <Notebook code = {`parseINI`}/> function from [Chapter 9](https://eloquentjavascript.net/09_regexp.html#ini) in another program. If it is clear what the function depends on (in this case, nothing), I can just copy that module into my new project and use it. But then, if I find a mistake in the code, I’ll probably fix it in whichever program I’m working with at the time and forget to also fix it in the other program.
+But how do you set this up? Say I want to use the `parseINI` function from some other program to convert a string to an integer. If it is clear what the function depends on, I can just copy that module into my new project and use it. But then, if I find a mistake in the code, I’ll probably fix it in whichever program I’m working with at the time and forget to also fix it in the other program.
 
 Once you start duplicating code, you’ll quickly find yourself wasting time and energy moving copies around and keeping them up to date. That’s where _packages_ come in. A package is a chunk of code that can be distributed (copied and installed). It may contain one or more modules and has information about which other packages it depends on. A package also usually comes with documentation explaining what it does so that people who didn’t write it might still be able to use it.
 
 When a problem is found in a package or a new feature is added, the package is updated. Now the programs that depend on it (which may also be packages) can copy the new version to get the improvements that were made to the code.
 
-Working in this way requires infrastructure. We need a place to store and find packages and a convenient way to install and upgrade them. In the JavaScript world, this infrastructure is provided by NPM ([_https://npmjs.com_](https://npmjs.com/)).
+Working in this way requires infrastructure. We need a place to store and find packages and a convenient way to install and upgrade them. In the JavaScript world, this infrastructure is provided by \[npm\]([https://npmjs.com](https://npmjs.com)).
 
 NPM is two things: an online service where you can download (and upload) packages, and a program (bundled with Node.js) that helps you install and manage them.
 
-At the time of writing, there are more than three million different packages available on NPM. A large portion of those are rubbish, to be fair. But almost every useful, publicly available JavaScript package can be found on NPM. For example, an INI file parser, similar to the one we built in [Chapter 9](https://eloquentjavascript.net/09_regexp.html), is available under the package name <Notebook code = {`ini`}/>.
+At the time of writing, there are more than three million different packages available on NPM. A large portion of those are rubbish, to be fair. But almost every useful, publicly available JavaScript package can be found on NPM. For example, an INI file parser, similar to the one we built in [Chapter 9](https://eloquentjavascript.net/09_regexp.html), is available under the package name `ini`.
 
-[Chapter 20](https://eloquentjavascript.net/20_node.html) will show how to install such packages locally using the <Notebook code = {`npm`}/>command line program.
+[Chapter 20](https://eloquentjavascript.net/20_node.html) will show how to install such packages locally using the `npm`command line program.
 
 Having quality packages available for download is extremely valuable. It means that we can often avoid reinventing a program that 100 people have written before and get a solid, well-tested implementation at the press of a few keys.
 
@@ -122,10 +138,11 @@ Most code on NPM is licensed this way. Some licenses require you to also publish
 
 Now, instead of writing our own INI file parser, we can use one from NPM.
 
+```javascript caption="import from ini third-party library"
 import {parse} from "ini";
 
-console.log(parse("x = 10\\ny = 20"));
-// → {x: "10", y: "20"}
+console.log(parse("x = 10\ny = 20"));
+```
 </section>
 
 <section className="content-chunk" aria-labelledby="CommonJS-Modules-849t" data-subsection-id="CommonJS-Modules-849t" data-show-header="true">
@@ -136,76 +153,81 @@ The community designed its own improvised module systems on top of the language.
 
 Initially, people just manually wrapped their entire module in an “immediately invoked function expression” to create the module’s scope and assigned their interface objects to a single global variable.
 
-const weekDay = function() {
-  const names = \["Sunday", "Monday", "Tuesday", "Wednesday",
-                 "Thursday", "Friday", "Saturday"\];
+<Sandbox pageSlug="test-page-no-chunks" code={`const weekDay = function() {
+  const names = ["Sunday", "Monday", "Tuesday", "Wednesday",
+                 "Thursday", "Friday", "Saturday"];
   return {
-    name(number) { return names\[number\]; },
+    name(number) { return names[number]; },
     number(name) { return names.indexOf(name); }
   };
 }();
 
-console.log(weekDay.name(weekDay.number("Sunday")));
-// → Sunday
+console.log(weekDay.name(weekDay.number("Sunday")));`}/>
 
 This style of modules provides isolation, to a certain degree, but it does not declare dependencies. Instead, it just puts its interface into the global scope and expects its dependencies, if any, to do the same. This is not ideal.
 
 If we implement our own module loader, we can do better. The most widely used approach to bolted-on JavaScript modules is called _CommonJS modules_. Node.js used this module system from the start (though it now also knows how to load ES modules), and it is the module system used by many packages on NPM.
 
-A CommonJS module looks like a regular script, but it has access to two bindings that it uses to interact with other modules. The first is a function called <Notebook code = {`require`}/>. When you call this with the module name of your dependency, it makes sure the module is loaded and returns its interface. The second is an object named <Notebook code = {`exports`}/>, which is the interface object for the module. It starts out empty and you add properties to it to define exported values.
+A CommonJS module looks like a regular script, but it has access to two bindings that it uses to interact with other modules. The first is a function called `require`. When you call this with the module name of your dependency, it makes sure the module is loaded and returns its interface. The second is an object named `exports`, which is the interface object for the module. It starts out empty and you add properties to it to define exported values.
 
-This CommonJS example module provides a date-formatting function. It uses two packages from NPM—<Notebook code = {`ordinal`}/> to convert numbers to strings like <Notebook code = {`"1st"`}/>and <Notebook code = {`"2nd"`}/>, and <Notebook code = {`date-names`}/> to get the English names for weekdays and months. It exports a single function, <Notebook code = {`formatDate`}/>, which takes a <Notebook code = {`Date`}/> object and a template string.
+This CommonJS example module provides a date-formatting function. It uses two packages from NPM—`ordinal` to convert numbers to strings like `"1st"`and `"2nd"`, and `date-names` to get the English names for weekdays and months. It exports a single function, `formatDate`, which takes a `Date` object and a template string.
 
-The template string may contain codes that direct the format, such as <Notebook code = {`YYYY`}/> for the full year and <Notebook code = {`Do`}/> for the ordinal day of the month. You could give it a string like <Notebook code = {`"MMMM Do YYYY"`}/> to get output like <Notebook code = {`November 22nd 2017`}/>.
+The template string may contain codes that direct the format, such as `YYYY` for the full year and `Do` for the ordinal day of the month. You could give it a string like `"MMMM Do YYYY"` to get output like `November 22nd 2017`.
 
+```javascript caption="use the date-names library to format date time objects"
 const ordinal = require("ordinal");
 const {days, months} = require("date-names");
 
 exports.formatDate = function(date, format) {
-  return format.replace(/YYYY|M(MMM)?|Do?|dddd/g, tag =\> {
+  return format.replace(/YYYY|M(MMM)?|Do?|dddd/g, tag => {
     if (tag == "YYYY") return date.getFullYear();
     if (tag == "M") return date.getMonth();
-    if (tag == "MMMM") return months\[date.getMonth()\];
+    if (tag == "MMMM") return months[date.getMonth()];
     if (tag == "D") return date.getDate();
     if (tag == "Do") return ordinal(date.getDate());
-    if (tag == "dddd") return days\[date.getDay()\];
+    if (tag == "dddd") return days[date.getDay()];
   });
 };
+```
 
-The interface of <Notebook code = {`ordinal`}/> is a single function, whereas <Notebook code = {`date-names`}/> exports an object containing multiple things—<Notebook code = {`days`}/> and <Notebook code = {`months`}/> are arrays of names. Destructuring is very convenient when creating bindings for imported interfaces.
+The interface of `ordinal` is a single function, whereas `date-names` exports an object containing multiple things—`days` and `months` are arrays of names. Destructuring is very convenient when creating bindings for imported interfaces.
 
-The module adds its interface function to <Notebook code = {`exports`}/> so that modules that depend on it get access to it. We could use the module like this:
+The module adds its interface function to `exports` so that modules that depend on it get access to it. We could use the module like this:
 
+```javascript 
 const {formatDate} = require("./format-date.js");
 
 console.log(formatDate(new Date(2017, 9, 13),
                        "dddd the Do"));
 // → Friday the 13th
+```
 
-CommonJS is implemented with a module loader that, when loading a module, wraps its code in a function (giving it its own local scope) and passes the <Notebook code = {`require`}/> and <Notebook code = {`exports`}/> bindings to that function as arguments.
+CommonJS is implemented with a module loader that, when loading a module, wraps its code in a function (giving it its own local scope) and passes the `require` and `exports` bindings to that function as arguments.
 
-If we assume we have access to a <Notebook code = {`readFile`}/> function that reads a file by name and gives us its content, we can define a simplified form of <Notebook code = {`require`}/> like this:
+If we assume we have access to a `readFile` function that reads a file by name and gives us its content, we can define a simplified form of `require` like this:
 
+```javascript 
 function require(name) {
   if (!(name in require.cache)) {
     let code = readFile(name);
-    let exports = require.cache\[name\] = {};
+    let exports = require.cache[name] = {};
     let wrapper = Function("require, exports", code);
     wrapper(require, exports);
   }
-  return require.cache\[name\];
+  return require.cache[name];
 }
 require.cache = Object.create(null);
+```
 
-<Notebook code = {`Function`}/> is a built-in JavaScript function that takes a list of arguments (as a comma-separated string) and a string containing the function body and returns a function value with those arguments and that body. This is an interesting concept—it allows a program to create new pieces of program from string data—but also a dangerous one, since if someone can trick your program into putting a string they provide into <Notebook code = {`Function`}/>, they can make the program do anything they want.
+`Function` is a built-in JavaScript function that takes a list of arguments (as a comma-separated string) and a string containing the function body and returns a function value with those arguments and that body. This is an interesting concept—it allows a program to create new pieces of program from string data—but also a dangerous one, since if someone can trick your program into putting a string they provide into `Function`, they can make the program do anything they want.
 
-Standard JavaScript provides no such function as <Notebook code = {`readFile`}/>, but different JavaScript environments, such as the browser and Node.js, provide their own ways of accessing files. The example just pretends that <Notebook code = {`readFile`}/> exists.
+Standard JavaScript provides no such function as `readFile`, but different JavaScript environments, such as the browser and Node.js, provide their own ways of accessing files. The example just pretends that `readFile` exists.
 
-To avoid loading the same module multiple times, <Notebook code = {`require`}/> keeps a store (cache) of already loaded modules. When called, it first checks whether the requested module has been loaded and, if not, loads it. This involves reading the module’s code, wrapping it in a function, and calling it.
+To avoid loading the same module multiple times, `require` keeps a store (cache) of already loaded modules. When called, it first checks whether the requested module has been loaded and, if not, loads it. This involves reading the module’s code, wrapping it in a function, and calling it.
 
-By defining <Notebook code = {`require`}/> and <Notebook code = {`exports`}/> as parameters for the generated wrapper function (and passing the appropriate values when calling it), the loader makes sure that these bindings are available in the module’s scope.
+By defining `require` and `exports` as parameters for the generated wrapper function (and passing the appropriate values when calling it), the loader makes sure that these bindings are available in the module’s scope.
 
-An important difference between this system and ES modules is that ES module imports happen before a module’s script starts running, whereas <Notebook code = {`require`}/> is a normal function, invoked when the module is already running. Unlike <Notebook code = {`import`}/> declarations, <Notebook code = {`require`}/> calls _can_ appear inside functions, and the name of the dependency can be any expression that evaluates to a string, whereas <Notebook code = {`import`}/> allows only plain quoted strings.
+An important difference between this system and ES modules is that ES module imports happen before a module’s script starts running, whereas `require` is a normal function, invoked when the module is already running. Unlike `import` declarations, `require` calls _can_ appear inside functions, and the name of the dependency can be any expression that evaluates to a string, whereas `import` allows only plain quoted strings.
 
 The transition of the JavaScript community from CommonJS style to ES modules has been a slow and somewhat rough one. Fortunately we are now at a point where most of the popular packages on NPM provide their code as ES modules, and Node.js allows ES modules to import from CommonJS modules. While CommonJS code is still something you will run across, there is no real reason to write new programs in this style anymore.
 
@@ -233,7 +255,7 @@ Good program design is subjective—there are trade-offs involved, and matters o
 
 One aspect of module design is ease of use. If you are designing something that is intended to be used by multiple people—or even by yourself, in three months when you no longer remember the specifics of what you did—it is helpful if your interface is simple and predictable.
 
-That may mean following existing conventions. A good example is the <Notebook code = {`ini`}/>package. This module imitates the standard <Notebook code = {`JSON`}/> object by providing <Notebook code = {`parse`}/>and <Notebook code = {`stringify`}/> (to write an INI file) functions, and, like <Notebook code = {`JSON`}/>, converts between strings and plain objects. The interface is small and familiar, and after you’ve worked with it once, you’re likely to remember how to use it.
+That may mean following existing conventions. A good example is the `ini`package. This module imitates the standard `JSON` object by providing `parse`and `stringify` (to write an INI file) functions, and, like `JSON`, converts between strings and plain objects. The interface is small and familiar, and after you’ve worked with it once, you’re likely to remember how to use it.
 
 Even if there’s no standard function or widely used package to imitate, you can keep your modules predictable by using simple data structures and doing a single, focused thing. Many of the INI-file parsing modules on NPM provide a function that directly reads such a file from the hard disk and parses it, for example. This makes it impossible to use such modules in the browser, where we don’t have direct filesystem access, and adds complexity that would have been better addressed by _composing_ the module with some file-reading function.
 
@@ -247,100 +269,27 @@ An example of a slightly more complex data structure is the graph from [Chapter 
 
 There are several different pathfinding packages on NPM, but none of them uses this graph format. They usually allow the graph’s edges to have a weight, which is the cost or distance associated with it. That isn’t possible in our representation.
 
-For example, there’s the <Notebook code = {`dijkstrajs`}/> package. A well-known approach to pathfinding, quite similar to our <Notebook code = {`findRoute`}/> function, is called _Dijkstra’s algorithm_, after Edsger Dijkstra, who first wrote it down. The <Notebook code = {`js`}/> suffix is often added to package names to indicate the fact that they are written in JavaScript. This <Notebook code = {`dijkstrajs`}/> package uses a graph format similar to ours, but instead of arrays, it uses objects whose property values are numbers—the weights of the edges.
+For example, there’s the `dijkstrajs` package. A well-known approach to pathfinding, quite similar to our `findRoute` function, is called _Dijkstra’s algorithm_, after Edsger Dijkstra, who first wrote it down. The `js` suffix is often added to package names to indicate the fact that they are written in JavaScript. This `dijkstrajs` package uses a graph format similar to ours, but instead of arrays, it uses objects whose property values are numbers—the weights of the edges.
 
 If we wanted to use that package, we’d have to make sure that our graph was stored in the format it expects. All edges get the same weight, since our simplified model treats each road as having the same cost (one turn).
 
+```javascript caption="find the shortest path with the dijkstrajs library"
 const {find_path} = require("dijkstrajs");
 
 let graph = {};
 for (let node of Object.keys(roadGraph)) {
-  let edges = graph\[node\] = {};
-  for (let dest of roadGraph\[node\]) {
-    edges\[dest\] = 1;
+  let edges = graph[node] = {};
+  for (let dest of roadGraph[node]) {
+    edges[dest] = 1;
   }
 }
 
 console.log(find_path(graph, "Post Office", "Cabin"));
-// → \["Post Office", "Alice's House", "Cabin"\]
+// → ["Post Office", "Alice's House", "Cabin"]
+```
 
 This can be a barrier to composition—when various packages are using different data structures to describe similar things, combining them is difficult. Therefore, if you want to design for composability, find out what data structures other people are using and, when possible, follow their example.
 
 Designing a fitting module structure for a program can be difficult. In the phase where you are still exploring the problem, trying different things to see what works, you might want to not worry about it too much, since keeping everything organized can be a big distraction. Once you have something that feels solid, that’s a good time to take a step back and organize it.
-</section>
-
-<section className="content-chunk" aria-labelledby="Exercises-233pt" data-subsection-id="Exercises-233pt" data-show-header="true">
-## Exercises \{#Exercises-233pt}
-### **A modular robot**
-
-These are the bindings that the project from [Chapter 7](https://eloquentjavascript.net/07_robot.html) creates:
-
-roads
-buildGraph
-roadGraph
-VillageState
-runRobot
-randomPick
-randomRobot
-mailRoute
-routeRobot
-findRoute
-goalOrientedRobot
-
-If you were to write that project as a modular program, what modules would you create? Which module would depend on which other module, and what would their interfaces look like?
-
-Which pieces are likely to be available prewritten on NPM? Would you prefer to use an NPM package or write them yourself?
-
-Here’s what I would have done (but again, there is no single _right_ way to design a given module):
-
-The code used to build the road graph lives in the <Notebook code = {`graph`}/> module. Because I’d rather use <Notebook code = {`dijkstrajs`}/> from NPM than our own pathfinding code, we’ll make this build the kind of graph data that <Notebook code = {`dijkstrajs`}/> expects. This module exports a single function, <Notebook code = {`buildGraph`}/>. I’d have <Notebook code = {`buildGraph`}/> accept an array of two-element arrays, rather than strings containing hyphens, to make the module less dependent on the input format.
-
-The <Notebook code = {`roads`}/> module contains the raw road data (the <Notebook code = {`roads`}/> array) and the <Notebook code = {`roadGraph`}/> binding. This module depends on <Notebook code = {`./graph.js`}/> and exports the road graph.
-
-The <Notebook code = {`VillageState`}/> class lives in the <Notebook code = {`state`}/> module. It depends on the <Notebook code = {`./roads`}/> module because it needs to be able to verify that a given road exists. It also needs <Notebook code = {`randomPick`}/>. Since that is a three-line function, we could just put it into the <Notebook code = {`state`}/> module as an internal helper function. But <Notebook code = {`randomRobot`}/> needs it too. So we’d have to either duplicate it or put it into its own module. Since this function happens to exist on NPM in the <Notebook code = {`random-item`}/> package, a reasonable solution is to just make both modules depend on that. We can add the <Notebook code = {`runRobot`}/> function to this module as well, since it’s small and closely related to state management. The module exports both the <Notebook code = {`VillageState`}/>class and the <Notebook code = {`runRobot`}/> function.
-
-Finally, the robots, along with the values they depend on, such as <Notebook code = {`mailRoute`}/>, could go into an <Notebook code = {`example-robots`}/> module, which depends on <Notebook code = {`./roads`}/> and exports the robot functions. To make it possible for <Notebook code = {`goalOrientedRobot`}/> to do route-finding, this module also depends on <Notebook code = {`dijkstrajs`}/>.
-
-By offloading some work to NPM modules, the code became a little smaller. Each individual module does something rather simple and can be read on its own. Dividing code into modules also often suggests further improvements to the program’s design. In this case, it seems a little odd that the <Notebook code = {`VillageState`}/>and the robots depend on a specific road graph. It might be a better idea to make the graph an argument to the state’s constructor and make the robots read it from the state object—this reduces dependencies (which is always good) and makes it possible to run simulations on different maps (which is even better).
-
-Is it a good idea to use NPM modules for things that we could have written ourselves? In principle, yes—for nontrivial things like the pathfinding function you are likely to make mistakes and waste time writing them yourself. For tiny functions like <Notebook code = {`random-item`}/>, writing them yourself is easy enough. But adding them wherever you need them does tend to clutter your modules.
-
-However, you should also not underestimate the work involved in _finding_ an appropriate NPM package. And even if you find one, it might not work well or may be missing some feature you need. On top of that, depending on NPM packages means you have to make sure they are installed, you have to distribute them with your program, and you might have to periodically upgrade them.
-
-So again, this is a trade-off, and you can decide either way depending on how much a given package actually helps you.
-</section>
-
-<section className="content-chunk" aria-labelledby="Exercises-2-234pt" data-subsection-id="Exercises-2-234pt" data-show-header="false">
-<h2 className="sr-only" id="Exercises-2-234pt">Exercises 2</h2>
-
-### **Roads module**
-
-Write an ES module based on the example from [Chapter 7](https://eloquentjavascript.net/07_robot.html) that contains the array of roads and exports the graph data structure representing them as <Notebook code = {`roadGraph`}/>. It depends on a module <Notebook code = {`./graph.js`}/> that exports a function <Notebook code = {`buildGraph`}/>, used to build the graph. This function expects an array of two-element arrays (the start and end points of the roads).
-
-// Add dependencies and exports
-
-const roads = \[
-  "Alice's House-Bob's House",   "Alice's House-Cabin",
-  "Alice's House-Post Office",   "Bob's House-Town Hall",
-  "Daria's House-Ernie's House", "Daria's House-Town Hall",
-  "Ernie's House-Grete's House", "Grete's House-Farm",
-  "Grete's House-Shop",          "Marketplace-Farm",
-  "Marketplace-Post Office",     "Marketplace-Shop",
-  "Marketplace-Town Hall",       "Shop-Town Hall"
-\];
-
-Since this is an ES module, you have to use <Notebook code = {`import`}/> to access the graph module. That was described as exporting a <Notebook code = {`buildGraph`}/> function, which you can pick out of its interface object with a destructuring <Notebook code = {`const`}/> declaration.
-
-To export <Notebook code = {`roadGraph`}/>, you put the keyword <Notebook code = {`export`}/> before its definition. Because <Notebook code = {`buildGraph`}/> takes a data structure that doesn’t precisely match <Notebook code = {`roads`}/>, the splitting of the road strings must happen in your module.
-
-### **Circular dependencies**
-
-A circular dependency is a situation where module A depends on B, and B also, directly or indirectly, depends on A. Many module systems simply forbid this because whichever order you choose for loading such modules, you cannot make sure that each module’s dependencies have been loaded before it runs.
-
-CommonJS modules allow a limited form of cyclic dependencies. As long as the modules don’t access each other’s interface until after they finish loading, cyclic dependencies are okay.
-
-The <Notebook code = {`require`}/> function given [earlier in this chapter](https://eloquentjavascript.net/10_modules.html#require) supports this type of dependency cycle. Can you see how it handles cycles?
-
-The trick is that <Notebook code = {`require`}/> adds the interface object for a module to its cache _before_ it starts loading the module. That way, if any <Notebook code = {`require`}/> call made while it is running tries to load it, it is already known, and the current interface will be returned, rather than starting to load the module once more (which would eventually overflow the stack).
 </section>
 
