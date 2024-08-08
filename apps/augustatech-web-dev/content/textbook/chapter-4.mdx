@@ -306,7 +306,7 @@ A _map_ (noun) is a data structure that associates values (the keys) with other 
   Júlia: 62
 };
 
-console.log(`Júlia is ${ages["Júlia"]}`);
+console.log(\`Júlia is \${ages["Júlia"]}\`);
 // → Júlia is 62
 console.log("Is Jack's age known?", "Jack" in ages);
 // → Is Jack's age known? false
@@ -331,7 +331,7 @@ ages.set("Boris", 39);
 ages.set("Liang", 22);
 ages.set("Júlia", 62);
 
-console.log(`Júlia is ${ages.get("Júlia")}`);
+console.log(\`Júlia is \${ages.get("Júlia")}\`);
 // → Júlia is 62
 console.log("Is Jack's age known?", ages.has("Jack"));
 // → Is Jack's age known? false
