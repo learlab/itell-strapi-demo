@@ -124,9 +124,9 @@ Working in this way requires infrastructure. We need a place to store and find p
 
 NPM is two things: an online service where you can download (and upload) packages, and a program (bundled with Node.js) that helps you install and manage them.
 
-At the time of writing, there are more than three million different packages available on NPM. A large portion of those are rubbish, to be fair. But almost every useful, publicly available JavaScript package can be found on NPM. For example, an INI file parser, similar to the one we built in [Chapter 9](https://eloquentjavascript.net/09_regexp.html), is available under the package name `ini`.
+At the time of writing, there are more than three million different packages available on NPM. A large portion of those are rubbish, to be fair. But almost every useful, publicly available JavaScript package can be found on NPM. For example, the [ini](https://www.npmjs.com/package/ini) package provides a ini file parser. To install the package with npm, run
 
-[Chapter 20](https://eloquentjavascript.net/20_node.html) will show how to install such packages locally using the `npm`command line program.
+<Sandbox pageSlug="test-page-no-chunks" code={`npm install ini`}/>
 
 Having quality packages available for download is extremely valuable. It means that we can often avoid reinventing a program that 100 people have written before and get a solid, well-tested implementation at the press of a few keys.
 
@@ -238,7 +238,7 @@ The transition of the JavaScript community from CommonJS style to ES modules has
 
 <section className="content-chunk" aria-labelledby="Building-And-Bundling-847t" data-subsection-id="Building-And-Bundling-847t" data-show-header="true">
 ## Building And Bundling \{#Building-And-Bundling-847t}
-Many JavaScript packages aren’t technically written in JavaScript. Language extensions such as TypeScript, the type checking dialect mentioned in [Chapter 8](https://eloquentjavascript.net/08_error.html#typing), are widely used. People also often start using planned new language features long before they have been added to the platforms that actually run JavaScript. To make this possible, they _compile_ their code, translating it from their chosen JavaScript dialect to plain old JavaScript—or even to a past version of JavaScript—so that browsers can run it.
+Many JavaScript packages aren’t technically written in JavaScript. Language extensions such as TypeScript, the type checking dialect are widely used. People also often start using planned new language features long before they have been added to the platforms that actually run JavaScript. To make this possible, they _compile_ their code, translating it from their chosen JavaScript dialect to plain old JavaScript—or even to a past version of JavaScript—so that browsers can run it.
 
 Including a modular program that consists of 200 different files in a web page produces its own problems. If fetching a single file over the network takes 50 milliseconds, loading the whole program takes 10 seconds, or maybe half that if you can load several files simultaneously. That’s a lot of wasted time. Because fetching a single big file tends to be faster than fetching a lot of tiny ones, web programmers have started using tools that combine their programs (which they painstakingly split into modules) into a single big file before they publish it to the web. Such tools are called _bundlers_.
 
@@ -265,7 +265,7 @@ Relatedly, stateful objects are sometimes useful or even necessary, but if somet
 
 Often, defining new data structures can’t be avoided—only a few basic ones are provided by the language standard, and many types of data have to be more complex than an array or a map. But when an array suffices, use an array.
 
-An example of a slightly more complex data structure is the graph from [Chapter 7](https://eloquentjavascript.net/07_robot.html). There is no single obvious way to represent a graph in JavaScript. In that chapter, we used an object whose properties hold arrays of strings—the other nodes reachable from that node.
+An example of a slightly more complex data structure is a graph. There is no single obvious way to represent a graph in JavaScript. In that chapter, we used an object whose properties hold arrays of strings—the other nodes reachable from that node.
 
 There are several different pathfinding packages on NPM, but none of them uses this graph format. They usually allow the graph’s edges to have a weight, which is the cost or distance associated with it. That isn’t possible in our representation.
 
