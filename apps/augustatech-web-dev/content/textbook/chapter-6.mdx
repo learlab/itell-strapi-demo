@@ -11,7 +11,14 @@ quiz: false
 > 
 > Charles Babbage, _Passages from the Life of a Philosopher (1864)_
 
-![4-1.jpg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-1.jpg-b2cf68cd377d2b5bcb12689f39c2c6ab.jpg)
+<Image
+  style="aspect-ratio:490/310;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-1.jpg-b2cf68cd377d2b5bcb12689f39c2c6ab.jpg"
+  alt="Illustration of a squirrel next to a pile of books and a pair of glasses. A moon and stars are visible in the background."
+  width="490"
+  height="310">
+
+</Image>
 
 Numbers, Booleans, and strings are the atoms from which data structures are built. Many types of information require more than one atom, though. _Objects_ allow us to group values—including other objects—to build more complex structures.
 
@@ -126,8 +133,11 @@ console.log(day1.wolf);
 
 Inside the braces, you write a list of properties separated by commas. Each property has a name followed by a colon and a value. When an object is written over multiple lines, indenting it as shown in this example helps with readability. Properties whose names aren’t valid binding names or valid numbers must be quoted:
 
-```
-let descriptions = { work: "Went to work", "touched tree": "Touched a tree"};
+```javascript caption="quotes are required for invalid binding names when creating objects"
+let descriptions = {
+ work: "Went to work",
+ "touched tree": "Touched a tree"
+};
 ```
 
 This means that braces have _two_ meanings in JavaScript. At the start of a statement, they begin a block of statements. In any other position, they describe an object. Fortunately, it is rarely useful to start a statement with an object in braces, so the ambiguity between these two is not much of a problem. The one case where this does come up is when you want to return an object from a shorthand arrow function—you can’t write `n => {prop: n}` since the braces will be interpreted as a function body. Instead, you have to put a set of parentheses around the object to make it clear that it is an expression.
@@ -250,7 +260,14 @@ To compute the measure of correlation between two Boolean variables, we can use 
 
 We could take the event of eating pizza and put that in a frequency table like this, where each number indicates the number of times that combination occurred in our measurements.
 
-![4-2.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-2.svg-320938f78366a35dd31ad352542ee830.svg)
+<Image
+  style="aspect-ratio:505/345;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-2.svg-320938f78366a35dd31ad352542ee830.svg"
+  alt="A two-by-two table showing the pizza variable on the horizontal, and the squirrel variable on the vertical axis. Each cell show how many time that combination occurred. In 76 cases, neither happened. In 9 cases, only pizza was true. In 4 cases only squirrel was true. And in one case both occurred."
+  width="505"
+  height="345">
+
+</Image>
 
 If we call that table _n_, we can compute _ϕ_ using the following formula:
 
@@ -288,9 +305,27 @@ console.log(phi([76, 9, 4, 1]));
 
 This is a direct translation of the _ϕ_ formula into JavaScript. `Math.sqrt` is the square root function, as provided by the `Math` object in a standard JavaScript environment. We have to add two fields from the table to get fields like n1• because the sums of rows or columns are not stored directly in our data structure.
 
-Jacques keeps his journal for three months. The resulting dataset is available in the [coding sandbox](https://eloquentjavascript.net/code#4) for this chapter, where it is stored in the `JOURNAL` binding, and in a downloadable [file](https://eloquentjavascript.net/code/journal.js).
+Jacques keeps his journal for three months. The data is available at [https://eloquentjavascript.net/code/journal.js](https://eloquentjavascript.net/code/journal.js). A sample is
 
-To extract a two-by-two table for a specific event from the journal, we must loop over all the entries and tally how many times the event occurs in relation to squirrel transformations:
+```javascript caption="Two entries from the journals data"
+[
+ 	{"events":["carrot","exercise","weekend"],"squirrel":false},
+ 	{"events":["bread","pudding","brushed teeth","weekend","touched tree"],"squirrel":false},
+ ]
+```
+
+To load the data into the sandbox environment, run the following code. You should see "data loaded" printed out in a few seconds, and now you can access it via the `JOURNAL` variable.
+
+<Sandbox pageSlug="test-page-no-chunks" code={`var JOURNAL
+const loadData = async () => {
+  const resp = await fetch("/journal.json")
+  SCRIPTS = await resp.json()
+  console.log("data loaded")
+}
+
+loadData()`}/>
+
+To extract a two-by-two table for a specific event from the journal, we must loop over all the entries and tally how many times the event occurs in relation to squirrel transformations:To load the journal data into the sandbox environment, run the following
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function tableFor(event, journal) {
   let table = [0, 0, 0, 0];
@@ -457,34 +492,39 @@ If you pass `concat` an argument that is not an array, that value will be added 
 ## Strings and their properties \{#Strings-and-their-properties-863t}
 We can read properties like `length` and `toUpperCase` from string values. But if we try to add a new property, it doesn’t stick.
 
-```
-let kim = "Kim";kim.age = 88;console.log(kim.age);// → undefined
-```
+<Sandbox pageSlug="test-page-no-chunks" code={`let kim = "Kim";
+kim.age = 88;
+console.log(kim.age);
+// → undefined`}/>
 
 Values of type string, number, and Boolean are not objects, and though the language doesn’t complain if you try to set new properties on them, it doesn’t actually store those properties. As mentioned earlier, such values are immutable and cannot be changed.
 
 But these types do have built-in properties. Every string value has a number of methods. Some very useful ones are `slice` and `indexOf`, which resemble the array methods of the same name:
 
-```
-console.log("coconuts".slice(4, 7));// → nutconsole.log("coconut".indexOf("u"));// → 5
-```
+<Sandbox pageSlug="test-page-no-chunks" code={`console.log("coconuts".slice(4, 7));
+// → nut
+console.log("coconut".indexOf("u"));
+// → 5`}/>
 
 One difference is that a string’s `indexOf` can search for a string containing more than one character, whereas the corresponding array method looks only for a single element:
 
-```
-console.log("one two three".indexOf("ee"));// → 11
+```javascript caption="indexOf search for a string"
+console.log("one two three".indexOf("ee"));
+// → 11
 ```
 
 The `trim` method removes whitespace (spaces, newlines, tabs, and similar characters) from the start and end of a string:
 
-```
-console.log("  okay \n ".trim());// → okay
+```javascript caption="trim() removes whitespaces from both ends"
+console.log("  okay \n ".trim());
+// → okay
 ```
 
-The `zeroPad` function from the [previous chapter](https://eloquentjavascript.net/03_functions.html) also exists as a method. It is called `padStart` and takes the desired length and padding character as arguments:
+The `zeroPad` function from the [previous chapter](https://itell-augustatech-web-dev.vercel.app/functions-1) also exists as a method. It is called `padStart` and takes the desired length and padding character as arguments:
 
-```
-console.log(String(6).padStart(3, "0"));// → 006
+```javascript caption="padStart pads a string to a given length with specified characters"
+console.log(String(6).padStart(3, "0"));
+// → 006
 ```
 
 You can split a string on every occurrence of another string with `split` and join it again with `join`:
@@ -498,11 +538,12 @@ console.log(words.join(". "));
 
 A string can be repeated with the `repeat` method, which creates a new string containing multiple copies of the original string, glued together:
 
-```
-console.log("LA".repeat(3));// → LALALA
+```javascript caption="repeat concatenates the same string multiple times"
+console.log("LA".repeat(3));
+// → LALALA
 ```
 
-We have already seen the string type’s `length` property. Accessing the individual characters in a string looks like accessing array elements (with a complication that we’ll discuss in [Chapter 5](https://eloquentjavascript.net/05_higher_order.html#code_units)).
+We have already seen the string type’s `length` property. Accessing the individual characters in a string looks like accessing array elements (with a complication that we’ll discuss in [Higher-order Functions](https://itell-augustatech-web-dev.vercel.app/5-higher-order-functions)).
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let string = "abc";
 console.log(string.length);
@@ -616,9 +657,8 @@ This also works for bindings created with `let`, `var`, or `const`. If you know 
 
 A similar trick works for objects, using braces instead of square brackets.
 
-```
-let {name} = {name: "Faraji", age: 23};console.log(name);// → Faraji
-```
+<Sandbox pageSlug="test-page-no-chunks" code={`let {name} = {name: "Faraji", age: 23};
+console.log(name);`}/>
 
 Note that if you try to destructure `null` or `undefined`, you get an error, much as you would if you directly try to access a property of those values.
 </section>
@@ -656,7 +696,7 @@ JSON looks similar to JavaScript’s way of writing arrays and objects, with a f
 
 A journal entry might look like this when represented as JSON data:
 
-```
+```javascript 
 {
   "squirrel": false,
   "events": ["work", "touched tree", "pizza", "running"]
