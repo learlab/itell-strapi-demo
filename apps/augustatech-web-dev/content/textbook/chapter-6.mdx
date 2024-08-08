@@ -1,726 +1,295 @@
 ---
-title: "4. Data Structures: Objects and Arrays"
-page_slug: 4-data-structures-objects-and-arrays
+title: "10. Modules"
+page_slug: 10-modules
 summary: true
 quiz: false
 ---
-<section className="content-chunk" aria-labelledby="Chapter-introduction-236pt" data-subsection-id="Chapter-introduction-236pt" data-show-header="false">
-<h2 className="sr-only" id="Chapter-introduction-236pt">Chapter introduction</h2>
+<section className="content-chunk" aria-labelledby="Introduction-843t" data-subsection-id="Introduction-843t" data-show-header="false">
+<h2 className="sr-only" id="Introduction-843t">Introduction</h2>
 
-> "On two occasions I have been asked, ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’ \[...\] I am not able rightly to apprehend the kind of confusion of ideas that could provoke such a question."
+> "Write code that is easy to delete, not easy to extend."
 > 
-> Charles Babbage, _Passages from the Life of a Philosopher (1864)_
+> \-\- Tef, _programming is terrible_
 
 <Image
   style="aspect-ratio:490/310;"
-  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-1.jpg-b2cf68cd377d2b5bcb12689f39c2c6ab.jpg"
-  alt="Illustration of a squirrel next to a pile of books and a pair of glasses. A moon and stars are visible in the background."
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/10-1.jpg-0e97ff8968e37fafbcb99ec449d05f02.jpg"
+  alt="Illustration of a complicated building built from modular pieces"
   width="490"
   height="310">
 
 </Image>
 
-Numbers, Booleans, and strings are the atoms from which data structures are built. Many types of information require more than one atom, though. _Objects_ allow us to group values—including other objects—to build more complex structures.
+Ideally, a program has a clear, straightforward structure. The way it works is easy to explain, and each part plays a well-defined role.
 
-The programs we have built so far have been limited by the fact that they were operating only on simple data types. After learning the basics of data structures in this chapter, you’ll know enough to start writing useful programs.
+In practice, programs grow organically. Pieces of functionality are added as the programmer identifies new needs. Keeping such a program well structured requires constant attention and work. This is work that will pay off only in the future, the _next_ time someone works on the program, so it’s tempting to neglect it and allow the various parts of the program to become deeply entangled.
 
-The chapter will work through a more or less realistic programming example, introducing concepts as they apply to the problem at hand. The example code will often build on functions and bindings introduced earlier in the book.
+This causes two practical issues. First, understanding an entangled system is hard. If everything can touch everything else, it is difficult to look at any given piece in isolation. You are forced to build up a holistic understanding of the entire thing. Second, if you want to use any of the functionality from such a program in another situation, rewriting it may be easier than trying to disentangle it from its context.
+
+The phrase “big ball of mud” is often used for such large, structureless programs. Everything sticks together, and when you try to pick out a piece, the whole thing comes apart, and you succeed only in making a mess.
 </section>
 
-<section className="content-chunk" aria-labelledby="The-weresquirrel-852t" data-subsection-id="The-weresquirrel-852t" data-show-header="true">
-## The weresquirrel \{#The-weresquirrel-852t}
-Every now and then, usually between 8 p.m. and 10 p.m., Jacques finds himself transforming into a small furry rodent with a bushy tail.
+<section className="content-chunk" aria-labelledby="Modular-Programs-844t" data-subsection-id="Modular-Programs-844t" data-show-header="true">
+## Modular Programs \{#Modular-Programs-844t}
+_Modules_ are an attempt to avoid these problems. A module is a piece of program that specifies which other pieces it relies on and which functionality it provides for other modules to use (its _interface_).
 
-On one hand, Jacques is quite glad that he doesn’t have classic lycanthropy. Turning into a squirrel does cause fewer problems than turning into a wolf. Instead of having to worry about accidentally eating the neighbor (_that_ would be awkward), he worries about being eaten by the neighbor’s cat. After two occasions of waking up on a precariously thin branch in the crown of an oak, naked and disoriented, he has taken to locking the doors and windows of his room at night and putting a few walnuts on the floor to keep himself busy.
+Module interfaces have a lot in common with object interfaces, as we saw them in Chapter 6. They make part of the module available to the outside world and keep the rest private.
 
-But Jacques would prefer to get rid of his condition entirely. The irregular occurrences of the transformation make him suspect that they might be triggered by something. For a while, he believed that it happened only on days when he had been near oak trees. However, avoiding oak trees did not solve the problem.
+But the interface that a module provides for others to use is only half the story. A good module system also requires modules to specify which code _they_ use from other modules. These relations are called _dependencies_. If module A uses functionality from module B, it is said to _depend_ on that module. When these are clearly specified in the module itself, they can be used to figure out which other modules need to be present to be able to use a given module and to automatically load dependencies.
 
-Switching to a more scientific approach, Jacques has started keeping a daily log of everything he does on a given day and whether he changed form. With this data he hopes to narrow down the conditions that trigger the transformations.
-
-The first thing he needs is a data structure to store this information.
+When the ways in which modules interact with each other are explicit, a system becomes more like LEGO, where pieces interact through well-defined connectors, and less like mud, where everything mixes with everything else.
 </section>
 
-<section className="content-chunk" aria-labelledby="Datasets-853t" data-subsection-id="Datasets-853t" data-show-header="true">
-## Datasets \{#Datasets-853t}
-To work with a chunk of digital data, we first have to find a way to represent it in our machine’s memory. Say, for example, that we want to represent a collection of the numbers 2, 3, 5, 7, and 11.
+<section className="content-chunk" aria-labelledby="ES-modules-845t" data-subsection-id="ES-modules-845t" data-show-header="true">
+## ES modules \{#ES-modules-845t}
+The original JavaScript language did not have any concept of a module. All scripts ran in the same scope, and accessing a function defined in another script was done by referencing the global bindings created by that script. This actively encouraged accidental, hard-to-see entanglement of code and invited problems like unrelated scripts trying to use the same binding name.
 
-We could get creative with strings—after all, strings can have any length, so we can put a lot of data into them—and use `"2 3 5 7 11"` as our representation. But this is awkward. We’d have to somehow extract the digits and convert them back to numbers to access them.
+Since ECMAScript 2015, JavaScript supports two different types of programs. _Scripts_ behave in the old way: their bindings are defined in the global scope, and they have no way to directly reference other scripts. _Modules_ get their own separate scope and support the `import` and `export` keywords, which aren’t available in scripts, to declare their dependencies and interface. This module system is usually called _ES modules_ (where _ES_ stands for ECMAScript).
 
-Fortunately, JavaScript provides a data type specifically for storing sequences of values. It is called an _array_ and is written as a list of values between square brackets, separated by commas.
+A modular program is composed of a number of such modules, wired together via their imports and exports.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let listOfNumbers = [2, 3, 5, 7, 11];
-console.log(listOfNumbers[2]);
-// → 5
-console.log(listOfNumbers[0]);
-// → 2
-console.log(listOfNumbers[2 - 1]);
-// → 3`}/>
+The following example module converts between day names and numbers (as returned by `Date`’s `getDay` method). It defines a constant that is not part of its interface, and two functions that are. It has no dependencies.
 
-The notation for getting at the elements inside an array also uses square brackets. A pair of square brackets immediately after an expression, with another expression inside of them, will look up the element in the left-hand expression that corresponds to the _index_ given by the expression in the brackets.
+```javascript {4,7} caption="use the export keyword to expose functions to other modules"
+const names = ["Sunday", "Monday", "Tuesday", "Wednesday",
+               "Thursday", "Friday", "Saturday"];
 
-The first index of an array is zero, not one, so the first element is retrieved with `listOfNumbers[0]`. Zero-based counting has a long tradition in technology and in certain ways makes a lot of sense, but it takes some getting used to. Think of the index as the number of items to skip, counting from the start of the array.
-</section>
-
-<section className="content-chunk" aria-labelledby="Properties-855t" data-subsection-id="Properties-855t" data-show-header="true">
-## Properties \{#Properties-855t}
-We’ve seen a few expressions like `myString.length` (to get the length of a string) and `Math.max` (the maximum function) in past chapters. These expressions access a _property_ of some value. In the first case, we access the `length` property of the value in `myString`. In the second, we access the property named `max` in the `Math` object (which is a collection of mathematics-related constants and functions).
-
-Almost all JavaScript values have properties. The exceptions are `null` and `undefined`. If you try to access a property on one of these nonvalues, you get an error:
-
-```
-null.length;// → TypeError: null has no properties
-```
-
-The two main ways to access properties in JavaScript are with a dot and with square brackets. Both `value.x` and `value[x]` access a property on `value`—but not necessarily the same property. The difference is in how `x` is interpreted. When using a dot, the word after the dot is the literal name of the property. When using square brackets, the expression between the brackets is _evaluated_ to get the property name. Whereas `value.x` fetches the property of `value` named “x”, `value[x]` takes the value of the variable named `x` and uses that, converted to a string, as the property name.
-
-If you know that the property in which you are interested is called _color_, you say `value.color`. If you want to extract the property named by the value held in the binding `i`, you say `value[i]`. Property names are strings. They can be any string, but the dot notation works only with names that look like valid binding names—starting with a letter or underscore, and containing only letters, numbers, and underscores. If you want to access a property named _2_ or _John Doe_, you must use square brackets: `value[2]` or `value["John Doe"]`.
-
-The elements in an array are stored as the array’s properties, using numbers as property names. Because you can’t use the dot notation with numbers and usually want to use a binding that holds the index anyway, you have to use the bracket notation to get at them.
-
-Just like strings, arrays have a `length` property that tells us how many elements the array has.
-</section>
-
-<section className="content-chunk" aria-labelledby="Methods-854t" data-subsection-id="Methods-854t" data-show-header="true">
-## Methods \{#Methods-854t}
-Both string and array values contain, in addition to the `length` property, a number of properties that hold function values.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let doh = "Doh";
-console.log(typeof doh.toUpperCase);
-// → function
-console.log(doh.toUpperCase());
-// → DOH`}/>
-
-Every string has a `toUpperCase` property. When called, it will return a copy of the string in which all letters have been converted to uppercase. There is also `toLowerCase`, going the other way.
-
-Interestingly, even though the call to `toUpperCase` does not pass any arguments, the function somehow has access to the string `"Doh"`, the value whose property we called. You’ll find out how this works in [Chapter 6](https://eloquentjavascript.net/06_object.html#obj_methods).
-
-Properties that contain functions are generally called _methods_ of the value they belong to, as in “`toUpperCase` is a method of a string”.
-
-This example demonstrates two methods you can use to manipulate arrays.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let sequence = [1, 2, 3];
-sequence.push(4);
-sequence.push(5);
-console.log(sequence);
-// → [1, 2, 3, 4, 5]
-console.log(sequence.pop());
-// → 5
-console.log(sequence);
-// → [1, 2, 3, 4]`}/>
-
-The `push` method adds values to the end of an array. The `pop` method does the opposite, removing the last value in the array and returning it.
-
-These somewhat silly names are the traditional terms for operations on a _stack_. A stack, in programming, is a data structure that allows you to push values into it and pop them out again in the opposite order so that the thing that was added last is removed first. Stacks are common in programming—you might remember the function call stack from the previous chapter, which is an instance of the same idea.
-</section>
-
-<section className="content-chunk" aria-labelledby="Objects-856t" data-subsection-id="Objects-856t" data-show-header="true">
-## Objects \{#Objects-856t}
-Back to the weresquirrel. A set of daily log entries can be represented as an array, but the entries do not consist of just a number or a string—each entry needs to store a list of activities and a Boolean value that indicates whether Jacques turned into a squirrel or not. Ideally, we would like to group these together into a single value and then put those grouped values into an array of log entries.
-
-Values of the type _object_ are arbitrary collections of properties. One way to create an object is by using braces as an expression.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let day1 = {
-  squirrel: false,
-  events: ["work", "touched tree", "pizza", "running"]
-};
-console.log(day1.squirrel);
-// → false
-console.log(day1.wolf);
-// → undefined
-day1.wolf = false;
-console.log(day1.wolf);
-// → false`}/>
-
-Inside the braces, you write a list of properties separated by commas. Each property has a name followed by a colon and a value. When an object is written over multiple lines, indenting it as shown in this example helps with readability. Properties whose names aren’t valid binding names or valid numbers must be quoted:
-
-```javascript caption="quotes are required for invalid binding names when creating objects"
-let descriptions = {
- work: "Went to work",
- "touched tree": "Touched a tree"
-};
-```
-
-This means that braces have _two_ meanings in JavaScript. At the start of a statement, they begin a block of statements. In any other position, they describe an object. Fortunately, it is rarely useful to start a statement with an object in braces, so the ambiguity between these two is not much of a problem. The one case where this does come up is when you want to return an object from a shorthand arrow function—you can’t write `n => {prop: n}` since the braces will be interpreted as a function body. Instead, you have to put a set of parentheses around the object to make it clear that it is an expression.
-
-Reading a property that doesn’t exist will give you the value `undefined`.
-
-It is possible to assign a value to a property expression with the `=` operator. This will replace the property’s value if it already existed or create a new property on the object if it didn’t.
-
-To briefly return to our tentacle model of bindings—property bindings are similar. They _grasp_ values, but other bindings and properties might be holding onto those same values. You can think of objects as octopuses with any number of tentacles, each of which has a name written on it.
-
-The `delete` operator cuts off a tentacle from such an octopus. It is a unary operator that, when applied to an object property, will remove the named property from the object. This is not a common thing to do, but it is possible.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let anObject = {left: 1, right: 2};
-console.log(anObject.left);
-// → 1
-delete anObject.left;
-console.log(anObject.left);
-// → undefined
-console.log("left" in anObject);
-// → false
-console.log("right" in anObject);
-// → true`}/>
-
-The binary `in` operator, when applied to a string and an object, tells you whether that object has a property with that name. The difference between setting a property to `undefined` and actually deleting it is that in the first case, the object still _has_ the property (it just doesn’t have a very interesting value), whereas in the second case, the property is no longer present and `in` will return `false`.
-
-To find out what properties an object has, you can use the `Object.keys` function. Give the function an object and it will return an array of strings—the object’s property names:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(Object.keys({x: 0, y: 0, z: 2}));
-// → ["x", "y", "z"]`}/>
-
-There’s an `Object.assign` function that copies all properties from one object into another:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let objectA = {a: 1, b: 2};
-Object.assign(objectA, {b: 3, c: 4});
-console.log(objectA);
-// → {a: 1, b: 3, c: 4}`}/>
-
-Arrays, then, are just a kind of object specialized for storing sequences of things. If you evaluate `typeof []`, it produces `"object"`. You can visualize arrays as long, flat octopuses with all their tentacles in a neat row, labeled with numbers.
-
-Jacques will represent the journal that Jacques keeps as an array of objects:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let journal = [
-  {events: ["work", "touched tree", "pizza",
-            "running", "television"],
-   squirrel: false},
-  {events: ["work", "ice cream", "cauliflower",
-            "lasagna", "touched tree", "brushed teeth"],
-   squirrel: false},
-  {events: ["weekend", "cycling", "break", "peanuts",
-            "beer"],
-   squirrel: true},
-  /* And so on... */
-];`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Mutability-857t" data-subsection-id="Mutability-857t" data-show-header="true">
-## Mutability \{#Mutability-857t}
-We will get to actual programming soon, but first, there’s one more piece of theory to understand.
-
-We saw that object values can be modified. The types of values discussed in earlier chapters, such as numbers, strings, and Booleans, are all _immutable_—it is impossible to change values of those types. You can combine them and derive new values from them, but when you take a specific string value, that value will always remain the same. The text inside it cannot be changed. If you have a string that contains `"cat"`, it is not possible for other code to change a character in your string to make it spell `"rat"`.
-
-Objects work differently. You _can_ change their properties, causing a single object value to have different content at different times.
-
-When we have two numbers, 120 and 120, we can consider them precisely the same number, whether or not they refer to the same physical bits. With objects, there is a difference between having two references to the same object and having two different objects that contain the same properties. Consider the following code:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let object1 = {value: 10};
-let object2 = object1;
-let object3 = {value: 10};
-
-console.log(object1 == object2);
-// → true
-console.log(object1 == object3);
-// → false
-
-object1.value = 15;
-console.log(object2.value);
-// → 15
-console.log(object3.value);
-// → 10`}/>
-
-The `object1` and `object2` bindings grasp the _same_ object, which is why changing `object1` also changes the value of `object2`. They are said to have the same _identity_. The binding `object3` points to a different object, which initially contains the same properties as `object1` but lives a separate life.
-
-Bindings can also be changeable or constant, but this is separate from the way their values behave. Even though number values don’t change, you can use a `let` binding to keep track of a changing number by changing the value at which the binding points. Similarly, though a `const` binding to an object can itself not be changed and will continue to point at the same object, the _contents_ of that object might change.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`const score = {visitors: 0, home: 0};
-// This is okay
-score.visitors = 1;
-// This isn't allowed
-score = {visitors: 1, home: 1};`}/>
-
-When you compare objects with JavaScript’s `==` operator, it compares by identity: it will produce `true` only if both objects are precisely the same value. Comparing different objects will return `false`, even if they have identical properties. There is no “deep” comparison operation built into JavaScript that compares objects by contents, but it is possible to write it yourself (which is one of the [exercises](https://eloquentjavascript.net/04_data.html#exercise_deep_compare) at the end of this chapter).
-</section>
-
-<section className="content-chunk" aria-labelledby="The-lycanthropes-log-858t" data-subsection-id="The-lycanthropes-log-858t" data-show-header="true">
-## The lycanthrope’s log \{#The-lycanthropes-log-858t}
-Jacques starts up his JavaScript interpreter and sets up the environment he needs to keep his journal:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let journal = [];
-
-function addEntry(events, squirrel) {
-  journal.push({events, squirrel});
-}`}/>
-
-Note that the object added to the journal looks a little odd. Instead of declaring properties like `events: events`, it just gives a property name: `events`. This is shorthand that means the same thing—if a property name in brace notation isn’t followed by a value, its value is taken from the binding with the same name.
-
-Every evening at 10 p.m.—or sometimes the next morning, after climbing down from the top shelf of his bookcase—Jacques records the day:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`addEntry(["work", "touched tree", "pizza", "running",
-          "television"], false);
-addEntry(["work", "ice cream", "cauliflower", "lasagna",
-          "touched tree", "brushed teeth"], false);
-addEntry(["weekend", "cycling", "break", "peanuts",
-          "beer"], true);`}/>
-
-Once he has enough data points, he intends to use statistics to find out which of these events may be related to the squirrelifications.
-
-_Correlation_ is a measure of dependence between statistical variables. A statistical variable is not quite the same as a programming variable. In statistics you typically have a set of _measurements_, and each variable is measured for every measurement. Correlation between variables is usually expressed as a value that ranges from -1 to 1. Zero correlation means the variables are not related. A correlation of 1 indicates that the two are perfectly related—if you know one, you also know the other. Negative 1 also means that the variables are perfectly related but are opposites—when one is true, the other is false.
-
-To compute the measure of correlation between two Boolean variables, we can use the _phi coefficient_ (_ϕ_). This is a formula whose input is a frequency table containing the number of times the different combinations of the variables were observed. The output of the formula is a number between -1 and 1 that describes the correlation.
-
-We could take the event of eating pizza and put that in a frequency table like this, where each number indicates the number of times that combination occurred in our measurements.
-
-<Image
-  style="aspect-ratio:505/345;"
-  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-2.svg-320938f78366a35dd31ad352542ee830.svg"
-  alt="A two-by-two table showing the pizza variable on the horizontal, and the squirrel variable on the vertical axis. Each cell show how many time that combination occurred. In 76 cases, neither happened. In 9 cases, only pizza was true. In 4 cases only squirrel was true. And in one case both occurred."
-  width="505"
-  height="345">
-
-</Image>
-
-If we call that table _n_, we can compute _ϕ_ using the following formula:
-
-|     |     |
-| --- | --- |
-| _ϕ_ = | _n_11_n_00 − _n_10_n_01
-
-√  _n_1•_n_0•_n_•1_n_•0 |
-
-(If at this point you’re putting the book down to focus on a terrible flashback to 10th grade math class—hold on! I do not intend to torture you with endless pages of cryptic notation—it’s just this one formula for now. And even with this one, all we do is turn it into JavaScript.)
-
-The notation _n_01 indicates the number of measurements where the first variable (squirrelness) is false (0) and the second variable (pizza) is true (1). In the pizza table, _n_01 is 9.
-
-The value _n_1• refers to the sum of all measurements where the first variable is true, which is 5 in the example table. Likewise, _n_•0 refers to the sum of the measurements where the second variable is false.
-
-So for the pizza table, the part above the division line (the dividend) would be 1×76−4×9 = 40, and the part below it (the divisor) would be the square root of 5×85×10×80, or √340,000. This comes out to _ϕ_ ≈ 0.069, which is tiny. Eating pizza does not appear to have influence on the transformations.
-</section>
-
-<section className="content-chunk" aria-labelledby="Computing-correlation-859t" data-subsection-id="Computing-correlation-859t" data-show-header="true">
-## Computing correlation \{#Computing-correlation-859t}
-We can represent a two-by-two table in JavaScript with a four-element array (`[76, 9, 4, 1]`). We could also use other representations, such as an array containing two two-element arrays (`[[76, 9], [4, 1]]`) or an object with property names like `"11"` and `"01"`, but the flat array is simple and makes the expressions that access the table pleasantly short. We’ll interpret the indices to the array as two-bit binary numbers, where the leftmost (most significant) digit refers to the squirrel variable and the rightmost (least significant) digit refers to the event variable. For example, the binary number `10` refers to the case where Jacques did turn into a squirrel, but the event (say, “pizza”) didn’t occur. This happened four times. And since binary `10` is 2 in decimal notation, we will store this number at index 2 of the array.
-
-This is the function that computes the _ϕ_ coefficient from such an array:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function phi(table) {
-  return (table[3] * table[0] - table[2] * table[1]) /
-    Math.sqrt((table[2] + table[3]) *
-              (table[0] + table[1]) *
-              (table[1] + table[3]) *
-              (table[0] + table[2]));
+export function dayName(number) {
+  return names[number];
 }
-
-console.log(phi([76, 9, 4, 1]));
-// → 0.068599434`}/>
-
-This is a direct translation of the _ϕ_ formula into JavaScript. `Math.sqrt` is the square root function, as provided by the `Math` object in a standard JavaScript environment. We have to add two fields from the table to get fields like n1• because the sums of rows or columns are not stored directly in our data structure.
-
-Jacques keeps his journal for three months. The data is available at [https://eloquentjavascript.net/code/journal.js](https://eloquentjavascript.net/code/journal.js). A sample is
-
-```javascript caption="Two entries from the journals data"
-[
- 	{"events":["carrot","exercise","weekend"],"squirrel":false},
- 	{"events":["bread","pudding","brushed teeth","weekend","touched tree"],"squirrel":false},
- ]
-```
-
-To load the data into the sandbox environment, run the following code. You should see "data loaded" printed out in a few seconds, and now you can access it via the `JOURNAL` variable.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`var JOURNAL
-const loadData = async () => {
-  const resp = await fetch("/journal.json")
-  SCRIPTS = await resp.json()
-  console.log("data loaded")
+export function dayNumber(name) {
+  return names.indexOf(name);
 }
-
-loadData()`}/>
-
-To extract a two-by-two table for a specific event from the journal, we must loop over all the entries and tally how many times the event occurs in relation to squirrel transformations:To load the journal data into the sandbox environment, run the following
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function tableFor(event, journal) {
-  let table = [0, 0, 0, 0];
-  for (let i = 0; i < journal.length; i++) {
-    let entry = journal[i], index = 0;
-    if (entry.events.includes(event)) index += 1;
-    if (entry.squirrel) index += 2;
-    table[index] += 1;
-  }
-  return table;
-}
-
-console.log(tableFor("pizza", JOURNAL));
-// → [76, 9, 4, 1]`}/>
-
-Arrays have an `includes` method that checks whether a given value exists in the array. The function uses that to determine whether the event name it is interested in is part of the event list for a given day.
-
-The body of the loop in `tableFor` figures out which box in the table each journal entry falls into by checking whether the entry contains the specific event it’s interested in and whether the event happens alongside a squirrel incident. The loop then adds one to the correct box in the table.
-
-We now have the tools we need to compute individual correlations. The only step remaining is to find a correlation for every type of event that was recorded and see whether anything stands out.
-</section>
-
-<section className="content-chunk" aria-labelledby="Array-loops-862t" data-subsection-id="Array-loops-862t" data-show-header="true">
-## Array loops \{#Array-loops-862t}
-In the `tableFor` function, there’s a loop like this:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let i = 0; i < JOURNAL.length; i++) {
-  let entry = JOURNAL[i];
-  // Do something with entry
-}`}/>
-
-This kind of loop is common in classical JavaScript—going over arrays one element at a time is something that comes up a lot, and to do that you’d run a counter over the length of the array and pick out each element in turn.
-
-There is a simpler way to write such loops in modern JavaScript:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let entry of JOURNAL) {
-  console.log(`${entry.events.length} events.`);
-}`}/>
-
-When a `for` loop uses the word `of` after its variable definition, it will loop over the elements of the value given after `of`. This works not only for arrays but also for strings and some other data structures. We’ll discuss __how__ it works in Chapter 6.
-</section>
-
-<section className="content-chunk" aria-labelledby="The-final-analysis-860t" data-subsection-id="The-final-analysis-860t" data-show-header="true">
-## The final analysis \{#The-final-analysis-860t}
-We need to compute a correlation for every type of event that occurs in the dataset. To do that, we first need to __find__ every type of event.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function journalEvents(journal) {
-  let events = [];
-  for (let entry of journal) {
-    for (let event of entry.events) {
-      if (!events.includes(event)) {
-        events.push(event);
-      }
-    }
-  }
-  return events;
-}
-
-console.log(journalEvents(JOURNAL));
-// → ["carrot", "exercise", "weekend", "bread", …]`}/>
-
-By adding any event names that aren’t already in it to the `events` array, the function collects every type of event.
-
-Using that function, we can see all the correlations:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let event of journalEvents(JOURNAL)) {
-  console.log(event + ":", phi(tableFor(event, JOURNAL)));
-}
-// → carrot:   0.0140970969
-// → exercise: 0.0685994341
-// → weekend:  0.1371988681
-// → bread:   -0.0757554019
-// → pudding: -0.0648203724
-// And so on...`}/>
-
-Most correlations seem to lie close to zero. Eating carrots, bread, or pudding apparently does not trigger squirrel-lycanthropy. The transformations __do__ seem to occur somewhat more often on weekends. Let’s filter the results to show only correlations greater than 0.1 or less than -0.1:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let event of journalEvents(JOURNAL)) {
-  let correlation = phi(tableFor(event, JOURNAL));
-  if (correlation > 0.1 || correlation < -0.1) {
-    console.log(event + ":", correlation);
-  }
-}
-// → weekend:        0.1371988681
-// → brushed teeth: -0.3805211953
-// → candy:          0.1296407447
-// → work:          -0.1371988681
-// → spaghetti:      0.2425356250
-// → reading:        0.1106828054
-// → peanuts:        0.5902679812`}/>
-
-Aha! There are two factors with a correlation clearly stronger than the others. Eating peanuts has a strong positive effect on the chance of turning into a squirrel, whereas brushing teeth has a significant negative effect.
-
-Interesting. Let’s try something.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let entry of JOURNAL) {
-  if (entry.events.includes("peanuts") &&
-     !entry.events.includes("brushed teeth")) {
-    entry.events.push("peanut teeth");
-  }
-}
-console.log(phi(tableFor("peanut teeth", JOURNAL)));
-// → 1`}/>
-
-That’s a strong result. The phenomenon occurs precisely when Jacques eats peanuts and fails to brush his teeth. If only he weren’t such a slob about dental hygiene, he’d never even have noticed his affliction.
-
-Knowing this, Jacques stops eating peanuts altogether and finds that his transformations stop.
-
-But it takes only a few months for him to notice that something is missing from this entirely human way of living. Without his feral adventures, Jacques hardly feels alive at all. He decides he’d rather be a full-time wild animal. After building a beautiful little tree house in the forest and equipping it with a peanut butter dispenser and a ten-year supply of peanut butter, he changes form one last time, and lives the short and energetic life of a squirrel.
-</section>
-
-<section className="content-chunk" aria-labelledby="Further-arrayology-861t" data-subsection-id="Further-arrayology-861t" data-show-header="true">
-## Further arrayology \{#Further-arrayology-861t}
-Before finishing the chapter, I want to introduce you to a few more object-related concepts. I’ll start with some generally useful array methods.
-
-We saw `push` and `pop`, which add and remove elements at the end of an array, earlier in this chapter. The corresponding methods for adding and removing things at the start of an array are called `unshift` and `shift`.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let todoList = [];
-function remember(task) {
-  todoList.push(task);
-}
-function getTask() {
-  return todoList.shift();
-}
-function rememberUrgently(task) {
-  todoList.unshift(task);
-}`}/>
-
-This program manages a queue of tasks. You add tasks to the end of the queue by calling `remember("groceries")`, and when you’re ready to do something, you call `getTask()` to get (and remove) the front item from the queue. The `rememberUrgently` function also adds a task but adds it to the front instead of the back of the queue.
-
-To search for a specific value, arrays provide an `indexOf` method. The method searches through the array from the start to the end and returns the index at which the requested value was found—or -1 if it wasn’t found. To search from the end instead of the start, there’s a similar method called `lastIndexOf`:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log([1, 2, 3, 2, 1].indexOf(2));
-// → 1
-console.log([1, 2, 3, 2, 1].lastIndexOf(2));
-// → 3`}/>
-
-Both `indexOf` and `lastIndexOf` take an optional second argument that indicates where to start searching.
-
-Another fundamental array method is `slice`, which takes start and end indices and returns an array that has only the elements between them. The start index is inclusive and the end index is exclusive.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log([0, 1, 2, 3, 4].slice(2, 4));
-// → [2, 3]
-console.log([0, 1, 2, 3, 4].slice(2));
-// → [2, 3, 4]`}/>
-
-When the end index is not given, `slice` will take all of the elements after the start index. You can also omit the start index to copy the entire array.
-
-The `concat` method can be used to append arrays together to create a new array, similar to what the `+` operator does for strings.
-
-The following example shows both `concat` and `slice` in action. It takes an array and an index and returns a new array that is a copy of the original array with the element at the given index removed:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function remove(array, index) {
-  return array.slice(0, index)
-    .concat(array.slice(index + 1));
-}
-console.log(remove(["a", "b", "c", "d", "e"], 2));
-// → ["a", "b", "d", "e"]`}/>
-
-If you pass `concat` an argument that is not an array, that value will be added to the new array as if it were a one-element array.
-</section>
-
-<section className="content-chunk" aria-labelledby="Strings-and-their-properties-863t" data-subsection-id="Strings-and-their-properties-863t" data-show-header="true">
-## Strings and their properties \{#Strings-and-their-properties-863t}
-We can read properties like `length` and `toUpperCase` from string values. But if we try to add a new property, it doesn’t stick.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let kim = "Kim";
-kim.age = 88;
-console.log(kim.age);
-// → undefined`}/>
-
-Values of type string, number, and Boolean are not objects, and though the language doesn’t complain if you try to set new properties on them, it doesn’t actually store those properties. As mentioned earlier, such values are immutable and cannot be changed.
-
-But these types do have built-in properties. Every string value has a number of methods. Some very useful ones are `slice` and `indexOf`, which resemble the array methods of the same name:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log("coconuts".slice(4, 7));
-// → nut
-console.log("coconut".indexOf("u"));
-// → 5`}/>
-
-One difference is that a string’s `indexOf` can search for a string containing more than one character, whereas the corresponding array method looks only for a single element:
-
-```javascript caption="indexOf search for a string"
-console.log("one two three".indexOf("ee"));
-// → 11
 ```
 
-The `trim` method removes whitespace (spaces, newlines, tabs, and similar characters) from the start and end of a string:
+The `export` keyword can be put in front of a function, class, or binding definition to indicate that that binding is part of the module’s interface. This makes it possible for other modules to use that binding by importing it.
 
-```javascript caption="trim() removes whitespaces from both ends"
-console.log("  okay \n ".trim());
-// → okay
+```javascript {1}
+import {dayName} from "./dayname.js";
+let now = new Date();
+console.log(`Today is ${dayName(now.getDay())}`);
+// → Today is Monday
 ```
 
-The `zeroPad` function from the [previous chapter](https://itell-augustatech-web-dev.vercel.app/functions-1) also exists as a method. It is called `padStart` and takes the desired length and padding character as arguments:
+The `import` keyword, followed by a list of binding names in braces, makes bindings from another module available in the current module. Modules are identified by quoted strings.
 
-```javascript caption="padStart pads a string to a given length with specified characters"
-console.log(String(6).padStart(3, "0"));
-// → 006
+How such a module name is resolved to an actual program differs by platform. The browser treats them as web addresses, whereas Node.js resolves them to files. When you run a module, all the other modules it depends on—and the modules _those_ depend on—are loaded, and the exported bindings are made available to the modules that import them.
+
+Import and export declarations cannot appear inside of functions, loops, or other blocks. They are immediately resolved when the module is loaded, regardless of how the code in the module executes. To reflect this, they must appear only in the outer module body.
+
+A module’s interface thus consists of a collection of named bindings, which other modules that depend on the module can access. Imported bindings can be renamed to give them a new local name using `as` after their name.
+
+```javascript {1} caption="import function as alias"
+import {dayName as nomDeJour} from "./dayname.js";
+console.log(nomDeJour(3));
+// → Wednesday
 ```
 
-You can split a string on every occurrence of another string with `split` and join it again with `join`:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let sentence = "Secretarybirds specialize in stomping";
-let words = sentence.split(" ");
-console.log(words);
-// → ["Secretarybirds", "specialize", "in", "stomping"]
-console.log(words.join(". "));
-// → Secretarybirds. specialize. in. stomping`}/>
-
-A string can be repeated with the `repeat` method, which creates a new string containing multiple copies of the original string, glued together:
-
-```javascript caption="repeat concatenates the same string multiple times"
-console.log("LA".repeat(3));
-// → LALALA
-```
-
-We have already seen the string type’s `length` property. Accessing the individual characters in a string looks like accessing array elements (with a complication that we’ll discuss in [Higher-order Functions](https://itell-augustatech-web-dev.vercel.app/5-higher-order-functions)).
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let string = "abc";
-console.log(string.length);
-// → 3
-console.log(string[1]);
-// → b`}/>
-</section>
-
-<section className="content-chunk" aria-labelledby="Rest-parameters-864t" data-subsection-id="Rest-parameters-864t" data-show-header="true">
-## Rest parameters \{#Rest-parameters-864t}
-It can be useful for a function to accept any number of arguments. For example, `Math.max` computes the maximum of __all__ the arguments it is given. To write such a function, you put three dots before the function’s last parameter, like this:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function max(...numbers) {
-  let result = -Infinity;
-  for (let number of numbers) {
-    if (number > result) result = number;
-  }
-  return result;
-}
-console.log(max(4, 1, 9, -2));
-// → 9`}/>
-
-When such a function is called, the _rest parameter_ is bound to an array containing all further arguments. If there are other parameters before it, their values aren’t part of that array. When, as in `max`, it is the only parameter, it will hold all arguments.
-
-You can use a similar three-dot notation to _call_ a function with an array of arguments.
-
-```
-let numbers = [5, 1, 7];console.log(max(...numbers));// → 7
-```
-
-This “spreads” out the array into the function call, passing its elements as separate arguments. It is possible to include an array like that along with other arguments, as in `max(9, ...numbers, 2)`.
-
-Square bracket array notation similarly allows the triple-dot operator to spread another array into the new array:
-
-```
-let words = ["never", "fully"];console.log(["will", ...words, "understand"]);// → ["will", "never", "fully", "understand"]
-```
-
-This works even in curly brace objects, where it adds all properties from another object. If a property is added multiple times, the last value to be added wins:
-
-```
-let coordinates = {x: 10, y: 0};console.log({...coordinates, y: 5, z: 1});// → {x: 10, y: 5, z: 1}
-```
-</section>
-
-<section className="content-chunk" aria-labelledby="The-Math-object-865t" data-subsection-id="The-Math-object-865t" data-show-header="true">
-## The Math object \{#The-Math-object-865t}
-As we’ve seen, `Math` is a grab bag of number-related utility functions such as `Math.max` (maximum), `Math.min` (minimum), and `Math.sqrt` (square root).
-
-The `Math` object is used as a container to group a bunch of related functionality. There is only one `Math` object, and it is almost never useful as a value. Rather, it provides a _namespace_ so that all these functions and values do not have to be global bindings.
-
-Having too many global bindings “pollutes” the namespace. The more names have been taken, the more likely you are to accidentally overwrite the value of some existing binding. For example, it’s not unlikely you’ll want to name something `max` in one of your programs. Since JavaScript’s built-in `max` function is tucked safely inside the `Math` object, you don’t have to worry about overwriting it.
-
-Many languages will stop you, or at least warn you, when you are defining a binding with a name that is already taken. JavaScript does this for bindings you declared with `let` or `const` but—perversely—not for standard bindings nor for bindings declared with `var` or `function`.
-
-Back to the `Math` object. If you need to do trigonometry, `Math` can help. It contains `cos` (cosine), `sin` (sine), and `tan` (tangent), as well as their inverse functions, `acos`, `asin`, and `atan`, respectively. The number π (pi)—or at least the closest approximation that fits in a JavaScript number—is available as `Math.PI`. There is an old programming tradition of writing the names of constant values in all caps.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function randomPointOnCircle(radius) {
-  let angle = Math.random() * 2 * Math.PI;
-  return {x: radius * Math.cos(angle),
-          y: radius * Math.sin(angle)};
-}
-console.log(randomPointOnCircle(2));
-// → {x: 0.3667, y: 1.966}`}/>
-
-If you’re not familiar with sines and cosines, don’t worry. I’ll explain them when they are used in Chapter 14.
-
-The previous example used `Math.random`. This is a function that returns a new pseudorandom number between 0 (inclusive) and 1 (exclusive) every time you call it:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(Math.random());
-// → 0.36993729369714856
-console.log(Math.random());
-// → 0.727367032552138
-console.log(Math.random());
-// → 0.40180766698904335`}/>
-
-Though computers are deterministic machines—they always react the same way if given the same input—it is possible to have them produce numbers that appear random. To do that, the machine keeps some hidden value, and whenever you ask for a new random number, it performs complicated computations on this hidden value to create a new value. It stores a new value and returns some number derived from it. That way, it can produce ever new, hard-to-predict numbers in a way that _seems_ random.
-
-If we want a whole random number instead of a fractional one, we can use `Math.floor` (which rounds down to the nearest whole number) on the result of `Math.random`:
-
-```
-console.log(Math.floor(Math.random() * 10));// → 2
-```
-
-Multiplying the random number by 10 gives us a number greater than or equal to 0 and below 10. Since `Math.floor` rounds down, this expression will produce, with equal chance, any number from 0 through 9.
-
-There are also the functions `Math.ceil` (for “ceiling”, which rounds up to a whole number), `Math.round` (to the nearest whole number), and `Math.abs`, which takes the absolute value of a number, meaning it negates negative values but leaves positive ones as they are.
-</section>
-
-<section className="content-chunk" aria-labelledby="Destructuring-866t" data-subsection-id="Destructuring-866t" data-show-header="true">
-## Destructuring \{#Destructuring-866t}
-Let’s return to the `phi` function for a moment.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function phi(table) {
-  return (table[3] * table[0] - table[2] * table[1]) /
-    Math.sqrt((table[2] + table[3]) *
-              (table[0] + table[1]) *
-              (table[1] + table[3]) *
-              (table[0] + table[2]));
-}`}/>
-
-One reason this function is awkward to read is that we have a binding pointing at our array, but we’d much prefer to have bindings for the __elements__ of the array—that is, `let n00 = table[0]` and so on. Fortunately, there is a succinct way to do this in JavaScript:
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function phi([n00, n01, n10, n11]) {
-  return (n11 * n00 - n10 * n01) /
-    Math.sqrt((n10 + n11) * (n00 + n01) *
-              (n01 + n11) * (n00 + n10));
-}`}/>
-
-This also works for bindings created with `let`, `var`, or `const`. If you know that the value you are binding is an array, you can use square brackets to “look inside” of the value, binding its contents.
-
-A similar trick works for objects, using braces instead of square brackets.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`let {name} = {name: "Faraji", age: 23};
-console.log(name);`}/>
-
-Note that if you try to destructure `null` or `undefined`, you get an error, much as you would if you directly try to access a property of those values.
-</section>
-
-<section className="content-chunk" aria-labelledby="Optional-property-access-867t" data-subsection-id="Optional-property-access-867t" data-show-header="true">
-## Optional property access \{#Optional-property-access-867t}
-When you aren’t sure whether a given value produces an object, but still want to read a property from it when it does, you can use a variant of the dot notation: `object?.property`.
-
-<Sandbox pageSlug="test-page-no-chunks" code={`function city(object) {
-  return object.address?.city;
-}
-console.log(city({address: {city: "Toronto"}}));
-// → Toronto
-console.log(city({name: "Vera"}));
-// → undefined`}/>
-
-The expression `a?.b` means the same as `a.b` when `a` isn’t null or undefined. When it is, it evaluates to `undefined`. This can be convenient when, as in the example, you aren’t sure that a given property exists or when a variable might hold an undefined value.
-
-A similar notation can be used with square bracket access, and even with function calls, by putting `?.` in front of the parentheses or brackets:
-
-```
-console.log("string".notAMethod?.());// → undefinedconsole.log({}.arrayProp?.[0]);// → undefined
-```
-</section>
-
-<section className="content-chunk" aria-labelledby="JSON-868t" data-subsection-id="JSON-868t" data-show-header="true">
-## JSON \{#JSON-868t}
-Because properties grasp their value rather than contain it, objects and arrays are stored in the computer’s memory as sequences of bits holding the _addresses_—the place in memory—of their contents. An array with another array inside of it consists of (at least) one memory region for the inner array and another for the outer array, containing (among other things) a number that represents the address of the inner array.
-
-If you want to save data in a file for later or send it to another computer over the network, you have to somehow convert these tangles of memory addresses to a description that can be stored or sent. You _could_ send over your entire computer memory along with the address of the value you’re interested in, I suppose, but that doesn’t seem like the best approach.
-
-What we can do is _serialize_ the data. That means it is converted into a flat description. A popular serialization format is called _JSON_ (pronounced “Jason”), which stands for JavaScript Object Notation. It is widely used as a data storage and communication format on the web, even with languages other than JavaScript.
-
-JSON looks similar to JavaScript’s way of writing arrays and objects, with a few restrictions. All property names have to be surrounded by double quotes, and only simple data expressions are allowed—no function calls, bindings, or anything that involves actual computation. Comments are not allowed in JSON.
-
-A journal entry might look like this when represented as JSON data:
+A module may also have a special export named `default`, which is often used for modules that only export a single binding. To define a default export, you write `export default` before an expression, a function declaration, or a class declaration.
 
 ```javascript 
-{
-  "squirrel": false,
-  "events": ["work", "touched tree", "pizza", "running"]
-}
+export default ["Winter", "Spring", "Summer", "Autumn"];
 ```
 
-JavaScript gives us the functions `JSON.stringify` and `JSON.parse` to convert data to and from this format. The first takes a JavaScript value and returns a JSON-encoded string. The second takes such a string and converts it to the value it encodes:
+Such a binding is imported by omitting the braces around the name of the import.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let string = JSON.stringify({squirrel: false,
-                             events: ["weekend"]});
-console.log(string);
-// → {"squirrel":false,"events":["weekend"]}
-console.log(JSON.parse(string).events);
-// → ["weekend"]`}/>
+```javascript 
+import seasonNames from "./seasonname.js";
+```
+
+To import all bindings from a module at the same time, you can use `import *`. You provide a name, and that name will be bound to an object holding all the module’s exports. This can be useful when you are using a lot of different exports.
+
+```javascript {1} caption="bind all exports to a name via the * symbol"
+import * as dayName from "./dayname.js";
+console.log(dayName.dayName(3));
+// → Wednesday
+```
+
+
+
+
 </section>
 
-<section className="content-chunk" aria-labelledby="Summary-869t" data-subsection-id="Summary-869t" data-show-header="true">
-## Summary \{#Summary-869t}
-Objects and arrays provide ways to group several values into a single value. This allows us to put a bunch of related things in a bag and run around with the bag instead of wrapping our arms around all of the individual things and trying to hold on to them separately.
+<section className="content-chunk" aria-labelledby="Packages-848t" data-subsection-id="Packages-848t" data-show-header="true">
+## Packages \{#Packages-848t}
+One of the advantages of building a program out of separate pieces and being able to run some of those pieces on their own is that you might be able to use the same piece in different programs.
 
-Most values in JavaScript have properties, with the exceptions being `null` and `undefined`. Properties are accessed using `value.prop` or `value["prop"]`. Objects tend to use names for their properties and store more or less a fixed set of them. Arrays, on the other hand, usually contain varying amounts of conceptually identical values and use numbers (starting from 0) as the names of their properties.
+But how do you set this up? Say I want to use the `parseINI` function from some other program to convert a string to an integer. If it is clear what the function depends on, I can just copy that module into my new project and use it. But then, if I find a mistake in the code, I’ll probably fix it in whichever program I’m working with at the time and forget to also fix it in the other program.
 
-There _are_ some named properties in arrays, such as `length` and a number of methods. Methods are functions that live in properties and (usually) act on the value of which they are a property.
+Once you start duplicating code, you’ll quickly find yourself wasting time and energy moving copies around and keeping them up to date. That’s where _packages_ come in. A package is a chunk of code that can be distributed (copied and installed). It may contain one or more modules and has information about which other packages it depends on. A package also usually comes with documentation explaining what it does so that people who didn’t write it might still be able to use it.
 
-You can iterate over arrays using a special kind of `for` loop: `for (let element of array)`.
+When a problem is found in a package or a new feature is added, the package is updated. Now the programs that depend on it (which may also be packages) can copy the new version to get the improvements that were made to the code.
+
+Working in this way requires infrastructure. We need a place to store and find packages and a convenient way to install and upgrade them. In the JavaScript world, this infrastructure is provided by \[npm\]([https://npmjs.com](https://npmjs.com)).
+
+NPM is two things: an online service where you can download (and upload) packages, and a program (bundled with Node.js) that helps you install and manage them.
+
+At the time of writing, there are more than three million different packages available on NPM. A large portion of those are rubbish, to be fair. But almost every useful, publicly available JavaScript package can be found on NPM. For example, an INI file parser, similar to the one we built in [Chapter 9](https://eloquentjavascript.net/09_regexp.html), is available under the package name `ini`.
+
+[Chapter 20](https://eloquentjavascript.net/20_node.html) will show how to install such packages locally using the `npm`command line program.
+
+Having quality packages available for download is extremely valuable. It means that we can often avoid reinventing a program that 100 people have written before and get a solid, well-tested implementation at the press of a few keys.
+
+Software is cheap to copy, so once someone has written it, distributing it to other people is an efficient process. Writing it in the first place _is_ work, though, and responding to people who have found problems in the code or who want to propose new features is even more work.
+
+By default, you own the copyright to the code you write, and other people may use it only with your permission. But because some people are just nice and because publishing good software can help make you a little bit famous among programmers, many packages are published under a license that explicitly allows other people to use it.
+
+Most code on NPM is licensed this way. Some licenses require you to also publish code that you build on top of the package under the same license. Others are less demanding, requiring only that you keep the license with the code as you distribute it. The JavaScript community mostly uses the latter type of license. When using other people’s packages, make sure you are aware of their licenses.
+
+Now, instead of writing our own INI file parser, we can use one from NPM.
+
+```javascript caption="import from ini third-party library"
+import {parse} from "ini";
+
+console.log(parse("x = 10\ny = 20"));
+```
+</section>
+
+<section className="content-chunk" aria-labelledby="CommonJS-Modules-849t" data-subsection-id="CommonJS-Modules-849t" data-show-header="true">
+## CommonJS Modules \{#CommonJS-Modules-849t}
+Before 2015, when the JavaScript language had no built-in module system, people were already building large systems in JavaScript. To make that workable, they _needed_ modules.
+
+The community designed its own improvised module systems on top of the language. These use functions to create a local scope for the modules and regular objects to represent module interfaces.
+
+Initially, people just manually wrapped their entire module in an “immediately invoked function expression” to create the module’s scope and assigned their interface objects to a single global variable.
+
+<Sandbox pageSlug="test-page-no-chunks" code={`const weekDay = function() {
+  const names = ["Sunday", "Monday", "Tuesday", "Wednesday",
+                 "Thursday", "Friday", "Saturday"];
+  return {
+    name(number) { return names[number]; },
+    number(name) { return names.indexOf(name); }
+  };
+}();
+
+console.log(weekDay.name(weekDay.number("Sunday")));`}/>
+
+This style of modules provides isolation, to a certain degree, but it does not declare dependencies. Instead, it just puts its interface into the global scope and expects its dependencies, if any, to do the same. This is not ideal.
+
+If we implement our own module loader, we can do better. The most widely used approach to bolted-on JavaScript modules is called _CommonJS modules_. Node.js used this module system from the start (though it now also knows how to load ES modules), and it is the module system used by many packages on NPM.
+
+A CommonJS module looks like a regular script, but it has access to two bindings that it uses to interact with other modules. The first is a function called `require`. When you call this with the module name of your dependency, it makes sure the module is loaded and returns its interface. The second is an object named `exports`, which is the interface object for the module. It starts out empty and you add properties to it to define exported values.
+
+This CommonJS example module provides a date-formatting function. It uses two packages from NPM—`ordinal` to convert numbers to strings like `"1st"`and `"2nd"`, and `date-names` to get the English names for weekdays and months. It exports a single function, `formatDate`, which takes a `Date` object and a template string.
+
+The template string may contain codes that direct the format, such as `YYYY` for the full year and `Do` for the ordinal day of the month. You could give it a string like `"MMMM Do YYYY"` to get output like `November 22nd 2017`.
+
+```javascript caption="use the date-names library to format date time objects"
+const ordinal = require("ordinal");
+const {days, months} = require("date-names");
+
+exports.formatDate = function(date, format) {
+  return format.replace(/YYYY|M(MMM)?|Do?|dddd/g, tag => {
+    if (tag == "YYYY") return date.getFullYear();
+    if (tag == "M") return date.getMonth();
+    if (tag == "MMMM") return months[date.getMonth()];
+    if (tag == "D") return date.getDate();
+    if (tag == "Do") return ordinal(date.getDate());
+    if (tag == "dddd") return days[date.getDay()];
+  });
+};
+```
+
+The interface of `ordinal` is a single function, whereas `date-names` exports an object containing multiple things—`days` and `months` are arrays of names. Destructuring is very convenient when creating bindings for imported interfaces.
+
+The module adds its interface function to `exports` so that modules that depend on it get access to it. We could use the module like this:
+
+```javascript 
+const {formatDate} = require("./format-date.js");
+
+console.log(formatDate(new Date(2017, 9, 13),
+                       "dddd the Do"));
+// → Friday the 13th
+```
+
+CommonJS is implemented with a module loader that, when loading a module, wraps its code in a function (giving it its own local scope) and passes the `require` and `exports` bindings to that function as arguments.
+
+If we assume we have access to a `readFile` function that reads a file by name and gives us its content, we can define a simplified form of `require` like this:
+
+```javascript 
+function require(name) {
+  if (!(name in require.cache)) {
+    let code = readFile(name);
+    let exports = require.cache[name] = {};
+    let wrapper = Function("require, exports", code);
+    wrapper(require, exports);
+  }
+  return require.cache[name];
+}
+require.cache = Object.create(null);
+```
+
+`Function` is a built-in JavaScript function that takes a list of arguments (as a comma-separated string) and a string containing the function body and returns a function value with those arguments and that body. This is an interesting concept—it allows a program to create new pieces of program from string data—but also a dangerous one, since if someone can trick your program into putting a string they provide into `Function`, they can make the program do anything they want.
+
+Standard JavaScript provides no such function as `readFile`, but different JavaScript environments, such as the browser and Node.js, provide their own ways of accessing files. The example just pretends that `readFile` exists.
+
+To avoid loading the same module multiple times, `require` keeps a store (cache) of already loaded modules. When called, it first checks whether the requested module has been loaded and, if not, loads it. This involves reading the module’s code, wrapping it in a function, and calling it.
+
+By defining `require` and `exports` as parameters for the generated wrapper function (and passing the appropriate values when calling it), the loader makes sure that these bindings are available in the module’s scope.
+
+An important difference between this system and ES modules is that ES module imports happen before a module’s script starts running, whereas `require` is a normal function, invoked when the module is already running. Unlike `import` declarations, `require` calls _can_ appear inside functions, and the name of the dependency can be any expression that evaluates to a string, whereas `import` allows only plain quoted strings.
+
+The transition of the JavaScript community from CommonJS style to ES modules has been a slow and somewhat rough one. Fortunately we are now at a point where most of the popular packages on NPM provide their code as ES modules, and Node.js allows ES modules to import from CommonJS modules. While CommonJS code is still something you will run across, there is no real reason to write new programs in this style anymore.
+
+
+
+
+</section>
+
+<section className="content-chunk" aria-labelledby="Building-And-Bundling-847t" data-subsection-id="Building-And-Bundling-847t" data-show-header="true">
+## Building And Bundling \{#Building-And-Bundling-847t}
+Many JavaScript packages aren’t technically written in JavaScript. Language extensions such as TypeScript, the type checking dialect mentioned in [Chapter 8](https://eloquentjavascript.net/08_error.html#typing), are widely used. People also often start using planned new language features long before they have been added to the platforms that actually run JavaScript. To make this possible, they _compile_ their code, translating it from their chosen JavaScript dialect to plain old JavaScript—or even to a past version of JavaScript—so that browsers can run it.
+
+Including a modular program that consists of 200 different files in a web page produces its own problems. If fetching a single file over the network takes 50 milliseconds, loading the whole program takes 10 seconds, or maybe half that if you can load several files simultaneously. That’s a lot of wasted time. Because fetching a single big file tends to be faster than fetching a lot of tiny ones, web programmers have started using tools that combine their programs (which they painstakingly split into modules) into a single big file before they publish it to the web. Such tools are called _bundlers_.
+
+And we can go further. Apart from the number of files, the _size_ of the files also determines how fast they can be transferred over the network. Thus, the JavaScript community has invented _minifiers_. These are tools that take a JavaScript program and make it smaller by automatically removing comments and whitespace, renaming bindings, and replacing pieces of code with equivalent code that take up less space.
+
+It is not uncommon for the code that you find in an NPM package or that runs on a web page to have gone through _multiple_ stages of transformation—converting from modern JavaScript to historic JavaScript, combining the modules into a single file, and minifying the code. We won’t go into the details of these tools in this book, since there are many of them, and which one is popular changes regularly. Just be aware that such things exist, and look them up when you need them.
+</section>
+
+<section className="content-chunk" aria-labelledby="Module-Design-846t" data-subsection-id="Module-Design-846t" data-show-header="true">
+## Module Design \{#Module-Design-846t}
+Structuring programs is one of the subtler aspects of programming. Any nontrivial piece of functionality can be organized in various ways.
+
+Good program design is subjective—there are trade-offs involved, and matters of taste. The best way to learn the value of well-structured design is to read or work on a lot of programs and notice what works and what doesn’t. Don’t assume that a painful mess is “just the way it is”. You can improve the structure of almost everything by putting more thought into it.
+
+One aspect of module design is ease of use. If you are designing something that is intended to be used by multiple people—or even by yourself, in three months when you no longer remember the specifics of what you did—it is helpful if your interface is simple and predictable.
+
+That may mean following existing conventions. A good example is the `ini`package. This module imitates the standard `JSON` object by providing `parse`and `stringify` (to write an INI file) functions, and, like `JSON`, converts between strings and plain objects. The interface is small and familiar, and after you’ve worked with it once, you’re likely to remember how to use it.
+
+Even if there’s no standard function or widely used package to imitate, you can keep your modules predictable by using simple data structures and doing a single, focused thing. Many of the INI-file parsing modules on NPM provide a function that directly reads such a file from the hard disk and parses it, for example. This makes it impossible to use such modules in the browser, where we don’t have direct filesystem access, and adds complexity that would have been better addressed by _composing_ the module with some file-reading function.
+
+This points to another helpful aspect of module design—the ease with which something can be composed with other code. Focused modules that compute values are applicable in a wider range of programs than bigger modules that perform complicated actions with side effects. An INI file reader that insists on reading the file from disk is useless in a scenario where the file’s content comes from some other source.
+
+Relatedly, stateful objects are sometimes useful or even necessary, but if something can be done with a function, use a function. Several of the INI file readers on NPM provide an interface style that requires you to first create an object, then load the file into your object, and finally use specialized methods to get at the results. This type of thing is common in the object-oriented tradition, and it’s terrible. Instead of making a single function call and moving on, you have to perform the ritual of moving your object through its various states. And because the data is now wrapped in a specialized object type, all code that interacts with it has to know about that type, creating unnecessary interdependencies.
+
+Often, defining new data structures can’t be avoided—only a few basic ones are provided by the language standard, and many types of data have to be more complex than an array or a map. But when an array suffices, use an array.
+
+An example of a slightly more complex data structure is the graph from [Chapter 7](https://eloquentjavascript.net/07_robot.html). There is no single obvious way to represent a graph in JavaScript. In that chapter, we used an object whose properties hold arrays of strings—the other nodes reachable from that node.
+
+There are several different pathfinding packages on NPM, but none of them uses this graph format. They usually allow the graph’s edges to have a weight, which is the cost or distance associated with it. That isn’t possible in our representation.
+
+For example, there’s the `dijkstrajs` package. A well-known approach to pathfinding, quite similar to our `findRoute` function, is called _Dijkstra’s algorithm_, after Edsger Dijkstra, who first wrote it down. The `js` suffix is often added to package names to indicate the fact that they are written in JavaScript. This `dijkstrajs` package uses a graph format similar to ours, but instead of arrays, it uses objects whose property values are numbers—the weights of the edges.
+
+If we wanted to use that package, we’d have to make sure that our graph was stored in the format it expects. All edges get the same weight, since our simplified model treats each road as having the same cost (one turn).
+
+```javascript caption="find the shortest path with the dijkstrajs library"
+const {find_path} = require("dijkstrajs");
+
+let graph = {};
+for (let node of Object.keys(roadGraph)) {
+  let edges = graph[node] = {};
+  for (let dest of roadGraph[node]) {
+    edges[dest] = 1;
+  }
+}
+
+console.log(find_path(graph, "Post Office", "Cabin"));
+// → ["Post Office", "Alice's House", "Cabin"]
+```
+
+This can be a barrier to composition—when various packages are using different data structures to describe similar things, combining them is difficult. Therefore, if you want to design for composability, find out what data structures other people are using and, when possible, follow their example.
+
+Designing a fitting module structure for a program can be difficult. In the phase where you are still exploring the problem, trying different things to see what works, you might want to not worry about it too much, since keeping everything organized can be a big distraction. Once you have something that feels solid, that’s a good time to take a step back and organize it.
 </section>
 
