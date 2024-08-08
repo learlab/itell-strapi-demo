@@ -142,7 +142,6 @@ export const QuestionBoxStairs = ({
 	});
 
 	const isPending = useDebounce(_isPending, 100);
-	const disabled = isPending || currentChunk !== chunkSlug;
 
 	const status = state.status;
 	const isNextButtonDisplayed =
@@ -305,7 +304,7 @@ export const QuestionBoxStairs = ({
 									<StatusButton
 										pending={isPending}
 										type="submit"
-										disabled={disabled}
+										disabled={_isPending}
 										variant={"outline"}
 										className="w-32"
 									>

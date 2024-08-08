@@ -12,7 +12,6 @@ import {
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
 import {
 	Button,
@@ -104,7 +103,6 @@ export const QuestionBoxReread = ({
 		});
 	});
 	const isPending = useDebounce(_isPending, 100);
-	const disabled = isPending || currentChunk !== chunkSlug;
 
 	const isNextButtonDisplayed =
 		shouldBlur && state.status === StatusReread.ANSWERED;
@@ -208,7 +206,7 @@ export const QuestionBoxReread = ({
 						<StatusButton
 							pending={isPending}
 							type="submit"
-							disabled={disabled}
+							disabled={_isPending}
 							variant={"outline"}
 							className="w-32"
 						>
