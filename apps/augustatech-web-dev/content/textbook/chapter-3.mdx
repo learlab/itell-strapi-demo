@@ -309,8 +309,14 @@ Jacques keeps his journal for three months. The data is available at [https://el
 
 ```javascript caption="Two entries from the journals data"
 [
- 	{"events":["carrot","exercise","weekend"],"squirrel":false},
- 	{"events":["bread","pudding","brushed teeth","weekend","touched tree"],"squirrel":false},
+ 	{
+		"events": ["bread", "pudding", "brushed teeth", "weekend", "touched tree"],
+		"squirrel": false
+	},
+	{
+		"events": ["carrot", "nachos", "brushed teeth", "cycling", "weekend"],
+		"squirrel": false
+	},
  ]
 ```
 
@@ -319,7 +325,7 @@ To load the data into the sandbox environment, run the following code. You shoul
 <Sandbox pageSlug="test-page-no-chunks" code={`var JOURNAL
 const loadData = async () => {
   const resp = await fetch("/journal.json")
-  SCRIPTS = await resp.json()
+  JOURNAL = await resp.json()
   console.log("data loaded")
 }
 
