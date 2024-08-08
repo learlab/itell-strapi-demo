@@ -118,7 +118,7 @@ You can use `Object.create` to create an object with a specific prototype.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let protoRabbit = {
   speak(line) {
-    console.log(`The ${this.type} rabbit says '${line}'`);
+    console.log(\`The \${this.type} rabbit says '\${line}'\`);
   }
 };
 let blackRabbit = Object.create(protoRabbit);
