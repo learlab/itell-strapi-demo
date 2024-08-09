@@ -22,7 +22,7 @@ If an expression corresponds to a sentence fragment, a JavaScript statement corr
 
 The simplest kind of statement is an expression with a semicolon after it. This is a program:
 
-<Sandbox code = {`1;
+<Sandbox pageSlug="test-page-no-chunks" code={`1;
 !false`}/>
 
 It is a useless program, though. An expression can be content to just produce a value, which can then be used by the enclosing code. However, a statement stands on its own, so if it doesn’t affect the world, it’s useless. It may display something on the screen, as with console.log, or change the state of the machine in a way that will affect the statements that come after it. These changes are called side effects. The statements in the previous example just produce the values 1 and true and then immediately throw them away. This leaves no impression on the world at all. When you run this program, nothing observable happens.
@@ -34,11 +34,11 @@ In some cases, JavaScript allows you to omit the semicolon at the end of a state
 ## Bindings \{#Bindings-776t}
 How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a binding, or variable.
 
-```javascript 
+```javascript caption="create variable bindings via the `let` keyword"
 let caught = 5 * 5;
 ```
 
-That gives us a second kind of statement. The special word (keyword) let indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an = operator and an expression.
+That gives us a second kind of statement. The special word (keyword) let indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an `=` operator and an expression.
 
 The example creates a binding called caught and uses it to grab hold of the number that is produced by multiplying 5 by 5.
 
@@ -52,7 +52,7 @@ console.log(ten * ten);
 
 When a binding points at a value, that does not mean it is tied to that value forever. The `=` operator can be used at any time on existing bindings to disconnect them from their current value and have them point to a new one:
 
-<Sandbox code = {`let mood = "light";
+<Sandbox pageSlug="test-page-no-chunks" code={`let mood = "light";
 console.log(mood);
 // → light
 mood = "dark";
@@ -63,7 +63,7 @@ You should imagine bindings as tentacles rather than boxes. They do not contain 
 
 Let’s look at another example. To remember the number of dollars that Luigi still owes you, you create a binding. When he pays back $35, you give this binding a new value.
 
-<Sandbox code = {`let luigisDebt = 140;
+<Sandbox pageSlug="test-page-no-chunks" code={`let luigisDebt = 140;
 luigisDebt = luigisDebt - 35;
 console.log(luigisDebt);
 // → 105`}/>
@@ -72,13 +72,13 @@ When you define a binding without giving it a value, the tentacle has nothing to
 
 A single let statement may define multiple bindings. The definitions must be separated by commas:
 
-<Sandbox code = {`let one = 1, two = 2;
+<Sandbox pageSlug="test-page-no-chunks" code={`let one = 1, two = 2;
 console.log(one + two);
 // → 3`}/>
 
-The words var and const can also be used to create bindings, in a similar fashion to let.
+The words `var` and `const` can also be used to create bindings, in a similar fashion to let.
 
-```javascript 
+```javascript caption="var and const can create bindings as well"
 var name = "Ayda";
 const greeting = "Hello ";
 console.log(greeting + name);
@@ -119,7 +119,7 @@ The collection of bindings and their values that exist at a given time is called
 ## Functions \{#Functions-779t}
 A lot of the values provided in the default environment have the type function. A function is a piece of program wrapped in a value. Such values can be applied in order to run the wrapped program. For example, in a browser environment, the binding prompt holds a function that shows a little dialog asking for user input. It is used like this:
 
-<Sandbox code = {`prompt("Enter passcode");`}/>
+<Sandbox pageSlug="test-page-no-chunks" code={`prompt("Enter passcode");`}/>
 <Image
   style="aspect-ratio:442/173;"
   src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/2-1-prompt.png-8ceb654c4df66a176f3138ca78a5ea19.png"
@@ -172,7 +172,7 @@ Chapter 3 will explain how to write your own functions.
 ## Control Flow \{#Control-Flow-782t}
 When your program contains more than one statement, the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the square of that number:
 
-<Sandbox code = {`let theNumber = Number(prompt("Pick a number"));
+<Sandbox pageSlug="test-page-no-chunks" code={`let theNumber = Number(prompt("Pick a number"));
 console.log("Your number is the square root of " +
            theNumber * theNumber);`}/>
 
@@ -207,7 +207,7 @@ Not all programs are straight roads. We may, for example, want to create a branc
 
 Conditional execution is created with the if keyword in JavaScript. In the simple case, we want some code to be executed if, and only if, a certain condition holds. We might, for example, want to show the square of the input only if the input is actually a number:
 
-<Sandbox code = {`let theNumber = Number(prompt("Pick a number"));
+<Sandbox pageSlug="test-page-no-chunks" code={`let theNumber = Number(prompt("Pick a number"));
 if (!Number.isNaN(theNumber)) {
  console.log("Your number is the square root of " +
              theNumber * theNumber);
@@ -232,7 +232,7 @@ if (1 + 1 == 2) console.log("It's true");
 
 You often won’t just have code that executes when a condition holds true, but also code that handles the other case. This alternate path is represented by the second arrow in the diagram. You can use the else keyword, together with if, to create two separate, alternative execution paths:
 
-<Sandbox code = {`let theNumber = Number(prompt("Pick a number"));
+<Sandbox pageSlug="test-page-no-chunks" code={`let theNumber = Number(prompt("Pick a number"));
 if (!Number.isNaN(theNumber)) {
  console.log("Your number is the square root of " +
              theNumber * theNumber);
@@ -244,7 +244,7 @@ if (!Number.isNaN(theNumber)) {
 
 If you have more than two paths to choose from, you can “chain” multiple if/else pairs together. Here’s an example:
 
-<Sandbox code = {`let num = Number(prompt("Pick a number"));
+<Sandbox pageSlug="test-page-no-chunks" code={`let num = Number(prompt("Pick a number"));
 if (num < 10) {
  console.log("Small");
 } else if (num < 100) {
@@ -300,7 +300,7 @@ That works, but the idea of writing a program is to make something less work, no
 
 Looping control flow allows us to go back to some point in the program where we were before and repeat it with our current program state. If we combine this with a binding that counts, we can do something like this:
 
-<Sandbox code = {`let number = 0;
+<Sandbox pageSlug="test-page-no-chunks" code={`let number = 0;
 while (number <= 12) {
  console.log(number);
  number = number + 2;
@@ -314,7 +314,7 @@ The number binding demonstrates the way a binding can track the progress of a pr
 
 As an example that actually does something useful, we can now write a program that calculates and shows the value of 210 (2 to the 10th power). We use two bindings: one to keep track of our result and one to count how often we have multiplied this result by 2. The loop tests whether the second binding has reached 10 yet and, if not, updates both bindings.
 
-<Sandbox code = {`let result = 1;
+<Sandbox pageSlug="test-page-no-chunks" code={`let result = 1;
 let counter = 0;
 while (counter < 10) {
  result = result * 2;
@@ -330,7 +330,7 @@ Note that JavaScript also has an operator for exponentiation (`2 ** 10`), which 
 
 A do loop is a control structure similar to a while loop. It differs only on one point: a do loop always executes its body at least once, and it starts testing whether it should stop only after that first execution. To reflect this, the test appears after the body of the loop:
 
-<Sandbox code = {`let yourName;
+<Sandbox pageSlug="test-page-no-chunks" code={`let yourName;
 do {
  yourName = prompt("Who are you?");
 } while (!yourName);
@@ -367,7 +367,7 @@ Many loops follow the pattern shown in the while examples. First a “counter”
 
 Because this pattern is so common, JavaScript and similar languages provide a slightly shorter and more comprehensive form, the for loop:
 
-<Sandbox code = {`for (let number = 0; number <= 12; number = number + 2) {
+<Sandbox pageSlug="test-page-no-chunks" code={`for (let number = 0; number <= 12; number = number + 2) {
  console.log(number);
 }`}/>
 
@@ -379,7 +379,7 @@ The parentheses after a for keyword must contain two semicolons. The part before
 
 This is the code that computes 210 using for instead of while:
 
-<Sandbox code = {`let result = 1;
+<Sandbox pageSlug="test-page-no-chunks" code={`let result = 1;
 for (let counter = 0; counter < 10; counter = counter + 1) {
  result = result * 2;
 }
@@ -390,7 +390,7 @@ console.log(result);`}/>
 ## Breaking Out of a Loop \{#Breaking-Out-of-a-Loop-788t}
 Having the looping condition produce false is not the only way a loop can finish. The break statement has the effect of immediately jumping out of the enclosing loop. Its use is demonstrated in the following program, which finds the first number that is both greater than or equal to 20 and divisible by 7:
 
-<Sandbox code = {`for (let current = 20; ; current = current + 1) {
+<Sandbox pageSlug="test-page-no-chunks" code={`for (let current = 20; ; current = current + 1) {
  if (current % 7 == 0) {
    console.log(current);
    break;
@@ -458,7 +458,7 @@ else defaultAction();
 
 There is a construct called switch that is intended to express such a “dispatch” in a more direct way. Unfortunately, the syntax JavaScript uses for this (which it inherited from the C/Java line of programming languages) is somewhat awkward—a chain of if statements may look better. Here is an example:
 
-<Sandbox code = {`switch (prompt("What is the weather like?")) {
+<Sandbox pageSlug="test-page-no-chunks" code={`switch (prompt("What is the weather like?")) {
  case "rainy":
    console.log("Remember to bring an umbrella.");
    break;
