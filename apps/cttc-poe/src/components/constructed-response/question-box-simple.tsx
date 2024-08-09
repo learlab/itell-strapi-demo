@@ -24,11 +24,14 @@ export const QuestionBoxSimple = ({
 	pageSlug,
 	chunkSlug,
 }: Props) => {
-	const { advanceChunk, currentChunk } = useConstructedResponse((state) => ({
-		advanceChunk: state.advanceChunk,
-		currentChunk: state.currentChunk,
-	}));
-	const disabled = currentChunk !== chunkSlug;
+	const { advanceChunk, currentChunk, isSummaryReady } = useConstructedResponse(
+		(state) => ({
+			advanceChunk: state.advanceChunk,
+			currentChunk: state.currentChunk,
+			isSummaryReady: state.isSummaryReady,
+		}),
+	);
+	const disabled = currentChunk !== chunkSlug || isSummaryReady;
 
 	if (!userId) {
 		return (

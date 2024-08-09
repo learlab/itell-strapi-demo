@@ -111,7 +111,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				/>
 			)}
 
-			<PageStatusModal user={user} pageStatus={pageStatus} />
+			{user && <PageStatusModal user={user} pageStatus={pageStatus} />}
 			<QuestionControl
 				userId={userId}
 				pageSlug={pageSlug}

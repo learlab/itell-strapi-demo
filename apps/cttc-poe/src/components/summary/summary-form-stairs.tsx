@@ -477,8 +477,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 								goToQuestion(state.stairsQuestion as StairsQuestion)
 							}
 						>
-							<span>See question</span>
-							<FileQuestionIcon className="size-4 ml-2" />
+							<span className="inline-flex items-center justify-center gap-2">
+								<FileQuestionIcon className="size-4" />
+								<span>See question</span>
+							</span>
 						</Button>
 					)}
 				</div>
