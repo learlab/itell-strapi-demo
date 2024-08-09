@@ -306,7 +306,6 @@ export const QuestionBoxStairs = ({
 										type="submit"
 										disabled={_isPending}
 										variant={"outline"}
-										className="w-32"
 									>
 										<span className="flex items-center gap-2">
 											<PencilIcon className="size-4" />

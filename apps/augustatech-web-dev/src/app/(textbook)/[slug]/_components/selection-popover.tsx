@@ -1,6 +1,5 @@
 "use client";
 import { useAddChat, useChatStore } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { SelectOpen } from "@/lib/store/chat-store";
 import { noteStore } from "@/lib/store/note-store";
@@ -163,13 +162,12 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 							setPending(undefined);
 						}}
 						key={command.label}
+						pending={pending === command.label}
 					>
-						{pending === command.label ? (
-							<Spinner className="size-4" />
-						) : (
-							command.icon
-						)}
-						{command.label}
+						<span className="flex items-center gap-2">
+							{command.icon}
+							{command.label}
+						</span>
 					</Button>
 				))}
 			</div>,

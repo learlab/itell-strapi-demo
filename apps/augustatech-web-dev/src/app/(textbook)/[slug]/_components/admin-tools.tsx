@@ -2,7 +2,6 @@
 import { resetUserAction, updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { allSummaryPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
@@ -104,10 +103,12 @@ export const AdminTools = ({ condition }: Props) => {
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
-					className="flex justify-start items-center gap-2 w-full px-1 py-2 xl:text-lg xl:gap-4"
+					className="flex justify-start w-full px-1 py-2 xl:text-lg"
 				>
-					<SettingsIcon className="size-4 xl:size-6" />
-					<span>Admin tools</span>
+					<span className="inline-flex items-center gap-2 xl:gap-4 ">
+						<SettingsIcon className="size-4 xl:size-6" />
+						<span>Admin tools</span>
+					</span>
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="overflow-y-scroll">
@@ -186,11 +187,8 @@ export const AdminTools = ({ condition }: Props) => {
 					</fieldset>
 
 					<footer className="flex justify-end">
-						<Button type="submit" disabled={isPending}>
-							<span className="flex items-center gap-2">
-								{isPending && <Spinner className="size-4" />}
-								Save changes
-							</span>
+						<Button type="submit" disabled={isPending} pending={isPending}>
+							Save changes
 						</Button>
 					</footer>
 
@@ -237,11 +235,9 @@ const RestartTextbook = () => {
 								? makePageHref(data.pageSlug)
 								: "/";
 						}}
+						pending={isPending}
 					>
-						<span className="flex items-center gap-2">
-							{isPending && <Spinner />}
-							Continue
-						</span>
+						Continue
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>

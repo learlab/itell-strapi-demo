@@ -1,6 +1,7 @@
 "use client";
 
 import { logout } from "@/lib/auth/actions";
+import { useDebounce } from "@itell/core/hooks";
 import {
 	Button,
 	DropdownMenu,
@@ -22,6 +23,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { NavigationButton } from "./navigation-button";
 import { Spinner } from "./spinner";
 import { UserAvatar } from "./user-avatar";
 
@@ -56,11 +58,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 	const [logoutPending, setLogoutPending] = useState(false);
 
 	if (!user) {
-		return (
-			<Link href="/auth">
-				<Button>Sign in</Button>
-			</Link>
-		);
+		return <NavigationButton href="/auth">Sign in</NavigationButton>;
 	}
 
 	return (

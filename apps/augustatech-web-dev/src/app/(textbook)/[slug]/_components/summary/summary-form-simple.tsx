@@ -98,7 +98,6 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 				<StatusButton
 					pending={isPending}
 					disabled={finished && !page.nextPageSlug}
-					className="w-44"
 				>
 					{!finished ? (
 						<span className="inline-flex gap-1 items-center">

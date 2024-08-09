@@ -7,7 +7,7 @@ export default function () {
 	return (
 		<InternalError className="flex flex-col gap-2">
 			Failed to retreive your summary at this point, please try again later.
-			<ContinueReading className="w-48" text="Back to textbook" />
+			<ContinueReading text="Back to textbook" />
 		</InternalError>
 	);
 }

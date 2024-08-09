@@ -1,7 +1,8 @@
 import { cn } from "@itell/utils";
-import { Slot } from "@radix-ui/react-slot";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import { forwardRef } from "react";
+import { Spinner } from "./spinner";
 
 const buttonVariants = cva(
 	"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
@@ -37,22 +38,41 @@ export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
-	noEvent?: boolean;
+	pending?: boolean;
+	event?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 	(
-		{ className, variant, size, asChild = false, noEvent = true, ...props },
+		{
+			className,
+			variant,
+			size,
+			asChild = false,
+			event,
+			pending,
+			children,
+			...props
+		},
 		ref,
 	) => {
 		const Comp = asChild ? Slot : "button";
 		return (
 			<Comp
-				className={cn(buttonVariants({ variant, size, className }))}
-				data-no-event={noEvent}
+				className={cn("relative", buttonVariants({ variant, size, className }))}
+				data-event={event !== undefined ? event : undefined}
 				ref={ref}
 				{...props}
-			/>
+			>
+				{pending && (
+					<span className="absolute inset-0 flex items-center justify-center">
+						<Spinner />
+					</span>
+				)}
+				<Slottable>
+					<span className={pending ? "invisible" : ""}>{children}</span>
+				</Slottable>
+			</Comp>
 		);
 	},
 );

@@ -1,7 +1,6 @@
 "use client";
 import { createEventAction } from "@/actions/event";
 import { DelayMessage } from "@/components/delay-message";
-import { Spinner } from "@/components/spinner";
 import { EventType } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
@@ -82,13 +81,12 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 				type="button"
 				disabled={formPending || isPending}
 				onClick={action}
+				pending={isPending}
 			>
-				{isPending ? (
-					<Spinner className="size-4" />
-				) : (
+				<span className="flex items-center gap-2">
 					<HelpCircleIcon className="size-4" />
-				)}
-				How can I improve my answer?
+					How can I improve my answer?
+				</span>
 			</Button>
 
 			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}

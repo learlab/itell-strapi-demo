@@ -4,7 +4,6 @@ import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -254,13 +253,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 					)}
 					{isDelayed && <DelayMessage />}
 					<div className="flex justify-end">
-						<Button disabled={!isSummaryReady || isPending} type="submit">
+						<Button
+							disabled={!isSummaryReady || isPending}
+							pending={isPending}
+							type="submit"
+						>
 							<span className="flex items-center gap-2">
-								{isPending ? (
-									<Spinner />
-								) : (
-									<SendHorizontalIcon className="size-4" />
-								)}
+								<SendHorizontalIcon className="size-4" />
 								Submit
 							</span>
 						</Button>

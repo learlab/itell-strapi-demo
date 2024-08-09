@@ -2,7 +2,6 @@
 
 import { updateUserPrefsAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
-import { Spinner } from "@/components/spinner";
 import { darkColors, lightColors } from "@itell/constants";
 import {
 	Button,
@@ -78,11 +77,8 @@ export const SettingsForm = ({ user }: { user: User }) => {
 
 				{isError && <InternalError />}
 				<footer>
-					<Button disabled={isPending} type="submit">
-						<span className="flex items-center gap-2">
-							{isPending && <Spinner className="size-4" />}
-							Save
-						</span>
+					<Button disabled={isPending} type="submit" pending={isPending}>
+						Save
 					</Button>
 				</footer>
 			</form>

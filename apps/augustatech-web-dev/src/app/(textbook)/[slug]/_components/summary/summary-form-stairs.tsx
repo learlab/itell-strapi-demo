@@ -10,7 +10,6 @@ import {
 	useSummaryStore,
 } from "@/components/provider/page-provider";
 
-import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -448,13 +447,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						<Warning role="alert">{ErrorFeedback[submissionError]}</Warning>
 					)}
 					<div className="flex justify-end">
-						<Button type="submit" disabled={isPending || !isSummaryReady}>
+						<Button
+							type="submit"
+							disabled={isPending || !isSummaryReady}
+							pending={isPending}
+						>
 							<span className="inline-flex items-center gap-2">
-								{isPending ? (
-									<Spinner />
-								) : (
-									<SendHorizontalIcon className="size-4" />
-								)}
+								<SendHorizontalIcon className="size-4" />
 								Submit
 							</span>
 						</Button>

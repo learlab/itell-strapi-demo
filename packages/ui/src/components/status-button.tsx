@@ -22,7 +22,7 @@ export const StatusButton = forwardRef<HTMLButtonElement, Props>(
 	({ disabled, className, pending, children, ...rest }, ref) => {
 		return (
 			<Button
-				className={cn("w-24", className)}
+				className={cn("relative", className)}
 				disabled={disabled || pending}
 				aria-live="off"
 				ref={ref}
@@ -39,7 +39,12 @@ export const StatusButton = forwardRef<HTMLButtonElement, Props>(
 						transition={{ type: "spring", duration: 0.3, bounce: 0 }}
 						key={String(pending)}
 					>
-						{pending ? <Spinner className="size-4" /> : children}
+						{pending && (
+							<span className="absolute inset-0 flex items-center justify-center">
+								<Spinner className="size-4" />
+							</span>
+						)}
+						<span className={pending ? "invisible" : ""}>{children}</span>
 					</motion.span>
 				</AnimatePresence>
 			</Button>

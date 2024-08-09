@@ -32,16 +32,14 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 				const target = event.target as HTMLElement;
 				const buttonContainer = target.closest("button");
 				if (buttonContainer) {
-					if (buttonContainer.dataset.noEvent === "true") {
-						return;
+					if (buttonContainer.dataset.event === "true") {
+						createEventAction({
+							type: EventType.CLICK,
+							pageSlug,
+							data,
+						});
 					}
 				}
-
-				createEventAction({
-					type: EventType.CLICK,
-					pageSlug,
-					data,
-				});
 			}}
 			onScrollEvent={async (data) => {
 				createEventAction({

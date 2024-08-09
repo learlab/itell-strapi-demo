@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
@@ -78,7 +77,7 @@ export const ChapterToc = ({
 				</a>
 				<ol
 					aria-label="list of chapters"
-					className="space-y-2 leading-relaxed tracking-tight"
+					className="border-l-2 leading-relaxed tracking-tight"
 				>
 					{allPagesSorted.map((p) => {
 						const { latest, unlocked } = getPageStatus({
@@ -92,7 +91,7 @@ export const ChapterToc = ({
 						return (
 							<li
 								className={cn(
-									"p-1 transition ease-in-out duration-200 relative rounded-md hover:bg-accent",
+									"transition ease-in-out duration-200 relative hover:bg-accent",
 									{
 										"bg-accent": p.page_slug === activePage,
 										"text-muted-foreground": !visible,
@@ -105,7 +104,7 @@ export const ChapterToc = ({
 									onClick={() => navigatePage(p.page_slug)}
 									disabled={(pending || !visible) && isProduction}
 									className={cn(
-										"w-full text-left text-balance inline-flex justify-between items-start text-lg xl:text-xl xl:gap-4",
+										"w-full text-left text-balance inline-flex justify-between items-start text-lg xl:text-xl xl:gap-4 p-2",
 										{
 											"animate-pulse": pending,
 										},
@@ -116,7 +115,7 @@ export const ChapterToc = ({
 										unlocked ? "Unlocked" : visible ? "Visible" : "Locked"
 									}`}
 								>
-									<span>{p.title}</span>
+									<span className="flex-1">{p.title}</span>
 									<span aria-hidden="true">
 										{unlocked ? "✅" : visible ? "" : "🔒"}
 									</span>
@@ -164,13 +163,10 @@ const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 				});
 			}}
 			disabled={pending}
+			pending={pending}
 		>
 			<span className="flex justify-start items-center gap-2 px-1 py-2 xl:gap-4 w-full">
-				{pending ? (
-					<Spinner className="size-4 xl:size-6 " />
-				) : (
-					<RotateCcwIcon className="size-4 xl:size-6" />
-				)}
+				<RotateCcwIcon className="size-4 xl:size-6" />
 				Reset
 			</span>
 		</Button>

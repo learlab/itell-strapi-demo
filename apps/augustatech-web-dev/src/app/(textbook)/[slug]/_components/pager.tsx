@@ -61,7 +61,6 @@ const PageLink = ({
 				"flex items-center h-14 xl:h-20 max-w-sm text-balance gap-2 xl:text-lg",
 				{ "pointer-events-none opacity-50": disabled },
 			)}
-			data-no-events={true}
 			aria-disabled={disabled}
 			aria-label={`Go to ${dir === "prev" ? "previous" : "next"} page`}
 			href={href}

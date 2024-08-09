@@ -1,7 +1,6 @@
 "use client";
 
 import { BrandIcon } from "@/components/brand-icon";
-import { Spinner } from "@/components/spinner";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
 import { LogInIcon, LogOutIcon } from "lucide-react";
@@ -55,18 +54,15 @@ export const GoogleLoginButton = () => {
 			aria-label="log in via google"
 			variant={"outline"}
 			disabled={pending}
+			pending={pending}
 		>
 			<span className="flex items-center gap-2">
-				{pending ? (
-					<Spinner className="size-4" />
-				) : (
-					<BrandIcon
-						name="google"
-						alt="log in via google"
-						width={16}
-						height={16}
-					/>
-				)}
+				<BrandIcon
+					name="google"
+					alt="log in via google"
+					width={16}
+					height={16}
+				/>
 				Google
 			</span>
 		</Button>
@@ -94,18 +90,15 @@ export const OutlookLoginButton = () => {
 			aria-label="log in via outlook"
 			variant={"outline"}
 			disabled={pending}
+			pending={pending}
 		>
 			<span className="flex items-center gap-2">
-				{pending ? (
-					<Spinner className="size-4" />
-				) : (
-					<BrandIcon
-						name="outlook"
-						alt="log in via outlook"
-						height={16}
-						width={16}
-					/>
-				)}
+				<BrandIcon
+					name="outlook"
+					alt="log in via outlook"
+					height={16}
+					width={16}
+				/>
 				Outlook
 			</span>
 		</Button>
@@ -125,9 +118,10 @@ export const LoginButton = () => {
 			}}
 			variant={"outline"}
 			disabled={pending}
+			pending={pending}
 		>
 			<span className="flex items-center gap-2">
-				{pending ? <Spinner /> : <LogInIcon className="size-4" />}
+				<LogInIcon className="size-4" />
 				Log in
 			</span>
 		</Button>
@@ -148,9 +142,10 @@ export const LogoutButton = () => {
 			}}
 			disabled={pending}
 			variant={"outline"}
+			pending={pending}
 		>
 			<span className="flex items-center gap-2">
-				{pending ? <Spinner /> : <LogOutIcon className="size-4" />}
+				<LogOutIcon className="size-4" />
 				Log out
 			</span>
 		</Button>

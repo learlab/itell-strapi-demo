@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@/components/spinner";
 import { makePageHref } from "@/lib/utils";
 import { Button } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
@@ -23,8 +22,7 @@ export const SummaryReviseButton = ({
 	};
 
 	return (
-		<Button onClick={navigate} disabled={pending}>
-			{pending && <Spinner className="size-4" />}
+		<Button onClick={navigate} disabled={pending} pending={pending}>
 			Revise this summary
 		</Button>
 	);

@@ -26,6 +26,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
+	Button,
 	Label,
 } from "@itell/ui/client";
 import { cn, getChunkElement } from "@itell/utils";
@@ -318,9 +319,13 @@ export const NotePopover = React.memo(
 										<AlertDialogCancel className="mt-0">
 											Cancel
 										</AlertDialogCancel>
-										<AlertDialogAction onClick={handleDelete}>
+										<Button
+											disabled={pending}
+											onClick={handleDelete}
+											pending={pending}
+										>
 											Continue
-										</AlertDialogAction>
+										</Button>
 									</AlertDialogFooter>
 								</AlertDialogContent>
 							</AlertDialog>

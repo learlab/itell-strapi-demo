@@ -32,7 +32,7 @@ export const DashboardNav = async (props: DashboardNavProps) => {
 				<ContinueReading
 					text="Back to textbook"
 					variant="outline"
-					className="w-48 hidden md:block"
+					className="hidden md:block"
 				/>
 			</div>
 			<DashboardNavMenu user={user} {...props} />

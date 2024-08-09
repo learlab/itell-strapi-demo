@@ -2,7 +2,6 @@
 
 import { getTeacherByClassAction } from "@/actions/dashboard";
 import { InternalError } from "@/components/interval-error";
-import { Spinner } from "@/components/spinner";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { JoinClassModal } from "@dashboard/join-class-modal";
 import { Button } from "@itell/ui/client";
@@ -66,11 +65,8 @@ export const JoinClassForm = ({ user }: Props) => {
 					defaultValue={join_class_code || ""}
 				/>
 				{isError && <InternalError />}
-				<Button disabled={isPending} type="submit">
-					<span className="flex items-center gap-2">
-						{isPending && <Spinner />}
-						Submit
-					</span>
+				<Button disabled={isPending} type="submit" pending={isPending}>
+					Submit
 				</Button>
 			</form>
 			{/* dialog to confirm joining a class */}

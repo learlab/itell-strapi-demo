@@ -3,7 +3,6 @@
 import { createQuestionAnswerAction } from "@/actions/question";
 import { InternalError } from "@/components/interval-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
@@ -12,7 +11,6 @@ import {
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import { LoginButton } from "@auth//auth-form";
 import { useDebounce } from "@itell/core/hooks";
 import {
 	Button,
@@ -23,7 +21,7 @@ import {
 	StatusButton,
 	TextArea,
 } from "@itell/ui/client";
-import { Card, CardContent, Warning } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { KeyRoundIcon, PencilIcon } from "lucide-react";
@@ -187,13 +185,13 @@ export const QuestionBoxReread = ({
 						{state.status === StatusReread.ANSWERED && (
 							<HoverCard>
 								<HoverCardTrigger asChild>
-									<Button variant={"outline"} type="button">
+									<Button
+										variant={"outline"}
+										type="button"
+										disabled={isPending}
+									>
 										<span className="flex items-center gap-2">
-											{isPending ? (
-												<Spinner />
-											) : (
-												<KeyRoundIcon className="size-4" />
-											)}
+											<KeyRoundIcon className="size-4" />
 											Reveal Answer
 										</span>
 									</Button>
@@ -209,7 +207,6 @@ export const QuestionBoxReread = ({
 							type="submit"
 							disabled={_isPending}
 							variant={"outline"}
-							className="w-32"
 						>
 							<span className="flex items-center gap-2">
 								<PencilIcon className="size-4" />

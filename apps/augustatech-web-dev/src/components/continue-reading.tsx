@@ -1,31 +1,20 @@
-"use client";
-
-import { useLastVisitedPage } from "@/lib/hooks/use-last-visited-page";
+import { getSession } from "@/lib/auth";
 import { firstPage } from "@/lib/pages";
-import { Button, StatusButton } from "@itell/ui/client";
-import { useRouter } from "next/navigation";
-import React, { useTransition } from "react";
+import { makePageHref } from "@/lib/utils";
+import { Button } from "@itell/ui/client";
+import React from "react";
+import { NavigationButton } from "./navigation-button";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
 	text?: string;
 }
 
-export const ContinueReading = ({ text, ...rest }: Props) => {
-	const href = useLastVisitedPage();
-	const router = useRouter();
-	const [pending, startTransition] = useTransition();
+export const ContinueReading = async ({ text, ...rest }: Props) => {
+	const { user } = await getSession();
+	const href = user?.pageSlug ? makePageHref(user.pageSlug) : firstPage.href;
 	return (
-		<StatusButton
-			pending={pending}
-			disabled={pending}
-			size={"lg"}
-			onClick={() => {
-				const dst = href || firstPage.href;
-				startTransition(() => router.push(dst));
-			}}
-			{...rest}
-		>
-			{text || (href ? "Continue Reading" : "Start Reading")}
-		</StatusButton>
+		<NavigationButton href={href} size={"lg"} {...rest}>
+			{text || (user ? "Continue Reading" : "Start Reading")}
+		</NavigationButton>
 	);
 };

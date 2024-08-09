@@ -1,5 +1,4 @@
 import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assignments";
-import { SelectionPopover } from "@/app/(textbook)/[slug]/_components/selection-popover";
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
@@ -20,6 +19,7 @@ import { PageStatusModal } from "@textbook/page-status-modal";
 import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
+import { SelectionPopover } from "@textbook/selection-popover";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { NoteLoader } from "./_components/note/note-loader";

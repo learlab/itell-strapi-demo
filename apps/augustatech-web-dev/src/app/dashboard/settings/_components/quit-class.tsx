@@ -2,11 +2,8 @@
 
 import { updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
-import { Spinner } from "@/components/spinner";
-import { isProduction } from "@/lib/constants";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -44,6 +41,7 @@ export const QuitClass = () => {
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
 					<Button
 						disabled={isPending}
+						pending={isPending}
 						onClick={async () => {
 							const [_, err] = await execute({ classId: null });
 							if (!err) {
@@ -51,10 +49,7 @@ export const QuitClass = () => {
 							}
 						}}
 					>
-						<span className="flex items-center gap-2">
-							{isPending && <Spinner />}
-							Confirm
-						</span>
+						Confirm
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>

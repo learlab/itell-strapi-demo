@@ -2,7 +2,6 @@
 
 import { createQuestionFeedbackAction } from "@/actions/question";
 import { InternalError } from "@/components/interval-error";
-import { Spinner } from "@/components/spinner";
 import {
 	Dialog,
 	DialogContent,
@@ -109,13 +108,9 @@ export const QuestionFeedback = ({ type, pageSlug, chunkSlug }: Props) => {
 						</InternalError>
 					)}
 					<div className="flex justify-end">
-						<Button type="submit" disabled={pending}>
+						<Button type="submit" disabled={pending} pending={pending}>
 							<span className="flex items-center gap-2">
-								{pending ? (
-									<Spinner />
-								) : (
-									<SendHorizontalIcon className="size-4" />
-								)}
+								<SendHorizontalIcon className="size-4" />
 								Submit feedback
 							</span>
 						</Button>

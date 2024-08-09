@@ -2,7 +2,6 @@
 
 import { updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
-import { Spinner } from "@/components/spinner";
 import { reportSentry } from "@/lib/utils";
 import {
 	AlertDialog,
@@ -93,12 +92,10 @@ export const JoinClassModal = ({
 						<Button
 							onClick={joinClass}
 							disabled={isPending}
+							pending={isPending}
 							className="bg-primary focus:ring-primary"
 						>
-							<span className="flex items-center gap-2">
-								{isPending && <Spinner />}
-								Confirm
-							</span>
+							Confirm
 						</Button>
 					)}
 				</AlertDialogFooter>
