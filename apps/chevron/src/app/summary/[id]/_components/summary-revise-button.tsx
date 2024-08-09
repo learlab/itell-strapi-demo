@@ -13,6 +13,7 @@ export const SummaryReviseButton = ({
 			href={`${makePageHref(pageSlug)}#${
 				Elements.PAGE_ASSIGNMENTS
 			}?summary=${buf.toString("base64")}`}
+			size={"default"}
 		>
 			Revise this summary
 		</NavigationButton>

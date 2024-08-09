@@ -10,7 +10,12 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
 	href: string;
 }
 
-export const NavigationButton = ({ children, href, ...props }: Props) => {
+export const NavigationButton = ({
+	children,
+	href,
+	onClick,
+	...props
+}: Props) => {
 	const [pending, startTransition] = useTransition();
 	const pendingDebounced = useDebounce(pending, 100);
 	const router = useRouter();
@@ -20,8 +25,9 @@ export const NavigationButton = ({ children, href, ...props }: Props) => {
 			disabled={pending}
 			size={"lg"}
 			{...props}
-			onClick={() => {
+			onClick={(e) => {
 				startTransition(() => {
+					onClick?.(e);
 					router.push(href);
 				});
 			}}
