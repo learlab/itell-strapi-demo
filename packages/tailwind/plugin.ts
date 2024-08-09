@@ -43,6 +43,7 @@ export default plugin(
 			},
 			"*": {
 				"border-color": "hsl(var(--border))",
+				"min-width": "0px",
 			},
 
 			body: {

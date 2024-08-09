@@ -514,16 +514,19 @@ const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 const goToQuestion = (question: StairsQuestion) => {
 	const el = getChunkElement(question.chunk);
 	if (el) {
-		scrollToElement(el);
-
 		driverObj.highlight({
 			element: el,
 			popover: {
 				description: "",
 			},
 		});
+		setTimeout(() => {
+			scrollToElement(el);
+		});
 	} else {
-		toast.warning("No question found, please revise your summary");
+		toast.warning(
+			"Please revise your summary with substantial changes and resubmit to unlock the next page",
+		);
 	}
 };
 

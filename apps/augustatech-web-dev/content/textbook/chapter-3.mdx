@@ -8,7 +8,7 @@ quiz: false
 <h2 className="sr-only" id="Chapter-introduction-236pt">Chapter introduction</h2>
 
 > "On two occasions I have been asked, ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’ \[...\] I am not able rightly to apprehend the kind of confusion of ideas that could provoke such a question."
-> 
+>
 > Charles Babbage, _Passages from the Life of a Philosopher (1864)_
 
 <Image
@@ -269,11 +269,11 @@ We could take the event of eating pizza and put that in a frequency table like t
 
 </Image>
 
-If we call that table $_n$_, we can compute $\\phi_$_ using the following formula:
+If we call that table $n$, we can compute $\phi$ using the following formula:
 
 $$
 
-\\phi = \\frac{n_{11}n_{00} - n_{10}n_{01}}{\\sqrt{(n_{1•} + n_{0•})(n_{•1} + n_{•0})(n_{1•} + n_{•1})(n_{0•} + n_{•0})}}
+\phi = \frac{n_{11} n_{00} - n_{10}n_{01}}{\sqrt{n_{1\boldsymbol{\cdot}}n_{0\boldsymbol{\cdot}}n_{\boldsymbol{\cdot}1}n_{\boldsymbol{\cdot}0}}}
 
 $$
 
@@ -283,7 +283,7 @@ The notation $n_{01}$ indicates the number of measurements where the first varia
 
 The value $n_{1•}$ refers to the sum of all measurements where the first variable is true, which is 5 in the example table. Likewise, $n_{•0}$ refers to the sum of the measurements where the second variable is false.
 
-So for the pizza table, the part above the division line (the dividend) would be $1 \\times 76 - 4 \\times 9 = 40$, and the part below it (the divisor) would be the square root of $5 \\times 85 \\times 10 \\times 80$, or $\\sqrt{340,000}$. This comes out to $\\phi \\approx 0.069$, which is tiny. Eating pizza does not appear to have influence on the transformations.
+So for the pizza table, the part above the division line (the dividend) would be $1 \times 76 - 4 \times 9 = 40$, and the part below it (the divisor) would be the square root of $5 \times 85 \times 10 \times 80$, or $\sqrt{340,000}$. This comes out to $\phi \approx 0.069$, which is tiny. Eating pizza does not appear to have influence on the transformations.
 </section>
 
 <section className="content-chunk" aria-labelledby="Computing-correlation-859t" data-subsection-id="Computing-correlation-859t" data-show-header="true">
@@ -706,7 +706,7 @@ JSON looks similar to JavaScript’s way of writing arrays and objects, with a f
 
 A journal entry might look like this when represented as JSON data:
 
-```javascript 
+```javascript
 {
   "squirrel": false,
   "events": ["work", "touched tree", "pizza", "running"]

@@ -319,7 +319,9 @@ const FinishReadingButton = ({
 const goToRandomChunk = (chunkSlug: string) => {
 	const el = getChunkElement(chunkSlug);
 	if (el) {
-		scrollToElement(el);
+		setTimeout(() => {
+			scrollToElement(el);
+		});
 		driverObj.highlight({
 			element: el,
 			popover: {
