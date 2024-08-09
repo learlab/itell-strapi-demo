@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@/components/spinner";
 import { isProduction } from "@/lib/constants";
 import { updateUser } from "@/lib/user/actions";
 import {
@@ -43,6 +42,8 @@ export const QuitClass = ({ userId }: { userId: string }) => {
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
 					<AlertDialogAction asChild>
 						<Button
+							pending={isLoading}
+							disabled={isLoading}
 							onClick={async () => {
 								setIsLoading(true);
 								await updateUser(userId, { classId: null });
@@ -51,7 +52,6 @@ export const QuitClass = ({ userId }: { userId: string }) => {
 								router.refresh();
 							}}
 						>
-							{isLoading && <Spinner className="inline mr-2" />}
 							Confirm
 						</Button>
 					</AlertDialogAction>

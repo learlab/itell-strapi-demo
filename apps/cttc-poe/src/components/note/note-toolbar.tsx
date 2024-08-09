@@ -155,13 +155,13 @@ export const NoteToolbar = ({ pageSlug, userId }: Props) => {
 							setPending(undefined);
 						}}
 						key={command.label}
+						disabled={pending === command.label}
+						pending={pending === command.label}
 					>
-						{pending === command.label ? (
-							<Spinner className="size-4" />
-						) : (
-							command.icon
-						)}
-						{command.label}
+						<span className="inline-flex items-center justify-center gap-2">
+							{command.icon}
+							{command.label}
+						</span>
 					</Button>
 				))}
 			</div>,

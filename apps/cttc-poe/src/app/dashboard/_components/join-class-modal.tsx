@@ -12,6 +12,7 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
+	Button,
 } from "@itell/ui/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -79,14 +80,13 @@ export const JoinClassModal = ({
 				<AlertDialogFooter>
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
 					{canJoinClass && (
-						<AlertDialogAction
+						<Button
 							onClick={joinClass}
 							disabled={joinClassLoading}
-							className="bg-primary focus:ring-primary"
+							pending={joinClassLoading}
 						>
-							{joinClassLoading && <Spinner className="mr-2 inline" />}
 							Confirm
-						</AlertDialogAction>
+						</Button>
 					)}
 				</AlertDialogFooter>
 			</AlertDialogContent>

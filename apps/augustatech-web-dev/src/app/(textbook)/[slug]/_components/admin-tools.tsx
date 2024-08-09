@@ -105,7 +105,7 @@ export const AdminTools = ({ condition }: Props) => {
 					variant="ghost"
 					className="flex justify-start w-full px-1 py-2 xl:text-lg"
 				>
-					<span className="inline-flex items-center gap-2 xl:gap-4 ">
+					<span className="inline-flex items-center justify-center gap-2 xl:gap-4 ">
 						<SettingsIcon className="size-4 xl:size-6" />
 						<span>Admin tools</span>
 					</span>

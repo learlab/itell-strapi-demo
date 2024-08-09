@@ -85,8 +85,7 @@ export const QuestionFeedback = ({
 						))}
 					</div>
 					<div className="flex justify-end">
-						<Button type="submit" disabled={pending}>
-							{pending && <Spinner className="inline mr-2" />}
+						<Button type="submit" disabled={pending} pending={pending}>
 							Submit feedback
 						</Button>
 					</div>

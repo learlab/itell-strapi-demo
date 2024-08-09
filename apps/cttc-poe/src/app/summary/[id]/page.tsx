@@ -76,7 +76,7 @@ export default async function ({ params }: PageProps) {
 					>
 						{summary.createdAt.toLocaleDateString()}
 					</time>
-					<div className="max-w-2xl mx-auto">
+					<div className="max-w-2xl mx-auto space-y-2">
 						<p>{summary.text}</p>
 						<div className="flex justify-end">
 							<SummaryReviseButton

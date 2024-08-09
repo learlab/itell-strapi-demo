@@ -42,7 +42,7 @@ import { Warning } from "@itell/ui/server";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
-import { FileQuestionIcon } from "lucide-react";
+import { FileQuestionIcon, SendHorizonalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
@@ -504,7 +504,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					{state.error && <Warning>{ErrorFeedback[state.error]}</Warning>}
 					<div className="flex justify-end">
 						<StatusButton disabled={!isSummaryReady} pending={isPending}>
-							Submit
+							<span className="inline-flex items-center justify-center gap-2">
+								<SendHorizonalIcon className="size-4" />
+								Submit
+							</span>
 						</StatusButton>
 					</div>
 				</form>

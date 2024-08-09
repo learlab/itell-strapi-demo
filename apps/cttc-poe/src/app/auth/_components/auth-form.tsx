@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@/components/spinner";
 import { logout } from "@/lib/auth/actions";
 import { Button } from "@itell/ui/client";
 import Image from "next/image";
@@ -37,10 +36,9 @@ export const GoogleLoginButton = () => {
 			}}
 			variant={"outline"}
 			disabled={pending}
+			pending={pending}
 		>
-			{pending ? (
-				<Spinner className="size-4 mr-2" />
-			) : (
+			<span className="inline-flex items-center">
 				<Image
 					alt="Google Icon"
 					src="/icons/google.png"
@@ -48,8 +46,8 @@ export const GoogleLoginButton = () => {
 					height={16}
 					className="mr-2"
 				/>
-			)}
-			<span>Google</span>
+				<span>Google</span>
+			</span>
 		</Button>
 	);
 };
@@ -67,9 +65,9 @@ export const LoginButton = () => {
 			}}
 			variant={"outline"}
 			disabled={pending}
+			pending={pending}
 		>
-			{pending && <Spinner className="size-4 mr-2" />}
-			<span>Log in</span>
+			Log in
 		</Button>
 	);
 };
@@ -88,9 +86,9 @@ export const LogoutButton = () => {
 			}}
 			disabled={pending}
 			variant={"outline"}
+			pending={pending}
 		>
-			{pending && <Spinner className="size-4 mr-2" />}
-			<span>Log out</span>
+			Log out
 		</Button>
 	);
 };

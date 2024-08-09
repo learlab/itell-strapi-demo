@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@/components/spinner";
 import { User } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { updateUser } from "@/lib/user/actions";
@@ -34,8 +33,8 @@ type FormState = { error: null | string };
 const SubmitButton = () => {
 	const { pending } = useFormStatus();
 	return (
-		<Button disabled={pending}>
-			{pending && <Spinner className="mr-2 size-4" />} Save
+		<Button disabled={pending} pending={pending}>
+			Save
 		</Button>
 	);
 };

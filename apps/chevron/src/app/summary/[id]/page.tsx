@@ -77,7 +77,7 @@ export default async function ({ params }: PageProps) {
 						<p className="sr-only">summary text</p>
 						<p>{summary.text}</p>
 					</div>
-					<div className="flex justify-end">
+					<div className="flex justify-end mt-2">
 						<SummaryReviseButton
 							pageSlug={summary.pageSlug}
 							text={summary.text}

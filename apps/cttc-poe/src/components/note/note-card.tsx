@@ -219,7 +219,7 @@ export const NoteCard = React.memo(
 		return (
 			<div
 				className={cn(
-					"absolute w-full rounded-md border-2 bg-background",
+					"absolute rounded-md border-2 bg-background w-48",
 					editState.collapsed ? "z-10" : "z-20",
 					isHidden && "hidden",
 				)}
@@ -342,8 +342,15 @@ const NoteFooter = ({
 					onDelete={onDelete}
 				/>
 				{isEditing && (
-					<Button disabled={pending} variant="ghost" size="sm" type="submit">
-						{pending ? <Spinner /> : <ForwardIcon className="size-4" />}
+					<Button
+						disabled={pending}
+						variant="ghost"
+						size="sm"
+						type="submit"
+						pending={pending}
+						aria-label="save"
+					>
+						<ForwardIcon className="size-4" />
 					</Button>
 				)}
 			</div>

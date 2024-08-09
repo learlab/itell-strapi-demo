@@ -81,14 +81,13 @@ export const ExplainButton = ({
 				className="gap-2"
 				type="button"
 				disabled={formPending || isPending}
+				pending={isPending}
 				onClick={action}
 			>
-				{isPending ? (
-					<Spinner className="size-4" />
-				) : (
+				<span className="inline-flex items-center justify-center gap-2">
 					<HelpCircleIcon className="size-4" />
-				)}
-				How can I improve my answer?
+					How can I improve my answer?
+				</span>
 			</Button>
 
 			{isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}

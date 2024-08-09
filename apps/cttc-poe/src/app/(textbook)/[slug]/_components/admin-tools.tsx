@@ -62,7 +62,7 @@ const RestartTextbook = ({ userId }: { userId: string }) => {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
-					<AlertDialogAction
+					<Button
 						disabled={pending}
 						onClick={() => {
 							startTransition(async () => {
@@ -71,9 +71,10 @@ const RestartTextbook = ({ userId }: { userId: string }) => {
 								window.location.href = makePageHref(pageSlug);
 							});
 						}}
+						pending={pending}
 					>
-						{pending && <Spinner className="inline mr-2" />} Continue
-					</AlertDialogAction>
+						Continue
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
@@ -141,7 +142,9 @@ export const AdminTools = ({ userId, condition }: Props) => {
 					variant="ghost"
 					className="flex justify-start items-center gap-2 w-full px-1 py-2"
 				>
-					<SettingsIcon className="size-4" /> Admin tools
+					<span className="inline-flex justify-center items-center gap-2">
+						<SettingsIcon className="size-4" /> Admin tools
+					</span>
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="overflow-y-scroll">
@@ -220,11 +223,8 @@ export const AdminTools = ({ userId, condition }: Props) => {
 					</fieldset>
 
 					<footer className="flex justify-end">
-						<Button type="submit" disabled={pending}>
-							<span className="flex items-center gap-2">
-								{pending && <Spinner className="size-4" />}
-								Save changes
-							</span>
+						<Button type="submit" disabled={pending} pending={pending}>
+							Save changes
 						</Button>
 					</footer>
 				</form>

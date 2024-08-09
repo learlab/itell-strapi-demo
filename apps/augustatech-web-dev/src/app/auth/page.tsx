@@ -85,7 +85,7 @@ export default async function ({ searchParams }: PageProps) {
 				<header>
 					<Link href="/" className={"absolute top-4 left-4 md:top-8 md:left-8"}>
 						<Button variant="ghost">
-							<span className="flex items-center gap-2">
+							<span className="flex items-center justify-center gap-2">
 								<ChevronLeftIcon />
 								Home
 							</span>

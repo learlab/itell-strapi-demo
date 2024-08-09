@@ -190,14 +190,13 @@ const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
 					window.location.reload();
 				});
 			}}
+			pending={pending}
 			disabled={pending}
 		>
-			{pending ? (
-				<Spinner className="size-4" />
-			) : (
+			<span className="inline-flex items-center justify-center gap-2">
 				<RotateCcwIcon className="size-4" />
-			)}
-			<span>Reset page</span>
+				Reset page
+			</span>
 		</Button>
 	);
 };

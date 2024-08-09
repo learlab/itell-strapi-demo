@@ -11,7 +11,7 @@ export const TextbookPageModal = ({
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="ghost" className="text-lg font-bold underline">
+				<Button variant="ghost" className="text-lg font-bold underline pl-0">
 					{title ? title : page.title}
 				</Button>
 			</DialogTrigger>

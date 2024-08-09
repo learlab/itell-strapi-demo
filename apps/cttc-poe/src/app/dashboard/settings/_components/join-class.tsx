@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@/components/spinner";
 import { User } from "@/drizzle/schema";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import { useSafeSearchParams } from "@/lib/navigation";
@@ -39,8 +38,8 @@ const onSubmit = async (
 export const SubmitButton = () => {
 	const { pending } = useFormStatus();
 	return (
-		<Button disabled={pending}>
-			{pending && <Spinner className="inline-flex mr-2" />}Submit
+		<Button disabled={pending} pending={pending}>
+			Submit
 		</Button>
 	);
 };

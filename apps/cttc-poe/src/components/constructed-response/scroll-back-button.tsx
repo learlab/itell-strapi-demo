@@ -16,13 +16,11 @@ export const ScrollBackButton = () => {
 	};
 
 	return (
-		<Button
-			onClick={scrollToCurrentChunk}
-			type="button"
-			className="flex gap-2 items-center justify-center uppercase"
-		>
-			<MoveUpIcon className="size-4" />
-			Back to current section
+		<Button onClick={scrollToCurrentChunk} type="button" className="uppercase">
+			<span className="inline-flex items-center gap-2">
+				<MoveUpIcon className="size-4" />
+				Back to current section
+			</span>
 		</Button>
 	);
 };

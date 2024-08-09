@@ -300,8 +300,10 @@ export const QuestionBoxStairs = ({
 							<HoverCard>
 								<HoverCardTrigger asChild>
 									<Button variant={"outline"} type="button">
-										<KeyRoundIcon className="size-4 mr-2" />
-										Reveal Answer
+										<span className="inline-flex items-center justify-center gap-2">
+											<KeyRoundIcon className="size-4 mr-2" />
+											Reveal Answer
+										</span>
 									</Button>
 								</HoverCardTrigger>
 								<HoverCardContent className="w-80">

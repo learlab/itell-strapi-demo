@@ -58,16 +58,17 @@ export const NoteDelete = ({
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
-					<AlertDialogAction
+					<Button
 						disabled={isLoading}
+						pending={isLoading}
 						onClick={async () => {
 							setIsLoading(true);
 							await onDelete();
 							setIsLoading(false);
 						}}
 					>
-						{isLoading ? <Spinner /> : <span>Delete</span>}
-					</AlertDialogAction>
+						Delete
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
