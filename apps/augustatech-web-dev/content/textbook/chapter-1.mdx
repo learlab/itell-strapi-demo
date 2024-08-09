@@ -34,11 +34,11 @@ In some cases, JavaScript allows you to omit the semicolon at the end of a state
 ## Bindings \{#Bindings-776t}
 How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a binding, or variable.
 
-```javascript caption="create variable bindings via the `let` keyword"
+```javascript caption="create variable bindings via the let keyword"
 let caught = 5 * 5;
 ```
 
-That gives us a second kind of statement. The special word (keyword) let indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an `=` operator and an expression.
+That gives us a second kind of statement. The special word (keyword) `let` indicates that this sentence is going to define a binding. It is followed by the name of the binding and, if we want to immediately give it a value, by an `=` operator and an expression.
 
 The example creates a binding called caught and uses it to grab hold of the number that is produced by multiplying 5 by 5.
 
@@ -146,7 +146,7 @@ console.log("the value of x is", x);
 // → the value of x is 30
 ```
 
-Though binding names cannot contain period characters, `console.lo`g does have one. This is because `console.log` isn’t a simple binding, but an expression that retrieves the `log` property from the value held by the `console` binding. We’ll find out exactly what this means in Chapter 4.
+Though binding names cannot contain period characters, `console.log` does have one. This is because `console.log` isn’t a simple binding, but an expression that retrieves the `log` property from the value held by the `console` binding. We’ll find out exactly what this means in [Chapter 4](https://itell-augustatech-web-dev.vercel.app/4-data-structures-objects-and-arrays).
 </section>
 
 <section className="content-chunk" aria-labelledby="Return-Values-781t" data-subsection-id="Return-Values-781t" data-show-header="true">
@@ -165,7 +165,7 @@ console.log(Math.min(2, 4) + 100);
 // → 102
 ```
 
-Chapter 3 will explain how to write your own functions.
+[Chapter 3](https://itell-augustatech-web-dev.vercel.app/functions-1) will explain how to write your own functions.
 </section>
 
 <section className="content-chunk" aria-labelledby="Control-Flow-782t" data-subsection-id="Control-Flow-782t" data-show-header="true">
@@ -492,7 +492,7 @@ fuzzyLittleTurtle
 
 The first style can be hard to read. I rather like the look of the underscores, though that style is a little painful to type. The standard JavaScript functions, and most JavaScript programmers, follow the final style—they capitalize every word except the first. It is not hard to get used to little things like that, and code with mixed naming styles can be jarring to read, so we follow this convention.
 
-In a few cases, such as the Number function, the first letter of a binding is also capitalized. This was done to mark this function as a constructor. It will become clear what a constructor is in Chapter 6. For now, the important thing is to not be bothered by this apparent lack of consistency.
+In a few cases, such as the Number function, the first letter of a binding is also capitalized. This was done to mark this function as a constructor. It will become clear what a constructor is in [Chapter 6](https://itell-augustatech-web-dev.vercel.app/6-the-secret-life-of-objects). For now, the important thing is to not be bothered by this apparent lack of consistency.
 </section>
 
 <section className="content-chunk" aria-labelledby="Comments-791t" data-subsection-id="Comments-791t" data-show-header="true">
@@ -545,9 +545,7 @@ It may be useful to know that you can find the length of a string by writing `.l
 
 ```javascript 
 let abc = "abc";
-
 console.log(abc.length);
-
 // → 3
 ```
 

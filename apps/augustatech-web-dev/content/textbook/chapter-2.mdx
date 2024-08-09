@@ -22,7 +22,7 @@ Typical adult English speakers have some 20,000 words in their vocabulary. Few p
 ## Defining a Function \{#Defining-a-Function-796t}
 A function definition is a regular binding where the value of the binding is a function. For example, this code defines square to refer to a function that produces the square of a given number:
 
-```javascript 
+```javascript caption="the function keyword defines a function that can take parameters"
 const square = function(x) {
   return x * x;
 };
@@ -33,7 +33,8 @@ A function is created with an expression that starts with the keyword `function`
 
 A function can have multiple parameters or no parameters at all. In the following example, `makeNoise` does not list any parameter names, whereas `roundTo` (which rounds n to the nearest multiple of `step`) lists two:
 
-```javascript {1}#a {8}#b
+```javascript {2}#a {9}#b caption="a function can take 0 parameters or multiple parameters"
+// 0 parameters
 const makeNoise = function() {
   console.log("Pling!");
 };
@@ -41,6 +42,7 @@ const makeNoise = function() {
 makeNoise();
 // → Pling!
 
+// 2 parameters
 const roundTo = function(n, step) {
   let remainder = n % step;
   return n - remainder + (remainder < step / 2 ? 0 : step);
@@ -63,7 +65,7 @@ Bindings created for function parameters or declared inside a function can be re
 
 Bindings declared with `let` and `const` are in fact local to the _block_ in which they are declared, so if you create one of those inside of a loop, the code before and after the loop cannot “see” it. In pre-2015 JavaScript, only functions created new scopes, so old-style bindings, created with the `var` keyword, are visible throughout the whole function in which they appear—or throughout the global scope, if they are not in a function.
 
-```javascript caption="let and const bindings are local to the block in which they are declared, whereas var variables created outside of functions are global"
+```javascript {1,3-4} caption="let and const bindings are local to the block in which they are declared, whereas var variables created outside of functions are global"
 let x = 10;   // global
 if (true) {
   let y = 20; // local to block
@@ -90,8 +92,9 @@ JavaScript distinguishes not just global and local bindings. Blocks and function
 
 For example, this function—which outputs the ingredients needed to make a batch of hummus—has another function inside it:
 
-```javascript 
+```javascript caption="the ingredient function is defined inside the hummus function, capturing the factor binding of the hummus function"
 const hummus = function(factor) {
+  // define a function inside a function
   const ingredient = function(amount, unit, name) {
     let ingredientAmount = amount * factor;
     if (ingredientAmount > 1) {
@@ -119,7 +122,7 @@ A function binding usually simply acts as a name for a specific piece of the pro
 
 But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary expressions, not just call it. It is possible to store a function value in a new binding, pass it as an argument to a function, and so on. Similarly, a binding that holds a function is still just a regular binding and can, if not constant, be assigned a new value, like so:
 
-```javascript 
+```javascript caption="rebind a variable to a different function"
 let launchMissiles = function() {
   missileSystem.launch("now");
 };
@@ -128,7 +131,7 @@ if (safeMode) {
 }
 ```
 
-In Chapter 5, we’ll discuss the interesting things that we can do by passing around function values to other functions.
+In [Chapter 5](https://itell-augustatech-web-dev.vercel.app/5-higher-order-functions), we’ll discuss the interesting things that we can do by passing around function values to other functions.
 </section>
 
 <section className="content-chunk" aria-labelledby="Declaration-Notation-800t" data-subsection-id="Declaration-Notation-800t" data-show-header="true">
@@ -158,7 +161,7 @@ The preceding code works, even though the function is defined _below_ the code t
 ## Arrow Functions \{#Arrow-Functions-801t}
 There’s a third notation for functions, which looks very different from the others. Instead of the `function` keyword, it uses an arrow (`=>`) made up of an equal sign and a greater-than character (not to be confused with the greater-than-or-equal operator, which is written `>=`):
 
-```javascript 
+```javascript caption="an arrow function definition"
 const roundTo = (n, step) => {
   let remainder = n % step;
   return n - remainder + (remainder < step / 2 ? 0 : step);
@@ -169,18 +172,20 @@ The arrow comes _after_ the list of parameters and is followed by the function�
 
 When there is only one parameter name, you can omit the parentheses around the parameter list. If the body is a single expression rather than a block in braces, that expression will be returned from the function. So, these two definitions of `square` do the same thing:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`const square1 = (x) => { return x * x; };
-const square2 = x => x * x;`}/>
+```javascript caption="when the function body is a single expression, braces and the return keyword can be omitted"
+const square1 = (x) => { return x * x; };
+const square2 = x => x * x;
+```
 
 When an arrow function has no parameters at all, its parameter list is just an empty set of parentheses.
 
-```javascript 
+```javascript caption="an arrow function with no parameters"
 const horn = () => {
   console.log("Toot");
 };
 ```
 
-There’s no deep reason to have both arrow functions and `function` expressions in the language. Apart from a minor detail, which we’ll discuss in Chapter 6, they do the same thing. Arrow functions were added in 2015, mostly to make it possible to write small function expressions in a less verbose way. We’ll use them often in Chapter 5.
+There’s no deep reason to have both arrow functions and `function` expressions in the language. Apart from a minor detail, which we’ll discuss in [Chapter 6](https://itell-augustatech-web-dev.vercel.app/6-the-secret-life-of-objects), they do the same thing. Arrow functions were added in 2015, mostly to make it possible to write small function expressions in a less verbose way. We’ll use them often in Chapter 5.
 </section>
 
 <section className="content-chunk" aria-labelledby="The-Call-Stack-804t" data-subsection-id="The-Call-Stack-804t" data-show-header="true">
@@ -217,7 +222,7 @@ The place where the computer stores this context is the _call stack_. Every time
 
 Storing this stack requires space in the computer’s memory. When the stack grows too big, the computer will fail with a message like “out of stack space” or “too much recursion”. The following code illustrates this by asking the computer a really hard question that causes an infinite back-and-forth between two functions. Or rather, it would be infinite, if the computer had an infinite stack. As it is, we will run out of space, or “blow the stack”.
 
-```javascript 
+```javascript caption="a scenario where two functions repeatedly call each other and eventually cause a stack overflow"
 function chicken() {
   return egg();
 }
@@ -267,7 +272,7 @@ console.log(roundTo(4.5, 2));
 
 The next chapter will introduce a way in which a function body can get at the whole list of arguments it was passed. This is helpful because it allows a function to accept any number of arguments. For example, `console.log` does this, outputting all the values it is given:
 
-```javascript 
+```javascript caption="console.log can take an arbitrary number of arguments"
 console.log("C", "O", 2);
 // → C O 2
 ```
@@ -324,7 +329,7 @@ It is perfectly okay for a function to call itself, as long as it doesn’t do i
 console.log(power(2, 3));
 // → 8`}/>
 
-This is rather close to the way mathematicians define exponentiation and arguably describes the concept more clearly than the loop we used in Chapter 2. The function calls itself multiple times with ever smaller exponents to achieve the repeated multiplication.
+This is rather close to the way mathematicians define exponentiation and arguably describes the concept more clearly than the loop we used in [Chapter 2](https://itell-augustatech-web-dev.vercel.app/values-types-and-operators). The function calls itself multiple times with ever smaller exponents to achieve the repeated multiplication.
 
 However, this implementation has one problem: in typical JavaScript implementations, it’s about three times slower than a version using a `for` loop. Running through a simple loop is generally cheaper than calling a function multiple times.
 
@@ -407,18 +412,18 @@ We want to write a program that prints two numbers: the numbers of cows and chic
 This asks for a function of two arguments—the number of cows and the number of chickens. Let’s get coding.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function printFarmInventory(cows, chickens) {
- let cowString = String(cows);
- while (cowString.length < 3) {
-   cowString = "0" + cowString;
- }
- console.log(\`\${cowString} Cows\`);
- let chickenString = String(chickens);
- while (chickenString.length < 3) {
-   chickenString = "0" + chickenString;
- }
- console.log(\`\${chickenString} Chickens\`);
+  let cowString = String(cows)
+  while (cowString.length < 3) {
+    cowString = "0" + cowString
+  }
+  console.log(`${cowString} Cows`)
+  let chickenString = String(chickens)
+  while (chickenString.length < 3) {
+    chickenString = "0" + chickenString
+  }
+  console.log(`${chickenString} Chickens`)
 }
-printFarmInventory(7, 11);`}/>
+printFarmInventory(7, 11)`}/>
 
 Writing `.length` after a string expression will give us the length of that string. Thus, the `while` loops keep adding zeros in front of the number strings until they are at least three characters long.
 
