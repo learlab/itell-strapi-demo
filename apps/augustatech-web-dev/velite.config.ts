@@ -1,10 +1,13 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import GithubSlugger from "github-slugger";
+import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
+import remarkMath from "remark-math";
+
 import { defineCollection, defineConfig, defineSchema, s } from "velite";
 
 const execAsync = promisify(exec);
@@ -74,12 +77,16 @@ const home = defineCollection({
 export default defineConfig({
 	root: "./content",
 	collections: { pages, guides, home },
+
 	mdx: {
+		gfm: false,
 		// @ts-ignore
-		remarkPlugins: [remarkGfm, remarkHeadingId],
+		remarkPlugins: [remarkGfm, remarkMath, remarkHeadingId],
 		rehypePlugins: [
 			// @ts-ignore
 			rehypeSlug,
+			// @ts-ignore
+			rehypeKatex,
 			() =>
 				rehypePrettyCode({
 					theme: {

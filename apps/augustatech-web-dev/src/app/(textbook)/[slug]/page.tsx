@@ -77,7 +77,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageContent title={page.title} code={page.code} />
 					<SelectionPopover user={user} pageSlug={pageSlug} />
 					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />
-					<p className="text-right text-sm text-muted-foreground">
+					<p className="text-right text-sm text-muted-foreground mt-4">
 						<span>Last updated at </span>
 						<time>{page.last_modified}</time>
 					</p>

@@ -5,6 +5,18 @@
 @import url("@itell/ui/dist/style.css");
 @import url("@itell/js-sandbox/dist/style.css");
 
+.prose code.language-math::before {
+  content: none;
+}
+
+.prose code.language-math::after {
+  content: none;
+}
+
+.prose pre:has(code.language-math) {
+  @apply bg-background text-foreground
+}
+
 .console-viewer {
   user-select: none;
 }

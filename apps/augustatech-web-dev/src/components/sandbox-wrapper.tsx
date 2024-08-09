@@ -35,6 +35,7 @@ export const SandboxWrapper = async ({
 						pageSlug: pageSlug || "",
 						data: {
 							code,
+							id: editorId,
 						},
 					});
 				}

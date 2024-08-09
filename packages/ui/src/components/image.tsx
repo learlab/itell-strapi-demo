@@ -13,7 +13,7 @@ import {
 type ImageProps = {
 	src: string;
 	alt: string;
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	width?: number;
 	height?: number;
 	rounded?: boolean;
@@ -21,7 +21,7 @@ type ImageProps = {
 	floatRight?: boolean;
 	expandable?: boolean;
 	onExpandClick?: () => void;
-	caption?: boolean;
+	showCaption?: boolean;
 };
 
 export const Figure = ({
@@ -34,7 +34,7 @@ export const Figure = ({
 	floatLeft = false,
 	floatRight = false,
 	expandable = true,
-	caption = true,
+	showCaption = false,
 	onExpandClick,
 }: ImageProps) => {
 	return (
@@ -65,14 +65,14 @@ export const Figure = ({
 					</Button>
 				)}
 			</div>
-			{caption && (
+			{showCaption && (
 				<figcaption
 					className={cn(
 						"mt-2 text-sm text-center text-gray-500 dark:text-gray-400",
 						{ "md:w-72 lg:w-96": floatLeft || floatRight },
 					)}
 				>
-					{children}
+					{children || alt}
 				</figcaption>
 			)}
 		</figure>
@@ -97,7 +97,11 @@ export const Image = (props: Omit<ImageProps, "caption" | "onExpandClick">) => {
 					<DialogHeader>
 						<DialogDescription>{props.children}</DialogDescription>
 					</DialogHeader>
-					<Figure {...props} caption={false} expandable={false} />
+					<Figure
+						{...props}
+						showCaption={Boolean(props.alt)}
+						expandable={false}
+					/>
 				</DialogContent>
 			</Dialog>
 		</div>

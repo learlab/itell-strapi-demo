@@ -14,7 +14,6 @@ export const ContinueReading = ({ text, ...rest }: Props) => {
 	const href = useLastVisitedPage();
 	const router = useRouter();
 	const [pending, startTransition] = useTransition();
-	console.log(text || href ? "Continue Reading" : "Start Reading");
 	return (
 		<StatusButton
 			pending={pending}
