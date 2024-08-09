@@ -163,10 +163,10 @@ Luckily, since this is a common day-to-day task across the software team, a fell
   return result;
 }
 
-console.log(parseINI(`
+console.log(parseINI(\`
 name=Vasilis
 [address]
-city=Tessaloniki`));
+city=Tessaloniki\`));
 // → {name: "Vasilis", address: {city: "Tessaloniki"}}`}/>
 
 The function is working great! Now, if I need to parse a similar ini file, I could simply copy this function into my program and use it from there. But then, if I find a mistake in the code, I’ll probably fix it in whichever program I’m working with at the time and forget to also fix it in the other program.
