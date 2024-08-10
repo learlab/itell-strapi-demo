@@ -10,7 +10,13 @@ import {
 	DialogHeader,
 } from "./dialog";
 
-interface ImageProps extends React.ComponentProps<typeof NextImage> {
+interface ImageProps {
+	src: string;
+	alt: string;
+	width?: number;
+	height?: number;
+	layout?: "responsive" | "fill";
+	className?: string;
 	children?: React.ReactNode;
 	rounded?: boolean;
 	floatLeft?: boolean;
@@ -23,6 +29,10 @@ interface ImageProps extends React.ComponentProps<typeof NextImage> {
 export const Figure = ({
 	src,
 	alt,
+	width,
+	height,
+	layout,
+	className,
 	children,
 	rounded = true,
 	floatLeft = false,
@@ -30,7 +40,6 @@ export const Figure = ({
 	expandable = true,
 	showCaption = false,
 	onExpandClick,
-	...rest
 }: ImageProps) => {
 	return (
 		<figure
@@ -43,10 +52,13 @@ export const Figure = ({
 				<NextImage
 					className={cn("object-cover", {
 						"rounded-md": rounded,
+						className,
 					})}
 					src={src}
 					alt={alt}
-					{...rest}
+					width={width}
+					height={height}
+					layout={layout}
 				/>
 				{expandable && (
 					<Button

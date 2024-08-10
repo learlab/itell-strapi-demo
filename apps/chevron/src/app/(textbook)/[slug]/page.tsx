@@ -1,5 +1,3 @@
-import { PageAssignments } from "@/app/(textbook)/[slug]/_components/page-assignments";
-import { SelectionPopover } from "@/app/(textbook)/[slug]/_components/selection-popover";
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
 import { Condition, isProduction } from "@/lib/constants";
@@ -14,15 +12,17 @@ import { ChapterToc } from "@textbook/chapter-toc";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
 import { NoteCount } from "@textbook/note/note-count";
+import { NoteLoader } from "@textbook/note/note-loader";
+import { PageAssignments } from "@textbook/page-assignments";
 import { PageContent } from "@textbook/page-content";
 import { PageInfo } from "@textbook/page-info";
 import { PageStatusModal } from "@textbook/page-status-modal";
 import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
+import { SelectionPopover } from "@textbook/selection-popover";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { NoteLoader } from "./_components/note/note-loader";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const { slug } = routes.textbook.$parseParams(params);
