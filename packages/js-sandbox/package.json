@@ -28,9 +28,7 @@
 		},
 		"./dist/style.css": "./dist/style.css"
 	},
-	"keywords": [
-		"itell"
-	],
+	"keywords": ["itell"],
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^22.1.0",

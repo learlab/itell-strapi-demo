@@ -5,6 +5,23 @@
 @import url("@itell/ui/dist/style.css");
 @import url("@itell/js-sandbox/dist/style.css");
 
+details {
+  @apply p-4 rounded-md border select-none
+}
+
+details[open] {
+  @apply shadow-xl
+}
+
+details[open]>summary:before {
+  transform: rotate(90deg);
+}
+
+details summary {
+  @apply leading-6 font-semibold
+}
+
+
 .prose code.language-math::before {
   content: none;
 }

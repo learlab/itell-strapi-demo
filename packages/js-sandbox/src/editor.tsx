@@ -2,10 +2,11 @@
 import { Console as LogOutput } from "@itell/react-console-viewer";
 import { Button } from "@itell/ui/client";
 import { useSelector } from "@xstate/store/react";
-import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
+import { CodeIcon, RefreshCwIcon, Split, TriangleIcon } from "lucide-react";
 import { editor } from "monaco-editor";
 import dynamic from "next/dynamic";
 import { useCallback, useRef, useState } from "react";
+
 import { useSandbox } from "./provider";
 import { Spinner } from "./spinner";
 import { store } from "./store";
@@ -25,8 +26,6 @@ const Editor = dynamic(
 	},
 );
 
-const minHeight = 60;
-
 type Props = {
 	id: string;
 	code: string;
@@ -44,6 +43,8 @@ export const CodeEditor = ({
 	onRun,
 	...props
 }: Props) => {
+	const lines = code.split("\n").length;
+	const minHeight = lines <= 1 ? 240 : 60;
 	const { run } = useSandbox();
 	const [height, setHeight] = useState(props.height || minHeight);
 	const data = useSelector(store, (state) => state.context.entities[id]);
