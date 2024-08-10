@@ -38,7 +38,7 @@ export const MainMdx = ({
 	return (
 		<Comp
 			className={cn(
-				"prose prose-quoteless prose-neutral dark:prose-invert max-w-none xl:text-lg xl:leading-relaxed",
+				"prose prose-quoteless prose-neutral dark:prose-invert max-w-none md:text-lg md:leading-relaxed xl:text-xl xl:leading-loose",
 				className,
 			)}
 			aria-label={title}

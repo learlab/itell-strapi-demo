@@ -1,5 +1,3 @@
-"use client";
-
 import { Image } from "@itell/ui/client";
 import { cn } from "@itell/utils";
 import React from "react";
@@ -32,7 +30,7 @@ export const Mdx = ({
 		<Wrapper
 			{...rest}
 			className={cn(
-				"prose prose-quoteless prose-neutral dark:prose-invert max-w-none xl:text-lg xl:leading-relaxed",
+				"prose prose-quoteless prose-neutral dark:prose-invert max-w-none md:text-lg md:leading-relaxed xl:text-xl xl:leading-loose",
 				className,
 			)}
 		>

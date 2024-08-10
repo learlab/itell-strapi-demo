@@ -61,33 +61,35 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 	}, []);
 
 	return (
-		<div className="page-toc">
+		<div className="page-toc space-y-4 px-1">
 			<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
 				skip to main content
 			</a>
-			<p className="font-semibold mb-4">
-				<span className="flex items-center gap-2">
-					<BookmarkIcon className="size-4" />
-					On this page
-				</span>
-			</p>
-			<ol className="flex flex-col mt-2 list-none text-foreground/70 tracking-tight">
+			<div className="flex items-center gap-2">
+				<div className="rounded-full ring-2 ring-blue-400 size-3" />
+				<h3 className="font-semibold">On this page</h3>
+			</div>
+			<ol className="flex flex-col list-none text-foreground/70 tracking-tight">
 				{headings
 					.filter((heading) => heading.level !== "other")
 					.map((heading) => (
 						<li
 							key={heading.slug}
 							className={cn(
-								"hover:underline inline-flex py-0.5 px-1 my-1 transition-colors ease-out delay-150 ",
+								"hover:underline inline-flex py-0.5 my-1 transition-colors ease-out delay-150 ",
 								{
-									"text-base ml-2": heading.level === "two",
-									"text-sm ml-4": heading.level === "three",
-									"text-sm ml-5": heading.level === "four",
+									"text-base": heading.level === "two",
+									"text-sm ml-2": heading.level === "three",
+									"text-sm ml-4": heading.level === "four",
 									" text-sm ml-6": heading.level === "other",
 								},
 							)}
 						>
-							<a data-level={heading.level} href={`#${heading.slug}`}>
+							<a
+								data-level={heading.level}
+								href={`#${heading.slug}`}
+								className="text-pretty"
+							>
 								{heading.text}
 							</a>
 						</li>

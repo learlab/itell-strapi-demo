@@ -104,7 +104,7 @@ export const ChapterToc = ({
 									onClick={() => navigatePage(p.page_slug)}
 									disabled={(pending || !visible) && isProduction}
 									className={cn(
-										"w-full text-left text-balance inline-flex justify-between items-start text-lg xl:text-xl xl:gap-4 p-2",
+										"w-full text-left text-balance inline-flex justify-between items-start text-base lg:text-lg 2xl:text-xl xl:gap-4 p-2",
 										{
 											"animate-pulse": pending,
 										},
@@ -116,7 +116,12 @@ export const ChapterToc = ({
 									}`}
 								>
 									<span className="flex-1">{p.title}</span>
-									<span aria-hidden="true">
+									<span
+										className="hidden xl:inline"
+										aria-label={`${
+											unlocked ? "Unlocked" : visible ? "Visible" : "Locked"
+										}`}
+									>
 										{unlocked ? "✅" : visible ? "" : "🔒"}
 									</span>
 								</button>

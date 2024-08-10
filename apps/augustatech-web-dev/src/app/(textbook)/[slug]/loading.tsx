@@ -54,20 +54,16 @@ export default async function () {
 			</div>
 
 			<aside id={Elements.PAGE_NAV} aria-label="table of contents">
-				<div className="sticky top-20 -mt-10 pt-4">
-					<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12 px-4">
-						<p className="font-semibold mb-4">
-							<span className="flex items-center gap-2">
-								<BookmarkIcon className="size-4" />
-								On this page
-							</span>
-						</p>
-						<ul className="mt-2 space-y-2">
-							{arr.slice(0, 5).map((i) => (
-								<Skeleton className="w-36 h-7" key={i} />
-							))}
-						</ul>
+				<div className="sticky top-20 -mt-10 py-6 space-y-4 px-1">
+					<div className="flex items-center gap-2">
+						<div className="rounded-full ring-2 ring-blue-400 size-3" />
+						<h3 className="font-semibold">On this page</h3>
 					</div>
+					<ul className="space-y-2">
+						{arr.slice(0, 5).map((i) => (
+							<Skeleton className="w-36 h-7" key={i} />
+						))}
+					</ul>
 				</div>
 			</aside>
 		</main>

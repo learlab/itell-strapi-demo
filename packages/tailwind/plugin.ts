@@ -17,7 +17,7 @@ const extractCssVariables = (obj: ThemeColor) => {
 };
 
 export default plugin(
-	({ addBase, theme, config }) => {
+	({ addBase, config }) => {
 		const themeParsed = ThemeSchema.safeParse(config("itell.theme"));
 		let lightColors: Record<string, string> = {};
 		let darkColors: Record<string, string> = {};
@@ -128,18 +128,18 @@ export default plugin(
 				"z-index": "1",
 			},
 			[`#${Elements.TEXTBOOK_MAIN_WRAPPER}`]: {
-				"@apply grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_3.5fr_250px] gap-6 flex-1":
+				"@apply grid md:grid-cols-[minmax(200px,1fr)_minmax(auto,65ch)] lg:grid-cols-[1fr_3.5fr_minmax(auto,200px)] gap-2 lg:gap-4 flex-1":
 					{},
 			},
 			[`#${Elements.TEXTBOOK_NAV}`]: {
-				"@apply top-16 h-[calc(100vh-3.5rem)] lg:sticky lg:block hidden z-30 border-r-2":
+				"@apply top-16 h-[calc(100vh-3.5rem)] hidden sticky md:block z-30 border-r-2":
 					{},
 			},
 			[`#${Elements.TEXTBOOK_MAIN}`]: {
 				"@apply relative p-4 lg:p-8 lg:pb-12": {},
 			},
 			[`#${Elements.PAGE_NAV}`]: {
-				"@apply hidden md:block": {},
+				"@apply hidden lg:block": {},
 			},
 		});
 	},

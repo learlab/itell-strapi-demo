@@ -98,7 +98,7 @@ export const ChapterToc = ({
 											href={makePageHref(chapter.page_slug)}
 											className="flex px-1 py-2 items-center"
 										>
-											<p className="text-lg text-balance xl:text-xl 2xl:text-2xl">
+											<p className="text-lg xl:text-xl 2xl:text-2xl text-balance">
 												{chapter.title}
 											</p>
 										</Link>
@@ -135,14 +135,16 @@ export const ChapterToc = ({
 														onClick={() => navigatePage(item.page_slug)}
 														disabled={(pending || !visible) && isProduction}
 														className={cn(
-															"w-full text-left text-balance tracking-tight inline-flex items-end justify-between gap-1 xl:text-lg",
+															"w-full text-left text-balance tracking-tight inline-flex items-end justify-between gap-1 text-base xl:text-lg 2xl:text-xl",
 															{
 																"animate-pulse": pending,
 															},
 														)}
 													>
 														<span>{item.title}</span>
-														<span>{unlocked ? "✅" : visible ? "" : "🔒"}</span>
+														<span className="hidden xl:inline">
+															{unlocked ? "✅" : visible ? "" : "🔒"}
+														</span>
 													</button>
 												</li>
 											);
