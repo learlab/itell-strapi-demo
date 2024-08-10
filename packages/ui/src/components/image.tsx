@@ -10,32 +10,27 @@ import {
 	DialogHeader,
 } from "./dialog";
 
-type ImageProps = {
-	src: string;
-	alt: string;
+interface ImageProps extends React.ComponentProps<typeof NextImage> {
 	children?: React.ReactNode;
-	width?: number;
-	height?: number;
 	rounded?: boolean;
 	floatLeft?: boolean;
 	floatRight?: boolean;
 	expandable?: boolean;
 	onExpandClick?: () => void;
 	showCaption?: boolean;
-};
+}
 
 export const Figure = ({
 	src,
 	alt,
 	children,
-	width = 600,
-	height = 400,
 	rounded = true,
 	floatLeft = false,
 	floatRight = false,
 	expandable = true,
 	showCaption = false,
 	onExpandClick,
+	...rest
 }: ImageProps) => {
 	return (
 		<figure
@@ -51,8 +46,7 @@ export const Figure = ({
 					})}
 					src={src}
 					alt={alt}
-					width={width}
-					height={height}
+					{...rest}
 				/>
 				{expandable && (
 					<Button
