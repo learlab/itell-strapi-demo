@@ -12,12 +12,13 @@ A large program is a costly program, and not just because of the time it takes t
 Let’s briefly go back to the final two example programs in the introduction. The first is self contained and six lines long.
 
 ```javascript 
-let total = 0, count = 1;
-                while (count <= 10) {
-                  total += count;
-                  count += 1;
-                }
-                console.log(total);
+let total = 0,
+  count = 1
+while (count <= 10) {
+  total += count
+  count += 1
+}
+console.log(total)
 ```
 
 The second relies on two external functions and is one line long.
@@ -442,15 +443,17 @@ To be able to compute percentages, we first need the total number of characters 
 
 <section className="content-chunk" aria-labelledby="Exercises-227pt" data-subsection-id="Exercises-227pt" data-show-header="true">
 ## Exercises \{#Exercises-227pt}
-### **Flattening**
+#### **Flattening**
 
 Use the `reduce` method in combination with the `concat` method to “flatten” an array of arrays into a single array that has all the elements of the original arrays.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let arrays = [[1, 2, 3], [4, 5], [6]];
+
 // Your code here.
+
 // → [1, 2, 3, 4, 5, 6]`}/>
 
-### **Your own loop**
+#### **Your own loop**
 
 Write a higher-order function `loop` that provides something like a `for` loop statement. It should take a value, a test function, an update function, and a body function. Each iteration, it should first run the test function on the current loop value and stop if that returns `false`. It should then call the body function, giving it the current value, and finally call the update function to create a new value and start over from the beginning.
 
@@ -463,7 +466,7 @@ loop(3, n => n > 0, n => n - 1, console.log);
 // → 2
 // → 1`}/>
 
-### **Everything**
+#### **Everything**
 
 Arrays also have an `every` method analogous to the `some` method. This method returns `true` when the given function returns `true` for _every_ element in the array. In a way, `some` is a version of the `||` operator that acts on arrays, and `every` is like the `&&` operator.
 
@@ -479,16 +482,19 @@ console.log(every([2, 4, 16], n => n < 10));
 // → false
 console.log(every([], n => n < 10));
 // → true`}/>
-
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
 Like the `&&` operator, the `every` method can stop evaluating further elements as soon as it has found one that doesn’t match. So the loop-based version can jump out of the loop—with `break` or `return`—as soon as it runs into an element for which the predicate function returns `false`. If the loop runs to its end without finding such an element, we know that all elements matched and we should return `true`.
 
 To build `every` on top of `some`, we can apply _De Morgan’s laws_, which state that `a && b` equals `!(!a || !b)`. This can be generalized to arrays, where all elements in the array match if there is no element in the array that does not match.
+</AccordionItem>
+</Accordion>
 
-### **Dominant writing direction**
+#### **Dominant writing direction**
 
 Write a function that computes the dominant writing direction in a string of text. Remember that each script object has a `direction` property that can be `"ltr"` (left to right), `"rtl"` (right to left), or `"ttb"` (top to bottom).
 
-The dominant direction is the direction of a majority of the characters that have a script associated with them. The `characterScript` and `countBy`functions defined earlier in the chapter are probably useful here.
+The dominant direction is the direction of a majority of the characters that have a script associated with them. The `characterScript` and `countBy` functions defined earlier in the chapter are probably useful here.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function dominantDirection(text) {
   // Your code here.
@@ -498,9 +504,12 @@ console.log(dominantDirection("Hello!"));
 // → ltr
 console.log(dominantDirection("Hey, مساء الخير"));
 // → rtl`}/>
-
-Your solution might look a lot like the first half of the `textScripts` example. You again have to count characters by a criterion based on `characterScript`and then filter out the part of the result that refers to uninteresting (script-less) characters.
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
+Your solution might look a lot like the first half of the `textScripts` example. You again have to count characters by a criterion based on `characterScript` and then filter out the part of the result that refers to uninteresting (script-less) characters.
 
 Finding the direction with the highest character count can be done with `reduce`. If it’s not clear how, refer to the example earlier in the chapter, where `reduce` was used to find the script with the most characters.
+</AccordionItem>
+</Accordion>
 </section>
 

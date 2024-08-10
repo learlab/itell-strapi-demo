@@ -630,14 +630,21 @@ Give the `Vec` prototype two methods, `plus` and `minus`, that take another vect
 
 Add a getter property `length` to the prototype that computes the length of the vector—that is, the distance of the point (_x_, _y_) from the origin (0, 0).
 
-```javascript 
+<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here
+
 console.log(new Vec(1, 2).plus(new Vec(2, 3)));
 // → Vec{x: 3, y: 5}
 console.log(new Vec(1, 2).minus(new Vec(2, 3)));
 // → Vec{x: -1, y: -1}
 console.log(new Vec(3, 4).length);
-// → 5
-```
+// → 5`}/>
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
+Look back to the `Rabbit` class example if you’re unsure how `class` declarations look.
+
+Adding a getter property to the constructor can be done by putting the word `get` before the method name. To compute the distance from (0, 0) to (x, y), you can use the Pythagorean theorem, which says that the square of the distance we are looking for is equal to the square of the x-coordinate plus the square of the y-coordinate. Thus, √(x2 \+ y2) is the number you want. `Math.sqrt` is the way you compute a square root in JavaScript and `x ** 2` can be used to square a number.
+</AccordionItem>
+</Accordion>
 
 ### **Groups**
 
@@ -649,8 +656,7 @@ Use the `===` operator, or something equivalent such as `indexOf`, to determine 
 
 Give the class a static `from` method that takes an iterable object as its argument and creates a group that contains all the values produced by iterating over it.
 
-```javascript 
-class Group {
+<Sandbox pageSlug="test-page-no-chunks" code={`class Group {
   // Your code here.
 }
 
@@ -662,8 +668,18 @@ console.log(group.has(30));
 group.add(10);
 group.delete(10);
 console.log(group.has(10));
-// → false
-```
+// → false`}/>
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
+The easiest way to do this is to store an array of group members in an instance property. The `includes` or `indexOf` methods can be used to check whether a given value is in the array.
+
+Your class’s constructor can set the member collection to an empty array. When `add` is called, it must check whether the given value is in the array or add it otherwise, possibly using `push`.
+
+Deleting an element from an array, in `delete`, is less straightforward, but you can use `filter` to create a new array without the value. Don’t forget to overwrite the property holding the members with the newly filtered version of the array.
+
+The `from` method can use a `for`/`of` loop to get the values out of the iterable object and call `add` to put them into a newly created group.
+</AccordionItem>
+</Accordion>
 
 ### **Iterable groups**
 
@@ -673,15 +689,20 @@ If you used an array to represent the group’s members, don’t just return the
 
 It is okay if your iterator behaves strangely when the group is modified during iteration.
 
-```javascript 
-// Your code here (and the code from the previous exercise)
+<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here (and the code from the previous exercise)
 
 for (let value of Group.from(["a", "b", "c"])) {
   console.log(value);
 }
 // → a
 // → b
-// → c
-```
+// → c`}/>
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
+It is probably worthwhile to define a new class `GroupIterator`. Iterator instances should have a property that tracks the current position in the group. Every time `next` is called, it checks whether it is done and, if not, moves past the current value and returns it.
+
+The `Group` class itself gets a method named by `Symbol.iterator` that, when called, returns a new instance of the iterator class for that group.
+</AccordionItem>
+</Accordion>
 </section>
 
