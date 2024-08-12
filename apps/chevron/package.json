@@ -28,10 +28,7 @@
 		"D": "^1.0.0",
 		"arctic": "2.0.0-next.1",
 		"cmdk": "^0.2.0",
-		"d3-drag": "^3.0.0",
-		"d3-force": "^3.0.0",
-		"d3-selection": "^3.0.0",
-		"d3-zoom": "^3.0.0",
+
 		"drizzle-orm": "^0.30.10",
 		"drizzle-zod": "^0.5.1",
 		"es-toolkit": "^1.13.1",
@@ -69,11 +66,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.5.2",
 		"@total-typescript/ts-reset": "^0.4.2",
-		"@types/d3-drag": "^3.0.7",
-		"@types/d3-force": "^3.0.10",
-		"@types/d3-selection": "^3.0.10",
-		"@types/d3-transition": "^3.0.8",
-		"@types/d3-zoom": "^3.0.8",
+
 		"@types/dom-view-transitions": "^1.0.4",
 		"@types/pluralize": "^0.0.31",
 		"@types/qs": "^6.9.10",
