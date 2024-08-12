@@ -5,7 +5,9 @@ summary: true
 quiz: false
 ---
 <section className="content-chunk" aria-labelledby="Values,-Types,-and-Operators-761t" data-subsection-id="Values,-Types,-and-Operators-761t" data-show-header="true">
+
 ## Values, Types, and Operators \{#Values,-Types,-and-Operators-761t}
+
 Below the surface of the machine, the program moves. Without effort, it expands and contracts. In great harmony, electrons scatter and regroup. The forms on the monitor are but ripples on the water. The essence stays invisibly below.
 
 Master Yuan-Ma, _The Book of Programming_
@@ -29,10 +31,13 @@ For example, we can express the number 13 in bits. This works the same way as a 
 | 128 | 64  | 32  | 16  | 8   | 4   | 2   | 1   |
 
 That’s the binary number 00001101. Its nonzero digits stand for 8, 4, and 1, and add up to 13.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Values-762t" data-subsection-id="Values-762t" data-show-header="true">
+
 ## Values \{#Values-762t}
+
 Imagine a sea of bits—an ocean of them. A typical modern computer has more than 100 billion bits in its volatile data storage (working memory). Nonvolatile storage (the hard disk or equivalent) tends to have yet a few orders of magnitude more.
 
 To be able to work with such quantities of bits without getting lost, we separate them into chunks that represent pieces of information. In a JavaScript environment, those chunks are called _values_. Though all values are made of bits, they play different roles. Every value has a type that determines its role. Some values are numbers, some values are pieces of text, some values are functions, and so on.
@@ -40,10 +45,13 @@ To be able to work with such quantities of bits without getting lost, we separat
 To create a value, you must merely invoke its name. This is convenient. You don’t have to gather building material for your values or pay for them. You just call for one, and _whoosh_, you have it. Of course, values are not really created from thin air. Each one has to be stored somewhere, and if you want to use a gigantic number of them at the same time, you might run out of computer memory. Fortunately, this is a problem only if you need them all simultaneously. As soon as you no longer use a value, it will dissipate, leaving behind its bits to be recycled as building material for the next generation of values.
 
 The remainder of this chapter introduces the atomic elements of JavaScript programs, that is, the simple value types and the operators that can act on such values.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Numbers-764t" data-subsection-id="Numbers-764t" data-show-header="true">
+
 ## Numbers \{#Numbers-764t}
+
 Values of the _number_ type are, unsurprisingly, numeric values. In a JavaScript program, they are written as follows:
 
 ```javascript 
@@ -73,10 +81,13 @@ For very big or very small numbers, you may also use scientific notation by addi
 That’s 2.998 × 108 = 299,800,000.
 
 Calculations with whole numbers (also called _integers_) that are smaller than the aforementioned 9 quadrillion are guaranteed to always be precise. Unfortunately, calculations with fractional numbers are generally not. Just as π (pi) cannot be precisely expressed by a finite number of decimal digits, many numbers lose some precision when only 64 bits are available to store them. This is a shame, but it causes practical problems only in specific situations. The important thing is to be aware of it and treat fractional digital numbers as approximations, not as precise values.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Arithmetic-763t" data-subsection-id="Arithmetic-763t" data-show-header="true">
+
 ## Arithmetic \{#Arithmetic-763t}
+
 The main thing to do with numbers is arithmetic. Arithmetic operations such as addition or multiplication take two number values and produce a new number from them. Here is what they look like in JavaScript:
 
 ```
@@ -98,17 +109,23 @@ When operators appear together without parentheses, the order in which they are 
 Don’t worry too much about these precedence rules. When in doubt, just add parentheses.
 
 There is one more arithmetic operator, which you might not immediately recognize. The `%` symbol is used to represent the _remainder_ operation. `X % Y` is the remainder of dividing `X` by `Y`. For example, `314 % 100` produces `14`, and `144 % 12` gives `0`. The remainder operator’s precedence is the same as that of multiplication and division. You’ll also often see this operator referred to as _modulo_.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Special-numbers-765t" data-subsection-id="Special-numbers-765t" data-show-header="true">
+
 ## Special numbers \{#Special-numbers-765t}
+
 There are three special values in JavaScript that are considered numbers but don’t behave like normal numbers. The first two are `Infinity` and `-Infinity`, which represent the positive and negative infinities. `Infinity - 1` is still `Infinity`, and so on. Don’t put too much trust in infinity-based computation, though. It isn’t mathematically sound, and it will quickly lead to the next special number: `NaN`.
 
 `NaN` stands for “not a number”, even though it _is_ a value of the number type. You’ll get this result when you, for example, try to calculate `0 / 0` (zero divided by zero), `Infinity - Infinity`, or any number of other numeric operations that don’t yield a meaningful result.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Strings-766t" data-subsection-id="Strings-766t" data-show-header="true">
+
 ## Strings \{#Strings-766t}
+
 The next basic data type is the _string_. Strings are used to represent text. They are written by enclosing their content in quotes.
 
 ```
@@ -134,7 +151,7 @@ This is the first line
 And this is the second
 ```
 
-There are, of course, situations where you want a backslash in a string to be just a backslash, not a special code. If two backslashes follow each other, they will collapse together, and only one will be left in the resulting string value. This is how the string “_A newline character is written like_ `_"_`_\\n_`_"_`_._” can be expressed:
+There are, of course, situations where you want a backslash in a string to be just a backslash, not a special code. If two backslashes follow each other, they will collapse together, and only one will be left in the resulting string value. This is how the string “_A newline character is written like "\\n"_ ” can be expressed:
 
 ```
 "A newline character is written like \"\\n\"."
@@ -144,7 +161,7 @@ Strings, too, have to be modeled as a series of bits to be able to exist inside 
 
 There’s a complication though: JavaScript’s representation uses 16 bits per string element, which can describe up to 216 different characters. However, Unicode defines more characters than that—about twice as many, at this point. So some characters, such as many emoji, take up two “character positions” in JavaScript strings. We’ll come back to this in [Higher-Order functions](https://itell-augustatech-web-dev.vercel.app/5-higher-order-functions).
 
-Strings cannot be divided, multiplied, or subtracted. The `+` operator _can_ be used on them, not to add, but to _concatenate_—to glue two strings together. The following line will produce the string `"concatenate"`:
+Strings cannot be divided, multiplied, or subtracted. The `+` operator _can_ be used on them, not to add, but to _concatenate_—to glue two strings together. The following line will produce the string "concatenate":
 
 ```
 "con" + "cat" + "e" + "nate"
@@ -158,11 +175,14 @@ Strings written with single or double quotes behave very much the same—the onl
 `half of 100 is ${100 / 2}`
 ```
 
-When you write something inside `${}` in a template literal, its result will be computed, converted to a string, and included at that position. This example produces the string `"half of 100 is 50"`.
+When you write something inside `${}` in a template literal, its result will be computed, converted to a string, and included at that position. This example produces the string "half of 100 is 50".
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Unary-operators-768t" data-subsection-id="Unary-operators-768t" data-show-header="true">
+
 ## Unary operators \{#Unary-operators-768t}
+
 Not all operators are symbols. Some are written as words. One example is the `typeof` operator, which produces a string value naming the type of the value you give it.
 
 <Info title="Try it yourself">
@@ -179,15 +199,21 @@ We will use `console.log` in example code to indicate that we want to see the re
 The other operators shown so far in this chapter all operated on two values, but `typeof` takes only one. Operators that use two values are called _binary_ operators, while those that take one are called _unary_ operators. The minus operator (`-`) can be used both as a binary operator and as a unary operator.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`console.log(- (10 - 2))`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Boolean-values-767t" data-subsection-id="Boolean-values-767t" data-show-header="true">
+
 ## Boolean values \{#Boolean-values-767t}
+
 It is often useful to have a value that distinguishes between only two possibilities, like “yes” and “no” or “on” and “off”. For this purpose, JavaScript has a `Boolean` type, which has just two values, `true` and `false`, written as those words.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Comparison-769t" data-subsection-id="Comparison-769t" data-show-header="true">
+
 ## Comparison \{#Comparison-769t}
+
 Here is one way to produce Boolean values:
 
 ```
@@ -225,10 +251,13 @@ console.log(NaN == NaN)
 ```
 
 `NaN` is supposed to denote the result of a nonsensical computation, and as such, it isn’t equal to the result of any _other_ nonsensical computations.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Logical-operators-770t" data-subsection-id="Logical-operators-770t" data-show-header="true">
+
 ## Logical operators \{#Logical-operators-770t}
+
 There are also some operations that can be applied to Boolean values themselves. JavaScript supports three logical operators: _and_, _or_, and _not_. These can be used to “reason” about Booleans.
 
 The `&&` operator represents logical _and_. It is a binary operator, and its result is true only if both the values given to it are true.
@@ -267,19 +296,25 @@ console.log(false ? 1 : 2);
 ```
 
 This one is called the _conditional_ operator (or sometimes just _the ternary operator_ since it is the only such operator in the language). The operator uses the value to the left of the question mark to decide which of the two other values to “pick”. If you write `a ? b : c`, the result will be `b` when `a` is true and `c` otherwise.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Empty-values-771t" data-subsection-id="Empty-values-771t" data-show-header="true">
+
 ## Empty values \{#Empty-values-771t}
+
 There are two special values, written `null` and `undefined`, that are used to denote the absence of a _meaningful_ value. They are themselves values, but they carry no information.
 
 Many operations in the language that don’t produce a meaningful value yield `undefined` simply because they have to yield _some_ value.
 
 The difference in meaning between `undefined` and `null` is an accident of JavaScript’s design, and it doesn’t matter most of the time. In cases where you actually have to concern yourself with these values, I recommend treating them as mostly interchangeable.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Automatic-type-conversion-774t" data-subsection-id="Automatic-type-conversion-774t" data-show-header="true">
+
 ## Automatic type conversion \{#Automatic-type-conversion-774t}
+
 In the [Introduction](https://eloquentjavascript.net/00_intro.html), I mentioned2 that JavaScript goes out of its way to accept almost any program you give it, even programs that do odd things. This is nicely demonstrated by the following expressions:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`console.log(8 * null)
@@ -311,10 +346,13 @@ That behavior is often useful. When you want to test whether a value has a real 
 What if you want to test whether something refers to the precise value `false`? Expressions like `0 == false` and `"" == false` are also true because of automatic type conversion. When you do _not_ want any type conversions to happen, there are two additional operators: `===` and `!==`. The first tests whether a value is _precisely_ equal to the other, and the second tests whether it is not precisely equal. Thus `"" === false` is false, as expected.
 
 I recommend using the three-character comparison operators defensively to prevent unexpected type conversions from tripping you up. But when you’re certain the types on both sides will be the same, there is no problem with using the shorter operators.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Short-circuiting-of-logical-operators-773t" data-subsection-id="Short-circuiting-of-logical-operators-773t" data-show-header="true">
+
 ## Short-circuiting of logical operators \{#Short-circuiting-of-logical-operators-773t}
+
 The logical operators `&&` and `||` handle values of different types in a peculiar way. They will convert the value on their left side to Boolean type in order to decide what to do, but depending on the operator and the result of that conversion, they will return either the _original_ left-hand value or the right-hand value.
 
 The `||` operator, for example, will return the value to its left when that value can be converted to true and will return the value on its right otherwise. This has the expected effect when the values are Boolean and does something analogous for values of other types.
@@ -344,5 +382,6 @@ The `&&` operator works similarly but the other way around. When the value to it
 Another important property of these two operators is that the part to their right is evaluated only when necessary. In the case of `true || X`, no matter what `X` is—even if it’s a piece of program that does something _terrible_—the result will be true, and `X` is never evaluated. The same goes for `false && X`, which is false and will ignore `X`. This is called _short-circuit evaluation_.
 
 The conditional operator works in a similar way. Of the second and third values, only the one that is selected is evaluated.
+
 </section>
 

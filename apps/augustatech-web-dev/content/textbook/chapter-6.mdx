@@ -5,6 +5,7 @@ summary: true
 quiz: false
 ---
 <section className="content-chunk" aria-labelledby="Introduction-843t" data-subsection-id="Introduction-843t" data-show-header="false">
+
 <h2 className="sr-only" id="Introduction-843t">Introduction</h2>
 
 > "Write code that is easy to delete, not easy to extend."
@@ -27,10 +28,13 @@ In practice, programs grow organically. Pieces of functionality are added as the
 This causes two practical issues. First, understanding an entangled system is hard. If everything can touch everything else, it is difficult to look at any given piece in isolation. You are forced to build up a holistic understanding of the entire thing. Second, if you want to use any of the functionality from such a program in another situation, rewriting it may be easier than trying to disentangle it from its context.
 
 The phrase “big ball of mud” is often used for such large, structureless programs. Everything sticks together, and when you try to pick out a piece, the whole thing comes apart, and you succeed only in making a mess.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Modular-Programs-844t" data-subsection-id="Modular-Programs-844t" data-show-header="true">
+
 ## Modular Programs \{#Modular-Programs-844t}
+
 _Modules_ are an attempt to avoid these problems. A module is a piece of program that specifies which other pieces it relies on and which functionality it provides for other modules to use (its _interface_).
 
 Module interfaces have a lot in common with object interfaces, as we saw them in [Chapter 6](https://itell-augustatech-web-dev.vercel.app/6-the-secret-life-of-objects). They make part of the module available to the outside world and keep the rest private.
@@ -38,10 +42,13 @@ Module interfaces have a lot in common with object interfaces, as we saw them in
 But the interface that a module provides for others to use is only half the story. A good module system also requires modules to specify which code _they_ use from other modules. These relations are called _dependencies_. If module A uses functionality from module B, it is said to _depend_ on that module. When these are clearly specified in the module itself, they can be used to figure out which other modules need to be present to be able to use a given module and to automatically load dependencies.
 
 When the ways in which modules interact with each other are explicit, a system becomes more like LEGO, where pieces interact through well-defined connectors, and less like mud, where everything mixes with everything else.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="ES-modules-845t" data-subsection-id="ES-modules-845t" data-show-header="true">
+
 ## ES modules \{#ES-modules-845t}
+
 The original JavaScript language did not have any concept of a module. All scripts ran in the same scope, and accessing a function defined in another script was done by referencing the global bindings created by that script. This actively encouraged accidental, hard-to-see entanglement of code and invited problems like unrelated scripts trying to use the same binding name.
 
 Since ECMAScript 2015, JavaScript supports two different types of programs. _Scripts_ behave in the old way: their bindings are defined in the global scope, and they have no way to directly reference other scripts. _Modules_ get their own separate scope and support the `import` and `export` keywords, which aren’t available in scripts, to declare their dependencies and interface. This module system is usually called _ES modules_ (where _ES_ stands for ECMAScript).
@@ -108,10 +115,13 @@ console.log(dayName.dayName(3));
 
 
 
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Packages-848t" data-subsection-id="Packages-848t" data-show-header="true">
+
 ## Packages \{#Packages-848t}
+
 One of the advantages of building a program out of separate pieces and being able to run some of those pieces on their own is that you might be able to use the same piece in different programs.
 
 Let's look at a problem that calls for regular expressions. Imagine we are writing a program to automatically collect information about our enemies from the internet. (We will not actually write that program here, just the part that reads the configuration file. Sorry.) The configuration file looks like this:
@@ -200,10 +210,13 @@ import {parse} from "ini";
 
 console.log(parse("x = 10\ny = 20"));
 ```
+
 </section>
 
 <section className="content-chunk" aria-labelledby="CommonJS-Modules-849t" data-subsection-id="CommonJS-Modules-849t" data-show-header="true">
+
 ## CommonJS Modules \{#CommonJS-Modules-849t}
+
 Before 2015, when the JavaScript language had no built-in module system, people were already building large systems in JavaScript. To make that workable, they _needed_ modules.
 
 The community designed its own improvised module systems on top of the language. These use functions to create a local scope for the modules and regular objects to represent module interfaces.
@@ -291,10 +304,13 @@ The transition of the JavaScript community from CommonJS style to ES modules has
 
 
 
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Building-And-Bundling-847t" data-subsection-id="Building-And-Bundling-847t" data-show-header="true">
+
 ## Building And Bundling \{#Building-And-Bundling-847t}
+
 Many JavaScript packages aren’t technically written in JavaScript. Language extensions such as TypeScript, the type checking dialect are widely used. People also often start using planned new language features long before they have been added to the platforms that actually run JavaScript. To make this possible, they _compile_ their code, translating it from their chosen JavaScript dialect to plain old JavaScript—or even to a past version of JavaScript—so that browsers can run it.
 
 Including a modular program that consists of 200 different files in a web page produces its own problems. If fetching a single file over the network takes 50 milliseconds, loading the whole program takes 10 seconds, or maybe half that if you can load several files simultaneously. That’s a lot of wasted time. Because fetching a single big file tends to be faster than fetching a lot of tiny ones, web programmers have started using tools that combine their programs (which they painstakingly split into modules) into a single big file before they publish it to the web. Such tools are called _bundlers_.
@@ -302,10 +318,13 @@ Including a modular program that consists of 200 different files in a web page p
 And we can go further. Apart from the number of files, the _size_ of the files also determines how fast they can be transferred over the network. Thus, the JavaScript community has invented _minifiers_. These are tools that take a JavaScript program and make it smaller by automatically removing comments and whitespace, renaming bindings, and replacing pieces of code with equivalent code that take up less space.
 
 It is not uncommon for the code that you find in an NPM package or that runs on a web page to have gone through _multiple_ stages of transformation—converting from modern JavaScript to historic JavaScript, combining the modules into a single file, and minifying the code. We won’t go into the details of these tools in this book, since there are many of them, and which one is popular changes regularly. Just be aware that such things exist, and look them up when you need them.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Module-Design-846t" data-subsection-id="Module-Design-846t" data-show-header="true">
+
 ## Module Design \{#Module-Design-846t}
+
 Structuring programs is one of the subtler aspects of programming. Any nontrivial piece of functionality can be organized in various ways.
 
 Good program design is subjective—there are trade-offs involved, and matters of taste. The best way to learn the value of well-structured design is to read or work on a lot of programs and notice what works and what doesn’t. Don’t assume that a painful mess is “just the way it is”. You can improve the structure of almost everything by putting more thought into it.
@@ -348,5 +367,6 @@ console.log(find_path(graph, "Post Office", "Cabin"));
 This can be a barrier to composition—when various packages are using different data structures to describe similar things, combining them is difficult. Therefore, if you want to design for composability, find out what data structures other people are using and, when possible, follow their example.
 
 Designing a fitting module structure for a program can be difficult. In the phase where you are still exploring the problem, trying different things to see what works, you might want to not worry about it too much, since keeping everything organized can be a big distraction. Once you have something that feels solid, that’s a good time to take a step back and organize it.
+
 </section>
 

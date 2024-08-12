@@ -5,6 +5,7 @@ summary: true
 quiz: false
 ---
 <section className="content-chunk" aria-labelledby="Introduction-795t" data-subsection-id="Introduction-795t" data-show-header="false">
+
 <h2 className="sr-only" id="Introduction-795t">Introduction</h2>
 
 > People think that computer science is the art of geniuses but the actual reality is the opposite, just many people doing things that build on each other, like a wall of mini stones.
@@ -16,10 +17,13 @@ Functions are one of the most central tools in JavaScript programming. The conce
 The most obvious application of functions is defining new vocabulary. Creating new words in prose is usually bad style, but in programming, it is indispensable.
 
 Typical adult English speakers have some 20,000 words in their vocabulary. Few programming languages come with 20,000 commands built in. And the vocabulary that is available tends to be more precisely defined, and thus less flexible, than in human language. Therefore, we have to introduce new words to avoid excessive verbosity.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Defining-a-Function-796t" data-subsection-id="Defining-a-Function-796t" data-show-header="true">
+
 ## Defining a Function \{#Defining-a-Function-796t}
+
 A function definition is a regular binding where the value of the binding is a function. For example, this code defines square to refer to a function that produces the square of a given number:
 
 ```javascript caption="the function keyword defines a function that can take parameters"
@@ -55,10 +59,13 @@ console.log(roundTo(23, 10));
 Some functions, such as `roundTo` and `square`, produce a value, and some don’t, such as `makeNoise`, whose only result is a side effect. A `return` statement determines the value the function returns. When control comes across such a statement, it immediately jumps out of the current function and gives the returned value to the code that called the function. A `return` keyword without an expression after it will cause the function to return `undefined`. Functions that don’t have a return statement at all, such as `makeNoise`, similarly return `undefined`.
 
 Parameters to a function behave like regular bindings, but their initial values are given by the _caller_ of the function, not the code in the function itself.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Bindings-and-Scopes-797t" data-subsection-id="Bindings-and-Scopes-797t" data-show-header="true">
+
 ## Bindings and Scopes \{#Bindings-and-Scopes-797t}
+
 Each binding has a _scope_, which is the part of the program in which the binding is visible. For bindings defined outside of any function, block, or module (see [Modules](/10-modules)), the scope is the whole program—you can refer to such bindings wherever you want. These are called _global_.
 
 Bindings created for function parameters or declared inside a function can be referenced only in that function, so they are known as _local_ bindings. Every time the function is called, new instances of these bindings are created. This provides some isolation between functions—each function call acts in its own little world (its local environment) and can often be understood without knowing a lot about what’s going on in the global environment.
@@ -84,10 +91,13 @@ console.log(halve(100));
 // → 50
 console.log(n);
 // → 10`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Nested-Scope-798t" data-subsection-id="Nested-Scope-798t" data-show-header="true">
+
 ## Nested Scope \{#Nested-Scope-798t}
+
 JavaScript distinguishes not just global and local bindings. Blocks and functions can be created inside other blocks and functions, producing multiple degrees of locality.
 
 For example, this function—which outputs the ingredients needed to make a batch of hummus—has another function inside it:
@@ -114,10 +124,13 @@ const hummus = function(factor) {
 The code inside the `ingredient` function can see the `factor` binding from the outer function, but its local bindings, such as `unit` or `ingredientAmount`, are not visible in the outer function.
 
 The set of bindings visible inside a block is determined by the place of that block in the program text. Each local scope can also see all the local scopes that contain it, and all scopes can see the global scope. This approach to binding visibility is called _lexical_ scoping.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Functions-as-Values-799t" data-subsection-id="Functions-as-Values-799t" data-show-header="true">
+
 ## Functions as Values \{#Functions-as-Values-799t}
+
 A function binding usually simply acts as a name for a specific piece of the program. Such a binding is defined once and never changed. This makes it easy to confuse the function and its name.
 
 But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary expressions, not just call it. It is possible to store a function value in a new binding, pass it as an argument to a function, and so on. Similarly, a binding that holds a function is still just a regular binding and can, if not constant, be assigned a new value, like so:
@@ -132,10 +145,13 @@ if (safeMode) {
 ```
 
 In [Chapter 5](https://itell-augustatech-web-dev.vercel.app/5-higher-order-functions), we’ll discuss the interesting things that we can do by passing around function values to other functions.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Declaration-Notation-800t" data-subsection-id="Declaration-Notation-800t" data-show-header="true">
+
 ## Declaration Notation \{#Declaration-Notation-800t}
+
 There is a slightly shorter way to create a function binding. When the `function` keyword is used at the start of a statement, it works differently:
 
 ```javascript 
@@ -155,10 +171,13 @@ function future() {
 }`}/>
 
 The preceding code works, even though the function is defined _below_ the code that uses it. Function declarations are not part of the regular top-to-bottom flow of control. They are conceptually moved to the top of their scope and can be used by all the code in that scope. This is sometimes useful because it offers the freedom to order code in a way that seems the clearest, without worrying about having to define all functions before they are used.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Arrow-Functions-801t" data-subsection-id="Arrow-Functions-801t" data-show-header="true">
+
 ## Arrow Functions \{#Arrow-Functions-801t}
+
 There’s a third notation for functions, which looks very different from the others. Instead of the `function` keyword, it uses an arrow (`=>`) made up of an equal sign and a greater-than character (not to be confused with the greater-than-or-equal operator, which is written `>=`):
 
 ```javascript caption="an arrow function definition"
@@ -186,10 +205,13 @@ const horn = () => {
 ```
 
 There’s no deep reason to have both arrow functions and `function` expressions in the language. Apart from a minor detail, which we’ll discuss in [Chapter 6](https://itell-augustatech-web-dev.vercel.app/6-the-secret-life-of-objects), they do the same thing. Arrow functions were added in 2015, mostly to make it possible to write small function expressions in a less verbose way. We’ll use them often in Chapter 5.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-Call-Stack-804t" data-subsection-id="The-Call-Stack-804t" data-show-header="true">
+
 ## The Call Stack \{#The-Call-Stack-804t}
+
 The way control flows through functions is somewhat involved. Let’s take a closer look at it. Here is a simple program that makes a few function calls:
 
 ```javascript 
@@ -232,10 +254,13 @@ function egg() {
 console.log(chicken() + " came first.");
 // → ??
 ```
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Optional-Arguments-803t" data-subsection-id="Optional-Arguments-803t" data-show-header="true">
+
 ## Optional Arguments \{#Optional-Arguments-803t}
+
 The following code is allowed and executes without any problem:
 
 ```javascript 
@@ -276,10 +301,13 @@ The next chapter will introduce a way in which a function body can get at the wh
 console.log("C", "O", 2);
 // → C O 2
 ```
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Closure-805t" data-subsection-id="Closure-805t" data-show-header="true">
+
 ## Closure \{#Closure-805t}
+
 The ability to treat functions as values, combined with the fact that local bindings are re-created every time a function is called, brings up an interesting question: What happens to local bindings when the function call that created them is no longer active?
 
 The following code shows an example of this. It defines a function, `wrapValue()`, that creates a local binding. It then returns a function that accesses and returns this local binding.
@@ -313,10 +341,13 @@ The explicit `local` binding from the `wrapValue()` example isn’t really neede
 Thinking about programs like this takes some practice. A good mental model is to think of function values as containing both the code in their body and the environment in which they are created. When called, the function body sees the environment in which it was created, not the environment in which it is called.
 
 In the previous example, `multiplier()` is called and creates an environment in which its `factor` parameter is bound to 2. The function value it returns, which is stored in `twice`, remembers this environment so that when that is called, it multiplies its argument by 2.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Recursion-806t" data-subsection-id="Recursion-806t" data-show-header="true">
+
 ## Recursion \{#Recursion-806t}
+
 It is perfectly okay for a function to call itself, as long as it doesn’t do it so often that it overflows the stack. A function that calls itself is called recursive. Recursion allows some functions to be written in a different style. Take, for example, this `power()` function, which does the same as the `**` (exponentiation) operator:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function power(base, exponent) {
@@ -390,10 +421,13 @@ find(1, "1")
 ```
 
 The indentation indicates the depth of the call stack. The first time `find()` is called, the function starts by calling itself to explore the solution that starts with `(1 + 5).` That call will further recurse to explore _every_ continued solution that yields a number less than or equal to the target number. Since it doesn’t find one that hits the target, it returns `null` back to the first call. There the `??` operator causes the call that explores `(1 * 3)` to happen. This search has more luck—its first recursive call, through yet _another_ recursive call, hits upon the target number. That innermost call returns a string, and each of the `??` operators in the intermediate calls passes that string along, ultimately returning the solution.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Growing-Functions-802t" data-subsection-id="Growing-Functions-802t" data-show-header="true">
+
 ## Growing Functions \{#Growing-Functions-802t}
+
 There are two more or less natural ways for functions to be introduced into programs.
 
 The first occurs when you find yourself writing similar code multiple times. You’d prefer not to do that, as having more code means more space for mistakes to hide and more material to read for people trying to understand the program. So you take the repeated functionality, find a good name for it, and put it into a function.
@@ -474,10 +508,13 @@ A function with a nice, obvious name like `zeroPad` makes it easier for someone 
 How smart and versatile _should_ our function be? We could write anything, from a terribly simple function that can only pad a number to be three characters wide to a complicated generalized number-formatting system that handles fractional numbers, negative numbers, alignment of decimal dots, padding with different characters, and so on.
 
 A useful principle is to refrain from adding cleverness unless you are absolutely sure you’re going to need it. It can be tempting to write general “frameworks” for every bit of functionality you come across. Resist that urge. You won’t get any real work done—you’ll be too busy writing code that you never use.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Functions-and-Side-Effects-807t" data-subsection-id="Functions-and-Side-Effects-807t" data-show-header="true">
+
 ## Functions and Side Effects \{#Functions-and-Side-Effects-807t}
+
 Functions can be roughly divided into those that are called for their side effects and those that are called for their return value (though it is also possible to both have side effects and return a value).
 
 The first helper function in the farm example, `printZeroPaddedWithLabel`, is called for its side effect: it prints a line. The second version, `zeroPad`, is called for its return value. It is no coincidence that the second is useful in more situations than the first. Functions that create values are easier to combine in new ways than functions that directly perform side effects.
@@ -485,5 +522,6 @@ The first helper function in the farm example, `printZeroPaddedWithLabel`, is ca
 A _pure_ function is a specific kind of value-producing function that not only has no side effects but also doesn’t rely on side effects from other code—for example, it doesn’t read global bindings whose value might change. A pure function has the pleasant property that, when called with the same arguments, it always produces the same value (and doesn’t do anything else). A call to such a function can be substituted by its return value without changing the meaning of the code. When you are not sure that a pure function is working correctly, you can test it by simply calling it and know that if it works in that context, it will work in any context. Nonpure functions tend to require more scaffolding to test.
 
 Still, there’s no need to feel bad when writing functions that are not pure. Side effects are often useful. There’s no way to write a pure version of `console.log`, for example, and `console.log` is good to have. Some operations are also easier to express in an efficient way when we use side effects.
+
 </section>
 

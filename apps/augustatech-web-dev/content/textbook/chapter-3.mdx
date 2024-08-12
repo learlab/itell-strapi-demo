@@ -5,6 +5,7 @@ summary: true
 quiz: false
 ---
 <section className="content-chunk" aria-labelledby="Chapter-introduction-236pt" data-subsection-id="Chapter-introduction-236pt" data-show-header="false">
+
 <h2 className="sr-only" id="Chapter-introduction-236pt">Chapter introduction</h2>
 
 > "On two occasions I have been asked, ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’ \[...\] I am not able rightly to apprehend the kind of confusion of ideas that could provoke such a question."
@@ -25,10 +26,13 @@ Numbers, Booleans, and strings are the atoms from which data structures are buil
 The programs we have built so far have been limited by the fact that they were operating only on simple data types. After learning the basics of data structures in this chapter, you’ll know enough to start writing useful programs.
 
 The chapter will work through a more or less realistic programming example, introducing concepts as they apply to the problem at hand. The example code will often build on functions and bindings introduced earlier in the book.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-weresquirrel-852t" data-subsection-id="The-weresquirrel-852t" data-show-header="true">
+
 ## The weresquirrel \{#The-weresquirrel-852t}
+
 Every now and then, usually between 8 p.m. and 10 p.m., Jacques finds himself transforming into a small furry rodent with a bushy tail.
 
 On one hand, Jacques is quite glad that he doesn’t have classic lycanthropy. Turning into a squirrel does cause fewer problems than turning into a wolf. Instead of having to worry about accidentally eating the neighbor (_that_ would be awkward), he worries about being eaten by the neighbor’s cat. After two occasions of waking up on a precariously thin branch in the crown of an oak, naked and disoriented, he has taken to locking the doors and windows of his room at night and putting a few walnuts on the floor to keep himself busy.
@@ -38,10 +42,13 @@ But Jacques would prefer to get rid of his condition entirely. The irregular occ
 Switching to a more scientific approach, Jacques has started keeping a daily log of everything he does on a given day and whether he changed form. With this data he hopes to narrow down the conditions that trigger the transformations.
 
 The first thing he needs is a data structure to store this information.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Datasets-853t" data-subsection-id="Datasets-853t" data-show-header="true">
+
 ## Datasets \{#Datasets-853t}
+
 To work with a chunk of digital data, we first have to find a way to represent it in our machine’s memory. Say, for example, that we want to represent a collection of the numbers 2, 3, 5, 7, and 11.
 
 We could get creative with strings—after all, strings can have any length, so we can put a lot of data into them—and use `"2 3 5 7 11"` as our representation. But this is awkward. We’d have to somehow extract the digits and convert them back to numbers to access them.
@@ -59,10 +66,13 @@ console.log(listOfNumbers[2 - 1]);
 The notation for getting at the elements inside an array also uses square brackets. A pair of square brackets immediately after an expression, with another expression inside of them, will look up the element in the left-hand expression that corresponds to the _index_ given by the expression in the brackets.
 
 The first index of an array is zero, not one, so the first element is retrieved with `listOfNumbers[0]`. Zero-based counting has a long tradition in technology and in certain ways makes a lot of sense, but it takes some getting used to. Think of the index as the number of items to skip, counting from the start of the array.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Properties-855t" data-subsection-id="Properties-855t" data-show-header="true">
+
 ## Properties \{#Properties-855t}
+
 We’ve seen a few expressions like `myString.length` (to get the length of a string) and `Math.max` (the maximum function) in past chapters. These expressions access a _property_ of some value. In the first case, we access the `length` property of the value in `myString`. In the second, we access the property named `max` in the `Math` object (which is a collection of mathematics-related constants and functions).
 
 Almost all JavaScript values have properties. The exceptions are `null` and `undefined`. If you try to access a property on one of these nonvalues, you get an error:
@@ -78,10 +88,13 @@ If you know that the property in which you are interested is called _color_, you
 The elements in an array are stored as the array’s properties, using numbers as property names. Because you can’t use the dot notation with numbers and usually want to use a binding that holds the index anyway, you have to use the bracket notation to get at them.
 
 Just like strings, arrays have a `length` property that tells us how many elements the array has.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Methods-854t" data-subsection-id="Methods-854t" data-show-header="true">
+
 ## Methods \{#Methods-854t}
+
 Both string and array values contain, in addition to the `length` property, a number of properties that hold function values.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let doh = "Doh";
@@ -111,10 +124,13 @@ console.log(sequence);
 The `push` method adds values to the end of an array. The `pop` method does the opposite, removing the last value in the array and returning it.
 
 These somewhat silly names are the traditional terms for operations on a _stack_. A stack, in programming, is a data structure that allows you to push values into it and pop them out again in the opposite order so that the thing that was added last is removed first. Stacks are common in programming—you might remember the function call stack from the previous chapter, which is an instance of the same idea.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Objects-856t" data-subsection-id="Objects-856t" data-show-header="true">
+
 ## Objects \{#Objects-856t}
+
 Back to the weresquirrel. A set of daily log entries can be represented as an array, but the entries do not consist of just a number or a string—each entry needs to store a list of activities and a Boolean value that indicates whether Jacques turned into a squirrel or not. Ideally, we would like to group these together into a single value and then put those grouped values into an array of log entries.
 
 Values of the type _object_ are arbitrary collections of properties. One way to create an object is by using braces as an expression.
@@ -191,10 +207,13 @@ Jacques will represent the journal that Jacques keeps as an array of objects:
    squirrel: true},
   /* And so on... */
 ];`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Mutability-857t" data-subsection-id="Mutability-857t" data-show-header="true">
+
 ## Mutability \{#Mutability-857t}
+
 We will get to actual programming soon, but first, there’s one more piece of theory to understand.
 
 We saw that object values can be modified. The types of values discussed in earlier chapters, such as numbers, strings, and Booleans, are all _immutable_—it is impossible to change values of those types. You can combine them and derive new values from them, but when you take a specific string value, that value will always remain the same. The text inside it cannot be changed. If you have a string that contains `"cat"`, it is not possible for other code to change a character in your string to make it spell `"rat"`.
@@ -229,10 +248,13 @@ score.visitors = 1;
 score = {visitors: 1, home: 1};`}/>
 
 When you compare objects with JavaScript’s `==` operator, it compares by identity: it will produce `true` only if both objects are precisely the same value. Comparing different objects will return `false`, even if they have identical properties. There is no “deep” comparison operation built into JavaScript that compares objects by contents, but it is possible to write it yourself (which is one of the [exercises](https://eloquentjavascript.net/04_data.html#exercise_deep_compare) at the end of this chapter).
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-lycanthropes-log-858t" data-subsection-id="The-lycanthropes-log-858t" data-show-header="true">
+
 ## The lycanthrope’s log \{#The-lycanthropes-log-858t}
+
 Jacques starts up his JavaScript interpreter and sets up the environment he needs to keep his journal:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let journal = [];
@@ -284,10 +306,13 @@ The notation `n01n_{01}n01` indicates the number of measurements where the first
 The value `n1•n_{1•}n1•` refers to the sum of all measurements where the first variable is true, which is 5 in the example table. Likewise, `n•0n_{•0}n•0` refers to the sum of the measurements where the second variable is false.
 
 So for the pizza table, the part above the division line (the dividend) would be `1×76−4×9=401 \times 76 - 4 \times 9 = 401×76−4×9=40`, and the part below it (the divisor) would be the square root of `5×85×10×805 \times 85 \times 10 \times 805×85×10×80`, or `340,000\sqrt{340,000}340,000`. This comes out to `ϕ≈0.069\phi \approx 0.069ϕ≈0.069`, which is tiny. Eating pizza does not appear to have influence on the transformations.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Computing-correlation-859t" data-subsection-id="Computing-correlation-859t" data-show-header="true">
+
 ## Computing correlation \{#Computing-correlation-859t}
+
 We can represent a two-by-two table in JavaScript with a four-element array (`[76, 9, 4, 1]`). We could also use other representations, such as an array containing two two-element arrays (`[[76, 9], [4, 1]]`) or an object with property names like `"11"` and `"01"`, but the flat array is simple and makes the expressions that access the table pleasantly short. We’ll interpret the indices to the array as two-bit binary numbers, where the leftmost (most significant) digit refers to the squirrel variable and the rightmost (least significant) digit refers to the event variable. For example, the binary number `10` refers to the case where Jacques did turn into a squirrel, but the event (say, “pizza”) didn’t occur. This happened four times. And since binary `10` is 2 in decimal notation, we will store this number at index 2 of the array.
 
 This is the function that computes the _ϕ_ coefficient from such an array:
@@ -352,10 +377,13 @@ Arrays have an `includes` method that checks whether a given value exists in the
 The body of the loop in `tableFor` figures out which box in the table each journal entry falls into by checking whether the entry contains the specific event it’s interested in and whether the event happens alongside a squirrel incident. The loop then adds one to the correct box in the table.
 
 We now have the tools we need to compute individual correlations. The only step remaining is to find a correlation for every type of event that was recorded and see whether anything stands out.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Array-loops-862t" data-subsection-id="Array-loops-862t" data-show-header="true">
+
 ## Array loops \{#Array-loops-862t}
+
 In the `tableFor` function, there’s a loop like this:
 
 ```javascript caption="use for loop to iterate over JOURNAL entries"
@@ -374,10 +402,13 @@ There is a simpler way to write such loops in modern JavaScript:
 }`}/>
 
 When a `for` loop uses the word `of` after its variable definition, it will loop over the elements of the value given after `of`. This works not only for arrays but also for strings and some other data structures. We’ll discuss __how__ it works in [Chapter 6](https://itell-augustatech-web-dev.vercel.app/6-the-secret-life-of-objects).
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-final-analysis-860t" data-subsection-id="The-final-analysis-860t" data-show-header="true">
+
 ## The final analysis \{#The-final-analysis-860t}
+
 We need to compute a correlation for every type of event that occurs in the dataset. To do that, we first need to __find__ every type of event.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function journalEvents(journal) {
@@ -443,10 +474,13 @@ That’s a strong result. The phenomenon occurs precisely when Jacques eats pean
 Knowing this, Jacques stops eating peanuts altogether and finds that his transformations stop.
 
 But it takes only a few months for him to notice that something is missing from this entirely human way of living. Without his feral adventures, Jacques hardly feels alive at all. He decides he’d rather be a full-time wild animal. After building a beautiful little tree house in the forest and equipping it with a peanut butter dispenser and a ten-year supply of peanut butter, he changes form one last time, and lives the short and energetic life of a squirrel.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Further-arrayology-861t" data-subsection-id="Further-arrayology-861t" data-show-header="true">
+
 ## Further arrayology \{#Further-arrayology-861t}
+
 Before finishing the chapter, I want to introduce you to a few more object-related concepts. I’ll start with some generally useful array methods.
 
 We saw `push` and `pop`, which add and remove elements at the end of an array, earlier in this chapter. The corresponding methods for adding and removing things at the start of an array are called `unshift` and `shift`.
@@ -494,10 +528,13 @@ console.log(remove(["a", "b", "c", "d", "e"], 2));
 // → ["a", "b", "d", "e"]`}/>
 
 If you pass `concat` an argument that is not an array, that value will be added to the new array as if it were a one-element array.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Strings-and-their-properties-863t" data-subsection-id="Strings-and-their-properties-863t" data-show-header="true">
+
 ## Strings and their properties \{#Strings-and-their-properties-863t}
+
 We can read properties like `length` and `toUpperCase` from string values. But if we try to add a new property, it doesn’t stick.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let kim = "Kim";
@@ -558,10 +595,13 @@ console.log(string.length);
 // → 3
 console.log(string[1]);
 // → b`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Rest-parameters-864t" data-subsection-id="Rest-parameters-864t" data-show-header="true">
+
 ## Rest parameters \{#Rest-parameters-864t}
+
 It can be useful for a function to accept any number of arguments. For example, `Math.max` computes the maximum of __all__ the arguments it is given. To write such a function, you put three dots before the function’s last parameter, like this:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function max(...numbers) {
@@ -599,10 +639,13 @@ let coordinates = {x: 10, y: 0};
 console.log({...coordinates, y: 5, z: 1});
 // → {x: 10, y: 5, z: 1}
 ```
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-Math-object-865t" data-subsection-id="The-Math-object-865t" data-show-header="true">
+
 ## The Math object \{#The-Math-object-865t}
+
 As we’ve seen, `Math` is a grab bag of number-related utility functions such as `Math.max` (maximum), `Math.min` (minimum), and `Math.sqrt` (square root).
 
 The `Math` object is used as a container to group a bunch of related functionality. There is only one `Math` object, and it is almost never useful as a value. Rather, it provides a _namespace_ so that all these functions and values do not have to be global bindings.
@@ -641,10 +684,13 @@ console.log(Math.floor(Math.random() * 10));// → 2
 Multiplying the random number by 10 gives us a number greater than or equal to 0 and below 10. Since `Math.floor` rounds down, this expression will produce, with equal chance, any number from 0 through 9.
 
 There are also the functions `Math.ceil` (for “ceiling”, which rounds up to a whole number), `Math.round` (to the nearest whole number), and `Math.abs`, which takes the absolute value of a number, meaning it negates negative values but leaves positive ones as they are.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Destructuring-866t" data-subsection-id="Destructuring-866t" data-show-header="true">
+
 ## Destructuring \{#Destructuring-866t}
+
 Let’s return to the `phi` function for a moment.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function phi(table) {
@@ -671,10 +717,13 @@ A similar trick works for objects, using braces instead of square brackets.
 console.log(name);`}/>
 
 Note that if you try to destructure `null` or `undefined`, you get an error, much as you would if you directly try to access a property of those values.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Optional-property-access-867t" data-subsection-id="Optional-property-access-867t" data-show-header="true">
+
 ## Optional property access \{#Optional-property-access-867t}
+
 When you aren’t sure whether a given value produces an object, but still want to read a property from it when it does, you can use a variant of the dot notation: `object?.property`.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function city(object) {
@@ -692,10 +741,13 @@ A similar notation can be used with square bracket access, and even with functio
 ```
 console.log("string".notAMethod?.());// → undefinedconsole.log({}.arrayProp?.[0]);// → undefined
 ```
+
 </section>
 
 <section className="content-chunk" aria-labelledby="JSON-868t" data-subsection-id="JSON-868t" data-show-header="true">
+
 ## JSON \{#JSON-868t}
+
 Because properties grasp their value rather than contain it, objects and arrays are stored in the computer’s memory as sequences of bits holding the _addresses_—the place in memory—of their contents. An array with another array inside of it consists of (at least) one memory region for the inner array and another for the outer array, containing (among other things) a number that represents the address of the inner array.
 
 If you want to save data in a file for later or send it to another computer over the network, you have to somehow convert these tangles of memory addresses to a description that can be stored or sent. You _could_ send over your entire computer memory along with the address of the value you’re interested in, I suppose, but that doesn’t seem like the best approach.
@@ -721,5 +773,6 @@ console.log(string);
 // → {"squirrel":false,"events":["weekend"]}
 console.log(JSON.parse(string).events);
 // → ["weekend"]`}/>
+
 </section>
 

@@ -5,6 +5,7 @@ summary: true
 quiz: false
 ---
 <section className="content-chunk" aria-labelledby="Introduction-832t" data-subsection-id="Introduction-832t" data-show-header="false">
+
 <h2 className="sr-only" id="Introduction-832t">Introduction</h2>
 
 A large program is a costly program, and not just because of the time it takes to build. Size almost always involves complexity, and complexity confuses programmers. Confused programmers, in turn, introduce mistakes (_bugs_) into programs. A large program then provides a lot of space for these bugs to hide, making them hard to find.
@@ -34,10 +35,13 @@ If we count the size of the definitions of `sum` and `range`, the second program
 This is because the solution is expressed in a vocabulary that corresponds to the problem being solved. Summing a range of numbers isn’t about loops and counters. It is about ranges and sums.
 
 The definitions of this vocabulary (the functions `sum` and `range`) will still involve loops, counters, and other incidental details. But because they are expressing simpler concepts than the program as a whole, they are easier to get right.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Abstraction-833t" data-subsection-id="Abstraction-833t" data-show-header="true">
+
 ## Abstraction \{#Abstraction-833t}
+
 In the context of programming, these kinds of vocabularies are usually called _abstractions_. Abstractions give us the ability to talk about problems at a higher (or more abstract) level, without getting sidetracked by uninteresting details.
 
 As an analogy, compare these two recipes for pea soup. The first goes like this:
@@ -55,10 +59,13 @@ The second is shorter and easier to interpret. But you do need to understand a f
 When programming, we can’t rely on all the words we need to be waiting for us in the dictionary. Thus, we might fall into the pattern of the first recipe—work out the precise steps the computer has to perform, one by one, blind to the higher-level concepts they express.
 
 It is a useful skill, in programming, to notice when you are working at too low a level of abstraction.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Abstracting-Repetition-834t" data-subsection-id="Abstracting-Repetition-834t" data-show-header="true">
+
 ## Abstracting Repetition \{#Abstracting-Repetition-834t}
+
 Plain functions, as we’ve seen them so far, are a good way to build abstractions. But sometimes they fall short.
 
 It is common for a program to do something a given number of times. You can write a `for` loop for that, like this:
@@ -101,10 +108,13 @@ console.log(labels);
 ```
 
 This is structured a little like a `for` loop—it first describes the kind of loop and then provides a body. However, the body is now written as a function value, which is wrapped in the parentheses of the call to `repeat`. This is why it has to be closed with the closing brace _and_ closing parenthesis. In cases like this example, where the body is a single small expression, you could also omit the braces and write the loop on a single line.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Higher-order-Functions-835t" data-subsection-id="Higher-order-Functions-835t" data-show-header="true">
+
 ## Higher-order Functions \{#Higher-order-Functions-835t}
+
 Functions that operate on other functions, either by taking them as arguments or by returning them, are called _higher-order functions_. Since we have already seen that functions are regular values, there is nothing particularly remarkable about the fact that such functions exist. The term comes from mathematics, where the distinction between functions and other values is taken more seriously.
 
 Higher-order functions allow us to abstract over _actions_, not just values. They come in several forms. For example, we can have functions that create new functions.
@@ -149,10 +159,13 @@ There is a built-in array method, `forEach`, that provides something like a `for
 <Sandbox pageSlug="test-page-no-chunks" code={`["A", "B"].forEach(l => console.log(l));
 // → A
 // → B`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Script-Dataset-837t" data-subsection-id="Script-Dataset-837t" data-show-header="true">
+
 ## Script Dataset \{#Script-Dataset-837t}
+
 One area where higher-order functions shine is data processing. To process data, we’ll need some actual example data. This chapter will use a dataset about scripts—writing systems such as Latin, Cyrillic, or Arabic.
 
 Remember Unicode, the system that assigns a number to each character in written language, from [Chapter 1](https://itell-augustatech-web-dev.vercel.app/values-types-and-operators)? Most of these characters are associated with a specific script. The standard contains 140 different scripts, of which 81 are still in use today and 59 are historic.
@@ -202,10 +215,13 @@ The `ranges` property contains an array of Unicode character ranges, each of whi
 
 
 
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Filtering-Arrays-836t" data-subsection-id="Filtering-Arrays-836t" data-show-header="true">
+
 ## Filtering Arrays \{#Filtering-Arrays-836t}
+
 If we want to find the scripts in the dataset that are still in use, the following function might be helpful. It filters out elements in an array that don’t pass a test.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function filter(array, test) {
@@ -227,10 +243,13 @@ Note how the `filter` function, rather than deleting elements from the existing 
 Like `forEach`, `filter` is a standard array method. The example defined the function only to show what it does internally. From now on, we’ll use it like this instead:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`console.log(SCRIPTS.filter(s => s.direction == "ttb"));`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Transforming-With-Map-838t" data-subsection-id="Transforming-With-Map-838t" data-show-header="true">
+
 ## Transforming With Map \{#Transforming-With-Map-838t}
+
 Say we have an array of objects representing scripts, produced by filtering the `SCRIPTS` array somehow. We want an array of names instead, which is easier to inspect.
 
 The `map` method transforms an array by applying a function to all of its elements and building a new array from the returned values. The new array will have the same length as the input array, but its content will have been _mapped_ to a new form by the function.
@@ -250,10 +269,13 @@ let rtlScripts = SCRIPTS.filter((s) => s.direction == "rtl")
 console.log(map(rtlScripts, (s) => s.name))`}/>
 
 Like `forEach` and `filter`, `map` is a standard array method.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Summarizing-With-Reduce-839t" data-subsection-id="Summarizing-With-Reduce-839t" data-show-header="true">
+
 ## Summarizing With Reduce \{#Summarizing-With-Reduce-839t}
+
 Another common thing to do with arrays is to compute a single value from them. Our recurring example, summing a collection of numbers, is an instance of this. Another example is finding the script with the most characters.
 
 The higher-order operation that represents this pattern is called _reduce_(sometimes also called _fold_). It builds a value by repeatedly taking a single element from the array and combining it with the current value. When summing numbers, you’d start with the number zero and, for each element, add that to the sum.
@@ -289,10 +311,13 @@ console.log(SCRIPTS.reduce((a, b) => {
 The `characterCount` function reduces the ranges assigned to a script by summing their sizes. Note the use of destructuring in the parameter list of the reducer function. The second call to `reduce` then uses this to find the largest script by repeatedly comparing two scripts and returning the larger one.
 
 The Han script has more than 89,000 characters assigned to it in the Unicode standard, making it by far the biggest writing system in the dataset. Han is a script sometimes used for Chinese, Japanese, and Korean text. Those languages share a lot of characters, though they tend to write them differently. The (US-based) Unicode Consortium decided to treat them as a single writing system to save character codes. This is called _Han unification_ and still makes some people very angry.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Composability-840t" data-subsection-id="Composability-840t" data-show-header="true">
+
 ## Composability \{#Composability-840t}
+
 Consider how we would have written the previous example (finding the biggest script) without higher-order functions. The code is not that much worse.
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let biggest = null;
@@ -334,10 +359,13 @@ console.log(Math.round(total / count));`}/>
 However, it is harder to see what was being computed and how. And because intermediate results aren’t represented as coherent values, it’d be a lot more work to extract something like `average` into a separate function.
 
 In terms of what the computer is actually doing, these two approaches are also quite different. The first will build up new arrays when running `filter` and `map`, whereas the second computes only some numbers, doing less work. You can usually afford the readable approach, but if you’re processing huge arrays and doing so many times, the less abstract style might be worth the extra speed.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Strings-And-Character-Codes-841t" data-subsection-id="Strings-And-Character-Codes-841t" data-show-header="true">
+
 ## Strings And Character Codes \{#Strings-And-Character-Codes-841t}
+
 One interesting use of this dataset would be figuring out what script a piece of text is using. Let’s go through a program that does this.
 
 Remember that each script has an array of character code ranges associated with it. Given a character code, we could use a function like this to find the corresponding script (if any):
@@ -390,10 +418,13 @@ for (let char of roseDragon) {
 // → 🐉`}/>
 
 If you have a character (which will be a string of one or two code units), you can use `codePointAt(0)` to get its code.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Recognizing-Text-842t" data-subsection-id="Recognizing-Text-842t" data-show-header="true">
+
 ## Recognizing Text \{#Recognizing-Text-842t}
+
 We have a `characterScript` function and a way to correctly loop over characters. The next step is to count the characters that belong to each script. The following counting abstraction will be useful there:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`function countBy(items, groupName) {
@@ -439,10 +470,13 @@ console.log(textScripts('英国的狗说"woof", 俄罗斯的狗说"тяв"'));
 The function first counts the characters by name, using `characterScript` to assign them a name and falling back to the string `"none"` for characters that aren’t part of any script. The `filter` call drops the entry for `"none"` from the resulting array, since we aren’t interested in those characters.
 
 To be able to compute percentages, we first need the total number of characters that belong to a script, which we can compute with `reduce`. If we find no such characters, the function returns a specific string. Otherwise, it transforms the counting entries into readable strings with `map` and then combines them with `join`.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Exercises-227pt" data-subsection-id="Exercises-227pt" data-show-header="true">
+
 ## Exercises \{#Exercises-227pt}
+
 #### **Flattening**
 
 Use the `reduce` method in combination with the `concat` method to “flatten” an array of arrays into a single array that has all the elements of the original arrays.
@@ -511,5 +545,6 @@ Your solution might look a lot like the first half of the `textScripts` example.
 Finding the direction with the highest character count can be done with `reduce`. If it’s not clear how, refer to the example earlier in the chapter, where `reduce` was used to find the script with the most characters.
 </AccordionItem>
 </Accordion>
+
 </section>
 

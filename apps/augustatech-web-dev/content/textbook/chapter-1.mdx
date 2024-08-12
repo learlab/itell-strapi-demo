@@ -5,13 +5,17 @@ summary: true
 quiz: false
 ---
 <section className="content-chunk" aria-labelledby="Introduction-203pt" data-subsection-id="Introduction-203pt" data-show-header="false">
+
 <h2 className="sr-only" id="Introduction-203pt">Introduction</h2>
 
 In this chapter, we will start to do things that can actually be called _programming_. We will expand our command of the JavaScript language beyond the nouns and sentence fragments we’ve seen so far to the point where we can express meaningful prose.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Expressions-and-Statements-775t" data-subsection-id="Expressions-and-Statements-775t" data-show-header="true">
+
 ## Expressions and Statements \{#Expressions-and-Statements-775t}
+
 In Chapter 1, we made values and applied operators to them to get new values. Creating values like this is the main substance of any JavaScript program. But that substance has to be framed in a larger structure to be useful. That’s what we’ll cover in this chapter.
 
 A fragment of code that produces a value is called an expression. Every value that is written literally (such as 22 or "psychoanalysis") is an expression. An expression between parentheses is also an expression, as is a binary operator applied to two expressions or a unary operator applied to one.
@@ -28,10 +32,13 @@ The simplest kind of statement is an expression with a semicolon after it. This 
 It is a useless program, though. An expression can be content to just produce a value, which can then be used by the enclosing code. However, a statement stands on its own, so if it doesn’t affect the world, it’s useless. It may display something on the screen, as with console.log, or change the state of the machine in a way that will affect the statements that come after it. These changes are called side effects. The statements in the previous example just produce the values 1 and true and then immediately throw them away. This leaves no impression on the world at all. When you run this program, nothing observable happens.
 
 In some cases, JavaScript allows you to omit the semicolon at the end of a statement. In other cases, it has to be there, or the next line will be treated as part of the same statement. The rules for when it can be safely omitted are somewhat complex and error prone. So in this book, every statement that needs a semicolon will always get one. I recommend you do the same, at least until you’ve learned more about the subtleties of missing semicolons.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Bindings-776t" data-subsection-id="Bindings-776t" data-show-header="true">
+
 ## Bindings \{#Bindings-776t}
+
 How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value must be used immediately or it will dissipate again. To catch and hold values, JavaScript provides a thing called a binding, or variable.
 
 ```javascript caption="create variable bindings via the let keyword"
@@ -88,10 +95,13 @@ console.log(greeting + name);
 The first of these, var (short for “variable”), is the way bindings were declared in pre-2015 JavaScript, when let didn’t exist yet. I’ll get back to the precise way it differs from let in the next chapter. For now, remember that it mostly does the same thing, but we’ll rarely use it in this book because it behaves oddly in some situations.
 
 The word const stands for constant. It defines a constant binding, which points at the same value for as long as it lives. This is useful for bindings that just give a name to a value so that you can easily refer to it later.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Binding-Names-777t" data-subsection-id="Binding-Names-777t" data-show-header="true">
+
 ## Binding Names \{#Binding-Names-777t}
+
 Binding names can be any sequence of one or more letters. Digits can be part of binding names—catch22 is a valid name, for example—but the name must not start with a digit. A binding name may include dollar signs ($) or underscores (_) but no other punctuation or special characters.
 
 Words with a special meaning, such as let, are keywords, and may not be used as binding names. There are also a number of words that are “reserved for use” in future versions of JavaScript, which also can’t be used as binding names. The full list of keywords and reserved words is rather long:
@@ -108,15 +118,21 @@ void      while    with      yield
 
 
 Don’t worry about memorizing this list. When creating a binding produces an unexpected syntax error, check whether you’re trying to define a reserved word.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-Environment-778t" data-subsection-id="The-Environment-778t" data-show-header="true">
+
 ## The Environment \{#The-Environment-778t}
+
 The collection of bindings and their values that exist at a given time is called the environment. When a program starts up, this environment is not empty. It always contains bindings that are part of the language standard, and most of the time, it also has bindings that provide ways to interact with the surrounding system. For example, in a browser, there are functions to interact with the currently loaded website and to read mouse and keyboard input.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Functions-779t" data-subsection-id="Functions-779t" data-show-header="true">
+
 ## Functions \{#Functions-779t}
+
 A lot of the values provided in the default environment have the type function. A function is a piece of program wrapped in a value. Such values can be applied in order to run the wrapped program. For example, in a browser environment, the binding prompt holds a function that shows a little dialog asking for user input. It is used like this:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`prompt("Enter passcode");`}/>
@@ -132,10 +148,13 @@ A lot of the values provided in the default environment have the type function. 
 Executing a function is called invoking, calling, or applying it. You can call a function by putting parentheses after an expression that produces a function value. Usually you’ll directly use the name of the binding that holds the function. The values between the parentheses are given to the program inside the function. In the example, the prompt function uses the string that we give it as the text to show in the dialog box. Values given to functions are called arguments. Different functions might need a different number or different types of arguments.
 
 The prompt function isn’t used much in modern web programming, mostly because you have no control over the way the resulting dialog looks, but it can be helpful in toy programs and experiments.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="The-`consolelog`-Function-780t" data-subsection-id="The-`consolelog`-Function-780t" data-show-header="true">
+
 ## The `console.log` Function \{#The-`consolelog`-Function-780t}
+
 In the examples, I used `console.log` to output values. Most JavaScript systems (including all modern web browsers and Node.js) provide a `console.log` function that writes out its arguments to some text output device. In browsers, the output lands in the JavaScript console. This part of the browser interface is hidden by default, but most browsers open it when you press F12 or, on a Mac, command-option-I. If that does not work, search through the menus for an item named Developer Tools or similar.
 
 When running the examples (or your own code) on the pages of this book, console.log output will be shown after the example, instead of in the browser’s JavaScript console.
@@ -147,10 +166,13 @@ console.log("the value of x is", x);
 ```
 
 Though binding names cannot contain period characters, `console.log` does have one. This is because `console.log` isn’t a simple binding, but an expression that retrieves the `log` property from the value held by the `console` binding. We’ll find out exactly what this means in [Chapter 4](https://itell-augustatech-web-dev.vercel.app/4-data-structures-objects-and-arrays).
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Return-Values-781t" data-subsection-id="Return-Values-781t" data-show-header="true">
+
 ## Return Values \{#Return-Values-781t}
+
 Showing a dialog box or writing text to the screen is a side effect. Many functions are useful because of the side effects they produce. Functions may also produce values, in which case they don’t need to have a side effect to be useful. For example, the function Math.max takes any amount of number arguments and gives back the greatest.
 
 ```javascript 
@@ -166,10 +188,13 @@ console.log(Math.min(2, 4) + 100);
 ```
 
 [Chapter 3](https://itell-augustatech-web-dev.vercel.app/functions-1) will explain how to write your own functions.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Control-Flow-782t" data-subsection-id="Control-Flow-782t" data-show-header="true">
+
 ## Control Flow \{#Control-Flow-782t}
+
 When your program contains more than one statement, the statements are executed as though they were a story, from top to bottom. For example, the following program has two statements. The first asks the user for a number, and the second, which is executed after the first, shows the square of that number:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`let theNumber = Number(prompt("Pick a number"));
@@ -190,10 +215,13 @@ Here is the rather trivial schematic representation of straight-line control flo
   height="20">
 
 </Image>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Conditional-Execution-785t" data-subsection-id="Conditional-Execution-785t" data-show-header="true">
+
 ## Conditional Execution \{#Conditional-Execution-785t}
+
 Not all programs are straight roads. We may, for example, want to create a branching road where the program takes the proper branch based on the situation at hand. This is called conditional execution.
 
 <Image
@@ -267,10 +295,13 @@ The schema for this program looks something like this:
   height="104">
 
 </Image>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="while-and-do-Loops-789t" data-subsection-id="while-and-do-Loops-789t" data-show-header="true">
+
 ## while and do Loops \{#while-and-do-Loops-789t}
+
 Consider a program that outputs all even numbers from 0 to 12. One way to write this is as follows:
 
 ```javascript 
@@ -339,10 +370,13 @@ console.log("Hello " + yourName);`}/>
 
 
 This program will force you to enter a name. It will ask again and again until it gets something that is not an empty string. Applying the ! operator will convert a value to Boolean type before negating it, and all strings except "" convert to true. This means the loop continues going round until you provide a non-empty name.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Indenting-Code-784t" data-subsection-id="Indenting-Code-784t" data-show-header="true">
+
 ## Indenting Code \{#Indenting-Code-784t}
+
 In the examples, I’ve been adding spaces in front of statements that are part of some larger statement. These spaces are not required—the computer will accept the program just fine without them. In fact, even the line breaks in programs are optional. You could write a program as a single long line if you felt like it.
 
 The role of this indentation inside blocks is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use tab characters. The important thing is that each new block adds the same amount of space.
@@ -359,10 +393,13 @@ if (false != true) {
 
 
 Most code editor programs (including the one in this book) will help by automatically indenting new lines the proper amount.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="for-Loops-783t" data-subsection-id="for-Loops-783t" data-show-header="true">
+
 ## for Loops \{#for-Loops-783t}
+
 Many loops follow the pattern shown in the while examples. First a “counter” binding is created to track the progress of the loop. Then comes a while loop, usually with a test expression that checks whether the counter has reached its end value. At the end of the loop body, the counter is updated to track progress.
 
 Because this pattern is so common, JavaScript and similar languages provide a slightly shorter and more comprehensive form, the for loop:
@@ -384,10 +421,13 @@ for (let counter = 0; counter < 10; counter = counter + 1) {
  result = result * 2;
 }
 console.log(result);`}/>
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Breaking-Out-of-a-Loop-788t" data-subsection-id="Breaking-Out-of-a-Loop-788t" data-show-header="true">
+
 ## Breaking Out of a Loop \{#Breaking-Out-of-a-Loop-788t}
+
 Having the looping condition produce false is not the only way a loop can finish. The break statement has the effect of immediately jumping out of the enclosing loop. Its use is demonstrated in the following program, which finds the first number that is both greater than or equal to 20 and divisible by 7:
 
 <Sandbox pageSlug="test-page-no-chunks" code={`for (let current = 20; ; current = current + 1) {
@@ -408,10 +448,13 @@ If you were to remove that break statement or you accidentally write an end cond
 If you create an infinite loop in one of the examples on these pages, you’ll usually be asked whether you want to stop the script after a few seconds. If that fails, you will have to close the tab that you’re working in to recover.
 
 The continue keyword is similar to break in that it influences the progress of a loop. When continue is encountered in a loop body, control jumps out of the body and continues with the loop’s next iteration.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Updating-Bindings-Succinctly-787t" data-subsection-id="Updating-Bindings-Succinctly-787t" data-show-header="true">
+
 ## Updating Bindings Succinctly \{#Updating-Bindings-Succinctly-787t}
+
 Especially when looping, a program often needs to “update” a binding to hold a value based on that binding’s previous value.
 
 ```javascript 
@@ -441,10 +484,13 @@ for (let number = 0; number <= 12; number += 2) {
 
 
 For `counter += 1` and `counter -= 1`, there are even shorter equivalents: `counter++` and `counter--`.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Dispatching-on-a-Value-with-Switch-786t" data-subsection-id="Dispatching-on-a-Value-with-Switch-786t" data-show-header="true">
+
 ## Dispatching on a Value with Switch \{#Dispatching-on-a-Value-with-Switch-786t}
+
 It is not uncommon for code to look like this:
 
 ```javascript 
@@ -475,10 +521,13 @@ There is a construct called switch that is intended to express such a “dispatc
 
 
 You may put any number of case labels inside the block opened by switch. The program will start executing at the label that corresponds to the value that switch was given, or at default if no matching value is found. It will continue executing, even across other labels, until it reaches a break statement. In some cases, such as the "sunny" case in the example, this can be used to share some code between cases (it recommends going outside for both sunny and cloudy weather). Be careful, though—it is easy to forget such a break, which will cause the program to execute code you do not want executed.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Capitalization-790t" data-subsection-id="Capitalization-790t" data-show-header="true">
+
 ## Capitalization \{#Capitalization-790t}
+
 Binding names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the binding represents. These are pretty much your choices for writing a binding name with several words in it:
 
 ```javascript 
@@ -493,10 +542,13 @@ fuzzyLittleTurtle
 The first style can be hard to read. I rather like the look of the underscores, though that style is a little painful to type. The standard JavaScript functions, and most JavaScript programmers, follow the final style—they capitalize every word except the first. It is not hard to get used to little things like that, and code with mixed naming styles can be jarring to read, so we follow this convention.
 
 In a few cases, such as the Number function, the first letter of a binding is also capitalized. This was done to mark this function as a constructor. It will become clear what a constructor is in [Chapter 6](https://itell-augustatech-web-dev.vercel.app/6-the-secret-life-of-objects). For now, the important thing is to not be bothered by this apparent lack of consistency.
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Comments-791t" data-subsection-id="Comments-791t" data-show-header="true">
+
 ## Comments \{#Comments-791t}
+
 Often, raw code does not convey all the information you want a program to convey to human readers, or it conveys it in such a cryptic way that people might not understand it. At other times, you might just want to include some related thoughts as part of your program. This is what comments are for.
 
 A comment is a piece of text that is part of a program but is completely ignored by the computer. JavaScript has two ways of writing comments. To write a single-line comment, you can use two slash characters (`//`) and then the comment text after it:
@@ -523,10 +575,13 @@ A // comment goes only to the end of the line. A section of text between `/*` an
 */
 const myNumber = 11213;
 ```
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Exercises-235pt" data-subsection-id="Exercises-235pt" data-show-header="true">
+
 ## Exercises \{#Exercises-235pt}
+
 Each exercise starts with a problem description. Read this description and try to solve the exercise. If you run into problems, consider reading the hints after the exercise. If you want to learn something from the exercises, I recommend looking at the solutions only after you’ve solved the exercise, or at least after you’ve attacked it long and hard enough to have a slight headache.
 
 ### **Looping a triangle**
@@ -615,6 +670,7 @@ You’ll need two bindings to track your progress. To know whether to put a spac
 Terminating a line by adding a newline character must happen after the line has been built up, so do this after the inner loop but inside the outer loop.
 </AccordionItem>
 </Accordion>
+
 
 
 
