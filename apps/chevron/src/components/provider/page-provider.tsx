@@ -150,7 +150,7 @@ export const useAddChat = () => {
 				body: JSON.stringify({
 					page_slug: pageSlug,
 					message: text,
-					history: getHistory(store, { isStairs: false }),
+					history: getHistory(store),
 					current_chunk: currentChunk,
 				}),
 			});

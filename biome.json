@@ -12,6 +12,7 @@
 			},
 			"a11y": {
 				"useButtonType": "warn",
+				"useKeyWithClickEvents": "warn",
 				"noSvgWithoutTitle": "warn"
 			},
 			"suspicious": {

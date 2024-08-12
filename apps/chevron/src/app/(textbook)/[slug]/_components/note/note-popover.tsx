@@ -182,6 +182,7 @@ export const NotePopover = React.memo(
 				const button = triggerRef.current;
 				computePosition(anchor, button, {
 					placement: "bottom-end",
+					strategy: "fixed",
 					middleware: [flip(), shift({ padding: 5 }), offset(3)],
 				}).then(({ x, y }) => {
 					if (triggerRef.current) {

@@ -142,14 +142,10 @@ export const botMessage = ({
 	context,
 });
 
-export const getHistory = (
-	store: ChatStore,
-	{ isStairs }: { isStairs: boolean },
-) => {
+export const getHistory = (store: ChatStore) => {
 	const snap = store.getSnapshot();
-	const data = isStairs ? snap.context.stairsMessages : snap.context.messages;
 
-	return data.map((m) => ({
+	return snap.context.messages.map((m) => ({
 		agent: m.isUser ? "user" : "bot",
 		text: m.text,
 	}));

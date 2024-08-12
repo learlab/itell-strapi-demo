@@ -89,6 +89,10 @@ figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title]) pr
     @apply rounded-t-none bg-[var(--shiki-light-bg)] dark:bg-[var(--shiki-dark-bg)]
 }
 
+figure[data-rehype-pretty-code-figure] figcaption {
+    text-align: center
+}
+
 figure {
     @apply mb-6 mt-1;
 }

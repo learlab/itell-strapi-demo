@@ -1,16 +1,12 @@
 "use client";
 
 import { Elements } from "@itell/constants";
+import { extractHeadingsFromMdast } from "@itell/content";
 import { cn } from "@itell/utils";
 import { useEffect } from "react";
 
-type Heading = {
-	level: "one" | "two" | "three" | "four" | "other" | string;
-	text: string | undefined;
-	slug: string | undefined;
-};
 type TocSidebarProps = {
-	headings: Heading[];
+	headings: ReturnType<typeof extractHeadingsFromMdast>;
 };
 
 export const PageToc = ({ headings }: TocSidebarProps) => {
@@ -45,19 +41,22 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 			) {
 				isUsingMostRecentHeading = true;
 				document
-					.querySelector(`div.page-toc ol li a[href="#${mostRecentHeading}"]`)
+					.querySelector(`.page-toc ol li a[href="#${mostRecentHeading}"]`)
 					?.classList.add(Elements.PAGE_NAV_ACTIVE);
 			}
 		});
 
-		// Track all sections that have an `id` applied
 		for (const heading of headings) {
 			const element = document.getElementById(heading.slug || "");
 			if (element) {
 				observer.observe(element);
 			}
 		}
-	}, []);
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [headings]);
 
 	return (
 		<div className="page-toc space-y-4 px-1">
@@ -70,22 +69,21 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 			</div>
 			<ol className="flex flex-col list-none text-foreground/70 tracking-tight">
 				{headings
-					.filter((heading) => heading.level !== "other")
+					.filter((heading) => heading.depth <= 4)
 					.map((heading) => (
 						<li
 							key={heading.slug}
 							className={cn(
 								"hover:underline inline-flex py-0.5 my-1 transition-colors ease-out delay-150 ",
 								{
-									"text-base": heading.level === "two",
-									"text-sm ml-2": heading.level === "three",
-									"text-sm ml-4": heading.level === "four",
-									" text-sm ml-6": heading.level === "other",
+									"text-base": heading.depth === 2,
+									"text-sm ml-2": heading.depth === 3,
+									"text-sm ml-4": heading.depth === 4,
 								},
 							)}
 						>
 							<a
-								data-level={heading.level}
+								data-depth={heading.depth}
 								href={`#${heading.slug}`}
 								className="text-pretty"
 							>

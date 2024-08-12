@@ -1,4 +1,12 @@
 import {
+	Tab,
+	TabPanel,
+	Tabs,
+	TabsBody,
+	TabsHeader,
+} from "@/components/ui/tabs";
+import { Image } from "@itell/ui/client";
+import {
 	Blockquote,
 	Callout,
 	Caption,
@@ -10,15 +18,7 @@ import {
 	Warning,
 	YoutubeVideo,
 } from "@itell/ui/server";
-
-import {
-	Tab,
-	TabPanel,
-	Tabs,
-	TabsBody,
-	TabsHeader,
-} from "@/components/ui/tabs";
-import { Image } from "@itell/ui/client";
+import { CustomLink } from "./custom-link";
 import { Accordion, AccordionItem } from "./ui/accordion";
 
 export const TextbookComponents = {
@@ -41,4 +41,5 @@ export const TextbookComponents = {
 	Tab,
 	TabPanel,
 	TabsBody,
+	a: CustomLink,
 };

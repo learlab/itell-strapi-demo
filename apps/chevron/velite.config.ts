@@ -1,5 +1,11 @@
 import { exec } from "node:child_process";
+import { writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
+import {
+	extractChunksFromHast,
+	extractHeadingsFromMdast,
+} from "@itell/content";
+import remarkWikiLink from "@itell/remark-wiki-link";
 import GithubSlugger from "github-slugger";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
@@ -45,8 +51,8 @@ const pages = defineCollection({
 				...data,
 				href: `/${data.page_slug}`,
 				chapter: Number(meta.basename?.split("-")[1].replaceAll(".mdx", "")),
-				headings: getHeadingsFromRawBody(meta.content || ""),
-				chunks: getPageChunks(meta.content || ""),
+				headings: extractHeadingsFromMdast(meta.mdast),
+				chunks: extractChunksFromHast(meta.hast),
 			};
 		}),
 });
@@ -73,59 +79,38 @@ export default defineConfig({
 	root: "./content",
 	collections: { pages, guides, home },
 	mdx: {
+		remarkPlugins: [remarkGfm, remarkWikiLink, remarkHeadingId],
 		// @ts-ignore
-
-		remarkPlugins: [remarkGfm, remarkHeadingId],
-		// @ts-ignore
-
 		rehypePlugins: [rehypeSlug],
 	},
-});
-
-const getHeadingsFromRawBody = (doc: string) => {
-	// Updated regex to capture the heading content and potential ID separately
-	const regXHeader = /\n(#{1,6})\s+(.+?)(?:\s+\\{#([\w-]+)\})?$/gm;
-
-	const slugger = new GithubSlugger();
-
-	const headings: Array<{ level: string; text: string; slug: string }> = [];
-	for (const match of doc.matchAll(regXHeader)) {
-		const flag = match[1];
-		const content = match[2].trim(); // This now excludes the custom ID part
-		const customId = match[3]; // Capture the custom ID if present
-		if (content && content !== "null") {
-			headings.push({
-				level:
-					flag.length === 1
-						? "one"
-						: flag.length === 2
-							? "two"
-							: flag.length === 3
-								? "three"
-								: flag.length === 4
-									? "four"
-									: "other",
-				text: content, // This is now clean, without the custom ID
-				slug: customId || slugger.slug(content), // Use custom ID if present, otherwise use slugger
+	prepare: async (data) => {
+		const output: {
+			nodes: { id: string; label: string; type: string }[];
+			edges: { source: string; target: string; label: string }[];
+		} = {
+			nodes: [],
+			edges: [],
+		};
+		data.pages.forEach((page) => {
+			output.nodes.push({
+				id: page.page_slug,
+				label: page.title,
+				type: "page",
 			});
-		}
-	}
+			page.chunks.forEach((chunk) => {
+				output.nodes.push({
+					id: chunk,
+					label: chunk,
+					type: "chunk",
+				});
+				output.edges.push({
+					source: page.page_slug,
+					target: chunk,
+					label: "page-chunk",
+				});
+			});
+		});
 
-	return headings;
-};
-
-const getPageChunks = (raw: string) => {
-	const contentChunkRegex =
-		/<section(?=\s)(?=[\s\S]*?\bclassName="content-chunk")(?=[\s\S]*?\bdata-subsection-id="([^"]+)")[\s\S]*?>/g;
-	const chunks = [];
-
-	const matches = raw.matchAll(contentChunkRegex);
-
-	for (const match of matches) {
-		if (match[1]) {
-			chunks.push(match[1]);
-		}
-	}
-
-	return chunks;
-};
+		await writeFile("public/data/graph.json", JSON.stringify(output, null, 2));
+	},
+});

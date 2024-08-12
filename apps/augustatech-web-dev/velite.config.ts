@@ -8,6 +8,10 @@ import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
 import remarkMath from "remark-math";
 
+import {
+	extractChunksFromHast,
+	extractHeadingsFromMdast,
+} from "@itell/content";
 import { defineCollection, defineConfig, defineSchema, s } from "velite";
 
 const execAsync = promisify(exec);
@@ -50,8 +54,8 @@ const pages = defineCollection({
 				...data,
 				href: `/${data.page_slug}`,
 				chapter: Number(meta.basename?.split("-")[1].replaceAll(".mdx", "")),
-				headings: getHeadingsFromRawBody(meta.content || ""),
-				chunks: getPageChunks(meta.content || ""),
+				headings: extractHeadingsFromMdast(meta.mdast),
+				chunks: extractChunksFromHast(meta.hast),
 			};
 		}),
 });
@@ -77,7 +81,6 @@ const home = defineCollection({
 export default defineConfig({
 	root: "./content",
 	collections: { pages, guides, home },
-
 	mdx: {
 		gfm: false,
 		// @ts-ignore
@@ -139,20 +142,4 @@ const getHeadingsFromRawBody = (doc: string) => {
 	}
 
 	return headings;
-};
-
-const getPageChunks = (raw: string) => {
-	const contentChunkRegex =
-		/<section(?=\s)(?=[\s\S]*?\bclassName="content-chunk")(?=[\s\S]*?\bdata-subsection-id="([^"]+)")[\s\S]*?>/g;
-	const chunks = [];
-
-	const matches = raw.matchAll(contentChunkRegex);
-
-	for (const match of matches) {
-		if (match[1]) {
-			chunks.push(match[1]);
-		}
-	}
-
-	return chunks;
 };

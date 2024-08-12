@@ -137,7 +137,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
-				chat_history: getHistory(chatStore, { isStairs: true }),
+				chat_history: getHistory(chatStore),
 				excluded_chunks: getExcludedChunks(questionStore),
 			});
 			requestBodyRef.current = body;

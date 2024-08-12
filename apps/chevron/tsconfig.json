@@ -6,6 +6,7 @@
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": true,
+		"allowArbitraryExtensions": true,
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"incremental": true,

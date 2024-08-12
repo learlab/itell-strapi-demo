@@ -4,6 +4,12 @@
 
 @import url("@itell/ui/dist/style.css");
 
+.tooltip {
+  position: absolute;
+  width: max-content;
+  top: 0;
+  left: 0;
+}
 
 .page-nav-active {
   @apply text-primary font-semibold

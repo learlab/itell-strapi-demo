@@ -84,7 +84,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<aside id={Elements.PAGE_NAV} aria-label="table of contents">
 					<div className="sticky top-20 -mt-10">
 						<ScrollArea className="pb-10">
-							<div className="sticky top-16 -mt-10 h-[70vh] py-12">
+							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
 								<PageToc headings={page.headings} />
 								<div className="mt-8 flex flex-col gap-1">
 									<PageInfo pageSlug={pageSlug} user={user} />
