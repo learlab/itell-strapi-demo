@@ -135,11 +135,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const isTextbookFinished = session.user?.finished || false;
 
 	const pageSlug = page.page_slug;
-	const { addStairsQuestion, messages, stairsAnswered } = useChat((state) => {
+	const { addStairsQuestion, messages } = useChat((state) => {
 		return {
 			addStairsQuestion: state.addStairsQuestion,
-			messages: state.stairsMessages,
-			stairsAnswered: state.stairsAnswered,
+			messages: state.messages,
 		};
 	});
 	const getExcludedChunks = useConstructedResponse(
