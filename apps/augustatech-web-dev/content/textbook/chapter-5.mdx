@@ -648,7 +648,8 @@ Whereas encapsulation and polymorphism can be used to _separate_ pieces of code 
 
 It is occasionally useful to know whether an object was derived from a specific class. For this, JavaScript provides a binary operator called `instanceof`.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(
+```javascript caption="use instanceof to check if an object is an instance of a class"
+console.log(
   new LengthList(1, null) instanceof LengthList);
 // → true
 console.log(new LengthList(2, null) instanceof List);
@@ -656,7 +657,8 @@ console.log(new LengthList(2, null) instanceof List);
 console.log(new List(3, null) instanceof LengthList);
 // → false
 console.log([1] instanceof Array);
-// → true`}/>
+// → true
+```
 
 The operator will see through inherited types, so a `LengthList` is an instance of `List`. The operator can also be applied to standard constructors like `Array`. Almost every object is an instance of `Object`.
 
