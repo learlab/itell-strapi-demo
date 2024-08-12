@@ -171,7 +171,7 @@ String values have a number of associated functions (_methods_) that can be used
 
 Strings written with single or double quotes behave very much the same—the only difference lies in which type of quote you need to escape inside of them. Backtick-quoted strings, usually called _template literals_, can do a few more tricks. Apart from being able to span lines, they can also embed other values.
 
-```
+```javascript /\${/#v /}/#v
 `half of 100 is ${100 / 2}`
 ```
 
@@ -198,7 +198,9 @@ We will use `console.log` in example code to indicate that we want to see the re
 
 The other operators shown so far in this chapter all operated on two values, but `typeof` takes only one. Operators that use two values are called _binary_ operators, while those that take one are called _unary_ operators. The minus operator (`-`) can be used both as a binary operator and as a unary operator.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(- (10 - 2))`}/>
+```javascript caption="the minus operator can be used both as a binary operator and as a unary operator"
+console.log(- (10 - 2))
+```
 
 </section>
 
@@ -357,18 +359,16 @@ The logical operators `&&` and `||` handle values of different types in a peculi
 
 The `||` operator, for example, will return the value to its left when that value can be converted to true and will return the value on its right otherwise. This has the expected effect when the values are Boolean and does something analogous for values of other types.
 
-```
-console.log(null || "user")
+<Sandbox pageSlug="test-page-no-chunks" code={`console.log(null || "user")
 // → user
 console.log("Agnes" || "user")
-// → Agnes
-```
+// → Agnes`}/>
 
 We can use this functionality as a way to fall back on a default value. If you have a value that might be empty, you can put `||` after it with a replacement value. If the initial value can be converted to false, you’ll get the replacement instead. The rules for converting strings and numbers to Boolean values state that `0`, `NaN`, and the empty string (`""`) count as false, while all the other values count as true. That means `0 || -1` produces `-1`, and `"" || "!?"` yields `"!?"`.
 
 The `??` operator resembles `||`, but returns the value on the right only if the one on the left is null or undefined, not if it is some other value that can be converted to `false`. Often, this is preferable to the behavior of `||`.
 
-```
+```javascript caption="?? only returns the right value if the left is exactly null or undefined"
 console.log(0 || 100);
 // → 100
 console.log(0 ?? 100);

@@ -57,7 +57,7 @@ A modular program is composed of a number of such modules, wired together via th
 
 The following example module converts between day names and numbers (as returned by `Date`’s `getDay` method). It defines a constant that is not part of its interface, and two functions that are. It has no dependencies.
 
-```javascript {4,7} caption="use the export keyword to expose functions to other modules"
+```javascript /export/#v caption="use the export keyword to expose functions to other modules"
 const names = ["Sunday", "Monday", "Tuesday", "Wednesday",
                "Thursday", "Friday", "Saturday"];
 
@@ -71,8 +71,8 @@ export function dayNumber(name) {
 
 The `export` keyword can be put in front of a function, class, or binding definition to indicate that that binding is part of the module’s interface. This makes it possible for other modules to use that binding by importing it.
 
-```javascript {1}
-import {dayName} from "./dayname.js";
+```javascript /import/#v
+import { dayName } from "./dayname.js";
 let now = new Date();
 console.log(`Today is ${dayName(now.getDay())}`);
 // → Today is Monday
@@ -86,15 +86,15 @@ Import and export declarations cannot appear inside of functions, loops, or othe
 
 A module’s interface thus consists of a collection of named bindings, which other modules that depend on the module can access. Imported bindings can be renamed to give them a new local name using `as` after their name.
 
-```javascript {1} caption="import function as alias"
-import {dayName as nomDeJour} from "./dayname.js";
-console.log(nomDeJour(3));
+```javascript /import/#v /as/#v caption="import function as alias"
+import { dayName as nomDeJour } from "./dayname.js"
+console.log(nomDeJour(3))
 // → Wednesday
 ```
 
 A module may also have a special export named `default`, which is often used for modules that only export a single binding. To define a default export, you write `export default` before an expression, a function declaration, or a class declaration.
 
-```javascript 
+```javascript /export default/#v
 export default ["Winter", "Spring", "Summer", "Autumn"];
 ```
 
@@ -106,7 +106,7 @@ import seasonNames from "./seasonname.js";
 
 To import all bindings from a module at the same time, you can use `import *`. You provide a name, and that name will be bound to an object holding all the module’s exports. This can be useful when you are using a lot of different exports.
 
-```javascript {1} caption="bind all exports to a name via the * symbol"
+```javascript /import * as dayName/#v caption="bind all exports to a name via the * symbol"
 import * as dayName from "./dayname.js";
 console.log(dayName.dayName(3));
 // → Wednesday
@@ -124,9 +124,9 @@ console.log(dayName.dayName(3));
 
 One of the advantages of building a program out of separate pieces and being able to run some of those pieces on their own is that you might be able to use the same piece in different programs.
 
-Let's look at a problem that calls for regular expressions. Imagine we are writing a program to automatically collect information about our enemies from the internet. (We will not actually write that program here, just the part that reads the configuration file. Sorry.) The configuration file looks like this:
+Let's look at a problem that calls for regular expressions. Imagine we are writing a program to automatically collect information about our enemies from the internet. (We will not actually write that program here, just the part that reads the configuration file, sorry.) The configuration file looks like this:
 
-```javascript caption=a sample ini file"
+```javascript caption="a sample ini file"
 searchengine=https://duckduckgo.com/?q=$1
 spitefulness=9.7
 
@@ -206,7 +206,7 @@ Most code on NPM is licensed this way. Some licenses require you to also publish
 Now, instead of writing our own INI file parser, we can use one from NPM.
 
 ```javascript caption="import from ini third-party library"
-import {parse} from "ini";
+import { parse } from "ini";
 
 console.log(parse("x = 10\ny = 20"));
 ```
@@ -245,19 +245,19 @@ This CommonJS example module provides a date-formatting function. It uses two pa
 The template string may contain codes that direct the format, such as `YYYY` for the full year and `Do` for the ordinal day of the month. You could give it a string like `"MMMM Do YYYY"` to get output like `November 22nd 2017`.
 
 ```javascript caption="use the date-names library to format date time objects"
-const ordinal = require("ordinal");
-const {days, months} = require("date-names");
+const ordinal = require("ordinal")
+const { days, months } = require("date-names")
 
-exports.formatDate = function(date, format) {
-  return format.replace(/YYYY|M(MMM)?|Do?|dddd/g, tag => {
-    if (tag == "YYYY") return date.getFullYear();
-    if (tag == "M") return date.getMonth();
-    if (tag == "MMMM") return months[date.getMonth()];
-    if (tag == "D") return date.getDate();
-    if (tag == "Do") return ordinal(date.getDate());
-    if (tag == "dddd") return days[date.getDay()];
-  });
-};
+exports.formatDate = function (date, format) {
+  return format.replace(/YYYY|M(MMM)?|Do?|dddd/g, (tag) => {
+    if (tag == "YYYY") return date.getFullYear()
+    if (tag == "M") return date.getMonth()
+    if (tag == "MMMM") return months[date.getMonth()]
+    if (tag == "D") return date.getDate()
+    if (tag == "Do") return ordinal(date.getDate())
+    if (tag == "dddd") return days[date.getDay()]
+  })
+}
 ```
 
 The interface of `ordinal` is a single function, whereas `date-names` exports an object containing multiple things—`days` and `months` are arrays of names. Destructuring is very convenient when creating bindings for imported interfaces.
@@ -265,10 +265,9 @@ The interface of `ordinal` is a single function, whereas `date-names` exports an
 The module adds its interface function to `exports` so that modules that depend on it get access to it. We could use the module like this:
 
 ```javascript 
-const {formatDate} = require("./format-date.js");
+const { formatDate } = require("./format-date.js")
 
-console.log(formatDate(new Date(2017, 9, 13),
-                       "dddd the Do"));
+console.log(formatDate(new Date(2017, 9, 13), "dddd the Do"))
 // → Friday the 13th
 ```
 
@@ -276,7 +275,7 @@ CommonJS is implemented with a module loader that, when loading a module, wraps 
 
 If we assume we have access to a `readFile` function that reads a file by name and gives us its content, we can define a simplified form of `require` like this:
 
-```javascript 
+```javascript caption="a custom implementation of require()"
 function require(name) {
   if (!(name in require.cache)) {
     let code = readFile(name);
@@ -350,18 +349,17 @@ For example, there’s the `dijkstrajs` package. A well-known approach to pathfi
 If we wanted to use that package, we’d have to make sure that our graph was stored in the format it expects. All edges get the same weight, since our simplified model treats each road as having the same cost (one turn).
 
 ```javascript caption="find the shortest path with the dijkstrajs library"
-const {find_path} = require("dijkstrajs");
+const { find_path } = require("dijkstrajs")
 
-let graph = {};
+let graph = {}
 for (let node of Object.keys(roadGraph)) {
-  let edges = graph[node] = {};
+  let edges = (graph[node] = {})
   for (let dest of roadGraph[node]) {
-    edges[dest] = 1;
+    edges[dest] = 1
   }
 }
 
-console.log(find_path(graph, "Post Office", "Cabin"));
-// → ["Post Office", "Alice's House", "Cabin"]
+console.log(find_path(graph, "Post Office", "Cabin"))
 ```
 
 This can be a barrier to composition—when various packages are using different data structures to describe similar things, combining them is difficult. Therefore, if you want to design for composability, find out what data structures other people are using and, when possible, follow their example.

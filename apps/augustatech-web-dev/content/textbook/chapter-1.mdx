@@ -85,7 +85,7 @@ console.log(one + two);
 
 The words `var` and `const` can also be used to create bindings, in a similar fashion to let.
 
-```javascript caption="var and const can create bindings as well"
+```javascript caption="var and const can create bindings as well" /var/#v /const/#v
 var name = "Ayda";
 const greeting = "Hello ";
 console.log(greeting + name);
@@ -381,7 +381,7 @@ In the examples, I’ve been adding spaces in front of statements that are part 
 
 The role of this indentation inside blocks is to make the structure of the code stand out to human readers. In code where new blocks are opened inside other blocks, it can become hard to see where one block ends and another begins. With proper indentation, the visual shape of a program corresponds to the shape of the blocks inside it. I like to use two spaces for every open block, but tastes differ—some people use four spaces, and some people use tab characters. The important thing is that each new block adds the same amount of space.
 
-```javascript 
+```javascript caption="proper indentation makes your control flow easier to read"
 if (false != true) {
  console.log("That makes sense.");
  if (1 < 2) {

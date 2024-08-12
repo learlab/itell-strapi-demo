@@ -149,7 +149,7 @@ console.log(day1.wolf);
 
 Inside the braces, you write a list of properties separated by commas. Each property has a name followed by a colon and a value. When an object is written over multiple lines, indenting it as shown in this example helps with readability. Properties whose names aren’t valid binding names or valid numbers must be quoted:
 
-```javascript caption="quotes are required for invalid binding names when creating objects"
+```javascript /"touched tree"/#v caption="quotes are required for invalid binding names when creating objects"
 let descriptions = {
  work: "Went to work",
  "touched tree": "Touched a tree"
@@ -626,7 +626,7 @@ This “spreads” out the array into the function call, passing its elements as
 
 Square bracket array notation similarly allows the triple-dot operator to spread another array into the new array:
 
-```javascript caption="use the spread operator to concatenate arrays"
+```javascript /...words/#v caption="use the spread operator to concatenate arrays"
 let words = ["never", "fully"];
 console.log(["will", ...words, "understand"]);
 // → ["will", "never", "fully", "understand"]
@@ -634,7 +634,7 @@ console.log(["will", ...words, "understand"]);
 
 This works even in curly brace objects, where it adds all properties from another object. If a property is added multiple times, the last value to be added wins:
 
-```javascript caption="use the spread operator to merge objects"
+```javascript /...coordinates/#v caption="use the spread operator to merge objects"
 let coordinates = {x: 10, y: 0};
 console.log({...coordinates, y: 5, z: 1});
 // → {x: 10, y: 5, z: 1}

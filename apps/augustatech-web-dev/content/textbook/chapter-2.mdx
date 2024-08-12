@@ -102,7 +102,7 @@ JavaScript distinguishes not just global and local bindings. Blocks and function
 
 For example, this function—which outputs the ingredients needed to make a batch of hummus—has another function inside it:
 
-```javascript caption="the ingredient function is defined inside the hummus function, capturing the factor binding of the hummus function"
+```javascript {3} caption="the ingredient function is defined inside the hummus function, capturing the factor binding of the hummus function"
 const hummus = function(factor) {
   // define a function inside a function
   const ingredient = function(amount, unit, name) {
@@ -180,7 +180,7 @@ The preceding code works, even though the function is defined _below_ the code t
 
 There’s a third notation for functions, which looks very different from the others. Instead of the `function` keyword, it uses an arrow (`=>`) made up of an equal sign and a greater-than character (not to be confused with the greater-than-or-equal operator, which is written `>=`):
 
-```javascript caption="an arrow function definition"
+```javascript /=>/#v caption="an arrow function definition"
 const roundTo = (n, step) => {
   let remainder = n % step;
   return n - remainder + (remainder < step / 2 ? 0 : step);

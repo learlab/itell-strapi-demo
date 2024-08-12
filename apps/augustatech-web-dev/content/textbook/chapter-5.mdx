@@ -9,8 +9,8 @@ quiz: false
 ## Introduction \{#Introduction-817t}
 
 > An abstract data type is realized by writing a special kind of program \[…\] which defines the type in terms of the operations which can be performed on it.
-
-\-\- Barbara Liskov, _Programming with Abstract Data Types_
+> 
+> \-\- Barbara Liskov, _Programming with Abstract Data Types_
 
 <Image
   style="aspect-ratio:829/447;"
@@ -151,7 +151,7 @@ Prototypes are useful for defining properties for which all instances of a class
 
 To create an instance of a given class, you have to make an object that derives from the proper prototype, but you _also_ have to make sure it itself has the properties that instances of this class are supposed to have. This is what a _constructor_ function does.
 
-```javascript 
+```javascript {2,3} caption="create a new class instance and initialize its properties"
 function makeRabbit(type) {
   let rabbit = Object.create(protoRabbit);
   rabbit.type = type;
@@ -161,7 +161,7 @@ function makeRabbit(type) {
 
 JavaScript’s class notation makes it easier to define this type of function, along with a prototype object.
 
-```javascript 
+```javascript /class/#v /constructor/#v /speak/#v caption="define a class with the class keyword"
 class Rabbit {
   constructor(type) {
     this.type = type;
@@ -182,7 +182,7 @@ let killerRabbit = new Rabbit("killer");
 
 In fact, `class` was only introduced in the 2015 edition of JavaScript. Any function can be used as a constructor, and before 2015, the way to define a class was to write a regular function and then manipulate its `prototype` property.
 
-```javascript 
+```javascript {4} caption="define class methods by setting the prototype"
 function ArchaicRabbit(type) {
   this.type = type;
 }
@@ -209,7 +209,7 @@ console.log(Object.getPrototypeOf(killerRabbit) ==
 
 Constructors will typically add some per-instance properties to `this`. It is also possible to declare properties directly in the class declaration. Unlike methods, such properties are added to instance objects and not the prototype.
 
-```javascript {4}
+```javascript {4} caption="initialize instance properties in the constructor"
 class Particle {
   speed = 0;
   constructor(position) {
@@ -234,7 +234,7 @@ It is common for classes to define some properties and methods for internal use 
 
 To declare a private method, put a `#` sign in front of its name. Such methods can be called only from inside the `class` declaration that defines them.
 
-```javascript 
+```javascript /#getSecret/#v caption="declare a private method"
 class SecretiveObject {
   #getSecret() {
     return "I ate all the plums";
@@ -254,7 +254,7 @@ To use private instance properties, you must declare them. Regular properties ca
 
 This class implements an appliance for getting a random whole number below a given maximum number. It has only one public property: `getNumber`.
 
-```javascript 
+```javascript /#max/#v caption="declare a private property"
 class RandomSource {
   #max;
   constructor(max) {
@@ -529,7 +529,7 @@ console.log(okIterator.next());
 
 Let’s implement an iterable data structure similar to the linked list from the exercise in [Chapter 4](https://itell-augustatech-web-dev.vercel.app/4-data-structures-objects-and-arrays). We’ll write the list as a class this time.
 
-```javascript 
+```javascript {11,14} caption="define a static method and use the this keyword to refer to the class"
 class List {
   constructor(value, rest) {
     this.value = value;
@@ -554,7 +554,7 @@ Note that `this`, in a static method, points at the constructor of the class, no
 
 Iterating over a list should return all the list’s elements from start to end. We’ll write a separate class for the iterator.
 
-```javascript 
+```javascript /next()/#v caption="define iteration behavior with the next() method"
 class ListIterator {
   constructor(list) {
     this.list = list;
@@ -612,7 +612,7 @@ JavaScript’s prototype system makes it possible to create a _new_ class, much 
 
 In object-oriented programming terms, this is called _inheritance_. The new class inherits properties and behavior from the old class.
 
-```javascript 
+```javascript /extends/#v /super/#v caption="use the extends keyword to inherit from another class"
 class LengthList extends List {
   #length;
 
