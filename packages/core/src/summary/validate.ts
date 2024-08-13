@@ -1,4 +1,3 @@
-import offensiveWords from "@/assets/offensive-words.json";
 import { numOfWords } from "@itell/utils";
 
 export enum ErrorType {
@@ -27,12 +26,6 @@ export const validateSummary = (
 	const wordCount = numOfWords(input);
 	if (wordCount < 50 || wordCount > 200) {
 		return ErrorType.WORD_COUNT;
-	}
-
-	for (const word of input.split(" ")) {
-		if (offensiveWords.includes(word.toLowerCase())) {
-			return ErrorType.OFFENSIVE;
-		}
 	}
 
 	if (prevInput) {

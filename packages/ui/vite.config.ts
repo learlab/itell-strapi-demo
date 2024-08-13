@@ -1,7 +1,9 @@
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import banner from "rollup-plugin-banner2";
+import { visualizer } from "rollup-plugin-visualizer";
 import tailwindcss from "tailwindcss";
+
 import { UserConfigExport, defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
@@ -30,16 +32,20 @@ const app = async (): Promise<UserConfigExport> => {
 				fileName: (format, name) => `${name}.${format}.js`,
 			},
 			rollupOptions: {
-				external: ["react", "react-dom", "tailwindcss", "next", "lucide-react"],
-				output: {
-					globals: {
-						react: "React",
-						"react-dom": "ReactDOM",
-						tailwindcss: "tailwindcss",
-						next: "next",
-					},
-				},
+				external: [
+					"react",
+					"react-dom",
+					"react/jsx-runtime",
+					"tailwindcss",
+					"next",
+					"next/navigation",
+					"next/link",
+					"lucide-react",
+					"framer-motion",
+					"recharts",
+				],
 				plugins: [
+					visualizer({ open: true }),
 					banner((chunk) => {
 						if (
 							chunk.fileName === "client.cjs.js" ||

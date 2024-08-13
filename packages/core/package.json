@@ -63,19 +63,21 @@
 		"@itell/utils": "workspace:^",
 		"github-slugger": "^2.0.0",
 		"js-yaml": "^4.1.0",
-		"range-serializer": "^0.0.2",
-		"zod": "^3.22.2"
+		"range-serializer": "^0.0.2"
 	},
 	"peerDependencies": {
 		"react": "^18",
-		"react-dom": "^18"
+		"react-dom": "^18",
+		"zod": "^3"
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
 		"@types/node": "^20.6.0",
 		"@types/react": "^18.2.21",
 		"@types/react-dom": "^18.2.19",
-		"vite": "^4.4.9",
+		"rollup-plugin-visualizer": "^5.12.0",
+		"typescript": "5.6.0-beta",
+		"vite": "^5.4.0",
 		"vite-plugin-dts": "^2.3.0",
 		"vite-plugin-node-polyfills": "^0.11.3",
 		"vitest": "^0.31.4"

@@ -1,4 +1,5 @@
 import path from "node:path";
+import { visualizer } from "rollup-plugin-visualizer";
 import { UserConfigExport, defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
@@ -28,12 +29,8 @@ const app = async (): Promise<UserConfigExport> => {
 			},
 			emptyOutDir: true,
 			rollupOptions: {
-				external: ["react", "react-dom", "node:fs/promises", "node:fs"],
-				output: {
-					globals: {
-						react: "React",
-					},
-				},
+				external: ["react", "react-dom", "zod", "node:fs/promises", "node:fs"],
+				plugins: [visualizer({ open: true })],
 			},
 		},
 	});
