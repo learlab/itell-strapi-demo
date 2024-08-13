@@ -531,23 +531,23 @@ Still, there’s no need to feel bad when writing functions that are not pure. S
 
 ### **Minimum**
 
-The [previous chapter](https://eloquentjavascript.net/02_program_structure.html#return_values) introduced the standard function `Math.min` that returns its smallest argument. We can write a function like that ourselves now. Define the function `min` that takes two arguments and returns their minimum.
+The [previous chapter](https://itell-augustatech-web-dev.vercel.app/2-program-structure) introduced the standard function `Math.min` that returns its smallest argument. We can write a function like that ourselves now. Define the function `min` that takes two arguments and returns their minimum.
 
-```javascript 
+<Sandbox pageSlug="test-page-no-chunks" code={`// Define the min function here
+
+
 console.log(min(0, 10));
 // → 0
 console.log(min(0, -10));
-// → -10
-```<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.`}/>
-<Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Display hints...
-</AccordionItem>
-</Accordion>
+// → -10`}/>
 
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
 If you have trouble putting braces and parentheses in the right place to get a valid function definition, start by copying one of the examples in this chapter and modifying it.
 
 A function may contain multiple `return` statements.
+</AccordionItem>
+</Accordion>
 
 ### **Recursion**
 
@@ -561,23 +561,22 @@ Define a recursive function `isEven` corresponding to this description. The func
 
 Test it on 50 and 75. See how it behaves on -1. Why? Can you think of a way to fix this?
 
-```javascript 
+<Sandbox pageSlug="test-page-no-chunks" code={`// Define isEven() here
+
+
 console.log(isEven(50));
 // → true
 console.log(isEven(75));
 // → false
 console.log(isEven(-1));
-// → ??
-```<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.`}/>
+// → ??`}/>
 <Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Displaying hints
-</AccordionItem>
-</Accordion>
-
-Your function will likely look somewhat similar to the inner `find` function in the recursive `findSolution`[example](https://eloquentjavascript.net/03_functions.html#recursive_puzzle) in this chapter, with an `if`/`else if`/`else` chain that tests which of the three cases applies. The final `else`, corresponding to the third case, makes the recursive call. Each of the branches should contain a `return` statement or in some other way arrange for a specific value to be returned.
+<AccordionItem value="1" title="Display hints">
+Your function will likely look somewhat similar to the inner `find` function in the recursive `findSolution` [example](https://eloquentjavascript.net/03_functions.html#recursive_puzzle) in this chapter, with an `if`/`else if`/`else` chain that tests which of the three cases applies. The final `else`, corresponding to the third case, makes the recursive call. Each of the branches should contain a `return` statement or in some other way arrange for a specific value to be returned.
 
 When given a negative number, the function will recurse again and again, passing itself an ever more negative number, thus getting further and further away from returning a result. It will eventually run out of stack space and abort.
+</AccordionItem>
+</Accordion>
 
 ### **Bean counting**
 
@@ -587,21 +586,19 @@ Write a function called `countBs` that takes a string as its only argument and r
 
 Next, write a function called `countChar` that behaves like `countBs`, except it takes a second argument that indicates the character that is to be counted (rather than counting only uppercase B characters). Rewrite `countBs` to make use of this new function.
 
-```javascript 
+<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+
 console.log(countBs("BOB"));
 // → 2
 console.log(countChar("kakkerlak", "k"));
-// → 4
-```<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.`}/>
+// → 4`}/>
 <Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Displaying hints
-</AccordionItem>
-</Accordion>
-
+<AccordionItem value="1" title="Display hints">
 Your function will need a loop that looks at every character in the string. It can run an index from zero to one below its length (`< string.length`). If the character at the current position is the same as the one the function is looking for, it adds 1 to a counter variable. Once the loop has finished, the counter can be returned.
 
 Take care to make all the bindings used in the function _local_ to the function by properly declaring them with the `let` or `const` keyword.
+</AccordionItem>
+</Accordion>
 
 </section>
 

@@ -774,13 +774,13 @@ console.log(JSON.parse(string).events);
 
 ### **The sum of a range**
 
-The [introduction](https://eloquentjavascript.net/00_intro.html) of this book alluded to the following as a nice way to compute the sum of a range of numbers:
+Considering the following code to compute the sum of a range of numbers:
 
 ```javascript 
 console.log(sum(range(1, 10)));
 ```
 
-Write a `range` function that takes two arguments, `start`and `end`, and returns an array containing all the numbers from `start` up to and including `end`.
+Write a `range` function that takes two arguments, `start` and `end`, and returns an array containing all the numbers from `start` up to and including `end`.
 
 Next, write a `sum` function that takes an array of numbers and returns the sum of these numbers. Run the example program and see whether it does indeed return 55.
 
@@ -795,11 +795,7 @@ console.log(range(5, 2, -1));
 console.log(sum(range(1, 10)));
 // → 55`}/>
 <Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Displaying hints
-</AccordionItem>
-</Accordion>
-
+<AccordionItem value="1" title="Display hints">
 Building up an array is most easily done by first initializing a binding to `[]` (a fresh, empty array) and repeatedly calling its `push` method to add a value. Don’t forget to return the array at the end of the function.
 
 Since the end boundary is inclusive, you’ll need to use the `<=` operator rather than `<` to check for the end of your loop.
@@ -808,13 +804,15 @@ The step parameter can be an optional parameter that defaults (using the `=` ope
 
 Having `range` understand negative step values is probably best done by writing two separate loops—one for counting up and one for counting down—because the comparison that checks whether the loop is finished needs to be `>=`rather than `<=` when counting downward.
 
-It might also be worthwhile to use a different default step, namely, -1, when the end of the range is smaller than the start. That way, `range(5, 2)` returns something meaningful rather than getting stuck in an infinite loop. It is possible to refer to previous parameters in the default value of a parameter.
+It might also be worthwhile to use a different default step, namely, -1, when the end of the range is smaller than the start. That way, `range(5, 2)` returns something meaningful rather than getting stuck in an infinite loop. It is possible to refer to previous parameters in the default value of a parameter.ints
+</AccordionItem>
+</Accordion>
 
 ### **Reversing an array**
 
 Arrays have a `reverse` method that changes the array by inverting the order in which its elements appear. For this exercise, write two functions, `reverseArray` and `reverseArrayInPlace`. The first, `reverseArray`, should take an array as its argument and produce a _new_ array that has the same elements in the inverse order. The second, `reverseArrayInPlace`, should do what the `reverse` method does: _modify_ the array given as its argument by reversing its elements. Neither may use the standard `reverse` method.
 
-Thinking back to the notes about side effects and pure functions in the [previous chapter](https://eloquentjavascript.net/03_functions.html#pure), which variant do you expect to be useful in more situations? Which one runs faster?
+Thinking back to the notes about side effects and pure functions in the [previous chapter](https://itell-augustatech-web-dev.vercel.app/functions-1), which variant do you expect to be useful in more situations? Which one runs faster?
 
 <Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
 
@@ -827,17 +825,12 @@ let arrayValue = [1, 2, 3, 4, 5];
 reverseArrayInPlace(arrayValue);
 console.log(arrayValue);
 // → [5, 4, 3, 2, 1]`}/>
-<Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Displaying hints
-</AccordionItem>
-</Accordion>
 
 There are two obvious ways to implement `reverseArray`. The first is to simply go over the input array from front to back and use the `unshift` method on the new array to insert each element at its start. The second is to loop over the input array backward and use the `push` method. Iterating over an array backward requires a (somewhat awkward) `for` specification, like `(let i = array.length - 1; i >= 0; i--)`.
 
 Reversing the array in place is harder. You have to be careful not to overwrite elements that you will later need. Using `reverseArray` or otherwise copying the whole array (`array.slice()` is a good way to copy an array) works but is cheating.
 
-The trick is to _swap_ the first and last elements, then the second and second-to-last, and so on. You can do this by looping over half the length of the array (use `Math.floor`to round down—you don’t need to touch the middle element in an array with an odd number of elements) and swapping the element at position `i` with the one at position `array.length - 1 - i`. You can use a local binding to briefly hold onto one of the elements, overwrite that one with its mirror image, and then put the value from the local binding in the place where the mirror image used to be.
+The trick is to _swap_ the first and last elements, then the second and second-to-last, and so on. You can do this by looping over half the length of the array (use `Math.floor` to round down—you don’t need to touch the middle element in an array with an odd number of elements) and swapping the element at position `i` with the one at position `array.length - 1 - i`. You can use a local binding to briefly hold onto one of the elements, overwrite that one with its mirror image, and then put the value from the local binding in the place where the mirror image used to be.
 
 ### **A list**
 
@@ -858,7 +851,14 @@ let list = {
 
 The resulting objects form a chain, as shown in the following diagram:
 
-![4-linked-list.svg](https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-linked-list.svg-8b4fa4c1717646e2e4b43acae908d27a.svg)
+<Image
+  style="aspect-ratio:393/76;"
+  src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/4-linked-list.svg-8b4fa4c1717646e2e4b43acae908d27a.svg"
+  alt="A diagram showing the memory structure of a linked list. There are 3 cells, each with a value field holding a number, and a 'rest' field with an arrow to the rest of the list. The first cell's arrow points at the second cell, the second cell's arrow at the last cell, and the last cell's 'rest' field holds null."
+  width="393"
+  height="76">
+
+</Image>
 
 A nice thing about lists is that they can share parts of their structure. For example, if I create two new values `{value: 0, rest: list}` and `{value: -1, rest: list}` (with `list` referring to the binding defined earlier), they are both independent lists, but they share the structure that makes up their last three elements. The original list is also still a valid three-element list.
 
@@ -876,23 +876,18 @@ console.log(prepend(10, prepend(20, null)));
 // → {value: 10, rest: {value: 20, rest: null}}
 console.log(nth(arrayToList([10, 20, 30]), 1));
 // → 20`}/>
-<Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Displaying hints
-</AccordionItem>
-</Accordion>
 
 Building up a list is easier when done back to front. So `arrayToList` could iterate over the array backward (see the previous exercise) and, for each element, add an object to the list. You can use a local binding to hold the part of the list that was built so far and use an assignment like `list = {value: X, rest: list}` to add an element.
 
 To run over a list (in `listToArray` and `nth`), a `for` loop specification like this can be used:
 
-```javascript 
+```
 for (let node = list; node; node = node.rest) {}
 ```
 
 Can you see how that works? Every iteration of the loop, `node` points to the current sublist, and the body can read its `value` property to get the current element. At the end of an iteration, `node` moves to the next sublist. When that is `null`, we have reached the end of the list, and the loop is finished.
 
-The recursive version of `nth` will, similarly, look at an ever smaller part of the “tail” of the list and at the same time count down the index until it reaches zero, at which point it can return the `value` property of the node it is looking at. To get the zeroth element of a list, you simply take the `value` property of its head node. To get element _N_ \+ 1, you take the _N_th element of the list that’s in this list’s `rest`property.
+The recursive version of `nth` will, similarly, look at an ever smaller part of the “tail” of the list and at the same time count down the index until it reaches zero, at which point it can return the `value` property of the node it is looking at. To get the zeroth element of a list, you simply take the `value` property of its head node. To get element _N_ \+ 1, you take the _N_th element of the list that’s in this list’s `rest` property.
 
 
 
@@ -915,11 +910,6 @@ console.log(deepEqual(obj, {here: 1, object: 2}));
 // → false
 console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
 // → true`}/>
-<Accordion value="first" className="prose dark:prose-invert">
-<AccordionItem value="1" title="">
-Displaying hints
-</AccordionItem>
-</Accordion>
 
 Your test for whether you are dealing with a real object will look something like `typeof x == "object" && x != null`. Be careful to compare properties only when _both_arguments are objects. In all other cases you can just immediately return the result of applying `===`.
 
