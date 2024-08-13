@@ -34,7 +34,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { User } from "lucia";
 import { SendHorizonalIcon } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useConstructedResponse } from "../provider/page-provider";
@@ -52,8 +52,6 @@ type Props = {
 	pageStatus: PageStatus;
 };
 
-const driverObj = driver();
-
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
 	const prevInput = useRef<string | undefined>();
@@ -69,16 +67,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
 
-	const exitChunk = () => {
-		const summaryEl = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-		driverObj.destroy();
-
-		if (summaryEl) {
-			scrollToElement(summaryEl as HTMLDivElement);
-		}
-	};
-
-	const { portals, addPortal } = usePortal();
+	const { portals, addPortal, removePortal } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const { updateUser } = useSessionAction();
 	const requestBodyRef = useRef<string>("");
@@ -87,31 +76,17 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		(state) => state.isSummaryReady,
 	);
 
-	const goToRandomChunk = () => {
-		const el = getChunkElement(randomChunkSlug);
-		if (el) {
-			scrollToElement(el);
-			driverObj.highlight({
-				element: el,
-				popover: {
-					description:
-						'Please re-read the highlighted section. when you are finished, press the "I finished rereading" button.',
-					side: "right",
-					align: "start",
-				},
-			});
-		}
-	};
+	const portalId = useRef<string | null>(null);
 
 	useEffect(() => {
 		driverObj.setConfig({
 			animate: false,
 			smoothScroll: false,
 			onPopoverRender: (popover) => {
-				addPortal(
+				portalId.current = addPortal(
 					<FinishReadingButton
 						onClick={(time) => {
-							exitChunk();
+							exitQuestion();
 
 							if (!pageStatus.unlocked) {
 								createEvent({
@@ -120,6 +95,10 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 									userId: user.id,
 									data: { chunkSlug: randomChunkSlug, time },
 								});
+							}
+
+							if (portalId.current) {
+								removePortal(portalId.current);
 							}
 						}}
 					/>,
@@ -216,7 +195,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			// 25% random rereading if the page is not unlocked
 			if (!pageStatus.unlocked && Math.random() <= 0.25) {
-				goToRandomChunk();
+				goToRandomChunk(randomChunkSlug);
 			}
 		},
 		{ delayTimeout: 10000 },
@@ -306,4 +285,35 @@ const FinishReadingButton = ({
 			I finished rereading
 		</Button>
 	);
+};
+
+const driverObj = driver();
+
+const goToRandomChunk = (chunkSlug: string) => {
+	const el = getChunkElement(chunkSlug);
+	if (el) {
+		setTimeout(() => {
+			scrollToElement(el);
+		}, 100);
+		driverObj.highlight({
+			element: el,
+			popover: {
+				description:
+					'Please re-read the highlighted section. when you are finished, press the "I finished rereading" button.',
+				side: "right",
+				align: "start",
+			},
+		});
+	}
+};
+
+const exitQuestion = () => {
+	const assignemnts = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+	driverObj.destroy();
+
+	if (assignemnts) {
+		setTimeout(() => {
+			scrollToElement(assignemnts as HTMLDivElement);
+		}, 100);
+	}
 };

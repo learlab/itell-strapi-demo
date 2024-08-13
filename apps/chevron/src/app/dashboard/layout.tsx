@@ -4,7 +4,6 @@ import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { dashboardConfig } from "@dashboard/config";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 import { Elements } from "@itell/constants";
@@ -44,7 +43,7 @@ export default async function DashboardLayout({
 		return (
 			<div className="min-h-screen">
 				<SiteNav>
-					<DashboardNav items={dashboardConfig.mainNav} />
+					<DashboardNav />
 				</SiteNav>
 				<div className="p-4">
 					<p>data unavailable</p>
@@ -56,7 +55,7 @@ export default async function DashboardLayout({
 	return (
 		<>
 			<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
-				<DashboardNav items={dashboardConfig.mainNav} />
+				<DashboardNav />
 			</SiteNav>
 			<main
 				id={Elements.DASHBOARD_MAIN}

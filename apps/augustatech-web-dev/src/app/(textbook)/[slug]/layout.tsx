@@ -1,3 +1,4 @@
+import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { allPagesSorted } from "@/lib/pages";
@@ -47,5 +48,10 @@ export default async function ({
 }: {
 	children: React.ReactNode;
 }) {
-	return <>{children}</>;
+	return (
+		<>
+			<TextbookNav scrollProgress />
+			{children}
+		</>
+	);
 }

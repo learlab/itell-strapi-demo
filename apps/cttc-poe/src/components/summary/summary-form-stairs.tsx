@@ -96,16 +96,20 @@ const driverObj = driver();
 
 const exitQuestion = () => {
 	driverObj.destroy();
-	const summaryEl = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-	if (summaryEl) {
-		scrollToElement(summaryEl as HTMLDivElement);
+	const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+	if (assignments) {
+		setTimeout(() => {
+			scrollToElement(assignments as HTMLElement);
+		}, 100);
 	}
 };
 
 const goToQuestion = (question: StairsQuestion) => {
 	const el = getChunkElement(question.chunk);
 	if (el) {
-		scrollToElement(el);
+		setTimeout(() => {
+			scrollToElement(el);
+		}, 100);
 		driverObj.highlight({
 			element: el,
 			popover: {
@@ -171,7 +175,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		}
 	}, initialState);
 
-	const { portals, addPortal } = usePortal();
+	const { portals, addPortal, removePortal } = usePortal();
 	const isSummaryReady = useConstructedResponse(
 		(state) => state.isSummaryReady,
 	);
@@ -182,8 +186,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const requestBodyRef = useRef<string | null>(null);
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
-	const stairsShowTimeRef = useRef<number | null>(null);
 	const stairsAnsweredRef = useRef(false);
+
+	const portalId = useRef<string | null>(null);
 
 	useEffect(() => {
 		driverObj.setConfig({
@@ -191,7 +196,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			animate: false,
 			allowClose: false,
 			onPopoverRender: (popover) => {
-				addPortal(
+				portalId.current = addPortal(
 					<ChatStairs
 						userId={user.id}
 						userImage={user.image}
@@ -215,6 +220,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 										});
 									}
 									exitQuestion();
+									if (portalId.current) {
+										removePortal(portalId.current);
+									}
 								}}
 							/>
 						)}

@@ -44,7 +44,7 @@ export default async function DashboardLayout({
 		return (
 			<div className="min-h-screen">
 				<SiteNav>
-					<DashboardNav items={dashboardConfig.mainNav} />
+					<DashboardNav />
 				</SiteNav>
 				<div className="p-4">
 					<p>data unavailable</p>
@@ -56,7 +56,7 @@ export default async function DashboardLayout({
 	return (
 		<>
 			<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
-				<DashboardNav items={dashboardConfig.mainNav} />
+				<DashboardNav />
 			</SiteNav>
 			<main
 				id={Elements.DASHBOARD_MAIN}

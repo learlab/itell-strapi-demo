@@ -63,7 +63,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
 
-	const { addPortal, portals } = usePortal();
+	const { addPortal, removePortal, portals } = usePortal();
+	const portalId = useRef<string | null>(null);
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -167,7 +168,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setInertBackground(randomChunkSlug);
 			},
 			onPopoverRender: (popover) => {
-				addPortal(
+				portalId.current = addPortal(
 					<FinishReadingButton
 						onClick={(time) => {
 							exitChunk();
@@ -184,6 +185,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			},
 			onDestroyed: (element) => {
 				removeInert();
+				if (portalId.current) {
+					removePortal(portalId.current);
+				}
 				if (element) {
 					element.removeAttribute("tabIndex");
 					element.removeAttribute("id");
@@ -196,7 +200,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 				const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
 				if (assignments) {
-					scrollToElement(element as HTMLElement);
+					setTimeout(() => {
+						scrollToElement(element as HTMLElement);
+					}, 100);
 				}
 				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
 			},
@@ -320,7 +326,7 @@ const goToRandomChunk = (chunkSlug: string) => {
 	if (el) {
 		setTimeout(() => {
 			scrollToElement(el);
-		});
+		}, 100);
 		driverObj.highlight({
 			element: el,
 			popover: {

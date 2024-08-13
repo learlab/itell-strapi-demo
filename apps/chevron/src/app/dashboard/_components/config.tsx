@@ -1,3 +1,5 @@
+import { MobileNavItem } from "@/components/mobile-nav";
+import { slug } from "github-slugger";
 import {
 	BarChart4Icon,
 	FileEditIcon,
@@ -7,7 +9,20 @@ import {
 
 const iconClasses = "size-4";
 export const dashboardConfig: DashboardConfig = {
-	mainNav: [],
+	mobileNav: [
+		{
+			title: "Summaries",
+			href: "/dashboard/summaries",
+		},
+		{
+			title: "Questions",
+			href: "/dashboard/questions",
+		},
+		{
+			title: "Settings",
+			href: "/dashboard/settings",
+		},
+	],
 	sidebarNav: [
 		{
 			title: "Statistics",
@@ -46,6 +61,6 @@ export type SidebarNavItem = {
 };
 
 export type DashboardConfig = {
-	mainNav: DashboardNavItem[];
+	mobileNav: MobileNavItem[];
 	sidebarNav: SidebarNavItem[];
 };

@@ -1,7 +1,9 @@
+import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { allPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
+import { Fragment } from "react";
 
 export const generateStaticParams = async () => {
 	return allPagesSorted.map((page) => {
@@ -47,5 +49,10 @@ export default async function ({
 }: {
 	children: React.ReactNode;
 }) {
-	return <>{children}</>;
+	return (
+		<Fragment>
+			<TextbookNav scrollProgress />
+			{children}
+		</Fragment>
+	);
 }

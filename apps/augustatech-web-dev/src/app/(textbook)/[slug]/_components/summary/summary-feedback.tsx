@@ -20,10 +20,6 @@ export const SummaryFeedback = ({
 	needRevision,
 	className,
 }: Props) => {
-	const terms = feedback?.suggestedKeyphrases
-		? Array.from(new Set(feedback.suggestedKeyphrases))
-		: [];
-	const Component = components[feedback?.isPassed ? "true" : "false"];
 	return (
 		<div
 			className={cn(
@@ -46,45 +42,56 @@ export const SummaryFeedback = ({
 					</p>
 				)}
 			</header>
-			{feedback && terms.length > 0 && (
-				<Component role="status">
-					<p className="my-2">
-						Improve your summary by including some of the following keywords:
-					</p>
-					<ul className="space-y-1">
-						{terms.map((term) => (
-							<li
-								className="flex items-center gap-2 text-accent-foreground"
-								key={term}
-							>
-								<Lightbulb className="size-4" aria-hidden="true" />
-								{term}
-							</li>
-						))}
-					</ul>
-					{feedback.promptDetails && (
-						<Accordion value="first">
-							<AccordionItem
-								value="first"
-								title="Scoring details"
-								accordionTriggerClassName="text-sm my-2 underline-none"
-							>
-								{feedback.promptDetails.map(
-									(detail) =>
-										// biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-										detail.feedback.prompt && (
-											<p key={detail.type} className="space-x-1">
-												<span>{detail.feedback.is_passed ? "✅" : "❌"}</span>
-												<span className="font-semibold">{detail.type}:</span>
-												<span>{detail.feedback.prompt}</span>
-											</p>
-										),
-								)}
-							</AccordionItem>
-						</Accordion>
-					)}
-				</Component>
-			)}
+			{feedback && <SummaryFeedbackDetails feedback={feedback} />}
 		</div>
+	);
+};
+
+export const SummaryFeedbackDetails = ({
+	feedback,
+}: { feedback: SummaryFeedbackType }) => {
+	const Component = components[feedback?.isPassed ? "true" : "false"];
+
+	const terms = feedback?.suggestedKeyphrases
+		? Array.from(new Set(feedback.suggestedKeyphrases))
+		: [];
+	return (
+		<Component role="status">
+			<p className="my-2">
+				Improve your summary by including some of the following keywords:
+			</p>
+			<ul className="space-y-1">
+				{terms.map((term) => (
+					<li
+						className="flex items-center gap-2 text-accent-foreground"
+						key={term}
+					>
+						<Lightbulb className="size-4" aria-hidden="true" />
+						{term}
+					</li>
+				))}
+			</ul>
+			{feedback.promptDetails && (
+				<Accordion value="first">
+					<AccordionItem
+						value="first"
+						title="Scoring details"
+						accordionTriggerClassName="text-sm my-2 underline-none"
+					>
+						{feedback.promptDetails.map(
+							(detail) =>
+								// biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+								detail.feedback.prompt && (
+									<p key={detail.type} className="space-x-1">
+										<span>{detail.feedback.is_passed ? "✅" : "❌"}</span>
+										<span className="font-semibold">{detail.type}:</span>
+										<span>{detail.feedback.prompt}</span>
+									</p>
+								),
+						)}
+					</AccordionItem>
+				</Accordion>
+			)}
+		</Component>
 	);
 };

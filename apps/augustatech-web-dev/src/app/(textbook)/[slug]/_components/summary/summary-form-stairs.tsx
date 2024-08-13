@@ -59,11 +59,11 @@ import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { SummaryFeedback } from "./summary-feedback";
+import { SummaryFeedback, SummaryFeedbackDetails } from "./summary-feedback";
 import {
 	SummaryInput,
 	getSummaryLocal,
@@ -79,7 +79,7 @@ type Props = {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
-	const { portals, addPortal } = usePortal();
+	const { portals, addPortal, removePortal } = usePortal();
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -103,6 +103,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const stairsQuestion = useSelector(summaryStore, SelectStairs);
 	const submissionError = useSelector(summaryStore, SelectError);
 	const feedback = response ? getFeedback(response) : null;
+
+	const portalIds = useRef<PortalIds>({ chat: null, feedback: null });
 
 	const {
 		action,
@@ -310,7 +312,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			animate: false,
 			allowClose: false,
 			onPopoverRender: (popover) => {
-				addPortal(
+				portalIds.current.chat = addPortal(
 					<ChatStairs
 						id={Elements.STAIRS_CONTAINER}
 						pageSlug={pageSlug}
@@ -328,7 +330,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 											},
 										});
 									}
-
 									exitQuestion();
 								}}
 							/>
@@ -358,6 +359,22 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				if (stairsDataRef.current?.chunk) {
 					setInertBackground(stairsDataRef.current.chunk);
 				}
+
+				const chunk = document.getElementById(
+					Elements.STAIRS_HIGHLIGHTED_CHUNK,
+				);
+				if (summaryResponseRef.current && chunk) {
+					const node = document.createElement("div");
+					node.id = Elements.STAIRS_FEEDBACK_CONTAINER;
+
+					portalIds.current.feedback = addPortal(
+						<SummaryFeedbackDetails
+							feedback={getFeedback(summaryResponseRef.current)}
+						/>,
+						node,
+					);
+					chunk.prepend(node);
+				}
 			},
 			onDestroyed: (element) => {
 				removeInert();
@@ -370,10 +387,18 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						link.remove();
 					}
 				}
+				if (portalIds.current.chat) {
+					removePortal(portalIds.current.chat);
+				}
+				if (portalIds.current.feedback) {
+					removePortal(portalIds.current.feedback);
+				}
 
 				const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
 				if (assignments) {
-					scrollToElement(element as HTMLElement);
+					setTimeout(() => {
+						scrollToElement(assignments as HTMLElement);
+					}, 100);
 				}
 
 				document.getElementById(Elements.SUMMARY_INPUT)?.focus();
@@ -456,16 +481,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 								Submit
 							</span>
 						</Button>
-						{/* <StatusButton
-						disabled={!isSummaryReady}
-						pending={isPending}
-						className="w-32"
-					>
-						<span className="flex items-center gap-2">
-							<SendHorizontalIcon className="size-4" />
-							Submit
-						</span>
-					</StatusButton> */}
 					</div>
 				</form>
 				{isDelayed && <DelayMessage />}
@@ -498,7 +513,10 @@ const FinishReadingButton = ({
 	);
 };
 
-const driverObj = driver();
+type PortalIds = {
+	chat: string | null;
+	feedback: string | null;
+};
 
 const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 	return {
@@ -508,6 +526,9 @@ const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
 		suggestedKeyphrases: response.suggested_keyphrases,
 	};
 };
+const driverObj = driver();
+
+const exitQuestion = () => driverObj.destroy();
 
 const goToQuestion = (question: StairsQuestion) => {
 	const el = getChunkElement(question.chunk);
@@ -520,14 +541,10 @@ const goToQuestion = (question: StairsQuestion) => {
 		});
 		setTimeout(() => {
 			scrollToElement(el);
-		});
+		}, 100);
 	} else {
 		toast.warning(
 			"Please revise your summary with substantial changes and resubmit to unlock the next page",
 		);
 	}
-};
-
-const exitQuestion = () => {
-	driverObj.destroy();
 };
