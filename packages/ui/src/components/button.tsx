@@ -40,7 +40,7 @@ export interface ButtonProps
 	asChild?: boolean;
 	pending?: boolean;
 	event?: boolean;
-	wrapSpan?: boolean;
+	wrapChild?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -53,7 +53,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 			pending,
 			children,
 			asChild = false,
-			wrapSpan = true,
+			wrapChild = true,
 			...props
 		},
 		ref,
@@ -71,7 +71,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 						<Spinner />
 					</span>
 				)}
-				{wrapSpan ? (
+				{wrapChild ? (
 					<Slottable>
 						<span className={pending ? "invisible" : ""}>{children}</span>
 					</Slottable>

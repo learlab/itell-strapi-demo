@@ -5,22 +5,27 @@
 @import url("@itell/ui/dist/style.css");
 @import url("@itell/js-sandbox/dist/style.css");
 
-details {
+
+
+details:not(.error-panel) {
   @apply p-4 rounded-md border select-none
 }
 
-details[open] {
+details[open]:not(.error-panel) {
   @apply shadow-xl
 }
 
-details[open]>summary:before {
+details[open]:not(.error-panel)>summary:before {
   transform: rotate(90deg);
 }
 
-details summary {
+details:not(.error-panel) summary {
   @apply leading-6 font-semibold
 }
 
+pre {
+  overflow-y: hidden;
+}
 
 .prose code.language-math::before {
   content: none;
