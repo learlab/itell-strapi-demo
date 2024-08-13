@@ -63,7 +63,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
 
-	const { addPortal, removePortal, portals } = usePortal();
+	const { addPortal, removePortals, portals } = usePortal();
 	const portalId = useRef<string | null>(null);
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const requestBodyRef = useRef<string>("");
@@ -185,9 +185,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			},
 			onDestroyed: (element) => {
 				removeInert();
-				if (portalId.current) {
-					removePortal(portalId.current);
-				}
+				removePortals();
 				if (element) {
 					element.removeAttribute("tabIndex");
 					element.removeAttribute("id");

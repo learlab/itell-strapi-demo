@@ -79,7 +79,7 @@ type Props = {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.page_slug;
-	const { portals, addPortal, removePortal } = usePortal();
+	const { portals, addPortal, removePortal, removePortals } = usePortal();
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -103,8 +103,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const stairsQuestion = useSelector(summaryStore, SelectStairs);
 	const submissionError = useSelector(summaryStore, SelectError);
 	const feedback = response ? getFeedback(response) : null;
-
-	const portalIds = useRef<PortalIds>({ chat: null, feedback: null });
 
 	const {
 		action,
@@ -312,7 +310,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			animate: false,
 			allowClose: false,
 			onPopoverRender: (popover) => {
-				portalIds.current.chat = addPortal(
+				addPortal(
 					<ChatStairs
 						id={Elements.STAIRS_CONTAINER}
 						pageSlug={pageSlug}
@@ -367,7 +365,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const node = document.createElement("div");
 					node.id = Elements.STAIRS_FEEDBACK_CONTAINER;
 
-					portalIds.current.feedback = addPortal(
+					addPortal(
 						<SummaryFeedbackDetails
 							feedback={getFeedback(summaryResponseRef.current)}
 						/>,
@@ -387,12 +385,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						link.remove();
 					}
 				}
-				if (portalIds.current.chat) {
-					removePortal(portalIds.current.chat);
-				}
-				if (portalIds.current.feedback) {
-					removePortal(portalIds.current.feedback);
-				}
+
+				removePortals();
 
 				const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
 				if (assignments) {
@@ -511,11 +505,6 @@ const FinishReadingButton = ({
 			</Button>
 		</div>
 	);
-};
-
-type PortalIds = {
-	chat: string | null;
-	feedback: string | null;
 };
 
 const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {

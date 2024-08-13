@@ -1,9 +1,7 @@
 "use client";
 
 import { logout } from "@/lib/auth/actions";
-import { useDebounce } from "@itell/core/hooks";
 import {
-	Button,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
@@ -20,7 +18,6 @@ import {
 	LogOutIcon,
 	SettingsIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { NavigationButton } from "./navigation-button";

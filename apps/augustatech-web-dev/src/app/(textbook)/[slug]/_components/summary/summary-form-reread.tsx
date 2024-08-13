@@ -63,8 +63,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 		return validChunks[Math.floor(Math.random() * validChunks.length)];
 	}, []);
 
-	const { addPortal, removePortal, portals } = usePortal();
-	const portalId = useRef<string | null>(null);
+	const { addPortal, removePortal, portals, removePortals } = usePortal();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 	const requestBodyRef = useRef<string>("");
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -168,7 +167,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				setInertBackground(randomChunkSlug);
 			},
 			onPopoverRender: (popover) => {
-				portalId.current = addPortal(
+				addPortal(
 					<FinishReadingButton
 						onClick={(time) => {
 							exitChunk();
@@ -185,9 +184,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			},
 			onDestroyed: (element) => {
 				removeInert();
-				if (portalId.current) {
-					removePortal(portalId.current);
-				}
+				removePortals();
 				if (element) {
 					element.removeAttribute("tabIndex");
 					element.removeAttribute("id");

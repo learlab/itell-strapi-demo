@@ -1,5 +1,4 @@
 import {
-	ReactNode,
 	RefObject,
 	useCallback,
 	useEffect,
@@ -149,9 +148,13 @@ export const usePortal = () => {
 		[],
 	);
 
+	const removePortals = useCallback(() => {
+		setPortals([]);
+	}, []);
+
 	const removePortal = useCallback((id: string) => {
 		setPortals((prev) => prev.filter((portal) => portal.id !== id));
 	}, []);
 
-	return { portals, addPortal, removePortal };
+	return { portals, addPortal, removePortal, removePortals };
 };
