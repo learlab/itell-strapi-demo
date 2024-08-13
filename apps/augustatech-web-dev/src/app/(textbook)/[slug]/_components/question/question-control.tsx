@@ -95,7 +95,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	) => {
 		const questionContainer = document.createElement("div");
 		const isLastQuestion = chunkSlug === chunks.at(-1);
-		questionContainer.className = Elements.QUESTION_CONTAINER;
+		questionContainer.className = Elements.QUESTION_CONTAINER_CLASS;
 		questionContainer.ariaLabel = "a question for the text above";
 		el.appendChild(questionContainer);
 

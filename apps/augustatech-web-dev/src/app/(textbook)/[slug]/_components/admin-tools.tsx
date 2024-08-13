@@ -66,7 +66,11 @@ const conditions = [
 export const AdminTools = ({ condition }: Props) => {
 	const store = useQuestionStore();
 	const [open, setOpen] = useState(false);
-	const { execute, isPending, isError } = useServerAction(updateUserAction);
+	const {
+		execute: updateUser,
+		isPending,
+		isError,
+	} = useServerAction(updateUserAction);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -83,7 +87,7 @@ export const AdminTools = ({ condition }: Props) => {
 			});
 		}
 
-		const [_, err] = await execute({
+		const [_, err] = await updateUser({
 			condition,
 			pageSlug,
 			finished: false,
@@ -183,7 +187,13 @@ export const AdminTools = ({ condition }: Props) => {
 							</div>
 							<Switch name="page-unblur" aria-describedby="unblur-desc" />
 						</Label>
-						<RestartTextbook />
+						<Label className="flex flex-col gap-2 font-normal">
+							<p className="font-semibold">Restart textbook</p>
+							<p className="text-muted-foreground text-sm">
+								Remove all your data and reset your progress to the first page
+							</p>
+							<RestartTextbook />
+						</Label>
 					</fieldset>
 
 					<footer className="flex justify-end">

@@ -376,17 +376,14 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			},
 			onDestroyed: (element) => {
 				removeInert();
+				removePortals();
+				document.getElementById(Elements.STAIRS_FEEDBACK_CONTAINER)?.remove();
+
 				if (element) {
 					element.removeAttribute("tabIndex");
 					element.removeAttribute("id");
-
-					const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
-					if (link) {
-						link.remove();
-					}
+					document.getElementById(Elements.STAIRS_ANSWER_LINK)?.remove();
 				}
-
-				removePortals();
 
 				const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
 				if (assignments) {
