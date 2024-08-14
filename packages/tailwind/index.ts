@@ -1,14 +1,20 @@
 import typographyPlugin from "@tailwindcss/typography";
 import { Config } from "tailwindcss";
 import animatePlugin from "tailwindcss-animate";
-import plugin from "./plugin";
+import { AppPlugin, UIPlugin } from "./plugin";
 import { DefaultTheme } from "./theme";
 
-export { DefaultTheme };
+export { DefaultTheme, AppPlugin, UIPlugin };
 
 // for using as a preset in the tailwind config for an app
-export default {
+export const AppPreset = {
 	darkMode: "class",
 	content: [],
-	plugins: [animatePlugin, typographyPlugin, plugin],
+	plugins: [animatePlugin, typographyPlugin, AppPlugin],
+} satisfies Config;
+
+export const UIPreset = {
+	darkMode: "class",
+	content: [],
+	plugins: [animatePlugin, typographyPlugin, UIPlugin],
 } satisfies Config;

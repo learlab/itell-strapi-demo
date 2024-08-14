@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("@itell/ui/dist/style.css");
-
 
 .note {
   color: black;

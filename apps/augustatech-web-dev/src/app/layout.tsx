@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-
 import { GeistSans as FontSans } from "geist/font/sans";
 import { Roboto_Slab as FontSerif } from "next/font/google";
 

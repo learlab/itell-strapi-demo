@@ -40,7 +40,6 @@ export interface ButtonProps
 	asChild?: boolean;
 	pending?: boolean;
 	event?: boolean;
-	wrapChild?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -53,12 +52,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 			pending,
 			children,
 			asChild = false,
-			wrapChild = true,
 			...props
 		},
 		ref,
 	) => {
 		const Comp = asChild ? Slot : "button";
+
 		return (
 			<Comp
 				className={cn("relative", buttonVariants({ variant, size, className }))}
@@ -66,17 +65,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				{...props}
 			>
-				{pending && (
-					<span className="absolute inset-0 flex items-center justify-center">
-						<Spinner />
-					</span>
-				)}
-				{wrapChild ? (
-					<Slottable>
-						<span className={pending ? "invisible" : ""}>{children}</span>
-					</Slottable>
-				) : (
+				{pending === undefined ? (
 					children
+				) : (
+					<>
+						{pending && (
+							<span className="absolute inset-0 flex items-center justify-center">
+								<Spinner />
+							</span>
+						)}
+						<Slottable>
+							<span className={pending ? "invisible" : ""}>{children}</span>
+						</Slottable>
+					</>
 				)}
 			</Comp>
 		);

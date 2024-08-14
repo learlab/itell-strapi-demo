@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("@itell/ui/dist/style.css");
-@import url("@itell/js-sandbox/dist/style.css");
-
-
 
 details:not(.error-panel) {
   @apply p-4 rounded-md border select-none

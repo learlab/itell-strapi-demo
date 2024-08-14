@@ -37,7 +37,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const Info = ({ title, children, className, ...rest }: Props) => (
 	<Alert
 		className={cn(
-			"bg-info dark:bg-inherit dark:border-2 dark:border-info my-4",
+			"bg-info my-4 dark:bg-inherit dark:border-2 dark:border-info",
 			className,
 		)}
 		{...rest}

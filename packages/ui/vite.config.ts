@@ -2,7 +2,6 @@ import path from "node:path";
 import react from "@vitejs/plugin-react";
 import banner from "rollup-plugin-banner2";
 import { visualizer } from "rollup-plugin-visualizer";
-import tailwindcss from "tailwindcss";
 
 import { UserConfigExport, defineConfig } from "vite";
 import dts from "vite-plugin-dts";
@@ -15,11 +14,6 @@ const app = async (): Promise<UserConfigExport> => {
 				insertTypesEntry: true,
 			}),
 		],
-		css: {
-			postcss: {
-				plugins: [tailwindcss],
-			},
-		},
 		build: {
 			lib: {
 				entry: {
@@ -45,7 +39,7 @@ const app = async (): Promise<UserConfigExport> => {
 					"recharts",
 				],
 				plugins: [
-					visualizer({ open: true }),
+					visualizer(),
 					banner((chunk) => {
 						if (
 							chunk.fileName === "client.cjs.js" ||

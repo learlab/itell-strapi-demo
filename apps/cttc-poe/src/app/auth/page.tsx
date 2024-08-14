@@ -40,11 +40,9 @@ export default async function ({ searchParams }: PageProps) {
 			<div className="col-span-2 lg:p-8 lg:col-span-1">
 				<header>
 					<Link href="/" className={"absolute top-4 left-4 md:top-8 md:left-8"}>
-						<Button variant="ghost">
-							<span className="inline-flex items-center justify-center">
-								<ChevronLeftIcon />
-								Home
-							</span>
+						<Button variant="ghost" className="flex items-center gap-2">
+							<ChevronLeftIcon />
+							Home
 						</Button>
 					</Link>
 				</header>

@@ -1,4 +1,5 @@
-import { TextbookMdx } from "@/components/mdx";
+import { Mdx } from "@/components/mdx";
+import { TextbookComponents } from "@/components/mdx-components";
 import { PageLink } from "@/components/page-link";
 import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
 import { buttonVariants } from "@itell/ui/server";
@@ -22,7 +23,7 @@ export const TextbookPageModal = ({
 					</PageLink>
 				</div>
 
-				<TextbookMdx code={page.code} />
+				<Mdx components={TextbookComponents} code={page.code} />
 			</DialogContent>
 		</Dialog>
 	);

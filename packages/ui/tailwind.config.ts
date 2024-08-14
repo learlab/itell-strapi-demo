@@ -1,7 +1,7 @@
+import { UIPreset } from "@itell/tailwind";
 import type { Config } from "tailwindcss";
-import tailwindPreset from "@itell/tailwind";
 
 export default {
-	presets: [tailwindPreset],
+	presets: [UIPreset],
 	content: ["./src/**/*.{js,jsx,ts,tsx}"],
 } satisfies Config;
