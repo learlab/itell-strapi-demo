@@ -276,11 +276,9 @@ export const QuestionBoxStairs = ({
 						{status !== StatusStairs.UNANSWERED && (
 							<HoverCard>
 								<HoverCardTrigger asChild>
-									<Button variant={"outline"} type="button">
-										<span className="flex items-center gap-2">
-											<KeyRoundIcon className="size-4" />
-											Reveal Answer
-										</span>
+									<Button variant={"outline"} type="button" className="gap-2">
+										<KeyRoundIcon className="size-4" />
+										Reveal Answer
 									</Button>
 								</HoverCardTrigger>
 								<HoverCardContent className="w-80 ">

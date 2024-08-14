@@ -37,7 +37,7 @@ export const TextbookNav = async ({ scrollProgress, read }: Props) => {
 					</Link>
 					{read && (
 						<ContinueReading
-							className="hidden md:blockw-28"
+							className="hidden md:block w-28"
 							text="Read"
 							variant="outline"
 							size={"default"}

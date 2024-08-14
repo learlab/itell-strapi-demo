@@ -10,7 +10,7 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			external: ["zod"],
-			plugins: [visualizer({ open: true })],
+			plugins: [visualizer({ open: false })],
 		},
 	},
 });

@@ -38,13 +38,12 @@ export const GoogleLoginButton = () => {
 			disabled={pending}
 			pending={pending}
 		>
-			<span className="inline-flex items-center">
+			<span className="inline-flex items-center gap-2">
 				<Image
 					alt="Google Icon"
 					src="/icons/google.png"
 					width={16}
 					height={16}
-					className="mr-2"
 				/>
 				<span>Google</span>
 			</span>

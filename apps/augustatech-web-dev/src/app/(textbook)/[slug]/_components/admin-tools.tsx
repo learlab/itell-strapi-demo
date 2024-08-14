@@ -107,12 +107,10 @@ export const AdminTools = ({ condition }: Props) => {
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
-					className="flex justify-start w-full px-1 py-2 xl:text-lg"
+					className="flex justify-start w-full px-1 py-2 gap-2 xl:text-lg xl:gap-4 "
 				>
-					<span className="inline-flex items-center justify-center gap-2 xl:gap-4 ">
-						<SettingsIcon className="size-4 xl:size-6" />
-						<span>Admin tools</span>
-					</span>
+					<SettingsIcon className="size-4 xl:size-6" />
+					<span>Admin tools</span>
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="overflow-y-scroll">

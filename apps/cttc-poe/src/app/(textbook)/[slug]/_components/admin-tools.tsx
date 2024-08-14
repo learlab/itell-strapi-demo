@@ -142,9 +142,7 @@ export const AdminTools = ({ userId, condition }: Props) => {
 					variant="ghost"
 					className="flex justify-start items-center gap-2 w-full px-1 py-2"
 				>
-					<span className="inline-flex justify-center items-center gap-2">
-						<SettingsIcon className="size-4" /> Admin tools
-					</span>
+					<SettingsIcon className="size-4" /> Admin tools
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="overflow-y-scroll">

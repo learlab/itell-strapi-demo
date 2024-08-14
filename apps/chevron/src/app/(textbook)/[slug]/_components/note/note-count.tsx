@@ -17,7 +17,7 @@ export const NoteCount = () => {
 		<HoverCard>
 			<HoverCardTrigger>
 				<Button variant={"link"} className="text-sm px-0 text-left">
-					<span>{`${pluralize("note", count, true)}`}</span>
+					{`${pluralize("note", count, true)}`}
 				</Button>
 			</HoverCardTrigger>
 			<HoverCardContent className="w-48 text-sm">
