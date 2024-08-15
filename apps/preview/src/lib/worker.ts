@@ -1,3 +1,4 @@
+import { expose } from "comlink";
 import type { Root as Hast } from "hast";
 import type { Root as Mdast } from "mdast";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -11,6 +12,16 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import type { PluggableList } from "unified";
 import { visit } from "unist-util-visit";
+
+export type WorkerApi = typeof workerApi;
+
+const workerApi = {
+	transform: async (code: string) => {
+		return _transform(code);
+	},
+};
+
+expose(workerApi);
 
 const remarkRemoveComments = () => (tree: Mdast) => {
 	visit(tree, "html", (node, index, parent) => {
@@ -35,7 +46,7 @@ const remarkPlugins: PluggableList = [
 	remarkRemoveComments,
 ];
 
-export const transform = async (value: string) => {
+export const _transform = async (value: string) => {
 	const rehypePlugins: PluggableList = [
 		// @ts-ignore
 		rehypeSlug,

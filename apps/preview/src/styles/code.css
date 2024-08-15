@@ -91,6 +91,10 @@ figure {
 }
 
 
+figure[data-rehype-pretty-code-figure] figcaption {
+    text-align: center
+}
+
 pre,
 code,
 figure {

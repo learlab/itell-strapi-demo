@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ThemeColorSchema = z.object({
+export const ColorSchema = z.object({
 	background: z.string(),
 	foreground: z.string(),
 	muted: z.string(),
@@ -31,30 +31,23 @@ export const ThemeColorSchema = z.object({
 	"note-popover": z.string(),
 });
 
-export const UserColorSchema = ThemeColorSchema.strict().partial().optional();
-
-export type ThemeColor = z.infer<typeof ThemeColorSchema>;
+export type ThemeColor = z.infer<typeof ColorSchema>;
 // entire object could be undefined, or any of the properties could be undefined
-export type UserColor = z.infer<typeof UserColorSchema>;
 
 export const ThemeSchema = z.object({
-	root: z.record(z.string()).optional(),
-	light: ThemeColorSchema,
-	dark: ThemeColorSchema,
+	root: ColorSchema,
+	dark: ColorSchema,
 });
-export const UserThemeSchema = z
-	.object({
-		light: UserColorSchema,
-		dark: UserColorSchema,
-	})
-	.strict()
-	.optional();
+export const UserThemeSchema = z.object({
+	root: ColorSchema.partial().optional(),
+	dark: ColorSchema.partial().optional(),
+});
 
 export type Theme = z.infer<typeof ThemeSchema>;
 export type UserTheme = z.infer<typeof UserThemeSchema>;
 
 export const DefaultTheme: Theme = {
-	light: {
+	root: {
 		background: "0 0% 100%",
 		foreground: "222.2 47.4% 11.2%",
 		muted: "210 40% 96.1%",

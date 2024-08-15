@@ -93,6 +93,7 @@ export const Image = (props: Omit<ImageProps, "caption" | "onExpandClick">) => {
 			<div className="relative">
 				<Figure
 					{...props}
+					showCaption={false}
 					onExpandClick={() => {
 						setModalOpen(true);
 					}}
@@ -100,14 +101,7 @@ export const Image = (props: Omit<ImageProps, "caption" | "onExpandClick">) => {
 			</div>
 			<Dialog open={modalOpen} onOpenChange={setModalOpen}>
 				<DialogContent className="max-w-4xl mx-auto">
-					<DialogHeader>
-						<DialogDescription>{props.children}</DialogDescription>
-					</DialogHeader>
-					<Figure
-						{...props}
-						showCaption={Boolean(props.alt)}
-						expandable={false}
-					/>
+					<Figure {...props} showCaption={true} expandable={false} />
 				</DialogContent>
 			</Dialog>
 		</div>

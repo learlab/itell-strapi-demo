@@ -4,8 +4,17 @@
 
 @import url("@itell/ui/dist/style.css");
 
-textarea {
+#editor {
+    display: block;
+    width: 100%;
     resize: none;
+    line-height: 1.5;
+    field-sizing: content;
+    min-height: 15lh;
+}
+
+.gutter {
+    @apply bg-accent
 }
 
 @media (prefers-reduced-motion: no-preference) {

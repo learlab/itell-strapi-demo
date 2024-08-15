@@ -1,8 +1,9 @@
+import { Editor } from "@/components/editor";
 import { Preview } from "@/components/preview";
 import { EditorProvider } from "@/components/provider";
-
-import { Editor } from "@/components/editor";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Split } from "@/components/ui/split";
+import { InfoIcon } from "lucide-react";
 
 export default function Home() {
 	return (
@@ -15,12 +16,22 @@ export default function Home() {
 					<ThemeToggle />
 				</div>
 
-				<section aria-label="editor">
-					<Editor />
-				</section>
-				<section aria-label="preview">
-					<Preview />
-				</section>
+				<Split
+					direction="horizontal"
+					minSize={100}
+					expandToMin={false}
+					sizes={[50, 50]}
+					gutterSize={10}
+					snapOffset={30}
+					className="flex gap-4"
+				>
+					<section aria-label="editor" className="flex-grow">
+						<Editor />
+					</section>
+					<section aria-label="preview" className="flex-grow">
+						<Preview />
+					</section>
+				</Split>
 			</main>
 		</EditorProvider>
 	);
