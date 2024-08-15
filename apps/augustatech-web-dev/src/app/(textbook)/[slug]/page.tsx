@@ -8,7 +8,7 @@ import { getRandomPageQuestions } from "@/lib/question";
 import "@/styles/code.css";
 import { Elements } from "@itell/constants";
 import { ScrollArea } from "@itell/ui/client";
-import { Info, PageTitle } from "@itell/ui/server";
+import { PageTitle } from "@itell/ui/server";
 import { ChapterToc } from "@textbook/chapter-toc";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";

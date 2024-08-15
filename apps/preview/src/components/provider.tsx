@@ -75,6 +75,8 @@ accordion content 2
 
 </accordion-wrapper>
 
+## Image
+
 <i-image
   style="aspect-ratio:678/435;"
   src="https://nbjrajrmujlgxmcvqsge.supabase.co/storage/v1/object/public/strapi/files/1.1.png-e1cb314dd72c8b8360d0cdddc949b81f.png"

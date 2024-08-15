@@ -1,7 +1,7 @@
 "use client";
 
 import { insertComponent, insertText } from "@/lib/textarea";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useEditor } from "./provider";
 import {
 	ContextMenu,
@@ -14,9 +14,10 @@ import {
 	ContextMenuTrigger,
 } from "./ui/context-menu";
 
+type TextAction = (textarea: HTMLTextAreaElement | null) => string | undefined;
 type MenuItem = {
 	label: string;
-	action: (textarea: HTMLTextAreaElement | null) => string | undefined;
+	action: TextAction;
 };
 
 const items: Array<MenuItem> = [
@@ -61,9 +62,25 @@ const calloutItems: Array<MenuItem> = [
 	},
 ];
 
+const sandboxItems: Array<MenuItem> = [
+	{
+		label: "JavaScript",
+		action: (t) =>
+			insertComponent(t, "i-sandbox-js", {
+				id: "greeting-example",
+				code: "function greet(name) { return `Hello ${name}!` }\ngreet('world')",
+			}),
+	},
+];
+
 export const Editor = () => {
 	const { setValue, value } = useEditor();
 	const ref = useRef<HTMLTextAreaElement>(null);
+
+	const execute = useCallback((action: TextAction) => {
+		const val = action(ref.current);
+		if (val) setValue(val);
+	}, []);
 
 	return (
 		<ContextMenu>
@@ -84,10 +101,21 @@ export const Editor = () => {
 							<ContextMenuItem
 								inset
 								key={item.label}
-								onSelect={() => {
-									const val = item.action(ref.current);
-									if (val) setValue(val);
-								}}
+								onSelect={() => execute(item.action)}
+							>
+								{item.label}
+							</ContextMenuItem>
+						))}
+					</ContextMenuSubContent>
+				</ContextMenuSub>
+				<ContextMenuSub>
+					<ContextMenuSubTrigger inset>Sandbox</ContextMenuSubTrigger>
+					<ContextMenuSubContent className="w-48">
+						{sandboxItems.map((item) => (
+							<ContextMenuItem
+								inset
+								key={item.label}
+								onSelect={() => execute(item.action)}
 							>
 								{item.label}
 							</ContextMenuItem>
@@ -98,10 +126,7 @@ export const Editor = () => {
 					<ContextMenuItem
 						inset
 						key={item.label}
-						onSelect={() => {
-							const val = item.action(ref.current);
-							if (val) setValue(val);
-						}}
+						onSelect={() => execute(item.action)}
 					>
 						{item.label}
 					</ContextMenuItem>
