@@ -3,7 +3,7 @@ import { CircleAlertIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
 
 interface CalloutProps extends React.ComponentProps<"div"> {
 	title?: string;
-	variant: "info" | "warning" | "danger";
+	variant?: "info" | "warning" | "danger";
 	children: React.ReactNode;
 }
 
@@ -19,6 +19,17 @@ const titles = {
 	danger: "Caution",
 };
 
+/**
+ * General callout component for displaying information, warnings, and cautions.
+ * @module Callout
+ * @param title - The title of the callout, optional. If not provided, the title will be "Note", "Warning", or "Caution" based on the variant. Defaults to "Note".
+ * @param variant - The variant of the callout, "info", "warning", or "danger". Defaults to "info".
+ * @param children - nested elements
+ * @example
+ * <i-callout variant="info">
+ * 	this is **important**
+ * </i-callout>
+ */
 export const Callout = ({
 	variant = "info",
 	title,

@@ -12,7 +12,35 @@ import { cn } from "@itell/utils";
 type AccordionProps = {
 	className?: string;
 	children: React.ReactNode;
-	value: string[] | string;
+	value?: string[] | string;
+};
+
+/**
+ * Top-level accordion wrapper
+ * @module Accordion
+ * @param value {string | string[] | undefined} - The value of the accordion item to be expanded. If not provided, all items will be collapsed.
+ * @param children - nested elements
+ * @example
+ * ```tsx
+ * <accordion-wrapper value="1">
+ * 	<accordion-item value="1" title="Item 1">
+ * 		<p>Item 1 content</p>
+ * 	</accordion-item>
+ * 	<accordion-item value="2" title="Item 2">
+ * 		<p>Item 2 content</p>
+ * 	</accordion-item>
+ * </accordion-wrapper>
+ * ```
+ */
+export const Accordion = ({ children, value, className }: AccordionProps) => {
+	if (typeof value === "string") {
+		value = [value];
+	}
+	return (
+		<BaseAccordion type="multiple" defaultValue={value} className={className}>
+			{children}
+		</BaseAccordion>
+	);
 };
 
 type AccordionItemProps = React.ComponentPropsWithoutRef<
@@ -25,6 +53,13 @@ type AccordionItemProps = React.ComponentPropsWithoutRef<
 	accordionContentClassName?: string;
 };
 
+/**
+ * An item in the accordion
+ * @module AccordionItem
+ * @param value {string} - The identifier for the accordion item, must be unique inside the same accordion
+ * @param title {string} - The title of the accordion item, optional. If not provided, the title will be the value.
+ * @param children - nested elements
+ */
 export const AccordionItem = ({
 	value,
 	title,
@@ -52,16 +87,5 @@ export const AccordionItem = ({
 				</div>
 			</BaseAccordionContent>
 		</BaseAccordionItem>
-	);
-};
-
-export const Accordion = ({ children, value, className }: AccordionProps) => {
-	if (typeof value === "string") {
-		value = [value];
-	}
-	return (
-		<BaseAccordion type="multiple" defaultValue={value} className={className}>
-			{children}
-		</BaseAccordion>
 	);
 };

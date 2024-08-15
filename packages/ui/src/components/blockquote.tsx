@@ -1,10 +1,14 @@
 import { cn } from "@itell/utils";
 
-interface Props extends React.ComponentPropsWithoutRef<"figure"> {
+interface BlockquoteProps extends React.ComponentPropsWithoutRef<"figure"> {
 	children: React.ReactNode;
 	className?: string;
 	author?: string;
 	role?: string;
+}
+
+export declare namespace Blockquote {
+	export type Props = BlockquoteProps;
 }
 
 export const Blockquote = ({
@@ -13,7 +17,7 @@ export const Blockquote = ({
 	author,
 	role,
 	...rest
-}: Props) => {
+}: BlockquoteProps) => {
 	return (
 		<figure
 			className={cn("max-w-screen-md mx-auto text-center", className)}

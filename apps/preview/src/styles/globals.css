@@ -4,6 +4,25 @@
 
 @import url("@itell/ui/dist/style.css");
 
+table,
+pre,
+code {
+    user-select: auto;
+}
+
+.prose code.language-math::before {
+    content: none;
+}
+
+.prose code.language-math::after {
+    content: none;
+}
+
+.prose pre:has(code.language-math) {
+    @apply bg-background text-foreground
+}
+
+
 #editor {
     display: block;
     width: 100%;

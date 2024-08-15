@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 800bfe6661f0192363cb61537403030045e6a1cf..0072eb44ace7240006ff9d1dd06e564585e4ae86 100644
+--- a/package.json
++++ b/package.json
+@@ -30,7 +30,7 @@
+       "deno": "./index.js",
+       "react-native": "./index.js",
+       "worker": "./index.js",
+-      "browser": "./lib/browser.js",
++      "browser": "./index.js",
+       "default": "./index.js"
+     }
+   },

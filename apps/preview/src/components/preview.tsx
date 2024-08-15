@@ -8,12 +8,16 @@ import htmr from "htmr";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useEditor } from "./provider";
+import { Spinner } from "./ui/spinner";
 
 export const Preview = () => {
 	const { value } = useEditor();
 	const [debouncedValue] = useDebounce(value, 1000);
 	const worker = useRef<Remote<WorkerApi>>();
 	const [node, setNode] = useState<ReactNode>(null);
+	const [_pending, setPending] = useState(false);
+	const [pending] = useDebounce(_pending, 500);
+	const [initialized, setInitialized] = useState(false);
 
 	useEffect(() => {
 		worker.current = wrap<WorkerApi>(
@@ -21,6 +25,7 @@ export const Preview = () => {
 				type: "module",
 			}),
 		);
+		setInitialized(true);
 
 		return () => {
 			worker.current?.[releaseProxy]();
@@ -28,6 +33,7 @@ export const Preview = () => {
 	}, []);
 
 	useEffect(() => {
+		setPending(true);
 		worker.current?.transform(debouncedValue).then((html) => {
 			setNode(
 				htmr(html, {
@@ -35,16 +41,27 @@ export const Preview = () => {
 					transform: components,
 				}),
 			);
+			setPending(false);
 		});
 	}, [debouncedValue]);
 	return (
 		<>
-			<Prose
-				id="preview"
-				className="font-sans border border-input bg-background p-4"
-			>
-				{node}
-			</Prose>
+			{initialized ? (
+				<Prose
+					id="preview"
+					className="font-sans border border-input bg-background p-4 relative"
+				>
+					{pending && <Spinner className="absolute top-2 right-2 size-6" />}
+					{node}
+				</Prose>
+			) : (
+				<div className="h-full w-full">
+					<p className="flex items-center gap-2">
+						<Spinner />
+						<span>initializing preview</span>
+					</p>
+				</div>
+			)}
 		</>
 	);
 };

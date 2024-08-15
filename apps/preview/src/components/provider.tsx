@@ -20,21 +20,15 @@ const initialValue = `
 | March    | $420    |
 
 
+## Math
 
+Inline math: $x^2$
 
-## Callout
+Block math:
 
-<i-callout variant="info" title="Guidance">
-Laborum aute veniam ut tempor veniam tempor. Ipsum id eiusmod veniam nulla ipsum incididunt occaecat Lorem commodo minim elit nostrud et. Cupidatat dolore sunt cillum excepteur in excepteur amet.
-</i-callout>
-
-<i-callout variant="warning">
-Laborum aute veniam ut tempor veniam tempor. Ipsum id eiusmod veniam nulla ipsum incididunt occaecat Lorem commodo minim elit nostrud et. Cupidatat dolore sunt cillum excepteur in excepteur amet.
-</i-callout>
-
-<i-callout variant="danger">
-Laborum aute veniam ut tempor veniam tempor. Ipsum id eiusmod veniam nulla ipsum incididunt occaecat Lorem commodo minim elit nostrud et. Cupidatat dolore sunt cillum excepteur in excepteur amet.
-</i-callout>
+$$
+a^2 + b^2 = c^2
+$$
 
 ## Code
 
@@ -51,7 +45,20 @@ foo(bar);
 
 code sandbox
 
-<js-sandbox id="1" code="const foo = 'bar';\nconsole.log('hello',\`\${foo}\`);" />
+<i-sandbox-js id="1" code="const foo = 'bar';\nconsole.log('hello',\`\${foo}\`);" />
+
+
+
+## Callout
+
+<i-callout variant="info" title="Guidance">
+Laborum aute veniam ut tempor veniam tempor. Ipsum id eiusmod veniam nulla ipsum incididunt occaecat Lorem commodo minim elit nostrud et. Cupidatat dolore sunt cillum excepteur in excepteur amet.
+</i-callout>
+
+
+
+
+
 
 
 ## Accordion

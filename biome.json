@@ -20,6 +20,9 @@
 				"noExplicitAny": "warn",
 				"noEmptyInterface": "warn"
 			},
+			"security": {
+				"noDangerouslySetInnerHtml": "warn"
+			},
 			"style": {
 				"noUselessElse": "warn",
 				"noParameterAssign": "warn",

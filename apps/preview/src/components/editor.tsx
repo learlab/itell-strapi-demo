@@ -7,6 +7,7 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuSeparator,
 	ContextMenuSub,
 	ContextMenuSubContent,
 	ContextMenuSubTrigger,
@@ -45,6 +46,21 @@ const items: Array<MenuItem> = [
 	},
 ];
 
+const calloutItems: Array<MenuItem> = [
+	{
+		label: "Info",
+		action: (t) => insertComponent(t, "i-callout", { variant: "info" }),
+	},
+	{
+		label: "Warning",
+		action: (t) => insertComponent(t, "i-callout", { variant: "warning" }),
+	},
+	{
+		label: "Danger",
+		action: (t) => insertComponent(t, "i-callout", { variant: "danger" }),
+	},
+];
+
 export const Editor = () => {
 	const { setValue, value } = useEditor();
 	const ref = useRef<HTMLTextAreaElement>(null);
@@ -64,21 +80,18 @@ export const Editor = () => {
 				<ContextMenuSub>
 					<ContextMenuSubTrigger inset>Callout</ContextMenuSubTrigger>
 					<ContextMenuSubContent className="w-48">
-						<ContextMenuItem
-							onSelect={(e) => {
-								insertComponent(
-									ref.current,
-									"i-callout",
-									{
-										variant: "info",
-									},
-									"Excepteur incididunt aliqua minim eiusmod quis reprehenderit aliqua cupidatat est voluptate labore laboris ea magna. In excepteur culpa sit officia eiusmod officia commodo. Et enim Lorem pariatur excepteur nulla veniam exercitation elit reprehenderit laborum nulla.",
-								);
-							}}
-						>
-							Info
-						</ContextMenuItem>
-						<ContextMenuItem>Note</ContextMenuItem>
+						{calloutItems.map((item) => (
+							<ContextMenuItem
+								inset
+								key={item.label}
+								onSelect={() => {
+									const val = item.action(ref.current);
+									if (val) setValue(val);
+								}}
+							>
+								{item.label}
+							</ContextMenuItem>
+						))}
 					</ContextMenuSubContent>
 				</ContextMenuSub>
 				{items.map((item) => (
@@ -93,6 +106,17 @@ export const Editor = () => {
 						{item.label}
 					</ContextMenuItem>
 				))}
+				<ContextMenuSeparator />
+				<ContextMenuItem
+					inset
+					onSelect={async () => {
+						const text = await navigator.clipboard.readText();
+						const val = insertText(ref.current, text);
+						if (val) setValue(val);
+					}}
+				>
+					Paste
+				</ContextMenuItem>
 			</ContextMenuContent>
 
 			{/* <style>{".ck-editor__editable_inline { min-height: 400px; }"}</style>

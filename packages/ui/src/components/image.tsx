@@ -3,14 +3,9 @@ import { ExpandIcon } from "lucide-react";
 import NextImage from "next/image";
 import { useState } from "react";
 import { Button } from "./button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-} from "./dialog";
+import { Dialog, DialogContent } from "./dialog";
 
-interface ImageProps {
+interface FigureProps {
 	src: string;
 	alt: string;
 	width?: number;
@@ -40,7 +35,7 @@ export const Figure = ({
 	expandable = true,
 	showCaption = false,
 	onExpandClick,
-}: ImageProps) => {
+}: FigureProps) => {
 	return (
 		<figure
 			className={cn("group", {
@@ -85,7 +80,13 @@ export const Figure = ({
 	);
 };
 
-export const Image = (props: Omit<ImageProps, "caption" | "onExpandClick">) => {
+type ImageProps = Omit<FigureProps, "caption" | "onExpandClick">;
+
+export declare namespace Image {
+	export type Props = ImageProps;
+}
+
+export const Image = (props: ImageProps) => {
 	const [modalOpen, setModalOpen] = useState(false);
 
 	return (

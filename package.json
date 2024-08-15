@@ -30,7 +30,8 @@
 	"pnpm": {
 		"patchedDependencies": {
 			"drizzle-orm@0.30.10": "patches/drizzle-orm@0.30.10.patch",
-			"decode-named-character-reference@1.0.2": "patches/decode-named-character-reference@1.0.2.patch"
+			"decode-named-character-reference@1.0.2": "patches/decode-named-character-reference@1.0.2.patch",
+			"hast-util-from-html-isomorphic@1.0.0": "patches/hast-util-from-html-isomorphic@1.0.0.patch"
 		}
 	}
 }

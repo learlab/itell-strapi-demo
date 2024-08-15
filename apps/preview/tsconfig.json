@@ -25,7 +25,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "src/*",
+      ],
+      "velite/generated": [
+        ".velite"
       ]
     },
     "plugins": [
@@ -40,7 +43,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    ".velite",
+    "src/components/ui/callout.js"
   ],
   "exclude": [
     "node_modules",

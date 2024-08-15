@@ -1,12 +1,14 @@
 import { expose } from "comlink";
 import type { Root as Hast } from "hast";
 import type { Root as Mdast } from "mdast";
+import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkHeadingId from "remark-heading-id";
+import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
@@ -44,12 +46,15 @@ const remarkPlugins: PluggableList = [
 	remarkGfm,
 	remarkHeadingId,
 	remarkRemoveComments,
+	remarkMath,
 ];
 
 export const _transform = async (value: string) => {
 	const rehypePlugins: PluggableList = [
 		// @ts-ignore
 		rehypeSlug,
+		// @ts-ignore
+		rehypeKatex,
 		() =>
 			rehypePrettyCode({
 				theme: {
