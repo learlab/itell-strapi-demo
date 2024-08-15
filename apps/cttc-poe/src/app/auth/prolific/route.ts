@@ -74,11 +74,15 @@ export async function GET(req: Request): Promise<Response> {
 				}
 
 				if (lastUser.condition === Condition.RANDOM_REREAD) {
-					condition = Condition.SIMPLE;
+					condition = Condition.STAIRS;
 				}
 
 				if (lastUser.condition === Condition.SIMPLE) {
-					condition = Condition.STAIRS;
+					if (Math.random() < 0.5) {
+						condition = Condition.STAIRS;
+					} else {
+						condition = Condition.RANDOM_REREAD;
+					}
 				}
 			}
 
