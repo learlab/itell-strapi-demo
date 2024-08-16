@@ -1,18 +1,35 @@
 import { Editor } from "@/components/editor";
 import { ExampleSelect } from "@/components/example-select";
+import { PageCard } from "@/components/page-card";
 import { Preview } from "@/components/preview";
 import { Reference } from "@/components/reference";
+import { SearchStrapi } from "@/components/search-strapi";
 import { Share } from "@/components/share";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Split } from "@/components/ui/split";
+import { getPage } from "@/lib/strapi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
+import { examples } from "#content";
 import { HomeProvider } from "./home-provider";
 
 type PageProps = {
 	params: { slug: string };
 	searchParams?: { [key: string]: string | string[] | undefined };
 };
-export default function Home({ searchParams }: PageProps) {
+
+const defaultExample = examples.find(
+	(example) => example.slug === "basic-markdown",
+);
+
+export default async function Home({ searchParams }: PageProps) {
+	const id = searchParams?.page;
+	const page = await getPage(Number(id));
+	const placeholder = page
+		? page.content.join("\n")
+		: typeof searchParams?.text === "string"
+			? atob(searchParams?.text)
+			: undefined;
+
 	return (
 		<HomeProvider>
 			<main className="flex flex-col gap-4 py-8 px-16 lg:px-32 ">
@@ -23,6 +40,8 @@ export default function Home({ searchParams }: PageProps) {
 					<ThemeToggle />
 				</div>
 
+				{page && <PageCard title={page.title} volume={page.volume} />}
+
 				<Tabs defaultValue="preview">
 					<TabsList>
 						<TabsTrigger value="preview">Preview</TabsTrigger>
@@ -31,13 +50,13 @@ export default function Home({ searchParams }: PageProps) {
 					<TabsContent value="preview">
 						<div className="flex items-center justify-between">
 							<ExampleSelect
-								text={
-									typeof searchParams?.text === "string"
-										? searchParams?.text
-										: undefined
-								}
+								initialSlug={placeholder ? undefined : defaultExample?.slug}
+								placeholder={placeholder}
 							/>
-							<Share />
+							<div className="space-x-2">
+								<SearchStrapi />
+								<Share />
+							</div>
 						</div>
 						<Split
 							direction="horizontal"

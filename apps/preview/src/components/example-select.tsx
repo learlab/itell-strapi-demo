@@ -20,29 +20,26 @@ const options = examples.map((example) => ({
 	title: example.title,
 }));
 
-const defaultExample = examples.find(
-	(example) => example.slug === "basic-markdown",
-);
-
 const findExample = (slug: string) =>
 	examples.find((example) => example.slug === slug);
 
-export const ExampleSelect = ({ text }: { text: string | undefined }) => {
-	const [slug, setSlug] = useState(() =>
-		text ? undefined : defaultExample?.slug,
-	);
+export const ExampleSelect = ({
+	initialSlug,
+	placeholder,
+}: { initialSlug: string | undefined; placeholder: string | undefined }) => {
+	const [slug, setSlug] = useState(initialSlug);
 	const { setValue } = useEditor();
 
 	useEffect(() => {
-		if (text) {
+		if (placeholder) {
 			try {
-				setValue(atob(text));
+				setValue(placeholder);
 			} catch {
 				setValue("");
 				toast.error("invalid url sharing");
 			}
 		}
-	}, [text]);
+	}, [placeholder]);
 
 	useEffect(() => {
 		if (slug) {

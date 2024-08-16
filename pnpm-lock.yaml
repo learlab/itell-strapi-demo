@@ -667,6 +667,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      qs:
+        specifier: ^6.11.2
+        version: 6.12.1
       react:
         specifier: ^18
         version: 18.3.1
@@ -743,6 +746,9 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.14.10
+      '@types/qs':
+        specifier: ^6.9.10
+        version: 6.9.15
       '@types/react':
         specifier: ^18
         version: 18.3.3
