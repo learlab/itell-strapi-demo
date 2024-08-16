@@ -71,13 +71,11 @@ export async function GET(req: Request): Promise<Response> {
 			} else {
 				if (lastUser.condition === Condition.STAIRS) {
 					condition = Condition.RANDOM_REREAD;
-				}
-
-				if (lastUser.condition === Condition.RANDOM_REREAD) {
+				} else if (lastUser.condition === Condition.RANDOM_REREAD) {
 					condition = Condition.SIMPLE;
-				}
-
-				if (lastUser.condition === Condition.SIMPLE) {
+				} else if (lastUser.condition === Condition.SIMPLE) {
+					condition = Condition.STAIRS;
+				} else {
 					condition = Condition.STAIRS;
 				}
 			}
