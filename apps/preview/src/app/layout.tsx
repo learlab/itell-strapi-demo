@@ -45,7 +45,7 @@ export default function RootLayout({
 				)}
 			>
 				<RootProvider>
-					<Toaster />
+					<Toaster richColors />
 					{children}
 				</RootProvider>
 			</body>

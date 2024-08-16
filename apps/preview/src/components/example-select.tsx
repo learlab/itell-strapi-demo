@@ -10,6 +10,7 @@ import {
 } from "@itell/ui/client";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { examples } from "#content";
 
 examples.sort((a, b) => a.order - b.order);
@@ -34,7 +35,12 @@ export const ExampleSelect = ({ text }: { text: string | undefined }) => {
 
 	useEffect(() => {
 		if (text) {
-			setValue(atob(text));
+			try {
+				setValue(atob(text));
+			} catch {
+				setValue("");
+				toast.error("invalid url sharing");
+			}
 		}
 	}, [text]);
 
