@@ -1,6 +1,6 @@
 import { CodeEditor } from "./editor";
 
-export type SandboxProps = {
+type SandboxProps = {
 	id: string;
 	code: string;
 	dependencies?: string[];
@@ -8,6 +8,10 @@ export type SandboxProps = {
 	theme?: string;
 	onRun?: (code: string, same: boolean) => void;
 };
+
+export declare namespace Sandbox {
+	type Props = SandboxProps;
+}
 
 export const Sandbox = ({
 	id,

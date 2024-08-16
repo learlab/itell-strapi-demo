@@ -1,30 +1,13 @@
 "use client";
 import { Console as LogOutput } from "@itell/react-console-viewer";
 import { Button } from "@itell/ui/client";
+import { Editor } from "@monaco-editor/react";
 import { useSelector } from "@xstate/store/react";
-import { CodeIcon, RefreshCwIcon, Split, TriangleIcon } from "lucide-react";
+import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
 import { editor } from "monaco-editor";
-import dynamic from "next/dynamic";
 import { useCallback, useRef, useState } from "react";
-
 import { useSandbox } from "./provider";
-import { Spinner } from "./spinner";
 import { store } from "./store";
-
-const Editor = dynamic(
-	() => import("@monaco-editor/react").then((mod) => mod.Editor),
-	{
-		ssr: false,
-		loading: () => (
-			<div className="flex items-center justify-center">
-				<p className="flex items-center gap-2">
-					<Spinner />
-					preparing code editor
-				</p>
-			</div>
-		),
-	},
-);
 
 type Props = {
 	id: string;

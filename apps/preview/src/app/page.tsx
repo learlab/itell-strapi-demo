@@ -1,15 +1,20 @@
 import { Editor } from "@/components/editor";
+import { ExampleSelect } from "@/components/example-select";
 import { Preview } from "@/components/preview";
-import { EditorProvider } from "@/components/provider";
 import { Reference } from "@/components/reference";
+import { Share } from "@/components/share";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Split } from "@/components/ui/split";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
-import { reference } from "velite/generated";
+import { HomeProvider } from "./home-provider";
 
-export default function Home() {
+type PageProps = {
+	params: { slug: string };
+	searchParams?: { [key: string]: string | string[] | undefined };
+};
+export default function Home({ searchParams }: PageProps) {
 	return (
-		<EditorProvider>
+		<HomeProvider>
 			<main className="flex flex-col gap-4 py-8 px-16 lg:px-32 ">
 				<div className="flex justify-center gap-4 items-center">
 					<h1 className="text-2xl tracking-tight font-extrabold leading-tight text-center">
@@ -24,6 +29,16 @@ export default function Home() {
 						<TabsTrigger value="reference">Reference</TabsTrigger>
 					</TabsList>
 					<TabsContent value="preview">
+						<div className="flex items-center justify-between">
+							<ExampleSelect
+								text={
+									typeof searchParams?.text === "string"
+										? searchParams?.text
+										: undefined
+								}
+							/>
+							<Share />
+						</div>
 						<Split
 							direction="horizontal"
 							minSize={100}
@@ -46,6 +61,6 @@ export default function Home() {
 					</TabsContent>
 				</Tabs>
 			</main>
-		</EditorProvider>
+		</HomeProvider>
 	);
 }

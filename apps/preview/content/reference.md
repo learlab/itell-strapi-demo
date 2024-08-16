@@ -81,7 +81,7 @@
 
 **Example**  
 ```js
-<i-callout variant="info">
+<i-callout variant="info">	
 	this is **important**
 </i-callout>
 ```

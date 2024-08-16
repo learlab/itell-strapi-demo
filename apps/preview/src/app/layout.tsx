@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Fira_Code, Inter } from "next/font/google";
 import RootProvider from "./root-provider";
 import "@/styles/code.css";
+import { Toaster } from "sonner";
 
 const FontSans = Inter({
 	weight: ["300", "400", "700"],
@@ -43,7 +44,10 @@ export default function RootLayout({
 					FontMono.variable,
 				)}
 			>
-				<RootProvider>{children}</RootProvider>
+				<RootProvider>
+					<Toaster />
+					{children}
+				</RootProvider>
 			</body>
 		</html>
 	);

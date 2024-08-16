@@ -1,4 +1,4 @@
-import { reference } from "velite/generated";
+import { reference } from "#content";
 import { Toc } from "./toc";
 
 export const Reference = () => {

@@ -1,11 +1,24 @@
 "use client";
-import {
-	Sandbox as BaseSandbox,
-	SandboxProps,
-} from "@itell/js-sandbox/sandbox";
+import { Sandbox as _Sandbox } from "@itell/js-sandbox/sandbox";
 import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
+import { Children } from "react";
+import { Spinner } from "./spinner";
 
-export type { SandboxProps };
+const BaseSandbox = dynamic(
+	() => import("@itell/js-sandbox/sandbox").then((mod) => mod.Sandbox),
+	{
+		ssr: false,
+		loading: () => (
+			<div className="flex items-center justify-center">
+				<p className="flex items-center gap-2">
+					<Spinner />
+					preparing code editor
+				</p>
+			</div>
+		),
+	},
+);
 
 /**
  * JavaScript Sandbox
@@ -18,7 +31,13 @@ export type { SandboxProps };
  * 	code="console.log('Hello, world!');"
  * />
  */
-export const Sandbox = (props: SandboxProps) => {
+export const Sandbox = ({
+	children,
+	code,
+	...props
+}: { children: React.ReactNode } & _Sandbox.Props) => {
 	const { theme } = useTheme();
-	return <BaseSandbox {...props} theme={theme} />;
+	const c = code || Children.toArray(children).join("\n").trim();
+
+	return <BaseSandbox {...props} code={c} theme={theme} />;
 };

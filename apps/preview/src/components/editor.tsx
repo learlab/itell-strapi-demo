@@ -2,7 +2,7 @@
 
 import { insertComponent, insertText } from "@/lib/textarea";
 import { useCallback, useRef } from "react";
-import { useEditor } from "./provider";
+import { useEditor } from "../app/home-provider";
 import {
 	ContextMenu,
 	ContextMenuContent,

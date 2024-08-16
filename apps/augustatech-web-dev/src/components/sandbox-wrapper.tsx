@@ -1,9 +1,10 @@
 import { createEventAction } from "@/actions/event";
 import { EventType } from "@/lib/constants";
+import type { Sandbox as Sandbox2 } from "@itell/js-sandbox/sandbox";
 import React from "react";
-import { Sandbox, SandboxProps } from "./sandbox";
+import { Sandbox } from "./sandbox";
 
-type Props = SandboxProps & {
+type Props = Sandbox2.Props & {
 	id?: string;
 	children?: React.ReactNode;
 	pageSlug?: string;

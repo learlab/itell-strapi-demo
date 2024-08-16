@@ -7,7 +7,7 @@ import { Remote, releaseProxy, wrap } from "comlink";
 import htmr from "htmr";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
-import { useEditor } from "./provider";
+import { useEditor } from "../app/home-provider";
 import { Spinner } from "./ui/spinner";
 
 export const Preview = () => {
@@ -45,23 +45,26 @@ export const Preview = () => {
 		});
 	}, [debouncedValue]);
 	return (
-		<>
+		<div>
 			{initialized ? (
 				<Prose
 					id="preview"
-					className="font-sans border border-input bg-background p-4 relative"
+					className="h-full font-sans border border-input bg-background p-4 relative min-h-64"
 				>
-					{pending && <Spinner className="absolute top-2 right-2 size-6" />}
-					{node}
+					{pending ? (
+						<div className="absolute inset-0 flex items-center justify-center">
+							<Spinner />
+						</div>
+					) : (
+						node
+					)}
 				</Prose>
 			) : (
-				<div className="h-full w-full">
-					<p className="flex items-center gap-2">
-						<Spinner />
-						<span>initializing preview</span>
-					</p>
-				</div>
+				<p className="flex items-center gap-2">
+					<Spinner />
+					<span>initializing preview</span>
+				</p>
 			)}
-		</>
+		</div>
 	);
 };
