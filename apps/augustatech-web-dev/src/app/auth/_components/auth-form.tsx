@@ -22,11 +22,10 @@ export const AuthForm = ({ joinClassCode }: Props) => {
 			)}
 			<div className="relative">
 				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
-					<p>Social Login</p>
+					<p>Please log in using your school email</p>
 				</div>
 			</div>
 			<div className="flex flex-col gap-2">
-				<GoogleLoginButton />
 				<OutlookLoginButton />
 			</div>
 		</div>
