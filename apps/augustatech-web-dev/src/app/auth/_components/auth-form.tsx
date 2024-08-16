@@ -2,6 +2,7 @@
 
 import { BrandIcon } from "@/components/brand-icon";
 import { logout } from "@/lib/auth/actions";
+import { isProduction } from "@/lib/constants";
 import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
 import { LogInIcon, LogOutIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,6 +28,7 @@ export const AuthForm = ({ joinClassCode }: Props) => {
 			</div>
 			<div className="flex flex-col gap-2">
 				<OutlookLoginButton />
+				{!isProduction && <GoogleLoginButton />}
 			</div>
 		</div>
 	);

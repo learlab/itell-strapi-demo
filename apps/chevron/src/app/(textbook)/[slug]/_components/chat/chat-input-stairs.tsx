@@ -96,7 +96,7 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 		});
 
 		try {
-			const response = await fetch("/api/itell/chat", {
+			const response = await fetch("/api/itell/chat/stairs", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
