@@ -26,8 +26,11 @@ export const GET = async (req: Request) => {
 	const code = url.searchParams.get("code");
 
 	const join_class_code = readJoinClassCode();
-	const { state: storedState, codeVerifier: storedCodeVerifier } =
-		readAzureOAuthState();
+	const {
+		state: storedState,
+		codeVerifier: storedCodeVerifier,
+		referer,
+	} = readAzureOAuthState();
 
 	if (
 		!code ||
@@ -52,7 +55,7 @@ export const GET = async (req: Request) => {
 			provider_user_id: azureUser.oid,
 		});
 		if (err) {
-			throw new Error("azure callback", { cause: err });
+			throw new Error(err?.message);
 		}
 
 		if (!user) {
@@ -68,7 +71,7 @@ export const GET = async (req: Request) => {
 				provider_user_id: azureUser.oid,
 			});
 			if (err) {
-				throw new Error("azure callback", { cause: err });
+				throw new Error(err?.message);
 			}
 
 			user = newUser;
@@ -93,7 +96,7 @@ export const GET = async (req: Request) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: referer ?? "/",
 			},
 		});
 	} catch (error) {

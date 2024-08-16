@@ -1,8 +1,12 @@
 "use client";
 
+import { AuthForm } from "@/app/auth/_components/auth-form";
 import { logout } from "@/lib/auth/actions";
-import { useDebounce } from "@itell/core/hooks";
 import {
+	Button,
+	Dialog,
+	DialogContent,
+	DialogTrigger,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
@@ -56,7 +60,16 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 	const [logoutPending, setLogoutPending] = useState(false);
 
 	if (!user) {
-		return <NavigationButton href="/auth">Sign in</NavigationButton>;
+		return (
+			<Dialog>
+				<DialogTrigger>
+					<Button size={"lg"}>Sign in</Button>
+				</DialogTrigger>
+				<DialogContent>
+					<AuthForm />
+				</DialogContent>
+			</Dialog>
+		);
 	}
 
 	return (

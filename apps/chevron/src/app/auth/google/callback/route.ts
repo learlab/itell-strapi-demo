@@ -34,8 +34,11 @@ export async function GET(req: Request) {
 		});
 	}
 
-	const { state: storedState, codeVerifier: storedCodeVerifier } =
-		readGoogleOAuthState();
+	const {
+		state: storedState,
+		codeVerifier: storedCodeVerifier,
+		referer,
+	} = readGoogleOAuthState();
 	const join_class_code = readJoinClassCode();
 
 	if (
@@ -70,7 +73,7 @@ export async function GET(req: Request) {
 			provider_user_id: googleUser.id,
 		});
 		if (err) {
-			throw new Error("google auth", { cause: err });
+			throw new Error(err?.message);
 		}
 
 		if (!user) {
@@ -81,13 +84,13 @@ export async function GET(req: Request) {
 					image: googleUser.picture,
 					email: googleUser.email,
 					condition: Condition.STAIRS,
-					role: env.ADMINS?.includes(googleUser.email) ? "admin": "user",
+					role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
 				},
 				provider_id: "google",
 				provider_user_id: googleUser.id,
 			});
 			if (err) {
-				throw new Error("google auth", { cause: err });
+				throw new Error(err?.message);
 			}
 
 			user = newUser;
@@ -113,7 +116,7 @@ export async function GET(req: Request) {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: referer ?? "/",
 			},
 		});
 	} catch (error) {

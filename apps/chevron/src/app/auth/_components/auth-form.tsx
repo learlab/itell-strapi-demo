@@ -2,7 +2,7 @@
 
 import { BrandIcon } from "@/components/brand-icon";
 import { logout } from "@/lib/auth/actions";
-import { Button } from "@itell/ui/client";
+import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
 import { LogInIcon, LogOutIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
@@ -106,25 +106,18 @@ export const OutlookLoginButton = () => {
 };
 
 export const LoginButton = () => {
-	const [pending, startTransition] = useTransition();
-	const router = useRouter();
-
 	return (
-		<Button
-			onClick={() => {
-				startTransition(() => {
-					router.push("/auth");
-				});
-			}}
-			variant={"outline"}
-			disabled={pending}
-			pending={pending}
-		>
-			<span className="flex items-center gap-2">
-				<LogInIcon className="size-4" />
-				Log in
-			</span>
-		</Button>
+		<Dialog>
+			<DialogTrigger>
+				<Button variant={"outline"} className="gap-2">
+					<LogInIcon className="size-4" />
+					Log in
+				</Button>
+			</DialogTrigger>
+			<DialogContent>
+				<AuthForm />
+			</DialogContent>
+		</Dialog>
 	);
 };
 

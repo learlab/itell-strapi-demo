@@ -44,11 +44,14 @@ export const readJoinClassCode = () => {
 	return join_class_code;
 };
 
-export const setAzureOAuthState = () => {
+export const setAzureOAuthState = (referer?: string) => {
 	const state = generateState();
 	const codeVerifier = generateCodeVerifier();
 	cookies().set("azure_oauth_state", state, cookieOptions);
 	cookies().set("azure_oauth_code_verifier", codeVerifier, cookieOptions);
+	if (referer) {
+		cookies().set("azure_oauth_referer", referer, cookieOptions);
+	}
 
 	return { state, codeVerifier };
 };
@@ -57,15 +60,19 @@ export const readAzureOAuthState = () => {
 	const state = cookies().get("azure_oauth_state")?.value ?? null;
 	const codeVerifier =
 		cookies().get("azure_oauth_code_verifier")?.value ?? null;
+	const referer = cookies().get("azure_oauth_referer")?.value ?? null;
 
-	return { state, codeVerifier };
+	return { state, codeVerifier, referer };
 };
 
-export const setGoogleOAuthState = () => {
+export const setGoogleOAuthState = (referer?: string) => {
 	const state = generateState();
 	const codeVerifier = generateCodeVerifier();
 	cookies().set("google_oauth_state", state, cookieOptions);
 	cookies().set("google_oauth_code_verifier", codeVerifier, cookieOptions);
+	if (referer) {
+		cookies().set("google_oauth_referer", referer, cookieOptions);
+	}
 
 	return { state, codeVerifier };
 };
@@ -74,6 +81,6 @@ export const readGoogleOAuthState = () => {
 	const state = cookies().get("google_oauth_state")?.value ?? null;
 	const codeVerifier =
 		cookies().get("google_oauth_code_verifier")?.value ?? null;
-
-	return { state, codeVerifier };
+	const referer = cookies().get("google_oauth_referer")?.value ?? null;
+	return { state, codeVerifier, referer };
 };

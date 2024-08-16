@@ -34,8 +34,11 @@ export async function GET(req: Request) {
 		});
 	}
 
-	const { state: storedState, codeVerifier: storedCodeVerifier } =
-		readGoogleOAuthState();
+	const {
+		state: storedState,
+		codeVerifier: storedCodeVerifier,
+		referer,
+	} = readGoogleOAuthState();
 	const join_class_code = readJoinClassCode();
 
 	if (
@@ -113,7 +116,7 @@ export async function GET(req: Request) {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: referer ?? "/",
 			},
 		});
 	} catch (error) {

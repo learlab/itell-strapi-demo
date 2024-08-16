@@ -26,8 +26,11 @@ export const GET = async (req: Request) => {
 	const code = url.searchParams.get("code");
 
 	const join_class_code = readJoinClassCode();
-	const { state: storedState, codeVerifier: storedCodeVerifier } =
-		readAzureOAuthState();
+	const {
+		state: storedState,
+		codeVerifier: storedCodeVerifier,
+		referer,
+	} = readAzureOAuthState();
 
 	if (
 		!code ||
@@ -93,7 +96,7 @@ export const GET = async (req: Request) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: referer ?? "/",
 			},
 		});
 	} catch (error) {

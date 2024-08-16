@@ -6,7 +6,10 @@ import {
 
 export async function GET(req: Request): Promise<Response> {
 	const searchParams = new URL(req.url).searchParams;
-	const { state, codeVerifier } = setGoogleOAuthState();
+	const referer = req.headers.get("referer");
+	const { state, codeVerifier } = setGoogleOAuthState(
+		referer && !referer.endsWith("/auth") ? referer : undefined,
+	);
 	setJoinClassCode(searchParams.get("join_class_code"));
 
 	const url = googleProvider.createAuthorizationURL(state, codeVerifier);
