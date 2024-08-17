@@ -15,16 +15,14 @@ export const AuthForm = ({ joinClassCode }: Props) => {
 	return (
 		<div className="grid gap-4 px-4">
 			{joinClassCode && (
-				<p className="font-light tracking-tight leading-relaxed">
-					To join your class, please first log in via one of the following
-					options.
+				<p className="font-light tracking-tight leading-relaxed text-center">
+					After you log in via one of the following options, you will be
+					automatically added to the class.
 				</p>
 			)}
-			<div className="relative">
-				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
-					<p>Social Login</p>
-				</div>
-			</div>
+			<p className="text-sm text-muted-foreground text-center">
+				Please log in using your school email
+			</p>
 			<div className="flex flex-col gap-2">
 				<GoogleLoginButton />
 				<OutlookLoginButton />

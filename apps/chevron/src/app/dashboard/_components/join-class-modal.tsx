@@ -2,7 +2,8 @@
 
 import { updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
-import { reportSentry } from "@/lib/utils";
+import { firstPage } from "@/lib/pages";
+import { makePageHref, reportSentry } from "@/lib/utils";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -41,7 +42,7 @@ export const JoinClassModal = ({
 			setOpen(false);
 			toast.success("You have joined the class! Redirecting.");
 			setTimeout(() => {
-				router.push("/dashboard");
+				router.push(firstPage.href);
 			}, 1000);
 		}
 	};

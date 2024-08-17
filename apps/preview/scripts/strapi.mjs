@@ -9,7 +9,7 @@ const filters = qs.stringify({
 		},
 	},
 });
-const fetchContent = async () => {
+const fetchPageBySlug = async () => {
 	const response = await fetch(`${base}/pages?${filters}`);
 
 	if (response.ok) {
@@ -29,4 +29,27 @@ const fetchContent = async () => {
 	}
 };
 
-fetchContent();
+const volumeFilter = qs.stringify({
+	populate: {
+		Pages: {
+			fields: ["*"],
+			populate: {
+				Content: true,
+			},
+		},
+	},
+});
+
+const fetchVolume = async () => {
+	console.log(`${base}/texts/10?${volumeFilter}`);
+	const response = await fetch(`${base}/texts/10?${volumeFilter}`);
+	const data = await response.json();
+	data.data.attributes.Pages.data.forEach((page, index) => {
+		if (index === 0) {
+			console.log(page);
+			console.log(Object.keys(page.attributes.Content[0]));
+		}
+	});
+};
+
+fetchVolume();
