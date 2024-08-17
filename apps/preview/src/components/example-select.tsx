@@ -1,5 +1,5 @@
 "use client";
-import { useEditor } from "@/app/home-provider";
+import { rewriteSearchParams } from "@/lib/utils";
 import {
 	Label,
 	Select,
@@ -8,42 +8,26 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@itell/ui/client";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { examples } from "#content";
-
-examples.sort((a, b) => a.order - b.order);
 
 const options = examples.map((example) => ({
 	slug: example.slug,
 	title: example.title,
 }));
 
-const findExample = (slug: string) =>
-	examples.find((example) => example.slug === slug);
-
 export const ExampleSelect = ({
 	initialSlug,
-	placeholder,
-}: { initialSlug: string | undefined; placeholder: string | undefined }) => {
+}: { initialSlug: string | undefined }) => {
 	const [slug, setSlug] = useState(initialSlug);
-	const { setValue } = useEditor();
-
-	useEffect(() => {
-		if (placeholder) {
-			try {
-				setValue(placeholder);
-			} catch {
-				setValue("");
-				toast.error("invalid url sharing");
-			}
-		}
-	}, [placeholder]);
+	const router = useRouter();
 
 	useEffect(() => {
 		if (slug) {
-			setValue(findExample(slug)?.content || "");
+			const url = new URL(window.location.href);
+			rewriteSearchParams(url, { example: slug });
+			router.push(url.toString());
 		}
 	}, [slug]);
 

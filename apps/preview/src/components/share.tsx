@@ -1,6 +1,7 @@
 "use client";
 
 import { useEditor } from "@/app/home-provider";
+import { rewriteSearchParams } from "@/lib/utils";
 import { Button } from "@itell/ui/client";
 import { ShareIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -14,7 +15,7 @@ export const Share = () => {
 			variant={"outline"}
 			onClick={() => {
 				const url = new URL(window.location.href);
-				url.searchParams.set("text", btoa(value));
+				rewriteSearchParams(url, { text: btoa(value) });
 				navigator.clipboard.writeText(url.toString());
 
 				toast.success("Copied to clipboard");

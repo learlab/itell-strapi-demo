@@ -7,7 +7,8 @@ import { SearchStrapi } from "@/components/search-strapi";
 import { Share } from "@/components/share";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Split } from "@/components/ui/split";
-import { getPage } from "@/lib/strapi";
+import { routes } from "@/lib/navigation";
+import { PageData, getPage } from "@/lib/strapi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
 import { examples } from "#content";
 import { HomeProvider } from "./home-provider";
@@ -17,21 +18,42 @@ type PageProps = {
 	searchParams?: { [key: string]: string | string[] | undefined };
 };
 
+examples.sort((a, b) => a.order - b.order);
 const defaultExample = examples.find(
 	(example) => example.slug === "basic-markdown",
 );
 
 export default async function Home({ searchParams }: PageProps) {
-	const id = searchParams?.page;
-	const page = await getPage(Number(id));
-	const placeholder = page
-		? page.content.join("\n")
-		: typeof searchParams?.text === "string"
-			? atob(searchParams?.text)
-			: undefined;
+	const { page, text, example } = routes.home.$parseSearchParams(searchParams);
+	let initialValue = defaultExample?.content || "";
+	let initialSlug: string | undefined = defaultExample?.slug || undefined;
+	let pageData: PageData | null = null;
+
+	try {
+		if (page !== undefined) {
+			pageData = await getPage(page);
+			if (pageData) {
+				initialValue = pageData.content.join("\n");
+				initialSlug = undefined;
+			}
+		} else if (text !== undefined) {
+			initialValue = atob(text);
+			initialSlug = undefined;
+		} else if (example !== undefined) {
+			const exampleData = examples.find((e) => e.slug === example);
+			if (exampleData) {
+				initialValue = exampleData.content;
+				initialSlug = exampleData.slug;
+			}
+		}
+	} catch (err) {
+		console.log(err);
+		initialValue = defaultExample?.content || "";
+		initialSlug = defaultExample?.slug || undefined;
+	}
 
 	return (
-		<HomeProvider>
+		<HomeProvider initialValue={initialValue}>
 			<main className="flex flex-col gap-4 py-8 px-16 lg:px-32 ">
 				<div className="flex justify-center gap-4 items-center">
 					<h1 className="text-2xl tracking-tight font-extrabold leading-tight text-center">
@@ -40,7 +62,9 @@ export default async function Home({ searchParams }: PageProps) {
 					<ThemeToggle />
 				</div>
 
-				{page && <PageCard title={page.title} volume={page.volume} />}
+				{pageData && (
+					<PageCard title={pageData.title} volume={pageData.volume} />
+				)}
 
 				<Tabs defaultValue="preview">
 					<TabsList>
@@ -49,10 +73,7 @@ export default async function Home({ searchParams }: PageProps) {
 					</TabsList>
 					<TabsContent value="preview">
 						<div className="flex items-center justify-between">
-							<ExampleSelect
-								initialSlug={placeholder ? undefined : defaultExample?.slug}
-								placeholder={placeholder}
-							/>
+							<ExampleSelect initialSlug={initialSlug} />
 							<div className="space-x-2">
 								<SearchStrapi />
 								<Share />

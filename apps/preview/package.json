@@ -20,6 +20,7 @@
         "htmr": "^1.0.2",
         "lucide-react": "^0.426.0",
         "next": "14.2.3",
+        "next-safe-navigation": "^0.3.2",
         "next-themes": "^0.2.1",
         "qs": "^6.11.2",
         "react": "^18",
@@ -36,7 +37,8 @@
         "sonner": "^1.2.0",
         "unified": "^11.0.5",
         "unist-util-visit": "^5.0.0",
-        "use-debounce": "^10.0.2"
+        "use-debounce": "^10.0.2",
+        "zod": "^3.22.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.24.8",

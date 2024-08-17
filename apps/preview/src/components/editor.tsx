@@ -74,9 +74,8 @@ const sandboxItems: Array<MenuItem> = [
 ];
 
 export const Editor = () => {
-	const { setValue, value } = useEditor();
 	const ref = useRef<HTMLTextAreaElement>(null);
-
+	const { value, setValue } = useEditor();
 	const execute = useCallback((action: TextAction) => {
 		const val = action(ref.current);
 		if (val) setValue(val);
