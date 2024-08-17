@@ -95,6 +95,7 @@ export const SearchStrapi = () => {
 								startTransition(() => {
 									router.push(url.toString());
 									setOpen(false);
+									setSearchResult(undefined);
 								});
 							}}
 						>

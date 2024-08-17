@@ -6,7 +6,6 @@ type State = {
 	value: string;
 	setValue: (value: string) => void;
 };
-
 export const HomeContext = createContext<State>({} as State);
 export const HomeProvider = ({ children }: { children: React.ReactNode }) => {
 	const [value, setValue] = useState("");
