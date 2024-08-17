@@ -1,6 +1,7 @@
 import { env } from "@/env.mjs";
 import { ifetch } from "@/lib/api";
 
+
 export async function POST(req: Request) {
 	const response = await ifetch(`${env.NEXT_PUBLIC_API_URL}/chat/SERT`, {
 		method: "POST",

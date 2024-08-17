@@ -35,7 +35,6 @@ export const searchPage = async (slug: string) => {
 		return null;
 	}
 	const pageAttr = pageData.data.attributes;
-	console.log(pageData);
 	return {
 		id: pageData.data.id,
 		title: pageAttr.Title,
@@ -59,7 +58,6 @@ export const getPage = async (id: number) => {
 	}
 
 	const { data } = await response.json();
-	console.log("data", data);
 	return {
 		id: data.id,
 		title: data.attributes.Title,

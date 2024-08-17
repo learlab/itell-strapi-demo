@@ -11,14 +11,18 @@ import {
 } from "@itell/ui/client";
 import { Card, CardDescription, CardHeader, CardTitle } from "@itell/ui/server";
 import { cn } from "@itell/utils";
-import { DatabaseIcon, SearchIcon } from "lucide-react";
+import { CornerDownLeft, DatabaseIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { FormEvent, useEffect, useRef, useState, useTransition } from "react";
+import { useDebounce } from "use-debounce";
 import { PageCard } from "./page-card";
 import { Spinner } from "./ui/spinner";
 
 export const SearchStrapi = () => {
 	const [open, setOpen] = useState(false);
+	const [slug, setSlug] = useState("");
+	const form = useRef<HTMLFormElement>(null);
+	const [debouncedSlug] = useDebounce(slug, 500);
 	const [searchPending, setSearchPending] = useState(false);
 	const [pending, startTransition] = useTransition();
 	const router = useRouter();
@@ -34,6 +38,22 @@ export const SearchStrapi = () => {
 		| undefined
 	>(undefined);
 
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (searchPending) return;
+		setSearchPending(true);
+
+		const page = await searchPage(slug);
+		setSearchResult(page);
+		setSearchPending(false);
+	};
+
+	useEffect(() => {
+		if (debouncedSlug) {
+			form.current?.requestSubmit();
+		}
+	}, [debouncedSlug]);
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
@@ -44,24 +64,14 @@ export const SearchStrapi = () => {
 			</DialogTrigger>
 			<DialogContent className="space-y-2">
 				<DialogHeader>
-					<DialogDescription>
-						Search the page slug you want to load from strapi
+					<DialogDescription asChild>
+						<p className="text-sm text-muted-foreground flex items-center gap-2">
+							<span>Input the page slug to load</span>{" "}
+							<CornerDownLeft className="size-4" />
+						</p>
 					</DialogDescription>
 				</DialogHeader>
-				<form
-					className="flex flex-col gap-2"
-					onSubmit={async (e) => {
-						e.preventDefault();
-						if (searchPending) return;
-						setSearchPending(true);
-
-						const formData = new FormData(e.currentTarget);
-						const slug = String(formData.get("slug"));
-						const page = await searchPage(slug);
-						setSearchResult(page);
-						setSearchPending(false);
-					}}
-				>
+				<form className="flex flex-col gap-2" onSubmit={onSubmit} ref={form}>
 					<Label className="inline-flex items-center gap-1 [&:has(:focus-visible)]:ring-4 rounded-md p-2">
 						<span className="sr-only">search by page slug</span>
 						{searchPending ? (
@@ -73,6 +83,8 @@ export const SearchStrapi = () => {
 							type="search"
 							name="slug"
 							placeholder="page slug"
+							value={slug}
+							onChange={(e) => setSlug(e.target.value)}
 							className="inline-block focus:outline-none py-1 px-2 flex-1"
 						/>
 					</Label>
@@ -89,6 +101,7 @@ export const SearchStrapi = () => {
 						/>
 						<Button
 							pending={pending || searchPending}
+							disabled={pending || searchPending}
 							onClick={() => {
 								const url = new URL(window.location.href);
 								url.searchParams.set("page", searchResult.id.toString());
