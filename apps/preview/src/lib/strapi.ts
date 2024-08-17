@@ -56,7 +56,6 @@ export const searchPages = cache(
 
 export const searchPage = cache(
 	async (slug: string): Promise<SearchPageResult | null> => {
-		console.log("search page!");
 		const filters = qs.stringify({
 			filters: {
 				Slug: {
