@@ -151,7 +151,7 @@ const SearchVolume = ({
 						) : (
 							<ScrollArea className="h-[200px]">
 								{volumes.map((volume) => (
-									<SelectItem key={volume.slug} value={volume.slug}>
+									<SelectItem key={volume.slug} value={volume.slug || ""}>
 										{volume.title}
 									</SelectItem>
 								))}

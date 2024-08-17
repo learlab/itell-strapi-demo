@@ -47,6 +47,7 @@
         "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
         "@babel/preset-env": "^7.25.3",
         "@babel/preset-typescript": "^7.24.7",
+        "@strapi/strapi": "^4.25.8",
         "@types/dom-view-transitions": "^1.0.4",
         "@types/hast": "^3.0.4",
         "@types/mdast": "^4.0.4",

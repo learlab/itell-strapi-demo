@@ -1,3 +1,9 @@
+import {
+	APIResponseCollection,
+	ApiResponsePage,
+	ApiResponsePages,
+	ApiResponseVolumes,
+} from "@/types/types";
 import qs from "qs";
 import { cache } from "react";
 
@@ -12,15 +18,15 @@ export type SearchPageResult = {
 
 export type Volume = {
 	title: string;
-	slug: string;
+	slug: string | undefined;
 };
 export const searchVolumes = cache(async () => {
 	const response = await fetch(`${base}/texts`);
 	if (!response.ok) {
 		return null;
 	}
-	const { data } = await response.json();
-	return data.map((text: any) => ({
+	const { data } = (await response.json()) as ApiResponseVolumes;
+	return data.map((text) => ({
 		title: text.attributes.Title,
 		slug: text.attributes.Slug,
 	}));
@@ -45,8 +51,9 @@ export const searchPages = cache(
 			return null;
 		}
 
-		const { data } = await response.json();
-		return data.map((page: any) => ({
+		const { data } =
+			(await response.json()) as APIResponseCollection<"api::page.page">;
+		return data.map((page) => ({
 			id: page.id,
 			title: page.attributes.Title,
 			slug: page.attributes.Slug,
@@ -69,31 +76,25 @@ export const searchPage = cache(
 			return null;
 		}
 
-		const data = await response.json();
-		if (data.data.length === 0) {
+		const { data } = (await response.json()) as ApiResponsePages;
+		if (data.length === 0) {
 			return null;
 		}
 
-		const id = data.data[0].id;
+		const id = data[0].id;
 		const pageFilter = qs.stringify({
 			fields: ["id", "Title", "Slug"],
 			populate: {
 				Volume: true,
-				// Content: { fields: ["*"] },
-				// Chunk: { fields: ["*"] },
 			},
 		});
 		const page = await fetch(`${base}/pages/${id}?${pageFilter})}`);
-		const pageData = await page.json();
-		if (!("data" in pageData)) {
-			return null;
-		}
-		const pageAttr = pageData.data.attributes;
+		const { data: pageData } = (await page.json()) as ApiResponsePage;
 		return {
-			id: pageData.data.id,
-			title: pageAttr.Title,
-			slug: pageAttr.Slug,
-			volume: pageAttr.Volume?.data.attributes?.Title || null,
+			id: pageData.id,
+			title: pageData.attributes.Title,
+			slug: pageData.attributes.Slug,
+			volume: pageData.attributes.Volume?.data.attributes?.Title || null,
 		};
 	},
 );
@@ -119,11 +120,11 @@ export const getPage = async (id: number) => {
 		return null;
 	}
 
-	const { data } = await response.json();
+	const { data } = (await response.json()) as ApiResponsePage;
 	return {
 		id: data.id,
 		title: data.attributes.Title,
 		volume: data.attributes.Volume?.data.attributes?.Title || null,
-		content: data.attributes.Content.map((chunk: any) => chunk.MDX),
+		content: data.attributes.Content?.map((chunk) => chunk.MDX) || [],
 	};
 };
