@@ -9,6 +9,6 @@ export const components = {
 	"i-image": ImageWrapper,
 	"i-blockquote": BlockquoteWrapper,
 	"i-callout": Callout,
-	"accordion-wrapper": Accordion,
-	"accordion-item": AccordionItem,
+	"i-accordion": Accordion,
+	"i-accordion-item": AccordionItem,
 };

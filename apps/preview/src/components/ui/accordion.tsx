@@ -22,14 +22,14 @@ type AccordionProps = {
  * @param children - nested elements
  * @example
  * ```tsx
- * <accordion-wrapper value="1">
- * 	<accordion-item value="1" title="Item 1">
+ * <i-accordion value="1">
+ * 	<i-accordion-item value="1" title="Item 1">
  * 		<p>Item 1 content</p>
- * 	</accordion-item>
- * 	<accordion-item value="2" title="Item 2">
+ * 	</i-accordion-item>
+ * 	<i-accordion-item value="2" title="Item 2">
  * 		<p>Item 2 content</p>
- * 	</accordion-item>
- * </accordion-wrapper>
+ * 	</i-accordion-item>
+ * </i-accordion>
  * ```
  */
 export const Accordion = ({ children, value, className }: AccordionProps) => {

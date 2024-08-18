@@ -46,8 +46,9 @@ const fetchVolume = async () => {
 	const data = await response.json();
 	data.data.attributes.Pages.data.forEach((page, index) => {
 		if (index === 0) {
-			console.log(page);
-			console.log(Object.keys(page.attributes.Content[0]));
+			console.log(page.attributes.Content[0]);
+			console.log(Object.keys(page.attributes));
+			// console.log(page.attributes.Content[0]);
 		}
 	});
 };

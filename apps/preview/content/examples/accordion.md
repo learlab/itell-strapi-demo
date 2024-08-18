@@ -6,14 +6,14 @@ order: 30
 
 ## Accordion
 
-<accordion-wrapper value="first">
+<i-accordion value="first">
 
-<accordion-item value='first' title = "First pane">
+<i-accordion-item value='first' title = "First pane">
 accordion content 1
-</accordion-item>
+</i-accordion-item>
 
-<accordion-item value='second' title="Second pane">
+<i-accordion-item value='second' title="Second pane">
 accordion content 2
-</accordion-item>
+</i-accordion-item>
 
-</accordion-wrapper>
+</i-accordion>
