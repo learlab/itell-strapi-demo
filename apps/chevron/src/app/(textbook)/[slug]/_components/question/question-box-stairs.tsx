@@ -7,30 +7,29 @@ import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
 import {
-	SelectCurrentChunk,
-	SelectShouldBlur,
+    SelectShouldBlur
 } from "@/lib/store/question-store";
-import { reportSentry } from "@/lib/utils";
+import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
 import {
-	Button,
-	HoverCard,
-	HoverCardContent,
-	HoverCardTrigger,
-	Label,
-	StatusButton,
-	TextArea,
+    Button,
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+    Label,
+    StatusButton,
+    TextArea,
 } from "@itell/ui/client";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
 } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { AlertTriangle, KeyRoundIcon, PencilIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { ExplainButton } from "./explain-button";
@@ -62,7 +61,7 @@ export const QuestionBoxStairs = ({
 }: Props) => {
 	const store = useQuestionStore();
 	const shouldBlur = useSelector(store, SelectShouldBlur);
-	const currentChunk = useSelector(store, SelectCurrentChunk);
+	const form = useRef<HTMLFormElement>(null);
 	const [state, setState] = useState<State>({
 		status: StatusStairs.UNANSWERED,
 		error: null,
@@ -253,6 +252,7 @@ export const QuestionBoxStairs = ({
 					Answer the question
 				</h2>
 				<form
+					ref={form}
 					aria-labelledby="form-question-heading"
 					onSubmit={onSubmit}
 					className="w-full space-y-2"
@@ -263,6 +263,19 @@ export const QuestionBoxStairs = ({
 							name="input"
 							rows={2}
 							className="max-w-lg mx-auto rounded-md shadow-md p-4"
+							onKeyDown={(e) => {
+								if (e.key === "Enter" && e.shiftKey) {
+									e.preventDefault();
+									insertNewline(e.currentTarget);
+									return;
+								}
+
+								if (e.key === "Enter") {
+									e.preventDefault();
+									form.current?.requestSubmit();
+									return;
+								}
+							}}
 							onPaste={(e) => {
 								if (isProduction) {
 									e.preventDefault();
