@@ -88,3 +88,9 @@ export const reportSentry = (msg: string, extra: any) => {
 		extra,
 	});
 };
+
+export const insertNewline = (textarea: HTMLTextAreaElement) => {
+	textarea.value = `${textarea.value}\n`;
+	textarea.selectionStart = textarea.value.length;
+	textarea.selectionEnd = textarea.value.length;
+};

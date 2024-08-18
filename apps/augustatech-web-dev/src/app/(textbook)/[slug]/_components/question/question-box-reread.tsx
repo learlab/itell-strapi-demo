@@ -10,7 +10,7 @@ import {
 	SelectCurrentChunk,
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
-import { reportSentry } from "@/lib/utils";
+import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
 import {
 	Button,
@@ -25,7 +25,7 @@ import { Card, CardContent } from "@itell/ui/server";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { KeyRoundIcon, PencilIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { FinishQuestionButton } from "./finish-question-button";
@@ -54,7 +54,7 @@ export const QuestionBoxReread = ({
 }: Props) => {
 	const store = useQuestionStore();
 	const shouldBlur = useSelector(store, SelectShouldBlur);
-	const currentChunk = useSelector(store, SelectCurrentChunk);
+	const form = useRef<HTMLFormElement>(null);
 
 	const [state, setState] = useState<State>({
 		error: null,
@@ -156,6 +156,7 @@ export const QuestionBoxReread = ({
 					Answer the question
 				</h2>
 				<form
+					ref={form}
 					aria-labelledby="form-question-heading"
 					onSubmit={onSubmit}
 					className="w-full space-y-2"
@@ -170,6 +171,19 @@ export const QuestionBoxReread = ({
 								if (isProduction) {
 									e.preventDefault();
 									toast.warning("Copy & Paste is not allowed for question");
+								}
+							}}
+							onKeyDown={(e) => {
+								if (e.key === "Enter" && e.shiftKey) {
+									e.preventDefault();
+									insertNewline(e.currentTarget);
+									return;
+								}
+
+								if (e.key === "Enter") {
+									e.preventDefault();
+									form.current?.requestSubmit();
+									return;
 								}
 							}}
 						/>

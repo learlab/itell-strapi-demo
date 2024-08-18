@@ -4,7 +4,7 @@ import { Button } from "@itell/ui/client";
 import { Editor } from "@monaco-editor/react";
 import { useSelector } from "@xstate/store/react";
 import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
-import { editor } from "monaco-editor";
+import { KeyCode, editor } from "monaco-editor";
 import { useCallback, useRef, useState } from "react";
 import { useSandbox } from "./provider";
 import { store } from "./store";
@@ -40,20 +40,22 @@ export const CodeEditor = ({
 		}
 	}, [code]);
 
+	const runCode = async () => {
+		const code = editor.current?.getValue() || "";
+		run(id, code);
+		onRun?.(code, prevCode.current === code);
+		prevCode.current = code;
+	};
+
 	return (
 		<div className="relative">
 			<div className="flex gap-1 absolute top-2 right-4 z-10">
 				<Button
 					variant={"outline"}
 					size={"sm"}
-					type="button"
-					onClick={() => {
-						const code = editor.current?.getValue() || "";
-						run(id, code);
-						onRun?.(code, prevCode.current === code);
-						prevCode.current = code;
-					}}
+					type="submit"
 					aria-label="Run code"
+					onClick={runCode}
 				>
 					<span className="inline-flex items-center gap-2">
 						<TriangleIcon className="size-3 rotate-90" />

@@ -17,7 +17,7 @@ export const Preview = () => {
 	const [node, setNode] = useState<ReactNode>(null);
 	const [_pending, setPending] = useState(false);
 	const [pending] = useDebounce(_pending, 500);
-	const [initialized, setInitialized] = useState(false);
+	const [workerReady, setWorkerReady] = useState(false);
 
 	useEffect(() => {
 		worker.current = wrap<WorkerApi>(
@@ -25,7 +25,7 @@ export const Preview = () => {
 				type: "module",
 			}),
 		);
-		setInitialized(true);
+		setWorkerReady(true);
 
 		return () => {
 			worker.current?.[releaseProxy]();
@@ -33,6 +33,7 @@ export const Preview = () => {
 	}, []);
 
 	useEffect(() => {
+		if (!workerReady) return;
 		setPending(true);
 		worker.current?.transform(debouncedValue).then((html) => {
 			setNode(
@@ -46,7 +47,7 @@ export const Preview = () => {
 	}, [debouncedValue]);
 	return (
 		<div>
-			{initialized ? (
+			{workerReady ? (
 				<Prose
 					id="preview"
 					className="h-full font-sans border border-input bg-background p-4 relative min-h-64"

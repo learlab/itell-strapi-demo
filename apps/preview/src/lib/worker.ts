@@ -13,7 +13,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import type { PluggableList } from "unified";
-import { visit } from "unist-util-visit";
+import { SKIP, visit } from "unist-util-visit";
 
 export type WorkerApi = typeof workerApi;
 
@@ -27,9 +27,9 @@ expose(workerApi);
 
 const remarkRemoveComments = () => (tree: Mdast) => {
 	visit(tree, "html", (node, index, parent) => {
-		if (node.value.match(/<!--([\s\S]*?)-->/g)) {
-			parent!.children.splice(index!, 1);
-			return ["skip", index]; // https://unifiedjs.com/learn/recipe/remove-node/
+		if (node.value.match(/<!--([\s\S]*?)-->/g) && parent && index) {
+			parent.children.splice(index, 1);
+			return [SKIP, index]; // https://unifiedjs.com/learn/recipe/remove-node/
 		}
 	});
 };
