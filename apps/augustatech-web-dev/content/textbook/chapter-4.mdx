@@ -88,7 +88,7 @@ function repeatLog(n) {
 
 But what if we want to do something other than logging the numbers? Since “doing something” can be represented as a function and functions are just values, we can pass our action as a function value.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function repeat(n, action) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function repeat(n, action) {
   for (let i = 0; i < n; i++) {
     action(i);
   }
@@ -119,7 +119,7 @@ Functions that operate on other functions, either by taking them as arguments or
 
 Higher-order functions allow us to abstract over _actions_, not just values. They come in several forms. For example, we can have functions that create new functions.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function greaterThan(n) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function greaterThan(n) {
   return m => m > n;
 }
 let greaterThan10 = greaterThan(10);
@@ -128,7 +128,7 @@ console.log(greaterThan10(11));
 
 We can also have functions that change other functions.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function noisy(f) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function noisy(f) {
   return (...args) => {
     console.log("calling with", args);
     let result = f(...args);
@@ -142,7 +142,7 @@ noisy(Math.min)(3, 2, 1);
 
 We can even write functions that provide new types of control flow.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function unless(test, then) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function unless(test, then) {
   if (!test) then();
 }
 
@@ -156,7 +156,7 @@ repeat(3, n => {
 
 There is a built-in array method, `forEach`, that provides something like a `for`/`of` loop as a higher-order function.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`["A", "B"].forEach(l => console.log(l));
+<Sandbox pageSlug="5-higher-order-functions" code={`["A", "B"].forEach(l => console.log(l));
 // → A
 // → B`}/>
 
@@ -196,7 +196,7 @@ The example dataset contains some pieces of information about the 140 scripts de
 
 To load the scripts data into the sandbox environment, run the following code.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`var SCRIPTS
+<Sandbox pageSlug="5-higher-order-functions" code={`var SCRIPTS
 
 const loadData = async () => {
   const resp = await fetch("/alphabets.json")
@@ -224,7 +224,7 @@ The `ranges` property contains an array of Unicode character ranges, each of whi
 
 If we want to find the scripts in the dataset that are still in use, the following function might be helpful. It filters out elements in an array that don’t pass a test.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function filter(array, test) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function filter(array, test) {
   let passed = [];
   for (let element of array) {
     if (test(element)) {
@@ -242,7 +242,7 @@ Note how the `filter` function, rather than deleting elements from the existing 
 
 Like `forEach`, `filter` is a standard array method. The example defined the function only to show what it does internally. From now on, we’ll use it like this instead:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(SCRIPTS.filter(s => s.direction == "ttb"));`}/>
+<Sandbox pageSlug="5-higher-order-functions" code={`console.log(SCRIPTS.filter(s => s.direction == "ttb"));`}/>
 
 </section>
 
@@ -254,7 +254,7 @@ Say we have an array of objects representing scripts, produced by filtering the 
 
 The `map` method transforms an array by applying a function to all of its elements and building a new array from the returned values. The new array will have the same length as the input array, but its content will have been _mapped_ to a new form by the function.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function map(array, transform) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function map(array, transform) {
   let mapped = []
 
   for (let element of array) {
@@ -282,7 +282,7 @@ The higher-order operation that represents this pattern is called _reduce_(somet
 
 The parameters to `reduce` are, apart from the array, a combining function and a start value. This function is a little less straightforward than `filter` and `map`, so take a close look at it:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function reduce(array, combine, start) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function reduce(array, combine, start) {
   let current = start;
   for (let element of array) {
     current = combine(current, element);
@@ -294,11 +294,11 @@ console.log(reduce([1, 2, 3, 4], (a, b) => a + b, 0));`}/>
 
 The standard array method `reduce`, which of course corresponds to this function, has an added convenience. If your array contains at least one element, you are allowed to leave off the `start` argument. The method will take the first element of the array as its start value and start reducing at the second element.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log([1, 2, 3, 4].reduce((a, b) => a + b));`}/>
+<Sandbox pageSlug="5-higher-order-functions" code={`console.log([1, 2, 3, 4].reduce((a, b) => a + b));`}/>
 
 To use `reduce` (twice) to find the script with the most characters, we can write something like this:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function characterCount(script) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function characterCount(script) {
   return script.ranges.reduce((count, [from, to]) => {
     return count + (to - from);
   }, 0);
@@ -320,7 +320,7 @@ The Han script has more than 89,000 characters assigned to it in the Unicode sta
 
 Consider how we would have written the previous example (finding the biggest script) without higher-order functions. The code is not that much worse.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let biggest = null;
+<Sandbox pageSlug="5-higher-order-functions" code={`let biggest = null;
 for (let script of SCRIPTS) {
   if (biggest == null ||
       characterCount(biggest) < characterCount(script)) {
@@ -333,7 +333,7 @@ There are a few more bindings, and the program is four lines longer, but it is s
 
 The abstractions these functions provide really shine when you need to _compose_ operations. As an example, let’s write code that finds the average year of origin for living and dead scripts in the dataset.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function average(array) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function average(array) {
   return array.reduce((a, b) => a + b) / array.length;
 }
 
@@ -347,7 +347,7 @@ As you can see, the dead scripts in Unicode are, on average, older than the livi
 
 You could definitely also write this computation as one big loop.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let total = 0, count = 0;
+<Sandbox pageSlug="5-higher-order-functions" code={`let total = 0, count = 0;
 for (let script of SCRIPTS) {
   if (script.living) {
     total += script.year;
@@ -370,7 +370,7 @@ One interesting use of this dataset would be figuring out what script a piece of
 
 Remember that each script has an array of character code ranges associated with it. Given a character code, we could use a function like this to find the corresponding script (if any):
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function characterScript(code) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function characterScript(code) {
   for (let script of SCRIPTS) {
     if (script.ranges.some(([from, to]) => {
       return code >= from && code < to;
@@ -410,7 +410,7 @@ JavaScript’s `charCodeAt` method gives you a code unit, not a full character c
 
 In the [previous chapter](https://eloquentjavascript.net/04_data.html#for_of_loop), I mentioned that a `for`/`of` loop can also be used on strings. Like `codePointAt`, this type of loop was introduced at a time when people were acutely aware of the problems with UTF-16. When you use it to loop over a string, it gives you real characters, not code units.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let roseDragon = "🌹🐉";
+<Sandbox pageSlug="5-higher-order-functions" code={`let roseDragon = "🌹🐉";
 for (let char of roseDragon) {
   console.log(char);
 }
@@ -427,7 +427,7 @@ If you have a character (which will be a string of one or two code units), you c
 
 We have a `characterScript` function and a way to correctly loop over characters. The next step is to count the characters that belong to each script. The following counting abstraction will be useful there:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function countBy(items, groupName) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function countBy(items, groupName) {
   let counts = [];
   for (let item of items) {
     let name = groupName(item);
@@ -450,7 +450,7 @@ It uses another array method, `find`, which goes over the elements in the array 
 
 Using `countBy`, we can write the function that tells us which scripts are used in a piece of text.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function textScripts(text) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function textScripts(text) {
   let scripts = countBy(text, char => {
     let script = characterScript(char.codePointAt(0));
     return script ? script.name : "none";
@@ -481,7 +481,7 @@ To be able to compute percentages, we first need the total number of characters 
 
 Use the `reduce` method in combination with the `concat` method to “flatten” an array of arrays into a single array that has all the elements of the original arrays.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let arrays = [[1, 2, 3], [4, 5], [6]];
+<Sandbox pageSlug="5-higher-order-functions" code={`let arrays = [[1, 2, 3], [4, 5], [6]];
 
 // Your code here.
 
@@ -493,7 +493,7 @@ Write a higher-order function `loop` that provides something like a `for` loop s
 
 When defining the function, you can use a regular loop to do the actual looping.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+<Sandbox pageSlug="5-higher-order-functions" code={`// Your code here.
 
 loop(3, n => n > 0, n => n - 1, console.log);
 // → 3
@@ -506,7 +506,7 @@ Arrays also have an `every` method analogous to the `some` method. This method r
 
 Implement `every` as a function that takes an array and a predicate function as parameters. Write two versions, one using a loop and one using the `some` method.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function every(array, test) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function every(array, test) {
   // Your code here.
 }
 
@@ -530,7 +530,7 @@ Write a function that computes the dominant writing direction in a string of tex
 
 The dominant direction is the direction of a majority of the characters that have a script associated with them. The `characterScript` and `countBy` functions defined earlier in the chapter are probably useful here.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function dominantDirection(text) {
+<Sandbox pageSlug="5-higher-order-functions" code={`function dominantDirection(text) {
   // Your code here.
 }
 

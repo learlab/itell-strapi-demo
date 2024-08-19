@@ -9,7 +9,7 @@ quiz: false
 <h2 className="sr-only" id="Chapter-introduction-236pt">Chapter introduction</h2>
 
 > "On two occasions I have been asked, ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’ \[...\] I am not able rightly to apprehend the kind of confusion of ideas that could provoke such a question."
->
+> 
 > Charles Babbage, _Passages from the Life of a Philosopher (1864)_
 
 <Image
@@ -55,7 +55,7 @@ We could get creative with strings—after all, strings can have any length, so 
 
 Fortunately, JavaScript provides a data type specifically for storing sequences of values. It is called an _array_ and is written as a list of values between square brackets, separated by commas.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let listOfNumbers = [2, 3, 5, 7, 11];
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let listOfNumbers = [2, 3, 5, 7, 11];
 console.log(listOfNumbers[2]);
 // → 5
 console.log(listOfNumbers[0]);
@@ -97,7 +97,7 @@ Just like strings, arrays have a `length` property that tells us how many elemen
 
 Both string and array values contain, in addition to the `length` property, a number of properties that hold function values.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let doh = "Doh";
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let doh = "Doh";
 console.log(typeof doh.toUpperCase);
 // → function
 console.log(doh.toUpperCase());
@@ -111,7 +111,7 @@ Properties that contain functions are generally called _methods_ of the value th
 
 This example demonstrates two methods you can use to manipulate arrays.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let sequence = [1, 2, 3];
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let sequence = [1, 2, 3];
 sequence.push(4);
 sequence.push(5);
 console.log(sequence);
@@ -135,7 +135,7 @@ Back to the weresquirrel. A set of daily log entries can be represented as an ar
 
 Values of the type _object_ are arbitrary collections of properties. One way to create an object is by using braces as an expression.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let day1 = {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let day1 = {
   squirrel: false,
   events: ["work", "touched tree", "pizza", "running"]
 };
@@ -166,7 +166,7 @@ To briefly return to our tentacle model of bindings—property bindings are simi
 
 The `delete` operator cuts off a tentacle from such an octopus. It is a unary operator that, when applied to an object property, will remove the named property from the object. This is not a common thing to do, but it is possible.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let anObject = {left: 1, right: 2};
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let anObject = {left: 1, right: 2};
 console.log(anObject.left);
 // → 1
 delete anObject.left;
@@ -181,12 +181,12 @@ The binary `in` operator, when applied to a string and an object, tells you whet
 
 To find out what properties an object has, you can use the `Object.keys` function. Give the function an object and it will return an array of strings—the object’s property names:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(Object.keys({x: 0, y: 0, z: 2}));
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`console.log(Object.keys({x: 0, y: 0, z: 2}));
 // → ["x", "y", "z"]`}/>
 
 There’s an `Object.assign` function that copies all properties from one object into another:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let objectA = {a: 1, b: 2};
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let objectA = {a: 1, b: 2};
 Object.assign(objectA, {b: 3, c: 4});
 console.log(objectA);
 // → {a: 1, b: 3, c: 4}`}/>
@@ -195,7 +195,7 @@ Arrays, then, are just a kind of object specialized for storing sequences of thi
 
 Jacques will represent the journal that Jacques keeps as an array of objects:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let journal = [
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let journal = [
   {events: ["work", "touched tree", "pizza",
             "running", "television"],
    squirrel: false},
@@ -222,7 +222,7 @@ Objects work differently. You _can_ change their properties, causing a single ob
 
 When we have two numbers, 120 and 120, we can consider them precisely the same number, whether or not they refer to the same physical bits. With objects, there is a difference between having two references to the same object and having two different objects that contain the same properties. Consider the following code:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let object1 = {value: 10};
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let object1 = {value: 10};
 let object2 = object1;
 let object3 = {value: 10};
 
@@ -241,7 +241,7 @@ The `object1` and `object2` bindings grasp the _same_ object, which is why chang
 
 Bindings can also be changeable or constant, but this is separate from the way their values behave. Even though number values don’t change, you can use a `let` binding to keep track of a changing number by changing the value at which the binding points. Similarly, though a `const` binding to an object can itself not be changed and will continue to point at the same object, the _contents_ of that object might change.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`const score = {visitors: 0, home: 0};
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`const score = {visitors: 0, home: 0};
 // This is okay
 score.visitors = 1;
 // This isn't allowed
@@ -257,7 +257,7 @@ When you compare objects with JavaScript’s `==` operator, it compares by ident
 
 Jacques starts up his JavaScript interpreter and sets up the environment he needs to keep his journal:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let journal = [];
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let journal = [];
 
 function addEntry(events, squirrel) {
   journal.push({events, squirrel});
@@ -267,7 +267,7 @@ Note that the object added to the journal looks a little odd. Instead of declari
 
 Every evening at 10 p.m.—or sometimes the next morning, after climbing down from the top shelf of his bookcase—Jacques records the day:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`addEntry(["work", "touched tree", "pizza", "running",
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`addEntry(["work", "touched tree", "pizza", "running",
           "television"], false);
 addEntry(["work", "ice cream", "cauliflower", "lasagna",
           "touched tree", "brushed teeth"], false);
@@ -291,10 +291,12 @@ We could take the event of eating pizza and put that in a frequency table like t
 
 </Image>
 
-If we call that table $n$, we can compute $\phi$ using the following formula:
+If we call that table $n$, we can compute $\\phi$ using the following formula:
 
 $$
-\phi = \frac{n_{11} n_{00} - n_{10}n_{01}}{\sqrt{n_{1\boldsymbol{\cdot}}n_{0\boldsymbol{\cdot}}n_{\boldsymbol{\cdot}1}n_{\boldsymbol{\cdot}0}}}
+
+\\phi = \\frac{n_{11} n_{00} - n_{10}n_{01}}{\\sqrt{n_{1\\boldsymbol{\\cdot}}n_{0\\boldsymbol{\\cdot}}n_{\\boldsymbol{\\cdot}1}n_{\\boldsymbol{\\cdot}0}}}
+
 $$
 
 (If at this point you’re putting the book down to focus on a terrible flashback to 10th grade math class—hold on! I do not intend to torture you with endless pages of cryptic notation—it’s just this one formula for now. And even with this one, all we do is turn it into JavaScript.)
@@ -303,7 +305,7 @@ The notation $n_{01}$ indicates the number of measurements where the first varia
 
 The value $n_{1•}$ refers to the sum of all measurements where the first variable is true, which is 5 in the example table. Likewise, $n_{•0}$ refers to the sum of the measurements where the second variable is false.
 
-So for the pizza table, the part above the division line (the dividend) would be $1 \times 76 - 4 \times 9 = 40$, and the part below it (the divisor) would be the square root of $5 \times 85 \times 10 \times 80$, or $\sqrt{340,000}$. This comes out to $\phi \approx 0.069$, which is tiny. Eating pizza does not appear to have influence on the transformations.
+So for the pizza table, the part above the division line (the dividend) would be $1 \\times 76 - 4 \\times 9 = 40$, and the part below it (the divisor) would be the square root of $5 \\times 85 \\times 10 \\times 80$, or $\\sqrt{340,000}$. This comes out to $\\phi \\approx 0.069$, which is tiny. Eating pizza does not appear to have influence on the transformations.
 
 </section>
 
@@ -315,7 +317,7 @@ We can represent a two-by-two table in JavaScript with a four-element array (`[7
 
 This is the function that computes the _ϕ_ coefficient from such an array:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function phi(table) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function phi(table) {
   return (table[3] * table[0] - table[2] * table[1]) /
     Math.sqrt((table[2] + table[3]) *
               (table[0] + table[1]) *
@@ -345,7 +347,7 @@ Jacques keeps his journal for three months. The data is available at [https://el
 
 To load the data into the sandbox environment, run the following code. You should see "data loaded" printed out in a few seconds, and now you can access it via the `JOURNAL` variable.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`var JOURNAL
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`var JOURNAL
 const loadData = async () => {
   const resp = await fetch("/journal.json")
   JOURNAL = await resp.json()
@@ -356,7 +358,7 @@ loadData()`}/>
 
 To extract a two-by-two table for a specific event from the journal, we must loop over all the entries and tally how many times the event occurs in relation to squirrel transformations:To load the journal data into the sandbox environment, run the following
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function tableFor(event, journal) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function tableFor(event, journal) {
   let table = [0, 0, 0, 0];
   for (let i = 0; i < journal.length; i++) {
     let entry = journal[i], index = 0;
@@ -395,7 +397,7 @@ This kind of loop is common in classical JavaScript—going over arrays one elem
 
 There is a simpler way to write such loops in modern JavaScript:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let entry of JOURNAL) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`for (let entry of JOURNAL) {
   console.log(\`\${entry.events.length} events.\`);
 }`}/>
 
@@ -409,7 +411,7 @@ When a `for` loop uses the word `of` after its variable definition, it will loop
 
 We need to compute a correlation for every type of event that occurs in the dataset. To do that, we first need to __find__ every type of event.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function journalEvents(journal) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function journalEvents(journal) {
   let events = [];
   for (let entry of journal) {
     for (let event of entry.events) {
@@ -428,7 +430,7 @@ By adding any event names that aren’t already in it to the `events` array, the
 
 Using that function, we can see all the correlations:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let event of journalEvents(JOURNAL)) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`for (let event of journalEvents(JOURNAL)) {
   console.log(event + ":", phi(tableFor(event, JOURNAL)));
 }
 // → carrot:   0.0140970969
@@ -440,7 +442,7 @@ Using that function, we can see all the correlations:
 
 Most correlations seem to lie close to zero. Eating carrots, bread, or pudding apparently does not trigger squirrel-lycanthropy. The transformations __do__ seem to occur somewhat more often on weekends. Let’s filter the results to show only correlations greater than 0.1 or less than -0.1:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let event of journalEvents(JOURNAL)) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`for (let event of journalEvents(JOURNAL)) {
   let correlation = phi(tableFor(event, JOURNAL));
   if (correlation > 0.1 || correlation < -0.1) {
     console.log(event + ":", correlation);
@@ -458,7 +460,7 @@ Aha! There are two factors with a correlation clearly stronger than the others. 
 
 Interesting. Let’s try something.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`for (let entry of JOURNAL) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`for (let entry of JOURNAL) {
   if (entry.events.includes("peanuts") &&
      !entry.events.includes("brushed teeth")) {
     entry.events.push("peanut teeth");
@@ -483,7 +485,7 @@ Before finishing the chapter, I want to introduce you to a few more object-relat
 
 We saw `push` and `pop`, which add and remove elements at the end of an array, earlier in this chapter. The corresponding methods for adding and removing things at the start of an array are called `unshift` and `shift`.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let todoList = [];
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let todoList = [];
 function remember(task) {
   todoList.push(task);
 }
@@ -498,7 +500,7 @@ This program manages a queue of tasks. You add tasks to the end of the queue by 
 
 To search for a specific value, arrays provide an `indexOf` method. The method searches through the array from the start to the end and returns the index at which the requested value was found—or -1 if it wasn’t found. To search from the end instead of the start, there’s a similar method called `lastIndexOf`:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log([1, 2, 3, 2, 1].indexOf(2));
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`console.log([1, 2, 3, 2, 1].indexOf(2));
 // → 1
 console.log([1, 2, 3, 2, 1].lastIndexOf(2));
 // → 3`}/>
@@ -507,7 +509,7 @@ Both `indexOf` and `lastIndexOf` take an optional second argument that indicates
 
 Another fundamental array method is `slice`, which takes start and end indices and returns an array that has only the elements between them. The start index is inclusive and the end index is exclusive.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log([0, 1, 2, 3, 4].slice(2, 4));
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`console.log([0, 1, 2, 3, 4].slice(2, 4));
 // → [2, 3]
 console.log([0, 1, 2, 3, 4].slice(2));
 // → [2, 3, 4]`}/>
@@ -518,7 +520,7 @@ The `concat` method can be used to append arrays together to create a new array,
 
 The following example shows both `concat` and `slice` in action. It takes an array and an index and returns a new array that is a copy of the original array with the element at the given index removed:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function remove(array, index) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function remove(array, index) {
   return array.slice(0, index)
     .concat(array.slice(index + 1));
 }
@@ -535,7 +537,7 @@ If you pass `concat` an argument that is not an array, that value will be added 
 
 We can read properties like `length` and `toUpperCase` from string values. But if we try to add a new property, it doesn’t stick.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let kim = "Kim";
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let kim = "Kim";
 kim.age = 88;
 console.log(kim.age);
 // → undefined`}/>
@@ -544,7 +546,7 @@ Values of type string, number, and Boolean are not objects, and though the langu
 
 But these types do have built-in properties. Every string value has a number of methods. Some very useful ones are `slice` and `indexOf`, which resemble the array methods of the same name:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log("coconuts".slice(4, 7));
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`console.log("coconuts".slice(4, 7));
 // → nut
 console.log("coconut".indexOf("u"));
 // → 5`}/>
@@ -572,7 +574,7 @@ console.log(String(6).padStart(3, "0"));
 
 You can split a string on every occurrence of another string with `split` and join it again with `join`:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let sentence = "Secretarybirds specialize in stomping";
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let sentence = "Secretarybirds specialize in stomping";
 let words = sentence.split(" ");
 console.log(words);
 // → ["Secretarybirds", "specialize", "in", "stomping"]
@@ -588,7 +590,7 @@ console.log("LA".repeat(3));
 
 We have already seen the string type’s `length` property. Accessing the individual characters in a string looks like accessing array elements (with a complication that we’ll discuss in [Higher-order Functions](https://itell-augustatech-web-dev.vercel.app/5-higher-order-functions)).
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let string = "abc";
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let string = "abc";
 console.log(string.length);
 // → 3
 console.log(string[1]);
@@ -602,7 +604,7 @@ console.log(string[1]);
 
 It can be useful for a function to accept any number of arguments. For example, `Math.max` computes the maximum of __all__ the arguments it is given. To write such a function, you put three dots before the function’s last parameter, like this:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function max(...numbers) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function max(...numbers) {
   let result = -Infinity;
   for (let number of numbers) {
     if (number > result) result = number;
@@ -616,7 +618,7 @@ When such a function is called, the _rest parameter_ is bound to an array contai
 
 You can use a similar three-dot notation to _call_ a function with an array of arguments.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let numbers = [5, 1, 7];
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let numbers = [5, 1, 7];
 console.log(max(...numbers));
 // → 7`}/>
 
@@ -654,7 +656,7 @@ Many languages will stop you, or at least warn you, when you are defining a bind
 
 Back to the `Math` object. If you need to do trigonometry, `Math` can help. It contains `cos` (cosine), `sin` (sine), and `tan` (tangent), as well as their inverse functions, `acos`, `asin`, and `atan`, respectively. The number π (pi)—or at least the closest approximation that fits in a JavaScript number—is available as `Math.PI`. There is an old programming tradition of writing the names of constant values in all caps.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function randomPointOnCircle(radius) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function randomPointOnCircle(radius) {
   let angle = Math.random() * 2 * Math.PI;
   return {x: radius * Math.cos(angle),
           y: radius * Math.sin(angle)};
@@ -664,7 +666,7 @@ console.log(randomPointOnCircle(2));
 
 The previous example used `Math.random`. This is a function that returns a new pseudorandom number between 0 (inclusive) and 1 (exclusive) every time you call it:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(Math.random());
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`console.log(Math.random());
 // → 0.36993729369714856
 console.log(Math.random());
 // → 0.727367032552138
@@ -691,7 +693,7 @@ There are also the functions `Math.ceil` (for “ceiling”, which rounds up to 
 
 Let’s return to the `phi` function for a moment.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function phi(table) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function phi(table) {
   return (table[3] * table[0] - table[2] * table[1]) /
     Math.sqrt((table[2] + table[3]) *
               (table[0] + table[1]) *
@@ -701,7 +703,7 @@ Let’s return to the `phi` function for a moment.
 
 One reason this function is awkward to read is that we have a binding pointing at our array, but we’d much prefer to have bindings for the __elements__ of the array—that is, `let n00 = table[0]` and so on. Fortunately, there is a succinct way to do this in JavaScript:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function phi([n00, n01, n10, n11]) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function phi([n00, n01, n10, n11]) {
   return (n11 * n00 - n10 * n01) /
     Math.sqrt((n10 + n11) * (n00 + n01) *
               (n01 + n11) * (n00 + n10));
@@ -711,7 +713,7 @@ This also works for bindings created with `let`, `var`, or `const`. If you know 
 
 A similar trick works for objects, using braces instead of square brackets.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let {name} = {name: "Faraji", age: 23};
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let {name} = {name: "Faraji", age: 23};
 console.log(name);`}/>
 
 Note that if you try to destructure `null` or `undefined`, you get an error, much as you would if you directly try to access a property of those values.
@@ -724,7 +726,7 @@ Note that if you try to destructure `null` or `undefined`, you get an error, muc
 
 When you aren’t sure whether a given value produces an object, but still want to read a property from it when it does, you can use a variant of the dot notation: `object?.property`.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function city(object) {
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`function city(object) {
   return object.address?.city;
 }
 console.log(city({address: {city: "Toronto"}}));
@@ -756,7 +758,7 @@ JSON looks similar to JavaScript’s way of writing arrays and objects, with a f
 
 A journal entry might look like this when represented as JSON data:
 
-```javascript
+```javascript 
 {
   "squirrel": false,
   "events": ["work", "touched tree", "pizza", "running"]
@@ -765,7 +767,7 @@ A journal entry might look like this when represented as JSON data:
 
 JavaScript gives us the functions `JSON.stringify` and `JSON.parse` to convert data to and from this format. The first takes a JavaScript value and returns a JSON-encoded string. The second takes such a string and converts it to the value it encodes:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`let string = JSON.stringify({squirrel: false,
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`let string = JSON.stringify({squirrel: false,
                              events: ["weekend"]});
 console.log(string);
 // → {"squirrel":false,"events":["weekend"]}
@@ -782,7 +784,7 @@ console.log(JSON.parse(string).events);
 
 Considering the following code to compute the sum of a range of numbers:
 
-```javascript
+```javascript 
 console.log(sum(range(1, 10)));
 ```
 
@@ -792,7 +794,7 @@ Next, write a `sum` function that takes an array of numbers and returns the sum 
 
 As a bonus assignment, modify your `range` function to take an optional third argument that indicates the “step” value used when building the array. If no step is given, the elements should go up by increments of one, corresponding to the old behavior. The function call `range(1, 10, 2)` should return `[1, 3, 5, 7, 9]`. Make sure this also works with negative step values so that `range(5, 2, -1)` produces `[5, 4, 3, 2]`.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`// Your code here.
 
 console.log(range(1, 10));
 // → [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -820,7 +822,7 @@ Arrays have a `reverse` method that changes the array by inverting the order in 
 
 Thinking back to the notes about side effects and pure functions in the [previous chapter](https://itell-augustatech-web-dev.vercel.app/functions-1), which variant do you expect to be useful in more situations? Which one runs faster?
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`// Your code here.
 
 let myArray = ["A", "B", "C"];
 console.log(reverseArray(myArray));
@@ -831,18 +833,21 @@ let arrayValue = [1, 2, 3, 4, 5];
 reverseArrayInPlace(arrayValue);
 console.log(arrayValue);
 // → [5, 4, 3, 2, 1]`}/>
-
+<Accordion value="first" className="prose dark:prose-invert">
+<AccordionItem value="1" title="Display hints">
 There are two obvious ways to implement `reverseArray`. The first is to simply go over the input array from front to back and use the `unshift` method on the new array to insert each element at its start. The second is to loop over the input array backward and use the `push` method. Iterating over an array backward requires a (somewhat awkward) `for` specification, like `(let i = array.length - 1; i >= 0; i--)`.
 
 Reversing the array in place is harder. You have to be careful not to overwrite elements that you will later need. Using `reverseArray` or otherwise copying the whole array (`array.slice()` is a good way to copy an array) works but is cheating.
 
 The trick is to _swap_ the first and last elements, then the second and second-to-last, and so on. You can do this by looping over half the length of the array (use `Math.floor` to round down—you don’t need to touch the middle element in an array with an odd number of elements) and swapping the element at position `i` with the one at position `array.length - 1 - i`. You can use a local binding to briefly hold onto one of the elements, overwrite that one with its mirror image, and then put the value from the local binding in the place where the mirror image used to be.
+</AccordionItem>
+</Accordion>
 
 ### **A list**
 
 As generic blobs of values, objects can be used to build all sorts of data structures. A common data structure is the _list_ (not to be confused with arrays). A list is a nested set of objects, with the first object holding a reference to the second, the second to the third, and so on:
 
-```javascript
+```javascript 
 let list = {
   value: 1,
   rest: {
@@ -872,7 +877,7 @@ Write a function `arrayToList` that builds up a list structure like the one show
 
 If you haven’t already, also write a recursive version of `nth`.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`// Your code here.
 
 console.log(arrayToList([10, 20]));
 // → {value: 10, rest: {value: 20, rest: null}}
@@ -907,7 +912,7 @@ To find out whether values should be compared directly (using the `===` operator
 
 The `Object.keys` function will be useful when you need to go over the properties of objects to compare them.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+<Sandbox pageSlug="4-data-structures-objects-and-arrays" code={`// Your code here.
 
 let obj = {here: {is: "an"}, object: 2};
 console.log(deepEqual(obj, obj));
@@ -924,3 +929,4 @@ Use `Object.keys` to go over the properties. You need to test whether both objec
 Returning the correct value from the function is best done by immediately returning `false` when a mismatch is found and returning `true` at the end of the function.
 
 </section>
+

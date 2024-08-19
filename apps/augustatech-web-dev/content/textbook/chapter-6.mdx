@@ -156,7 +156,7 @@ Since the format has to be processed line by line, splitting up the file into se
 
 Luckily, since this is a common day-to-day task across the software team, a fellow engineer has already written a function `parseINI` for this purpose:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function parseINI(string) {
+<Sandbox pageSlug="10-modules" code={`function parseINI(string) {
   // Start with an object to hold the top-level fields
   let result = {};
   let section = result;
@@ -223,7 +223,7 @@ The community designed its own improvised module systems on top of the language.
 
 Initially, people just manually wrapped their entire module in an “immediately invoked function expression” to create the module’s scope and assigned their interface objects to a single global variable.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`const weekDay = function() {
+<Sandbox pageSlug="10-modules" code={`const weekDay = function() {
   const names = ["Sunday", "Monday", "Tuesday", "Wednesday",
                  "Thursday", "Friday", "Saturday"];
   return {

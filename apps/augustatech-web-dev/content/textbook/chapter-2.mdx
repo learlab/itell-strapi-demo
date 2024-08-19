@@ -1,6 +1,6 @@
 ---
 title: "3. Functions"
-page_slug: functions-1
+page_slug: 3-functions
 summary: true
 quiz: false
 ---
@@ -82,7 +82,7 @@ if (true) {
 
 Each scope can “look out” into the scope around it, so `x` is visible inside the block in the example. The exception is when multiple bindings have the same name—in that case, code can see only the innermost one. For example, when the code inside the `halve` function refers to `n`, it is seeing its _own_ `n`, not the global `n`.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`const halve = function(n) {
+<Sandbox pageSlug="3-functions" code={`const halve = function(n) {
   return n / 2;
 };
 
@@ -164,7 +164,7 @@ This is a function _declaration_. The statement defines the binding `square` and
 
 There is one subtlety with this form of function definition.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log("The future says:", future());
+<Sandbox pageSlug="3-functions" code={`console.log("The future says:", future());
 
 function future() {
   return "You'll never have flying cars";
@@ -275,7 +275,7 @@ JavaScript is extremely broad-minded about the number of arguments you can pass 
 
 The downside of this is that it is possible—likely, even—that you’ll accidentally pass the wrong number of arguments to functions. And no one will tell you about it. The upside is that you can use this behavior to allow a function to be called with different numbers of arguments. For example, this `minus` function tries to imitate the - operator by acting on either one or two arguments:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function minus(a, b) {
+<Sandbox pageSlug="3-functions" code={`function minus(a, b) {
  if (b === undefined) return -a;
  else return a - b;
 }
@@ -286,7 +286,7 @@ console.log(minus(10, 5));
 
 If you write an `=` operator after a parameter, followed by an expression, the value of that expression will replace the argument when it is not given. For example, this version of `roundTo` makes its second argument optional. If you don’t provide it or pass the value `undefined`, it will default to one:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function roundTo(n, step = 1) {
+<Sandbox pageSlug="3-functions" code={`function roundTo(n, step = 1) {
  let remainder = n % step;
  return n - remainder + (remainder < step / 2 ? 0 : step);
 };
@@ -312,7 +312,7 @@ The ability to treat functions as values, combined with the fact that local bind
 
 The following code shows an example of this. It defines a function, `wrapValue()`, that creates a local binding. It then returns a function that accesses and returns this local binding.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function wrapValue(n) {
+<Sandbox pageSlug="3-functions" code={`function wrapValue(n) {
  let local = n;
  return () => local;
 }
@@ -329,7 +329,7 @@ This feature—being able to reference a specific instance of a local binding in
 
 With a slight change, we can turn the previous example into a way to create functions that multiply by an arbitrary amount.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function multiplier(factor) {
+<Sandbox pageSlug="3-functions" code={`function multiplier(factor) {
  return number => number * factor;
 }
 let twice = multiplier(2);
@@ -350,7 +350,7 @@ In the previous example, `multiplier()` is called and creates an environment in 
 
 It is perfectly okay for a function to call itself, as long as it doesn’t do it so often that it overflows the stack. A function that calls itself is called recursive. Recursion allows some functions to be written in a different style. Take, for example, this `power()` function, which does the same as the `**` (exponentiation) operator:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function power(base, exponent) {
+<Sandbox pageSlug="3-functions" code={`function power(base, exponent) {
  if (exponent == 0) {
    return 1;
  } else {
@@ -378,7 +378,7 @@ Consider this puzzle: by starting from the number 1 and repeatedly either adding
 
 Here is a recursive solution:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function findSolution(target) {
+<Sandbox pageSlug="3-functions" code={`function findSolution(target) {
  function find(current, history) {
    if (current == target) {
      return history;
@@ -445,7 +445,7 @@ We want to write a program that prints two numbers: the numbers of cows and chic
 
 This asks for a function of two arguments—the number of cows and the number of chickens. Let’s get coding.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function printFarmInventory(cows, chickens) {
+<Sandbox pageSlug="3-functions" code={`function printFarmInventory(cows, chickens) {
   let cowString = String(cows)
   while (cowString.length < 3) {
     cowString = "0" + cowString
@@ -465,7 +465,7 @@ Mission accomplished! But just as we are about to send the farmer the code (alon
 
 We sure can. But just as we’re in the process of copying and pasting those four lines one more time, we stop and reconsider. There has to be a better way. Here’s a first attempt:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function printZeroPaddedWithLabel(number, label) {
+<Sandbox pageSlug="3-functions" code={`function printZeroPaddedWithLabel(number, label) {
  let numberString = String(number);
  while (numberString.length < 3) {
    numberString = "0" + numberString;
@@ -487,7 +487,7 @@ It works! But that name, `printZeroPaddedWithLabel`, is a little awkward. It con
 
 Instead of lifting out the repeated part of our program wholesale, let’s try to pick out a single _concept_:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`function zeroPad(number, width) {
+<Sandbox pageSlug="3-functions" code={`function zeroPad(number, width) {
  let string = String(number);
  while (string.length < width) {
    string = "0" + string;
@@ -533,7 +533,7 @@ Still, there’s no need to feel bad when writing functions that are not pure. S
 
 The [previous chapter](https://itell-augustatech-web-dev.vercel.app/2-program-structure) introduced the standard function `Math.min` that returns its smallest argument. We can write a function like that ourselves now. Define the function `min` that takes two arguments and returns their minimum.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Define the min function here
+<Sandbox pageSlug="3-functions" code={`// Define the min function here
 
 
 console.log(min(0, 10));
@@ -561,7 +561,7 @@ Define a recursive function `isEven` corresponding to this description. The func
 
 Test it on 50 and 75. See how it behaves on -1. Why? Can you think of a way to fix this?
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Define isEven() here
+<Sandbox pageSlug="3-functions" code={`// Define isEven() here
 
 
 console.log(isEven(50));
@@ -586,7 +586,7 @@ Write a function called `countBs` that takes a string as its only argument and r
 
 Next, write a function called `countChar` that behaves like `countBs`, except it takes a second argument that indicates the character that is to be counted (rather than counting only uppercase B characters). Rewrite `countBs` to make use of this new function.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`// Your code here.
+<Sandbox pageSlug="3-functions" code={`// Your code here.
 
 console.log(countBs("BOB"));
 // → 2

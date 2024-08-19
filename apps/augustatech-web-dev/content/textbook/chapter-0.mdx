@@ -189,7 +189,7 @@ Not all operators are symbols. Some are written as words. One example is the `ty
 Below is a code sandbox for running JavaScript code directly in your browser. Compared to static code snippets, the sandbox is designed for interactive exploration of the code samples in this textbook. You can edit the sample code, click the run button, and view the output. You can also format and reset the editor to the initial state. As you are introduced more advanced topics, the sandbox will become more helpful and assist you in understanding how difference pieces in a program fit together. However, please note that the sandbox is only an approximation of the actual JavaScript runtime in the browser, and might not produce the exact same output in a few edge cases. For a fully featured runtime, consider using tools such as \[Chrome DevTools\](https://developer.chrome.com/docs/devtools/console) and \[Node.js\](https://nodejs.org/en).
 </Info>
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(typeof 4.5)
+<Sandbox pageSlug="values-types-and-operators" code={`console.log(typeof 4.5)
 // → number
 console.log(typeof "x")
 // → string`}/>
@@ -317,9 +317,9 @@ The difference in meaning between `undefined` and `null` is an accident of JavaS
 
 ## Automatic type conversion \{#Automatic-type-conversion-774t}
 
-In the [Introduction](https://eloquentjavascript.net/00_intro.html), I mentioned2 that JavaScript goes out of its way to accept almost any program you give it, even programs that do odd things. This is nicely demonstrated by the following expressions:
+JavaScript goes out of its way to accept almost any program you give it, even programs that do odd things. This is nicely demonstrated by the following expressions:
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(8 * null)
+<Sandbox pageSlug="values-types-and-operators" code={`console.log(8 * null)
 // → 0
 console.log("5" - 1)
 // → 4
@@ -349,6 +349,12 @@ What if you want to test whether something refers to the precise value `false`? 
 
 I recommend using the three-character comparison operators defensively to prevent unexpected type conversions from tripping you up. But when you’re certain the types on both sides will be the same, there is no problem with using the shorter operators.
 
+$$
+
+a^2 + b^2 = c^2
+
+$$
+
 </section>
 
 <section className="content-chunk" aria-labelledby="Short-circuiting-of-logical-operators-773t" data-subsection-id="Short-circuiting-of-logical-operators-773t" data-show-header="true">
@@ -359,7 +365,7 @@ The logical operators `&&` and `||` handle values of different types in a peculi
 
 The `||` operator, for example, will return the value to its left when that value can be converted to true and will return the value on its right otherwise. This has the expected effect when the values are Boolean and does something analogous for values of other types.
 
-<Sandbox pageSlug="test-page-no-chunks" code={`console.log(null || "user")
+<Sandbox pageSlug="values-types-and-operators" code={`console.log(null || "user")
 // → user
 console.log("Agnes" || "user")
 // → Agnes`}/>
