@@ -57,7 +57,7 @@ export const NextPageButton = ({
 		>
 			<AnimatePresence mode="popLayout" initial={false}>
 				<motion.span
-					className="flex w-full items-center justify-center"
+					className="flex w-full items-center justify-center relative"
 					style={{ textShadow: "0px 1px 1.5px rgba(0, 0, 0, 0.16)" }}
 					initial="initial"
 					animate="visible"
@@ -70,29 +70,31 @@ export const NextPageButton = ({
 					transition={{ type: "spring", duration: 0.3, bounce: 0 }}
 					key={String(pending)}
 				>
-					{pending ? (
-						<Spinner className="size-4" />
-					) : (
-						<>
-							<span
-								className="flex items-center gap-2 relative h-full w-full text-sm tracking-wide "
-								style={{
-									maskImage:
-										"linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
-								}}
-							>
-								{text}
-								<ArrowRightIcon className="size-4" />
-							</span>
-							<span
-								style={{
-									mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
-									maskComposite: "exclude",
-								}}
-								className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,hsl(var(--primary)/10%)_calc(var(--x)+20%),hsl(var(--primary)/50%)_calc(var(--x)+25%),hsl(var(--primary)/10%)_calc(var(--x)+100%))] p-px"
-							/>
-						</>
+					{pending && (
+						<span className="absolute inset-0 flex items-center justify-center">
+							<Spinner />
+						</span>
 					)}
+					<span
+						className={cn(
+							"flex items-center gap-2 relative h-full w-full text-sm tracking-wide",
+							pending ? "invisible" : "",
+						)}
+						style={{
+							maskImage:
+								"linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
+						}}
+					>
+						{text}
+						<ArrowRightIcon className="size-4" />
+					</span>
+					<span
+						style={{
+							mask: "linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box,linear-gradient(rgb(0,0,0), rgb(0,0,0))",
+							maskComposite: "exclude",
+						}}
+						className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,hsl(var(--primary)/10%)_calc(var(--x)+20%),hsl(var(--primary)/50%)_calc(var(--x)+25%),hsl(var(--primary)/10%)_calc(var(--x)+100%))] p-px"
+					/>
 				</motion.span>
 			</AnimatePresence>
 		</motion.button>

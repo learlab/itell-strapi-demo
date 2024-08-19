@@ -66,7 +66,7 @@ importers:
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.112.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.93.0(@swc/core@1.7.5(@swc/helpers@0.5.11)))
+        version: 7.112.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.93.0(@swc/core@1.7.5(@swc/helpers@0.5.11))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -75,7 +75,7 @@ importers:
         version: 2.0.0(react@18.3.1)
       arctic:
         specifier: 2.0.0-next.1
-        version: 2.0.0-next.1(@types/node@22.2.0)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
+        version: 2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
       cmdk:
         specifier: ^0.2.0
         version: 0.2.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -117,13 +117,13 @@ importers:
         version: 0.50.0
       next:
         specifier: 14.2.3
-        version: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.2.1(next@14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nextjs-better-unstable-cache:
         specifier: ^1.1.0
         version: 1.1.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -232,7 +232,7 @@ importers:
         version: 1.11.1
       tailwindcss:
         specifier: ^3.4.0
-        version: 3.4.3(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta))
+        version: 3.4.3(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.0-beta))
       typescript:
         specifier: 5.5.0-beta
         version: 5.5.0-beta
@@ -283,7 +283,7 @@ importers:
         version: 1.0.7(lucia@3.2.0)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.112.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.93.0(@swc/core@1.7.5(@swc/helpers@0.5.11))(esbuild@0.19.12))
+        version: 7.112.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.93.0(@swc/core@1.7.5(@swc/helpers@0.5.11)))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -334,13 +334,13 @@ importers:
         version: 0.298.0(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.2.1(next@14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nextjs-better-unstable-cache:
         specifier: ^1.1.0
         version: 1.1.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -521,7 +521,7 @@ importers:
         version: 0.298.0(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-contentlayer:
         specifier: ^0.3.4
         version: 0.3.4(contentlayer@0.3.4(esbuild@0.23.0))(esbuild@0.23.0)(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -530,7 +530,7 @@ importers:
         version: 0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.2.1(next@14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -794,6 +794,235 @@ importers:
       velite:
         specifier: ^0.1.1
         version: 0.1.1
+
+  apps/research-methods-in-psychology:
+    dependencies:
+      '@floating-ui/dom':
+        specifier: ^1.6.8
+        version: 1.6.8
+      '@floating-ui/react':
+        specifier: ^0.26.22
+        version: 0.26.22(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@hello-pangea/color-picker':
+        specifier: ^3.2.2
+        version: 3.2.2(react@18.3.1)
+      '@itell/constants':
+        specifier: workspace:^
+        version: link:../../packages/constants
+      '@itell/content':
+        specifier: workspace:^
+        version: link:../../packages/content
+      '@itell/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@itell/driver.js':
+        specifier: workspace:^
+        version: link:../../packages/driverjs
+      '@itell/remark-wiki-link':
+        specifier: workspace:^
+        version: link:../../packages/remark-wiki-link
+      '@itell/tailwind':
+        specifier: workspace:^
+        version: link:../../packages/tailwind
+      '@itell/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@itell/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
+      '@lucia-auth/adapter-drizzle':
+        specifier: ^1.0.7
+        version: 1.0.7(lucia@3.2.0)
+      '@sentry/nextjs':
+        specifier: ^7.105.0
+        version: 7.112.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.93.0(@swc/core@1.7.5(@swc/helpers@0.5.11)))
+      '@tanstack/react-table':
+        specifier: ^8.9.10
+        version: 8.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@xstate/store':
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
+      D:
+        specifier: ^1.0.0
+        version: 1.0.0
+      arctic:
+        specifier: 2.0.0-next.1
+        version: 2.0.0-next.1(@types/node@22.2.0)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
+      cmdk:
+        specifier: ^0.2.0
+        version: 0.2.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      drizzle-orm:
+        specifier: ^0.30.10
+        version: 0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.3.3)(knex@2.5.0(pg@8.11.5))(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.30.10(patch_hash=jnczbjk6zmcayqpggfcog2xqha)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.3.3)(knex@2.5.0(pg@8.11.5))(pg@8.11.5)(postgres@3.4.4)(react@18.3.1))(zod@3.23.4)
+      es-toolkit:
+        specifier: ^1.13.1
+        version: 1.13.1
+      framer-motion:
+        specifier: ^10.16.4
+        version: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      geist:
+        specifier: ^1.0.0
+        version: 1.3.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      github-slugger:
+        specifier: ^2.0.0
+        version: 2.0.0
+      htmr:
+        specifier: ^1.0.2
+        version: 1.0.2(react@18.3.1)
+      immer:
+        specifier: ^9.0.21
+        version: 9.0.21
+      jwt-decode:
+        specifier: ^4.0.0
+        version: 4.0.0
+      lucia:
+        specifier: ^3.2.0
+        version: 3.2.0
+      lucide-react:
+        specifier: ^0.426.0
+        version: 0.426.0(react@18.3.1)
+      next:
+        specifier: 14.2.3
+        version: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-safe-navigation:
+        specifier: ^0.3.2
+        version: 0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      nextjs-better-unstable-cache:
+        specifier: ^1.1.0
+        version: 1.1.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      pluralize:
+        specifier: ^8.0.0
+        version: 8.0.0
+      postgres:
+        specifier: ^3.4.4
+        version: 3.4.4
+      qs:
+        specifier: ^6.11.2
+        version: 6.12.1
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-dom-confetti:
+        specifier: ^0.2.0
+        version: 0.2.0(react@18.3.1)
+      react-error-boundary:
+        specifier: ^4.0.12
+        version: 4.0.13(react@18.3.1)
+      react-textarea-autosize:
+        specifier: ^8.5.3
+        version: 8.5.3(@types/react@18.3.3)(react@18.3.1)
+      recharts:
+        specifier: ^2.8.0
+        version: 2.12.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rehype-slug:
+        specifier: ^5.1.0
+        version: 5.1.0
+      remark-wiki-link:
+        specifier: ^2.0.1
+        version: 2.0.1
+      sonner:
+        specifier: ^1.2.0
+        version: 1.4.41(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      use-action-status:
+        specifier: ^0.0.1
+        version: 0.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      use-immer:
+        specifier: ^0.9.0
+        version: 0.9.0(immer@9.0.21)(react@18.3.1)
+      velite:
+        specifier: ^0.1.1
+        version: 0.1.1
+      zod:
+        specifier: ^3.22.2
+        version: 3.23.4
+      zsa:
+        specifier: ^0.5.1
+        version: 0.5.1(zod@3.23.4)
+      zsa-react:
+        specifier: ^0.2.2
+        version: 0.2.2(react@18.3.1)(zod@3.23.4)
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^1.5.2
+        version: 1.7.1
+      '@total-typescript/ts-reset':
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@types/dom-view-transitions':
+        specifier: ^1.0.4
+        version: 1.0.4
+      '@types/hast':
+        specifier: ^3.0.4
+        version: 3.0.4
+      '@types/pluralize':
+        specifier: ^0.0.31
+        version: 0.0.31
+      '@types/qs':
+        specifier: ^6.9.10
+        version: 6.9.15
+      '@types/react':
+        specifier: 18.3.3
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
+      '@types/remark-heading-id':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@types/yaml':
+        specifier: ^1.9.7
+        version: 1.9.7
+      autoprefixer:
+        specifier: ^10.4.15
+        version: 10.4.19(postcss@8.4.40)
+      drizzle-kit:
+        specifier: ^0.21.2
+        version: 0.21.2
+      hast:
+        specifier: ^1.0.0
+        version: 1.0.0
+      hastscript:
+        specifier: ^9.0.0
+        version: 9.0.0
+      postcss:
+        specifier: ^8.4.29
+        version: 8.4.40
+      remark-gfm:
+        specifier: ^4.0.0
+        version: 4.0.0
+      remark-heading-attrs:
+        specifier: ^0.0.1
+        version: 0.0.1
+      remark-heading-id:
+        specifier: ^1.0.1
+        version: 1.0.1
+      remark-unwrap-images:
+        specifier: ^4.0.0
+        version: 4.0.0
+      tailwindcss:
+        specifier: ^3.4.0
+        version: 3.4.7(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta))
+      typescript:
+        specifier: 5.5.0-beta
+        version: 5.5.0-beta
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
+      vitest:
+        specifier: ^0.31.4
+        version: 0.31.4(@vitest/ui@0.33.0)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
+      yaml:
+        specifier: ^2.5.0
+        version: 2.5.0
 
   packages/constants:
     devDependencies:
@@ -1223,7 +1452,7 @@ importers:
         version: 0.263.1(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       postcss:
         specifier: ^8.4.29
         version: 8.4.38
@@ -5794,6 +6023,10 @@ packages:
   '@types/use-sync-external-store@0.0.3':
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
 
+  '@types/yaml@1.9.7':
+    resolution: {integrity: sha512-8WMXRDD1D+wCohjfslHDgICd2JtMATZU8CkhH8LVJqcJs6dyYj5TGptzP8wApbmEullGBSsCEzzap73DQ1HJaA==}
+    deprecated: This is a stub types definition. yaml provides its own type definitions, so you do not need this installed.
+
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
 
@@ -8340,6 +8573,9 @@ packages:
 
   hastscript@8.0.0:
     resolution: {integrity: sha512-dMOtzCEd3ABUeSIISmrETiKuyydk1w0pa+gE/uormcTpSYuaNJPbX1NU3JLyscSLjwAQM8bWMhhIlnCqnRvDTw==}
+
+  hastscript@9.0.0:
+    resolution: {integrity: sha512-jzaLBGavEDKHrc5EfFImKN7nZKKBdSLIdGvCwDZ9TfzbF2ffXiov8CKE445L2Z1Ek2t/m4SKQ2j6Ipv7NyUolw==}
 
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
@@ -11425,6 +11661,9 @@ packages:
   remark-gfm@4.0.0:
     resolution: {integrity: sha512-U92vJgBPkbw4Zfu/IiW2oTZLSL3Zpv+uI7My2eq8JxKgqraFdU8YUGicEJCEgSbeaG+QDFqIcwwfMTOEelPxuA==}
 
+  remark-heading-attrs@0.0.1:
+    resolution: {integrity: sha512-kh/vCT3ZjOA4ZyiRretCn3DJktGx/+RGEwWBFtx/24qd8/RB7sSSrWZHmetsgKTK2cym+HHRz8o+WSZ+kxCZvw==}
+
   remark-heading-id@1.0.1:
     resolution: {integrity: sha512-GmJjuCeEkYvwFlvn/Skjc/1Qafj71412gbQnrwUmP/tKskmAf1cMRlZRNoovV+aIvsSRkTb2rCmGv2b9RdoJbQ==}
     engines: {node: '>=8'}
@@ -11459,6 +11698,9 @@ packages:
 
   remark-stringify@11.0.0:
     resolution: {integrity: sha512-1OSmLd3awB/t8qdoEOMazZkNsfVTeY4fTsgzcQFdXNq8ToTN4ZGwrMnlda4K6smTFKD+GRV6O48i6Z4iKgPPpw==}
+
+  remark-unwrap-images@4.0.0:
+    resolution: {integrity: sha512-Ilr5ZhrhZSvnjemy1rRuxlTC0I/39YyWDRiE9d5vF079APcwdYYzwcZL8RGehlCtQCiik8hWMyo4Xhz2Fq0JhA==}
 
   remark-wiki-link@2.0.1:
     resolution: {integrity: sha512-F8Eut1E7GWfFm4ZDTI6/4ejeZEHZgnVk6E933Yqd/ssYsc4AyI32aGakxwsGcEzbbE7dkWi1EfLlGAdGgOZOsA==}
@@ -13316,8 +13558,8 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
 
-  yaml@2.4.2:
-    resolution: {integrity: sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==}
+  yaml@2.5.0:
+    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
     engines: {node: '>= 14'}
     hasBin: true
 
@@ -14537,7 +14779,7 @@ snapshots:
       micromatch: 4.0.5
       ts-pattern: 4.3.0
       unified: 10.1.2
-      yaml: 2.4.2
+      yaml: 2.5.0
       zod: 3.23.4
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
@@ -17408,7 +17650,7 @@ snapshots:
       '@sentry/vercel-edge': 7.112.2
       '@sentry/webpack-plugin': 1.21.0
       chalk: 3.0.0
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       resolve: 1.22.8
       rollup: 2.78.0
@@ -17431,7 +17673,7 @@ snapshots:
       '@sentry/vercel-edge': 7.112.2
       '@sentry/webpack-plugin': 1.21.0
       chalk: 3.0.0
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       resolve: 1.22.8
       rollup: 2.78.0
@@ -17454,7 +17696,7 @@ snapshots:
       '@sentry/vercel-edge': 7.112.2
       '@sentry/webpack-plugin': 1.21.0
       chalk: 3.0.0
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       resolve: 1.22.8
       rollup: 2.78.0
@@ -18848,6 +19090,10 @@ snapshots:
 
   '@types/use-sync-external-store@0.0.3': {}
 
+  '@types/yaml@1.9.7':
+    dependencies:
+      yaml: 2.5.0
+
   '@types/yargs-parser@21.0.3': {}
 
   '@types/yargs@17.0.32':
@@ -19348,6 +19594,27 @@ snapshots:
     dependencies:
       oslo: 1.2.0
 
+  arctic@2.0.0-next.1(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3):
+    dependencies:
+      '@oslojs/encoding': 0.3.0
+      '@oslojs/oauth2': 0.3.0
+      vitest: 1.6.0(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   arctic@2.0.0-next.1(@types/node@22.2.0)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3):
     dependencies:
       '@oslojs/encoding': 0.3.0
@@ -19381,7 +19648,7 @@ snapshots:
 
   aria-hidden@1.2.4:
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   aria-query@5.1.3:
     dependencies:
@@ -19834,7 +20101,7 @@ snapshots:
   camel-case@4.1.2:
     dependencies:
       pascal-case: 3.1.2
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   camelcase-css@2.0.1: {}
 
@@ -21542,7 +21809,7 @@ snapshots:
 
   geist@1.3.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
     dependencies:
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   gensync@1.0.0-beta.2: {}
 
@@ -22056,6 +22323,14 @@ snapshots:
       space-separated-tokens: 2.0.2
 
   hastscript@8.0.0:
+    dependencies:
+      '@types/hast': 3.0.4
+      comma-separated-tokens: 2.0.3
+      hast-util-parse-selector: 4.0.0
+      property-information: 6.5.0
+      space-separated-tokens: 2.0.2
+
+  hastscript@9.0.0:
     dependencies:
       '@types/hast': 3.0.4
       comma-separated-tokens: 2.0.3
@@ -24482,7 +24757,7 @@ snapshots:
       '@contentlayer/core': 0.3.4(esbuild@0.23.0)
       '@contentlayer/utils': 0.3.4
       contentlayer: 0.3.4(esbuild@0.23.0)
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
@@ -24499,7 +24774,7 @@ snapshots:
 
   next-safe-navigation@0.3.2(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.5.0-beta)(zod@3.23.4):
     dependencies:
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typescript: 5.5.0-beta
       zod: 3.23.4
 
@@ -24509,46 +24784,14 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  next-themes@0.2.1(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
   next-tick@1.1.0: {}
-
-  next@14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@next/env': 14.2.3
-      '@swc/helpers': 0.5.5
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001614
-      graceful-fs: 4.2.11
-      postcss: 8.4.31
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(@babel/core@7.24.4)(react@18.3.1)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.3
-      '@next/swc-darwin-x64': 14.2.3
-      '@next/swc-linux-arm64-gnu': 14.2.3
-      '@next/swc-linux-arm64-musl': 14.2.3
-      '@next/swc-linux-x64-gnu': 14.2.3
-      '@next/swc-linux-x64-musl': 14.2.3
-      '@next/swc-win32-arm64-msvc': 14.2.3
-      '@next/swc-win32-ia32-msvc': 14.2.3
-      '@next/swc-win32-x64-msvc': 14.2.3
-      '@opentelemetry/api': 1.8.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
 
   next@14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 14.2.3
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001614
+      caniuse-lite: 1.0.30001651
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.3.1
@@ -24572,7 +24815,7 @@ snapshots:
   nextjs-better-unstable-cache@1.1.0(next@14.2.3(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
     dependencies:
       chalk: 4.1.2
-      next: 14.2.3(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.3(@babel/core@7.25.2)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
   no-case@2.3.2:
@@ -25208,15 +25451,23 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.39)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.12.7)(typescript@5.3.3)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.2
+      yaml: 2.5.0
     optionalDependencies:
       postcss: 8.4.39
       ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.12.7)(typescript@5.3.3)
 
+  postcss-load-config@4.0.2(postcss@8.4.39)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.0-beta)):
+    dependencies:
+      lilconfig: 3.1.1
+      yaml: 2.5.0
+    optionalDependencies:
+      postcss: 8.4.39
+      ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.0-beta)
+
   postcss-load-config@4.0.2(postcss@8.4.39)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.2
+      yaml: 2.5.0
     optionalDependencies:
       postcss: 8.4.39
       ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta)
@@ -25224,7 +25475,7 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.40)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.4)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.2
+      yaml: 2.5.0
     optionalDependencies:
       postcss: 8.4.40
       ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.4)
@@ -25232,7 +25483,7 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.40)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.1.0)(typescript@5.5.4)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.2
+      yaml: 2.5.0
     optionalDependencies:
       postcss: 8.4.40
       ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.1.0)(typescript@5.5.4)
@@ -25240,10 +25491,18 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.40)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.1.0)(typescript@5.6.0-beta)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.2
+      yaml: 2.5.0
     optionalDependencies:
       postcss: 8.4.40
       ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.1.0)(typescript@5.6.0-beta)
+
+  postcss-load-config@4.0.2(postcss@8.4.40)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta)):
+    dependencies:
+      lilconfig: 3.1.1
+      yaml: 2.5.0
+    optionalDependencies:
+      postcss: 8.4.40
+      ts-node: 10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta)
 
   postcss-modules-extract-imports@3.1.0(postcss@8.4.40):
     dependencies:
@@ -25628,7 +25887,7 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-style-singleton: 2.2.1(@types/react@18.3.3)(react@18.3.1)
-      tslib: 2.6.2
+      tslib: 2.6.3
     optionalDependencies:
       '@types/react': 18.3.3
 
@@ -25648,7 +25907,7 @@ snapshots:
       react: 18.3.1
       react-remove-scroll-bar: 2.3.6(@types/react@18.3.3)(react@18.3.1)
       react-style-singleton: 2.2.1(@types/react@18.3.3)(react@18.3.1)
-      tslib: 2.6.2
+      tslib: 2.6.3
       use-callback-ref: 1.3.2(@types/react@18.3.3)(react@18.3.1)
       use-sidecar: 1.1.2(@types/react@18.3.3)(react@18.3.1)
     optionalDependencies:
@@ -25659,7 +25918,7 @@ snapshots:
       react: 18.3.1
       react-remove-scroll-bar: 2.3.6(@types/react@18.3.3)(react@18.3.1)
       react-style-singleton: 2.2.1(@types/react@18.3.3)(react@18.3.1)
-      tslib: 2.6.2
+      tslib: 2.6.3
       use-callback-ref: 1.3.2(@types/react@18.3.3)(react@18.3.1)
       use-sidecar: 1.1.2(@types/react@18.3.3)(react@18.3.1)
     optionalDependencies:
@@ -25739,7 +25998,7 @@ snapshots:
       get-nonce: 1.0.1
       invariant: 2.2.4
       react: 18.3.1
-      tslib: 2.6.2
+      tslib: 2.6.3
     optionalDependencies:
       '@types/react': 18.3.3
 
@@ -26009,6 +26268,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  remark-heading-attrs@0.0.1:
+    dependencies:
+      unist-util-visit: 5.0.0
+
   remark-heading-id@1.0.1:
     dependencies:
       lodash: 4.17.21
@@ -26088,6 +26351,12 @@ snapshots:
       '@types/mdast': 4.0.4
       mdast-util-to-markdown: 2.1.0
       unified: 11.0.5
+
+  remark-unwrap-images@4.0.0:
+    dependencies:
+      '@types/mdast': 4.0.4
+      hast-util-whitespace: 3.0.0
+      unist-util-visit: 5.0.0
 
   remark-wiki-link@2.0.1:
     dependencies:
@@ -26764,13 +27033,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
 
-  styled-jsx@5.1.1(@babel/core@7.24.4)(react@18.3.1):
-    dependencies:
-      client-only: 0.0.1
-      react: 18.3.1
-    optionalDependencies:
-      '@babel/core': 7.24.4
-
   styled-jsx@5.1.1(@babel/core@7.25.2)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
@@ -26854,6 +27116,33 @@ snapshots:
       postcss-import: 15.1.0(postcss@8.4.39)
       postcss-js: 4.0.1(postcss@8.4.39)
       postcss-load-config: 4.0.2(postcss@8.4.39)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.12.7)(typescript@5.3.3))
+      postcss-nested: 6.0.1(postcss@8.4.39)
+      postcss-selector-parser: 6.0.16
+      resolve: 1.22.8
+      sucrase: 3.35.0
+    transitivePeerDependencies:
+      - ts-node
+
+  tailwindcss@3.4.3(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.0-beta)):
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      arg: 5.0.2
+      chokidar: 3.6.0
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.3.2
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.21.0
+      lilconfig: 2.1.0
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.0
+      postcss: 8.4.39
+      postcss-import: 15.1.0(postcss@8.4.39)
+      postcss-js: 4.0.1(postcss@8.4.39)
+      postcss-load-config: 4.0.2(postcss@8.4.39)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.0-beta))
       postcss-nested: 6.0.1(postcss@8.4.39)
       postcss-selector-parser: 6.0.16
       resolve: 1.22.8
@@ -26962,6 +27251,33 @@ snapshots:
       postcss-import: 15.1.0(postcss@8.4.40)
       postcss-js: 4.0.1(postcss@8.4.40)
       postcss-load-config: 4.0.2(postcss@8.4.40)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.1.0)(typescript@5.6.0-beta))
+      postcss-nested: 6.0.1(postcss@8.4.40)
+      postcss-selector-parser: 6.0.16
+      resolve: 1.22.8
+      sucrase: 3.35.0
+    transitivePeerDependencies:
+      - ts-node
+
+  tailwindcss@3.4.7(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta)):
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      arg: 5.0.2
+      chokidar: 3.6.0
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.3.2
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.21.0
+      lilconfig: 2.1.0
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.1
+      postcss: 8.4.40
+      postcss-import: 15.1.0(postcss@8.4.40)
+      postcss-js: 4.0.1(postcss@8.4.40)
+      postcss-load-config: 4.0.2(postcss@8.4.40)(ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@22.2.0)(typescript@5.5.0-beta))
       postcss-nested: 6.0.1(postcss@8.4.40)
       postcss-selector-parser: 6.0.16
       resolve: 1.22.8
@@ -27243,6 +27559,27 @@ snapshots:
       yn: 3.1.1
     optionalDependencies:
       '@swc/core': 1.7.5(@swc/helpers@0.5.11)
+
+  ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.0-beta):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 20.14.10
+      acorn: 8.11.3
+      acorn-walk: 8.3.2
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.5.0-beta
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    optionalDependencies:
+      '@swc/core': 1.7.5(@swc/helpers@0.5.11)
+    optional: true
 
   ts-node@10.9.2(@swc/core@1.7.5(@swc/helpers@0.5.11))(@types/node@20.14.10)(typescript@5.5.4):
     dependencies:
@@ -27626,7 +27963,7 @@ snapshots:
   use-callback-ref@1.3.2(@types/react@18.3.3)(react@18.3.1):
     dependencies:
       react: 18.3.1
-      tslib: 2.6.2
+      tslib: 2.6.3
     optionalDependencies:
       '@types/react': 18.3.3
 
@@ -27660,7 +27997,7 @@ snapshots:
     dependencies:
       detect-node-es: 1.1.0
       react: 18.3.1
-      tslib: 2.6.2
+      tslib: 2.6.3
     optionalDependencies:
       '@types/react': 18.3.3
 
@@ -27783,7 +28120,7 @@ snapshots:
       debug: 4.3.4
       mlly: 1.6.1
       pathe: 1.1.2
-      picocolors: 1.0.0
+      picocolors: 1.0.1
       vite: 4.5.3(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -27800,6 +28137,24 @@ snapshots:
       cac: 6.7.14
       debug: 4.3.4
       mlly: 1.6.1
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      vite: 5.4.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vite-node@1.6.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3):
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.6(supports-color@5.5.0)
       pathe: 1.1.2
       picocolors: 1.0.1
       vite: 5.4.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
@@ -28070,6 +28425,41 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@vitest/ui': 0.33.0(vitest@0.34.6)
+      happy-dom: 10.11.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vitest@1.6.0(@types/node@20.14.10)(happy-dom@10.11.2)(lightningcss@1.24.1)(terser@5.31.3):
+    dependencies:
+      '@vitest/expect': 1.6.0
+      '@vitest/runner': 1.6.0
+      '@vitest/snapshot': 1.6.0
+      '@vitest/spy': 1.6.0
+      '@vitest/utils': 1.6.0
+      acorn-walk: 8.3.2
+      chai: 4.4.1
+      debug: 4.3.4
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      tinybench: 2.8.0
+      tinypool: 0.8.4
+      vite: 5.4.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
+      vite-node: 1.6.0(@types/node@20.14.10)(lightningcss@1.24.1)(terser@5.31.3)
+      why-is-node-running: 2.2.2
+    optionalDependencies:
+      '@types/node': 20.14.10
       happy-dom: 10.11.2
     transitivePeerDependencies:
       - less
@@ -28472,7 +28862,7 @@ snapshots:
 
   yaml@1.10.2: {}
 
-  yaml@2.4.2: {}
+  yaml@2.5.0: {}
 
   yargs-parser@20.2.9: {}
 

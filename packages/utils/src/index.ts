@@ -122,13 +122,14 @@ export const createFetchWithBearerToken = (bearerToken?: string) => {
 	};
 };
 
-export const getChunkElement = (chunkSlug: string | null) => {
+export const getChunkElement = (
+	chunkSlug: string | null,
+	attr = "data-subsection-id",
+) => {
 	if (!chunkSlug) {
 		return null;
 	}
-	const el = document.querySelector(
-		`section[data-subsection-id='${chunkSlug}']`,
-	);
+	const el = document.querySelector(`section[${attr}='${chunkSlug}']`);
 	if (el instanceof HTMLElement) {
 		return el;
 	}

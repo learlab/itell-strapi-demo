@@ -1,7 +1,7 @@
 "use client";
 
-import { AuthForm } from "@/app/auth/_components/auth-form";
 import { logout } from "@/lib/auth/actions";
+import { AuthForm } from "@auth/auth-form";
 import {
 	Button,
 	Dialog,
@@ -62,7 +62,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 	if (!user) {
 		return (
 			<Dialog>
-				<DialogTrigger>
+				<DialogTrigger asChild>
 					<Button size={"lg"}>Sign in</Button>
 				</DialogTrigger>
 				<DialogContent>
