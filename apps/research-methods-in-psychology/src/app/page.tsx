@@ -8,7 +8,6 @@ import { cn } from "@itell/utils";
 import { home } from "#content";
 
 export default async function () {
-	console.log(home.html);
 	return (
 		<>
 			<TextbookNav read />

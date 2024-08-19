@@ -101,7 +101,6 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 
 		const hasQuestion = status[currentChunkSlug]?.hasQuestion;
 
-		console.log(chunks.length - 1, idx, currentChunk);
 		if (idx === chunks.length - 1) {
 			removePortal(portalIds.current.scrollBack);
 			if (!hasQuestion) {

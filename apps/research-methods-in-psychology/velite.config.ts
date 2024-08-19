@@ -1,15 +1,8 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
-import {
-	extractChunksFromHast,
-	extractHeadingsFromMdast,
-} from "@itell/content";
-import {
-	rehypeAddCri,
-	rehypeFrontmatter,
-	rehypeWrapHeadingSection,
-} from "plugins";
-import rehypeSlug from "rehype-slug";
+import { extractHeadingsFromMdast } from "@itell/content";
+import rehypeAddCri from "@itell/rehype-add-cri";
+import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
 import remarkGfm from "remark-gfm";
 import remarkHeadingAttrs from "remark-heading-attrs";
 import remarkUnwrapImage from "remark-unwrap-images";
@@ -90,7 +83,6 @@ export default defineConfig({
 	collections: { pages, guides, home },
 	markdown: {
 		remarkPlugins: [remarkGfm, remarkHeadingAttrs, remarkUnwrapImage],
-		// @ts-ignore
 		rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri],
 	},
 });

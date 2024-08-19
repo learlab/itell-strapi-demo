@@ -30,6 +30,8 @@ slug: methods-of-knowing
 title: 1. Methods of Knowing
 ---
 
+
+
 ## Learning Objectives {#Learning-Objectives-198pt .sr-only}
 
 <i-callout title="Learning Objectives">

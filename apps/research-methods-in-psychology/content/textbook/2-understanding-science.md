@@ -27,12 +27,15 @@ slug: 2-understanding-science
 title: 2. Understanding Science
 ---
 
+
+
+
+
 ## learning objectives {#learning-objectives-200pt .sr-only}
 
 <i-callout title="Learning Objectives">
 \- Define Science
 </i-callout>
-
 
 ## What Is Science? {#What-Is-Science?-758t}
 

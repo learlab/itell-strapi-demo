@@ -1,6 +1,7 @@
 {
-    "name": "@itell/utils",
+    "name": "@itell/rehype-add-cri",
     "version": "0.0.1",
+    "description": "",
     "type": "module",
     "main": "./dist/index.umd.cjs",
     "module": "./dist/index.js",
@@ -11,23 +12,27 @@
             "require": "./dist/index.umd.cjs"
         }
     },
-    "scripts": {
-        "build": "vite build"
-    },
     "files": [
         "dist"
     ],
+    "scripts": {
+        "build": "vite build"
+    },
     "keywords": [
         "itell"
     ],
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "clsx": "^2.1.1",
-        "tailwind-merge": "^2.4.0"
+        "hastscript": "^9.0.0",
+        "unist-util-visit": "^5.0.0",
+        "yaml": "^2.5.0"
     },
     "devDependencies": {
+        "@types/hast": "^3.0.4",
+        "hast": "^1.0.0",
+        "vfile": "^6.0.2",
         "vite": "^5.4.1",
-        "vite-plugin-dts": "4.0.3"
+        "vite-plugin-dts": "^4.0.3"
     }
 }

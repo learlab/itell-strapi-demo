@@ -16,7 +16,7 @@ interface FigureProps {
 	rounded?: boolean;
 	floatLeft?: boolean;
 	floatRight?: boolean;
-	expandable?: boolean;
+	expandable?: boolean | string;
 	onExpandClick?: () => void;
 	showCaption?: boolean;
 }
@@ -32,10 +32,11 @@ export const Figure = ({
 	rounded = true,
 	floatLeft = false,
 	floatRight = false,
-	expandable = true,
 	showCaption = false,
+	expandable = true,
 	onExpandClick,
 }: FigureProps) => {
+	const shouldExpand = expandable && expandable !== "false";
 	return (
 		<figure
 			className={cn("group", {
@@ -55,10 +56,10 @@ export const Figure = ({
 					height={height}
 					layout={layout}
 				/>
-				{expandable && (
+				{shouldExpand && (
 					<Button
 						variant="outline"
-						className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out "
+						className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out"
 						onClick={onExpandClick}
 						aria-label="expand image"
 					>
@@ -91,15 +92,13 @@ export const Image = (props: ImageProps) => {
 
 	return (
 		<div className="image">
-			<div className="relative">
-				<Figure
-					{...props}
-					showCaption={false}
-					onExpandClick={() => {
-						setModalOpen(true);
-					}}
-				/>
-			</div>
+			<Figure
+				{...props}
+				showCaption={false}
+				onExpandClick={() => {
+					setModalOpen(true);
+				}}
+			/>
 			<Dialog open={modalOpen} onOpenChange={setModalOpen}>
 				<DialogContent className="max-w-4xl mx-auto">
 					<Figure {...props} showCaption={true} expandable={false} />
