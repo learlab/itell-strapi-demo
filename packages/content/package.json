@@ -1,27 +1,25 @@
 {
-	"name": "@itell/content",
-	"version": "0.0.1",
-	"description": "",
-	"main": "dist/index.js",
-	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"type": "module",
-	"scripts": {
-		"build": "tsc"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"devDependencies": {
-		"@types/github-slugger": "^2.0.0",
-		"@types/hast": "^3.0.4",
-		"@types/mdast": "^4.0.4",
-		"@types/node": "^22.2.0",
-		"hast": "^1.0.0",
-		"mdast": "^3.0.0",
-		"typescript": "5.6.0-beta"
-	},
-	"dependencies": {
-		"github-slugger": "^2.0.0"
-	}
+    "name": "@itell/content",
+    "version": "0.0.1",
+    "description": "",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "type": "module",
+    "scripts": {
+        "build": "pnpm tsc"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/github-slugger": "^2.0.0",
+        "@types/hast": "^3.0.4",
+        "@types/mdast": "^4.0.4",
+        "hast": "^1.0.0",
+        "mdast": "^3.0.0"
+    },
+    "dependencies": {
+        "github-slugger": "^2.0.0"
+    }
 }

@@ -1,85 +1,83 @@
 {
-	"name": "@itell/core",
-	"version": "0.0.0",
-	"description": "",
-	"private": true,
-	"main": "./dist/index.cjs.js",
-	"module": "./dist/index.es.js",
-	"exports": {
-		".": {
-			"require": "./dist/index.cjs.js",
-			"import": "./dist/index.es.js"
-		},
-		"./hooks": {
-			"require": "./dist/hooks.cjs.js",
-			"import": "./dist/hooks.es.js"
-		},
-		"./note": {
-			"require": "./dist/note.cjs.js",
-			"import": "./dist/note.es.js"
-		},
-		"./config": {
-			"require": "./dist/config.cjs.js",
-			"import": "./dist/config.es.js"
-		},
-		"./dashboard": {
-			"require": "./dist/dashboard.cjs.js",
-			"import": "./dist/dashboard.es.js"
-		},
-		"./summary": {
-			"require": "./dist/summary.cjs.js",
-			"import": "./dist/summary.es.js"
-		},
-		"./question": {
-			"require": "./dist/question.cjs.js",
-			"import": "./dist/question.es.js"
-		},
-		"./chat": {
-			"require": "./dist/chat.cjs.js",
-			"import": "./dist/chat.es.js"
-		}
-	},
-	"typings": "./index.d.ts",
-	"files": [
-		"dist",
-		"index.d.ts",
-		"hooks.d.ts",
-		"note.d.ts",
-		"dashboard.d.ts",
-		"question.d.ts",
-		"chat.d.ts",
-		"config.d.ts",
-		"summary.d.ts"
-	],
-	"scripts": {
-		"build": "vite build",
-		"test": "vitest"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"@itell/constants": "workspace:^",
-		"@itell/utils": "workspace:^",
-		"github-slugger": "^2.0.0",
-		"js-yaml": "^4.1.0",
-		"range-serializer": "^0.0.2"
-	},
-	"peerDependencies": {
-		"react": "^18",
-		"react-dom": "^18",
-		"zod": "^3"
-	},
-	"devDependencies": {
-		"@types/js-yaml": "^4.0.5",
-		"@types/node": "^20.6.0",
-		"@types/react": "^18.2.21",
-		"@types/react-dom": "^18.2.19",
-		"rollup-plugin-visualizer": "^5.12.0",
-		"typescript": "5.6.0-beta",
-		"vite": "^5.4.0",
-		"vite-plugin-dts": "^2.3.0",
-		"vite-plugin-node-polyfills": "^0.11.3",
-		"vitest": "^0.31.4"
-	}
+    "name": "@itell/core",
+    "version": "0.0.0",
+    "description": "",
+    "private": true,
+    "main": "./dist/index.cjs.js",
+    "module": "./dist/index.es.js",
+    "exports": {
+        ".": {
+            "require": "./dist/index.cjs.js",
+            "import": "./dist/index.es.js"
+        },
+        "./hooks": {
+            "require": "./dist/hooks.cjs.js",
+            "import": "./dist/hooks.es.js"
+        },
+        "./note": {
+            "require": "./dist/note.cjs.js",
+            "import": "./dist/note.es.js"
+        },
+        "./config": {
+            "require": "./dist/config.cjs.js",
+            "import": "./dist/config.es.js"
+        },
+        "./dashboard": {
+            "require": "./dist/dashboard.cjs.js",
+            "import": "./dist/dashboard.es.js"
+        },
+        "./summary": {
+            "require": "./dist/summary.cjs.js",
+            "import": "./dist/summary.es.js"
+        },
+        "./question": {
+            "require": "./dist/question.cjs.js",
+            "import": "./dist/question.es.js"
+        },
+        "./chat": {
+            "require": "./dist/chat.cjs.js",
+            "import": "./dist/chat.es.js"
+        }
+    },
+    "typings": "./index.d.ts",
+    "files": [
+        "dist",
+        "index.d.ts",
+        "hooks.d.ts",
+        "note.d.ts",
+        "dashboard.d.ts",
+        "question.d.ts",
+        "chat.d.ts",
+        "config.d.ts",
+        "summary.d.ts"
+    ],
+    "scripts": {
+        "build": "vite build",
+        "test": "vitest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@itell/constants": "workspace:^",
+        "@itell/utils": "workspace:^",
+        "github-slugger": "^2.0.0",
+        "js-yaml": "^4.1.0",
+        "range-serializer": "^0.0.2"
+    },
+    "peerDependencies": {
+        "react": "^18",
+        "react-dom": "^18",
+        "zod": "^3"
+    },
+    "devDependencies": {
+        "@types/js-yaml": "^4.0.5",
+        "@types/react": "^18.2.21",
+        "@types/react-dom": "^18.2.19",
+        "rollup-plugin-visualizer": "^5.12.0",
+        "vite": "^5.4.0",
+        "vite-plugin-dts": "^2.3.0",
+        "vite-plugin-node-polyfills": "^0.11.3",
+        "vitest": "^0.31.4"
+    }
 }

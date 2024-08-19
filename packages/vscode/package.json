@@ -1,24 +1,23 @@
 {
-  "name": "@itell/vscode",
-  "displayName": "vscode-itell",
-  "description": "Code snippets for ITELL",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.77.0"
-  },
-  "categories": [
-    "Snippets"
-  ],
-  "contributes": {
-    "snippets": [
-      {
-        "language": "mdx",
-        "path": "./snippets/mdx.json"
-      },
-      {
-        "language": "markdown",
-        "path": "./snippets/md.json"
-      }
-    ]
-  }
+    "name": "@itell/vscode",
+    "description": "vscode extension for iTELL",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.77.0"
+    },
+    "categories": [
+        "Snippets"
+    ],
+    "contributes": {
+        "snippets": [
+            {
+                "language": "mdx",
+                "path": "./snippets/mdx.json"
+            },
+            {
+                "language": "markdown",
+                "path": "./snippets/md.json"
+            }
+        ]
+    }
 }

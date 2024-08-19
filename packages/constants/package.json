@@ -1,19 +1,20 @@
 {
-	"name": "@itell/constants",
-	"version": "0.0.1",
-	"description": "constants",
-	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"files": ["dist"],
-	"scripts": {
-		"build": "pnpm tsc"
-	},
-	"keywords": ["itell"],
-	"author": "",
-	"license": "MIT",
-	"devDependencies": {
-		"typescript": "^5.5.4"
-	}
+    "name": "@itell/constants",
+    "version": "0.0.1",
+    "description": "constants",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "pnpm tsc"
+    },
+    "keywords": [
+        "itell"
+    ],
+    "author": "",
+    "license": "MIT"
 }
