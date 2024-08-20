@@ -31,7 +31,7 @@ export const Preview = ({ html, className }: Props) => {
 		if (html) {
 			setNode(
 				htmr(html, {
-					// @ts-nocheck
+					// @ts-expect-error
 					transform: components,
 				}),
 			);
