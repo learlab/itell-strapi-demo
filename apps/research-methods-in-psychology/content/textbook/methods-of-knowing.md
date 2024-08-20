@@ -49,6 +49,8 @@ title: 1. Methods of Knowing
 
 </i-callout>
 
+
+
 Take a minute to ponder some of what you know and how you acquired that knowledge. Perhaps you know that you should make your bed in the morning because your mother or father told you this is what you should do, perhaps you know that swans are white because all of the swans you have seen are white, or perhaps you know that your friend is lying to you because she is acting strange and won’t look you in the eye. But should we trust knowledge from these sources? The methods of acquiring knowledge can be broken down into five categories each with its own strengths and weaknesses.
 
 ## Intuition {#Intuition-752t}

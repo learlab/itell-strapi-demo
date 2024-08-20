@@ -1,8 +1,6 @@
-import { components } from "@/lib/shared-components";
-import htmr from "htmr";
 import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
-import remarkHeadingId from "remark-heading-id";
+import remarkHeadingAttr from "remark-heading-attrs";
 import remarkMath from "remark-math";
 import { defineConfig, s } from "velite";
 
@@ -29,7 +27,7 @@ export default defineConfig({
 		},
 	},
 	markdown: {
-		remarkPlugins: [remarkHeadingId, remarkMath],
+		remarkPlugins: [remarkHeadingAttr, remarkMath],
 		rehypePlugins: [
 			// @ts-ignore
 			rehypeKatex,
