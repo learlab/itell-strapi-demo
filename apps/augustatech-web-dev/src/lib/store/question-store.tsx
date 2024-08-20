@@ -78,7 +78,7 @@ export const createQuestionStore = (
 export const getExcludedChunks = (store: QuestionStore) => {
 	const snap = store.getSnapshot();
 	return snap.context.chunks.filter(
-		(slug) => snap.context.chunkStatus[slug].status !== "passed",
+		(slug) => snap.context.chunkStatus[slug].status === "passed",
 	);
 };
 
