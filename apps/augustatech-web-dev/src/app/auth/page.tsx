@@ -16,6 +16,8 @@ type PageProps = {
 
 const ErrorDict: Record<string, string> = {
 	oauth: "A problem occurred while logging in. Please try again later.",
+	wrong_email:
+		"Please sign in using your school email (the one that ends with 'augustatech.edu')",
 	access_denied:
 		"This application needs your consent to access your social account. You may come back at any time.",
 };

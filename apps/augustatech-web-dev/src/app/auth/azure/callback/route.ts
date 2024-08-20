@@ -50,6 +50,22 @@ export const GET = async (req: Request) => {
 		const idToken = tokens.idToken();
 		const azureUser = jwtDecode(idToken) as AzureUser;
 
+		if (azureUser.email) {
+			const emailLower = azureUser.email.toLocaleLowerCase();
+			console.log("emiallower", emailLower);
+			if (
+				!emailLower.endsWith("vanderbilt.edu") &&
+				!emailLower.endsWith("augustatech.edu")
+			) {
+				return new Response(null, {
+					status: 302,
+					headers: {
+						Location: "/auth?error=wrong_email",
+					},
+				});
+			}
+		}
+
 		let [user, err] = await getUserByProviderAction({
 			provider_id: "azure",
 			provider_user_id: azureUser.oid,
