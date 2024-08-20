@@ -1,3 +1,4 @@
+import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
 import { expose } from "comlink";
 import type { Root as Hast } from "hast";
 import type { Root as Mdast } from "mdast";
@@ -7,11 +8,13 @@ import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
-import remarkHeadingId from "remark-heading-id";
+import remarkHeadingAttrs from "remark-heading-attrs";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import remarkUnwrapImage from "remark-unwrap-images";
 import { unified } from "unified";
+
 import type { PluggableList } from "unified";
 import { SKIP, visit } from "unist-util-visit";
 
@@ -44,26 +47,26 @@ const rehypeMetaString = () => (tree: Hast) => {
 };
 const remarkPlugins: PluggableList = [
 	remarkGfm,
-	remarkHeadingId,
+	remarkHeadingAttrs,
 	remarkRemoveComments,
+	remarkUnwrapImage,
 	remarkMath,
 ];
 
-export const _transform = async (value: string) => {
-	const rehypePlugins: PluggableList = [
-		// @ts-ignore
-		rehypeSlug,
-		// @ts-ignore
-		rehypeKatex,
-		() =>
-			rehypePrettyCode({
-				theme: {
-					dark: "one-dark-pro",
-					light: "github-light",
-				},
-			}),
-	];
+const rehypePlugins: PluggableList = [
+	rehypeSlug,
+	rehypeKatex as any,
+	() =>
+		rehypePrettyCode({
+			theme: {
+				dark: "one-dark-pro",
+				light: "github-light",
+			},
+		}),
+	rehypeWrapHeadingSection,
+];
 
+export const _transform = async (value: string) => {
 	const html = await unified()
 		.use(remarkParse) // parse markdown content to a syntax tree
 		.use(remarkPlugins) // apply remark plugins

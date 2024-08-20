@@ -106,15 +106,15 @@ export type PageData = {
 	content: string[];
 };
 
-export const getPage = async (id: number) => {
-	const pageFilter = qs.stringify({
-		fields: ["Title"],
-		populate: {
-			Content: { fields: ["*"] },
-			Chunk: { fields: ["*"] },
-			Volume: true,
-		},
-	});
+const pageFilter = qs.stringify({
+	fields: ["Title"],
+	populate: {
+		Content: { fields: ["*"] },
+		Chunk: { fields: ["*"] },
+		Volume: true,
+	},
+});
+export const getPage = cache(async (id: number) => {
 	const response = await fetch(`${base}/pages/${id}?${pageFilter}`);
 	if (!response.ok) {
 		return null;
@@ -125,6 +125,9 @@ export const getPage = async (id: number) => {
 		id: data.id,
 		title: data.attributes.Title,
 		volume: data.attributes.Volume?.data.attributes?.Title || null,
-		content: data.attributes.Content?.map((chunk) => chunk.MDX) || [],
+		content:
+			data.attributes.Content?.map((chunk) =>
+				chunk.ShowHeader ? `## ${chunk.Header}\n${chunk.MDX}` : chunk.MDX,
+			) || [],
 	};
-};
+});

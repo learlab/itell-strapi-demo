@@ -2,22 +2,23 @@
 
 import { createEventAction } from "@/actions/event";
 import { createFocusTimeAction } from "@/actions/focus-time";
+import { useChunks } from "@/components/provider/page-provider";
 import { EventType, FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { EventTracker as Tracker } from "@itell/core";
 import { getChunkElement } from "@itell/utils";
 import { useEffect, useState } from "react";
 
 type Props = {
-	chunks: string[];
 	pageSlug: string;
 };
 
-export const EventTracker = ({ pageSlug, chunks }: Props) => {
+export const EventTracker = ({ pageSlug }: Props) => {
 	const [els, setEls] = useState<HTMLElement[] | undefined>();
+	const chunks = useChunks();
 
 	useEffect(() => {
 		const chunkElements = chunks
-			.map((chunkId) => getChunkElement(chunkId, "data-chunk-slug"))
+			.map((slug) => getChunkElement(slug, "data-chunk-slug"))
 			.filter(Boolean);
 		setEls(chunkElements);
 	}, []);

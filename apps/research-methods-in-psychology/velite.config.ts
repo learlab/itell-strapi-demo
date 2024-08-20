@@ -3,6 +3,7 @@ import { promisify } from "node:util";
 import { extractHeadingsFromMdast } from "@itell/content";
 import rehypeAddCri from "@itell/rehype-add-cri";
 import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkHeadingAttrs from "remark-heading-attrs";
 import remarkUnwrapImage from "remark-unwrap-images";
@@ -38,7 +39,9 @@ const pages = defineCollection({
 			slug: s.slug(),
 			assignments: s.array(s.string()),
 			description: s.string().optional(),
-			chunks: s.array(s.string()),
+			chunks: s.array(
+				s.object({ slug: s.string(), type: s.enum(["plain", "regular"]) }),
+			),
 			excerpt: s.excerpt(),
 			last_modified: timestamp(),
 			cri: s.array(
@@ -51,11 +54,13 @@ const pages = defineCollection({
 			html: s.markdown(),
 		})
 		.transform((data, { meta }) => {
+			const headings = extractHeadingsFromMdast(meta.mdast);
+			console.log(headings);
 			return {
 				...data,
 				summary: data.assignments.includes("summary"),
 				href: `/${data.slug}`,
-				headings: extractHeadingsFromMdast(meta.mdast),
+				headings,
 			};
 		}),
 });
@@ -83,6 +88,7 @@ export default defineConfig({
 	collections: { pages, guides, home },
 	markdown: {
 		remarkPlugins: [remarkGfm, remarkHeadingAttrs, remarkUnwrapImage],
-		rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri],
+
+		rehypePlugins: [rehypeSlug as any, rehypeWrapHeadingSection, rehypeAddCri],
 	},
 });

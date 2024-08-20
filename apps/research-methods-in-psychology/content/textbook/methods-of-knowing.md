@@ -2,13 +2,20 @@
 assignments:
 - summary
 chunks:
-- Learning-Objectives-198pt
-- Intuition-752t
-- Authority-753t
-- Rationalism-754t
-- Empiricism-756t
-- The-Scientific-Method-755t
-- References-199pt
+- slug: Learning-Objectives-198pt
+  type: plain
+- slug: Intuition-752t
+  type: regular
+- slug: Authority-753t
+  type: regular
+- slug: Rationalism-754t
+  type: regular
+- slug: Empiricism-756t
+  type: regular
+- slug: The-Scientific-Method-755t
+  type: regular
+- slug: References-199pt
+  type: plain
 cri:
 - question: What is the problem with relying on intuition?
   answer: Our intuitions can be wrong because they are driven by cognitive and motivational biases rather than logical reasoning or scientific evidence.
@@ -64,6 +71,6 @@ Empiricism involves acquiring knowledge through observation and experience. Once
 
 The scientific method is a process of systematically collecting and evaluating evidence to test ideas and answer questions. While scientists may use intuition, authority, rationalism, and empiricism to generate new ideas they don’t stop there. Scientists go a step further by using systematic empiricism to make careful observations under various controlled conditions in order to test their ideas and they use rationalism to arrive at valid conclusions. While the scientific method is the most likely of all of the methods to produce valid knowledge, like all methods of acquiring knowledge it also has its drawbacks. One major problem is that it is not always feasible to use the scientific method; this method can require considerable time and resources. Another problem with the scientific method is that it cannot be used to answer all questions. As described in the following section, the scientific method can only be used to address empirical questions. This book and your research methods course are designed to provide you with an in-depth examination of how psychologists use the scientific method to advance our understanding of human behavior and the mind.
 
-### References
+## References {#References-199pt}
 
 1.  Gladwell, M. E. (2005). __Blink: The power of thinking without thinking.__ (9th ed.). New York: Little, Brown & Co.

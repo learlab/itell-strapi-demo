@@ -21,7 +21,6 @@ import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
 import { SelectionPopover } from "@textbook/selection-popover";
-import htmr from "htmr";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -50,8 +49,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userFinished,
 	});
 
+	const chunkSlugs = page.chunks.map((chunk) => chunk.slug);
+
 	return (
-		<PageProvider page={page} pageStatus={pageStatus}>
+		<PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
 			<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
 				<div id={Elements.TEXTBOOK_NAV}>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
@@ -111,7 +112,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				pageSlug={pageSlug}
 				condition={userCondition}
 			/>
-			{user && <EventTracker pageSlug={pageSlug} chunks={page.chunks} />}
+			{user && <EventTracker pageSlug={pageSlug} />}
 		</PageProvider>
 	);
 }

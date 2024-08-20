@@ -33,17 +33,27 @@ import { useServerAction } from "zsa-react";
 
 type Props = {
 	children: React.ReactNode;
+	condition: string;
 	page: Page;
 	pageStatus: PageStatus;
 };
 
-const PageContext = createContext<{
+type State = {
+	condition: string;
+	chunks: string[];
 	questionStore: QuestionStore;
 	chatStore: ChatStore;
 	summaryStore: SummaryStore;
-} | null>(null);
+};
+const PageContext = createContext<State>({} as State);
 
-export const PageProvider = ({ children, page, pageStatus }: Props) => {
+export const PageProvider = ({
+	children,
+	condition,
+	page,
+	pageStatus,
+}: Props) => {
+	const slugs = page.chunks.map(({ slug }) => slug);
 	const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
 		`question-store-${page.slug}`,
 		undefined,
@@ -108,6 +118,8 @@ export const PageProvider = ({ children, page, pageStatus }: Props) => {
 				questionStore: questionStoreRef.current,
 				chatStore: chatStoreRef.current,
 				summaryStore: summaryStoreRef.current,
+				chunks: slugs,
+				condition,
 			}}
 		>
 			{children}
@@ -115,21 +127,28 @@ export const PageProvider = ({ children, page, pageStatus }: Props) => {
 	);
 };
 
+export const useCondition = () => {
+	const state = useContext(PageContext);
+	return useMemo(() => state.condition, [state.condition]);
+};
+
+export const useChunks = () => {
+	const state = useContext(PageContext);
+	return useMemo(() => state.chunks, [state.chunks]);
+};
+
 export const useSummaryStore = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as SummaryStore;
 	return value.summaryStore;
 };
 
 export const useChatStore = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as ChatStore;
 	return value.chatStore;
 };
 
 export const useQuestionStore = () => {
 	const value = useContext(PageContext);
-	if (!value) return {} as QuestionStore;
 	return value.questionStore;
 };
 

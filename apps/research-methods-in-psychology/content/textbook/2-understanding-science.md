@@ -2,13 +2,20 @@
 assignments:
 - summary
 chunks:
-- learning-objectives-200pt
-- What-Is-Science?-758t
-- Features-of-Science-757t
-- Features-of-Science-2-759t
-- Science-Versus-Pseudoscience-760t
-- The-Skeptics-Dictionary-202pt
-- References-201pt
+- slug: learning-objectives-200pt
+  type: plain
+- slug: What-Is-Science?-758t
+  type: regular
+- slug: Features-of-Science-757t
+  type: regular
+- slug: Features-of-Science-2-759t
+  type: regular
+- slug: Science-Versus-Pseudoscience-760t
+  type: regular
+- slug: The-Skeptics-Dictionary-202pt
+  type: plain
+- slug: References-201pt
+  type: plain
 cri:
 - question: Why is psychology considered a science?
   answer: Psychology is considered a science because it takes a general approach to understanding human behavior, similar to how astronomy, biology, and chemistry approach their respective subjects.
@@ -34,7 +41,9 @@ title: 2. Understanding Science
 ## learning objectives {#learning-objectives-200pt .sr-only}
 
 <i-callout title="Learning Objectives">
-\- Define Science
+
+- Define Science
+
 </i-callout>
 
 ## What Is Science? {#What-Is-Science?-758t}
@@ -53,9 +62,11 @@ Publication is an essential feature of science for two reasons. One is that scie
 
 Pseudoscience refers to activities and beliefs that are claimed to be scientific by their proponents—and may appear to be scientific at first glance—but are not. Consider the theory of biorhythms (not to be confused with sleep cycles or circadian rhythms that do have a scientific basis). The idea is that people’s physical, intellectual, and emotional abilities run in cycles that begin when they are born and continue until they die. Allegedly, the physical cycle has a period of 23 days, the intellectual cycle a period of 33 days, and the emotional cycle a period of 28 days. So, for example, if you had the option of when to schedule an exam, you would want to schedule it for a time when your intellectual cycle will be at a high point. The theory of biorhythms has been around for more than 100 years, and you can find numerous popular books and websites about biorhythms, often containing impressive and scientific-sounding terms like sinusoidal wave and bioelectricity. The problem with biorhythms, however, is that scientific evidence indicates they do not exist (Hines, 1998)\[5\].<br/>A set of beliefs or activities can be said to be pseudoscientific if (a) its adherents claim or imply that it is scientific but (b) it lacks one or more of the three features of science. For instance, it might lack systematic empiricism. Either there is no relevant scientific research or, as in the case of biorhythms, there is relevant scientific research but it is ignored. It might also lack public knowledge. People who promote the beliefs or activities might claim to have conducted scientific research but never publish that research in a way that allows others to evaluate it.<br/>A set of beliefs and activities might also be pseudoscientific because it does not address empirical questions. The philosopher Karl Popper was especially concerned with this idea (Popper, 2002)\[6\]. He argued more specifically that any scientific claim must be expressed in such a way that there are observations that would—if they were made—count as evidence against the claim. In other words, scientific claims must be falsifiable. The claim that women talk more than men is falsifiable because systematic observations could reveal either that they do talk more than men or that they do not. As an example of an unfalsifiable claim, consider that many people who believe in extrasensory perception (ESP) and other psychic powers claim that such powers can disappear when they are observed too closely. This makes it so that no possible observation would count as evidence against ESP. If a careful test of a self-proclaimed psychic showed that she predicted the future at better-than-chance levels, this would be consistent with the claim that she had psychic powers. But if she failed to predict the future at better-than-chance levels, this would also be consistent with the claim because her powers can supposedly disappear when they are observed too closely.<br/>Why should we concern ourselves with pseudoscience? There are at least three reasons. One is that learning about pseudoscience helps bring the fundamental features of science—and their importance—into sharper focus. A second is that biorhythms, psychic powers, astrology, and many other pseudoscientific beliefs are widely held and are promoted on the Internet, on television, and in books and magazines. Far from being harmless, the promotion of these beliefs often results in great personal toll as, for example, believers in pseudoscience opt for “treatments” such as homeopathy for serious medical conditions instead of empirically-supported treatments. Learning what makes them pseudoscientific can help us to identify and evaluate such beliefs and practices when we encounter them. A third reason is that many pseudosciences purport to explain some aspect of human behavior and mental processes, including biorhythms, astrology, graphology (handwriting analysis), and magnet therapy for pain control. It is important for students of psychology to distinguish their own field clearly from this “pseudo psychology.”
 
+
 ## The Skeptic’s Dictionary {#The-Skeptics-Dictionary-202pt .sr-only}
 
 > The Skeptic’s Dictionary An excellent source for information on pseudoscience is The Skeptic’s Dictionary (http://www.skepdic.com). Among the pseudoscientific beliefs and practices you can learn about are the following: - Cryptozoology. The study of “hidden” creatures like Bigfoot, the Loch Ness monster, and the chupacabra. - Pseudoscientific psychotherapies. Past-life regression, rebirthing therapy, and bioscream therapy, among others. - Homeopathy. The treatment of medical conditions using natural substances that have been diluted sometimes to the point of no longer being present. - Pyramidology. Odd theories about the origin and function of the Egyptian pyramids (e.g., that they were built by extraterrestrials) and the idea that pyramids, in general, have healing and other special powers. Another excellent online resource is Neurobonkers (http://neurobonkers.com), which regularly posts articles that investigate claims that pertain specifically to psychological science.
+
 
 ## References {#References-201pt}
 

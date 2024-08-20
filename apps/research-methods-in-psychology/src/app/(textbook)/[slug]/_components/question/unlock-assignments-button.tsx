@@ -7,7 +7,7 @@ import { SelectSummaryReady } from "@/lib/store/question-store";
 import { Button } from "@itell/ui/client";
 import { useSelector } from "@xstate/store/react";
 
-export const UnlockSummaryButton = ({
+export const UnlockAssignmentsButton = ({
 	pageSlug,
 	chunkSlug,
 	condition,
@@ -31,7 +31,7 @@ export const UnlockSummaryButton = ({
 				});
 			}}
 		>
-			Unlock summary
+			Unlock assignments
 		</Button>
 	);
 };

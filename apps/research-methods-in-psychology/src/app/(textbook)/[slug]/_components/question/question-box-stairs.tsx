@@ -1,7 +1,10 @@
 "use client";
 
 import { createQuestionAnswerAction } from "@/actions/question";
-import { useQuestionStore } from "@/components/provider/page-provider";
+import {
+	useChunks,
+	useQuestionStore,
+} from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
@@ -64,10 +67,8 @@ export const QuestionBoxStairs = ({
 		show: shouldBlur,
 		input: "",
 	});
-	const isLastQuestion = useSelector(
-		store,
-		(store) => store.context.chunks[-1] === chunkSlug,
-	);
+	const chunks = useChunks();
+	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
 
 	const {
 		action: onSubmit,

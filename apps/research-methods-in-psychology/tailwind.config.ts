@@ -5,7 +5,6 @@ export default {
 	presets: [AppPreset],
 	content: [
 		"./src/**/*.{js,ts,jsx,tsx}",
-		"./content/**/*.md",
 		"../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
 	],
 	itell: {

@@ -1,5 +1,6 @@
 import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
 import produce from "immer";
+import { Page } from "#content";
 import { PageStatus } from "../page-status";
 
 export type Question = { answer: string; question: string };
@@ -7,7 +8,7 @@ export type SelectedQuestions = Record<string, Question>;
 export type QuestionStore = ReturnType<typeof createQuestionStore>;
 export type QuestionSnapshot = {
 	currentChunk: string;
-	chunks: string[];
+	chunks: Page["chunks"];
 	chunkStatus: ChunkStatus;
 	isSummaryReady: boolean;
 	shouldBlur: boolean;
@@ -15,35 +16,39 @@ export type QuestionSnapshot = {
 
 export type ChunkQuestion = Record<string, boolean>;
 
+type Props = {
+	pageStatus: PageStatus;
+	chunks: Page["chunks"];
+	chunkQuestion: ChunkQuestion;
+};
+
 export const createQuestionStore = (
-	{
-		pageStatus,
-		chunks,
-		chunkQuestion,
-	}: {
-		pageStatus: PageStatus;
-		chunks: string[];
-		chunkQuestion: ChunkQuestion;
-	},
+	{ pageStatus, chunks, chunkQuestion }: Props,
 	snapshot?: QuestionSnapshot,
 ) => {
-	const defaultSnapshot: QuestionSnapshot = {
-		currentChunk: chunks[0],
+	const slugs = chunks.map(({ slug }) => slug);
+	const initialChunk =
+		chunks.find(({ type }) => type === "regular")?.slug ||
+		chunks[chunks.length - 1].slug;
+	const initialState: QuestionSnapshot = {
 		chunks,
-		chunkStatus: Object.fromEntries(
-			chunks.map((slug) => [
-				slug,
-				{
-					hasQuestion: chunkQuestion[slug],
-					status: pageStatus.unlocked ? "completed" : undefined,
-				},
-			]),
-		),
-		isSummaryReady: pageStatus.unlocked,
-		shouldBlur: !pageStatus.unlocked,
+		currentChunk: snapshot?.currentChunk || initialChunk,
+		chunkStatus:
+			snapshot?.chunkStatus ||
+			Object.fromEntries(
+				chunks.map(({ slug, type }) => [
+					slug,
+					{
+						hasQuestion: chunkQuestion[slug],
+						status: type === "regular" ? undefined : "completed",
+					},
+				]),
+			),
+		isSummaryReady: snapshot?.isSummaryReady || pageStatus.unlocked,
+		shouldBlur: snapshot?.shouldBlur || !pageStatus.unlocked,
 	};
 
-	return createStoreWithProducer(produce, snapshot || defaultSnapshot, {
+	return createStoreWithProducer(produce, initialState, {
 		finishChunk: (context, event: { chunkSlug: string; passed?: boolean }) => {
 			context.chunkStatus[event.chunkSlug].status = event.passed
 				? "passed"
@@ -51,23 +56,28 @@ export const createQuestionStore = (
 		},
 
 		advanceChunk: (context, event: { chunkSlug: string }) => {
-			const currentIndex = context.chunks.indexOf(event.chunkSlug);
+			const currentIndex = slugs.indexOf(event.chunkSlug);
+			let nextIndex = currentIndex + 1;
 
-			if (currentIndex + 1 < context.chunks.length) {
-				context.currentChunk = context.chunks[currentIndex + 1];
+			if (nextIndex < context.chunks.length) {
+				const nextChunk = chunks[nextIndex];
+				while (nextChunk.type !== "regular") {
+					nextIndex++;
+				}
+				context.currentChunk = chunks[nextIndex].slug;
 			}
 		},
 		finishPage: (context) => {
 			context.isSummaryReady = true;
 			context.shouldBlur = false;
-			context.currentChunk = context.chunks[context.chunks.length - 1];
+			context.currentChunk = slugs[context.chunks.length - 1];
 		},
 		resetPage: (context) => {
 			context.isSummaryReady = false;
 			context.shouldBlur = true;
-			context.currentChunk = context.chunks[0];
+			context.currentChunk = slugs[0];
 			context.chunkStatus = Object.fromEntries(
-				context.chunks.map((slug) => [
+				slugs.map((slug) => [
 					slug,
 					{
 						hasQuestion: chunkQuestion[slug],
@@ -82,7 +92,7 @@ export const createQuestionStore = (
 export const getExcludedChunks = (store: QuestionStore) => {
 	const snap = store.getSnapshot();
 	return snap.context.chunks.filter(
-		(slug) => snap.context.chunkStatus[slug].status !== "passed",
+		({ slug }) => snap.context.chunkStatus[slug].status === "passed",
 	);
 };
 
@@ -99,7 +109,6 @@ type Selector<T> = (state: SnapshotFromStore<QuestionStore>) => T;
 
 export const SelectChunkStatus: Selector<ChunkStatus> = (state) =>
 	state.context.chunkStatus;
-export const SelectChunks: Selector<string[]> = (state) => state.context.chunks;
 export const SelectShouldBlur: Selector<boolean> = (state) =>
 	state.context.shouldBlur;
 export const SelectCurrentChunk: Selector<string> = (state) =>

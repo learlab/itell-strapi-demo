@@ -23,6 +23,9 @@ export declare namespace extractHeadingsFromMdast {
 	type Input = Root | undefined;
 }
 
+const srOnlyRegex = /\{#[^}]*\s+\.sr-only\}/;
+const headingAttrRegex = /\{#[^}]+\}\s*$/;
+
 export const extractHeadingsFromMdast = (
 	input: extractHeadingsFromMdast.Input,
 ) => {
@@ -50,9 +53,12 @@ export const extractHeadingsFromMdast = (
 
 				child = child.children[0];
 			}
-
+			const isSrOnly = srOnlyRegex.test(text);
+			if (isSrOnly) {
+				return undefined;
+			}
 			const slug = getCustomId(text) || slugger.slug(text);
-			text = text.replace(/\{#[^}]+\}\s*$/, "").trim();
+			text = text.replace(headingAttrRegex, "").trim();
 
 			return {
 				depth: node.depth,
@@ -64,6 +70,6 @@ export const extractHeadingsFromMdast = (
 };
 
 function getCustomId(headingText: string): string | null {
-	const match = headingText.match(/\{#([^}]+)\}\s*$/);
+	const match = headingText.match(/\{#([^.\s}]+)\}/);
 	return match?.[1] || null;
 }

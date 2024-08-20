@@ -4,6 +4,18 @@
 
 @import url("@itell/ui/dist/style.css");
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+    scroll-margin-top: 0;
+}
+
+.page-nav-active {
+    @apply text-primary font-semibold
+}
+
 table,
 pre,
 code {

@@ -3,12 +3,15 @@
 import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
-import { useQuestionStore } from "@/components/provider/page-provider";
+import {
+	useChunks,
+	useQuestionStore,
+} from "@/components/provider/page-provider";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
-import { SelectChunks, SelectSummaryReady } from "@/lib/store/question-store";
+import { SelectSummaryReady } from "@/lib/store/question-store";
 import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 import { PortalContainer } from "@itell/core";
@@ -54,7 +57,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const questionStore = useQuestionStore();
-	const chunks = useSelector(questionStore, SelectChunks);
+	const chunks = useChunks();
 	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
 
 	const randomChunkSlug = useMemo(() => {

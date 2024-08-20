@@ -36,7 +36,6 @@ type Props = {
 	answer: string;
 	chunkSlug: string;
 	pageSlug: string;
-	isLastQuestion: boolean;
 };
 
 type State = {
@@ -50,7 +49,6 @@ export const QuestionBoxReread = ({
 	answer,
 	chunkSlug,
 	pageSlug,
-	isLastQuestion,
 }: Props) => {
 	const store = useQuestionStore();
 	const shouldBlur = useSelector(store, SelectShouldBlur);
@@ -233,7 +231,6 @@ export const QuestionBoxReread = ({
 								<FinishQuestionButton
 									pageSlug={pageSlug}
 									chunkSlug={chunkSlug}
-									isLastQuestion={isLastQuestion}
 									condition={Condition.RANDOM_REREAD}
 								/>
 							)}

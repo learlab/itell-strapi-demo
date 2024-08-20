@@ -1,7 +1,10 @@
 "use client";
 
 import { createEventAction } from "@/actions/event";
-import { useQuestionStore } from "@/components/provider/page-provider";
+import {
+	useChunks,
+	useQuestionStore,
+} from "@/components/provider/page-provider";
 import { Condition, EventType } from "@/lib/constants";
 import {
 	SelectCurrentChunk,
@@ -17,7 +20,6 @@ type Props = {
 	answer: string;
 	pageSlug: string;
 	chunkSlug: string;
-	isLastQuestion: boolean;
 };
 
 export const QuestionBoxSimple = ({
@@ -25,13 +27,13 @@ export const QuestionBoxSimple = ({
 	answer,
 	pageSlug,
 	chunkSlug,
-	isLastQuestion,
 }: Props) => {
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
 	const isSummaryReady = useSelector(store, SelectSummaryReady);
 	const disabled = isSummaryReady || currentChunk !== chunkSlug;
-
+	const chunks = useChunks();
+	const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
 	return (
 		<Card
 			className={cn(

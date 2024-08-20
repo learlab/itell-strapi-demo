@@ -1,9 +1,11 @@
 "use client";
 
-import { useQuestionStore } from "@/components/provider/page-provider";
+import {
+	useChunks,
+	useQuestionStore,
+} from "@/components/provider/page-provider";
 import {
 	SelectChunkStatus,
-	SelectChunks,
 	SelectCurrentChunk,
 	SelectShouldBlur,
 } from "@/lib/store/question-store";
@@ -15,7 +17,7 @@ import { useSelector } from "@xstate/store/react";
 import { useEffect, useRef } from "react";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
-import { UnlockSummaryButton } from "./unlock-summary-button";
+import { UnlockAssignmentsButton } from "./unlock-assignments-button";
 
 type Props = {
 	userId: string | null;
@@ -26,11 +28,11 @@ type Props = {
 export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
-	const chunks = useSelector(store, SelectChunks);
+	const chunks = useChunks();
 	const status = useSelector(store, SelectChunkStatus);
 	const shouldBlur = useSelector(store, SelectShouldBlur);
 
-	const { portals, addPortal, removePortal } = usePortal();
+	const { portals, addPortal, removePortal, removePortals } = usePortal();
 
 	const portalIds = useRef<PortalIds>({} as PortalIds);
 
@@ -70,8 +72,8 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const insertUnlockSummaryButton = (el: HTMLElement, chunkSlug: string) => {
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className = "unlock-summary-button-container";
-		addPortal(
-			<UnlockSummaryButton
+		portalIds.current.unlockSummary = addPortal(
+			<UnlockAssignmentsButton
 				pageSlug={pageSlug}
 				chunkSlug={chunkSlug}
 				condition={condition}
@@ -101,6 +103,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 
 		const hasQuestion = status[currentChunkSlug]?.hasQuestion;
 
+		console.log(idx, chunks, chunks.length);
 		if (idx === chunks.length - 1) {
 			removePortal(portalIds.current.scrollBack);
 			if (!hasQuestion) {
@@ -150,6 +153,10 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	}, []);
 
 	useEffect(() => {
+		return () => removePortals();
+	}, []);
+
+	useEffect(() => {
 		revealChunk(currentChunk);
 	}, [currentChunk]);
 
@@ -159,4 +166,5 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 type PortalIds = {
 	scrollBack: string;
 	continueReading: string;
+	unlockSummary: string;
 };
