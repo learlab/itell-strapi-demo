@@ -46,8 +46,10 @@ export default function RootLayout({
 				)}
 			>
 				<RootProvider>
-					<Toaster richColors />
-					{children}
+					<main className="flex flex-col gap-4 py-8 px-16 lg:px-32 ">
+						<Toaster richColors />
+						{children}
+					</main>
 				</RootProvider>
 			</body>
 		</html>

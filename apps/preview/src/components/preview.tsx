@@ -5,19 +5,25 @@ import { WorkerApi } from "@/lib/worker";
 import { Prose } from "@itell/ui/server";
 import { Remote, releaseProxy, wrap } from "comlink";
 import htmr from "htmr";
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import React, { ReactNode } from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useCallback } from "react";
 import { useDebounce } from "use-debounce";
-import { useEditor } from "../app/home-provider";
 import { Spinner } from "./ui/spinner";
 
-export const Preview = () => {
-	const { value } = useEditor();
-	const [debouncedValue] = useDebounce(value, 1000);
+type Props = {
+	html: string;
+	className?: string;
+};
+
+export const Preview = ({ html, className }: Props) => {
 	const worker = useRef<Remote<WorkerApi>>();
-	const [node, setNode] = useState<ReactNode>(null);
 	const [_pending, setPending] = useState(false);
 	const [pending] = useDebounce(_pending, 500);
 	const [workerReady, setWorkerReady] = useState(false);
+	const [node, setNode] = useState<ReactNode>(null);
 
 	const transform = useCallback(async (value: string) => {
 		setPending(true);
@@ -25,7 +31,7 @@ export const Preview = () => {
 		if (html) {
 			setNode(
 				htmr(html, {
-					// @ts-ignore
+					// @ts-nocheck
 					transform: components,
 				}),
 			);
@@ -40,19 +46,15 @@ export const Preview = () => {
 			}),
 		);
 		setWorkerReady(true);
-		transform(debouncedValue);
+		transform(html);
 
 		return () => {
 			worker.current?.[releaseProxy]();
 		};
-	}, []);
+	}, [html]);
 
-	useEffect(() => {
-		if (!workerReady) return;
-		transform(debouncedValue);
-	}, [debouncedValue]);
 	return (
-		<div>
+		<div className={className}>
 			{workerReady ? (
 				<Prose
 					id="preview"

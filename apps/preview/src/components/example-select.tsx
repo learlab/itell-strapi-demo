@@ -20,7 +20,7 @@ const options = examples.map((example) => ({
 export const ExampleSelect = ({
 	initialSlug,
 }: { initialSlug: string | undefined }) => {
-	const [slug, setSlug] = useState(initialSlug);
+	const [slug, setSlug] = useState<string | undefined>(initialSlug);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -30,6 +30,10 @@ export const ExampleSelect = ({
 			router.push(url.toString());
 		}
 	}, [slug]);
+
+	useEffect(() => {
+		setSlug(initialSlug);
+	}, [initialSlug]);
 
 	return (
 		<form className="my-4">

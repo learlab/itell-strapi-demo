@@ -10,4 +10,9 @@ export const { routes, useSafeParams, useSafeSearchParams } =
 				example: z.string().optional(),
 			}),
 		}),
+		preview: defineRoute("/preview", {
+			search: z.object({
+				page: z.coerce.number(),
+			}),
+		}),
 	}));
