@@ -1,4 +1,5 @@
 import { ProseContent } from "@/components/mdx";
+import { GuideComponents } from "@/components/mdx-components";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { Condition } from "@/lib/constants";
 import { Elements } from "@itell/constants";
@@ -22,10 +23,7 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 			<a className="sr-only" href={`#${Elements.SUMMARY_FORM}`}>
 				skip to summary submission
 			</a>
-			<ProseContent
-				components={{ AccordionItem, Accordion }}
-				code={guide.code}
-			/>
+			<ProseContent components={GuideComponents} html={guide.html} />
 		</section>
 	);
 };

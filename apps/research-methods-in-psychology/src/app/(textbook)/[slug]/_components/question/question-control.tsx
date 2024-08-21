@@ -31,6 +31,7 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 	const chunks = useChunks();
 	const status = useSelector(store, SelectChunkStatus);
 	const shouldBlur = useSelector(store, SelectShouldBlur);
+	const prevChunkIdx = useRef(0);
 
 	const { portals, addPortal, removePortal, removePortals } = usePortal();
 
@@ -83,47 +84,6 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		el.appendChild(buttonContainer);
 	};
 
-	// unblur a chunk when current chunk advances
-	// and controls the visibility of the "next-chunk" button
-	const revealChunk = (currentChunk: string) => {
-		const idx = chunks.indexOf(currentChunk);
-		if (idx === -1) return;
-
-		// when the last chunk is revealed, hide the scroll back button
-		const currentChunkSlug = chunks.at(idx);
-		if (!currentChunkSlug) return;
-		const currentChunkElement = getChunkElement(
-			currentChunkSlug,
-			"data-chunk-slug",
-		);
-		if (!currentChunkElement) return;
-
-		currentChunkElement.classList.remove("blurred");
-		removePortal(portalIds.current.continueReading);
-
-		const hasQuestion = status[currentChunkSlug]?.hasQuestion;
-
-		console.log(idx, chunks, chunks.length);
-		if (idx === chunks.length - 1) {
-			removePortal(portalIds.current.scrollBack);
-			if (!hasQuestion) {
-				insertUnlockSummaryButton(currentChunkElement, currentChunkSlug);
-			}
-		} else {
-			// add next button to next chunk, if the current chunk does not contain a question
-			if (shouldBlur && !hasQuestion) {
-				const nextChunkSlug = chunks[idx + 1];
-				const nextChunkElement = getChunkElement(
-					nextChunkSlug,
-					"data-chunk-slug",
-				);
-				if (nextChunkElement) {
-					insertContinueButton(nextChunkElement, currentChunk);
-				}
-			}
-		}
-	};
-
 	useEffect(() => {
 		chunks.forEach((chunkSlug, chunkIndex) => {
 			const el = getChunkElement(chunkSlug, "data-chunk-slug");
@@ -150,14 +110,52 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 				insertScrollBackButton(lastChunkElement);
 			}
 		}
-	}, []);
 
-	useEffect(() => {
 		return () => removePortals();
 	}, []);
 
 	useEffect(() => {
-		revealChunk(currentChunk);
+		const currentChunkElement = getChunkElement(
+			currentChunk,
+			"data-chunk-slug",
+		) as HTMLElement;
+		const isLastChunk = currentChunk === chunks[chunks.length - 1];
+
+		if (isLastChunk && currentChunkElement) {
+			removePortal(portalIds.current.scrollBack);
+			insertUnlockSummaryButton(currentChunkElement, currentChunk);
+		}
+
+		if (shouldBlur) {
+			const hasQuestion = status[currentChunk]?.hasQuestion;
+			const idx = chunks.indexOf(currentChunk);
+			if (idx === -1) return;
+
+			for (let i = prevChunkIdx.current; i < idx + 1; i++) {
+				const chunk = chunks[i];
+				const el = getChunkElement(chunk, "data-chunk-slug");
+				if (el?.classList.contains("blurred")) {
+					el.classList.remove("blurred");
+				}
+			}
+
+			prevChunkIdx.current = idx;
+
+			if (!hasQuestion) {
+				const nextChunkSlug = chunks[idx + 1];
+				const nextChunkElement = getChunkElement(
+					nextChunkSlug,
+					"data-chunk-slug",
+				);
+				if (nextChunkElement) {
+					insertContinueButton(nextChunkElement, currentChunk);
+				}
+			}
+		}
+
+		return () => {
+			removePortal(portalIds.current.continueReading);
+		};
 	}, [currentChunk]);
 
 	return <PortalContainer portals={portals} />;

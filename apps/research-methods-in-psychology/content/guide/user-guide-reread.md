@@ -1,5 +1,5 @@
 ---
-condition: stairs
+condition: random_reread
 ---
 
 ### Overview
@@ -57,7 +57,7 @@ The textbook's contents are divided into Pages. You can access different Pages u
 
 Below is an overview of what a Page in an iTELL book looks like.
 
-<Image src="/images/userguide/userguide_prolific_2.png">
+<Image src="/images/userguide/userguide_prolific_2_reread.png">
   What each Page looks like.
 </Image>
 
@@ -67,7 +67,6 @@ Below is an overview of what a Page in an iTELL book looks like.
 (<span style= {{ color: 'red' }}>**4**</span>) Click on this quick link to move to the bottom of the page where the Summary-writing textbox is located.
 (<span style= {{ color: 'red' }}>**5**</span>) Click on this quick link to move to the top of the page.
 (<span style= {{ color: 'red' }}>**6**</span>) The right-side navigation bar will have quick links to different subsections within the page.
-(<span style= {{ color: 'red' }}>**7**</span>) Click on this box to start engaging with iTELL's conversational AI.
 
 #### Making Progress
 
@@ -85,16 +84,12 @@ Most of the contents in a page will be blurred at the beginning. As you read thr
 
 Some parts of the text will have constructed response items instead of the "Click here to continue reading" button. These items are short written questions where you provide a brief explanation of a concept to demonstrate your understanding of the text that you have read.
 
-<Image src="/images/userguide/userguide_prolific_3.png">
+<Image src="/images/userguide/userguide_prolific_3_reread.png">
   You will need to answer the constructed response item first to unblur the next section
 </Image>
 
-<Image src="/images/userguide/userguide_prolific_4.png">
-  Submitting the correct answer to the constructed response item will unlock the next section
-</Image>
-
-<Image src="/images/userguide/userguide_prolific_5.png">
-  After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Skip this question".
+<Image src="/images/userguide/userguide_prolific_4_reread.png">
+  Submitting an answer to the constructed response item will unlock the next section
 </Image>
 
 ##### 3) Write a Summary
@@ -115,69 +110,19 @@ A successful summary will…
 - Not be plagiarized
 - Use appropriate language
 
-_> Evaluation_
-
-Your summary will be evaluated by the AI engine and give it a passing or a failing grade. The evaluation will be based on four different factors:
-
-- <span style={{ color: "#60a5fa" }}>Content</span>: which will include main points, details to support those main points, and general organization of summary
-- <span style={{ color: "#60a5fa" }}>Language</span>: which will evaluate the lexical and syntactic structures of your summary.
-- <span style={{ color: "#60a5fa" }}>Paraphrasing</span>: which will include appropriate paraphrasing of text and using objective language
-- <span style={{ color: "#60a5fa" }}>Key words</span>: which will include the use of important terms and phases from the text
-
-_> Feedback_
-
-If your summary fails to pass the evaluation, you will be given additional attempts to revise and resubmit your summary. Click on the _Details_ tab to access more detailed feedback to help you write a better summary.
-
-<Image src="/images/userguide/userguide9.png">
-  Summaries that do not receive a passing grade will be given detailed feedback.
-</Image>
-
 _> Re-reading_
 
-If your summary fails to pass the evaluation, iTELL's conversational agent (iTELL AI) will analyze your summary and redirect you to a part of the textbook that you could re-read to write a better summary. Read more about this process below in the iTELL AI section.
+After submitting a summary, you will sometimes be redirected to re-read a portion of the text. After you finish re-reading, press the "I finished rereading" button to proceed to the next page.
+
+<Image src="/images/userguide/userguide_prolific_5_reread.png">
+  You will sometimes be redirected to re-read a portion of the text
+</Image>
 
 _> Notes_
 
 - Your past summaries will be accessible from your dashboard.
 
-### 3. iTELL AI
-
-#### Starting a Conversation
-
-iTELL provides a conversational agent that will answer any questions related to the textbook. Click on the module located at the bottom right of the screen to start a conversation with iTELL AI.
-
-<Image src="/images/userguide/userguide_prolific_2.png">
-  iTELL AI's module is located at the bottom right side of the screen (**7**)
-</Image>
-
-#### Assisted Re-reading
-
-If you submit a summary that does not pass the evaluation, iTELL AI will automatically redirect you to a part of the textbook that you should re-read to improve your understanding of the textbook and to write a better summary.
-
-<Image src="/images/userguide/userguide_iTELLAI_2.png">
-  iTELL AI will redirect you to a relevant chunk
-</Image>
-
-Make sure to spend enough time re-reading the highlighted text. Click on the `I'm ready for question` button when you are ready to answer a question about the passage.
-
-<Image src="/images/userguide/userguide_iTELLAI_3.png">
-  iTELL AI will ask you a question about the highlighted passage.
-</Image>
-
-Answer the question and engage in a conversation with iTELL AI to gain a better understanding of the passage. Once you feel that you have a better understanding of the text, click on the `Return to summary` button to go back to the summary module and rewrite your summary.After responding to iTELL AI's question, you can continue to engage with iTELL AI, or go back to the summary module
-
-iTELL AI will only automatically redirect you for re-reading one time per page. If you submit more summaries that fail the evaluation, you will have the choice to manually engage in this re-reading activity by clicking on the `See question` button. Please note that this button will only appear if you submit a **failing** summary.
-
-<Image src="/images/userguide/userguide_iTELLAI_4.png">
-  Click on the `See question` button to start the assisted re-reading feature
-</Image>
-
-_> Notes_
-
-- Like any other conversational agents, iTELL AI can make mistakes. Make sure to double check any important information.
-- Some chapters in this iTELL volume will not support STAIRS
-
-### 4. Dashboard
+### 3. Dashboard
 
 #### Statistics
 
@@ -210,7 +155,7 @@ In the `Questions` tab, you will have access to all the constructed response ite
   An overview of the summaries tab.
 </Image>
 
-### 5. Other Features
+### 4. Other Features
 
 #### Search Bar
 
@@ -285,11 +230,12 @@ Transition to dark mode by clicking on the sun icon on the top right corner (<sp
 ---
 <Image src="/images/userguide/userguide23.png">Voila.</Image>
 
-### 6. Others
+### 5. Others
 
 #### Notes
 
 - The note feature might not function properly when there are multiple notes on the same line.
+
 - The highlighting feature might not function properly when highlighting texts across different subsections.
 
 #### Contact

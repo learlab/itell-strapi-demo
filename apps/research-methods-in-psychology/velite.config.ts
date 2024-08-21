@@ -55,7 +55,6 @@ const pages = defineCollection({
 		})
 		.transform((data, { meta }) => {
 			const headings = extractHeadingsFromMdast(meta.mdast);
-			console.log(headings);
 			return {
 				...data,
 				summary: data.assignments.includes("summary"),
@@ -88,7 +87,6 @@ export default defineConfig({
 	collections: { pages, guides, home },
 	markdown: {
 		remarkPlugins: [remarkGfm, remarkHeadingAttrs, remarkUnwrapImage],
-
 		rehypePlugins: [rehypeSlug as any, rehypeWrapHeadingSection, rehypeAddCri],
 	},
 });

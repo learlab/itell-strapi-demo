@@ -12,5 +12,11 @@ export const ProseContent = ({
 	components = { "i-image": Image },
 	...rest
 }: MdxProps) => {
-	return <Prose {...rest}>{htmr(html, { transform: components })}</Prose>;
+	return (
+		<Prose {...rest}>
+			{htmr(html, {
+				transform: components,
+			})}
+		</Prose>
+	);
 };

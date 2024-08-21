@@ -85,7 +85,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 					? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."
 					: "Below is a reference summary for this page. Please read it carefully to better understand the information presented."}
 			</p>
-			{page.referenceSummary && <p>{page.referenceSummary}</p>}
+			<p>placeholder text</p>
 
 			<h2 id="completion-form-heading" className="sr-only">
 				completion

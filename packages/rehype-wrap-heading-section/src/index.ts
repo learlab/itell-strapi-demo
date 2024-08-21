@@ -38,9 +38,7 @@ export default function rehypeWrapHeadingSection() {
 					},
 					[
 						{ type: "text", value: "\n\n" },
-						h("h2", (node as Element).properties, [
-							...(node as Element).children,
-						]),
+						node,
 						{ type: "text", value: "\n\n" },
 					],
 				);
@@ -59,15 +57,15 @@ export default function rehypeWrapHeadingSection() {
 		// Only replace tree children if we found at least one h2
 		if (hasFoundH2) {
 			// Add newlines between sections
-			const newTree = { type: "root", children: [] };
+			const newChildren: (Element | { type: string; value: string })[] = [];
 			sections.forEach((section, index) => {
-				newTree.children.push(section);
+				newChildren.push(section);
 				if (index < sections.length - 1) {
-					newTree.children.push({ type: "text", value: "\n\n" });
+					newChildren.push({ type: "text", value: "\n\n" });
 				}
 			});
 
-			tree.children = newTree.children;
+			tree.children = newChildren;
 		}
 		// If no h2 found, we do nothing and the tree remains unchanged
 	};

@@ -1,5 +1,4 @@
 import { MobileNavItem } from "@/components/mobile-nav";
-import { slug } from "github-slugger";
 import {
 	BarChart4Icon,
 	FileEditIcon,

@@ -12,3 +12,10 @@ export const TextbookComponents = {
 	"i-accordion": Accordion,
 	"i-accordion-item": AccordionItem,
 };
+
+export const GuideComponents = {
+	"i-image": Image,
+	"i-callout": Callout,
+	"i-accordion": Accordion,
+	"i-accordion-item": AccordionItem,
+};

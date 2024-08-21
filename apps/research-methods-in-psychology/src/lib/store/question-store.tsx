@@ -8,7 +8,6 @@ export type SelectedQuestions = Record<string, Question>;
 export type QuestionStore = ReturnType<typeof createQuestionStore>;
 export type QuestionSnapshot = {
 	currentChunk: string;
-	chunks: Page["chunks"];
 	chunkStatus: ChunkStatus;
 	isSummaryReady: boolean;
 	shouldBlur: boolean;
@@ -26,12 +25,14 @@ export const createQuestionStore = (
 	{ pageStatus, chunks, chunkQuestion }: Props,
 	snapshot?: QuestionSnapshot,
 ) => {
+	const lastIndex = chunks.length - 1;
 	const slugs = chunks.map(({ slug }) => slug);
+
 	const initialChunk =
 		chunks.find(({ type }) => type === "regular")?.slug ||
 		chunks[chunks.length - 1].slug;
+
 	const initialState: QuestionSnapshot = {
-		chunks,
 		currentChunk: snapshot?.currentChunk || initialChunk,
 		chunkStatus:
 			snapshot?.chunkStatus ||
@@ -57,11 +58,17 @@ export const createQuestionStore = (
 
 		advanceChunk: (context, event: { chunkSlug: string }) => {
 			const currentIndex = slugs.indexOf(event.chunkSlug);
-			let nextIndex = currentIndex + 1;
+			if (currentIndex < lastIndex) {
+				let nextIndex = currentIndex + 1;
+				if (nextIndex === lastIndex) {
+					context.currentChunk = slugs[lastIndex];
+					return;
+				}
 
-			if (nextIndex < context.chunks.length) {
-				const nextChunk = chunks[nextIndex];
-				while (nextChunk.type !== "regular") {
+				while (
+					nextIndex + 1 <= lastIndex &&
+					chunks[nextIndex + 1].type !== "regular"
+				) {
 					nextIndex++;
 				}
 				context.currentChunk = chunks[nextIndex].slug;
@@ -70,7 +77,7 @@ export const createQuestionStore = (
 		finishPage: (context) => {
 			context.isSummaryReady = true;
 			context.shouldBlur = false;
-			context.currentChunk = slugs[context.chunks.length - 1];
+			context.currentChunk = slugs[lastIndex];
 		},
 		resetPage: (context) => {
 			context.isSummaryReady = false;
@@ -91,9 +98,9 @@ export const createQuestionStore = (
 
 export const getExcludedChunks = (store: QuestionStore) => {
 	const snap = store.getSnapshot();
-	return snap.context.chunks.filter(
-		({ slug }) => snap.context.chunkStatus[slug].status === "passed",
-	);
+	return Object.entries(snap.context.chunkStatus)
+		.filter(([_, { status }]) => status === "passed")
+		.map(([slug]) => slug);
 };
 
 type ChunkStatus = Record<

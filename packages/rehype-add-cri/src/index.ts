@@ -22,6 +22,9 @@ export default function rehypeAddCri() {
 				return;
 			}
 			const frontmatter = yaml.parse(frontmatterString);
+			if (!frontmatter.cri) {
+				return;
+			}
 			pageSlug = frontmatter.slug;
 			cri = Object.fromEntries(
 				frontmatter.cri.map(

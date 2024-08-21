@@ -1,7 +1,10 @@
 "use client";
 
 import { createEventAction } from "@/actions/event";
-import { useQuestionStore } from "@/components/provider/page-provider";
+import {
+	useChunks,
+	useQuestionStore,
+} from "@/components/provider/page-provider";
 import { EventType } from "@/lib/constants";
 import {
 	SelectCurrentChunk,
@@ -24,10 +27,8 @@ export const FinishQuestionButton = ({
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
 	const isSummaryReady = useSelector(store, SelectSummaryReady);
-	const isLastQuestion = useSelector(
-		store,
-		(store) => store.context.chunks[-1] === chunkSlug,
-	);
+	const chunks = useChunks();
+	const isLastQuestion = chunks[chunks.length - 1] === chunkSlug;
 
 	const text = isLastQuestion ? "Unlock summary" : "Continue reading";
 

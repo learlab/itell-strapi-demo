@@ -29,6 +29,7 @@ export type PageData = {
 	index: number;
 	title: string;
 	slug: string;
+	order: number;
 	nextPageSlug: string | null;
 };
 
@@ -50,6 +51,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		title: page.title,
 		slug: page.slug,
 		nextPageSlug,
+		order: page.order,
 	};
 };
 

@@ -1,5 +1,4 @@
 import { getTeacherAction, getUserAction } from "@/actions/user";
-import { authedProcedure } from "@/actions/utils";
 import { Meta } from "@/config/metadata";
 import { User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
@@ -96,8 +95,8 @@ const StudentProfile = ({
 					<div className="flex items-center justify-between">
 						<p>{student.name}</p>
 						<p className="text-muted-foreground text-sm font-medium">
-							at chapter{" "}
-							<span className="ml-1 font-semibold">{page?.chapter}</span>
+							at page
+							<span className="ml-1 font-semibold">{page?.order}</span>
 						</p>
 					</div>
 				</CardTitle>
