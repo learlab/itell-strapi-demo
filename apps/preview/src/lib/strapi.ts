@@ -1,5 +1,6 @@
 import {
 	APIResponseCollection,
+	ApiResponseChunk,
 	ApiResponsePage,
 	ApiResponsePages,
 	ApiResponseVolumes,
@@ -107,7 +108,7 @@ export type PageData = {
 };
 
 const pageFilter = qs.stringify({
-	fields: ["Title"],
+	fields: ["Title", "Slug"],
 	populate: {
 		Content: { fields: ["*"] },
 		Chunk: { fields: ["*"] },
@@ -127,7 +128,19 @@ export const getPage = cache(async (id: number) => {
 		volume: data.attributes.Volume?.data.attributes?.Title || null,
 		content:
 			data.attributes.Content?.map((chunk) =>
-				chunk.ShowHeader ? `## ${chunk.Header}\n${chunk.MDX}` : chunk.MDX,
+				getChunkContent(chunk, data.attributes.Slug),
 			) || [],
 	};
 });
+
+const getChunkContent = (chunk: any, pageSlug: string) => {
+	const question = chunk.Question;
+	const answer = chunk.ConstructedResponse;
+	const cri =
+		question && answer
+			? `\n<i-question question='${question}' answer='${answer}' page-slug='${pageSlug}' chunk-slug='${chunk.Slug}' >\n</i-question>`
+			: "";
+
+	const heading = `## ${chunk.Header} {#${chunk.Slug}${chunk.ShowHeader ? "" : " .sr-only"}}`;
+	return `${heading}\n${chunk.MDX}${cri}`;
+};

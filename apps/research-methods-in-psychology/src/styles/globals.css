@@ -9,8 +9,6 @@
     left: 0;
 }
 
-
-
 .page-nav-active {
     @apply text-primary font-semibold
 }

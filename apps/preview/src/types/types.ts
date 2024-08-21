@@ -142,3 +142,4 @@ export interface APIResponseCollection<
 export type ApiResponsePages = APIResponseCollection<"api::page.page">;
 export type ApiResponsePage = APIResponse<"api::page.page">;
 export type ApiResponseVolumes = APIResponseCollection<"api::text.text">;
+export type ApiResponseChunk = APIResponse<"api::text.chunk">;

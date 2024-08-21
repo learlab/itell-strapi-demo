@@ -1,5 +1,5 @@
-import { env } from "@/env.mjs";
-import { ifetch } from "@/lib/api";
+import { createFetchWithBearerToken } from "@itell/utils";
+const ifetch = createFetchWithBearerToken(process.env.ITELL_API_KEY || "");
 
 interface Data {
 	pageSlug: string;
@@ -9,8 +9,7 @@ interface Data {
 
 export async function POST(req: Request) {
 	const data = (await req.json()) as Data;
-
-	const response = await ifetch(`${env.NEXT_PUBLIC_API_URL}/score/answer`, {
+	const response = await ifetch(`${process.env.ITELL_API_URL}/score/answer`, {
 		method: "POST",
 		body: JSON.stringify({
 			page_slug: data.pageSlug,

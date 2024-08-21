@@ -3,6 +3,7 @@ import { BlockquoteWrapper } from "@/components/ui/blockquote";
 import { Callout } from "@/components/ui/callout";
 import { ImageWrapper } from "@/components/ui/image";
 import { Sandbox } from "@/components/ui/sandbox";
+import { Question } from "./question";
 
 export const components = {
 	"i-sandbox-js": Sandbox,
@@ -11,4 +12,5 @@ export const components = {
 	"i-callout": Callout,
 	"i-accordion": Accordion,
 	"i-accordion-item": AccordionItem,
+	"i-question": Question,
 };

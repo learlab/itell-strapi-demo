@@ -10,7 +10,6 @@
         "build:docs": "jsdoc2md --files src/components/ui/*.tsx --configure jsdoc2md.json > content/reference.md && velite build"
     },
     "dependencies": {
-        "@itell/constants": "workspace:^",
         "@itell/content": "workspace:^",
         "@itell/js-sandbox": "workspace:^",
         "@itell/rehype-wrap-heading-section": "workspace:^",

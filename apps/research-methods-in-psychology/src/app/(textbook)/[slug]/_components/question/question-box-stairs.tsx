@@ -249,9 +249,9 @@ export const QuestionBoxStairs = ({
 					)}
 				</div>
 
-				<h2 id="form-question-heading" className="sr-only">
+				<h3 id="form-question-heading" className="sr-only">
 					Answer the question
-				</h2>
+				</h3>
 				<form
 					ref={form}
 					aria-labelledby="form-question-heading"
