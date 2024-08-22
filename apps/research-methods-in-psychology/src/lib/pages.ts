@@ -1,16 +1,71 @@
+import { groupBy } from "es-toolkit";
 import { pages } from "#content";
 
 export const allPagesSorted = pages.sort((a, b) => {
 	return a.order - b.order;
 });
 
-export const allSummaryPagesSorted = allPagesSorted.filter((page) =>
-	page.assignments.includes("summary"),
+export const tocPages = pages.reduce(
+	(acc, page) => {
+		const item: TocPageItem = {
+			group: false,
+			title: page.title,
+			slug: page.slug,
+			href: page.href,
+		};
+		if (!page.parent) {
+			acc.push(item);
+			return acc;
+		}
+
+		const group = acc.find((g) => g.group && g.slug === page.parent?.slug);
+		if (group) {
+			(group as TocGroup).pages.push(item);
+		} else {
+			acc.push({
+				group: true,
+				slug: page.parent.slug,
+				title: page.parent.title,
+				pages: [item],
+			});
+		}
+
+		return acc;
+	},
+	[] as Array<TocPageItem | TocGroup>,
 );
-export const firstSummaryPage = allSummaryPagesSorted.find((page) =>
-	page.assignments.includes("summary"),
+
+export type TocPageItem = {
+	group: false;
+	title: string;
+	slug: string;
+	href: string;
+};
+
+type TocGroup = {
+	group: true;
+	title: string;
+	slug: string;
+	pages: TocPageItem[];
+};
+
+export const pagesByParent = groupBy(
+	pages.map((page) => ({
+		parentTitle: page.parent?.title || "root",
+		title: page.title,
+		slug: page.slug,
+		href: page.href,
+	})),
+	(page) => page.parentTitle,
 );
-export const firstPage = firstSummaryPage || allPagesSorted[0];
+
+export const allAssignmentPagesSorted = allPagesSorted.filter(
+	(page) => page.assignments.length > 0,
+);
+export const firstAssignmentPage = allAssignmentPagesSorted.find(
+	(page) => page.assignments.length > 0,
+);
+export const firstPage = firstAssignmentPage || allPagesSorted[0];
 
 export const isLastPage = (slug: string) => {
 	const lastPage = allPagesSorted[allPagesSorted.length - 1];

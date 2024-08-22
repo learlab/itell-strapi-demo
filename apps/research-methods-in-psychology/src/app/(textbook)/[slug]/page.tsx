@@ -1,5 +1,4 @@
 import { PageProvider } from "@/components/provider/page-provider";
-import { Question } from "@/components/ui/question";
 import { getSession } from "@/lib/auth";
 import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
@@ -8,7 +7,6 @@ import { allPagesSorted } from "@/lib/pages";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
-import { ChapterToc } from "@textbook/chapter-toc";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
 import { NoteCount } from "@textbook/note/note-count";
@@ -21,6 +19,7 @@ import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
 import { SelectionPopover } from "@textbook/selection-popover";
+import { TextbookToc } from "@textbook/textbook-toc";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -49,19 +48,15 @@ export default async function ({ params }: { params: { slug: string } }) {
 		userFinished,
 	});
 
-	const chunkSlugs = page.chunks.map((chunk) => chunk.slug);
-
 	return (
 		<PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
 			<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
 				<div id={Elements.TEXTBOOK_NAV}>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
-						<ChapterToc
-							currentPage={page}
+						<TextbookToc
+							page={page}
 							userPageSlug={userPageSlug}
 							userFinished={userFinished}
-							userRole={userRole}
-							condition={userCondition}
 						/>
 					</ScrollArea>
 				</div>

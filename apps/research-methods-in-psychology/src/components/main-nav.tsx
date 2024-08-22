@@ -17,7 +17,7 @@ type Props = {
 	read?: boolean;
 };
 
-export const TextbookNav = async ({ scrollProgress, read }: Props) => {
+export const MainNav = async ({ scrollProgress, read }: Props) => {
 	const { user } = await getSession();
 
 	return (

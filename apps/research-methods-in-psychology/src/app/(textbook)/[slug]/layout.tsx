@@ -1,4 +1,4 @@
-import { TextbookNav } from "@/components/textbook-nav";
+import { MainNav } from "@/components/main-nav";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { allPagesSorted } from "@/lib/pages";
@@ -51,7 +51,7 @@ export default async function ({
 }) {
 	return (
 		<Fragment>
-			<TextbookNav scrollProgress />
+			<MainNav scrollProgress />
 			{children}
 		</Fragment>
 	);

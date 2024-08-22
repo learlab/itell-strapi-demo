@@ -1,5 +1,5 @@
-import { ProseContent } from "@/components/mdx";
-import { TextbookComponents } from "@/components/mdx-components";
+import { TextbookComponents } from "@/components/content-components";
+import { HtmlRenderer } from "@/components/html-renderer";
 import { PageLink } from "@/components/page-link";
 import { Button } from "@itell/ui/button";
 import { buttonVariants } from "@itell/ui/button";
@@ -24,7 +24,7 @@ export const TextbookPageModal = ({
 					</PageLink>
 				</div>
 
-				<ProseContent html={page.html} components={TextbookComponents} />
+				<HtmlRenderer html={page.html} components={TextbookComponents} />
 			</DialogContent>
 		</Dialog>
 	);

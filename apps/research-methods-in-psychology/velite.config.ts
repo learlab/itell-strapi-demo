@@ -37,6 +37,12 @@ const pages = defineCollection({
 			title: s.string(),
 			order: s.number(),
 			slug: s.slug(),
+			parent: s
+				.object({
+					title: s.string(),
+					slug: s.string(),
+				})
+				.nullable(),
 			assignments: s.array(s.string()),
 			description: s.string().optional(),
 			chunks: s.array(

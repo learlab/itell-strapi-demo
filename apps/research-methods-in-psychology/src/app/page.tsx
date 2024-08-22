@@ -1,7 +1,7 @@
 import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
 import { HtmlRenderer } from "@/components/html-renderer";
-import { TextbookNav } from "@/components/textbook-nav";
+import { MainNav } from "@/components/main-nav";
 import { SiteConfig } from "@/config/site";
 import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
@@ -10,7 +10,7 @@ import { home } from "#content";
 export default async function () {
 	return (
 		<>
-			<TextbookNav read />
+			<MainNav read />
 			<main
 				className="flex-1 px-6 md:px-10 lg:px-16 py-8 mx-auto max-w-3xl space-y-6"
 				id={Elements.TEXTBOOK_MAIN}

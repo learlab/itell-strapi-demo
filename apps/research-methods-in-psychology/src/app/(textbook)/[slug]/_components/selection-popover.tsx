@@ -226,7 +226,7 @@ function findParentChunk(range: Range) {
 			node instanceof HTMLElement &&
 			node.classList.contains("content-chunk")
 		) {
-			return getChunkSlug(node);
+			return node.dataset.chunkSlug as string;
 		}
 		node = node.parentElement;
 	}

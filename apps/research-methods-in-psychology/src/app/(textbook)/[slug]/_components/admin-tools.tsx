@@ -3,7 +3,7 @@ import { resetUserAction, updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Condition } from "@/lib/constants";
-import { allSummaryPagesSorted } from "@/lib/pages";
+import { allAssignmentPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import {
 	AlertDialog,
@@ -106,7 +106,7 @@ export const AdminTools = ({ condition }: Props) => {
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
-					className="flex justify-start w-full px-1 py-2 xl:text-lg"
+					className="flex justify-start w-full p-2 xl:text-lg"
 				>
 					<span className="inline-flex items-center gap-2 xl:gap-4 ">
 						<SettingsIcon className="size-4 xl:size-6" />
@@ -167,7 +167,7 @@ export const AdminTools = ({ condition }: Props) => {
 								<SelectContent>
 									<SelectGroup>
 										<SelectLabel>Page</SelectLabel>
-										{allSummaryPagesSorted.map((page) => (
+										{allAssignmentPagesSorted.map((page) => (
 											<SelectItem key={page.slug} value={page.slug}>
 												{page.title}
 											</SelectItem>

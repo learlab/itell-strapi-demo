@@ -1,11 +1,10 @@
 import { lucia } from "@/lib/auth/lucia";
-import { Condition } from "@/lib/constants";
 import { allPagesSorted } from "@/lib/pages";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
 import { Skeleton } from "@itell/ui/skeleton";
-import { ChapterToc } from "@textbook/chapter-toc";
+import { TextbookToc } from "@textbook/textbook-toc";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -35,12 +34,10 @@ export default async function () {
 		<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
 			<div id={Elements.TEXTBOOK_NAV}>
 				<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
-					<ChapterToc
-						currentPage={page}
+					<TextbookToc
+						page={page}
 						userPageSlug={userPageSlug}
 						userFinished={false}
-						userRole={"user"}
-						condition={Condition.STAIRS}
 					/>
 				</ScrollArea>
 			</div>
