@@ -9,6 +9,7 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: false,
+
 	images: {
 		dangerouslyAllowSVG: true,
 		remotePatterns: [
@@ -27,6 +28,7 @@ const nextConfig = {
 	},
 	experimental: {
 		optimizePackageImports: ["shiki"],
+		typedRoutes: true,
 	},
 };
 

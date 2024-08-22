@@ -10,6 +10,7 @@ import { Split } from "@/components/ui/split";
 import { routes } from "@/lib/navigation";
 import { PageData, getPage } from "@/lib/strapi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/tabs";
+import Link from "next/link";
 import { examples } from "#content";
 import { HomeProvider } from "./home-provider";
 
@@ -61,7 +62,15 @@ export default async function Home({ searchParams }: PageProps) {
 				<ThemeToggle />
 			</div>
 
-			{pageData && <PageCard title={pageData.title} volume={pageData.volume} />}
+			{pageData && (
+				<Link href={routes.preview({ search: { page: pageData.id } })}>
+					<PageCard
+						className="hover:bg-accent"
+						title={pageData.title}
+						volume={pageData.volume}
+					/>
+				</Link>
+			)}
 
 			<Tabs defaultValue="preview">
 				<TabsList>

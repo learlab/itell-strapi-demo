@@ -27,7 +27,7 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 				<div className="flex flex-col gap-2">
 					<PageCard title={data.title} volume={data.volume} />
 					<Link
-						href={`/?page=${page}`}
+						href={routes.home({ search: { page: data.id } })}
 						className={cn(buttonVariants({ variant: "secondary" }))}
 					>
 						Home
