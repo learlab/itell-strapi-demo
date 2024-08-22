@@ -1,7 +1,7 @@
 "use client";
 
 import { createQuestionFeedbackAction } from "@/actions/question";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { Button } from "@itell/ui/button";
 import { Checkbox } from "@itell/ui/checkbox";
 import {

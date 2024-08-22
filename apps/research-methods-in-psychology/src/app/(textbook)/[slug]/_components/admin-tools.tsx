@@ -1,6 +1,6 @@
 "use client";
 import { resetUserAction, updateUserAction } from "@/actions/user";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Condition } from "@/lib/constants";
 import { allSummaryPagesSorted } from "@/lib/pages";

@@ -1,6 +1,6 @@
 "use client";
 
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { useAddChat } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import { Label } from "@itell/ui/label";

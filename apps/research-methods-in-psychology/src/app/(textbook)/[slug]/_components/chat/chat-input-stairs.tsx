@@ -1,7 +1,7 @@
 "use client";
 
 import { createChatsAction } from "@/actions/chat";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { useChatStore } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import {

@@ -1,5 +1,5 @@
-import { ProseContent } from "@/components/mdx";
-import { GuideComponents } from "@/components/mdx-components";
+import { TextbookComponents } from "@/components/content-components";
+import { HtmlRenderer } from "@/components/html-renderer";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
 import { notFound } from "next/navigation";
@@ -18,7 +18,7 @@ export default async function () {
 			<h2 className="text-2xl md:text-3xl 2xl:text-4xl font-extrabold tracking-tight mb-4 text-center text-balance">
 				iTELL User Guide
 			</h2>
-			<ProseContent components={GuideComponents} html={guide.html} />
+			<HtmlRenderer components={TextbookComponents} html={guide.html} />
 		</>
 	);
 }

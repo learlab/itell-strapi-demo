@@ -2,16 +2,16 @@ import { Image } from "@itell/ui/image";
 import { Prose } from "@itell/ui/prose";
 import htmr from "htmr";
 
-interface MdxProps extends Omit<Prose.Props, "children"> {
+interface Props extends Omit<Prose.Props, "children"> {
 	html: string;
 	components?: Record<string, any>;
 }
 
-export const ProseContent = ({
+export const HtmlRenderer = ({
 	html,
 	components = { "i-image": Image },
 	...rest
-}: MdxProps) => {
+}: Props) => {
 	return (
 		<Prose {...rest}>
 			{htmr(html, {

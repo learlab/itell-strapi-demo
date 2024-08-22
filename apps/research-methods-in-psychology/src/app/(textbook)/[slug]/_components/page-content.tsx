@@ -1,5 +1,5 @@
-import { ProseContent } from "@/components/mdx";
-import { TextbookComponents } from "@/components/mdx-components";
+import { TextbookComponents } from "@/components/content-components";
+import { HtmlRenderer } from "@/components/html-renderer";
 import { Elements } from "@itell/constants";
 
 export const PageContent = ({
@@ -7,7 +7,7 @@ export const PageContent = ({
 	title,
 }: { html: string; title?: string }) => {
 	return (
-		<ProseContent
+		<HtmlRenderer
 			components={TextbookComponents}
 			aria-label={title}
 			html={html}

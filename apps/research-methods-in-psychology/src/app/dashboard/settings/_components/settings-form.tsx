@@ -1,7 +1,7 @@
 "use client";
 
 import { updateUserPrefsAction } from "@/actions/user";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { darkColors, lightColors } from "@itell/constants";
 import { Button } from "@itell/ui/button";
 import { Input } from "@itell/ui/input";

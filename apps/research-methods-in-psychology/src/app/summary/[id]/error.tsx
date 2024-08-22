@@ -1,6 +1,6 @@
 "use client";
 
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { NavigationButton } from "@/components/navigation-button";
 
 export default function () {

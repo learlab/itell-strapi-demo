@@ -1,7 +1,7 @@
 "use client";
 
 import { updateUserAction } from "@/actions/user";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import {
 	AlertDialog,
 	AlertDialogCancel,

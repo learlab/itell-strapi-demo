@@ -1,7 +1,7 @@
 "use client";
 
 import { getTeacherByClassAction } from "@/actions/dashboard";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { JoinClassModal } from "@dashboard/join-class-modal";
 import { Button } from "@itell/ui/button";

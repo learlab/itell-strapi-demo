@@ -1,6 +1,6 @@
 import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
-import { ProseContent } from "@/components/mdx";
+import { HtmlRenderer } from "@/components/html-renderer";
 import { TextbookNav } from "@/components/textbook-nav";
 import { SiteConfig } from "@/config/site";
 import { Elements } from "@itell/constants";
@@ -16,7 +16,7 @@ export default async function () {
 				id={Elements.TEXTBOOK_MAIN}
 				tabIndex={-1}
 			>
-				<ProseContent html={home.html} />
+				<HtmlRenderer html={home.html} />
 				<div className="flex justify-center items-center">
 					<ContinueReading className="w-48" />
 				</div>

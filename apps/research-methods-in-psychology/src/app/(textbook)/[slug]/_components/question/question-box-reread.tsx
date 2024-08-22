@@ -1,7 +1,7 @@
 "use client";
 
 import { createQuestionAnswerAction } from "@/actions/question";
-import { InternalError } from "@/components/interval-error";
+import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
