@@ -4,11 +4,10 @@ import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { EventType, animationProps } from "@/lib/constants";
 import { SelectChunkStatus } from "@/lib/store/question-store";
-import { Button } from "@itell/ui/client";
-import { buttonVariants } from "@itell/ui/server";
+import { Button, buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { type AnimationProps, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
 
 interface Props extends React.ComponentPropsWithRef<typeof Button> {

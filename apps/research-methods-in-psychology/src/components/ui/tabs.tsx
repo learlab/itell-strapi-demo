@@ -5,7 +5,7 @@ import {
 	TabsContent as BaseTabsContent,
 	TabsList as BaseTabsList,
 	TabsTrigger as BaseTabsTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/tabs";
 import { cn } from "@itell/utils";
 
 export const Tab = ({

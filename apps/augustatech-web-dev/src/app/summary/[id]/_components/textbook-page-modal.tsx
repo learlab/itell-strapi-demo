@@ -1,8 +1,8 @@
 import { Mdx } from "@/components/mdx";
 import { TextbookComponents } from "@/components/mdx-components";
 import { PageLink } from "@/components/page-link";
-import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
-import { buttonVariants } from "@itell/ui/server";
+import { Button, buttonVariants } from "@itell/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import { Page } from "velite/generated";
 
 export const TextbookPageModal = ({

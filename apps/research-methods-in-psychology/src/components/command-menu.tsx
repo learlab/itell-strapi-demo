@@ -1,8 +1,8 @@
 "use client";
 
 import { allPagesSorted } from "@/lib/pages";
+import { Button } from "@itell/ui/button";
 import {
-	Button,
 	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
@@ -10,7 +10,7 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator,
-} from "@itell/ui/client";
+} from "@itell/ui/command";
 import { cn } from "@itell/utils";
 import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";

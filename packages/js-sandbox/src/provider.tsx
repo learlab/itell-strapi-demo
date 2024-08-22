@@ -1,7 +1,6 @@
 "use client";
-import { useSelector } from "@xstate/store/react";
 import React, { createContext, useContext, useEffect, useRef } from "react";
-import { store } from "./store";
+import { store } from "./store.js";
 
 type State = {
 	run: (id: string, code: string) => void;

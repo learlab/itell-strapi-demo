@@ -1,6 +1,6 @@
 import { cn } from "@itell/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { Skeleton } from "./skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "./card.js";
+import { Skeleton } from "./skeleton.js";
 
 type Props = {
 	title: string;

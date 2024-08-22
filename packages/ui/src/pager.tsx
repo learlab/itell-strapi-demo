@@ -1,7 +1,7 @@
 import { cn } from "@itell/utils";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "./button";
+import { Button } from "./button.js";
 
 export type PageLinkData = {
 	text: string;

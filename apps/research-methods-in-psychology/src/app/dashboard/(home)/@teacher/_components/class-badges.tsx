@@ -1,6 +1,6 @@
 import { getOtherStatsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { DashboardBadge } from "@itell/ui/server";
+import { DashboardBadge } from "@itell/ui/dashboard-badge";
 import {
 	FileTextIcon,
 	FlagIcon,

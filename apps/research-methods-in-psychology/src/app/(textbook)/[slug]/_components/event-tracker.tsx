@@ -4,7 +4,7 @@ import { createEventAction } from "@/actions/event";
 import { createFocusTimeAction } from "@/actions/focus-time";
 import { useChunks } from "@/components/provider/page-provider";
 import { EventType, FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
-import { EventTracker as Tracker } from "@itell/core";
+import { EventTracker as Tracker } from "@itell/core/event-tracker";
 import { getChunkElement } from "@itell/utils";
 import { useEffect, useState } from "react";
 

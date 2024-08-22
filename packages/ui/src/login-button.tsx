@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Spinner } from "./spinner";
-import { Button } from "./button";
+import { Button } from "./button.js";
+import { Spinner } from "./spinner.js";
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
 	action: () => Promise<any>;

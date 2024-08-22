@@ -1,7 +1,7 @@
 import { Mdx } from "@/components/mdx";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
-import { Image } from "@itell/ui/client";
+import { Image } from "@itell/ui/image";
 import { notFound } from "next/navigation";
 import { guides } from "velite/generated";
 export default async function () {

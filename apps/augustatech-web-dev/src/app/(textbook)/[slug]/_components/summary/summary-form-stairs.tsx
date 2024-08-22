@@ -34,13 +34,13 @@ import {
 	scrollToElement,
 } from "@/lib/utils";
 import { Elements } from "@itell/constants";
-import { PortalContainer } from "@itell/core";
 import {
 	useDebounce,
 	useKeystroke,
 	usePortal,
 	useTimer,
 } from "@itell/core/hooks";
+import { PortalContainer } from "@itell/core/portal-container";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -51,8 +51,8 @@ import {
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
-import { Button } from "@itell/ui/client";
-import { Warning } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
 import { ChatStairs } from "@textbook/chat-stairs";
 import { useSelector } from "@xstate/store/react";

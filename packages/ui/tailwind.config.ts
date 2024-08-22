@@ -3,5 +3,5 @@ import type { Config } from "tailwindcss";
 
 export default {
 	presets: [UIPreset],
-	content: ["./src/**/*.{js,jsx,ts,tsx}"],
+	content: ["./src/**/*.tsx"],
 } satisfies Config;

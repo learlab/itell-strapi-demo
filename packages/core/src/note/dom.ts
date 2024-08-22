@@ -11,7 +11,9 @@ export const removeNotes = async (id: number) => {
 	if (highlights) {
 		for (let i = 0; i < highlights.length; i++) {
 			const h = highlights[i];
-			unwrapElement(h);
+			if (h) {
+				unwrapElement(h);
+			}
 		}
 	}
 };

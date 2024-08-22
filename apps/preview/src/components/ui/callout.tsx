@@ -26,7 +26,7 @@ const titles = {
  * @param variant - The variant of the callout, "info", "warning", or "danger". Defaults to "info".
  * @param children - nested elements
  * @example
- * <i-callout variant="info">	
+ * <i-callout variant="info">
  * 	this is **important**
  * </i-callout>
  */

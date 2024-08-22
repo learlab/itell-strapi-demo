@@ -14,10 +14,11 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
-	Label,
-	RadioGroup,
-	RadioGroupItem,
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
+import { Label } from "@itell/ui/label";
+import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
+import {
 	Select,
 	SelectContent,
 	SelectGroup,
@@ -25,14 +26,16 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
+} from "@itell/ui/select";
+import {
 	Sheet,
 	SheetContent,
 	SheetDescription,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-	Switch,
-} from "@itell/ui/client";
+} from "@itell/ui/sheet";
+import { Switch } from "@itell/ui/switch";
 import { SettingsIcon } from "lucide-react";
 import { startTransition, useState } from "react";
 import { toast } from "sonner";
@@ -66,11 +69,7 @@ const conditions = [
 export const AdminTools = ({ condition }: Props) => {
 	const store = useQuestionStore();
 	const [open, setOpen] = useState(false);
-	const {
-		execute: updateUser,
-		isPending,
-		isError,
-	} = useServerAction(updateUserAction);
+	const { execute, isPending, isError } = useServerAction(updateUserAction);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -87,7 +86,7 @@ export const AdminTools = ({ condition }: Props) => {
 			});
 		}
 
-		const [_, err] = await updateUser({
+		const [_, err] = await execute({
 			condition,
 			pageSlug,
 			finished: false,
@@ -107,10 +106,12 @@ export const AdminTools = ({ condition }: Props) => {
 			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
-					className="flex justify-start w-full px-1 py-2 gap-2 xl:text-lg xl:gap-4 "
+					className="flex justify-start w-full px-1 py-2 xl:text-lg"
 				>
-					<SettingsIcon className="size-4 xl:size-6" />
-					<span>Admin tools</span>
+					<span className="inline-flex items-center gap-2 xl:gap-4 ">
+						<SettingsIcon className="size-4 xl:size-6" />
+						<span>Admin tools</span>
+					</span>
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="overflow-y-scroll">
@@ -185,13 +186,7 @@ export const AdminTools = ({ condition }: Props) => {
 							</div>
 							<Switch name="page-unblur" aria-describedby="unblur-desc" />
 						</Label>
-						<Label className="flex flex-col gap-2 font-normal">
-							<p className="font-semibold">Restart textbook</p>
-							<p className="text-muted-foreground text-sm">
-								Remove all your data and reset your progress to the first page
-							</p>
-							<RestartTextbook />
-						</Label>
+						<RestartTextbook />
 					</fieldset>
 
 					<footer className="flex justify-end">

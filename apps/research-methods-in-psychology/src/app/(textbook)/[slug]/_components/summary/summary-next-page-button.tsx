@@ -1,7 +1,7 @@
 "use client";
 import { Spinner } from "@/components/spinner";
 import { makePageHref } from "@/lib/utils";
-import { buttonVariants } from "@itell/ui/server";
+import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { AnimatePresence, type AnimationProps, motion } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";

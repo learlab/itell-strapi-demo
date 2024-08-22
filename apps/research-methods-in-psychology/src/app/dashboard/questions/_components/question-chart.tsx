@@ -7,7 +7,7 @@ import {
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "@itell/ui/client";
+} from "@itell/ui/chart";
 
 const chartConfig = {
 	value: {

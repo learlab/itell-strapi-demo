@@ -3,18 +3,11 @@
 import { updateUserPrefsAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { darkColors, lightColors } from "@itell/constants";
-import {
-	Button,
-	Label,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@itell/ui/client";
-import { Input } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Input } from "@itell/ui/input";
+import { Label } from "@itell/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@itell/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/tabs";
 import { cn } from "@itell/utils";
 import { User } from "lucia";
 import { Paintbrush } from "lucide-react";

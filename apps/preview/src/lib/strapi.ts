@@ -141,6 +141,8 @@ const getChunkContent = (chunk: any, pageSlug: string) => {
 			? `\n<i-question question='${question}' answer='${answer}' page-slug='${pageSlug}' chunk-slug='${chunk.Slug}' >\n</i-question>`
 			: "";
 
-	const heading = `## ${chunk.Header} {#${chunk.Slug}${chunk.ShowHeader ? "" : " .sr-only"}}`;
+	const heading = `## ${chunk.Header} {#${chunk.Slug}${
+		chunk.ShowHeader ? "" : " .sr-only"
+	}}`;
 	return `${heading}\n${chunk.MDX}${cri}`;
 };

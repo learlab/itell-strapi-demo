@@ -1,9 +1,10 @@
+"use client";
 import { cn } from "@itell/utils";
 import { ExpandIcon } from "lucide-react";
 import NextImage from "next/image";
 import { useState } from "react";
-import { Button } from "./button";
-import { Dialog, DialogContent } from "./dialog";
+import { Button } from "./button.js";
+import { Dialog, DialogContent } from "./dialog.js";
 
 interface FigureProps {
 	src: string;

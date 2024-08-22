@@ -6,13 +6,7 @@ import { getSession } from "@/lib/auth";
 import { getAllQuestions } from "@/lib/question";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@itell/ui/server";
+import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import { cn } from "@itell/utils";
 import { QuestionChart } from "@questions/question-chart";
 import { groupBy } from "es-toolkit";

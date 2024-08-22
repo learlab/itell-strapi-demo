@@ -5,7 +5,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/dropdown";
 import { CircleEllipsisIcon } from "lucide-react";
 import Link from "next/link";
 

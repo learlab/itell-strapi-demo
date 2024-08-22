@@ -2,13 +2,16 @@
 
 import { createQuestionFeedbackAction } from "@/actions/question";
 import { InternalError } from "@/components/interval-error";
+import { Button } from "@itell/ui/button";
+import { Checkbox } from "@itell/ui/checkbox";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTrigger,
-} from "@itell/ui/client";
-import { Button, Checkbox, Label, TextArea } from "@itell/ui/client";
+} from "@itell/ui/dialog";
+import { Label } from "@itell/ui/label";
+import { TextArea } from "@itell/ui/textarea";
 import { SendHorizontalIcon, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -21,11 +21,14 @@
         "start": "turbo run start",
         "lint": "turbo run lint",
         "clean": "turbo run clean",
-        "postinstall": "pnpm patch-package"
+        "patch": "pnpm patch-package"
     },
-    "keywords": [],
-    "license": "ISC",
+    "keywords": [
+        "itell"
+    ],
+    "license": "MIT",
     "devDependencies": {
+        "@biomejs/biome": "^1.5.2",
         "@types/node": "^22.4.1",
         "patch-package": "^8.0.0",
         "tsx": "^4.17.0",

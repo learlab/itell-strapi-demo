@@ -1,8 +1,8 @@
 import typographyPlugin from "@tailwindcss/typography";
 import { Config } from "tailwindcss";
 import animatePlugin from "tailwindcss-animate";
-import { AppPlugin, UIPlugin } from "./plugin";
-import { DefaultTheme } from "./theme";
+import { AppPlugin, UIPlugin } from "./plugin.js";
+import { DefaultTheme } from "./theme.js";
 
 export { DefaultTheme, AppPlugin, UIPlugin };
 

@@ -1,5 +1,9 @@
 import { Elements } from "@itell/constants";
-import { Accordion, AccordionContent, AccordionItem } from "@itell/ui/client";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+} from "@itell/ui/accordion";
 import { ChatInputStairs } from "./chat/chat-input-stairs";
 import { ChatMessagesStairs } from "./chat/chat-messages-stairs";
 

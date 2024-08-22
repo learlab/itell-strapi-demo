@@ -1,9 +1,9 @@
-import { PageContent } from "@/app/(textbook)/[slug]/_components/page-content";
 import { ProseContent } from "@/components/mdx";
 import { TextbookComponents } from "@/components/mdx-components";
 import { PageLink } from "@/components/page-link";
-import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
-import { buttonVariants } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { buttonVariants } from "@itell/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import { Page } from "#content";
 
 export const TextbookPageModal = ({

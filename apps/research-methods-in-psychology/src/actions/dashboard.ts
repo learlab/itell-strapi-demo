@@ -10,11 +10,9 @@ import {
 	users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
-import { reportSentry } from "@/lib/utils";
 import { getGroupedReadingTime } from "@itell/core/dashboard";
 import { and, count, eq, gte, inArray, ne, sql } from "drizzle-orm";
 import { User } from "lucia";
-import { unstable_noStore as noStore } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
 import { cache } from "react";
 import { z } from "zod";

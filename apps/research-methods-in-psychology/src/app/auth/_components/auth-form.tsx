@@ -2,7 +2,8 @@
 
 import { BrandIcon } from "@/components/brand-icon";
 import { logout } from "@/lib/auth/actions";
-import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import { LogInIcon, LogOutIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";

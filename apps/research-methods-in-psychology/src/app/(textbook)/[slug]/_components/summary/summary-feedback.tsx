@@ -1,6 +1,6 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
-import { Info, Warning } from "@itell/ui/server";
+import { Info, Warning } from "@itell/ui/callout";
 import { cn } from "@itell/utils";
 import { Lightbulb } from "lucide-react";
 

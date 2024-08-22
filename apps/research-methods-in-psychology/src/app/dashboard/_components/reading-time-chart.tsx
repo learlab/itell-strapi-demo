@@ -1,13 +1,12 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, LabelList } from "recharts";
-
 import {
 	ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "@itell/ui/client";
+} from "@itell/ui/chart";
+import { Bar, BarChart, CartesianGrid, LabelList } from "recharts";
 
 const chartConfig = {
 	value: {

@@ -2,7 +2,7 @@ import { getTeacherAction } from "@/actions/user";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Errorbox } from "@itell/ui/server";
+import { Errorbox } from "@itell/ui/callout";
 import { redirect } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
 import { ClassInfo } from "./_components/class-info";

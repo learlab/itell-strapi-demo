@@ -12,16 +12,16 @@ import {
 } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
+import { Button } from "@itell/ui/button";
+import { Card, CardContent } from "@itell/ui/card";
 import {
-	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
-	Label,
-	StatusButton,
-	TextArea,
-} from "@itell/ui/client";
-import { Card, CardContent } from "@itell/ui/server";
+} from "@itell/ui/hover-card";
+import { Label } from "@itell/ui/label";
+import { StatusButton } from "@itell/ui/status-button";
+import { TextArea } from "@itell/ui/textarea";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { KeyRoundIcon, PencilIcon } from "lucide-react";

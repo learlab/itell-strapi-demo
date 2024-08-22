@@ -1,13 +1,13 @@
-import { Image } from "@itell/ui/client";
+import { Blockquote } from "@itell/ui/blockquote";
+import { Image } from "@itell/ui/image";
 import { Accordion, AccordionItem } from "./ui/accordion";
-import { BlockquoteWrapper } from "./ui/blockquote";
 import { Callout } from "./ui/callout";
 import { Question } from "./ui/question";
 
 export const TextbookComponents = {
 	"i-image": Image,
 	"i-question": Question,
-	"i-blockquote": BlockquoteWrapper,
+	"i-blockquote": Blockquote,
 	"i-callout": Callout,
 	"i-accordion": Accordion,
 	"i-accordion-item": AccordionItem,

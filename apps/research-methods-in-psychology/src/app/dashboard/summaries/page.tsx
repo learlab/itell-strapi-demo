@@ -5,7 +5,7 @@ import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted, firstPage } from "@/lib/pages";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Card, CardContent } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";

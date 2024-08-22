@@ -1,13 +1,13 @@
 "use client";
 
+import { Card, CardContent } from "@itell/ui/card";
 import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
 	CarouselNext,
 	CarouselPrevious,
-} from "@itell/ui/client";
-import { Card, CardContent } from "@itell/ui/server";
+} from "@itell/ui/carousel";
 import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 import data from "public/knowledge-cards.json";

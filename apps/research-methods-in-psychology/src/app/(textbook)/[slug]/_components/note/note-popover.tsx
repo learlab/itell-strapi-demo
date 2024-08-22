@@ -14,11 +14,9 @@ import {
 	createNoteElements,
 	deserializeRange,
 	removeNotes,
-	serializeRange,
 } from "@itell/core/note";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -26,9 +24,9 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
-	Label,
-} from "@itell/ui/client";
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
+import { Label } from "@itell/ui/label";
 import { cn, getChunkElement } from "@itell/utils";
 import { PaletteIcon, StickyNoteIcon, TrashIcon } from "lucide-react";
 import { ForwardIcon } from "lucide-react";

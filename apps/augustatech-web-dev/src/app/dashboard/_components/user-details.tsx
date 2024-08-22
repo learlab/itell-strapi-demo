@@ -7,7 +7,8 @@ import {
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
 import { getPageData } from "@/lib/utils";
-import { DashboardBadge, Skeleton } from "@itell/ui/server";
+import { DashboardBadge } from "@itell/ui/dashboard-badge";
+import { Skeleton } from "@itell/ui/skeleton";
 import { cn, median } from "@itell/utils";
 import {
 	FileTextIcon,

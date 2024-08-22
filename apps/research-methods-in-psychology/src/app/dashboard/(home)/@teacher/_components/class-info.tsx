@@ -3,15 +3,15 @@ import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
 import { allPagesSorted } from "@/lib/pages";
 import { getPageData } from "@/lib/utils";
-import { Progress } from "@itell/ui/client";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	Skeleton,
-} from "@itell/ui/server";
+} from "@itell/ui/card";
+import { Progress } from "@itell/ui/progress";
+import { Skeleton } from "@itell/ui/skeleton";
 import { median } from "@itell/utils";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";

@@ -6,7 +6,7 @@ import { StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { Elements } from "@itell/constants";
-import { Label } from "@itell/ui/client";
+import { Label } from "@itell/ui/label";
 import { cn, numOfWords } from "@itell/utils";
 import pluralize from "pluralize";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";

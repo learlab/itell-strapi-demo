@@ -3,7 +3,7 @@
 import { updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/interval-error";
 import { firstPage } from "@/lib/pages";
-import { makePageHref, reportSentry } from "@/lib/utils";
+import { reportSentry } from "@/lib/utils";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -12,8 +12,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	Button,
-} from "@itell/ui/client";
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

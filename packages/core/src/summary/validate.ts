@@ -65,6 +65,7 @@ const levenshteinDistance = (a: string, b: string) => {
 		for (j = 1; j <= a.length; j++) {
 			tmp = row[j - 1];
 			row[j - 1] = res;
+			// @ts-ignore
 			res = Math.min(tmp + (b[i - 1] !== a[j - 1]), res + 1, row[j] + 1);
 		}
 		row[j - 1] = res;

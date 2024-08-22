@@ -40,7 +40,7 @@ export const getGroupedReadingTime = async (
 			);
 		} else {
 			// when the entry date is greater than the last date in intervalDates, group it with the last date
-			const lastDate = intervalDates[intervalDates.length - 1];
+			const lastDate = intervalDates[intervalDates.length - 1] as Date;
 			const formattedDate = formatDate(lastDate);
 			acc.set(
 				formattedDate,
@@ -101,7 +101,7 @@ export const getReadingTimeChartData = (
 			if (i === intervalDates.length - 1) {
 				end = "Now";
 			} else {
-				const nextDate = new Date(intervalDates[i + 1]);
+				const nextDate = new Date(intervalDates[i + 1] as Date);
 				if (nextDate.getMonth() !== date.getMonth()) {
 					end = format(nextDate);
 				} else {

@@ -1,8 +1,8 @@
 "use client";
 
-import { ClickEventData, useClick } from "@/hooks/use-click";
-import { FocusTimeEventData, useFocusTime } from "@/hooks/use-focus-time";
-import { ScrollEventData, useScroll } from "@/hooks/use-scroll";
+import { ClickEventData, useClick } from "./hooks/use-click";
+import { FocusTimeEventData, useFocusTime } from "./hooks/use-focus-time";
+import { ScrollEventData, useScroll } from "./hooks/use-scroll";
 type Props = {
 	focusTimeSaveInterval: number;
 	chunks: HTMLElement[];

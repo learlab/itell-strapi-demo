@@ -2,54 +2,47 @@
     "name": "@itell/core",
     "version": "0.0.0",
     "description": "",
-    "private": true,
-    "main": "./dist/index.cjs.js",
-    "module": "./dist/index.es.js",
+    "type": "module",
     "exports": {
-        ".": {
-            "require": "./dist/index.cjs.js",
-            "import": "./dist/index.es.js"
+        "./event-tracker": {
+            "types": "./src/event-tracker.tsx",
+            "default": "./dist/event-tracker.js"
+        },
+        "./portal-container": {
+            "types": "./src/portal-container.tsx",
+            "default": "./dist/portal-container.js"
         },
         "./hooks": {
-            "require": "./dist/hooks.cjs.js",
-            "import": "./dist/hooks.es.js"
+            "types": "./src/hooks/index.ts",
+            "default": "./dist/hooks.js"
         },
         "./note": {
-            "require": "./dist/note.cjs.js",
-            "import": "./dist/note.es.js"
+            "types": "./src/note/index.ts",
+            "default": "./dist/note.js"
         },
         "./config": {
-            "require": "./dist/config.cjs.js",
-            "import": "./dist/config.es.js"
+            "types": "./src/config/index.ts",
+            "default": "./dist/config.js"
         },
         "./dashboard": {
-            "require": "./dist/dashboard.cjs.js",
-            "import": "./dist/dashboard.es.js"
+            "types": "./src/dashboard/index.ts",
+            "default": "./dist/dashboard.js"
         },
         "./summary": {
-            "require": "./dist/summary.cjs.js",
-            "import": "./dist/summary.es.js"
+            "types": "./src/summary/index.ts",
+            "default": "./dist/summary.js"
         },
         "./question": {
-            "require": "./dist/question.cjs.js",
-            "import": "./dist/question.es.js"
+            "types": "./src/question/index.ts",
+            "default": "./dist/question.js"
         },
         "./chat": {
-            "require": "./dist/chat.cjs.js",
-            "import": "./dist/chat.es.js"
+            "types": "./src/chat/index.ts",
+            "default": "./dist/chat.js"
         }
     },
-    "typings": "./index.d.ts",
     "files": [
-        "dist",
-        "index.d.ts",
-        "hooks.d.ts",
-        "note.d.ts",
-        "dashboard.d.ts",
-        "question.d.ts",
-        "chat.d.ts",
-        "config.d.ts",
-        "summary.d.ts"
+        "dist"
     ],
     "scripts": {
         "build": "vite build",
@@ -71,10 +64,12 @@
         "zod": "^3"
     },
     "devDependencies": {
+        "@itell/tsconfig": "workspace:^",
         "@types/js-yaml": "^4.0.5",
         "@types/react": "^18.2.21",
         "@types/react-dom": "^18.2.19",
         "rollup-plugin-visualizer": "^5.12.0",
+        "rollup-preserve-directives": "^1.1.1",
         "vite": "^5.4.0",
         "vite-plugin-dts": "^2.3.0",
         "vite-plugin-node-polyfills": "^0.11.3",

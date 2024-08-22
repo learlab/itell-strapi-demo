@@ -10,9 +10,9 @@ import {
 } from "@/lib/store/question-store";
 import { LoginButton } from "@auth/auth-form";
 import { Elements } from "@itell/constants";
-import { PortalContainer } from "@itell/core";
 import { usePortal } from "@itell/core/hooks";
-import { Warning } from "@itell/ui/server";
+import { PortalContainer } from "@itell/core/portal-container";
+import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { useEffect, useRef } from "react";

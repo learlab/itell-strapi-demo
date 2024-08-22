@@ -1,7 +1,7 @@
 import { getTeacherAction } from "@/actions/user";
 import { getSession } from "@/lib/auth";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/tabs";
 
 type Props = {
 	children: React.ReactNode;

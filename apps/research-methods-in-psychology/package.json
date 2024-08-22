@@ -1,13 +1,11 @@
 {
     "name": "@itell/research-methods-in-psychology",
     "version": "0.1.0",
-    "private": true,
     "scripts": {
         "build": "next build",
         "clean": "rm -rf .next .turbo .velite",
         "dev": "next dev -p 3001",
-        "start": "next start",
-        "test": "vitest"
+        "start": "next start"
     },
     "dependencies": {
         "@floating-ui/dom": "^1.6.8",
@@ -76,7 +74,6 @@
         "remark-heading-attrs": "^0.0.1",
         "remark-unwrap-images": "^4.0.0",
         "tailwindcss": "^3.4.0",
-        "typescript": "5.5.0-beta",
-        "vitest": "^0.31.4"
+        "typescript": "5.5.0-beta"
     }
 }

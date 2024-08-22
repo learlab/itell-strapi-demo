@@ -6,7 +6,7 @@ import {
 	AccordionContent as BaseAccordionContent,
 	AccordionItem as BaseAccordionItem,
 	AccordionTrigger as BaseAccordionTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/accordion";
 import { cn } from "@itell/utils";
 
 type AccordionProps = {

@@ -8,8 +8,7 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from "@itell/ui/client";
-
+} from "@itell/ui/select";
 export const ChapterSelect = ({
 	chapters,
 	...rest

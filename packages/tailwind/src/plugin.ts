@@ -2,7 +2,7 @@ import { Elements } from "@itell/constants";
 import { Config } from "tailwindcss";
 import tailwind, { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
-import { DefaultTheme, UserThemeSchema } from "./theme";
+import { DefaultTheme, UserThemeSchema } from "./theme.js";
 
 const camelToKebab = (str: string) => {
 	return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
@@ -181,6 +181,7 @@ export const AppPlugin = plugin(({ addBase, config }) => {
 
 	// css variables
 	addBase({
+		// @ts-ignore
 		":root": {
 			"--nav-height": tailwind.spacing[16],
 			"--expo-out":

@@ -7,6 +7,7 @@ export default defineConfig({
 			// Could also be a dictionary or array of multiple entry points
 			entry: "src/index.ts",
 			name: "index",
+			formats: ["es"],
 			fileName: "index",
 		},
 		rollupOptions: {

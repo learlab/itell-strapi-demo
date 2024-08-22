@@ -1,7 +1,7 @@
 "use client";
 import { InternalError } from "@/components/interval-error";
 import { Meta } from "@/config/metadata";
-import { Card, CardContent } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
 import { DashboardHeader, DashboardShell } from "../_components/shell";
 
 export default function () {

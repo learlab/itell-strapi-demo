@@ -1,11 +1,11 @@
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
+import rollupPreserveDirectives from "rollup-preserve-directives";
 import { UserConfigExport, defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 const app = async (): Promise<UserConfigExport> => {
 	return defineConfig({
-		plugins: [dts()],
 		resolve: {
 			alias: {
 				"@/": `${path.resolve(__dirname, "src")}/`,
@@ -14,9 +14,12 @@ const app = async (): Promise<UserConfigExport> => {
 		build: {
 			lib: {
 				entry: {
-					index: path.resolve(__dirname, "src/index.ts"),
+					"event-tracker": path.resolve(__dirname, "src/event-tracker.tsx"),
+					"portal-container": path.resolve(
+						__dirname,
+						"src/portal-container.tsx",
+					),
 					hooks: path.resolve(__dirname, "src/hooks/index.ts"),
-					config: path.resolve(__dirname, "src/config/index.ts"),
 					note: path.resolve(__dirname, "src/note/index.ts"),
 					dashboard: path.resolve(__dirname, "src/dashboard/index.ts"),
 					summary: path.resolve(__dirname, "src/summary/index.ts"),
@@ -24,13 +27,20 @@ const app = async (): Promise<UserConfigExport> => {
 					chat: path.resolve(__dirname, "src/chat/index.ts"),
 				},
 				name: "core",
-				formats: ["es", "cjs"],
-				fileName: (format, name) => `${name}.${format}.js`,
+				formats: ["es"],
+				fileName: (format, name) => `${name}.js`,
 			},
 			emptyOutDir: true,
 			rollupOptions: {
-				external: ["react", "react-dom", "zod", "node:fs/promises", "node:fs"],
-				plugins: [visualizer({ open: true })],
+				external: [
+					"react",
+					"react/jsx-runtime",
+					"react-dom",
+					"zod",
+					"node:fs/promises",
+					"node:fs",
+				],
+				plugins: [visualizer(), rollupPreserveDirectives()],
 			},
 		},
 	});

@@ -5,9 +5,10 @@ export default {
 	presets: [AppPreset],
 	content: [
 		"./src/**/*.{js,ts,jsx,tsx}",
-		"../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
+		"../../packages/ui/src/*.tsx",
 		"./content/**/*.md",
 	],
+	plugins: [],
 	itell: {
 		theme: {
 			root: {

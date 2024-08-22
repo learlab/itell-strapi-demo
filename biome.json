@@ -1,38 +1,48 @@
 {
-	"organizeImports": {
-		"enabled": true
-	},
-	"linter": {
-		"rules": {
-			"complexity": {
-				"noForEach": "off"
-			},
-			"correctness": {
-				"useExhaustiveDependencies": "warn"
-			},
-			"a11y": {
-				"useButtonType": "warn",
-				"useKeyWithClickEvents": "warn",
-				"noSvgWithoutTitle": "warn"
-			},
-			"suspicious": {
-				"noArrayIndexKey": "warn",
-				"noExplicitAny": "warn",
-				"noEmptyInterface": "warn"
-			},
-			"security": {
-				"noDangerouslySetInnerHtml": "warn"
-			},
-			"style": {
-				"noUselessElse": "warn",
-				"noParameterAssign": "warn",
-				"useImportType": "off"
-			}
-		}
-	},
-	"json": {
-		"parser": {
-			"allowComments": true
-		}
-	}
+    "organizeImports": {
+        "enabled": true
+    },
+    "vcs": {
+        "defaultBranch": "main"
+    },
+    "linter": {
+        "rules": {
+            "complexity": {
+                "noForEach": "off"
+            },
+            "correctness": {
+                "useExhaustiveDependencies": "warn"
+            },
+            "a11y": {
+                "useButtonType": "warn",
+                "useKeyWithClickEvents": "warn",
+                "noSvgWithoutTitle": "warn"
+            },
+            "suspicious": {
+                "noArrayIndexKey": "warn",
+                "noExplicitAny": "warn",
+                "noEmptyInterface": "warn"
+            },
+            "security": {
+                "noDangerouslySetInnerHtml": "warn"
+            },
+            "style": {
+                "noUselessElse": "warn",
+                "noParameterAssign": "warn",
+                "useImportType": "off"
+            }
+        }
+    },
+    "json": {
+        "parser": {
+            "allowComments": true
+        }
+    },
+    "formatter": {
+        "ignore": [
+            "*.json",
+            "packages/driverjs/**/*.ts"
+        ],
+        "formatWithErrors": true
+    }
 }

@@ -4,15 +4,15 @@ import { PageStatus } from "@/lib/page-status";
 import { firstPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
+import { Button } from "@itell/ui/button";
 import {
-	Button,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@itell/ui/client";
+} from "@itell/ui/dialog";
 import { User } from "lucia";
 import Link from "next/link";
 import { useState } from "react";

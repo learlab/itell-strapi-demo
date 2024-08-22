@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@itell/ui/client";
+import { Avatar, AvatarFallback, AvatarImage } from "@itell/ui/avatar";
 import { User } from "lucia";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Avatar> {

@@ -1,4 +1,4 @@
-import { CodeEditor } from "./editor";
+import { CodeEditor } from "./editor.js";
 
 type SandboxProps = {
 	id: string;

@@ -7,7 +7,7 @@ import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";
 import { UserStatistics } from "@dashboard/user-statistics";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
-import { Card, CardContent } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
 
 type Props = {
 	searchParams?: unknown;

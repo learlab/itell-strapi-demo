@@ -1,7 +1,7 @@
 import { cn } from "@itell/utils";
 import { AlertCircleIcon, AlertTriangleIcon, InfoIcon } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "./alert";
-import { Card, CardContent } from "./card";
+import { Alert, AlertDescription, AlertTitle } from "./alert.js";
+import { Card, CardContent } from "./card.js";
 
 export const Callout = ({ children }: { children: React.ReactNode }) => {
 	return (

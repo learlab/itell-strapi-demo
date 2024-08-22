@@ -2,7 +2,7 @@ import { getChatsAction } from "@/actions/chat";
 import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/constants";
 import { Message } from "@itell/core/chat";
-import { Avatar, AvatarImage } from "@itell/ui/client";
+import { Avatar, AvatarImage } from "@itell/ui/avatar";
 import { User } from "lucia";
 import { Chat } from "./chat/chat";
 

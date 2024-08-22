@@ -13,20 +13,22 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 
+import { Button } from "@itell/ui/button";
 import {
-	Button,
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuTrigger,
+} from "@itell/ui/dropdown";
+import { Input } from "@itell/ui/input";
+import {
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@itell/ui/client";
-import { Input } from "@itell/ui/server";
+} from "@itell/ui/table";
 import pluralize from "pluralize";
 import { useState } from "react";
 

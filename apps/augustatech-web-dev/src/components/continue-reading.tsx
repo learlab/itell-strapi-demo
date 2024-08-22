@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { firstPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import React from "react";
 import { NavigationButton } from "./navigation-button";
 

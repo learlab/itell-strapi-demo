@@ -1,6 +1,7 @@
 "use client";
 import { Summary } from "@/drizzle/schema";
-import { Skeleton, buttonVariants } from "@itell/ui/server";
+import { buttonVariants } from "@itell/ui/button";
+import { Skeleton } from "@itell/ui/skeleton";
 import { cn, keyof } from "@itell/utils";
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";

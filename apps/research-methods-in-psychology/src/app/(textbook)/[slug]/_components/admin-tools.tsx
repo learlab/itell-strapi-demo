@@ -14,10 +14,11 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
-	Label,
-	RadioGroup,
-	RadioGroupItem,
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
+import { Label } from "@itell/ui/label";
+import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
+import {
 	Select,
 	SelectContent,
 	SelectGroup,
@@ -25,14 +26,16 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
+} from "@itell/ui/select";
+import {
 	Sheet,
 	SheetContent,
 	SheetDescription,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-	Switch,
-} from "@itell/ui/client";
+} from "@itell/ui/sheet";
+import { Switch } from "@itell/ui/switch";
 import { SettingsIcon } from "lucide-react";
 import { startTransition, useState } from "react";
 import { toast } from "sonner";

@@ -2,10 +2,10 @@ import { lucia } from "@/lib/auth/lucia";
 import { Condition } from "@/lib/constants";
 import { allPagesSorted } from "@/lib/pages";
 import { Elements } from "@itell/constants";
-import { ScrollArea } from "@itell/ui/client";
-import { PageTitle, Skeleton } from "@itell/ui/server";
+import { PageTitle } from "@itell/ui/page-title";
+import { ScrollArea } from "@itell/ui/scroll-area";
+import { Skeleton } from "@itell/ui/skeleton";
 import { ChapterToc } from "@textbook/chapter-toc";
-import { BookmarkIcon } from "lucide-react";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 

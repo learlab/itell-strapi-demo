@@ -11,13 +11,13 @@ import { isLastPage } from "@/lib/pages";
 import { SelectChunks, SelectSummaryReady } from "@/lib/store/question-store";
 import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
-import { PortalContainer } from "@itell/core";
 import {
 	useDebounce,
 	useKeystroke,
 	usePortal,
 	useTimer,
 } from "@itell/core/hooks";
+import { PortalContainer } from "@itell/core/portal-container";
 import {
 	ErrorFeedback,
 	ErrorType,
@@ -26,8 +26,8 @@ import {
 } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
-import { Button } from "@itell/ui/client";
-import { Warning } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";

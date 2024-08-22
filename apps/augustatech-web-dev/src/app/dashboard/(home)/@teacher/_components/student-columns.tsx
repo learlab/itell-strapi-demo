@@ -1,15 +1,15 @@
 "use client";
 
 import { User } from "@/drizzle/schema";
+import { Button } from "@itell/ui/button";
 import {
-	Button,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/dropdown";
 import { Column, ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";

@@ -3,7 +3,7 @@
 import { InternalError } from "@/components/interval-error";
 import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Card, CardContent } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
 
 export default function () {
 	return (

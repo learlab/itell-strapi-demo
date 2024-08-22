@@ -2,17 +2,15 @@
 
 import { logout } from "@/lib/auth/actions";
 import { AuthForm } from "@auth/auth-form";
+import { Button } from "@itell/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import {
-	Button,
-	Dialog,
-	DialogContent,
-	DialogTrigger,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/dropdown";
 import { User } from "lucia";
 import {
 	ChevronDownIcon,

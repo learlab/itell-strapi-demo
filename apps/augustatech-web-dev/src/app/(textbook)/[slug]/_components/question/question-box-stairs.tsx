@@ -6,26 +6,19 @@ import { Confetti } from "@/components/ui/confetti";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { getQAScore } from "@/lib/question";
-import {
-    SelectShouldBlur
-} from "@/lib/store/question-store";
+import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
+import { Button } from "@itell/ui/button";
+import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import {
-    Button,
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-    Label,
-    StatusButton,
-    TextArea,
-} from "@itell/ui/client";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-} from "@itell/ui/server";
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@itell/ui/hover-card";
+import { Label } from "@itell/ui/label";
+import { StatusButton } from "@itell/ui/status-button";
+import { TextArea } from "@itell/ui/textarea";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { AlertTriangle, KeyRoundIcon, PencilIcon } from "lucide-react";

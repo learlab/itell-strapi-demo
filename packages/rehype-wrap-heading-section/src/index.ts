@@ -2,6 +2,29 @@ import type { Element, Root } from "hast";
 import { h } from "hastscript";
 import { SKIP, visit } from "unist-util-visit";
 
+/**
+ * Wrap all h2 elements and following siblings into a section element. e.g.
+ * for the following markdown:
+ * @example
+ * ```
+ * # Heading 1
+ * some text
+ * # Heading 2
+ * some text
+ * ```
+ * will become
+ * ```
+ * <section>
+ *   <h2>Heading 1</h2>
+ *   <p>some text</p>
+ * </section>
+ *
+ * <section>
+ *   <h2>Heading 2</h2>
+ *   <p>some text</p>
+ * </section>
+ * ```
+ */
 export default function rehypeWrapHeadingSection() {
 	return (tree: Root) => {
 		const sections: Element[] = [];

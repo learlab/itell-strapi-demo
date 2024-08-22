@@ -1,6 +1,6 @@
 import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 
 export default function () {
 	return (

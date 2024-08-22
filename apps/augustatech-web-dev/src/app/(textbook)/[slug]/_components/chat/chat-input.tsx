@@ -3,7 +3,7 @@
 import { InternalError } from "@/components/interval-error";
 import { useAddChat } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
-import { Label } from "@itell/ui/client";
+import { Label } from "@itell/ui/label";
 import { cn } from "@itell/utils";
 import { CornerDownLeft } from "lucide-react";
 import { HTMLAttributes } from "react";

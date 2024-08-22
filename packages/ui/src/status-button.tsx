@@ -1,11 +1,10 @@
 "use client";
 
 import { cn } from "@itell/utils";
-import { Button } from "./button";
-import { Spinner } from "./spinner";
-
 import { AnimatePresence, motion } from "framer-motion";
 import { forwardRef } from "react";
+import { Button } from "./button.js";
+import { Spinner } from "./spinner.js";
 
 const variants: Record<string, { opacity: number; y: number }> = {
 	initial: { opacity: 0, y: -25 },

@@ -1,13 +1,13 @@
 "use client";
 import { Console as LogOutput } from "@itell/react-console-viewer";
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import { Editor } from "@monaco-editor/react";
 import { useSelector } from "@xstate/store/react";
 import { CodeIcon, RefreshCwIcon, TriangleIcon } from "lucide-react";
-import { KeyCode, editor } from "monaco-editor";
+import { editor } from "monaco-editor";
 import { useCallback, useRef, useState } from "react";
-import { useSandbox } from "./provider";
-import { store } from "./store";
+import { useSandbox } from "./provider.js";
+import { store } from "./store.js";
 
 type Props = {
 	id: string;

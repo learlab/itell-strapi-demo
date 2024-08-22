@@ -8,7 +8,7 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/accordion";
 import { useSelector } from "@xstate/store/react";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";

@@ -2,20 +2,20 @@ import { countSummaryAction, getReadingTimeAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { PrevDaysLookup, getReadingTimeChartData } from "@itell/core/dashboard";
 import { ReadingTimeChartParams } from "@itell/core/dashboard";
-import {
-	Button,
-	HoverCard,
-	HoverCardContent,
-	HoverCardTrigger,
-} from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	Skeleton,
-} from "@itell/ui/server";
+} from "@itell/ui/card";
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@itell/ui/hover-card";
+import { Skeleton } from "@itell/ui/skeleton";
 import { getDatesBetween } from "@itell/utils";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";

@@ -10,8 +10,8 @@ import {
 	SelectCurrentChunk,
 	SelectSummaryReady,
 } from "@/lib/store/question-store";
-import { Button } from "@itell/ui/client";
-import { Card, CardContent } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Card, CardContent } from "@itell/ui/card";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 

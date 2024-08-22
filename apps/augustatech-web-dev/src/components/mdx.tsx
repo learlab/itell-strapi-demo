@@ -1,7 +1,6 @@
-import { Image } from "@itell/ui/client";
-import { Prose } from "@itell/ui/server";
+import { Image } from "@itell/ui/image";
+import { Prose } from "@itell/ui/prose";
 import * as runtime from "react/jsx-runtime";
-import { TextbookComponents } from "./mdx-components";
 
 const useMDXComponent = (code: string) => {
 	const fn = new Function(code);

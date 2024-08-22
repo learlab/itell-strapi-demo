@@ -102,9 +102,7 @@ export default async function () {
 						endDate={summariesByPassing.endDate.toLocaleDateString()}
 						totalCount={summaries.length}
 					/>
-					<SummaryList
-						summariesByChapter={summariesByChapter}
-					/>
+					<SummaryList summariesByChapter={summariesByChapter} />
 				</CardContent>
 			</Card>
 		</DashboardShell>

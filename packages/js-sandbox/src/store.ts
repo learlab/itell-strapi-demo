@@ -1,6 +1,6 @@
 import { LogMessage } from "@itell/react-console-viewer";
 import { createStoreWithProducer } from "@xstate/store";
-import produce from "immer";
+import { produce } from "immer";
 
 export const store = createStoreWithProducer(
 	produce,

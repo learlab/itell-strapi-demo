@@ -13,6 +13,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@itell/tsconfig": "workspace:^",
         "@types/mdast": "^4.0.4",
         "mdast": "^3.0.0"
     },

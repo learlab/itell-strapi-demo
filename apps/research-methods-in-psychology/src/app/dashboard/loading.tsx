@@ -1,4 +1,4 @@
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 
 export default function () {
 	return <Skeleton className="w-full h-screen" />;
