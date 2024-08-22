@@ -1,6 +1,5 @@
 "use client";
 import {
-	PageData,
 	SearchPageResult,
 	Volume,
 	searchPage,
@@ -8,28 +7,27 @@ import {
 	searchVolumes,
 } from "@/lib/strapi";
 import { rewriteSearchParams } from "@/lib/utils";
+
+import { Button } from "@itell/ui/button";
 import {
-	Button,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTrigger,
-	Label,
-	RadioGroup,
-	RadioGroupItem,
-	ScrollArea,
+} from "@itell/ui/dialog";
+import { Label } from "@itell/ui/label";
+import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
+import { ScrollArea } from "@itell/ui/scroll-area";
+import {
 	Select,
 	SelectContent,
-	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/tabs";
+
 import { CornerDownLeft, DatabaseIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";

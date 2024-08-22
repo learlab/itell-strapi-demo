@@ -2,7 +2,7 @@
 
 import { components } from "@/lib/shared-components";
 import { WorkerApi } from "@/lib/worker";
-import { Prose } from "@itell/ui/server";
+import { Prose } from "@itell/ui/prose";
 import { Remote, releaseProxy, wrap } from "comlink";
 import htmr from "htmr";
 import React, { ReactNode } from "react";

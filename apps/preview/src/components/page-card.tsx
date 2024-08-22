@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@itell/ui/server";
+import { Card, CardDescription, CardHeader, CardTitle } from "@itell/ui/card";
 
 type Props = {
 	title: string;

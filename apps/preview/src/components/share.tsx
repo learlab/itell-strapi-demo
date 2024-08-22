@@ -2,7 +2,7 @@
 
 import { useEditor } from "@/app/home-provider";
 import { rewriteSearchParams } from "@/lib/utils";
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import { ShareIcon } from "lucide-react";
 import { toast } from "sonner";
 

@@ -1,14 +1,14 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { BlockquoteWrapper } from "@/components/ui/blockquote";
 import { Callout } from "@/components/ui/callout";
-import { ImageWrapper } from "@/components/ui/image";
 import { Sandbox } from "@/components/ui/sandbox";
+import { Blockquote } from "@itell/ui/blockquote";
+import Image from "next/image";
 import { Question } from "./question";
 
 export const components = {
 	"i-sandbox-js": Sandbox,
-	"i-image": ImageWrapper,
-	"i-blockquote": BlockquoteWrapper,
+	"i-image": Image,
+	"i-blockquote": Blockquote,
 	"i-callout": Callout,
 	"i-accordion": Accordion,
 	"i-accordion-item": AccordionItem,

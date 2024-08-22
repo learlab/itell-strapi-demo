@@ -1,13 +1,13 @@
 "use client";
 import { rewriteSearchParams } from "@/lib/utils";
+import { Label } from "@itell/ui/label";
 import {
-	Label,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@itell/ui/client";
+} from "@itell/ui/select";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { examples } from "#content";

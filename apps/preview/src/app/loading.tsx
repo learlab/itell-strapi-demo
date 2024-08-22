@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 
 export default function () {
 	return (

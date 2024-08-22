@@ -1,6 +1,8 @@
 "use client";
-import { Button, Label, TextArea } from "@itell/ui/client";
-import { Card, CardContent } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Card, CardContent } from "@itell/ui/card";
+import { Label } from "@itell/ui/label";
+import { TextArea } from "@itell/ui/textarea";
 import { useRef, useState } from "react";
 
 type ScoreResponse = {

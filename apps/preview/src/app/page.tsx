@@ -1,7 +1,6 @@
 import { Editor } from "@/components/editor";
 import { ExampleSelect } from "@/components/example-select";
 import { PageCard } from "@/components/page-card";
-import { Preview } from "@/components/preview";
 import { PreviewController } from "@/components/preview-controller";
 import { Reference } from "@/components/reference";
 import { SearchStrapi } from "@/components/search-strapi";
@@ -10,7 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Split } from "@/components/ui/split";
 import { routes } from "@/lib/navigation";
 import { PageData, getPage } from "@/lib/strapi";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/tabs";
 import { examples } from "#content";
 import { HomeProvider } from "./home-provider";
 
