@@ -35,19 +35,23 @@ const volumeFilter = qs.stringify({
 			fields: ["*"],
 			populate: {
 				Content: true,
+				Chapter: {
+					fields: ["Title", "Slug"],
+				},
 			},
 		},
 	},
 });
 
 const fetchVolume = async () => {
-	console.log(`${base}/texts/10?${volumeFilter}`);
-	const response = await fetch(`${base}/texts/10?${volumeFilter}`);
+	console.log(volumeFilter);
+	const response = await fetch(`${base}/texts/9?${volumeFilter}`);
 	const data = await response.json();
+
 	data.data.attributes.Pages.data.forEach((page, index) => {
+		console.log(page.attributes.Chapter);
 		if (index === 0) {
-			console.log(page.attributes.Content[0]);
-			console.log(Object.keys(page.attributes));
+			// console.log(Object.keys(page.attributes));
 			// console.log(page.attributes.Content[0]);
 		}
 	});

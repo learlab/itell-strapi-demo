@@ -1,26 +1,15 @@
-import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import preserveDirectives from "rollup-preserve-directives";
-
 import { UserConfigExport, defineConfig } from "vite";
-import dts from "vite-plugin-dts";
 import { getComponentEntries } from "./component-entries";
-
-const comp = (name: string) => path.resolve(__dirname, `src/${name}.tsx`);
 
 const app = async (): Promise<UserConfigExport> => {
 	return defineConfig({
-		plugins: [
-			react(),
-			dts({
-				insertTypesEntry: true,
-			}),
-		],
+		plugins: [react()],
 		build: {
 			lib: {
 				entry: {
-					index: path.resolve(__dirname, "src/index.ts"),
 					...getComponentEntries(),
 				},
 				name: "ui",
@@ -41,7 +30,7 @@ const app = async (): Promise<UserConfigExport> => {
 					"framer-motion",
 					"recharts",
 				],
-				plugins: [visualizer(), preserveDirectives()],
+				plugins: [visualizer() as any, preserveDirectives() as any],
 			},
 		},
 	});

@@ -1,13 +1,13 @@
-import "@/styles/globals.css";
-import { GeistSans as FontSans } from "geist/font/sans";
-import { Roboto_Slab as FontSerif } from "next/font/google";
-
 import { RootProvider } from "@/components/provider/root-provider";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { isProduction } from "@/lib/constants";
+import "@/styles/globals.css";
+import "@itell/ui/dist/style.css";
 import { cn } from "@itell/utils";
+import { GeistSans as FontSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { Roboto_Slab as FontSerif } from "next/font/google";
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
