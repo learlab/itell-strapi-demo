@@ -8,10 +8,13 @@ export function easeInOutQuad(
 	amountOfChange: number,
 	duration: number,
 ): number {
-	if ((elapsed /= duration / 2) < 1) {
-		return (amountOfChange / 2) * elapsed * elapsed + initialValue;
+	const halfDuration = duration / 2;
+	if (elapsed < halfDuration) {
+		const t = elapsed / halfDuration;
+		return (amountOfChange / 2) * t * t + initialValue;
 	}
-	return (-amountOfChange / 2) * (--elapsed * (elapsed - 2) - 1) + initialValue;
+	const t = (elapsed - halfDuration) / halfDuration;
+	return (-amountOfChange / 2) * (t * (t - 2) - 1) + initialValue;
 }
 
 export function getFocusableElements(parentEls: Element[] | HTMLElement[]) {

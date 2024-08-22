@@ -1,11 +1,11 @@
 import { Config, DriverHook, configure, getConfig } from "./config";
+import "./driver.css";
 import { destroyEmitter, listen } from "./emitter";
 import { destroyEvents, initEvents, requireRefresh } from "./events";
 import { destroyHighlight, highlight } from "./highlight";
 import { destroyOverlay } from "./overlay";
 import { AllowedButtons, Popover, destroyPopover } from "./popover";
 import { getState, resetState, setState } from "./state";
-import "./driver.css";
 import { removeInert, setInertBackground } from "./utils";
 
 export type DriveStep = {
@@ -160,7 +160,7 @@ export function driver(options: Config = {}) {
 		listen("arrowRightPress", handleArrowRight);
 	}
 
-	function drive(stepIndex: number = 0) {
+	function drive(stepIndex = 0) {
 		const steps = getConfig("steps");
 		if (!steps) {
 			console.error("No steps to drive through");
@@ -265,7 +265,7 @@ export function driver(options: Config = {}) {
 				!activeElement || activeElement?.id === "driver-dummy-element";
 			onDestroyStarted(
 				isActiveDummyElement ? undefined : activeElement,
-				activeStep!,
+				activeStep as DriveStep,
 				{
 					config: getConfig(),
 					state: getState(),
@@ -324,7 +324,7 @@ export function driver(options: Config = {}) {
 	return {
 		isActive: () => getState("isInitialized") || false,
 		refresh: requireRefresh,
-		drive: (stepIndex: number = 0) => {
+		drive: (stepIndex = 0) => {
 			init();
 			drive(stepIndex);
 		},
@@ -374,7 +374,7 @@ export function driver(options: Config = {}) {
 							showButtons: [],
 							showProgress: false,
 							progressText: "",
-							...step.popover!,
+							...step.popover,
 						}
 					: undefined,
 			});
