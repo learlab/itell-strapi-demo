@@ -5,14 +5,15 @@
     "exports": {
         ".": {
             "types": "./src/index.ts",
-            "default": "./dist/index.js"
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
         }
     },
     "files": [
         "dist"
     ],
     "scripts": {
-        "build": "pnpm tsc"
+        "build": "pnpm tsup src/index.ts --format cjs,esm --dts --clean"
     },
     "keywords": [
         "itell"
