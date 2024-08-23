@@ -28,7 +28,6 @@ const nextConfig = {
 	},
 	experimental: {
 		optimizePackageImports: ["shiki"],
-		typedRoutes: true,
 	},
 };
 
