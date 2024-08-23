@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("@itell/ui/dist/style.css");
+@import "@itell/ui/dist/style.css";
+
+pre {
+    font-family: "Fira Code", monospace;
+}
+
+code {
+    font-family: "Fira Code", monospace;
+}
+
 
 h1,
 h2,

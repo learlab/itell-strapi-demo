@@ -1,6 +1,13 @@
 import { cn } from "@itell/utils";
 
-const modules = ["Accordion", "Blockquote", "Callout", "Image", "Sandbox"];
+const modules = [
+	"Accordion",
+	"Blockquote",
+	"Callout",
+	"Image",
+	"Sandbox",
+	"Steps",
+];
 
 export const Toc = () => {
 	return (

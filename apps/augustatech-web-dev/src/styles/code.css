@@ -1,10 +1,20 @@
+.prose code.language-math::before {
+    content: none;
+}
+
+.prose code.language-math::after {
+    content: none;
+}
+
+.prose pre:has(code.language-math) {
+    @apply bg-background text-foreground
+}
+
 pre {
-    font-family: "PT Mono", monospace;
     @apply !px-0 rounded-lg;
 }
 
 code {
-    font-family: "PT Mono", monospace;
     @apply text-sm md:text-base leading-loose;
 }
 

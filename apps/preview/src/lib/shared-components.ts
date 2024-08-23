@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { Callout } from "@/components/ui/callout";
 import { Sandbox } from "@/components/ui/sandbox";
+import { StepsWrapper } from "@/components/ui/steps";
 import { Blockquote } from "@itell/ui/blockquote";
 import Image from "next/image";
 import { Question } from "./question";
@@ -13,4 +14,5 @@ export const components = {
 	"i-accordion": Accordion,
 	"i-accordion-item": AccordionItem,
 	"i-question": Question,
+	"i-steps": StepsWrapper,
 };

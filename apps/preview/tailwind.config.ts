@@ -1,4 +1,4 @@
-import { AppPreset } from "@itell/tailwind";
+import { AppPreset, CodePlugin } from "@itell/tailwind";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -8,6 +8,7 @@ export default {
 		"../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
 		"../../packages/js-sandbox/src/**/*.{js,ts,jsx,tsx}",
 	],
+	plugins: [CodePlugin],
 	theme: {
 		extend: {
 			fontFamily: {

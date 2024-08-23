@@ -29,7 +29,7 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 		setElements(chunkElements);
 	}, [chunks]);
 
-	if (!mounted) return;
+	if (!mounted || elements.length === 0) return;
 
 	return (
 		<Tracker

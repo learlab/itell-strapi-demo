@@ -2,9 +2,8 @@ import "@/styles/globals.css";
 import { cn } from "@itell/utils";
 import type { Metadata } from "next";
 import { Fira_Code, Inter } from "next/font/google";
-import RootProvider from "./root-provider";
-import "@/styles/code.css";
 import { Toaster } from "sonner";
+import RootProvider from "./root-provider";
 
 const FontSans = Inter({
 	weight: ["300", "400", "700"],

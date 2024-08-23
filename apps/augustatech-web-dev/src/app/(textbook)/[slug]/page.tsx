@@ -5,7 +5,6 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted } from "@/lib/pages";
 import { getRandomPageQuestions } from "@/lib/question";
-import "@/styles/code.css";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";

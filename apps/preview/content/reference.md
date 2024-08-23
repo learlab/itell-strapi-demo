@@ -9,6 +9,8 @@
 <dd><p>General callout component for displaying information, warnings, and cautions.</p></dd>
 <dt><a href="#module_Sandbox">Sandbox</a></dt>
 <dd><p>JavaScript Sandbox</p></dd>
+<dt><a href="#module_Steps">Steps</a></dt>
+<dd><p>Step-by-step instructions</p></dd>
 </dl>
 
 <a name="module_Accordion"></a>
@@ -80,4 +82,19 @@
 	id="hello-world-example"
 	code="console.log('Hello, world!');"
 />
+```
+<a name="module_Steps"></a>
+
+## Steps
+<p>Step-by-step instructions</p>
+
+**Example**  
+```js
+<i-steps>
+	#### step 1
+	instructions for step 1
+
+	#### step 2
+	instructions for step 2
+</i-steps>
 ```
