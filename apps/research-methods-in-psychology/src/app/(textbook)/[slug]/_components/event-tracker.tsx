@@ -22,13 +22,13 @@ export const EventTracker = ({ pageSlug }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		const chunkElements = chunks.map(
-			(slug) => getChunkElement(slug, "data-chunk-slug") as HTMLElement,
-		);
+		const chunkElements = chunks
+			.map((slug) => getChunkElement(slug, "data-chunk-slug"))
+			.filter((element) => element !== null) as HTMLElement[];
 		setElements(chunkElements);
 	}, [chunks]);
 
-	if (!mounted) return;
+	if (!mounted || elements.length === 0) return;
 
 	return (
 		<Tracker

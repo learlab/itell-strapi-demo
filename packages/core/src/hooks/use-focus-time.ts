@@ -56,7 +56,6 @@ export const useFocusTime = ({
 					entry.totalViewTime = 0;
 					entry.lastTick = now;
 				});
-				console.log("saving", eventData);
 
 				try {
 					await onEvent(eventData, total);

@@ -121,19 +121,31 @@ export const createSummaryAction = authedProcedure
  * Get summary current user, if summary id is not provided, return all summaries
  */
 export const getSummariesAction = authedProcedure
-	.input(z.object({ summaryId: z.number().optional() }))
+	.input(
+		z.object({
+			summaryId: z.number().optional(),
+			pageSlug: z.string().optional(),
+		}),
+	)
 	.handler(async ({ input, ctx }) => {
-		return await getSummariesHandler(ctx.user.id, input.summaryId);
+		return await getSummariesHandler(ctx.user.id, {
+			summaryId: input.summaryId,
+			pageSlug: input.pageSlug,
+		});
 	});
 
 export const getSummariesHandler = memoize(
-	async (userId: string, summaryId?: number) => {
+	async (
+		userId: string,
+		{ summaryId, pageSlug }: { summaryId?: number; pageSlug?: string },
+	) => {
 		return await db
 			.select()
 			.from(summaries)
 			.where(
 				and(
 					eq(summaries.userId, userId),
+					pageSlug !== undefined ? eq(summaries.pageSlug, pageSlug) : undefined,
 					summaryId !== undefined ? eq(summaries.id, summaryId) : undefined,
 				),
 			)

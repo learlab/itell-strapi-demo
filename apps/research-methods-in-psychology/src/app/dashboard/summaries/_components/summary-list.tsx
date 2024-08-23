@@ -1,13 +1,9 @@
 "use client";
 import { Summary } from "@/drizzle/schema";
-import { buttonVariants } from "@itell/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
-import { cn, keyof } from "@itell/utils";
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
-import pluralize from "pluralize";
-import { useState } from "react";
-import { ChapterSelect } from "./chapter-select";
 
 type SummaryData = Summary & { pageTitle: string };
 
@@ -16,28 +12,25 @@ export const SummaryList = ({
 }: {
 	data: Record<string, SummaryData[]>;
 }) => {
-	const chapters = keyof(data);
-	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
-	const chapterSummaries = data[selectedChapter];
 	return (
-		<div className="spacey-4">
-			<div className="flex items-center justify-between">
-				<ChapterSelect
-					chapters={chapters}
-					value={selectedChapter}
-					onValueChange={(val) => setSelectedChapter(val)}
-				/>
-				<p className="text-muted-foreground text-sm">
-					{`${pluralize("summary", chapterSummaries.length, true)}`}
-				</p>
-			</div>
-
-			<ol className="divide-y divide-border rounded-md border mt-4">
-				{chapterSummaries.map((summary) => (
-					<SummaryItem summary={summary} key={summary.id} />
-				))}
-			</ol>
-		</div>
+		<ol className="divide-y divide-border rounded-md border mt-4">
+			{Object.entries(data).map(([title, summaries]) => (
+				<Card key={title}>
+					<CardHeader>
+						<CardTitle>{title}</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<ol className="divide-y divide-border">
+							{summaries.map((summary) => (
+								<li key={summary.id}>
+									<SummaryItem summary={summary} />
+								</li>
+							))}
+						</ol>
+					</CardContent>
+				</Card>
+			))}
+		</ol>
 	);
 };
 
@@ -49,21 +42,14 @@ export const SummaryItem = ({ summary }: SummaryItemProps) => {
 	return (
 		<Link
 			href={`/summary/${summary.id}`}
-			className={cn(
-				buttonVariants({ variant: "ghost", className: "h-fit" }),
-				"block p-4",
-			)}
+			className="flex px-2 py-4 flex-col hover:bg-accent transition-all ease-out duration-150 rounded-md"
 			aria-label="user summary"
 		>
 			<header className="flex flex-col text-sm text-muted-foreground">
-				<p className="font-semibold text-lg leading-relaxed ">
-					{summary.pageTitle}
-				</p>
-
 				<p>{summary.createdAt.toLocaleDateString()}</p>
 			</header>
-			<div className="flex items-center justify-between">
-				<p className="line-clamp-2">{summary.text}</p>
+			<div className="flex items-center justify-between gap-2">
+				<p className="flex-1 line-clamp-2">{summary.text}</p>
 				{summary.isPassed ? (
 					<CheckCircle className="size-4 stroke-info" />
 				) : (

@@ -21,7 +21,7 @@ export default function () {
 							<Skeleton className="aspect-square h-[300px]" />
 						</div>
 					</div>
-					<div className="flex items-center flex-col sm:flex-row gap-4 p-2">
+					<div className="flex items-center flex-col sm:flex-row justify-between p-2">
 						<Skeleton className="h-12 w-[300px]" />
 						<Skeleton className="h-12 w-[150px]" />
 					</div>

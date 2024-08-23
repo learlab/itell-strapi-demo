@@ -33,13 +33,15 @@ export default async function () {
 				/>
 				<Card>
 					<CardContent>
-						You have not made any summary yet. Start with{" "}
-						<PageLink
-							pageSlug={firstPage.page_slug}
-							className="underline font-medium"
-						>
-							{firstPage.title}
-						</PageLink>
+						<p>
+							You have not made any summary yet. Start with{" "}
+							<PageLink
+								pageSlug={firstPage.page_slug}
+								className="underline font-medium"
+							>
+								{firstPage.title}
+							</PageLink>
+						</p>
 					</CardContent>
 				</Card>
 			</DashboardShell>

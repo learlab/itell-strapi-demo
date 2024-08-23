@@ -1,17 +1,20 @@
 import { incrementViewAction } from "@/actions/dashboard";
 import { getSummariesAction } from "@/actions/summary";
-import { PageLink } from "@/components/page-link";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
-import { allPagesSorted, firstPage } from "@/lib/pages";
+import { routes } from "@/lib/navigation";
+import { allPagesSorted } from "@/lib/pages";
+import { delay } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";
 import { redirect } from "next/navigation";
+import pluralize from "pluralize";
+import { SummaryListSelect } from "./_components/summary-list-select";
 
-export default async function () {
+export default async function ({ searchParams }: { searchParams: unknown }) {
 	const { user } = await getSession();
 	if (!user) {
 		return redirect("/auth");
@@ -19,38 +22,17 @@ export default async function () {
 
 	incrementViewAction({ pageSlug: Meta.summaries.slug });
 
-	const [summaries, err] = await getSummariesAction({});
+	const { page } = routes.summaries.$parseSearchParams(searchParams);
+	const [summaries, err] = await getSummariesAction({
+		pageSlug: page,
+	});
 	if (err) {
 		throw new Error(err.message);
-	}
-
-	if (summaries.length === 0) {
-		return (
-			<DashboardShell>
-				<DashboardHeader
-					heading={Meta.summaries.title}
-					text={Meta.summaries.description}
-				/>
-				<Card>
-					<CardContent>
-						You have not made any summary yet. Start with{" "}
-						<PageLink
-							pageSlug={firstPage.slug}
-							className="underline font-medium"
-						>
-							{firstPage.title}
-						</PageLink>
-						!
-					</CardContent>
-				</Card>
-			</DashboardShell>
-		);
 	}
 
 	const summariesWithPage = summaries
 		.map((s) => {
 			const page = allPagesSorted.find((page) => page.slug === s.pageSlug);
-
 			if (!page) {
 				return undefined;
 			}
@@ -108,13 +90,28 @@ export default async function () {
 			/>
 			<Card className="w-full">
 				<CardContent className="space-y-4">
-					<SummaryChart
-						data={chartData}
-						startDate={summariesByPassing.startDate.toLocaleDateString()}
-						endDate={summariesByPassing.endDate.toLocaleDateString()}
-						totalCount={summaries.length}
-					/>
-					<SummaryList data={summariesByPage} />
+					<div className="space-y-4">
+						<SummaryChart
+							data={chartData}
+							startDate={summariesByPassing.startDate.toLocaleDateString()}
+							endDate={summariesByPassing.endDate.toLocaleDateString()}
+							totalCount={summaries.length}
+						/>
+						<div className="space-y-4">
+							<div className="flex flex-col gap-2 sm:flex-row items-center justify-between">
+								<SummaryListSelect pageSlug={page} />
+								<p className="text-sm text-muted-foreground">
+									{summariesByPassing.passed} passed,{" "}
+									{summariesByPassing.failed} failed
+								</p>
+							</div>
+							{summaries.length > 0 ? (
+								<SummaryList data={summariesByPage} />
+							) : (
+								<p>No summaries yet.</p>
+							)}
+						</div>
+					</div>
 				</CardContent>
 			</Card>
 		</DashboardShell>

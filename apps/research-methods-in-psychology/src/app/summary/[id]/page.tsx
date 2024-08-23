@@ -1,5 +1,6 @@
 import { incrementViewAction } from "@/actions/dashboard";
 import { getSummariesAction } from "@/actions/summary";
+import { PageLink } from "@/components/page-link";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages";
@@ -7,7 +8,6 @@ import { Badge } from "@itell/ui/badge";
 import { SummaryBackButton } from "@summary/summary-back-button";
 import { SummaryOperations } from "@summary/summary-operations";
 import { SummaryReviseButton } from "@summary/summary-revise-button";
-import { TextbookPageModal } from "@summary/textbook-page-modal";
 import { notFound, redirect } from "next/navigation";
 
 interface PageProps {
@@ -64,7 +64,9 @@ export default async function ({ params }: PageProps) {
 				</div>
 				<div className="grid gap-2">
 					<div className="text-center">
-						<TextbookPageModal page={page} />
+						<PageLink pageSlug={page.slug} className="hover:underline">
+							<h1 className="text-2xl font-semibold">{page.title}</h1>
+						</PageLink>
 					</div>
 
 					<p className="text-sm text-muted-foreground text-center">

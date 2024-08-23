@@ -43,6 +43,13 @@ export const { routes, useSafeParams, useSafeSearchParams } =
 					join_class_code: undefined,
 				}),
 		}),
+		summaries: defineRoute("/dashboard/summaries", {
+			search: z
+				.object({
+					page: z.string().optional(),
+				})
+				.default({ page: undefined }),
+		}),
 		student: defineRoute("/dashboard/student/[id]", {
 			params: z.object({
 				id: z.string(),

@@ -3,14 +3,31 @@ import { getAnswerStatsAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
 import { ConstructedResponse } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { getAllQuestions } from "@/lib/question";
+import { allPagesSorted } from "@/lib/pages";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@itell/ui/card";
 import { cn } from "@itell/utils";
 import { QuestionChart } from "@questions/question-chart";
 import { groupBy } from "es-toolkit";
 import pluralize from "pluralize";
+
+const questions = allPagesSorted.reduce(
+	(acc, page) => {
+		if (page.cri) {
+			acc[page.slug] = page.cri;
+		}
+
+		return acc;
+	},
+	{} as Record<string, { slug: string; question: string; answer: string }[]>,
+);
 
 export default async function () {
 	const { user } = await getSession();
@@ -20,10 +37,7 @@ export default async function () {
 
 	incrementViewAction({ pageSlug: Meta.questions.slug });
 
-	const [[data, err], allQuestions] = await Promise.all([
-		getAnswerStatsAction(),
-		getAllQuestions(),
-	]);
+	const [data, err] = await getAnswerStatsAction();
 	if (err) {
 		throw new Error(err.message);
 	}
@@ -44,27 +58,6 @@ export default async function () {
 		};
 	});
 
-	const questions: Array<{
-		chunkSlug: string;
-		question: string;
-		answer: string;
-	}> = [];
-	allQuestions?.data.forEach((page) => {
-		page.attributes.Content.forEach((chunk) => {
-			if (chunk.QuestionAnswerResponse) {
-				const parsed = JSON.parse(chunk.QuestionAnswerResponse) as {
-					question: string;
-					answer: string;
-				};
-				questions.push({
-					chunkSlug: chunk.Slug,
-					question: parsed.question,
-					answer: parsed.answer,
-				});
-			}
-		});
-	});
-
 	return (
 		<DashboardShell>
 			<DashboardHeader
@@ -80,51 +73,47 @@ export default async function () {
 				{records.length > 0 && (
 					<CardContent className="space-y-4">
 						<QuestionChart data={chartData} />
-						<div className="grid gap-2q">
+						<div className="grid gap-2">
 							<h2 className="font-semibold text-xl">All Records</h2>
 							<p className="text-sm text-muted-foreground">
 								Due to randomness in question placement, you may not receive the
 								same question set for a chapter
 							</p>
-							<div className="grid gap-4 divide-y divide-border">
-								{pages.map((chapter) => {
-									const answers = byPage[chapter.slug];
+							<div className="grid gap-4">
+								{pages.map((page) => {
+									const answers = byPage[page.slug];
 									const excellentAnswers = answers.filter((a) => a.score === 2);
 									return (
-										<div key={chapter.index} className="grid gap-4">
-											<header>
-												<p
-													className={cn(
-														"font-semibold text-lg text-pretty tracking-tight",
-													)}
-												>
-													{chapter.title}
-												</p>
-												<p className="text-muted-foreground">
+										<Card key={page.slug} className="grid gap-4">
+											<CardHeader>
+												<CardTitle>{page.title}</CardTitle>
+												<CardDescription className="text-muted-foreground">
 													{pluralize("answer", answers.length, true)},{" "}
 													{excellentAnswers.length} excellent
-												</p>
-											</header>
-											<div className="divide-y divide-border border space-y-2">
-												{questions.map(({ chunkSlug, question, answer }) => {
-													const records = answers.filter(
-														(a) => a.chunkSlug === chunkSlug,
-													);
-													if (records.length === 0) {
-														return null;
-													}
+												</CardDescription>
+											</CardHeader>
+											<CardContent className="space-y-2 divide-y divide-border border">
+												{questions[page.slug].map(
+													({ slug, question, answer }) => {
+														const records = answers.filter(
+															(a) => a.chunkSlug === slug,
+														);
+														if (records.length === 0) {
+															return null;
+														}
 
-													return (
-														<AnswerItem
-															key={chunkSlug}
-															answers={records}
-															question={question}
-															refAnswer={answer}
-														/>
-													);
-												})}
-											</div>
-										</div>
+														return (
+															<AnswerItem
+																key={slug}
+																answers={records}
+																question={question}
+																refAnswer={answer}
+															/>
+														);
+													},
+												)}
+											</CardContent>
+										</Card>
 									);
 								})}
 							</div>

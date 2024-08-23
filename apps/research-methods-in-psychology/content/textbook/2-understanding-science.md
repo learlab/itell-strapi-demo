@@ -2,32 +2,32 @@
 assignments:
 - summary
 chunks:
-- title: Learning Objectives
-  slug: Learning-Objectives-198pt
+- title: learning objectives
+  slug: learning-objectives-200pt
   type: plain
   headings: []
-- title: Intuition
-  slug: Intuition-752t
+- title: What Is Science?
+  slug: What-Is-Science?-758t
   type: regular
   headings: []
-- title: Authority
-  slug: Authority-753t
+- title: Features of Science
+  slug: Features-of-Science-757t
   type: regular
   headings: []
-- title: Rationalism
-  slug: Rationalism-754t
+- title: Features of Science 2
+  slug: Features-of-Science-2-759t
   type: regular
   headings: []
-- title: Empiricism
-  slug: Empiricism-756t
+- title: Science Versus Pseudoscience
+  slug: Science-Versus-Pseudoscience-760t
   type: regular
   headings: []
-- title: The Scientific Method
-  slug: The-Scientific-Method-755t
-  type: regular
+- title: The Skeptic’s Dictionary
+  slug: The-Skeptics-Dictionary-202pt
+  type: plain
   headings: []
 - title: References
-  slug: References-199pt
+  slug: References-201pt
   type: plain
   headings: []
 cri:

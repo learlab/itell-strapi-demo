@@ -10,7 +10,7 @@ export const Meta = {
 	},
 	summaries: {
 		title: "Summary Submissions",
-		description: "Comprehend the text by summarizing it",
+		description: "Comprehend the text with summarization",
 		slug: "summaries",
 	},
 	questions: {
