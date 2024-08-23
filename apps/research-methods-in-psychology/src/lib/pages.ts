@@ -18,9 +18,9 @@ export const tocPages = pages.reduce(
 			return acc;
 		}
 
-		const group = acc.find((g) => g.group && g.slug === page.parent?.slug);
-		if (group) {
-			(group as TocGroup).pages.push(item);
+		const group = acc.at(-1);
+		if (group?.group && group.slug === page.parent.slug) {
+			group.pages.push(item);
 		} else {
 			acc.push({
 				group: true,

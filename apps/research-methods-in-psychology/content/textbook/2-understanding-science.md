@@ -29,7 +29,7 @@ cri:
 - question: Why should we concern ourselves with pseudoscience?
   answer: Learning about pseudoscience helps bring the fundamental features of science into sharper focus, pseudoscientific beliefs are widely held and promoted, and many pseudosciences purport to explain aspects of human behavior and mental processes.
   slug: Science-Versus-Pseudoscience-760t
-order: 2
+order: 1
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
