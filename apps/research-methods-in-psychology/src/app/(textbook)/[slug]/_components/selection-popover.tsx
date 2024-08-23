@@ -6,7 +6,7 @@ import { noteStore } from "@/lib/store/note-store";
 import { DefaultPreferences, Elements } from "@itell/constants";
 import { serializeRange } from "@itell/core/note";
 import { Button } from "@itell/ui/button";
-import { cn, getChunkElement, getChunkSlug } from "@itell/utils";
+import { cn, getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { User } from "lucia";
 import { PencilIcon, SparklesIcon } from "lucide-react";

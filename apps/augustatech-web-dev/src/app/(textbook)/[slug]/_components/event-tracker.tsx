@@ -1,11 +1,13 @@
 "use client";
 
+import { type } from "node:os";
 import { createEventAction } from "@/actions/event";
 import { createFocusTimeAction } from "@/actions/focus-time";
 import { EventType, FOCUS_TIME_SAVE_INTERVAL } from "@/lib/constants";
 import { EventTracker as Tracker } from "@itell/core/event-tracker";
 import { getChunkElement } from "@itell/utils";
 import { useEffect, useState } from "react";
+import { map } from "zod";
 
 type Props = {
 	chunks: string[];
@@ -13,18 +15,21 @@ type Props = {
 };
 
 export const EventTracker = ({ pageSlug, chunks }: Props) => {
-	const [els, setEls] = useState<HTMLElement[] | undefined>();
+	const [mounted, setMounted] = useState(false);
+	const [elements, setElements] = useState<HTMLElement[]>([]);
 
 	useEffect(() => {
-		const chunkElements = chunks
-			.map((chunkId) => getChunkElement(chunkId))
-			.filter(Boolean);
-		setEls(chunkElements);
+		setMounted(true);
 	}, []);
 
-	if (!els) {
-		return null;
-	}
+	useEffect(() => {
+		const chunkElements = chunks.map(
+			(slug) => getChunkElement(slug) as HTMLElement,
+		);
+		setElements(chunkElements);
+	}, [chunks]);
+
+	if (!mounted) return;
 
 	return (
 		<Tracker
@@ -56,7 +61,8 @@ export const EventTracker = ({ pageSlug, chunks }: Props) => {
 					});
 				}
 			}}
-			chunks={els}
+			chunks={elements}
+			attr="subsectionId"
 			focusTimeSaveInterval={FOCUS_TIME_SAVE_INTERVAL}
 		/>
 	);

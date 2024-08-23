@@ -37,7 +37,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.slug;
 
-	const userRole = user?.role || "user";
 	const userId = user?.id || null;
 	const userFinished = user?.finished || false;
 	const userPageSlug = user?.pageSlug || null;
@@ -76,7 +75,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<div className="sticky top-20 -mt-10">
 						<ScrollArea className="pb-10">
 							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
-								<PageToc headings={page.headings} />
+								<PageToc chunks={page.chunks} />
 								<div className="mt-8 flex flex-col gap-1">
 									<PageInfo pageSlug={pageSlug} user={user} />
 									<NoteCount />

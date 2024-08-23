@@ -2,15 +2,20 @@
 import { useEffect, useRef } from "react";
 
 type Props = {
-	chunks: HTMLElement[];
 	onEvent: (data: FocusTimeEventData, total: number) => Promise<void>;
+	chunks: HTMLElement[];
+	attr: string;
 	saveInterval: number;
+	updateInterval: number;
 };
 
-// save focus time every second
-const UPDATE_INTERVAL = 1000;
-
-export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
+export const useFocusTime = ({
+	onEvent,
+	chunks,
+	attr,
+	saveInterval,
+	updateInterval,
+}: Props) => {
 	const entries = useRef<ChunkEntryWithLastTick[]>([]);
 	const isSaving = useRef(false);
 	const visibleChunks = useRef<Set<string>>(new Set());
@@ -22,7 +27,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 	useEffect(() => {
 		const updateEntries = () => {
 			const now = performance.now();
-			if (now - lastUpdateTime.current >= UPDATE_INTERVAL) {
+			if (now - lastUpdateTime.current >= updateInterval) {
 				if (!isSaving.current) {
 					entries.current.forEach((entry) => {
 						if (visibleChunks.current.has(entry.chunkId)) {
@@ -51,6 +56,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 					entry.totalViewTime = 0;
 					entry.lastTick = now;
 				});
+				console.log("saving", eventData);
 
 				try {
 					await onEvent(eventData, total);
@@ -104,8 +110,8 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 
 		window.addEventListener("visibilitychange", onVisibilityChange);
 
-		entries.current = chunks.map((el) => ({
-			chunkId: el.dataset.subsectionId as string,
+		entries.current = chunks.map((chunk) => ({
+			chunkId: chunk.dataset[attr] as string,
 			totalViewTime: 0,
 			lastTick: performance.now(),
 		}));
@@ -114,7 +120,7 @@ export const useFocusTime = ({ onEvent, saveInterval, chunks }: Props) => {
 			(entries) => {
 				entries.forEach((entry) => {
 					const target = entry.target as HTMLElement;
-					const id = target.dataset.subsectionId as string;
+					const id = target.dataset[attr] as string;
 					if (entry.isIntersecting) {
 						visibleChunks.current.add(id);
 					} else {

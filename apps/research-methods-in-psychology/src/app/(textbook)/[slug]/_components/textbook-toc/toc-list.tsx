@@ -32,7 +32,7 @@ export const TextbookTocList = ({ page, pages }: Props) => {
 			</a>
 			<ol
 				aria-label="list of chapters"
-				className="border-l-2 leading-relaxed tracking-tight"
+				className="leading-relaxed tracking-tight"
 			>
 				{pages.map((item) => {
 					if (!item.group) {

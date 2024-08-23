@@ -13,19 +13,22 @@ type Props = {
 };
 
 export const EventTracker = ({ pageSlug }: Props) => {
-	const [els, setEls] = useState<HTMLElement[] | undefined>();
+	const [mounted, setMounted] = useState(false);
+	const [elements, setElements] = useState<HTMLElement[]>([]);
 	const chunks = useChunks();
 
 	useEffect(() => {
-		const chunkElements = chunks
-			.map((slug) => getChunkElement(slug, "data-chunk-slug"))
-			.filter(Boolean);
-		setEls(chunkElements);
+		setMounted(true);
 	}, []);
 
-	if (!els) {
-		return null;
-	}
+	useEffect(() => {
+		const chunkElements = chunks.map(
+			(slug) => getChunkElement(slug, "data-chunk-slug") as HTMLElement,
+		);
+		setElements(chunkElements);
+	}, [chunks]);
+
+	if (!mounted) return;
 
 	return (
 		<Tracker
@@ -57,7 +60,8 @@ export const EventTracker = ({ pageSlug }: Props) => {
 					});
 				}
 			}}
-			chunks={els}
+			chunks={elements}
+			attr="chunkSlug"
 			focusTimeSaveInterval={FOCUS_TIME_SAVE_INTERVAL}
 		/>
 	);

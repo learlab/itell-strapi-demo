@@ -2,10 +2,13 @@
     "name": "@itell/content",
     "version": "0.0.1",
     "description": "",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
     "type": "module",
+    "exports": {
+        ".": {
+            "types": "./src/index.ts",
+            "default": "./dist/index.js"
+        }
+    },
     "scripts": {
         "build": "pnpm tsc"
     },
@@ -13,7 +16,6 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@types/github-slugger": "^2.0.0",
         "@types/hast": "^3.0.4",
         "@types/mdast": "^4.0.4",
         "hast": "^1.0.0",

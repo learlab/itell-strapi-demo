@@ -32,7 +32,7 @@ export const TocItem = ({
 	return (
 		<li
 			className={cn(
-				"transition ease-in-out duration-200 relative hover:bg-accent",
+				"transition ease-in-out duration-200 relative hover:bg-accent border-l-2",
 				{
 					"bg-accent": item.slug === activePage,
 					"text-muted-foreground": !visible,

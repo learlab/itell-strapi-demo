@@ -1,4 +1,4 @@
-import GithubSlugger from "github-slugger";
+import Slugger from "github-slugger";
 import type { Element, Nodes } from "hast";
 import type { Root } from "mdast";
 
@@ -31,11 +31,13 @@ export const extractHeadingsFromMdast = (
 ) => {
 	if (!input) return [];
 
-	const slugger = new GithubSlugger();
+	const slugger = new Slugger();
 
 	return input.children
 		.filter((node) => node.type === "heading")
 		.map((node) => {
+			if (node.depth > 3) return undefined;
+
 			let text = "";
 			let child = node.children[0];
 
