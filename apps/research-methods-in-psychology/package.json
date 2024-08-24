@@ -5,12 +5,12 @@
         "build": "next build",
         "clean": "rm -rf .next .turbo .velite",
         "dev": "next dev -p 3001",
-        "start": "next start"
+        "start": "next start",
+        "analyze": "ANALYZE=true next build"
     },
     "dependencies": {
         "@floating-ui/dom": "^1.6.8",
         "@floating-ui/react": "^0.26.22",
-        "@hello-pangea/color-picker": "^3.2.2",
         "@itell/constants": "workspace:^",
         "@itell/core": "workspace:^",
         "@itell/driver.js": "workspace:^",
@@ -39,7 +39,6 @@
         "nextjs-better-unstable-cache": "^1.1.0",
         "pluralize": "^8.0.0",
         "postgres": "^3.4.4",
-        "qs": "^6.11.2",
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "react-dom-confetti": "^0.2.0",
@@ -55,15 +54,13 @@
         "zsa-react": "^0.2.2"
     },
     "devDependencies": {
-        "@biomejs/biome": "^1.5.2",
-        "@itell/content": "workspace:^",
         "@itell/rehype-add-cri": "workspace:^",
         "@itell/rehype-wrap-heading-section": "workspace:^",
+        "@next/bundle-analyzer": "^14.2.6",
         "@total-typescript/ts-reset": "^0.4.2",
         "@types/dom-view-transitions": "^1.0.4",
         "@types/hast": "^3.0.4",
         "@types/pluralize": "^0.0.31",
-        "@types/qs": "^6.9.10",
         "@types/react": "18.3.3",
         "@types/react-dom": "^18.3.0",
         "autoprefixer": "^10.4.15",

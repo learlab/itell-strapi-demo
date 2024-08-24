@@ -8,7 +8,7 @@ import {
 import { Spinner } from "@/components/spinner";
 import { NoteData, noteStore } from "@/lib/store/note-store";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
-import { TwitterPicker } from "@hello-pangea/color-picker";
+import { darkColors, lightColors } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
 import {
 	createNoteElements,
@@ -26,10 +26,17 @@ import {
 	AlertDialogTrigger,
 } from "@itell/ui/alert-dialog";
 import { Button } from "@itell/ui/button";
+import { Input } from "@itell/ui/input";
 import { Label } from "@itell/ui/label";
 import { cn, getChunkElement } from "@itell/utils";
-import { PaletteIcon, StickyNoteIcon, TrashIcon } from "lucide-react";
+import {
+	PaletteIcon,
+	StickyNoteIcon,
+	TrashIcon,
+	TwitterIcon,
+} from "lucide-react";
 import { ForwardIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 import Textarea from "react-textarea-autosize";
@@ -99,6 +106,20 @@ export const NotePopover = React.memo(
 				setPending(false);
 			}
 		};
+
+		const handleColorChange = useCallback(
+			(value: string) => {
+				setNoteColor(value);
+
+				if (recordId) {
+					updateNoteAction({
+						id: recordId,
+						data: { color: value },
+					});
+				}
+			},
+			[recordId],
+		);
 
 		const handleUpsert = async () => {
 			setPending(true);
@@ -240,7 +261,7 @@ export const NotePopover = React.memo(
 			<div className="note-popover-container">
 				<button
 					id={triggerId}
-					className={cn("note-trigger p-1", {
+					className={cn(" p-1", {
 						"absolute z-10 ": !positionFailed,
 					})}
 					style={{
@@ -258,7 +279,10 @@ export const NotePopover = React.memo(
 					) : positionFailed ? (
 						<span>Note</span>
 					) : (
-						<StickyNoteIcon className="fill-warning opacity-60 hover:fill-accent hover:opacity-100" />
+						<StickyNoteIcon
+							className="opacity-60 hover:opacity-100"
+							style={{ fill: noteColor }}
+						/>
 					)}
 				</button>
 				<div
@@ -266,9 +290,18 @@ export const NotePopover = React.memo(
 					ref={popoverRef}
 					popover="auto"
 					role="tooltip"
-					className="w-64 md:w-80 rounded-md bg-note-popover shadow-md hover:shadow-lg p-4 pb-2"
+					className="w-64 md:w-80 rounded-md shadow-md hover:shadow-lg p-4 pb-2"
+					style={{ background: noteColor }}
 				>
-					<form className="w-full">
+					<form
+						className="w-full"
+						onSubmit={(e) => {
+							e.preventDefault();
+							const formData = new FormData(e.currentTarget);
+							const color = String(formData.get("color"));
+							handleColorChange(color);
+						}}
+					>
 						<Label>
 							<span className="sr-only">note text</span>
 							<Textarea
@@ -283,16 +316,7 @@ export const NotePopover = React.memo(
 							<ColorPicker
 								id={id}
 								color={noteColor}
-								onChange={(value) => {
-									setNoteColor(value);
-
-									if (recordId) {
-										updateNoteAction({
-											id: recordId,
-											data: { color: value },
-										});
-									}
-								}}
+								onChange={handleColorChange}
 							/>
 							<AlertDialog>
 								<AlertDialogTrigger asChild>
@@ -367,29 +391,72 @@ type ColorPickerProps = {
 	onChange: (color: string) => void;
 };
 const ColorPicker = ({ id, color, onChange }: ColorPickerProps) => {
-	const colorPickerId = `color-picker-${id}`;
-	const ref = useRef<HTMLDivElement>(null);
+	const popoverId = `color-picker-${id}`;
+	const triggerRef = useRef<HTMLButtonElement>(null);
+	const popoverRef = useRef<HTMLDivElement>(null);
+	const { theme } = useTheme();
+	const colors =
+		theme === "light" ? lightColors.slice(0, 8) : darkColors.slice(0, 8);
+	const [customBg, setCustomBg] = useState<string>(colors[0]);
 
 	return (
-		<>
+		<div>
 			<button
 				type="button"
 				className="p-2 hover:bg-muted/50"
 				aria-label="change note color"
-				popoverTarget={colorPickerId}
+				popoverTarget={popoverId}
+				ref={triggerRef}
 			>
 				<PaletteIcon className="size-3" />
 			</button>
-			<div id={colorPickerId} popover="auto" role="tooltip" ref={ref}>
-				<TwitterPicker
-					color={color}
-					onChange={(color) => {
-						onChange(color.hex);
-						ref.current?.hidePopover();
-					}}
-				/>
+			<div
+				id={popoverId}
+				popover="auto"
+				role="tooltip"
+				className="rounded-md"
+				ref={popoverRef}
+			>
+				<div className="grid grid-cols-6 gap-2 p-2">
+					{colors.map((c) => (
+						<button
+							key={c}
+							type="button"
+							style={{ background: c }}
+							className={cn(
+								"rounded-md size-8",
+								c === color ? "border-2 border-primary" : "",
+							)}
+							onClick={() => {
+								onChange(c);
+							}}
+						/>
+					))}
+					<button
+						type="button"
+						className="rounded-md size-8 inline-flex items-center justify-center col-span-1 text-foreground"
+						style={{
+							background: customBg,
+						}}
+						onClick={() => {
+							onChange(customBg);
+						}}
+					>
+						#
+					</button>
+					<Input
+						className="col-span-3 w-28 h-8"
+						name="color"
+						value={customBg || ""}
+						onChange={(e) => {
+							if (e.target.value.length <= 7) {
+								setCustomBg(e.target.value);
+							}
+						}}
+					/>
+				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

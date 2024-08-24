@@ -1,6 +1,5 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
-import { extractHeadingsFromMdast } from "@itell/content";
 import rehypeAddCri from "@itell/rehype-add-cri";
 import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
 import remarkGfm from "remark-gfm";
