@@ -6,7 +6,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@itell/ui/accordion";
-import { useCallback, useOptimistic } from "react";
+import { useOptimistic } from "react";
 import { Page } from "#content";
 import { TocPagesWithStatus } from ".";
 import { TocItem } from "./toc-item";
@@ -18,12 +18,6 @@ type Props = {
 
 export const TextbookTocList = ({ page, pages }: Props) => {
 	const [activePage, setActivePage] = useOptimistic(page.slug);
-	const onClick = useCallback(
-		(pageSlug: string) => {
-			setActivePage(pageSlug);
-		},
-		[setActivePage],
-	);
 
 	return (
 		<nav aria-label="textbook primary">
@@ -40,7 +34,7 @@ export const TextbookTocList = ({ page, pages }: Props) => {
 							<TocItem
 								key={item.slug}
 								inGroup={false}
-								onClick={onClick}
+								onClick={(slug) => setActivePage(slug)}
 								activePage={activePage}
 								item={item}
 							/>
@@ -63,7 +57,7 @@ export const TextbookTocList = ({ page, pages }: Props) => {
 									{item.pages.map((p) => (
 										<TocItem
 											key={p.slug}
-											onClick={onClick}
+											onClick={() => setActivePage(p.slug)}
 											item={p}
 											inGroup={true}
 											activePage={activePage}

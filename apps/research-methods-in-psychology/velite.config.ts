@@ -69,6 +69,7 @@ const pages = defineCollection({
 				}),
 			),
 			html: s.markdown({
+				remarkPlugins: [remarkHeadingAttrs],
 				rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri],
 			}),
 		})
@@ -103,7 +104,7 @@ export default defineConfig({
 	root: "./content",
 	collections: { pages, guides, home },
 	markdown: {
-		remarkPlugins: [remarkGfm, remarkHeadingAttrs, remarkUnwrapImage],
+		remarkPlugins: [remarkGfm, remarkUnwrapImage],
 		rehypePlugins: [],
 	},
 });
