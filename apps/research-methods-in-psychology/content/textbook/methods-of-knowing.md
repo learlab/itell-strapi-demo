@@ -5,31 +5,24 @@ chunks:
 - title: Learning Objectives
   slug: Learning-Objectives-198pt
   type: plain
-  headings: []
 - title: Intuition
   slug: Intuition-752t
   type: regular
-  headings: []
 - title: Authority
   slug: Authority-753t
   type: regular
-  headings: []
 - title: Rationalism
   slug: Rationalism-754t
   type: regular
-  headings: []
 - title: Empiricism
   slug: Empiricism-756t
   type: regular
-  headings: []
 - title: The Scientific Method
   slug: The-Scientific-Method-755t
   type: regular
-  headings: []
 - title: References
   slug: References-199pt
   type: plain
-  headings: []
 cri:
 - question: What is the problem with relying on intuition?
   answer: Our intuitions can be wrong because they are driven by cognitive and motivational biases rather than logical reasoning or scientific evidence.

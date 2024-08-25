@@ -48,13 +48,15 @@ const pages = defineCollection({
 					title: s.string(),
 					slug: s.string(),
 					type: s.enum(["plain", "regular"]),
-					headings: s.array(
-						s.object({
-							title: s.string(),
-							depth: s.union([s.literal(3), s.literal(4)]),
-							slug: s.string(),
-						}),
-					),
+					headings: s
+						.array(
+							s.object({
+								title: s.string(),
+								depth: s.union([s.literal(3), s.literal(4)]),
+								slug: s.string(),
+							}),
+						)
+						.optional(),
 				}),
 			),
 			excerpt: s.excerpt(),
@@ -66,7 +68,9 @@ const pages = defineCollection({
 					answer: s.string(),
 				}),
 			),
-			html: s.markdown(),
+			html: s.markdown({
+				rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri],
+			}),
 		})
 		.transform((data) => {
 			return {
@@ -100,6 +104,6 @@ export default defineConfig({
 	collections: { pages, guides, home },
 	markdown: {
 		remarkPlugins: [remarkGfm, remarkHeadingAttrs, remarkUnwrapImage],
-		rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri],
+		rehypePlugins: [],
 	},
 });

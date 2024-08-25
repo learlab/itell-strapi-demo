@@ -5,19 +5,15 @@ chunks:
 - title: Learning Objectives
   slug: Learning-Objectives-220pt
   type: plain
-  headings: []
 - title: Can We Rely on Common Sense?
   slug: Can-We-Rely-on-Common-Sense?-815t
   type: regular
-  headings: []
 - title: How Could We Be So Wrong?
   slug: How-Could-We-Be-So-Wrong?-816t
   type: regular
-  headings: []
 - title: References
   slug: References-221pt
   type: plain
-  headings: []
 cri:
 - question: Is it possible to reach accurate conclusions about human behavior based solely on common sense or intuition?
   answer: No, scientific research has shown that many commonly held beliefs about human behavior are inaccurate.

@@ -5,31 +5,24 @@ chunks:
 - title: learning objectives
   slug: learning-objectives-200pt
   type: plain
-  headings: []
 - title: What Is Science?
   slug: What-Is-Science?-758t
   type: regular
-  headings: []
 - title: Features of Science
   slug: Features-of-Science-757t
   type: regular
-  headings: []
 - title: Features of Science 2
   slug: Features-of-Science-2-759t
   type: regular
-  headings: []
 - title: Science Versus Pseudoscience
   slug: Science-Versus-Pseudoscience-760t
   type: regular
-  headings: []
 - title: The Skeptic’s Dictionary
   slug: The-Skeptics-Dictionary-202pt
   type: plain
-  headings: []
 - title: References
   slug: References-201pt
   type: plain
-  headings: []
 cri:
 - question: Why is psychology considered a science?
   answer: Psychology is considered a science because it takes a general approach to understanding human behavior, similar to how astronomy, biology, and chemistry approach their respective subjects.
