@@ -11,6 +11,7 @@ interface FigureProps {
 	alt: string;
 	width?: number;
 	height?: number;
+	priority?: boolean;
 	layout?: "responsive" | "fill";
 	className?: string;
 	children?: React.ReactNode;
@@ -31,6 +32,7 @@ export const Figure = ({
 	children,
 	layout,
 	rounded = true,
+	priority = false,
 	floatLeft = false,
 	floatRight = false,
 	showCaption = false,
@@ -56,6 +58,7 @@ export const Figure = ({
 					width={width}
 					height={height}
 					layout={layout}
+					priority={priority}
 				/>
 				{shouldExpand && (
 					<Button
