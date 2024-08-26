@@ -1,4 +1,4 @@
-import type { Node, Root } from "mdast";
+import type { Root } from "mdast";
 import { visit } from "unist-util-visit";
 
 interface Options {

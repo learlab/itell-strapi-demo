@@ -4,6 +4,7 @@ import { Meta } from "@/config/metadata";
 import { User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
+import { firstSummaryPage } from "@/lib/pages";
 import { getPageData } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";
@@ -90,9 +91,8 @@ const StudentProfile = ({
 				<CardTitle>
 					<div className="flex items-center justify-between">
 						<p>{student.name}</p>
-						<p className="text-muted-foreground text-sm font-medium">
-							at chapter{" "}
-							<span className="ml-1 font-semibold">{page?.chapter}</span>
+						<p className="text-muted-foreground text-sm  font-semibold">
+							{page?.title || firstSummaryPage?.title}
 						</p>
 					</div>
 				</CardTitle>
