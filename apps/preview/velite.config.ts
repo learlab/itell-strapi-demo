@@ -1,8 +1,6 @@
-import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
-import remarkHeadingAttr from "remark-heading-attrs";
-import remarkMath from "remark-math";
 import { defineConfig, s } from "velite";
+import { rehypeAddTryExample } from "./plugin";
 
 export default defineConfig({
 	root: "content",
@@ -11,9 +9,25 @@ export default defineConfig({
 			name: "reference",
 			single: true,
 			pattern: "reference.md",
-			schema: s.object({
-				content: s.markdown(),
-			}),
+			schema: s
+				.object({
+					content: s.markdown({
+						rehypePlugins: [rehypeAddTryExample],
+					}),
+				})
+				.transform((data, { meta }) => {
+					return {
+						...data,
+						headings: meta.mdast?.children
+							.filter((note) => note.type === "heading")
+							.map((note) =>
+								"value" in note.children[0]
+									? note.children[0].value
+									: undefined,
+							)
+							.filter(Boolean),
+					};
+				}),
 		},
 		examples: {
 			name: "example",
@@ -27,10 +41,8 @@ export default defineConfig({
 		},
 	},
 	markdown: {
-		remarkPlugins: [remarkHeadingAttr, remarkMath],
+		remarkPlugins: [],
 		rehypePlugins: [
-			// @ts-ignore
-			rehypeKatex,
 			() =>
 				rehypePrettyCode({
 					theme: {

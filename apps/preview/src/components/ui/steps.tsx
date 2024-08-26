@@ -6,11 +6,12 @@ import { Steps } from "@itell/ui/steps";
  *
  * @example
  * <i-steps>
- * 	#### step 1
- * 	instructions for step 1
  *
- * 	#### step 2
- * 	instructions for step 2
+ * #### step 1
+ * instructions for step 1
+ *
+ * #### step 2
+ * instructions for step 2
  * </i-steps>
  */
 export const StepsWrapper = ({ children }: { children: React.ReactNode }) => {

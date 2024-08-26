@@ -1,20 +1,14 @@
 import { cn } from "@itell/utils";
+import { examples, reference } from "#content";
 
-const modules = [
-	"Accordion",
-	"Blockquote",
-	"Callout",
-	"Image",
-	"Sandbox",
-	"Steps",
-];
+const headings = reference.headings;
 
-export const Toc = () => {
+export const ReferenceToc = () => {
 	return (
 		<aside className="sticky top-12 h-[calc(100vh-3.5rem)]">
 			<nav className="px-2">
 				<ol className="flex flex-col gap-2">
-					{modules.map((heading) => (
+					{headings?.map((heading) => (
 						<li
 							key={heading}
 							className={cn(

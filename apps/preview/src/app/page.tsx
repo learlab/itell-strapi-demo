@@ -72,12 +72,12 @@ export default async function Home({ searchParams }: PageProps) {
 				</Link>
 			)}
 
-			<Tabs defaultValue="preview">
+			<Tabs defaultValue="editor">
 				<TabsList>
-					<TabsTrigger value="preview">Preview</TabsTrigger>
+					<TabsTrigger value="editor">Preview</TabsTrigger>
 					<TabsTrigger value="reference">Reference</TabsTrigger>
 				</TabsList>
-				<TabsContent value="preview">
+				<TabsContent value="editor">
 					<div className="flex items-center justify-between">
 						<ExampleSelect initialSlug={initialSlug} />
 						<div className="space-x-2">

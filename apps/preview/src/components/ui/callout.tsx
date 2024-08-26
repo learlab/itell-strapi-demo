@@ -27,7 +27,9 @@ const titles = {
  * @param children - nested elements
  * @example
  * <i-callout variant="info">
- * 	this is **important**
+ *
+ * this is **important**
+ *
  * </i-callout>
  */
 export const Callout = ({

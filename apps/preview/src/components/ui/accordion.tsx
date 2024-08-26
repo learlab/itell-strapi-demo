@@ -24,10 +24,10 @@ type AccordionProps = {
  * ```tsx
  * <i-accordion value="1">
  * 	<i-accordion-item value="1" title="Item 1">
- * 		<p>Item 1 content</p>
+ * 		Item 1 content
  * 	</i-accordion-item>
  * 	<i-accordion-item value="2" title="Item 2">
- * 		<p>Item 2 content</p>
+ * 		Item 2 content
  * 	</i-accordion-item>
  * </i-accordion>
  * ```

@@ -18,6 +18,7 @@
         "@itell/utils": "workspace:^",
         "@radix-ui/react-context-menu": "^2.2.1",
         "comlink": "^4.4.1",
+        "hastscript": "^9.0.0",
         "htmr": "^1.0.2",
         "lucide-react": "^0.426.0",
         "mdast-util-from-markdown": "^2.0.1",

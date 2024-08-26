@@ -5,6 +5,8 @@
 <dd><p>Top-level accordion wrapper</p></dd>
 <dt><a href="#module_AccordionItem">AccordionItem</a></dt>
 <dd><p>An item in the accordion</p></dd>
+<dt><a href="#module_Blockquote">Blockquote</a></dt>
+<dd><p>Blockquote</p></dd>
 <dt><a href="#module_Callout">Callout</a></dt>
 <dd><p>General callout component for displaying information, warnings, and cautions.</p></dd>
 <dt><a href="#module_Sandbox">Sandbox</a></dt>
@@ -28,10 +30,10 @@
 ```tsx
 <i-accordion value="1">
 	<i-accordion-item value="1" title="Item 1">
-		<p>Item 1 content</p>
+		Item 1 content
 	</i-accordion-item>
 	<i-accordion-item value="2" title="Item 2">
-		<p>Item 2 content</p>
+		Item 2 content
 	</i-accordion-item>
 </i-accordion>
 ```
@@ -47,6 +49,24 @@
 | title | <code>string</code> | <p>The title of the accordion item, optional. If not provided, the title will be the value.</p> |
 | children |  | <p>nested elements</p> |
 
+<a name="module_Blockquote"></a>
+
+## Blockquote
+<p>Blockquote</p>
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| children |  | <p>blockquote content</p> |
+| author | <code>string</code> | <p>blockquote author, optional</p> |
+| role | <code>string</code> | <p>blockquote author role, optional</p> |
+
+**Example**  
+```js
+<i-blockquote author="John Doe" role="CEO">
+	This is a blockquote
+</i-blockquote>
+```
 <a name="module_Callout"></a>
 
 ## Callout
@@ -62,7 +82,9 @@
 **Example**  
 ```js
 <i-callout variant="info">
-	this is **important**
+
+this is **important**
+
 </i-callout>
 ```
 <a name="module_Sandbox"></a>
@@ -91,10 +113,11 @@
 **Example**  
 ```js
 <i-steps>
-	#### step 1
-	instructions for step 1
 
-	#### step 2
-	instructions for step 2
+#### step 1
+instructions for step 1
+
+#### step 2
+instructions for step 2
 </i-steps>
 ```
