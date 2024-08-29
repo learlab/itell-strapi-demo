@@ -40,12 +40,12 @@ export const ProlificForm = () => {
 				onSubmit={onSubmit}
 				ref={formRef}
 			>
-				<Label htmlFor="pid">Prolific ID</Label>
+				<Label htmlFor="pid">One-time ID</Label>
 				<Input
 					type="text"
 					name="pid"
 					id="pid"
-					placeholder="Enter your Prolific ID here"
+					placeholder="Enter your One-time ID here"
 					defaultValue={prolific_pid}
 				/>
 				<Button disabled={pending} variant={"outline"}>
@@ -57,7 +57,7 @@ export const ProlificForm = () => {
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>
-							Are you sure you want to login with prolific id {prolific_pid}?
+							Are you sure you want to login with one-time id {prolific_pid}?
 						</AlertDialogTitle>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
