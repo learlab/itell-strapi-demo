@@ -1,7 +1,7 @@
 import { getChatMessages } from "@/lib/chat";
 import { Condition } from "@/lib/control/condition";
 import { Message } from "@itell/core/chat";
-import { Avatar, AvatarImage } from "@itell/ui/client";
+import { Avatar, AvatarImage } from "@itell/ui/avatar";
 import { User } from "lucia";
 import { Spinner } from "../spinner";
 import { Chat } from "./chat";

@@ -1,6 +1,6 @@
 import { summaries } from "@/drizzle/schema";
 import { db } from "@/lib/db";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 import { and, count, eq } from "drizzle-orm";
 import Link from "next/link";
 import pluralize from "pluralize";

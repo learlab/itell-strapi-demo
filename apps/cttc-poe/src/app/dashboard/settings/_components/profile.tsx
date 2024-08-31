@@ -1,5 +1,5 @@
 import { UserAvatar } from "@/components/user-avatar";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 import { User } from "lucia";
 
 export const Profile = ({ user }: { user: User }) => {

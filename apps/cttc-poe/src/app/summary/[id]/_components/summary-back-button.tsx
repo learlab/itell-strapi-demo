@@ -1,4 +1,4 @@
-import { buttonVariants } from "@itell/ui/server";
+import { buttonVariants } from "@itell/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 

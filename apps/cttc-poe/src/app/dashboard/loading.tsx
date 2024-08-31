@@ -1,6 +1,7 @@
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { UserDetails } from "@dashboard//user-details";
-import { Card, CardContent, Skeleton } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
+import { Skeleton } from "@itell/ui/skeleton";
 
 export default function () {
 	return (

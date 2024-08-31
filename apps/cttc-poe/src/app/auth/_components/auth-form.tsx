@@ -1,7 +1,7 @@
 "use client";
 
 import { logout } from "@/lib/auth/actions";
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";

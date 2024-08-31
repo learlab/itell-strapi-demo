@@ -1,7 +1,6 @@
 "use client";
 
 import { useConstructedResponse } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { clearSummaryLocal } from "@/components/summary/summary-input";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
@@ -12,13 +11,13 @@ import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/utils";
 
 import { Elements } from "@itell/constants";
+import { Button, buttonVariants } from "@itell/ui/button";
 import {
-	Button,
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@itell/ui/client";
-import { buttonVariants } from "@itell/ui/server";
+} from "@itell/ui/collapsible";
+
 import { Page } from "contentlayer/generated";
 import {
 	ArrowUpIcon,

@@ -9,7 +9,7 @@ import {
 	SidebarItem,
 	SidebarNavItem,
 } from "@dashboard//nav";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 import {
 	BarChart4Icon,
 	FileEditIcon,

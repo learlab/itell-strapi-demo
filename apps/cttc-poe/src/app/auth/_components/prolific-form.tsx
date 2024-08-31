@@ -9,10 +9,10 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	Button,
-	Label,
-} from "@itell/ui/client";
-import { Input } from "@itell/ui/server";
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
+import { Input } from "@itell/ui/input";
+import { Label } from "@itell/ui/label";
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState, useTransition } from "react";
 

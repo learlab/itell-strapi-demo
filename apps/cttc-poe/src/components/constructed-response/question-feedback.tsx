@@ -1,17 +1,19 @@
 "use client";
 
 import { createConstructedResponseFeedback } from "@/lib/constructed-response/actions";
+import { Button } from "@itell/ui/button";
+import { Checkbox } from "@itell/ui/checkbox";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTrigger,
-} from "@itell/ui/client";
-import { Button, Checkbox, Label, TextArea } from "@itell/ui/client";
+} from "@itell/ui/dialog";
+import { Label } from "@itell/ui/label";
+import { TextArea } from "@itell/ui/textarea";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Spinner } from "../spinner";
 
 type Props = {
 	userId: string;

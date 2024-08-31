@@ -3,16 +3,16 @@
 import { User } from "@/drizzle/schema";
 import { DEFAULT_TIME_ZONE } from "@/lib/constants";
 import { updateUser } from "@/lib/user/actions";
+import { Button } from "@itell/ui/button";
+import { Errorbox } from "@itell/ui/callout";
+import { Label } from "@itell/ui/label";
 import {
-	Button,
-	Label,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@itell/ui/client";
-import { Errorbox } from "@itell/ui/server";
+} from "@itell/ui/select";
 import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";

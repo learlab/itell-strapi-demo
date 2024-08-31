@@ -6,14 +6,14 @@ import { getUser } from "@/lib/user/actions";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { JoinClassModal } from "@dashboard//join-class-modal";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { Separator } from "@itell/ui/client";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@itell/ui/server";
+} from "@itell/ui/card";
+import { Separator } from "@itell/ui/separator";
 import { JoinClassForm } from "@settings/join-class";
 import { Profile } from "@settings/profile";
 import { QuitClass } from "@settings/quit-class";

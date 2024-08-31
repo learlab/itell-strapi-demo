@@ -1,12 +1,10 @@
 "use client";
 
-import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/control/condition";
 import { getChunkElement } from "@/lib/utils";
-import { PortalContainer } from "@itell/core";
 import { usePortal } from "@itell/core/hooks";
+import { PortalContainer } from "@itell/core/portal-container";
 import { useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 import { useConstructedResponse } from "../provider/page-provider";
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { QuestionBoxReread } from "./question-box-reread";

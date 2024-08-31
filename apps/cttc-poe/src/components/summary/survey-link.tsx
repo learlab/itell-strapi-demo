@@ -3,7 +3,7 @@
 import { useSession } from "@/lib/auth/context";
 import { cn } from "@itell/utils";
 
-import { buttonVariants } from "@itell/ui/server";
+import { buttonVariants } from "@itell/ui/button";
 import { User } from "lucia";
 
 type Props = {

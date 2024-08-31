@@ -4,7 +4,7 @@ import {
 	AvatarFallback,
 	AvatarImage,
 	Avatar as BaseAvatar,
-} from "@itell/ui/client";
+} from "@itell/ui/avatar";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {
 	src: string | null;

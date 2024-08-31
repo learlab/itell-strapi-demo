@@ -4,7 +4,7 @@ import { incrementView } from "@/lib/dashboard/actions";
 import { allPagesSorted, firstSummaryPage } from "@/lib/pages";
 import { getUserSummaries } from "@/lib/summary";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { Card, CardContent } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";

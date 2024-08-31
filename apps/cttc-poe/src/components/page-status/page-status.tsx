@@ -1,12 +1,12 @@
 "use client";
 import { useSession } from "@/lib/auth/context";
 import { getPageStatus } from "@/lib/page-status";
+import { Button } from "@itell/ui/button";
 import {
-	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/hover-card";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 
 type Props = {

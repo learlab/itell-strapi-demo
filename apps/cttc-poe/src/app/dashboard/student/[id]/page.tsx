@@ -9,14 +9,9 @@ import { DashboardHeader, DashboardShell } from "@dashboard//shell";
 import { UserProgress } from "@dashboard//user-progress";
 import { UserStatistics } from "@dashboard//user-statistics";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
-import { Errorbox } from "@itell/ui/server";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	buttonVariants,
-} from "@itell/ui/server";
+import { buttonVariants } from "@itell/ui/button";
+import { Errorbox } from "@itell/ui/callout";
+import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
