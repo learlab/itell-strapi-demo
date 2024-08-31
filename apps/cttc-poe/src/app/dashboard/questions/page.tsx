@@ -6,7 +6,7 @@ import { incrementView } from "@/lib/dashboard/actions";
 import { db } from "@/lib/db";
 import { getPageData, redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { Card, CardContent } from "@itell/ui/server";
+import { Card, CardContent } from "@itell/ui/card";
 import { cn } from "@itell/utils";
 import { QuestionChart } from "@questions/question-chart";
 import { count, eq } from "drizzle-orm";

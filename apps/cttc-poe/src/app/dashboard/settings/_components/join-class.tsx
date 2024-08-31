@@ -4,8 +4,9 @@ import { User } from "@/drizzle/schema";
 import { getTeacherWithClassId } from "@/lib/dashboard/actions";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { JoinClassModal } from "@dashboard//join-class-modal";
-import { Button } from "@itell/ui/client";
-import { Errorbox, Input } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Errorbox } from "@itell/ui/callout";
+import { Input } from "@itell/ui/input";
 import { useFormState, useFormStatus } from "react-dom";
 
 type Props = {

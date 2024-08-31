@@ -8,7 +8,7 @@ import { useNotesStore } from "@/lib/store/note";
 import { serializeRange } from "@itell/core/note";
 import { cn } from "@itell/utils";
 
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import { CopyIcon, HighlighterIcon, PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";

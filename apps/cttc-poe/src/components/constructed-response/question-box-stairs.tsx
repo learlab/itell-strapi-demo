@@ -9,20 +9,15 @@ import { reportSentry } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { cn } from "@itell/utils";
 
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
+import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import {
-	Button,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
-	TextArea,
-} from "@itell/ui/client";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	Warning,
-} from "@itell/ui/server";
+} from "@itell/ui/hover-card";
+import { TextArea } from "@itell/ui/textarea";
 import { AlertTriangle, KeyRoundIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";

@@ -3,8 +3,8 @@ import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { AuthForm, LogoutButton } from "@auth/auth-form";
 import { KnowledgeCarousel } from "@auth/knowledge-carousel";
-import { Button } from "@itell/ui/client";
-import { Warning } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import Link from "next/link";
 

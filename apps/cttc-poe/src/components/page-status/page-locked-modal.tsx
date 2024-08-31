@@ -3,14 +3,14 @@
 import { isProduction } from "@/lib/constants";
 import { firstSummaryPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
+import { Button } from "@itell/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@itell/ui/client";
-import { Button } from "@itell/ui/client";
+} from "@itell/ui/dialog";
 import Link from "next/link";
 import { useState } from "react";
 

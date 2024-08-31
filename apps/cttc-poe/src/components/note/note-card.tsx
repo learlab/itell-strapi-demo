@@ -11,7 +11,8 @@ import {
 	getElementsByNoteId,
 	removeNotes,
 } from "@itell/core/note";
-import { Button, TextArea } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
+import { TextArea } from "@itell/ui/textarea";
 import { cn } from "@itell/utils";
 import { EditIcon } from "lucide-react";
 import { ForwardIcon } from "lucide-react";

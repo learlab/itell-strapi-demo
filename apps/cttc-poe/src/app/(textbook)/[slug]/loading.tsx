@@ -2,7 +2,7 @@ import { lucia } from "@/lib/auth";
 import { Condition } from "@/lib/control/condition";
 import { allPagesSorted } from "@/lib/pages";
 import { Elements } from "@itell/constants";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 import { ChapterToc } from "@textbook/chapter-toc";
 import { PageTitle } from "@textbook/page-title";
 import { BookmarkIcon } from "lucide-react";

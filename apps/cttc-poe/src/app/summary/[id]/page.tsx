@@ -3,7 +3,7 @@ import { getSession } from "@/lib/auth";
 import { incrementView } from "@/lib/dashboard/actions";
 import { db, first } from "@/lib/db";
 import { allPagesSorted } from "@/lib/pages";
-import { Badge } from "@itell/ui/server";
+import { Badge } from "@itell/ui/badge";
 import { SummaryBackButton } from "@summary/summary-back-button";
 import { SummaryOperations } from "@summary/summary-operations";
 import { SummaryReviseButton } from "@summary/summary-revise-button";

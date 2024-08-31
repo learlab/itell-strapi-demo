@@ -1,5 +1,5 @@
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { Skeleton } from "@itell/ui/server";
+import { Skeleton } from "@itell/ui/skeleton";
 
 const title = "Question Answering";
 const description =
