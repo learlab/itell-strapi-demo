@@ -17,7 +17,7 @@ export const ClassBadges = async ({ students }: Props) => {
 		ids: students.map((student) => student.id),
 	});
 	if (err) {
-		throw new Error(err.message);
+		throw new Error("failed to get class statistics", { cause: err });
 	}
 
 	return (

@@ -1,16 +1,10 @@
-import { ContinueReading } from "@/components/continue-reading";
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarFooter,
 	SidebarHeader,
 	SidebarItem,
 	SidebarLabel,
-	SidebarTrigger,
 } from "@/components/sidebar";
-import { Button } from "@itell/ui/button";
-import { User } from "lucia";
-import { SidebarIcon } from "lucide-react";
 import { NavStatistics } from "./nav-statistics";
 import { RoleSwitcher } from "./role-switch";
 

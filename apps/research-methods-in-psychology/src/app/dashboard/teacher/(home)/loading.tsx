@@ -6,8 +6,8 @@ export default function () {
 	return (
 		<DashboardShell>
 			<DashboardHeader
-				heading={Meta.class.title}
-				text={Meta.class.description}
+				heading={Meta.homeTeacher.title}
+				text={Meta.homeTeacher.description}
 			/>
 			<ClassInfo.Skeleton />
 		</DashboardShell>

@@ -6,6 +6,7 @@ import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import {
+	ClassRole,
 	Condition,
 	SIDEBAR_ROLE_COOKIE,
 	SIDEBAR_STATE_COOKIE,
@@ -16,7 +17,6 @@ import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 import { Elements } from "@itell/constants";
 import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
 
 export const generateMetadata = () => {
 	const title = "Dashboard";
@@ -68,30 +68,26 @@ export default async function DashboardLayout({
 		);
 	}
 
-	const [data, error] = await getTeacherAction({ userId: user.id });
-	if (!data || error) {
-		return notFound();
-	}
-
-	const isTeacher = Boolean(data);
-
+	const [teacher, _] = await getTeacherAction();
+	const isTeacher = !!teacher;
+	const sidebarState = cookies().get(SIDEBAR_STATE_COOKIE)?.value;
 	return (
 		<SidebarLayout
-			defaultOpen={cookies().get(SIDEBAR_STATE_COOKIE)?.value === "true"}
+			defaultOpen={sidebarState ? sidebarState === "true" : true}
 			defaultRole={
 				(cookies().get(SIDEBAR_ROLE_COOKIE)?.value as Role) ||
-				(isTeacher ? "teacher" : "student")
+				(isTeacher ? ClassRole.TEACHER : ClassRole.STUDENT)
 			}
-			className="flex-col"
+			className="group flex-col"
 		>
 			<DashboardSidebar isTeacher={isTeacher} />
 			<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
 				<DashboardNav />
 			</SiteNav>
-			<main id={Elements.DASHBOARD_MAIN} className="min-h-screen group">
+			<main id={Elements.DASHBOARD_MAIN} className="min-h-screen">
 				<section
 					aria-label="dashboard main panel"
-					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
+					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-[[data-pending]]:animate-pulse group-has-[[data-pending]]:animate-pulse"
 					aria-live="polite"
 					aria-atomic="true"
 					tabIndex={-1}

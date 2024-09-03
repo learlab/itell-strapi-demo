@@ -6,17 +6,16 @@ import {
 	SettingsIcon,
 } from "lucide-react";
 
-const iconClasses = "size-4";
 export const dashboardConfig = {
 	mobileNav: {
 		teacher: [
 			{
 				title: "Summaries",
-				href: "/dashboard/summaries",
+				href: "/dashboard/teacher/summaries",
 			},
 			{
 				title: "Questions",
-				href: "/dashboard/questions",
+				href: "/dashboard/teacher/questions",
 			},
 			{
 				title: "Settings",
@@ -47,12 +46,12 @@ export const dashboardConfig = {
 			},
 			{
 				title: "Summaries",
-				href: "/dashboard/summaries",
+				href: "/dashboard/teacher/summaries",
 				icon: FileEditIcon,
 			},
 			{
 				title: "Questions",
-				href: "/dashboard/questions",
+				href: "/dashboard/teacher/questions",
 				icon: MessageCircleQuestion,
 			},
 			{
@@ -64,7 +63,7 @@ export const dashboardConfig = {
 		student: [
 			{
 				title: "Overview",
-				href: "/dashboard/student",
+				href: "/dashboard",
 				icon: BarChartIcon,
 			},
 			{

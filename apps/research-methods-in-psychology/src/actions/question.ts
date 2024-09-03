@@ -6,9 +6,11 @@ import {
 	CreateConstructedResponseSchema,
 	constructed_responses,
 	constructed_responses_feedback,
+	users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
 import { count, eq } from "drizzle-orm";
+import { z } from "zod";
 import { authedProcedure } from "./utils";
 
 /**
@@ -62,3 +64,28 @@ export const getAnswerStatsAction = authedProcedure.handler(async ({ ctx }) => {
 		return { records, byScore };
 	});
 });
+
+/**
+ * Get question-answer statistics for class
+ */
+export const getAnswerStatsClassAction = authedProcedure
+	.input(
+		z.object({
+			classId: z.string(),
+		}),
+	)
+	.handler(async ({ input }) => {
+		return await db.transaction(async (tx) => {
+			const byScore = await tx
+				.select({
+					count: count(),
+					score: constructed_responses.score,
+				})
+				.from(constructed_responses)
+				.leftJoin(users, eq(users.id, constructed_responses.userId))
+				.where(eq(users.classId, input.classId))
+				.groupBy(constructed_responses.score);
+
+			return { byScore };
+		});
+	});

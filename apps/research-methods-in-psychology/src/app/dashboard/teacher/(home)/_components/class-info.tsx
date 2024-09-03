@@ -24,7 +24,7 @@ const numChapters = allPagesSorted.length;
 export const ClassInfo = async ({ classId }: { classId: string }) => {
 	const [students, err] = await getClassStudentsAction({ classId });
 	if (err) {
-		throw new Error(err.message);
+		throw new Error("failed to get students in the class", { cause: err });
 	}
 
 	if (students.length === 0) {

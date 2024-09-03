@@ -1,7 +1,6 @@
 import { incrementViewAction } from "@/actions/dashboard";
-import { getSummariesAction } from "@/actions/summary";
+import { getSummariesClassAction } from "@/actions/summary";
 import { Meta } from "@/config/metadata";
-import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
@@ -9,19 +8,16 @@ import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";
-import { redirect } from "next/navigation";
-import { SummaryListSelect } from "./_components/summary-list-select";
+import { SummaryListSelect } from "../../summaries/_components/summary-list-select";
+import { checkTeacher } from "../check-teacher";
 
 export default async function ({ searchParams }: { searchParams: unknown }) {
-	const { user } = await getSession();
-	if (!user) {
-		return redirect("/auth");
-	}
+	const teacher = await checkTeacher();
+	incrementViewAction({ pageSlug: Meta.summariesTeacher.slug });
 
-	incrementViewAction({ pageSlug: Meta.summaries.slug });
-
-	const { page } = routes.summaries.$parseSearchParams(searchParams);
-	const [summaries, err] = await getSummariesAction({
+	const { page } = routes.summariesTeacher.$parseSearchParams(searchParams);
+	const [summaries, err] = await getSummariesClassAction({
+		classId: teacher.classId,
 		pageSlug: page,
 	});
 	if (err) {
@@ -41,11 +37,6 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 			};
 		})
 		.filter((s) => s !== undefined);
-
-	const summariesByPage = groupBy(
-		summariesWithPage,
-		(summary) => summary.pageTitle,
-	);
 
 	const summariesByPassing = summaries.reduce(
 		(acc, summary) => {
@@ -90,6 +81,7 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 				<CardContent className="space-y-4">
 					<div className="space-y-4">
 						<SummaryChart
+							chartTitle="All Summaries from Class"
 							data={chartData}
 							startDate={summariesByPassing.startDate.toLocaleDateString()}
 							endDate={summariesByPassing.endDate.toLocaleDateString()}
@@ -103,11 +95,6 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 									{summariesByPassing.failed} failed
 								</p>
 							</div>
-							{summaries.length > 0 ? (
-								<SummaryList data={summariesByPage} />
-							) : (
-								<p>No summaries yet.</p>
-							)}
 						</div>
 					</div>
 				</CardContent>

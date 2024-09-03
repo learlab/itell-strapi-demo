@@ -5,6 +5,10 @@ export const PAGE_SUMMARY_THRESHOLD = 2;
 export const SIDEBAR_STATE_COOKIE = "sidebar:state";
 export const SIDEBAR_ROLE_COOKIE = "sidebar:role";
 export const isProduction = process.env.NODE_ENV === "production";
+export const ClassRole = {
+	TEACHER: "teacher",
+	STUDENT: "student",
+} as const;
 
 export const EventType = {
 	KEYSTROKE: "keystroke",

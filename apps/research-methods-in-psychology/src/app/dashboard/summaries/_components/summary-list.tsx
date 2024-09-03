@@ -1,11 +1,16 @@
 "use client";
-import { Summary } from "@/drizzle/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 
-type SummaryData = Summary & { pageTitle: string };
+type SummaryData = {
+	id: number;
+	createdAt: Date;
+	isPassed: boolean;
+	text: string;
+	pageTitle: string;
+};
 
 export const SummaryList = ({
 	data,
@@ -42,7 +47,7 @@ export const SummaryItem = ({ summary }: SummaryItemProps) => {
 	return (
 		<Link
 			href={`/summary/${summary.id}`}
-			className="flex px-2 py-4 flex-col hover:bg-accent transition-all ease-out duration-150 rounded-md"
+			className="flex px-2 py-4 flex-col hover:bg-accent hover:text-accent-foreground transition-all ease-out duration-150 rounded-md"
 			aria-label="user summary"
 		>
 			<header className="flex flex-col text-sm text-muted-foreground">

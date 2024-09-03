@@ -27,7 +27,7 @@ export default async function ({ params }: PageProps) {
 	});
 
 	if (err) {
-		throw new Error(err.message);
+		throw new Error("failed to get summary", { cause: err });
 	}
 
 	if (data.length === 0) {

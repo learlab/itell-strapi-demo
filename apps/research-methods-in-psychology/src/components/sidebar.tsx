@@ -2,12 +2,18 @@
 
 import * as React from "react";
 
-import { SIDEBAR_ROLE_COOKIE, SIDEBAR_STATE_COOKIE } from "@/lib/constants";
+import {
+	ClassRole,
+	SIDEBAR_ROLE_COOKIE,
+	SIDEBAR_STATE_COOKIE,
+} from "@/lib/constants";
+import { setCookie } from "@/lib/cookie";
 import { useClickOutside, useIsMobile } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
 import { Sheet, SheetContent } from "@itell/ui/sheet";
 import { cn } from "@itell/utils";
 import { PanelLeft } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 
 /**
  * cookie name for sidebar state
@@ -32,29 +38,54 @@ function useSidebar() {
 	return React.useContext(SidebarContext);
 }
 
+// route to switch to when role is changed
+const routeMappings: Record<Role, Record<string, string | undefined>> = {
+	teacher: {
+		"/dashboard": "/dashboard/teacher",
+		"/dashboard/questions": "/dashboard/teacher/questions",
+		"/dashboard/summaries": "/dashboard/teacher/summaries",
+	},
+	student: {
+		"/dashboard/teacher": "/dashboard",
+		"/dashboard/teacher/questions": "/dashboard/questions",
+		"/dashboard/teacher/summaries": "/dashboard/summaries",
+	},
+};
+
 const SidebarLayout = React.forwardRef<
 	HTMLDivElement,
 	React.ComponentProps<"div"> & {
 		defaultOpen?: boolean;
 		defaultRole?: Role;
 	}
->(({ defaultOpen, defaultRole, className, ...props }, ref) => {
+>(({ defaultOpen, defaultRole, className, children, ...props }, ref) => {
 	const [open, setOpen] = React.useState(defaultOpen ?? true);
-	const [role, setRole] = React.useState(defaultRole ?? "student");
+	const [role, setRole] = React.useState(defaultRole ?? ClassRole.STUDENT);
+	const pathname = usePathname();
+	const router = useRouter();
+	const [pending, startTransition] = React.useTransition();
 
 	const onOpenChange = React.useCallback((open: boolean) => {
 		setOpen(open);
-		document.cookie = `${SIDEBAR_STATE_COOKIE}=${open}; path=/; max-age=${
-			60 * 60 * 24 * 7
-		}`;
+		setCookie(SIDEBAR_STATE_COOKIE, open);
 	}, []);
 
-	const onRoleChange = React.useCallback((role: Role) => {
-		setRole(role);
-		document.cookie = `${SIDEBAR_ROLE_COOKIE}=${role}; path=/; max-age=${
-			60 * 60 * 24 * 7
-		}`;
-	}, []);
+	const onRoleChange = React.useCallback(
+		(role: Role) => {
+			setRole(role);
+			setCookie(SIDEBAR_ROLE_COOKIE, role);
+			console.log(role, pathname);
+			if (pathname && pathname in routeMappings[role]) {
+				const nextRoute = routeMappings[role][pathname];
+				if (nextRoute) {
+					startTransition(() => {
+						router.push(nextRoute);
+					});
+				}
+			}
+		},
+		[pathname, role],
+	);
 
 	const state = open ? "open" : "closed";
 
@@ -63,6 +94,7 @@ const SidebarLayout = React.forwardRef<
 			<div
 				ref={ref}
 				data-sidebar={state}
+				data-pending={pending ? "" : undefined}
 				style={
 					{
 						"--sidebar-width": "16rem",
@@ -73,7 +105,9 @@ const SidebarLayout = React.forwardRef<
 					className,
 				)}
 				{...props}
-			/>
+			>
+				{children}
+			</div>
 		</SidebarContext.Provider>
 	);
 });

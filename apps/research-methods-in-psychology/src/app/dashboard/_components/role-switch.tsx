@@ -1,6 +1,7 @@
 "use client";
 
 import { Role, useSidebar } from "@/components/sidebar";
+import { ClassRole } from "@/lib/constants";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -14,48 +15,20 @@ import * as React from "react";
 
 const roles = [
 	{
-		name: "teacher",
+		name: ClassRole.TEACHER,
 		label: "Teacher",
 		icon: UserPlus,
 	},
 	{
-		name: "student",
+		name: ClassRole.STUDENT,
 		label: "Student",
 		icon: User,
 	},
 ];
 
-// route to switch to when role is changed
-const routeMappings: Record<Role, Record<string, string | undefined>> = {
-	teacher: {
-		"/dashboard": "/dashboard/teacher",
-	},
-	student: {
-		"/dashboard/teacher": "/dashboard",
-	},
-};
-
 export function RoleSwitcher() {
 	const { role, onRoleChange } = useSidebar();
-	const router = useRouter();
-	const [pending, startTransition] = React.useTransition();
-	const activeRole = role === "teacher" ? roles[0] : roles[1];
-	const pathname = usePathname();
-
-	const toggleRole = React.useCallback(
-		(role: Role) => {
-			onRoleChange(role);
-			if (pathname) {
-				const nextRoute = routeMappings[role][pathname];
-				if (nextRoute) {
-					startTransition(() => {
-						router.push(nextRoute);
-					});
-				}
-			}
-		},
-		[pathname],
-	);
+	const activeRole = role === ClassRole.TEACHER ? roles[0] : roles[1];
 
 	return (
 		<DropdownMenu>
@@ -79,10 +52,10 @@ export function RoleSwitcher() {
 				<DropdownMenuLabel className="text-xs text-muted-foreground">
 					Roles
 				</DropdownMenuLabel>
-				{roles.map((role, index) => (
+				{roles.map((role) => (
 					<DropdownMenuItem
 						key={role.name}
-						onClick={() => toggleRole(role.name as Role)}
+						onClick={() => onRoleChange(role.name)}
 						className="items-start gap-2 px-1.5"
 					>
 						<div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary text-primary-foreground">

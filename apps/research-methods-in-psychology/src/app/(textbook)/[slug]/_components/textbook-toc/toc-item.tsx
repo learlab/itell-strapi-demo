@@ -4,6 +4,7 @@ import { PageStatus } from "@/lib/page-status";
 import { TocPageItem } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/utils";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
@@ -28,7 +29,7 @@ export const TocItem = ({
 		status: item.status,
 		title: item.title,
 	});
-
+	const disabled = isProduction && (pending || !visible);
 	return (
 		<li
 			className={cn(
@@ -41,28 +42,29 @@ export const TocItem = ({
 				className,
 			)}
 		>
-			<button
-				type="button"
-				onClick={() => {
+			<Link
+				href={makePageHref(item.slug)}
+				onClick={(event) => {
+					event.preventDefault();
 					onClick(item.slug);
 					startTransition(async () => {
 						router.push(makePageHref(item.slug));
 					});
 				}}
-				disabled={pending && isProduction}
 				className={cn(
 					"w-full text-left text-balance inline-flex justify-between items-start text-base lg:text-lg 2xl:text-xl xl:gap-4 p-2",
 					{
 						"animate-pulse": pending,
 						"text-base 2xl:text-lg": inGroup,
+						"cursor-not-allowed": disabled,
 					},
 				)}
-				role="link"
 				aria-label={label}
+				aria-disabled={disabled}
 			>
 				<span className="flex-1">{item.title}</span>
 				<span className="hidden xl:inline">{icon}</span>
-			</button>
+			</Link>
 		</li>
 	);
 };
