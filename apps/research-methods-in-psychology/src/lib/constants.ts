@@ -1,8 +1,9 @@
-import { AnimationProps } from "framer-motion";
+import type { AnimationProps } from "framer-motion";
 
 export const FOCUS_TIME_SAVE_INTERVAL = 60000;
 export const PAGE_SUMMARY_THRESHOLD = 2;
-
+export const SIDEBAR_STATE_COOKIE = "sidebar:state";
+export const SIDEBAR_ROLE_COOKIE = "sidebar:role";
 export const isProduction = process.env.NODE_ENV === "production";
 
 export const EventType = {

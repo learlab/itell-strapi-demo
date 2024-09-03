@@ -139,6 +139,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				chat_history: getHistory(chatStore),
 				excluded_chunks: getExcludedChunks(questionStore),
 			});
+			console.log(body);
 			requestBodyRef.current = body;
 			const response = await fetch("/api/itell/score/stairs", {
 				method: "POST",
