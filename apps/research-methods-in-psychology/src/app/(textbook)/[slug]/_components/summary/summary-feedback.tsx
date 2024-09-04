@@ -1,6 +1,5 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
-import { Info, Warning } from "@itell/ui/callout";
 import { cn } from "@itell/utils";
 import { Lightbulb } from "lucide-react";
 
@@ -8,11 +7,6 @@ type Props = {
 	className?: string;
 	feedback: SummaryFeedbackType | null;
 	needRevision: boolean;
-};
-
-const components = {
-	true: Info,
-	false: Warning,
 };
 
 export const SummaryFeedback = ({
@@ -23,7 +17,7 @@ export const SummaryFeedback = ({
 	return (
 		<div
 			className={cn(
-				"font-light leading-relaxed space-y-2 animate-in fade-in",
+				"flex flex-col gap-4 my-4 font-light leading-relaxed animate-in fade-in",
 				className,
 			)}
 			role="alert"
@@ -50,17 +44,21 @@ export const SummaryFeedback = ({
 export const SummaryFeedbackDetails = ({
 	feedback,
 }: { feedback: SummaryFeedbackType }) => {
-	const Component = components[feedback?.isPassed ? "true" : "false"];
-
 	const terms = feedback?.suggestedKeyphrases
 		? Array.from(new Set(feedback.suggestedKeyphrases))
 		: [];
 	return (
-		<Component role="status">
-			<p className="my-2">
-				Improve your summary by including some of the following keywords:
-			</p>
-			<ul className="space-y-1">
+		<div
+			className={cn("grid gap-1.5 px-4 border-l-4", {
+				"border-info": feedback.isPassed,
+				"border-warning": !feedback.isPassed,
+			})}
+			role="status"
+		>
+			<strong className="block font-bold mb-2 text-[1.1em]">
+				Improve your summary by including some of the following keywords
+			</strong>
+			<ul className="space-y-1 m-0 p-0">
 				{terms.map((term) => (
 					<li
 						className="flex items-center gap-2 text-accent-foreground"
@@ -92,6 +90,6 @@ export const SummaryFeedbackDetails = ({
 					</AccordionItem>
 				</Accordion>
 			)}
-		</Component>
+		</div>
 	);
 };

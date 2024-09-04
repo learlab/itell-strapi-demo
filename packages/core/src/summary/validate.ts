@@ -38,7 +38,7 @@ export const validateSummary = (
 	return null;
 };
 
-const levenshteinDistance = (a: string, b: string) => {
+export const levenshteinDistance = (a: string, b: string) => {
 	let tmp: string | number;
 	if (a.length === 0) {
 		return b.length;
