@@ -1,6 +1,5 @@
 "use client";
 
-import { Role, useSidebar } from "@/components/sidebar";
 import { ClassRole } from "@/lib/constants";
 import {
 	DropdownMenu,
@@ -10,8 +9,7 @@ import {
 	DropdownMenuTrigger,
 } from "@itell/ui/dropdown";
 import { ChevronsUpDown, User, UserPlus } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import * as React from "react";
+import { useDashboard } from "./dashboard-context";
 
 const roles = [
 	{
@@ -27,7 +25,7 @@ const roles = [
 ];
 
 export function RoleSwitcher() {
-	const { role, onRoleChange } = useSidebar();
+	const { role, onRoleChange } = useDashboard();
 	const activeRole = role === ClassRole.TEACHER ? roles[0] : roles[1];
 
 	return (

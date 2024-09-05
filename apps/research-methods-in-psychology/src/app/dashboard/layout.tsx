@@ -1,6 +1,6 @@
 import { getTeacherAction } from "@/actions/user";
 import { ContinueReading } from "@/components/continue-reading";
-import { Role, SidebarLayout } from "@/components/sidebar";
+import { SidebarLayout } from "@/components/sidebar";
 import { SiteNav } from "@/components/site-nav";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
@@ -8,7 +8,7 @@ import { getSession } from "@/lib/auth";
 import {
 	ClassRole,
 	Condition,
-	SIDEBAR_ROLE_COOKIE,
+	DASHBOARD_ROLE_COOKIE,
 	SIDEBAR_STATE_COOKIE,
 } from "@/lib/constants";
 import { redirectWithSearchParams } from "@/lib/utils";
@@ -17,6 +17,7 @@ import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 import { Elements } from "@itell/constants";
 import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { cookies } from "next/headers";
+import { DashboardProvider, Role } from "./_components/dashboard-context";
 
 export const generateMetadata = () => {
 	const title = "Dashboard";
@@ -72,29 +73,32 @@ export default async function DashboardLayout({
 	const isTeacher = !!teacher;
 	const sidebarState = cookies().get(SIDEBAR_STATE_COOKIE)?.value;
 	return (
-		<SidebarLayout
-			defaultOpen={sidebarState ? sidebarState === "true" : true}
+		<DashboardProvider
 			defaultRole={
-				(cookies().get(SIDEBAR_ROLE_COOKIE)?.value as Role) ||
+				(cookies().get(DASHBOARD_ROLE_COOKIE)?.value as Role) ||
 				(isTeacher ? ClassRole.TEACHER : ClassRole.STUDENT)
 			}
-			className="group flex-col"
 		>
-			<DashboardSidebar isTeacher={isTeacher} />
-			<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
-				<DashboardNav />
-			</SiteNav>
-			<main id={Elements.DASHBOARD_MAIN} className="min-h-screen">
-				<section
-					aria-label="dashboard main panel"
-					className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-[[data-pending]]:animate-pulse group-has-[[data-pending]]:animate-pulse"
-					aria-live="polite"
-					aria-atomic="true"
-					tabIndex={-1}
-				>
-					{children}
-				</section>
-			</main>
-		</SidebarLayout>
+			<SidebarLayout
+				defaultOpen={sidebarState ? sidebarState === "true" : true}
+				className="flex-col"
+			>
+				<DashboardSidebar isTeacher={isTeacher} />
+				<SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
+					<DashboardNav />
+				</SiteNav>
+				<main id={Elements.DASHBOARD_MAIN} className="min-h-screen">
+					<section
+						aria-label="dashboard main panel"
+						className="flex flex-col px-4 py-4 lg:px-8 max-w-screen-xl group-has-[[data-pending]]:animate-pulse"
+						aria-live="polite"
+						aria-atomic="true"
+						tabIndex={-1}
+					>
+						{children}
+					</section>
+				</main>
+			</SidebarLayout>
+		</DashboardProvider>
 	);
 }

@@ -1,14 +1,14 @@
 "use client";
 
-import { useSidebar } from "@/components/sidebar";
 import { cn } from "@itell/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
 import { dashboardConfig } from "./config";
+import { useDashboard } from "./dashboard-context";
 
 export const NavStatistics = () => {
-	const { role } = useSidebar();
+	const { role } = useDashboard();
 	const [pending, startTransition] = useTransition();
 	const pathname = usePathname();
 	const [activeRoute, setActiveRoute] = useOptimistic(pathname);
