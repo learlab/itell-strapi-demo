@@ -28,7 +28,6 @@ export const useKeystroke = () => {
       ] as KeystrokeEvent;
       data.current.push(d);
     }
-    console.log(e.code);
   };
 
   const clear = useCallback(() => {
