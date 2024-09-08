@@ -8,7 +8,7 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "@itell/ui/client";
+} from "@itell/ui/dialog";
 import { useState } from "react";
 
 export const PageUnauthorizedModal = () => {

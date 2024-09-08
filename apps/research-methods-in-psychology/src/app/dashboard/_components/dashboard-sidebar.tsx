@@ -1,49 +1,32 @@
-"use client";
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarHeader,
+	SidebarItem,
+	SidebarLabel,
+} from "@/components/sidebar";
+import { NavStatistics } from "./nav-statistics";
+import { RoleSwitcher } from "./role-switch";
 
-import { cn } from "@itell/utils";
-import { ArrowRightIcon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useOptimistic, useTransition } from "react";
-import { dashboardConfig } from "./config";
-
-export const DashboardSidebar = () => {
-	const [pending, startTransition] = useTransition();
-	const pathname = usePathname();
-	const [activeRoute, setActiveRoute] = useOptimistic(pathname);
-	const router = useRouter();
-
+export const DashboardSidebar = async ({
+	isTeacher,
+}: { isTeacher: boolean }) => {
 	return (
-		<nav
-			className="hidden md:grid items-start pt-4 border-r-2"
-			data-pending={pending ? "" : undefined}
-		>
-			<ol>
-				{dashboardConfig.sidebarNav.map((item) => (
-					<li key={item.title}>
-						<button
-							type="button"
-							className="block w-full"
-							role="link"
-							onClick={() => {
-								setActiveRoute(item.href);
-								startTransition(() => {
-									router.push(item.href);
-								});
-							}}
-						>
-							<span
-								className={cn(
-									"group flex items-center gap-2 px-6 h-12 text-sm lg:text-base font-medium hover:bg-accent hover:text-accent-foreground",
-									activeRoute === item.href ? "bg-accent" : "transparent",
-								)}
-							>
-								{item.icon || <ArrowRightIcon className="size-4" />}
-								{item.title}
-							</span>
-						</button>
-					</li>
-				))}
-			</ol>
-		</nav>
+		<Sidebar>
+			<SidebarContent className="gap-2">
+				{isTeacher && (
+					<SidebarHeader>
+						<RoleSwitcher />
+					</SidebarHeader>
+				)}
+				<SidebarItem>
+					<SidebarLabel>Statistics</SidebarLabel>
+					<NavStatistics />
+				</SidebarItem>
+			</SidebarContent>
+			{/* <SidebarFooter>
+				<SidebarTrigger className="flex items-center gap-2 w-full" />
+			</SidebarFooter> */}
+		</Sidebar>
 	);
 };

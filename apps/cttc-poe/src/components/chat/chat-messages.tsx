@@ -2,8 +2,8 @@
 
 import { getChunkElement, scrollToElement } from "@/lib/utils";
 import { Message } from "@itell/core/chat";
-import { Button } from "@itell/ui/client";
-import { Avatar, AvatarImage } from "@itell/ui/client";
+import { Avatar, AvatarImage } from "@itell/ui/avatar";
+import { Button } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

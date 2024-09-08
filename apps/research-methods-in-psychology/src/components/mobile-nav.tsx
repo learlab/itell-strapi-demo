@@ -61,11 +61,11 @@ export const MobileNav = ({ items }: MobileNavProps) => {
 						</div>
 						<nav className="grid grid-flow-row auto-rows-max text-sm">
 							{items.map((item) => (
-								<button
-									type="button"
-									role="link"
+								<Link
 									key={item.href}
-									onClick={() => {
+									href={item.href}
+									onClick={(e) => {
+										e.preventDefault();
 										setActiveRoute(item.href);
 										startTransition(() => {
 											router.push(item.disabled ? "#" : item.href);
@@ -80,7 +80,7 @@ export const MobileNav = ({ items }: MobileNavProps) => {
 								>
 									<span>{item.title}</span>
 									{isPending && item.href === activeRoute && <Spinner />}
-								</button>
+								</Link>
 							))}
 						</nav>
 					</div>

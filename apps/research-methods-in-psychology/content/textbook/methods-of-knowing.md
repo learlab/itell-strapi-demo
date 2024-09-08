@@ -43,7 +43,7 @@ order: 0
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
-slug: methods-of-knowing
+slug: 1-methods-of-knowing
 title: 1. Methods of Knowing
 ---
 

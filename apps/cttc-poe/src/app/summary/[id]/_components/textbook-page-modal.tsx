@@ -1,7 +1,7 @@
 import { MainMdx } from "@/components/mdx";
 import { PageLink } from "@/components/page-link";
-import { Button, Dialog, DialogContent, DialogTrigger } from "@itell/ui/client";
-import { buttonVariants } from "@itell/ui/server";
+import { Button, buttonVariants } from "@itell/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import { Page } from "contentlayer/generated";
 
 export const TextbookPageModal = ({

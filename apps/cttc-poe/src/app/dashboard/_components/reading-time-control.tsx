@@ -8,7 +8,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@itell/ui/client";
+} from "@itell/ui/select";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 

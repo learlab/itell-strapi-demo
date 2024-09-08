@@ -1,28 +1,16 @@
 import {
-	Blockquote,
-	Callout,
-	Caption,
-	Column,
-	Columns,
-	Info,
-	Keyterm,
-	Steps,
-	Warning,
-	YoutubeVideo,
-} from "@itell/ui/server";
-
-import {
 	Tab,
 	TabPanel,
 	Tabs,
 	TabsBody,
 	TabsHeader,
 } from "@/components/ui/tabs";
-import { Image } from "@itell/ui/client";
+import { Blockquote } from "@itell/ui/blockquote";
+import { Callout, Info, Keyterm, Warning } from "@itell/ui/callout";
+import { Image } from "@itell/ui/image";
 import { Accordion, AccordionItem } from "./ui/accordion";
 
 export const MdxComponents = {
-	YoutubeVideo,
 	Image,
 	Blockquote,
 	Accordion,
@@ -31,11 +19,6 @@ export const MdxComponents = {
 	Warning,
 	Keyterm,
 	Callout,
-	Caption,
-	Steps,
-	Columns,
-	Column,
-	// tab related
 	Tabs,
 	TabsHeader,
 	Tab,

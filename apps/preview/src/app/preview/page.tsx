@@ -5,6 +5,7 @@ import { routes } from "@/lib/navigation";
 import { getPage } from "@/lib/strapi";
 import { extractHeadingsFromMdast } from "@itell/content";
 import { buttonVariants } from "@itell/ui/button";
+import { Info } from "@itell/ui/callout";
 import { ScrollArea } from "@itell/ui/scroll-area";
 import { cn } from "@itell/utils";
 import { fromMarkdown } from "mdast-util-from-markdown";
@@ -22,6 +23,11 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 
 	return (
 		<div className="grid grid-cols-3 gap-8 items-start">
+			<Info className="col-span-full">
+				<p className="text-lg">
+					Make sure you save your changes in strapi before previewing.
+				</p>
+			</Info>
 			<Preview className="min-h-[50vh] col-span-2" html={html} />
 			<div className="flex flex-col gap-4 h-full">
 				<div className="flex flex-col gap-2">

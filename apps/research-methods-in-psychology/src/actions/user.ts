@@ -26,10 +26,9 @@ import { authedProcedure } from "./utils";
  * Check if user is a teacher
  */
 export const getTeacherAction = authedProcedure
-	.input(z.object({ userId: z.string() }))
 	.output(TeacherSchema.nullable())
-	.handler(async ({ input }) => {
-		return await getTeacherActionHandler(input.userId);
+	.handler(async ({ ctx }) => {
+		return await getTeacherActionHandler(ctx.user.id);
 	});
 
 const getTeacherActionHandler = memoize(

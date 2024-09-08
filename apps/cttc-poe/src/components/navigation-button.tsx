@@ -1,7 +1,8 @@
 "use client";
 
 import { useDebounce } from "@itell/core/hooks";
-import { Button, StatusButton } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
+import { StatusButton } from "@itell/ui/status-button";
 import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 

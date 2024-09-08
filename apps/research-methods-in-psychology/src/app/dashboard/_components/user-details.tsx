@@ -30,7 +30,7 @@ type Props = {
 export const UserDetails = async ({ classId, pageSlug }: Props) => {
 	const [otherUsers, err] = await getOtherUsersAction();
 	if (err) {
-		throw new Error(err.message);
+		throw new Error("failed to get other users", { cause: err });
 	}
 
 	const [[userStats, err1], [otherStats, err2]] = await Promise.all([

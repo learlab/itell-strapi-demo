@@ -27,18 +27,14 @@ export default async function ({ params, searchParams }: PageProps) {
 		return redirect("/auth");
 	}
 
-	const teacher = await getTeacherAction({ userId: user.id });
+	const [teacher, error] = await getTeacherAction();
+	if (error) {
+		throw new Error("failed to get teacher", { cause: error });
+	}
 
-	if (!teacher) {
-		return (
-			<DashboardShell>
-				<DashboardHeader
-					heading={Meta.student.title}
-					text={Meta.student.description}
-				/>
-				<Errorbox>You have to be a teacher to view this page.</Errorbox>
-			</DashboardShell>
-		);
+	const isTeacher = !!teacher;
+	if (!isTeacher) {
+		throw new Error("teacher only");
 	}
 
 	const { id } = routes.student.$parseParams(params);

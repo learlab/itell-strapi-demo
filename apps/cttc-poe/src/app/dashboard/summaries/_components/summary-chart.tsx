@@ -4,18 +4,18 @@ import { CheckIcon, XIcon } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 
 import {
-	ChartConfig,
-	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
-} from "@itell/ui/client";
-import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@itell/ui/server";
+} from "@itell/ui/card";
+import {
+	ChartConfig,
+	ChartContainer,
+	ChartTooltip,
+	ChartTooltipContent,
+} from "@itell/ui/chart";
 
 const chartConfig = {
 	passed: {

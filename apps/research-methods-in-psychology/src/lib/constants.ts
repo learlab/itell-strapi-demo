@@ -1,9 +1,14 @@
-import { AnimationProps } from "framer-motion";
+import type { AnimationProps } from "framer-motion";
 
 export const FOCUS_TIME_SAVE_INTERVAL = 60000;
 export const PAGE_SUMMARY_THRESHOLD = 2;
-
+export const SIDEBAR_STATE_COOKIE = "sidebar:state";
+export const DASHBOARD_ROLE_COOKIE = "dashboard:role";
 export const isProduction = process.env.NODE_ENV === "production";
+export const ClassRole = {
+	TEACHER: "teacher",
+	STUDENT: "student",
+} as const;
 
 export const EventType = {
 	KEYSTROKE: "keystroke",

@@ -3,7 +3,7 @@ import { getSession } from "@/lib/auth";
 import { getUserTeacherStatus } from "@/lib/dashboard";
 import { ClassInfo } from "@class/class-info";
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { Errorbox } from "@itell/ui/server";
+import { Errorbox } from "@itell/ui/callout";
 import { redirect } from "next/navigation";
 
 export const metadata = Meta.class;

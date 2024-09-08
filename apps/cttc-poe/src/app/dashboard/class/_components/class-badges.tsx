@@ -1,6 +1,6 @@
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { getOtherStats } from "@/lib/dashboard";
-import { DashboardBadge } from "@itell/ui/server";
+import { DashboardBadge } from "@itell/ui/dashboard-badge";
 import {
 	FileTextIcon,
 	FlagIcon,

@@ -1,7 +1,7 @@
 "use client";
 
 import { getChunkElement, scrollToElement } from "@/lib/utils";
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import { MoveUpIcon } from "lucide-react";
 import { useConstructedResponse } from "../provider/page-provider";
 

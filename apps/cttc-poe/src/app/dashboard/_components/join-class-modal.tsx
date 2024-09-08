@@ -1,19 +1,17 @@
 "use client";
 
-import { Spinner } from "@/components/spinner";
 import { User } from "@/drizzle/schema";
 import { updateUser } from "@/lib/user/actions";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	Button,
-} from "@itell/ui/client";
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";

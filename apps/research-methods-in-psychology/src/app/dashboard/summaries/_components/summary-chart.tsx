@@ -35,6 +35,7 @@ type Props = {
 	totalCount: number;
 	startDate: string;
 	endDate: string;
+	chartTitle?: string;
 };
 
 export const SummaryChart = ({
@@ -42,11 +43,12 @@ export const SummaryChart = ({
 	totalCount,
 	startDate,
 	endDate,
+	chartTitle = "Summary Submission History",
 }: Props) => {
 	return (
 		<Card className="flex flex-col border-none">
 			<CardHeader className="items-center pb-0">
-				<CardTitle>Summary Submission History</CardTitle>
+				<CardTitle>{chartTitle}</CardTitle>
 				<CardDescription>
 					{startDate}- {endDate}
 				</CardDescription>
