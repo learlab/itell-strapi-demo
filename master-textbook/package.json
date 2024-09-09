@@ -4,7 +4,7 @@
 	"scripts": {
 		"build": "next build",
 		"clean": "rm -rf .next .turbo .velite",
-		"dev": "next dev -p 3000",
+		"dev": "next dev -p 3001",
 		"start": "next start"
 	},
 	"dependencies": {
