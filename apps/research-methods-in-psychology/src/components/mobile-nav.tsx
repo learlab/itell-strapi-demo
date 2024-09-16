@@ -3,11 +3,7 @@ import { useClickOutside, useDebounce } from "@itell/core/hooks";
 import { cn } from "@itell/utils";
 import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import {
-	usePathname,
-	useRouter,
-	useSelectedLayoutSegment,
-} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useOptimistic, useState, useTransition } from "react";
 import { Spinner } from "./spinner";
 

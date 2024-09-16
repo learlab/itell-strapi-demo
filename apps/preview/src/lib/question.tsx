@@ -80,7 +80,7 @@ export const Question = ({
 					</Label>
 					<footer className="flex items-center justify-center">
 						<Button pending={pending} disabled={pending} type="submit">
-							submit
+							Submit
 						</Button>
 					</footer>
 					{response && (

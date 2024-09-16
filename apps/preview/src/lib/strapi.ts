@@ -1,6 +1,5 @@
 import {
 	APIResponseCollection,
-	ApiResponseChunk,
 	ApiResponsePage,
 	ApiResponsePages,
 	ApiResponseVolumes,
@@ -144,5 +143,6 @@ const getChunkContent = (chunk: any, pageSlug: string) => {
 	const heading = `## ${chunk.Header} {#${chunk.Slug}${
 		chunk.ShowHeader ? "" : " .sr-only"
 	}}`;
-	return `${heading}\n${chunk.MDX}${cri}`;
+	const content = "MD" in chunk ? chunk.MD : chunk.MDX;
+	return `${heading}\n${content}${cri}`;
 };
