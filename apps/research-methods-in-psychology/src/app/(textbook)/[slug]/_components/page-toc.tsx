@@ -76,7 +76,7 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
 						)}
 					>
 						<a
-							data-depth={2}
+							data-heading-level={2}
 							href={`#${chunk.slug}`}
 							className="text-pretty hover:underline text-base"
 						>
@@ -89,7 +89,7 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
 									<li key={heading.slug}>
 										<a
 											href={`#${heading.slug}`}
-											data-depth={heading.depth}
+											data-heading-level={heading.level}
 											className="text-pretty hover:underline"
 										>
 											{heading.title}
