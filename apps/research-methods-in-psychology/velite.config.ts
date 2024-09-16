@@ -53,7 +53,7 @@ const pages = defineCollection({
 						.array(
 							s.object({
 								title: s.string(),
-								depth: s.union([s.literal(3), s.literal(4)]),
+								level: s.union([s.literal(3), s.literal(4)]),
 								slug: s.string(),
 							}),
 						)
