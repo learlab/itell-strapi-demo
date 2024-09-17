@@ -58,10 +58,11 @@ cri:
 - question: What is criterion validity and how is it demonstrated in research?
   answer: Criterion validity is the extent to which scores on a measure are correlated with other variables that one would expect them to be correlated with, and it is demonstrated by showing correlations between the measure and relevant criteria such as exam performance or participation in related activities.
   slug: Validity-2-891t
-order: 13
+order: 19
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement
+quiz: null
 slug: 20-reliability-and-validity-of-measurement
 title: 20. Reliability and Validity of Measurement
 ---

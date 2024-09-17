@@ -21,10 +21,11 @@ cri:
 - question: Why do psychologists emphasize the importance of skepticism in evaluating beliefs?
   answer: Psychologists emphasize skepticism to encourage pausing to consider alternatives, search for evidence, and avoid intuitive but incorrect beliefs.
   slug: How-Could-We-Be-So-Wrong?-816t
-order: 2
+order: 4
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
+quiz: null
 slug: 4-science-and-common-sense
 title: 4.  Science and Common Sense
 ---

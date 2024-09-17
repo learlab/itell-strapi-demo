@@ -37,10 +37,11 @@ cri:
 - question: What are the levels of measurement according to S. S. Stevens?
   answer: Nominal, ordinal, interval, and ratio levels of measurement.
   slug: Levels-of-Measurement-887t
-order: 12
+order: 18
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement
+quiz: null
 slug: 19-understanding-psychological-measurement
 title: 19. Understanding Psychological Measurement
 ---

@@ -54,10 +54,11 @@ cri:
 - question: What is the process of debriefing in psychological research?
   answer: Debriefing involves informing research participants of the study's purpose, revealing any deception, correcting misconceptions, and minimizing harm.
   slug: Ethics-Codes-3-876t
-order: 6
+order: 15
 parent:
   title: III. Research Ethics
   slug: iii-research-ethics
+quiz: null
 slug: 16-from-moral-principles-to-ethics-codes
 title: 16. From Moral Principles to Ethics Codes
 ---

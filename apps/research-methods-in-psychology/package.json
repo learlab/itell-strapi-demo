@@ -29,6 +29,7 @@
         "es-toolkit": "^1.13.1",
         "framer-motion": "^10.16.4",
         "geist": "^1.0.0",
+        "hono": "^4.6.2",
         "htmr": "^1.0.2",
         "immer": "^9.0.21",
         "jwt-decode": "^4.0.0",

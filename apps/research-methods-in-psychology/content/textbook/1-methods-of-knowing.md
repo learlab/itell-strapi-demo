@@ -39,10 +39,11 @@ cri:
 - question: What are some drawbacks of the scientific method?
   answer: One major problem is that it is not always feasible to use the scientific method due to the considerable time and resources it requires, and it cannot be used to answer all questions.
   slug: The-Scientific-Method-755t
-order: 0
+order: 1
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
+quiz: null
 slug: 1-methods-of-knowing
 title: 1. Methods of Knowing
 ---

@@ -48,7 +48,7 @@ const pages = defineCollection({
 				s.object({
 					title: s.string(),
 					slug: s.string(),
-					type: s.enum(["plain", "regular"]),
+					type: s.enum(["plain", "regular", "video"]),
 					headings: s
 						.array(
 							s.object({

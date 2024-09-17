@@ -30,10 +30,11 @@ cri:
 - question: What is an important criterion for evaluating research questions?
   answer: The feasibility of successfully answering them.
   slug: Feasibility-731t
-order: 10
+order: 9
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method
+quiz: null
 slug: 9-generating-good-research-questions
 title: 9. Generating Good Research Questions
 ---

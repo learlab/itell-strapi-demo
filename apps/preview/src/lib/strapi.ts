@@ -119,7 +119,6 @@ export const getPage = cache(async (id: number) => {
 	if (!response.ok) {
 		return null;
 	}
-
 	const { data } = (await response.json()) as ApiResponsePage;
 	return {
 		id: data.id,

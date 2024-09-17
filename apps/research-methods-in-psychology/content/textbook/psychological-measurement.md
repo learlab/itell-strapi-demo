@@ -8,10 +8,11 @@ chunks:
   slug: References-254pt
   type: plain
 cri: []
-order: 11
+order: 17
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement
+quiz: null
 slug: psychological-measurement
 title: Psychological Measurement
 ---

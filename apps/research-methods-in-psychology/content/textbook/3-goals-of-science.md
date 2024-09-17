@@ -31,6 +31,7 @@ order: 3
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
+quiz: null
 slug: 3-goals-of-science
 title: 3. Goals of Science
 ---

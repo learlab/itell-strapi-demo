@@ -18,10 +18,141 @@ cri:
 - question: What are the different ways in which research findings can be reported?
   answer: Research findings can be reported through peer-reviewed journal articles, book chapters, and conference presentations.
   slug: Reporting-the-Results-745t
-order: 18
+order: 13
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method
+quiz:
+- question: "1.\tAccording to the text, which of the following is least important when considering the interestingness of a scientific research question?"
+  answers:
+  - answer: "a.\tAre you personally curious about knowing the answer?"
+    correct: true
+  - answer: "b.\tIs the answer in doubt?"
+    correct: false
+  - answer: "c.\tWould an answer fill a gap in the research literature?"
+    correct: false
+  - answer: "d.\tDoes the answer have practical implications? "
+    correct: false
+- question: "2.\tWhich of the following practices is recommended by your text to ensure that a research question has feasibility? "
+  answers:
+  - answer: "a.\tResearchers work independently, because working in a group just makes the project more difficult to complete"
+    correct: false
+  - answer: "b.\tResearchers use methods that have already been used successfully by other researchers, because those methods have been tried and validated"
+    correct: true
+  - answer: "c.\tResearchers try to come up with a completely unique research question, because they don’t want to risk exploring an area that already has prior research "
+    correct: false
+  - answer: "d.\tResearchers try to do the most complicated or difficult version of the research study because these are likely to be more impactful"
+    correct: false
+- question: "3.\tWhat type of paper is described here: The paper deals with the correlation between growth mindset and college success. The paper summarizes 36 previous research reports about this correlation. In the paper, the authors calculate a statistical summary, based on all of the previous findings, estimating the overall correlation. "
+  answers:
+  - answer: "a.\tAn empirical research report"
+    correct: false
+  - answer: "b.\tA theoretical article"
+    correct: false
+  - answer: "c.\tA meta-analysis"
+    correct: true
+  - answer: "d.\tA peer-review"
+    correct: false
+- question: "4.\tWhich of these steps comes first in the scientific method? "
+  answers:
+  - answer: "a.\tChoose a research design"
+    correct: false
+  - answer: "b.\tDevelop a research question"
+    correct: true
+  - answer: "c.\tForm operational definitions"
+    correct: false
+  - answer: "d.\tAnalyze your data"
+    correct: false
+- question: "5.\tPrior to an exam, a researcher gave 30 participants caffeinated coffee and 30 participants decaf (control) coffee. She predicted that consuming caffeine prior to an exam would cause an improvement in exam scores. Which of the following represents the Independent Variable? "
+  answers:
+  - answer: "a.\tThe students"
+    correct: false
+  - answer: "b.\tThe caffeine manipulation"
+    correct: true
+  - answer: "c.\tThe exam scores"
+    correct: false
+  - answer: "d.\tThe improvement in exam scores because of caffeine"
+    correct: false
+- question: "6.\tWhich hypothesis doesn’t make a “positive claim” and therefore cannot be tested in traditional hypothesis tests?"
+  answers:
+  - answer: "a.\tCaffeine will have beneficial effect on exam scores"
+    correct: false
+  - answer: "b.\tCaffeine will have a detrimental effect on exam scores"
+    correct: false
+  - answer: "c.\tCaffeine will have a beneficial effect on exam scores but only for people who are sleep deprived"
+    correct: false
+  - answer: "d.\tCaffeine will have no real effect on exam scores "
+    correct: true
+- question: "7.\tWhich of the following best differentiates hypotheses and theories, according to the text?"
+  answers:
+  - answer: "a.\tHypotheses are predictions, whereas theories are explanations"
+    correct: true
+  - answer: "b.\tTheories are predictions, whereas hypotheses are explanations"
+    correct: false
+  - answer: "c.\tHypotheses are guesses with no data, whereas theories have been proven by data"
+    correct: false
+  - answer: "d.\tTheories are guesses with no data, whereas hypotheses have been proven by data"
+    correct: false
+- question: "8.\tWhich of the following is TRUE of nonexperimental research?"
+  answers:
+  - answer: "a.\tIt involves measuring variables rather than manipulating them"
+    correct: true
+  - answer: "b.\tIt is not scientific research"
+    correct: false
+  - answer: "c.\tIt can effectively lead to valid causal conclusions"
+    correct: false
+  - answer: "d.\tAll of the above"
+    correct: false
+- question: "9.\tWhich of the following is NOT an example of an operational definition of a psychological construct?"
+  answers:
+  - answer: "a.\tA child psychologist administers an intelligence test to assess the cognitive development of children"
+    correct: false
+  - answer: "b.\tA manager has her employees complete a personality inventory to measure their levels of extraversion and other traits "
+    correct: false
+  - answer: "c.\tA researcher argues that, theoretically, there are three completely different “types” of happiness"
+    correct: true
+  - answer: "d.\tAn educational psychologist gathers high school GPA scores to serve as a measurement of school performance"
+    correct: false
+- question: "10.\tLaboratory research tends to be higher in _______ validity, but field research tends to be higher in ______ validity"
+  answers:
+  - answer: "a.\tIndependent; Dependent"
+    correct: false
+  - answer: "b.\tDependent; Independent"
+    correct: false
+  - answer: "c.\tExternal; Internal"
+    correct: false
+  - answer: "d.\tInternal; External"
+    correct: true
+- question: "11.\tTypically in psychological research, details about the sample of the study are presented, including the percentage of participants in each gender category, and the mean and standard deviation of their ages. What type of statistics are used for this? "
+  answers:
+  - answer: "a.\tInferential statistics"
+    correct: false
+  - answer: "b.\tDescriptive statistics"
+    correct: true
+  - answer: "c.\tCorrelational statistics"
+    correct: false
+  - answer: "d.\tThere are no statistics involved here"
+    correct: false
+- question: "12.\tPersonality researchers tend not to use _______ variables, which treat traits like extraversion as a binary (extravert vs. introvert). Instead, they typically allow each person to have a score along a spectrum from more introverted to more extraverted. "
+  answers:
+  - answer: "a.\tOperational"
+    correct: false
+  - answer: "b.\tExtraneous"
+    correct: false
+  - answer: "c.\tQuantitative"
+    correct: false
+  - answer: "d.\tCategorical"
+    correct: true
+- question: "13.\tWhich of the following can we conclude if the result of our study is found to be “statistically significant”? "
+  answers:
+  - answer: "a.\tThe result is unlikely to be due to random error"
+    correct: true
+  - answer: "b.\tThe result is likely due to random error"
+    correct: false
+  - answer: "c.\tThe result proves our hypothesis"
+    correct: false
+  - answer: "d.\tThe result disproves our hypothesis"
+    correct: false
 slug: 13-drawing-conclusions-and-reporting-the-results
 title: 13. Drawing Conclusions and Reporting the Results
 ---

@@ -47,10 +47,131 @@ cri:
 - question: How should researchers proceed if their newly collected data cast doubt on the reliability or validity of their measure?
   answer: Researchers should investigate potential issues with the measure, administration, conceptual definition, or experimental manipulation to determine the cause of the doubt.
   slug: Evaluating-the-Measure-896t
-order: 14
+order: 20
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement
+quiz:
+- question: "1.\tWhich of the following best establishes validity when it comes to a psychological measurement?"
+  answers:
+  - answer: "a.\tThe measure represents the variable the researcher intends to measure "
+    correct: true
+  - answer: "b.\tThe measure produces stable and consistent results"
+    correct: false
+  - answer: "c.\tThe measure produces results that are consistent with the hypothesis"
+    correct: false
+  - answer: "d.\tThe measure easy to understand and implement"
+    correct: false
+- question: "2.\tTo establish the reliability of a measure of personality, a researcher will often have individuals complete the questionnaire on two separate occasions to make sure their responses are similar across time. What type of reliability is demonstrated here? "
+  answers:
+  - answer: "a.\tSplit-half reliability"
+    correct: false
+  - answer: "b.\tInternal reliability"
+    correct: false
+  - answer: "c.\tTest-retest reliability"
+    correct: true
+  - answer: "d.\tInter-rater reliability"
+    correct: false
+- question: "3.\tTwo observers record similar observations on a behavioral rating scale for a group of children they are watching. The researchers have established what kind of reliability?"
+  answers:
+  - answer: "a.\tSplit-half reliability"
+    correct: false
+  - answer: "b.\tInternal reliability"
+    correct: false
+  - answer: "c.\tTest-retest reliability"
+    correct: false
+  - answer: "d.\tInter-rater reliability"
+    correct: true
+- question: "4.\tYou produce a new measure of emotional intelligence, and you find that this new measure does not correlate with cognitive tests of intelligence, suggesting to you that these constructs are different. What type of validity have you demonstrated?"
+  answers:
+  - answer: "a.\tFace validity"
+    correct: false
+  - answer: "b.\tContent validity"
+    correct: false
+  - answer: "c.\tCriterion validity"
+    correct: false
+  - answer: "d.\tDiscriminant validity"
+    correct: true
+- question: "5.\tA teacher separates students into three groups based on their level of performance on a math test (low, medium, and high performance), and plans to teach differently to the three groups. What scale of measurement is being used to create the three groups of students? "
+  answers:
+  - answer: "a.\tNominal"
+    correct: false
+  - answer: "b.\tOrdinal"
+    correct: true
+  - answer: "c.\tInterval"
+    correct: false
+  - answer: "d.\tRatio"
+    correct: false
+- question: "6.\tWhich of the following is true about psychological or mental “constructs” like self-esteem or happiness?"
+  answers:
+  - answer: "a.\tThey can be measured directly"
+    correct: false
+  - answer: "b.\tThey cannot be measured at all"
+    correct: false
+  - answer: "c.\tThey can be measured indirectly via operational definitions"
+    correct: true
+  - answer: "d.\tThey don’t exist because they are all in your mind"
+    correct: false
+- question: "7.\tFor which type of scale is it impossible to calculate a mean and standard deviation? "
+  answers:
+  - answer: "a.\tNominal"
+    correct: true
+  - answer: "b.\tInterval"
+    correct: false
+  - answer: "c.\tRatio"
+    correct: false
+  - answer: "d.\tYou can calculate a mean and standard deviation for all of these"
+    correct: false
+- question: "8.\tWhich of the following demonstrates an example of socially desirable responding on a self-reported measure?"
+  answers:
+  - answer: "a.\tA participant falsely claims that they have experienced hallucinations because they want to mess with the researchers"
+    correct: false
+  - answer: "b.\tA participant falsely claims that they have never smoked cigarettes because they think that this is the socially appropriate response"
+    correct: true
+  - answer: "c.\tA participant provides false responses by randomly clicking buttons to get through a survey more quickly"
+    correct: false
+  - answer: "d.\tAll of the above"
+    correct: false
+- question: "9.\tWhich of the following is a “behavioral” measure of amount of sleep?"
+  answers:
+  - answer: "a.\tParticipant complete a survey reporting how much they slept on each of the previous 7 days"
+    correct: false
+  - answer: "b.\tParticipants are observed for 7 days and the time they go to bed and when they wake up is recorded each day"
+    correct: false
+  - answer: "c.\tParticipants wear a sleep tracker for 7 days, which measures their heart rate, body temperature, and breathing rate to indicate how much they sleep"
+    correct: true
+  - answer: "d.\tParticipants are provided with melatonin which may help them sleep more"
+    correct: false
+- question: "10.\tIn terms of operational definitions, what does it mean to say that researchers use “converging operations” in the measurement of psychological constructs?"
+  answers:
+  - answer: "a.\tThey use more than one operational definition to get a better estimate of the construct"
+    correct: true
+  - answer: "b.\tThey survey different researchers about the measurements they use to converge on the most preferred measurement"
+    correct: false
+  - answer: "c.\tThey try out different types of measurement and converge on the true one though evidence"
+    correct: false
+  - answer: "d.\tThey observe behaviors for enough time that the observations converge on a reliable conclusion"
+    correct: false
+- question: "11.\tA researcher believes that the construct of “personality” involves 5 separate traits (Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism). They then create a measure of personality that only includes a single item (“do you have a good personality?”) and doesn’t cover that whole construct. What is the primary issue with this measurement?"
+  answers:
+  - answer: "a.\tIt lacks reliability"
+    correct: false
+  - answer: "b.\tIt lacks content validity"
+    correct: true
+  - answer: "c.\tIt lacks criterion validity"
+    correct: false
+  - answer: "d.\tIt lacks discriminant validity"
+    correct: false
+- question: "12.\tWhen conducting your own study, what does your textbook recommend about using existing measures, rather than creating your own?"
+  answers:
+  - answer: "a.\tUsing existing measures is not recommended"
+    correct: false
+  - answer: "b.\tUsing existing measures is not allowed"
+    correct: false
+  - answer: "c.\tUsing existing measures is required"
+    correct: false
+  - answer: "d.\tUsing existing measures is usually a good idea"
+    correct: true
 slug: 21-practical-strategies-for-psychological-measurement
 title: 21. Practical Strategies for Psychological Measurement
 ---

@@ -44,10 +44,11 @@ cri:
 - question: What significant event led to President Bill Clinton formally apologizing on behalf of the US government in 1997?
   answer: The Tuskegee Syphilis Study where poor African American men were observed without being treated for syphilis.
   slug: Moral-Principles-872t
-order: 5
+order: 14
 parent:
   title: III. Research Ethics
   slug: iii-research-ethics
+quiz: null
 slug: 15-moral-foundations-of-ethical-research
 title: 15. Moral Foundations of Ethical Research
 ---

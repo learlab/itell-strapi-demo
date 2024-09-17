@@ -34,10 +34,135 @@ cri:
 - question: Why is a scientific approach to clinical psychology considered essential?
   answer: A scientific approach to clinical psychology is essential for diagnosing and treating psychological problems based on accurate knowledge and effective treatments.
   slug: Clinical-Psychologists-794t
-order: 4
+order: 5
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
+quiz:
+- question: "1.\tWhich of the following is necessary for psychology to be considered a science? "
+  answers:
+  - answer: "a.\tIt exclusively generates accurate findings"
+    correct: false
+  - answer: "b.\tIt uses neurological methods like fMRI to directly measure the mind"
+    correct: false
+  - answer: "c.\tIt relies on systematic empirical observation to test theories"
+    correct: true
+  - answer: "d.\tAll of the above"
+    correct: false
+- question: "2.\tWhat is pseudoscience?"
+  answers:
+  - answer: "a.\tA study with poor design"
+    correct: false
+  - answer: "b.\tComing to a conclusion based on logic or emotion, not relying on the scientific method"
+    correct: false
+  - answer: "c.\tA popular press article that reports on other people's work"
+    correct: false
+  - answer: "d.\tClaims that are intended to sound scientific, but are not based on scientific research or evidence"
+    correct: true
+- question: "3.\tWhich of the following is not an empirical question that could be addressed by scientific research? "
+  answers:
+  - answer: "a.\tWhat is the relationship between interest and learning? "
+    correct: false
+  - answer: "b.\tIs it morally justified for a psychologist to diagnose a public figure? "
+    correct: true
+  - answer: "c.\tIs cognitive-behavioral therapy an effective treatment for social anxiety? "
+    correct: false
+  - answer: "d.\tDo more people drink Coke or Pepsi? "
+    correct: false
+- question: "4.\tWhich of the following accurately describes replication, which is part of science as public knowledge? "
+  answers:
+  - answer: "a.\tOther researchers read the research and use it to inform their own research and practice."
+    correct: false
+  - answer: "b.\tOther researchers review the work to determine whether it should be published and released publicly"
+    correct: false
+  - answer: "c.\tOther researchers attempt to repeat the same study, potentially correcting any errors in the initial findings"
+    correct: true
+  - answer: "d.\tAll of the above"
+    correct: false
+- question: "5.\tYour friend tells you that you should date someone you both just met. When you ask why you should date that person, your friend says it feels like you would be a good match. What method of knowing is your friend using? "
+  answers:
+  - answer: "a.\tIntuition"
+    correct: true
+  - answer: "b.\tRationalism"
+    correct: false
+  - answer: "c.\tAuthority"
+    correct: false
+  - answer: "d.\tEmpiricism"
+    correct: false
+  - answer: "e.\tThe scientific method"
+    correct: false
+- question: "6.\tWe learn a lot of information from what we read in textbooks and hear from professors, and we trust these sources to provide good information. According to the text, which \"method of knowing\" does this represent? "
+  answers:
+  - answer: "a.\tIntuition"
+    correct: false
+  - answer: "b.\tRationalism"
+    correct: false
+  - answer: "c.\tAuthority"
+    correct: true
+  - answer: "d.\tEmpiricism"
+    correct: false
+  - answer: "e.\tThe scientific method"
+    correct: false
+- question: "7.\tOne concern about making conclusions based on our intuitive beliefs and personal experience is that we may focus on cases or information consistent with our beliefs and ignore cases or information inconsistent with our beliefs. What is this bias called?  "
+  answers:
+  - answer: "a.\tConfirmation bias"
+    correct: true
+  - answer: "b.\tHeuristic bias"
+    correct: false
+  - answer: "c.\tHindsight bias"
+    correct: false
+  - answer: "d.\tBelief bias"
+    correct: false
+- question: "8.\tImagine someone claims that holding a certain kind of crystal for an hour a day will relieve depression symptoms. Which of the following responses represents scientific skepticism based on this claim?"
+  answers:
+  - answer: "a.\t“Let’s assume this works, and start doing it. Crystals are natural, so they probably have some benefit.” "
+    correct: false
+  - answer: "b.\t“Nothing can help with depression because it’s in the mind.”"
+    correct: false
+  - answer: "c.\t“We could never know what would help with depression because everyone is unique and responds differently.”"
+    correct: false
+  - answer: "d.\t“Why is it that crystals are supposed to relieve depression? Is there any scientific evidence that this is true?”"
+    correct: true
+- question: "9.\tYour book describes that clinical practice often involves “empirically supported treatments” like cognitive behavioral therapy. What does it mean to say these treatments are empirically supported? "
+  answers:
+  - answer: "a.\tThe treatments have been shown through systematic observation to be more effective than a control"
+    correct: true
+  - answer: "b.\tThe treatments have been observed to be effective in the clinician’s own personal experience and expertise"
+    correct: false
+  - answer: "c.\tThe treatments are experimental in nature, and we’re not sure if they will work or not"
+    correct: false
+  - answer: "d.\tThe treatments are empirically supported if and only if they work in a specific case to which the clinician tries to apply them"
+    correct: false
+- question: "10.\tWhich of the following statements best describes the difference between basic and applied research in psychology?"
+  answers:
+  - answer: "a.\tBasic research counts as scientific research, whereas applied research does not."
+    correct: false
+  - answer: "b.\tApplied research counts as scientific research, whereas basic research does not. "
+    correct: false
+  - answer: "c.\t Basic research is focused on solving practical problems, while applied research seeks a deeper understanding of psychology."
+    correct: false
+  - answer: "d.\tApplied research is focused on solving practical problems, while basic research seeks a deeper understanding of psychology."
+    correct: true
+- question: "11.\tSome people who believe in pseudoscience like psychic powers claim that you can’t observe these powers because they don’t work when someone is observing. What makes a claim like this non-scientific, according to the text?"
+  answers:
+  - answer: "a.\tIt is false"
+    correct: false
+  - answer: "b.\tIt is an opinion"
+    correct: false
+  - answer: "c.\tIt is unfalsifiable"
+    correct: true
+  - answer: "d.\tNothing. This is a scientific claim."
+    correct: false
+- question: "12.\tMajor research projects have sought to explore the risk factors for conditions like Alzheimer’s disease by measuring dozens of factors (e.g., genetics, education level, diet, etc.) for years to see who is more likely to develop the condition later on. Which purpose of science is this research primarily focused on? "
+  answers:
+  - answer: "a.\tTo describe"
+    correct: false
+  - answer: "b.\tTo predict"
+    correct: true
+  - answer: "c.\tTo explain"
+    correct: false
+  - answer: "d.\tTo control"
+    correct: false
 slug: 5-experimental-and-clinical-psychologists
 title: 5. Experimental and Clinical Psychologists
 ---

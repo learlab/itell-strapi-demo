@@ -8,10 +8,11 @@ chunks:
   slug: References-252pt
   type: plain
 cri: []
-order: 9
+order: 6
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method
+quiz: null
 slug: overview-of-the-scientific-method
 title: Overview of the Scientific Method
 ---

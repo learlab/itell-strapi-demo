@@ -8,10 +8,11 @@ chunks:
   slug: References-250pt
   type: plain
 cri: []
-order: 8
+order: 0
 parent:
   title: I. The Science of Psychology
   slug: i-the-science-of-psychology
+quiz: null
 slug: the-science-of-psychology
 title: The Science of Psychology
 ---
