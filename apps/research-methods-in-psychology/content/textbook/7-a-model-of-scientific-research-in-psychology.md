@@ -8,8 +8,8 @@ chunks:
 - title: Continue
   slug: Continue-717t
   type: regular
-- title: Understanding driver distration
-  slug: Understanding-driver-distration-46t
+- title: Understanding driver distraction
+  slug: Understanding-driver-distraction-46t
   type: video
 - title: Continue
   slug: Continue-719t
@@ -23,7 +23,7 @@ cri:
   slug: Continue-717t
 - question: What are some of the risks associated with using cell phones while driving according to David Strayer's research?
   answer: If you talk on a cell phone while driving, you are four times more likely to be involved in a crash, and if you text, you are eight times more likely to be involved in a crash.
-  slug: Understanding-driver-distration-46t
+  slug: Understanding-driver-distraction-46t
 - question: What did researchers find regarding the effect of cell phone use on driving performance?
   answer: Researchers found that people's ability to detect road hazards, reaction time, and maintain control of the vehicle were all impaired by cell phone use.
   slug: Continue-719t
@@ -48,11 +48,11 @@ Figure 2.1 presents a simple model of scientific research in psychology. The res
 
 The research by Mehl and his colleagues is described nicely by this model. Their research question—whether women are more talkative than men—was suggested to them both by people’s stereotypes and by claims published in the research literature about the relative talkativeness of women and men. When they checked the research literature, however, they found that this question had not been adequately addressed in scientific studies. They then conducted a careful empirical study, analyzed the results (finding very little difference between women and men), formed their conclusions, and published their work so that it became part of the research literature. The publication of their article is not the end of the story, however, because their work suggests many new questions (about the reliability of the result, about potential cultural differences, etc.) that will likely be taken up by them and by other researchers inspired by their work.
 
-## Understanding driver distration {#Understanding-driver-distration-46t} 
+## Understanding driver distraction {#Understanding-driver-distraction-46t} 
 
 
 
-<i-youtube-video src="https://www.youtube.com/watch?v=XToWVxS_9lA" />
+<i-youtube videoid="XToWVxS_9lA" height={400} width="100%" />
 
 ## Continue {#Continue-719t .sr-only} 
 

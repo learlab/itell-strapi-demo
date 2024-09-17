@@ -64,6 +64,7 @@ import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
+import { PageQuizModal } from "../page-quiz-modal";
 import { SummaryFeedback, SummaryFeedbackDetails } from "./summary-feedback";
 import {
 	SummaryInput,
@@ -429,6 +430,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					{isNextPageVisible && page.nextPageSlug && (
 						<NextPageButton pageSlug={page.nextPageSlug} />
 					)}
+					{isNextPageVisible && page.quiz && <PageQuizModal quiz={page.quiz} />}
 					{stairsQuestion && (
 						<Button
 							variant={"outline"}
@@ -473,7 +475,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							pending={isPending}
 						>
 							<span className="inline-flex items-center gap-2">
-								<SendHorizontalIcon className="size-4" />
+								<SendHorizontalIcon className="size-3" />
 								Submit
 							</span>
 						</Button>

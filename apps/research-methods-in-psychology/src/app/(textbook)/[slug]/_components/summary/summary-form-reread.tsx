@@ -266,7 +266,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 							type="submit"
 						>
 							<span className="flex items-center gap-2">
-								<SendHorizontalIcon className="size-4" />
+								<SendHorizontalIcon className="size-3" />
 								Submit
 							</span>
 						</Button>

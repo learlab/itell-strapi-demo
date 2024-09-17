@@ -60,6 +60,10 @@ export const PageProvider = ({
 	);
 
 	const questions = useMemo(() => {
+		if (page.cri.length === 0) {
+			return {};
+		}
+
 		const chunkQuestion: ChunkQuestion = Object.fromEntries(
 			page.chunks.map((chunk) => [chunk, false]),
 		);

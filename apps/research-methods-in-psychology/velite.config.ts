@@ -60,6 +60,19 @@ const pages = defineCollection({
 						.optional(),
 				}),
 			),
+			quiz: s
+				.array(
+					s.object({
+						question: s.string(),
+						answers: s.array(
+							s.object({
+								answer: s.string(),
+								correct: s.boolean(),
+							}),
+						),
+					}),
+				)
+				.nullable(),
 			excerpt: s.excerpt(),
 			last_modified: timestamp(),
 			cri: s.array(

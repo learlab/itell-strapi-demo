@@ -156,12 +156,14 @@ export const QuestionBoxStairs = ({
 
 	if (!state.show) {
 		return (
-			<Button
-				variant={"outline"}
-				onClick={() => setState((state) => ({ ...state, show: true }))}
-			>
-				Reveal optional question
-			</Button>
+			<div className="my-6">
+				<Button
+					variant={"outline"}
+					onClick={() => setState((state) => ({ ...state, show: true }))}
+				>
+					Reveal optional question
+				</Button>
+			</div>
 		);
 	}
 

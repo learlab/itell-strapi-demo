@@ -18,7 +18,7 @@ type Props = {
 
 export const TextbookTocList = ({ page, pages }: Props) => {
 	const [activePage, setActivePage] = useOptimistic(page.slug);
-
+	console.log(pages[pages.length - 1]);
 	return (
 		<nav aria-label="textbook primary">
 			<a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
