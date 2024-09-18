@@ -8,6 +8,7 @@ import {
 	useQuestionStore,
 	useQuizStore,
 } from "@/components/provider/page-provider";
+import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -91,17 +92,14 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			const input = String(formData.get("input")).replaceAll("\u0000", "");
 
 			saveSummaryLocal(pageSlug, input);
-			requestBodyRef.current = JSON.stringify({
+			const body = {
 				summary: input,
 				page_slug: pageSlug,
-			});
+			};
+			requestBodyRef.current = JSON.stringify(body);
 			console.log("requestBody", requestBodyRef.current);
-			const response = await fetch("/api/itell/score/summary", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: requestBodyRef.current,
+			const response = await apiClient.api.summary.$post({
+				json: body,
 			});
 			const json = await response.json();
 			const parsed = SummaryResponseSchema.safeParse(json);

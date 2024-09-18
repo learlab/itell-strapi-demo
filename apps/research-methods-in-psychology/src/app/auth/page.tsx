@@ -32,12 +32,12 @@ export const generateMetadata = async ({
 		return {
 			title,
 			description,
-			metadataBase: new URL(env.HOST),
+			metadataBase: new URL(env.NEXT_PUBLIC_HOST),
 			openGraph: {
 				title: `${title} | ${SiteConfig.title}`,
 				description,
 				type: "article",
-				url: `${env.HOST}/dashboard`,
+				url: `${env.NEXT_PUBLIC_HOST}/dashboard`,
 				images: [
 					{
 						url: "/og?dashboard=true",
@@ -56,7 +56,7 @@ export const generateMetadata = async ({
 			title: `${title} | ${SiteConfig.title}`,
 			description,
 			type: "article",
-			url: `${env.HOST}/auth`,
+			url: `${env.NEXT_PUBLIC_HOST}/auth`,
 			images: [
 				{
 					url: "/og?auth=true",

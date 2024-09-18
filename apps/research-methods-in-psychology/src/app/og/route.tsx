@@ -15,12 +15,12 @@ export const GET = async (req: Request) => {
 	const slug = url.searchParams.get("slug");
 
 	const header = isDashboard
-		? `${env.HOST}/dashboard`
+		? `${env.NEXT_PUBLIC_HOST}/dashboard`
 		: isAuth
-			? `${env.HOST}/auth`
+			? `${env.NEXT_PUBLIC_HOST}/auth`
 			: slug
-				? `${env.HOST}/${slug}`
-				: env.HOST;
+				? `${env.NEXT_PUBLIC_HOST}/${slug}`
+				: env.NEXT_PUBLIC_HOST;
 	const footer = isDashboard
 		? "Learning statistics"
 		: isAuth

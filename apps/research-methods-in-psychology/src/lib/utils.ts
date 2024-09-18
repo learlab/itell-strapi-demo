@@ -66,7 +66,7 @@ export const redirectWithSearchParams = (
 	path: string,
 	searchParams?: unknown,
 ) => {
-	const url = new URL(path, env.HOST);
+	const url = new URL(path, env.NEXT_PUBLIC_HOST);
 	if (isRecord(searchParams)) {
 		for (const key in searchParams) {
 			url.searchParams.append(key, String(searchParams[key]));

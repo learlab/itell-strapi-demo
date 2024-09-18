@@ -10,7 +10,6 @@ const server = z.object({
 	AZURE_CLIENT_ID: z.string(),
 	AZURE_CLIENT_SECRET: z.string(),
 	AZURE_TENANT_ID: z.string(),
-	HOST: z.string(),
 	NODE_ENV: z.enum(["development", "test", "production"]),
 	DATABASE_URL: z.string(),
 	ADMINS: z.string().optional(),
@@ -23,6 +22,7 @@ const server = z.object({
  */
 const client = z.object({
 	NEXT_PUBLIC_API_URL: z.string(),
+	NEXT_PUBLIC_HOST: z.string(),
 });
 
 /**
@@ -33,7 +33,6 @@ const client = z.object({
  */
 const processEnv = {
 	NODE_ENV: process.env.NODE_ENV,
-	HOST: process.env.HOST,
 	SCORE_API_URL: process.env.SCORE_API_URL,
 	DATABASE_URL: process.env.DATABASE_URL,
 	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -43,6 +42,7 @@ const processEnv = {
 	AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
 	ADMINS: process.env.ADMINS,
 	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+	NEXT_PUBLIC_HOST: process.env.NEXT_PUBLIC_HOST,
 	ITELL_API_KEY: process.env.ITELL_API_KEY,
 };
 

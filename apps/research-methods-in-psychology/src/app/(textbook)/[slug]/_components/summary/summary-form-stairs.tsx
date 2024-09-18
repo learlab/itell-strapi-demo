@@ -12,6 +12,7 @@ import {
 } from "@/components/provider/page-provider";
 
 import { Callout } from "@/components/ui/callout";
+import { apiClient } from "@/lib/api-client";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -135,20 +136,16 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			if (err) {
 				throw new Error("get focus time action", { cause: err });
 			}
-			const body = JSON.stringify({
+			const body = {
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
 				chat_history: getHistory(chatStore),
 				excluded_chunks: getExcludedChunks(questionStore),
-			});
-			requestBodyRef.current = body;
-			const response = await fetch("/api/itell/score/stairs", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body,
+			};
+			requestBodyRef.current = JSON.stringify(body);
+			const response = await apiClient.api.summary.stairs.$post({
+				json: body,
 			});
 
 			if (response.ok && response.body) {
@@ -162,7 +159,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
 					const chunk = decoder.decode(value, { stream: true });
-
 					if (chunkIndex === 0) {
 						const data = chunk
 							.trim()

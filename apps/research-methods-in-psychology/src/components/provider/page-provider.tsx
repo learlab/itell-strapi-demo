@@ -11,6 +11,7 @@ import {
 } from "@/lib/store/chat-store";
 import { Page } from "#content";
 
+import { apiClient } from "@/lib/api-client";
 import {
 	ChunkQuestion,
 	QuestionSnapshot,
@@ -206,19 +207,18 @@ export const useAddChat = () => {
 
 		try {
 			// init response message
-			const response = await fetch("/api/itell/chat", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
+			const response = await apiClient.api.chat.$post({
+				json: {
 					page_slug: pageSlug,
 					message: text,
 					history: getHistory(store),
 					current_chunk: currentChunk,
-				}),
+				},
 			});
 
+			if (!response.ok) {
+				throw new Error("Failed to fetch chat response");
+			}
 			store.send({ type: "setActive", id: null });
 
 			let data = {} as { text: string; context?: string[] };

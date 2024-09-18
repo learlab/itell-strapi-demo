@@ -3,9 +3,9 @@
 import { createQuestionAnswerAction } from "@/actions/question";
 import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
+import { apiClient } from "@/lib/api-client";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
-import { getQAScore } from "@/lib/question";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
@@ -72,13 +72,23 @@ export const QuestionBoxReread = ({
 			return;
 		}
 
-		const response = await getQAScore({
-			input,
-			chunk_slug: chunkSlug,
-			page_slug: pageSlug,
+		const response = await apiClient.api.cri.$post({
+			json: {
+				answer: input,
+				chunk_slug: chunkSlug,
+				page_slug: pageSlug,
+			},
 		});
+		if (!response.ok) {
+			setState((state) => ({
+				...state,
+				error: "Failed to evaluate answer, please try again later",
+			}));
+			return;
+		}
 
-		const score = response.score as QuestionScore;
+		const data = await response.json();
+		const score = data.score as QuestionScore;
 
 		store.send({ type: "finishChunk", chunkSlug, passed: false });
 

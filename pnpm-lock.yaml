@@ -827,6 +827,9 @@ importers:
       '@floating-ui/react':
         specifier: ^0.26.22
         version: 0.26.22(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@hono/zod-validator':
+        specifier: ^0.2.2
+        version: 0.2.2(hono@4.6.2)(zod@3.23.4)
       '@itell/constants':
         specifier: workspace:^
         version: link:../../packages/constants
@@ -3484,6 +3487,12 @@ packages:
     engines: {node: '>=14.6.0'}
     peerDependencies:
       react: '>=16.8.0'
+
+  '@hono/zod-validator@0.2.2':
+    resolution: {integrity: sha512-dSDxaPV70Py8wuIU2QNpoVEIOSzSXZ/6/B/h4xA7eOMz7+AarKTSGV8E6QwrdcCbBLkpqfJ4Q2TmBO0eP1tCBQ==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
 
   '@img/sharp-darwin-arm64@0.33.4':
     resolution: {integrity: sha512-p0suNqXufJs9t3RqLBO6vvrgr5OhgbWp76s5gTRvdmxmuv9E1rcaqGUsl3l4mKVmXPkTkTErXediAui4x+8PSA==}
@@ -15835,6 +15844,11 @@ snapshots:
       lodash: 4.17.21
       react: 18.3.1
       tinycolor2: 1.6.0
+
+  '@hono/zod-validator@0.2.2(hono@4.6.2)(zod@3.23.4)':
+    dependencies:
+      hono: 4.6.2
+      zod: 3.23.4
 
   '@img/sharp-darwin-arm64@0.33.4':
     optionalDependencies:
