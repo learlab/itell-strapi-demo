@@ -15,7 +15,6 @@ export const TextbookComponents = {
 	"i-accordion-item": AccordionItem,
 	"i-steps": Steps,
 	"i-youtube": (props: { videoid: string }) => {
-		console.log(props);
 		return <YoutubeVideo videoid={props.videoid} />;
 	},
 };

@@ -6,7 +6,7 @@ import { DelayMessage } from "@/components/delay-message";
 import {
 	useChunks,
 	useQuestionStore,
-	useSummaryStore,
+	useQuizStore,
 } from "@/components/provider/page-provider";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -39,7 +39,6 @@ import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-import { PageQuizModal } from "../page-quiz-modal";
 import {
 	SummaryInput,
 	getSummaryLocal,
@@ -56,7 +55,7 @@ type Props = {
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.slug;
 	const prevInput = useRef<string | undefined>();
-	const summaryStore = useSummaryStore();
+	const quizStore = useQuizStore();
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const questionStore = useQuestionStore();
@@ -143,7 +142,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			}
 
 			if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
-				summaryStore.send({
+				quizStore.send({
 					type: "toggleQuiz",
 				});
 				return;
@@ -236,7 +235,6 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	return (
 		<>
 			<PortalContainer portals={portals} />
-			<PageQuizModal pageSlug={pageSlug} quiz={page.quiz} />
 			<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
 				<div role="status">
 					{finished && page.nextPageSlug && (

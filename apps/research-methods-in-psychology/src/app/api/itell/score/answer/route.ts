@@ -25,5 +25,7 @@ export async function POST(req: Request) {
 	if (response.ok) {
 		return new Response(response.body);
 	}
-	return new Response("Failed to fetch answer response", { status: 500 });
+	return new Response(response.body, {
+		status: response.status,
+	});
 }

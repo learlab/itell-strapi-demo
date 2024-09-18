@@ -1,9 +1,12 @@
 "use client";
 
-import { useSummaryStore } from "@/components/provider/page-provider";
+import {
+	useQuizStore,
+	useSummaryStore,
+} from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
 import { isLastPage } from "@/lib/pages";
-import { SelectQuizOpen } from "@/lib/store/summary-store";
+import { SelectQuizOpen } from "@/lib/store/quiz-store";
 import {
 	Dialog,
 	DialogContent,
@@ -19,13 +22,14 @@ export const PageQuizModal = ({
 	quiz,
 	pageSlug,
 }: { quiz: Page["quiz"]; pageSlug: string }) => {
-	const store = useSummaryStore();
-	const quizOpen = useSelector(store, SelectQuizOpen);
+	const quizStore = useQuizStore();
+	const summaryStore = useSummaryStore();
+	const quizOpen = useSelector(quizStore, SelectQuizOpen);
 
 	return (
 		<Dialog
 			open={quizOpen}
-			onOpenChange={() => store.send({ type: "toggleQuiz" })}
+			onOpenChange={() => quizStore.send({ type: "toggleQuiz" })}
 		>
 			{/* <DialogTrigger asChild>
 				<Button variant={"outline"} className="flex items-center gap-2">
@@ -49,8 +53,8 @@ export const PageQuizModal = ({
 					quiz={quiz}
 					pageSlug={pageSlug}
 					afterSubmit={() => {
-						store.send({ type: "toggleQuiz" });
-						store.send({
+						quizStore.send({ type: "toggleQuiz" });
+						summaryStore.send({
 							type: "finish",
 							isNextPageVisible: !isLastPage(pageSlug),
 							input: "",

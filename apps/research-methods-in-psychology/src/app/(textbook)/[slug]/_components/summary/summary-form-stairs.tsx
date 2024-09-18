@@ -7,6 +7,7 @@ import { DelayMessage } from "@/components/delay-message";
 import {
 	useChatStore,
 	useQuestionStore,
+	useQuizStore,
 	useSummaryStore,
 } from "@/components/provider/page-provider";
 
@@ -95,6 +96,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const chatStore = useChatStore();
 	const questionStore = useQuestionStore();
 	const summaryStore = useSummaryStore();
+	const quizStore = useQuizStore();
 
 	// states
 	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
@@ -257,7 +259,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				if (data.canProceed) {
 					if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
-						summaryStore.send({
+						quizStore.send({
 							type: "toggleQuiz",
 						});
 						return;
@@ -422,7 +424,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	return (
 		<>
 			<PortalContainer portals={portals} />
-			<PageQuizModal quiz={page.quiz} pageSlug={pageSlug} />
 			<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
 				{feedback && (
 					<SummaryFeedback

@@ -6,6 +6,7 @@ import { Errorbox } from "@itell/ui/callout";
 import { User } from "lucia";
 import { Suspense } from "react";
 import { PageQuiz } from "./page-quiz";
+import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
@@ -73,6 +74,8 @@ export const PageAssignments = async ({
 					</div>
 				</>
 			)}
+
+			<PageQuizModal pageSlug={pageSlug} quiz={page.quiz} />
 		</section>
 	);
 };

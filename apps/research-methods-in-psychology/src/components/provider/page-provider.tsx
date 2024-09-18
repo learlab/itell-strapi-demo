@@ -17,6 +17,7 @@ import {
 	QuestionStore,
 	createQuestionStore,
 } from "@/lib/store/question-store";
+import { QuizStore, createQuizStore } from "@/lib/store/quiz-store";
 import { SummaryStore, createSummaryStore } from "@/lib/store/summary-store";
 import { reportSentry } from "@/lib/utils";
 import { useLocalStorage } from "@itell/core/hooks";
@@ -44,6 +45,7 @@ type State = {
 	questionStore: QuestionStore;
 	chatStore: ChatStore;
 	summaryStore: SummaryStore;
+	quizStore: QuizStore;
 };
 const PageContext = createContext<State>({} as State);
 
@@ -116,12 +118,18 @@ export const PageProvider = ({
 		summaryStoreRef.current = createSummaryStore({ pageStatus });
 	}
 
+	const quizStoreRef = useRef<QuizStore>();
+	if (!quizStoreRef.current) {
+		quizStoreRef.current = createQuizStore();
+	}
+
 	return (
 		<PageContext.Provider
 			value={{
 				questionStore: questionStoreRef.current,
 				chatStore: chatStoreRef.current,
 				summaryStore: summaryStoreRef.current,
+				quizStore: quizStoreRef.current,
 				chunks: slugs,
 				condition,
 			}}
@@ -154,6 +162,11 @@ export const useChatStore = () => {
 export const useQuestionStore = () => {
 	const value = useContext(PageContext);
 	return value.questionStore;
+};
+
+export const useQuizStore = () => {
+	const value = useContext(PageContext);
+	return value.quizStore;
 };
 
 export const useAddChat = () => {

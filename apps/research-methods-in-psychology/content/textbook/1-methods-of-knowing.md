@@ -30,8 +30,8 @@ cri:
 - question: What are some examples of authority figures mentioned in the passage?
   answer: Parents, the media, doctors, Priests and other religious authorities, the government, and professors.
   slug: Authority-753t
-- question: Currently being generated...
-  answer: Currently being generated...
+- question: What is the potential issue with using rationalism as a method to acquire knowledge?
+  answer: If the premises are wrong or there is an error in logic, the conclusion will not be valid.
   slug: Rationalism-754t
 - question: What is systematic empiricism?
   answer: Structured observations that form the basis of the scientific method.

@@ -8,7 +8,7 @@ chunks:
   slug: References-263pt
   type: plain
 cri: []
-order: 21
+order: 14
 parent:
   title: III. Research Ethics
   slug: iii-research-ethics
