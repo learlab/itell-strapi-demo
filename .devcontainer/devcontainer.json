@@ -1,0 +1,17 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "Node.js & TypeScript",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
+	"runArgs": [
+		"--env-file",
+		".env"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {}
+	},
+	// Install pnpm package manager and use it to install dependencies.
+	"postCreateCommand": "wget -qO- https://get.pnpm.io/install.sh | ENV=$HOME/.bashrc SHELL=$(which bash) bash - && pnpm install"
+}
