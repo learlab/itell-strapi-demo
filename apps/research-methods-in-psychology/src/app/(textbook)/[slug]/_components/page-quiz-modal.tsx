@@ -1,43 +1,62 @@
 "use client";
 
-import { Button } from "@itell/ui/button";
+import { useSummaryStore } from "@/components/provider/page-provider";
+import { isProduction } from "@/lib/constants";
+import { isLastPage } from "@/lib/pages";
+import { SelectQuizOpen } from "@/lib/store/summary-store";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@itell/ui/dialog";
-import { ScrollArea } from "@itell/ui/scroll-area";
-import { BookCheckIcon } from "lucide-react";
-import { useState } from "react";
+import { useSelector } from "@xstate/store/react";
 import { Page } from "#content";
 import { PageQuiz } from "./page-quiz";
 
-export const PageQuizModal = ({ quiz }: { quiz: Page["quiz"] }) => {
-	const [open, setOpen] = useState(false);
+export const PageQuizModal = ({
+	quiz,
+	pageSlug,
+}: { quiz: Page["quiz"]; pageSlug: string }) => {
+	const store = useSummaryStore();
+	const quizOpen = useSelector(store, SelectQuizOpen);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
+		<Dialog
+			open={quizOpen}
+			onOpenChange={() => store.send({ type: "toggleQuiz" })}
+		>
+			{/* <DialogTrigger asChild>
 				<Button variant={"outline"} className="flex items-center gap-2">
-					<BookCheckIcon className="size-3" />
+					<BookCheckIcon className="size-4" />
 					Quiz
 				</Button>
-			</DialogTrigger>
+			</DialogTrigger> */}
 			<DialogContent
 				className="max-w-4xl h-[80vh] overflow-y-auto"
-				canClose={false}
+				canClose={!isProduction}
 			>
 				<DialogHeader>
 					<DialogTitle>Quiz</DialogTitle>
 					<DialogDescription>
-						Test your knowledge by answering the following questions. When you
-						are finished, you will be able to finish assignments for this page
+						Test what you learned in this chapter by answering the following
+						questions. You will be able to go the next chapter after you finish
+						the quiz.
 					</DialogDescription>
 				</DialogHeader>
-				<PageQuiz quiz={quiz} />
+				<PageQuiz
+					quiz={quiz}
+					pageSlug={pageSlug}
+					afterSubmit={() => {
+						store.send({ type: "toggleQuiz" });
+						store.send({
+							type: "finish",
+							isNextPageVisible: !isLastPage(pageSlug),
+							input: "",
+						});
+					}}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

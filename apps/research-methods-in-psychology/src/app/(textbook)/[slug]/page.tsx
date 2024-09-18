@@ -107,6 +107,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<QuestionControl
 				userId={userId}
 				pageSlug={pageSlug}
+				hasAssignments={page.assignments.length > 0}
 				condition={userCondition}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} />}

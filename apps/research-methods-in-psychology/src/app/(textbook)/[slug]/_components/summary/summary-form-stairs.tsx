@@ -53,7 +53,6 @@ import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/button";
-import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
 import { ChatStairs } from "@textbook/chat-stairs";
 import { useSelector } from "@xstate/store/react";
@@ -257,28 +256,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				finishStage("Saving");
 
 				if (data.canProceed) {
-					if (isLastPage(pageSlug)) {
-						toast.info("You have finished the entire textbook!");
-					} else {
-						// check if we can already proceed to prevent excessive toasts
-						if (isNextPageVisible) {
-							const title = feedback?.isPassed
-								? "Good job summarizing 🎉"
-								: "You can now move on 👏";
-							toast(title, {
-								className: "toast",
-								description: "Move to the next page to continue reading",
-								duration: 5000,
-								action: page.nextPageSlug
-									? {
-											label: "Proceed",
-											onClick: () => {
-												router.push(makePageHref(page.nextPageSlug as string));
-											},
-										}
-									: undefined,
-							});
-						}
+					if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
+						summaryStore.send({
+							type: "toggleQuiz",
+						});
+						return;
 					}
 				}
 
@@ -305,6 +287,31 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		{ delayTimeout: 20000 },
 	);
 	const isPending = useDebounce(_isPending, 100);
+
+	useEffect(() => {
+		if (summaryResponseRef.current) {
+			if (isLastPage(pageSlug)) {
+				toast.info("You have finished the entire textbook!");
+			} else {
+				const title = feedback?.isPassed
+					? "Good job summarizing 🎉"
+					: "You can now move on 👏";
+				toast(title, {
+					className: "toast",
+					description: "Move to the next page to continue reading",
+					duration: 5000,
+					action: page.nextPageSlug
+						? {
+								label: "Proceed",
+								onClick: () => {
+									router.push(makePageHref(page.nextPageSlug as string));
+								},
+							}
+						: undefined,
+				});
+			}
+		}
+	}, [isNextPageVisible]);
 
 	useEffect(() => {
 		driverObj.setConfig({
@@ -415,6 +422,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	return (
 		<>
 			<PortalContainer portals={portals} />
+			<PageQuizModal quiz={page.quiz} pageSlug={pageSlug} />
 			<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
 				{feedback && (
 					<SummaryFeedback
@@ -430,7 +438,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					{isNextPageVisible && page.nextPageSlug && (
 						<NextPageButton pageSlug={page.nextPageSlug} />
 					)}
-					{isNextPageVisible && page.quiz && <PageQuizModal quiz={page.quiz} />}
 					{stairsQuestion && (
 						<Button
 							variant={"outline"}
@@ -438,7 +445,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						>
 							<span className="flex items-center gap-2">
 								<FileQuestionIcon className="size-4" />
-								See question
+								Reflection
 							</span>
 						</Button>
 					)}

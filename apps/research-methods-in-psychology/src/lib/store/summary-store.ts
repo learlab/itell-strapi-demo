@@ -1,7 +1,7 @@
 import { PageStatus } from "@/lib/page-status";
 import { ErrorType, SummaryResponse } from "@itell/core/summary";
 import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
-import produce from "immer";
+import { produce } from "immer";
 
 export type StairsQuestion = {
 	text: string;
@@ -21,6 +21,7 @@ export const createSummaryStore = ({
 			response: null as SummaryResponse | null,
 			stairsQuestion: null as StairsQuestion | null,
 			isNextPageVisible: pageStatus.unlocked,
+			quizOpen: false,
 		},
 		{
 			submit: (context) => {
@@ -44,6 +45,9 @@ export const createSummaryStore = ({
 				}
 				context.prevInput = event.input;
 			},
+			toggleQuiz: (context) => {
+				context.quizOpen = !context.quizOpen;
+			},
 		},
 	);
 };
@@ -59,3 +63,5 @@ export const SelectStairs: Selector<StairsQuestion | null> = (state) =>
 	state.context.stairsQuestion;
 export const SelectError: Selector<ErrorType | null> = (state) =>
 	state.context.error;
+export const SelectQuizOpen: Selector<boolean> = (state) =>
+	state.context.quizOpen;

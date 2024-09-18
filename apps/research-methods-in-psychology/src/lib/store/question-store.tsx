@@ -1,5 +1,5 @@
 import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
-import produce from "immer";
+import { produce } from "immer";
 import { Page } from "#content";
 import { PageStatus } from "../page-status";
 
