@@ -104,7 +104,11 @@ Probably the most common inspiration for new research ideas, however, is previou
 
 
 
-<i-youtube videoid="nXNztCLYgxc" height={400} width="100%" />
+<i-youtube videoid="nXNztCLYgxc" height={400} width="100%" >
+
+</i-youtube>
+
+
 
 ## Reviewing the Research Literature {#Reviewing-the-Research-Literature-721t} 
 
@@ -149,7 +153,11 @@ Depending on the vendor that provides the interface to PsycINFO, you may be able
 
 
 
-<i-youtube videoid="WTvQqU2oih8" height={400} width="100%" />
+<i-youtube videoid="WTvQqU2oih8" height={400} width="100%" >
+
+</i-youtube>
+
+
 
 ## Using Other Search Techniques {#Using-Other-Search-Techniques-727t} 
 
