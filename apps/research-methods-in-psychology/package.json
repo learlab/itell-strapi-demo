@@ -11,7 +11,7 @@
     "dependencies": {
         "@floating-ui/dom": "^1.6.8",
         "@floating-ui/react": "^0.26.22",
-        "@hono/zod-validator": "^0.2.2",
+        "@itell/api": "workspace:^",
         "@itell/constants": "workspace:^",
         "@itell/core": "workspace:^",
         "@itell/driver.js": "workspace:^",

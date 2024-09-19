@@ -1,4 +1,3 @@
-import { ApiType } from "@/app/api/[[...route]]/route";
 import { env } from "@/env.mjs";
-import { hc } from "hono/client";
-export const apiClient = hc<ApiType>(env.NEXT_PUBLIC_HOST);
+import { createApiClient } from "@itell/api";
+export const apiClient = createApiClient(env.NEXT_PUBLIC_HOST);

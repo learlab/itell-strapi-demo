@@ -1,0 +1,30 @@
+{
+    "name": "@itell/api",
+    "version": "0.1.0",
+    "description": "",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            }
+        }
+    },
+    "scripts": {
+        "build": "pnpm tsc"
+    },
+    "keywords": [],
+    "author": "Qiushi Yan <qiushi.yan@gmail.com> (https://github.com/qiushiyan)",
+    "license": "MIT",
+    "type": "module",
+    "dependencies": {
+        "@hono/zod-validator": "^0.2.2"
+    },
+    "devDependencies": {
+        "@itell/tsconfig": "workspace:^"
+    },
+    "peerDependencies": {
+        "hono": "^4.6.2",
+        "zod": "^3.22.2"
+    }
+}

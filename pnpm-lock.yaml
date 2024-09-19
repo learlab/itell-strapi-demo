@@ -827,9 +827,9 @@ importers:
       '@floating-ui/react':
         specifier: ^0.26.22
         version: 0.26.22(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@hono/zod-validator':
-        specifier: ^0.2.2
-        version: 0.2.2(hono@4.6.2)(zod@3.23.4)
+      '@itell/api':
+        specifier: workspace:^
+        version: link:../../packages/api
       '@itell/constants':
         specifier: workspace:^
         version: link:../../packages/constants
@@ -1017,6 +1017,22 @@ importers:
       typescript:
         specifier: 5.6.0-beta
         version: 5.6.0-beta
+
+  packages/api:
+    dependencies:
+      '@hono/zod-validator':
+        specifier: ^0.2.2
+        version: 0.2.2(hono@4.6.2)(zod@3.23.4)
+      hono:
+        specifier: ^4.6.2
+        version: 4.6.2
+      zod:
+        specifier: ^3.22.2
+        version: 3.23.4
+    devDependencies:
+      '@itell/tsconfig':
+        specifier: workspace:^
+        version: link:../tsconfig
 
   packages/constants:
     devDependencies:

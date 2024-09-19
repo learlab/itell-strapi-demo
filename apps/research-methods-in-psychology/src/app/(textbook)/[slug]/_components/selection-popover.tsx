@@ -20,10 +20,9 @@ type Props = {
 	user: User | null;
 };
 
-const abort = new AbortController();
-const { signal } = abort;
-
 export const SelectionPopover = ({ user, pageSlug }: Props) => {
+	const abort = new AbortController();
+	const { signal } = abort;
 	const { theme } = useTheme();
 	const store = useChatStore();
 	const open = useSelector(store, SelectOpen);
@@ -135,7 +134,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 		return () => {
 			abort.abort();
 		};
-	}, []);
+	}, [pageSlug]);
 
 	return (
 		state &&

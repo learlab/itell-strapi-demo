@@ -123,21 +123,19 @@ export const QuestionBoxReread = ({
 
 	if (!state.show) {
 		return (
-			<div className="my-6">
-				<Button
-					variant={"outline"}
-					onClick={() => setState((state) => ({ ...state, show: true }))}
-				>
-					Reveal optional question
-				</Button>
-			</div>
+			<Button
+				variant={"outline"}
+				onClick={() => setState((state) => ({ ...state, show: true }))}
+			>
+				Reveal optional question
+			</Button>
 		);
 	}
 
 	return (
 		<Card
 			className={cn(
-				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
+				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10 question-co",
 				state.status === StatusReread.ANSWERED ? "border-2 border-border" : "",
 			)}
 		>

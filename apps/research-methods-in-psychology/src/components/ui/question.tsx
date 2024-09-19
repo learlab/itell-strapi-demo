@@ -1,7 +1,7 @@
 "use client";
-import { QuestionBoxReread } from "@/app/(textbook)/[slug]/_components/question/question-box-reread";
-import { QuestionBoxSimple } from "@/app/(textbook)/[slug]/_components/question/question-box-simple";
 import { Condition } from "@/lib/constants";
+import { QuestionBoxReread } from "@textbook/question/question-box-reread";
+import { QuestionBoxSimple } from "@textbook/question/question-box-simple";
 import { QuestionBoxStairs } from "@textbook/question/question-box-stairs";
 import { useSelector } from "@xstate/store/react";
 import { useCondition, useQuestionStore } from "../provider/page-provider";
@@ -23,36 +23,32 @@ export const Question = ({ question, answer, chunkSlug, pageSlug }: Props) => {
 
 	if (!chunkStatus || !chunkStatus.hasQuestion) return null;
 
-	if (condition === Condition.STAIRS) {
-		return (
-			<QuestionBoxStairs
-				question={question}
-				answer={answer}
-				chunkSlug={chunkSlug}
-				pageSlug={pageSlug}
-			/>
-		);
-	}
-
-	if (condition === Condition.RANDOM_REREAD) {
-		return (
-			<QuestionBoxReread
-				question={question}
-				answer={answer}
-				chunkSlug={chunkSlug}
-				pageSlug={pageSlug}
-			/>
-		);
-	}
-
-	if (condition === Condition.SIMPLE) {
-		return (
-			<QuestionBoxSimple
-				question={question}
-				answer={answer}
-				chunkSlug={chunkSlug}
-				pageSlug={pageSlug}
-			/>
-		);
-	}
+	return (
+		<div className="question-container my-6">
+			{condition === Condition.STAIRS && (
+				<QuestionBoxStairs
+					question={question}
+					answer={answer}
+					chunkSlug={chunkSlug}
+					pageSlug={pageSlug}
+				/>
+			)}
+			{condition === Condition.RANDOM_REREAD && (
+				<QuestionBoxReread
+					question={question}
+					answer={answer}
+					chunkSlug={chunkSlug}
+					pageSlug={pageSlug}
+				/>
+			)}
+			{condition === Condition.SIMPLE && (
+				<QuestionBoxSimple
+					question={question}
+					answer={answer}
+					chunkSlug={chunkSlug}
+					pageSlug={pageSlug}
+				/>
+			)}
+		</div>
+	);
 };

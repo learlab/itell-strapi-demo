@@ -1,19 +1,14 @@
-import { Hono } from "hono";
+import { env } from "@/env.mjs";
+import { createApp } from "@itell/api";
+import { createFetchWithBearerToken } from "@itell/utils";
 import { handle } from "hono/vercel";
-import { chat } from "./chat";
-import { cri } from "./cri";
-import { summary } from "./summary";
 
 export const dynamic = "force-dynamic";
 
-const app = new Hono().basePath("/api");
-
-const routes = app
-	.route("/cri", cri)
-	.route("/chat", chat)
-	.route("/summary", summary);
-
-export type ApiType = typeof routes;
+const app = createApp({
+	apiUrl: env.NEXT_PUBLIC_API_URL,
+	fetcher: createFetchWithBearerToken(env.ITELL_API_KEY || ""),
+});
 
 export const GET = handle(app);
 export const POST = handle(app);
