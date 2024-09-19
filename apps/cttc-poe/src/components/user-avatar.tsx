@@ -1,4 +1,4 @@
-import { Avatar as BaseAvatar } from "@itell/ui/client";
+import { Avatar as BaseAvatar } from "@itell/ui/avatar";
 import { Avatar } from "./ui/avatar";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof BaseAvatar> {

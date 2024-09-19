@@ -1,4 +1,4 @@
-import { StatusButton } from "@itell/ui/client";
+import { StatusButton } from "@itell/ui/status-button";
 import { PencilIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 

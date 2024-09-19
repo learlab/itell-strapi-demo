@@ -2,9 +2,8 @@
 
 import { createEvent } from "@/lib/event/actions";
 import { LoginButton } from "@auth/auth-form";
+import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
-
-import { buttonVariants } from "@itell/ui/server";
 import { type AnimationProps, motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
 import { useConstructedResponse } from "../provider/page-provider";

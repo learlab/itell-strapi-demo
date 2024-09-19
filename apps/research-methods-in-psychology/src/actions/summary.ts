@@ -121,7 +121,48 @@ export const createSummaryAction = authedProcedure
 	});
 
 /**
- * Get summary current user, if summary id is not provided, return all summaries
+ * Get summary for class
+ */
+export const getSummariesClassAction = authedProcedure
+	.input(z.object({ classId: z.string(), pageSlug: z.string().optional() }))
+	.handler(async ({ input }) => {
+		return await getSummariesClassHandler(input.classId, input.pageSlug);
+	});
+export const getSummariesClassHandler = memoize(
+	async (classId: string, pageSlug?: string) => {
+		return await db
+			.select({
+				id: summaries.id,
+				text: summaries.text,
+				pageSlug: summaries.pageSlug,
+				isPassed: summaries.isPassed,
+				createdAt: summaries.createdAt,
+				updatedAt: summaries.updatedAt,
+			})
+			.from(summaries)
+			.leftJoin(users, eq(users.id, summaries.userId))
+			.where(
+				and(
+					eq(users.classId, classId),
+					pageSlug !== undefined ? eq(summaries.pageSlug, pageSlug) : undefined,
+				),
+			)
+			.orderBy(desc(summaries.updatedAt));
+	},
+	{
+		persist: false,
+		revalidateTags: (classId, pageSlug) => [
+			"get-summaries-class",
+			classId,
+			pageSlug ?? "",
+		],
+		log: isProduction ? undefined : ["dedupe", "datacache", "verbose"],
+		logid: "Get summaries class",
+	},
+);
+
+/**
+ * Get summary for current user, if summary id is not provided, return all summaries
  */
 export const getSummariesAction = authedProcedure
 	.input(z.object({ summaryId: z.number().optional() }))

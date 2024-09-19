@@ -1,7 +1,7 @@
 "use client";
 
 import { logout } from "@/lib/auth/actions";
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -10,7 +10,7 @@ import { ProlificForm } from "./prolific-form";
 export const AuthForm = () => {
 	return (
 		<div className="grid gap-4 px-4">
-			<ProlificForm />
+			{/* <ProlificForm /> */}
 			<div className="relative">
 				<div className="relative space-y-2 mx-auto text-sm text-center text-muted-foreground">
 					<p>Social Login</p>

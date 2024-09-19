@@ -42,7 +42,7 @@
                 "./src/app/dashboard/questions/_components/*"
             ],
             "@class/*": [
-                "src/app/dashboard/(home)/@teacher/_components/*"
+                "src/app/dashboard/teacher/(home)/_components/*"
             ],
             "@auth/*": [
                 "./src/app/auth/_components/*"

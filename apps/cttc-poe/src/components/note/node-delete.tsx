@@ -3,7 +3,6 @@ import { TrashIcon } from "lucide-react";
 
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -11,8 +10,8 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
-} from "@itell/ui/client";
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
 import { useState } from "react";
 import { Spinner } from "../spinner";
 

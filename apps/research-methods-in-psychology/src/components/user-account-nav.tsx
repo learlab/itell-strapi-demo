@@ -21,16 +21,16 @@ import {
 	LogOutIcon,
 	SettingsIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { NavigationButton } from "./navigation-button";
 import { Spinner } from "./spinner";
 import { UserAvatar } from "./user-avatar";
 
 const items = [
 	{
 		text: "Dashboard",
-		href: "/dashboard",
+		href: "/api/dashboard",
 		icon: <LineChartIcon className="size-4" />,
 	},
 	{
@@ -105,26 +105,25 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 					<DropdownMenuSeparator />
 					{items.map((item) => (
 						<DropdownMenuItem
-							onSelect={(e) => {
-								e.preventDefault();
-								setActive(item.text);
-								startTransition(() => {
-									setOpen(false);
-									router.push(item.href);
-									setActive("");
-								});
-							}}
 							disabled={active === item.text && pending}
 							key={item.href}
 						>
-							<button
-								role="link"
-								type="button"
+							<Link
+								href={item.href}
 								className="flex items-center gap-2 w-full"
+								onClick={(e) => {
+									e.preventDefault();
+									setActive(item.text);
+									startTransition(() => {
+										setOpen(false);
+										router.push(item.href);
+										setActive("");
+									});
+								}}
 							>
 								{active === item.text ? <Spinner /> : item.icon}
 								{item.text}
-							</button>
+							</Link>
 						</DropdownMenuItem>
 					))}
 					<DropdownMenuSeparator />

@@ -30,10 +30,15 @@ export const incrementViewAction = authedProcedure
 		}
 	});
 
-const incrementViewHandler = cache(
-	async (userId: string, pageSlug: string, data?: unknown) => {
+export const incrementViewHandler = cache(
+	async (
+		userId: string,
+		pageSlug: string,
+		data?: unknown,
+		type = "dashboard_page_view",
+	) => {
 		await db.insert(events).values({
-			type: "dashboard_page_view",
+			type,
 			pageSlug,
 			userId,
 			data,

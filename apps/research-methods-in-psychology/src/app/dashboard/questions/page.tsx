@@ -13,10 +13,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@itell/ui/card";
-import { cn } from "@itell/utils";
 import { QuestionChart } from "@questions/question-chart";
 import { groupBy } from "es-toolkit";
 import pluralize from "pluralize";
+import { getLabel } from "./get-label";
 
 const questions = allPagesSorted.reduce(
 	(acc, page) => {
@@ -39,7 +39,7 @@ export default async function () {
 
 	const [data, err] = await getAnswerStatsAction();
 	if (err) {
-		throw new Error(err.message);
+		throw new Error("failed to get answer statistics", { cause: err });
 	}
 	const { records, byScore } = data;
 	const byPage = groupBy(records, (d) => d.pageSlug);
@@ -159,12 +159,4 @@ const AnswerItem = ({
 			</div>
 		</div>
 	);
-};
-
-const getLabel = (score: number) => {
-	if (score === 0) return "poor";
-	if (score === 1) return "average";
-	if (score === 2) return "excellent";
-
-	return "unknown";
 };

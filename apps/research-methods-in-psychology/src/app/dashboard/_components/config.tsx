@@ -1,49 +1,88 @@
 import { MobileNavItem } from "@/components/mobile-nav";
 import {
-	BarChart4Icon,
+	BarChartIcon,
 	FileEditIcon,
 	MessageCircleQuestion,
 	SettingsIcon,
 } from "lucide-react";
 
-const iconClasses = "size-4";
-export const dashboardConfig: DashboardConfig = {
-	mobileNav: [
-		{
-			title: "Summaries",
-			href: "/dashboard/summaries",
-		},
-		{
-			title: "Questions",
-			href: "/dashboard/questions",
-		},
-		{
-			title: "Settings",
-			href: "/dashboard/settings",
-		},
-	],
-	sidebarNav: [
-		{
-			title: "Statistics",
-			href: "/dashboard",
-			icon: <BarChart4Icon className={iconClasses} />,
-		},
-		{
-			title: "Summaries",
-			href: "/dashboard/summaries",
-			icon: <FileEditIcon className={iconClasses} />,
-		},
-		{
-			title: "Questions",
-			href: "/dashboard/questions",
-			icon: <MessageCircleQuestion className={iconClasses} />,
-		},
-		{
-			title: "Settings",
-			href: "/dashboard/settings",
-			icon: <SettingsIcon className={iconClasses} />,
-		},
-	],
+export const dashboardConfig = {
+	mobileNav: {
+		teacher: [
+			{
+				title: "Summaries",
+				href: "/dashboard/teacher/summaries",
+			},
+			{
+				title: "Questions",
+				href: "/dashboard/teacher/questions",
+			},
+			{
+				title: "Settings",
+				href: "/dashboard/settings",
+			},
+		],
+		student: [
+			{
+				title: "Summaries",
+				href: "/dashboard/summaries",
+			},
+			{
+				title: "Questions",
+				href: "/dashboard/questions",
+			},
+			{
+				title: "Settings",
+				href: "/dashboard/settings",
+			},
+		],
+	},
+	sidebarNav: {
+		teacher: [
+			{
+				title: "Overview",
+				href: "/dashboard/teacher",
+				icon: BarChartIcon,
+			},
+			{
+				title: "Summaries",
+				href: "/dashboard/teacher/summaries",
+				icon: FileEditIcon,
+			},
+			{
+				title: "Questions",
+				href: "/dashboard/teacher/questions",
+				icon: MessageCircleQuestion,
+			},
+			{
+				title: "Settings",
+				href: "/dashboard/settings",
+				icon: SettingsIcon,
+			},
+		],
+		student: [
+			{
+				title: "Overview",
+				href: "/dashboard",
+				icon: BarChartIcon,
+			},
+			{
+				title: "Summaries",
+				href: "/dashboard/summaries",
+				icon: FileEditIcon,
+			},
+			{
+				title: "Questions",
+				href: "/dashboard/questions",
+				icon: MessageCircleQuestion,
+			},
+			{
+				title: "Settings",
+				href: "/dashboard/settings",
+				icon: SettingsIcon,
+			},
+		],
+	},
 };
 
 export type DashboardNavItem = {
@@ -56,7 +95,7 @@ export type SidebarNavItem = {
 	title: string;
 	href: string;
 	external?: boolean;
-	icon?: React.ReactNode;
+	icon: () => React.ReactNode;
 };
 
 export type DashboardConfig = {

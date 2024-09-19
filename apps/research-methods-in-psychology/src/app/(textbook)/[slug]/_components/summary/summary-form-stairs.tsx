@@ -10,6 +10,7 @@ import {
   useSummaryStore,
 } from "@/components/provider/page-provider";
 
+import { Callout } from "@/components/ui/callout";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -79,7 +80,7 @@ type Props = {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
   const pageSlug = page.slug;
-  const { portals, addPortal, removePortal, removePortals } = usePortal();
+  const { portals, addPortal, removePortals } = usePortal();
   const router = useRouter();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -458,10 +459,14 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
             pending={isPending}
             stages={stages}
             userRole={user.role}
+            enableSimilarity={true}
+            prevInput={prevInput}
             ref={ref}
           />
           {submissionError && (
-            <Warning role="alert">{ErrorFeedback[submissionError]}</Warning>
+            <Callout variant="warning" title="Error">
+              {ErrorFeedback[submissionError]}
+            </Callout>
           )}
           <div className="flex justify-end">
             <Button

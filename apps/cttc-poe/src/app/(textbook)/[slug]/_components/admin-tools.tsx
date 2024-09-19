@@ -1,13 +1,11 @@
 "use client";
 import { useConstructedResponse } from "@/components/provider/page-provider";
-import { Spinner } from "@/components/spinner";
 import { Condition } from "@/lib/control/condition";
 import { allSummaryPagesSorted } from "@/lib/pages";
 import { resetUser, updateUser } from "@/lib/user/actions";
 import { makePageHref } from "@/lib/utils";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -15,10 +13,11 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
-	Label,
-	RadioGroup,
-	RadioGroupItem,
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
+import { Label } from "@itell/ui/label";
+import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
+import {
 	Select,
 	SelectContent,
 	SelectGroup,
@@ -26,15 +25,16 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
+} from "@itell/ui/select";
+import {
 	Sheet,
-	SheetClose,
 	SheetContent,
 	SheetDescription,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-	Switch,
-} from "@itell/ui/client";
+} from "@itell/ui/sheet";
+import { Switch } from "@itell/ui/switch";
 import { SettingsIcon } from "lucide-react";
 import { useState, useTransition } from "react";
 

@@ -50,6 +50,13 @@ export const { routes, useSafeParams, useSafeSearchParams } =
 				})
 				.default({ page: undefined }),
 		}),
+		summariesTeacher: defineRoute("/dashboard/summaries/teacher", {
+			search: z
+				.object({
+					page: z.string().optional(),
+				})
+				.default({ page: undefined }),
+		}),
 		student: defineRoute("/dashboard/student/[id]", {
 			params: z.object({
 				id: z.string(),

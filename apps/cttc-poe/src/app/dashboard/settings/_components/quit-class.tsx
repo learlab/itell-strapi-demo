@@ -12,8 +12,8 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	Button,
-} from "@itell/ui/client";
+} from "@itell/ui/alert-dialog";
+import { Button } from "@itell/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

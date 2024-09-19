@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@itell/ui/client";
+import { Button } from "@itell/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/dropdown";
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 

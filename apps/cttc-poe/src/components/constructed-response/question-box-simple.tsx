@@ -5,8 +5,9 @@ import { createEvent } from "@/lib/event/actions";
 import { LoginButton } from "@auth//auth-form";
 import { cn } from "@itell/utils";
 
-import { Button } from "@itell/ui/client";
-import { Card, CardContent, Warning } from "@itell/ui/server";
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
+import { Card, CardContent } from "@itell/ui/card";
 import { useConstructedResponse } from "../provider/page-provider";
 
 type Props = {

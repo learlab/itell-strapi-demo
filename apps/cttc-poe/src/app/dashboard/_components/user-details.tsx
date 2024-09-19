@@ -3,7 +3,8 @@ import { Spinner } from "@/components/spinner";
 import { getOtherStats, getUserStats } from "@/lib/dashboard";
 import { countStudent, getOtherUsers } from "@/lib/dashboard/class";
 import { getPageData } from "@/lib/utils";
-import { DashboardBadge, Skeleton } from "@itell/ui/server";
+import { DashboardBadge } from "@itell/ui/dashboard-badge";
+import { Skeleton } from "@itell/ui/skeleton";
 import { cn, median } from "@itell/utils";
 import {
 	FileTextIcon,

@@ -2,6 +2,7 @@ import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import rehypeAddCri from "@itell/rehype-add-cri";
 import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
+import rehypeFormat from "rehype-format";
 import remarkGfm from "remark-gfm";
 import remarkHeadingAttrs from "remark-heading-attrs";
 import remarkUnwrapImage from "remark-unwrap-images";
@@ -70,7 +71,7 @@ const pages = defineCollection({
 			),
 			html: s.markdown({
 				remarkPlugins: [remarkHeadingAttrs],
-				rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri],
+				rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri, rehypeFormat],
 			}),
 		})
 		.transform((data) => {

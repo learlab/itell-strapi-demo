@@ -2,13 +2,12 @@
 
 import { logout } from "@/lib/auth/actions";
 import {
-	Button,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@itell/ui/client";
+} from "@itell/ui/dropdown";
 import { User } from "lucia";
 import {
 	ChevronDownIcon,
@@ -19,7 +18,6 @@ import {
 	LogOutIcon,
 	SettingsIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { NavigationButton } from "./navigation-button";

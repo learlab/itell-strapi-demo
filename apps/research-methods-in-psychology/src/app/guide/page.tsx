@@ -1,9 +1,11 @@
+import { incrementViewHandler } from "@/actions/dashboard";
 import { TextbookComponents } from "@/components/content-components";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import { guides } from "#content";
+
 export default async function () {
 	const { user } = await getSession();
 	const userCondition = user?.condition || Condition.STAIRS;
@@ -12,6 +14,17 @@ export default async function () {
 	if (!guide) {
 		return notFound();
 	}
+
+	// use the handler directly instead of action here because we allow
+	// unauthenticated users to access this page
+	incrementViewHandler(
+		user?.id || "",
+		"guide",
+		{
+			condition: userCondition,
+		},
+		"guide_page_view",
+	);
 
 	return (
 		<>

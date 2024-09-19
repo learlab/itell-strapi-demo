@@ -46,14 +46,14 @@ export default async function ({ searchParams }: Props) {
 			classId: user.classId,
 		});
 		if (err) {
-			throw new Error(err.message);
+			throw new Error("failed to get teacher by class", { cause: err });
 		}
 		if (data) {
 			teacherName = data.name;
 		} else {
 			const [_, err] = await updateUserAction({ id: user.id, classId: null });
 			if (err) {
-				throw new Error(err.message);
+				throw new Error("failed to update user class id", { cause: err });
 			}
 			userClassId = null;
 		}
@@ -63,7 +63,7 @@ export default async function ({ searchParams }: Props) {
 				classId: join_class_code,
 			});
 			if (err) {
-				throw new Error(err.message);
+				throw new Error("failed to get teacher by class", { cause: err });
 			}
 			if (data) {
 				teacherName = data.name;
@@ -76,7 +76,7 @@ export default async function ({ searchParams }: Props) {
 			classId: user.classId,
 		});
 		if (err) {
-			throw new Error(err.message);
+			throw new Error("failed to get teacher by class", { cause: err });
 		}
 		if (data) {
 			teacherName = data.name;

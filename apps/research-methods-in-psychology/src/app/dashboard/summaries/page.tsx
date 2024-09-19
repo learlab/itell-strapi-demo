@@ -4,14 +4,12 @@ import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages";
-import { delay } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";
 import { redirect } from "next/navigation";
-import pluralize from "pluralize";
 import { SummaryListSelect } from "./_components/summary-list-select";
 
 export default async function ({ searchParams }: { searchParams: unknown }) {
@@ -27,7 +25,7 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 		pageSlug: page,
 	});
 	if (err) {
-		throw new Error(err.message);
+		throw new Error("failed to get summaries", { cause: err });
 	}
 
 	const summariesWithPage = summaries

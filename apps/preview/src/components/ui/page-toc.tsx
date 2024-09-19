@@ -1,5 +1,6 @@
 import { extractHeadingsFromMdast } from "@itell/content";
 import { cn } from "@itell/utils";
+import Link from "next/link";
 
 type TocSidebarProps = {
 	headings: ReturnType<typeof extractHeadingsFromMdast>;
@@ -27,13 +28,13 @@ export const PageToc = ({ headings }: TocSidebarProps) => {
 								},
 							)}
 						>
-							<a
+							<Link
 								data-depth={heading.depth}
 								href={`#${heading.slug}`}
 								className="text-pretty"
 							>
 								{heading.text}
-							</a>
+							</Link>
 						</li>
 					))}
 			</ol>

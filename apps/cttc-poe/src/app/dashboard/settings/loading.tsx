@@ -1,5 +1,5 @@
 import { DashboardHeader, DashboardShell } from "@dashboard//shell";
-import { Separator } from "@itell/ui/client";
+import { Separator } from "@itell/ui/separator";
 
 import {
 	Card,
@@ -7,8 +7,8 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	Skeleton,
-} from "@itell/ui/server";
+} from "@itell/ui/card";
+import { Skeleton } from "@itell/ui/skeleton";
 import { Profile } from "@settings/profile";
 
 export default function DashboardSettingsLoading() {

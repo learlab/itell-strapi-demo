@@ -16,7 +16,7 @@ import {
 	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "@itell/ui/client";
+} from "@itell/ui/chart";
 
 const chartConfig = {
 	userScaled: {
