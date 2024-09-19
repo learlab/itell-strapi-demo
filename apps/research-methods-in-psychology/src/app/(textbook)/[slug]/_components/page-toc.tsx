@@ -67,7 +67,7 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
 				<div className="rounded-full ring-2 ring-blue-400 size-3" />
 				<h3 className="font-semibold">On this page</h3>
 			</div>
-			<ol className="flex flex-col gap-2 list-none text-foreground/70 tracking-tight">
+			<ol className="flex flex-col gap-2 list-none text-muted-foreground pr-2">
 				{chunks.map((chunk) => (
 					<li
 						key={chunk.slug}
@@ -76,9 +76,9 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
 						)}
 					>
 						<a
-							data-depth={2}
+							data-heading-level={2}
 							href={`#${chunk.slug}`}
-							className="text-pretty hover:underline text-base"
+							className="text-pretty hover:underline text-sm"
 						>
 							{chunk.title}
 						</a>
@@ -89,8 +89,8 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
 									<li key={heading.slug}>
 										<a
 											href={`#${heading.slug}`}
-											data-depth={heading.depth}
-											className="text-pretty hover:underline"
+											data-heading-level={heading.level}
+											className="text-pretty hover:underline hover:underline-offset-4"
 										>
 											{heading.title}
 										</a>

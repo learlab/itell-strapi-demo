@@ -18,6 +18,7 @@ export const tocPages = pages.reduce(
 			return acc;
 		}
 
+        // if page have a parent, treat it as the children of the latest group
 		const group = acc.at(-1);
 		if (group?.group && group.slug === page.parent.slug) {
 			group.pages.push(item);

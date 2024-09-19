@@ -1,14 +1,15 @@
 "use client";
 
+import { client } from "@/actions/db";
 import { createQuestionAnswerAction } from "@/actions/question";
 import {
 	useChunks,
 	useQuestionStore,
 } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
+import { apiClient } from "@/lib/api-client";
 import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
-import { getQAScore } from "@/lib/question";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
@@ -87,11 +88,17 @@ export const QuestionBoxStairs = ({
 			return;
 		}
 
-		const response = await getQAScore({
-			input,
-			chunk_slug: chunkSlug,
-			page_slug: pageSlug,
+		const res = await apiClient.api.cri.$post({
+			json: {
+				page_slug: pageSlug,
+				chunk_slug: chunkSlug,
+				answer: input,
+			},
 		});
+		if (!res.ok) {
+			throw new Error("Failed to evaluate answer");
+		}
+		const response = await res.json();
 		const score = response.score as QuestionScore;
 		createQuestionAnswerAction({
 			text: input,
@@ -148,6 +155,7 @@ export const QuestionBoxStairs = ({
 		if (isError) {
 			setState((state) => ({
 				...state,
+				status: StatusStairs.PASSED,
 				error: "Failed to evaluate answer, please try again later",
 			}));
 			reportSentry("evaluate constructed response", { error });
@@ -168,7 +176,7 @@ export const QuestionBoxStairs = ({
 	return (
 		<Card
 			className={cn(
-				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10 ",
+				"flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
 				`${borderColor}`,
 				{ shake: state.status === StatusStairs.BOTH_INCORRECT },
 			)}

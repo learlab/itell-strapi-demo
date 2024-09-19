@@ -49,7 +49,10 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	return (
 		<PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
-			<main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
+			<main
+				id={Elements.TEXTBOOK_MAIN_WRAPPER}
+				className="max-w-[1800px] mx-auto"
+			>
 				<div id={Elements.TEXTBOOK_NAV}>
 					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
 						<TextbookToc
@@ -104,6 +107,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<QuestionControl
 				userId={userId}
 				pageSlug={pageSlug}
+				hasAssignments={page.assignments.length > 0}
 				condition={userCondition}
 			/>
 			{user && <EventTracker pageSlug={pageSlug} />}

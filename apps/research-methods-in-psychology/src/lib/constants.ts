@@ -21,6 +21,7 @@ export const EventType = {
 	STAIRS: "stairs",
 	RANDOM_REREAD: "random_reread",
 	SIMPLE: "simple",
+	QUIZ: "quiz",
 } as const;
 
 export const Condition = {

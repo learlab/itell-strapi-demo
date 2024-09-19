@@ -1,6 +1,7 @@
 "use client";
 import { createEventAction } from "@/actions/event";
 import { DelayMessage } from "@/components/delay-message";
+import { apiClient } from "@/lib/api-client";
 import { EventType } from "@/lib/constants";
 import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
@@ -23,18 +24,13 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 	const { pending: formPending } = useFormStatus();
 	const { action, isPending, isDelayed, isError, error } = useActionStatus(
 		async () => {
-			const res = await fetch("/api/itell/score/explain", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const res = await apiClient.api.cri.explain.$post({
+				json: {
+					page_slug: pageSlug,
+					chunk_slug: chunkSlug,
+					student_response: input,
 				},
-				body: JSON.stringify({
-					pageSlug: pageSlug,
-					chunkSlug: chunkSlug,
-					studentResponse: input,
-				}),
 			});
-
 			let response = "";
 			if (res.ok && res.body) {
 				await parseEventStream(res.body, (data, done) => {
@@ -51,13 +47,15 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
 						}
 					}
 				});
+				createEventAction({
+					type: EventType.EXPLAIN,
+					pageSlug,
+					data: { chunkSlug, response },
+				});
+			} else {
+				console.log(await res.text());
+				throw new Error("Failed to get explain response");
 			}
-
-			createEventAction({
-				type: EventType.EXPLAIN,
-				pageSlug,
-				data: { chunkSlug, response },
-			});
 		},
 	);
 

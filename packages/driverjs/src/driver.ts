@@ -378,7 +378,6 @@ export function driver(options: Config = {}) {
 						}
 					: undefined,
 			});
-			setInertBackground;
 		},
 		destroy: () => {
 			destroy(false);

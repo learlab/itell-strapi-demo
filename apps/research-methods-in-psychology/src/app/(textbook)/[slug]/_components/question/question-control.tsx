@@ -23,9 +23,15 @@ type Props = {
 	userId: string | null;
 	pageSlug: string;
 	condition: string;
+	hasAssignments: boolean;
 };
 
-export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
+export const QuestionControl = ({
+	userId,
+	pageSlug,
+	condition,
+	hasAssignments,
+}: Props) => {
 	const store = useQuestionStore();
 	const currentChunk = useSelector(store, SelectCurrentChunk);
 	const chunks = useChunks();
@@ -70,7 +76,10 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 		el.prepend(buttonContainer);
 	};
 
-	const insertUnlockSummaryButton = (el: HTMLElement, chunkSlug: string) => {
+	const insertUnlockAssignmentsButton = (
+		el: HTMLElement,
+		chunkSlug: string,
+	) => {
 		const buttonContainer = document.createElement("div");
 		buttonContainer.className = "unlock-summary-button-container";
 		portalIds.current.unlockSummary = addPortal(
@@ -123,7 +132,9 @@ export const QuestionControl = ({ userId, pageSlug, condition }: Props) => {
 
 		if (isLastChunk && currentChunkElement) {
 			removePortal(portalIds.current.scrollBack);
-			insertUnlockSummaryButton(currentChunkElement, currentChunk);
+			if (hasAssignments) {
+				insertUnlockAssignmentsButton(currentChunkElement, currentChunk);
+			}
 		}
 
 		if (shouldBlur) {

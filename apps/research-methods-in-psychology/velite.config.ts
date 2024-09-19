@@ -48,18 +48,31 @@ const pages = defineCollection({
 				s.object({
 					title: s.string(),
 					slug: s.string(),
-					type: s.enum(["plain", "regular"]),
+					type: s.enum(["plain", "regular", "video"]),
 					headings: s
 						.array(
 							s.object({
 								title: s.string(),
-								depth: s.union([s.literal(3), s.literal(4)]),
+								level: s.union([s.literal(3), s.literal(4)]),
 								slug: s.string(),
 							}),
 						)
 						.optional(),
 				}),
 			),
+			quiz: s
+				.array(
+					s.object({
+						question: s.string(),
+						answers: s.array(
+							s.object({
+								answer: s.string(),
+								correct: s.boolean(),
+							}),
+						),
+					}),
+				)
+				.nullable(),
 			excerpt: s.excerpt(),
 			last_modified: timestamp(),
 			cri: s.array(

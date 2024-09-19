@@ -1,6 +1,7 @@
 import { env } from "@/env.mjs";
 import * as Sentry from "@sentry/nextjs";
 import { redirect } from "next/navigation";
+import { Page } from "#content";
 import { allPagesSorted } from "./pages";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
@@ -30,6 +31,7 @@ export type PageData = {
 	title: string;
 	slug: string;
 	order: number;
+	quiz: Page["quiz"];
 	nextPageSlug: string | null;
 };
 
@@ -52,6 +54,7 @@ export const getPageData = (slug: string | null): PageData | null => {
 		slug: page.slug,
 		nextPageSlug,
 		order: page.order,
+		quiz: page.quiz,
 	};
 };
 
@@ -63,7 +66,7 @@ export const redirectWithSearchParams = (
 	path: string,
 	searchParams?: unknown,
 ) => {
-	const url = new URL(path, env.HOST);
+	const url = new URL(path, env.NEXT_PUBLIC_HOST);
 	if (isRecord(searchParams)) {
 		for (const key in searchParams) {
 			url.searchParams.append(key, String(searchParams[key]));

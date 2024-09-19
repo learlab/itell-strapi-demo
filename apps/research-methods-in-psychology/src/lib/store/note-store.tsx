@@ -1,5 +1,5 @@
 import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
-import produce from "immer";
+import { produce } from "immer";
 
 export type NoteData = {
 	id: number;
