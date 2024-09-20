@@ -6,8 +6,6 @@ import { allPagesSorted } from "@/lib/pages";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
-import { SummaryList } from "@summaries/summary-list";
-import { groupBy } from "es-toolkit";
 import { SummaryListSelect } from "../../summaries/_components/summary-list-select";
 import { checkTeacher } from "../check-teacher";
 
