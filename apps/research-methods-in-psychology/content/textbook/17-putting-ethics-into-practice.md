@@ -51,6 +51,7 @@ cri:
 - question: What is one criticism of Milgram's study according to the passage?
   answer: Milgram should have made adjustments to his study after seeing severe negative reactions from participants.
   slug: Follow-Through-883t
+next_slug: psychological-measurement
 order: 17
 parent:
   title: III. Research Ethics

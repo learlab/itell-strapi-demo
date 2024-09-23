@@ -8,6 +8,7 @@ chunks:
   slug: References-263pt
   type: plain
 cri: []
+next_slug: 15-moral-foundations-of-ethical-research
 order: 14
 parent:
   title: III. Research Ethics

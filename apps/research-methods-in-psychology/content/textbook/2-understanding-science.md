@@ -36,6 +36,7 @@ cri:
 - question: Why should we concern ourselves with pseudoscience?
   answer: Learning about pseudoscience helps bring the fundamental features of science into sharper focus, pseudoscientific beliefs are widely held and promoted, and many pseudosciences purport to explain aspects of human behavior and mental processes.
   slug: Science-Versus-Pseudoscience-760t
+next_slug: 3-goals-of-science
 order: 2
 parent:
   title: I. The Science of Psychology
@@ -49,7 +50,11 @@ title: 2. Understanding Science
 
 <i-callout variant="info" title="Learning Objectives">
 
-Define science.Describe the three fundamental features of science.Explain why psychology is a science.Define pseudoscience and give some examples.
+\- Define science.Describe the three fundamental features of science.
+
+\- Explain why psychology is a science. 
+
+\- Define pseudoscience and give some examples.
 
 </i-callout>
 

@@ -7,6 +7,7 @@ import {
 import { isProduction } from "@/lib/constants";
 import { isLastPage } from "@/lib/pages";
 import { SelectQuizOpen } from "@/lib/store/quiz-store";
+import { PageData } from "@/lib/utils";
 import {
 	Dialog,
 	DialogContent,
@@ -15,22 +16,15 @@ import {
 	DialogTitle,
 } from "@itell/ui/dialog";
 import { useSelector } from "@xstate/store/react";
-import { Page } from "#content";
 import { PageQuiz } from "./page-quiz";
 
-export const PageQuizModal = ({
-	quiz,
-	pageSlug,
-}: { quiz: Page["quiz"]; pageSlug: string }) => {
+export const PageQuizModal = ({ page }: { page: PageData }) => {
 	const quizStore = useQuizStore();
 	const summaryStore = useSummaryStore();
 	const quizOpen = useSelector(quizStore, SelectQuizOpen);
 
 	return (
-		<Dialog
-			open={quizOpen}
-			onOpenChange={() => quizStore.send({ type: "toggleQuiz" })}
-		>
+		<Dialog open={quizOpen}>
 			{/* <DialogTrigger asChild>
 				<Button variant={"outline"} className="flex items-center gap-2">
 					<BookCheckIcon className="size-4" />
@@ -50,13 +44,12 @@ export const PageQuizModal = ({
 					</DialogDescription>
 				</DialogHeader>
 				<PageQuiz
-					quiz={quiz}
-					pageSlug={pageSlug}
+					page={page}
 					afterSubmit={() => {
 						quizStore.send({ type: "toggleQuiz" });
 						summaryStore.send({
 							type: "finish",
-							isNextPageVisible: !isLastPage(pageSlug),
+							isNextPageVisible: !isLastPage(page.slug),
 							input: "",
 						});
 					}}

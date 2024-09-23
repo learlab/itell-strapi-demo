@@ -20,7 +20,7 @@ export const NoteList = ({ notes, pageSlug }: Props) => {
 
 	if (data) {
 		return (
-			<div className="note-list flex flex-row gap-2 max-w-2xl mx-auto my-2">
+			<div className="note-list flex flex-row gap-2 max-w-2xl mx-auto">
 				<p className="sr-only">list of notes</p>
 				{data.map((note) => (
 					<NotePopover

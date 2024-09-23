@@ -36,6 +36,7 @@ const pages = defineCollection({
 			title: s.string(),
 			order: s.number(),
 			slug: s.slug(),
+			next_slug: s.string().nullable(),
 			parent: s
 				.object({
 					title: s.string(),

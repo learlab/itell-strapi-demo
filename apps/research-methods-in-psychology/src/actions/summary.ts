@@ -40,7 +40,6 @@ export const createSummaryAction = authedProcedure
 		z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() }),
 	)
 	.handler(async ({ input, ctx }) => {
-		console.log("helo");
 		let shouldRevalidate = false;
 		const data = await db.transaction(async (tx) => {
 			// count

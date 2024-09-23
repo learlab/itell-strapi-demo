@@ -64,7 +64,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				</div>
 
 				<div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
-					<PageTitle>{page.title}</PageTitle>
+					<PageTitle className="mb-8">{page.title}</PageTitle>
 					<PageContent title={page.title} html={page.html} />
 					<SelectionPopover user={user} pageSlug={pageSlug} />
 					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />

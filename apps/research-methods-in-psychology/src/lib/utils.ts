@@ -32,7 +32,7 @@ export type PageData = {
 	slug: string;
 	order: number;
 	quiz: Page["quiz"];
-	nextPageSlug: string | null;
+	next_slug: string | null;
 };
 
 export const getPageData = (slug: string | null): PageData | null => {
@@ -42,17 +42,12 @@ export const getPageData = (slug: string | null): PageData | null => {
 	}
 	const page = allPagesSorted[index];
 
-	const nextPageSlug =
-		index !== allPagesSorted.length - 1
-			? allPagesSorted[index + 1]?.slug
-			: null;
-
 	return {
 		id: page.title,
 		index,
 		title: page.title,
 		slug: page.slug,
-		nextPageSlug,
+		next_slug: page.next_slug,
 		order: page.order,
 		quiz: page.quiz,
 	};

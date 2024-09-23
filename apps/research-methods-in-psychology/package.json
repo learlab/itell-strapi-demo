@@ -5,7 +5,7 @@
         "build": "next build",
         "clean": "rm -rf .next .turbo .velite",
         "dev": "next dev -p 3001",
-        "start": "next start",
+        "start": "next start -p 3001",
         "analyze": "ANALYZE=true next build"
     },
     "dependencies": {

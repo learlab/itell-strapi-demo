@@ -30,6 +30,7 @@ cri:
 - question: What is an important criterion for evaluating research questions?
   answer: The feasibility of successfully answering them.
   slug: Feasibility-731t
+next_slug: 10-developing-a-hypothesis
 order: 9
 parent:
   title: II. Overview of the Scientific Method
