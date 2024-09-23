@@ -77,11 +77,11 @@ export const createSummaryAction = authedProcedure
 					type: EventType.KEYSTROKE,
 					pageSlug: input.summary.pageSlug,
 					userId: ctx.user.id,
-					isMobile: input.keystroke.isMobile,
 					data: {
 						summaryId,
 						start: input.keystroke.start,
 						keystrokes: input.keystroke.data,
+						isMobile: input.keystroke.isMobile,
 					},
 				});
 			}
