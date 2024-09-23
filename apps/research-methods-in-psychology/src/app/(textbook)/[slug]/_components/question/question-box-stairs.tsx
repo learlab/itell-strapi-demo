@@ -5,6 +5,7 @@ import { createQuestionAnswerAction } from "@/actions/question";
 import {
   useChunks,
   useQuestionStore,
+  useCondition,
 } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { apiClient } from "@/lib/api-client";
@@ -12,7 +13,7 @@ import { isProduction } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
-import { useDebounce } from "@itell/core/hooks";
+import { useDebounce, useLocalStorage } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import {
@@ -33,7 +34,7 @@ import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
 import { QuestionScore, StatusStairs, borderColors } from "./types";
-import { getSession } from "@/lib/auth";
+// import { getSession } from "@/lib/auth";
 
 type Props = {
   question: string;
@@ -58,16 +59,17 @@ export const QuestionBoxStairs = async ({
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
-  const userId = (await getSession()).user?.id;
+
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
     error: null,
     show: shouldBlur,
     input: "",
   });
-  // const [streak, setStreak] = useState(user.);
   const chunks = useChunks();
   const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+
+  const [streak, setStreak] = useLocalStorage<number>("streak", 0);
 
   const {
     action: onSubmit,
@@ -115,6 +117,7 @@ export const QuestionBoxStairs = async ({
     // this will add the chunk to the list of finished chunks that gets excluded from stairs question
     if (score === 2) {
       store.send({ type: "finishChunk", chunkSlug, passed: true });
+      setStreak((streak) => streak + 1);
 
       setState({
         status: StatusStairs.BOTH_CORRECT,
@@ -126,6 +129,7 @@ export const QuestionBoxStairs = async ({
     }
 
     if (score === 1) {
+      setStreak(0);
       setState({
         status: StatusStairs.SEMI_CORRECT,
         error: null,
@@ -136,6 +140,7 @@ export const QuestionBoxStairs = async ({
     }
 
     if (score === 0) {
+      setStreak(0);
       setState({
         status: StatusStairs.BOTH_INCORRECT,
         error: null,
@@ -251,12 +256,12 @@ export const QuestionBoxStairs = async ({
                 {!shouldBlur && (
                   <span className="font-bold">(Optional)</span>
                 )}: {question}
-                {/* {streak >= 0 && (
+                {streak >= 0 && (
                   <span className="flex items-center space-x-1 text-sm text-zinc-500">
                     <Flame color="#71717a" size={16} />
                     <span>{streak}</span>
                   </span>
-                )} */}
+                )}
               </p>
             )
           )}

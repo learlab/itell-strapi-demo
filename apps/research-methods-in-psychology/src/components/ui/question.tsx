@@ -1,26 +1,25 @@
 "use client";
+
 import { Condition } from "@/lib/constants";
 import { QuestionBoxReread } from "@textbook/question/question-box-reread";
 import { QuestionBoxSimple } from "@textbook/question/question-box-simple";
 import { QuestionBoxStairs } from "@textbook/question/question-box-stairs";
 import { useSelector } from "@xstate/store/react";
 import { useCondition, useQuestionStore } from "../provider/page-provider";
-import { User } from "@/drizzle/schema";
+// import { getSession } from "@/lib/auth";
 
 type Props = {
   question: string;
   answer: string;
   chunkSlug: string;
   pageSlug: string;
-  user: User;
 };
 
-export const Question = ({
+export const Question = async ({
   question,
   answer,
   chunkSlug,
   pageSlug,
-  user,
 }: Props) => {
   const store = useQuestionStore();
   const condition = useCondition();
@@ -28,7 +27,9 @@ export const Question = ({
     store,
     (store) => store.context.chunkStatus[chunkSlug]
   );
-  console.log(user);
+
+  // const userId = (await getSession()).user?.id;
+  // console.log(userId);
 
   if (!chunkStatus || !chunkStatus.hasQuestion) return null;
 
