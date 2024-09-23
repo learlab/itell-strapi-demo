@@ -34,7 +34,8 @@ import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
 import { QuestionScore, StatusStairs, borderColors } from "./types";
-// import { getSession } from "@/lib/auth";
+import { useServerAction } from "zsa-react";
+import { getUserQuestionStreakAction } from "@/actions/question";
 
 type Props = {
   question: string;
@@ -59,6 +60,9 @@ export const QuestionBoxStairs = async ({
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
+  const { execute } = useServerAction(getUserQuestionStreakAction);
+
+  const [streak, setStreak] = useState(0);
 
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
@@ -68,8 +72,6 @@ export const QuestionBoxStairs = async ({
   });
   const chunks = useChunks();
   const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
-
-  const [streak, setStreak] = useLocalStorage<number>("streak", 0);
 
   const {
     action: onSubmit,
@@ -169,6 +171,17 @@ export const QuestionBoxStairs = async ({
       reportSentry("evaluate constructed response", { error });
     }
   }, [isError]);
+
+  useEffect(() => {
+    execute().then(([streak, err]) => {
+      if (err) {
+        reportSentry("get user question streak", { err });
+        return;
+      }
+      console.log(streak);
+      setStreak(streak ?? 0);
+    });
+  }, []);
 
   if (!state.show) {
     return (

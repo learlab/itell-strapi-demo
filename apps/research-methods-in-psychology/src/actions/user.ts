@@ -96,17 +96,6 @@ export const updateUserPrefsAction = authedProcedure
 	});
 
 /**
- * Update user's question streak
- */
-export const updateUserQuestionStreakAction = authedProcedure
-	.input(z.object({ streak: z.number() }))
-	.handler(async ({ input, ctx }) => {
-		await db
-			.update(users)
-			.set({ questionStreak: input.streak })
-			.where(eq(users.id, ctx.user.id));
-	});
-/**
  * Reset user progress, also deletes all user data, including summaries, answers, events, etc.
  */
 export const resetUserAction = authedProcedure
@@ -116,7 +105,7 @@ export const resetUserAction = authedProcedure
 		return await db.transaction(async (tx) => {
 			await tx
 				.update(users)
-				.set({ finished: false, pageSlug: firstPage.slug, questionStreak: 0 })
+				.set({ finished: false, pageSlug: firstPage.slug })
 				.where(eq(users.id, userId));
 			await tx.delete(summaries).where(eq(summaries.userId, userId));
 			await tx.delete(chat_messages).where(eq(chat_messages.userId, userId));

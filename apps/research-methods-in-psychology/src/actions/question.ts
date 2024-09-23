@@ -12,6 +12,7 @@ import { isProduction } from "@/lib/constants";
 import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 import { authedProcedure } from "./utils";
+import { desc } from "drizzle-orm";
 
 /**
  * Create constructed response item
@@ -64,6 +65,26 @@ export const getAnswerStatsAction = authedProcedure.handler(async ({ ctx }) => {
 		return { records, byScore };
 	});
 });
+
+/**
+ * Get streak of correctly answered questions for user
+ */
+export const getUserQuestionStreakAction = authedProcedure.handler(
+	async ({ ctx }) => {
+		return await db.transaction(async (tx) => {
+			const records = await tx
+				.select()
+				.from(constructed_responses)
+				.where(eq(constructed_responses.userId, ctx.user.id))
+				.orderBy(desc(constructed_responses.createdAt));
+			let streak = 0;
+			while (records[streak]?.score === 2) {
+				streak++;
+			}
+			return streak;
+		});
+	},
+);
 
 /**
  * Get question-answer statistics for class
