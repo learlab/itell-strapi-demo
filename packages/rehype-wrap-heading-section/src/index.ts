@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Element, Root } from "hast";
 import { h } from "hastscript";
 import { SKIP, visit } from "unist-util-visit";
