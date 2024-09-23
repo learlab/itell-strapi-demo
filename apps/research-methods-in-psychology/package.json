@@ -5,7 +5,7 @@
         "build": "next build",
         "clean": "rm -rf .next .turbo .velite",
         "dev": "next dev -p 3001",
-        "start": "next start",
+        "start": "next start -p 3001",
         "analyze": "ANALYZE=true next build"
     },
     "dependencies": {
@@ -22,7 +22,7 @@
         "@next/third-parties": "^14.2.11",
         "@sentry/nextjs": "^7.105.0",
         "@tanstack/react-table": "^8.9.10",
-        "@xstate/store": "^2.0.0",
+        "@xstate/store": "^2.6.0",
         "arctic": "2.0.0-next.1",
         "client-only": "^0.0.1",
         "cmdk": "^0.2.0",

@@ -34,6 +34,7 @@ cri:
 - question: Why is a scientific approach to clinical psychology considered essential?
   answer: A scientific approach to clinical psychology is essential for diagnosing and treating psychological problems based on accurate knowledge and effective treatments.
   slug: Clinical-Psychologists-794t
+next_slug: overview-of-the-scientific-method
 order: 5
 parent:
   title: I. The Science of Psychology

@@ -8,6 +8,7 @@ chunks:
   slug: References-254pt
   type: plain
 cri: []
+next_slug: 19-understanding-psychological-measurement
 order: 18
 parent:
   title: IV. Psychological Measurement

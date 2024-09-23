@@ -8,6 +8,7 @@ chunks:
   slug: References-250pt
   type: plain
 cri: []
+next_slug: 1-methods-of-knowing
 order: 0
 parent:
   title: I. The Science of Psychology

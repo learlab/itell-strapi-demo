@@ -21,9 +21,7 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 	incrementViewAction({ pageSlug: Meta.summaries.slug });
 
 	const { page } = routes.summaries.$parseSearchParams(searchParams);
-	const [summaries, err] = await getSummariesAction({
-		pageSlug: page,
-	});
+	const [summaries, err] = await getSummariesAction({});
 	if (err) {
 		throw new Error("failed to get summaries", { cause: err });
 	}

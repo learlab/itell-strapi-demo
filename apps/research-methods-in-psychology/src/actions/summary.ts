@@ -40,7 +40,6 @@ export const createSummaryAction = authedProcedure
 		z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() }),
 	)
 	.handler(async ({ input, ctx }) => {
-		console.log("helo");
 		let shouldRevalidate = false;
 		const data = await db.transaction(async (tx) => {
 			// count
@@ -78,11 +77,11 @@ export const createSummaryAction = authedProcedure
 					type: EventType.KEYSTROKE,
 					pageSlug: input.summary.pageSlug,
 					userId: ctx.user.id,
-					isMobile: input.keystroke.isMobile,
 					data: {
 						summaryId,
 						start: input.keystroke.start,
 						keystrokes: input.keystroke.data,
+						isMobile: input.keystroke.isMobile,
 					},
 				});
 			}

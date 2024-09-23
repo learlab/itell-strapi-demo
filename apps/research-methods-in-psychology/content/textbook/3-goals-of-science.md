@@ -27,6 +27,7 @@ cri:
 - question: What is the distinction between basic and applied research in psychology?
   answer: Basic research aims to understand human behavior without addressing practical problems, while applied research focuses on solving specific issues.
   slug: Basic-versus-Applied-Research-814t
+next_slug: 4-science-and-common-sense
 order: 3
 parent:
   title: I. The Science of Psychology

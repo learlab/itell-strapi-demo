@@ -30,6 +30,7 @@ cri:
 - question: What are the three general characteristics of a good hypothesis?
   answer: A good hypothesis must be testable and falsifiable, logical, and positive in nature.
   slug: Characteristics-of-a-Good-Hypothesis-735t
+next_slug: 11-designing-a-research-study
 order: 10
 parent:
   title: II. Overview of the Scientific Method

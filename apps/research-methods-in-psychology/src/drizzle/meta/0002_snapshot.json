@@ -1,5 +1,5 @@
 {
-  "id": "b4cf3e27-562f-4cfd-8c23-b640513226b6",
+  "id": "48b91f66-ab6c-4886-aa00-ae7de2956cc8",
   "prevId": "b5e30bb1-3712-4e54-9a76-f5562618df94",
   "version": "6",
   "dialect": "postgresql",
@@ -249,12 +249,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "is_mobile": {
-          "name": "is_mobile",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false
         },
         "data": {
           "name": "data",
@@ -783,13 +777,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "streak": {
-          "name": "streak",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
         }
       },
       "indexes": {},

@@ -41,8 +41,8 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 	} = useActionStatus(
 		async (e: FormEvent) => {
 			e.preventDefault();
-			if (finished && page.nextPageSlug) {
-				router.push(page.nextPageSlug);
+			if (finished && page.next_slug) {
+				router.push(page.next_slug);
 				return;
 			}
 			const [data, err] = await incrementUserPageSlugAction({
@@ -108,14 +108,14 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 			>
 				<StatusButton
 					pending={isPending}
-					disabled={finished && !page.nextPageSlug}
+					disabled={finished && !page.next_slug}
 					className="w-44"
 				>
 					{!finished ? (
 						<span className="inline-flex gap-1 items-center">
 							<CheckSquare2Icon className="size-4" /> Mark as completed
 						</span>
-					) : page.nextPageSlug ? (
+					) : page.next_slug ? (
 						<span className="inline-flex gap-1 items-center">
 							<ArrowRightIcon className="size-4" /> Go to next page
 						</span>

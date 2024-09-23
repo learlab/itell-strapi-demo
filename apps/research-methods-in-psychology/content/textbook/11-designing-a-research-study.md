@@ -46,6 +46,7 @@ cri:
 - question: What is the trade-off between internal and external validity in research studies?
   answer: When internal validity is high, external validity tends to be low; and when internal validity is low, external validity tends to be high.
   slug: Laboratory-vs-Field-Research-741t
+next_slug: 12-analyzing-the-data
 order: 11
 parent:
   title: II. Overview of the Scientific Method

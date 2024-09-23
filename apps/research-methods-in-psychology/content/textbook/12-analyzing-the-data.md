@@ -18,6 +18,7 @@ cri:
 - question: What is a Type I error in inferential statistics?
   answer: A Type I error is a false positive where a researcher concludes there is an effect in the population when in reality there is no real effect, and the results are just due to chance.
   slug: Inferential-Statistics-743t
+next_slug: 13-drawing-conclusions-and-reporting-the-results
 order: 12
 parent:
   title: II. Overview of the Scientific Method

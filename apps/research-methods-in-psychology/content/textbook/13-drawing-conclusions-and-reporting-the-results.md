@@ -18,6 +18,7 @@ cri:
 - question: What are the different ways in which research findings can be reported?
   answer: Research findings can be reported through peer-reviewed journal articles, book chapters, and conference presentations.
   slug: Reporting-the-Results-745t
+next_slug: research-ethics
 order: 13
 parent:
   title: II. Overview of the Scientific Method

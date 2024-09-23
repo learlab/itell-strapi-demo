@@ -67,6 +67,7 @@ cri:
 - question: How many sources are enough for your literature review?
   answer: This is a difficult question because it depends on how extensively your topic has been studied and also on your own goals.
   slug: What-to-Search-For-726t
+next_slug: 9-generating-good-research-questions
 order: 8
 parent:
   title: II. Overview of the Scientific Method

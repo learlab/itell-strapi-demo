@@ -165,7 +165,6 @@ export const events = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 		pageSlug: text("page_slug").notNull(),
-		isMobile: boolean("is_mobile"),
 		data: jsonb("data"),
 		createdAt: CreatedAt,
 	},
