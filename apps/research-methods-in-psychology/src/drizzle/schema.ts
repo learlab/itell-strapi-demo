@@ -97,6 +97,7 @@ export const users = pgTable("users", {
 	preferences: jsonb("preferences").$type<UserPreferences>(),
 	createdAt: CreatedAt,
 	updatedAt: UpdatedAt,
+	questionStreak: integer("streak").default(0).notNull(),
 });
 
 export type User = InferSelectModel<typeof users>;
