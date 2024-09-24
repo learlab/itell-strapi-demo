@@ -105,7 +105,7 @@ export const resetUserAction = authedProcedure
 		return await db.transaction(async (tx) => {
 			await tx
 				.update(users)
-				.set({ finished: false, pageSlug: firstPage.slug })
+				.set({ finished: false, pageSlug: null })
 				.where(eq(users.id, userId));
 			await tx.delete(summaries).where(eq(summaries.userId, userId));
 			await tx.delete(chat_messages).where(eq(chat_messages.userId, userId));

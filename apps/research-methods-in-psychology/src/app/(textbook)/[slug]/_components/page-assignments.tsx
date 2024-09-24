@@ -73,8 +73,6 @@ export const PageAssignments = async ({
 					</div>
 				</>
 			)}
-
-			<PageQuizModal page={page} />
 		</section>
 	);
 };

@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/auth";
+import { getUserCondition } from "@/lib/auth/conditions";
 import { isAdmin } from "@/lib/auth/role";
 import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/button";
@@ -40,7 +41,9 @@ export const PageControl = async ({
 	return (
 		<div className="mt-12 space-y-2">
 			<p className="sr-only">page control</p>
-			{user && isAdmin(user.role) && <AdminTools condition={user.condition} />}
+			{user && isAdmin(user.role) && (
+				<AdminTools user={user} pageSlug={pageSlug} />
+			)}
 			{assignment && (
 				<AnchorLink
 					icon={<PencilIcon className="size-4 xl:size-6" />}

@@ -8,29 +8,44 @@ import { isProduction } from "@/lib/constants";
 import { PageData } from "@/lib/pages/pages.client";
 import { isLastPage } from "@/lib/pages/pages.client";
 import { SelectQuizOpen } from "@/lib/store/quiz-store";
+import { Button } from "@itell/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from "@itell/ui/dialog";
 import { useSelector } from "@xstate/store/react";
+import { BookCheckIcon } from "lucide-react";
 import { PageQuiz } from "./page-quiz";
 
-export const PageQuizModal = ({ page }: { page: PageData }) => {
+export const PageQuizModal = ({
+	page,
+	showTrigger = false,
+}: { page: PageData; showTrigger: boolean }) => {
 	const quizStore = useQuizStore();
 	const summaryStore = useSummaryStore();
 	const quizOpen = useSelector(quizStore, SelectQuizOpen);
 
 	return (
-		<Dialog open={quizOpen}>
-			{/* <DialogTrigger asChild>
-				<Button variant={"outline"} className="flex items-center gap-2">
-					<BookCheckIcon className="size-4" />
-					Quiz
-				</Button>
-			</DialogTrigger> */}
+		<Dialog
+			open={quizOpen}
+			onOpenChange={(open) => {
+				if (!quizOpen) {
+					quizStore.send({ type: "toggleQuiz" });
+				}
+			}}
+		>
+			{showTrigger && (
+				<DialogTrigger asChild>
+					<Button variant={"outline"} className="flex items-center gap-2">
+						<BookCheckIcon className="size-4" />
+						Quiz
+					</Button>
+				</DialogTrigger>
+			)}
 			<DialogContent
 				className="max-w-4xl h-[80vh] overflow-y-auto"
 				canClose={!isProduction}
@@ -46,9 +61,9 @@ export const PageQuizModal = ({ page }: { page: PageData }) => {
 				<PageQuiz
 					page={page}
 					afterSubmit={() => {
-						quizStore.send({ type: "toggleQuiz" });
+						quizStore.send({ type: "finishQuiz" });
 						summaryStore.send({
-							type: "finish",
+							type: "finishPage",
 							isNextPageVisible: !isLastPage(page),
 							input: "",
 						});

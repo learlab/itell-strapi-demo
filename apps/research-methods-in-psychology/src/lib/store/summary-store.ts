@@ -12,17 +12,18 @@ export type StairsQuestion = {
 export type SummaryStore = ReturnType<typeof createSummaryStore>;
 export const createSummaryStore = ({
 	pageStatus,
-}: { pageStatus: PageStatus }) => {
-	return createStoreWithProducer(
-		produce,
-		{
+}: {
+	pageStatus: PageStatus;
+}) => {
+	return createStoreWithProducer(produce, {
+		context: {
 			prevInput: undefined as string | undefined,
 			error: null as ErrorType | null,
 			response: null as SummaryResponse | null,
 			stairsQuestion: null as StairsQuestion | null,
 			isNextPageVisible: pageStatus.unlocked,
 		},
-		{
+		on: {
 			submit: (context) => {
 				context.error = null;
 			},
@@ -35,7 +36,7 @@ export const createSummaryStore = ({
 			stairs: (context, event: { data: StairsQuestion }) => {
 				context.stairsQuestion = event.data;
 			},
-			finish: (
+			finishPage: (
 				context,
 				event: { isNextPageVisible?: boolean; input: string },
 			) => {
@@ -45,7 +46,7 @@ export const createSummaryStore = ({
 				context.prevInput = event.input;
 			},
 		},
-	);
+	});
 };
 
 type Selector<T> = (snap: SnapshotFromStore<SummaryStore>) => T;

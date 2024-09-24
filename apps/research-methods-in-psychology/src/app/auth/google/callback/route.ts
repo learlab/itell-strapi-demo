@@ -1,5 +1,6 @@
 import { createUserAction, getUserByProviderAction } from "@/actions/user";
 import { env } from "@/env.mjs";
+import { getPageConditions } from "@/lib/auth/conditions";
 import { lucia } from "@/lib/auth/lucia";
 import {
 	googleProvider,
@@ -7,6 +8,7 @@ import {
 	readJoinClassCode,
 } from "@/lib/auth/provider";
 import { Condition } from "@/lib/constants";
+import { allPagesSorted } from "@/lib/pages/pages.server";
 import { reportSentry } from "@/lib/utils";
 import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
@@ -77,13 +79,14 @@ export async function GET(req: Request) {
 		}
 
 		if (!user) {
+			const pageConditions = getPageConditions(allPagesSorted);
 			const [newUser, err] = await createUserAction({
 				user: {
 					id: generateIdFromEntropySize(16),
 					name: googleUser.name,
 					image: googleUser.picture,
 					email: googleUser.email,
-					condition: Condition.STAIRS,
+					conditionAssignments: pageConditions,
 					role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
 				},
 				provider_id: "google",

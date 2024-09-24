@@ -22,6 +22,7 @@ import {
 	SelectSummaryReady,
 	getExcludedChunks,
 } from "@/lib/store/question-store";
+import { SelectQuizFinished } from "@/lib/store/quiz-store";
 import {
 	SelectError,
 	SelectIsNextPageVisible,
@@ -61,6 +62,7 @@ import { useEffect, useRef } from "react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
+import { PageQuizModal } from "../page-quiz-modal";
 import { SummaryFeedback, SummaryFeedbackDetails } from "./summary-feedback";
 import {
 	SummaryInput,
@@ -82,7 +84,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
-	// for debugging purposes
+	// for debugging
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const requestBodyRef = useRef<string | null>(null);
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -104,6 +106,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const stairsQuestion = useSelector(summaryStore, SelectStairs);
 	const submissionError = useSelector(summaryStore, SelectError);
 	const feedback = response ? getFeedback(response) : null;
+	const quizFinished = useSelector(quizStore, SelectQuizFinished);
 
 	const {
 		action,
@@ -261,7 +264,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				}
 
 				summaryStore.send({
-					type: "finish",
+					type: "finishPage",
 					isNextPageVisible: data.canProceed ? !isLast : undefined,
 					input,
 				});
@@ -426,6 +429,10 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				)}
 
 				<div className="flex gap-2 items-center">
+					<PageQuizModal
+						page={page}
+						showTrigger={pageStatus.unlocked && quizFinished === false}
+					/>
 					{isNextPageVisible && page.next_slug && (
 						<NextPageButton pageSlug={page.next_slug} />
 					)}

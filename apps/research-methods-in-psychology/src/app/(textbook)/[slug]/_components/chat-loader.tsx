@@ -1,5 +1,6 @@
 import { getChatsAction } from "@/actions/chat";
 import { Spinner } from "@/components/spinner";
+import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
 import { Message } from "@itell/core/chat";
 import { Avatar, AvatarImage } from "@itell/ui/avatar";
@@ -13,7 +14,8 @@ type Props = {
 };
 
 export const ChatLoader = async ({ user, pageSlug, pageTitle }: Props) => {
-	if (!user || user.condition !== Condition.STAIRS) return null;
+	if (!user || getUserCondition(user, pageSlug) !== Condition.STAIRS)
+		return null;
 
 	const [chats, err] = await getChatsAction({ pageSlug });
 	if (!err) {

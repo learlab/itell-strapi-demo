@@ -1,5 +1,6 @@
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
+import { getPageConditions, getUserCondition } from "@/lib/auth/conditions";
 import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
@@ -37,7 +38,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 	const userId = user?.id || null;
 	const userFinished = user?.finished || false;
 	const userPageSlug = user?.pageSlug || null;
-	const userCondition = user?.condition || Condition.STAIRS;
+	const userCondition = user
+		? getUserCondition(user, pageSlug)
+		: Condition.STAIRS;
 	const pageStatus = getPageStatus({
 		pageSlug,
 		userPageSlug,

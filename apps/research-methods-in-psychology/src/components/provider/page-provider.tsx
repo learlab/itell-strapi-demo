@@ -23,6 +23,7 @@ import { SummaryStore, createSummaryStore } from "@/lib/store/summary-store";
 import { reportSentry } from "@/lib/utils";
 import { useLocalStorage } from "@itell/core/hooks";
 import { parseEventStream } from "@itell/utils";
+import { Subscription } from "@xstate/store";
 import {
 	createContext,
 	useContext,
@@ -60,6 +61,10 @@ export const PageProvider = ({
 	const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
 		`question-store-${page.slug}`,
 		undefined,
+	);
+	const [quizFinished, setQuizFinished] = useLocalStorage<boolean | undefined>(
+		`quiz-finished-${page.slug}`,
+		page.quiz ? false : undefined,
 	);
 
 	const questions = useMemo(() => {
@@ -103,10 +108,6 @@ export const PageProvider = ({
 			},
 			snapshot,
 		);
-
-		questionStoreRef.current.subscribe((state) => {
-			setSnapshot(state.context);
-		});
 	}
 
 	const chatStoreRef = useRef<ChatStore>();
@@ -116,13 +117,37 @@ export const PageProvider = ({
 
 	const summaryStoreRef = useRef<SummaryStore>();
 	if (!summaryStoreRef.current) {
-		summaryStoreRef.current = createSummaryStore({ pageStatus });
+		summaryStoreRef.current = createSummaryStore({
+			pageStatus,
+		});
 	}
 
 	const quizStoreRef = useRef<QuizStore>();
 	if (!quizStoreRef.current) {
-		quizStoreRef.current = createQuizStore();
+		quizStoreRef.current = createQuizStore({ finished: quizFinished });
 	}
+
+	useEffect(() => {
+		let questionSubscription: Subscription | undefined;
+		let quizSubscription: Subscription | undefined;
+		if (questionStoreRef.current) {
+			questionSubscription = questionStoreRef.current.subscribe((state) => {
+				setSnapshot(state.context);
+			});
+		}
+
+		if (quizStoreRef.current) {
+			quizSubscription = quizStoreRef.current.on("finishQuiz", (context) => {
+				console.log("finish quiz");
+				setQuizFinished(true);
+			});
+		}
+
+		return () => {
+			questionSubscription?.unsubscribe();
+			quizSubscription?.unsubscribe();
+		};
+	}, []);
 
 	return (
 		<PageContext.Provider

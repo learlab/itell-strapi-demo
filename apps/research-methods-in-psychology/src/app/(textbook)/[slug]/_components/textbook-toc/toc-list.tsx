@@ -6,7 +6,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@itell/ui/accordion";
-import { useOptimistic } from "react";
+import { startTransition, useOptimistic } from "react";
 import { Page } from "#content";
 import { TocPagesWithStatus } from ".";
 import { TocItem } from "./toc-item";
@@ -33,7 +33,11 @@ export const TextbookTocList = ({ page, pages }: Props) => {
 							<TocItem
 								key={item.slug}
 								inGroup={false}
-								onClick={(slug) => setActivePage(slug)}
+								onClick={(slug) =>
+									startTransition(() => {
+										setActivePage(slug);
+									})
+								}
 								activePage={activePage}
 								item={item}
 							/>
@@ -56,7 +60,11 @@ export const TextbookTocList = ({ page, pages }: Props) => {
 									{item.pages.map((p) => (
 										<TocItem
 											key={p.slug}
-											onClick={() => setActivePage(p.slug)}
+											onClick={() => {
+												startTransition(() => {
+													setActivePage(p.slug);
+												});
+											}}
 											item={p}
 											inGroup={true}
 											activePage={activePage}

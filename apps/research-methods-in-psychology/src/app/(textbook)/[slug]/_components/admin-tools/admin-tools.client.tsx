@@ -2,6 +2,7 @@
 import { resetUserAction, updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
+import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
 import { makePageHref } from "@/lib/utils";
 import {
@@ -35,6 +36,7 @@ import {
 	SheetTrigger,
 } from "@itell/ui/sheet";
 import { Switch } from "@itell/ui/switch";
+import { User } from "lucia";
 import { SettingsIcon } from "lucide-react";
 import { startTransition, useState } from "react";
 import { toast } from "sonner";
@@ -42,7 +44,8 @@ import { useServerAction } from "zsa-react";
 import { Page } from "#content";
 
 type Props = {
-	condition: string;
+	user: User;
+	pageSlug: string;
 	pages: Page[];
 };
 
@@ -67,16 +70,16 @@ const conditions = [
 	},
 ];
 
-export const AdminToolsClient = ({ condition, pages }: Props) => {
+export const AdminToolsClient = ({ user, pageSlug, pages }: Props) => {
 	const store = useQuestionStore();
+	const condition = getUserCondition(user, pageSlug);
 	const [open, setOpen] = useState(false);
 	const { execute, isPending, isError } = useServerAction(updateUserAction);
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
-		const condition = String(formData.get("condition"));
-		const pageSlug =
+		const newPageSlug =
 			formData.get("page-progress") !== ""
 				? String(formData.get("page-progress"))
 				: undefined;
@@ -87,9 +90,15 @@ export const AdminToolsClient = ({ condition, pages }: Props) => {
 			});
 		}
 
+		const newCondition = String(formData.get("condition"));
+		const newConditionAssignments = {
+			...user.conditionAssignments,
+			[pageSlug]: newCondition,
+		};
+
 		const [_, err] = await execute({
-			condition,
-			pageSlug,
+			conditionAssignments: newConditionAssignments,
+			pageSlug: newPageSlug,
 			finished: false,
 		});
 		if (!err) {
@@ -120,8 +129,7 @@ export const AdminToolsClient = ({ condition, pages }: Props) => {
 					<SheetTitle>Configure ITELL</SheetTitle>
 					<SheetDescription className="text-left">
 						You can view this because you are recognized as an admin. Apply the
-						configuration by clicking "Save Changes". Unsaved changes will be
-						lost.
+						configuration by clicking "Save Changes".
 					</SheetDescription>
 				</SheetHeader>
 				<form className="grid gap-8 py-4" onSubmit={onSubmit}>

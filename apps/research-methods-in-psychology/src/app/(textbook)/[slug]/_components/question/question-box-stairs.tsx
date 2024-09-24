@@ -96,7 +96,8 @@ export const QuestionBoxStairs = ({
 			},
 		});
 		if (!res.ok) {
-			throw new Error("Failed to evaluate answer");
+			const { error, details } = await res.json();
+			throw new Error(error, { cause: details });
 		}
 		const response = await res.json();
 		const score = response.score as QuestionScore;

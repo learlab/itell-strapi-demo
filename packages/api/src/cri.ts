@@ -39,6 +39,7 @@ export const createCriRouter = ({
 					return c.json(
 						{
 							error: "Failed to get cri response",
+							details: await response.text(),
 						},
 						500,
 					);
@@ -46,11 +47,12 @@ export const createCriRouter = ({
 
 				const parsed = ScoreSchema.safeParse(await response.json());
 				if (parsed.success) {
-					return c.json(parsed.data);
+					return c.json(parsed.data, 200);
 				}
 				return c.json(
 					{
 						error: "Failed to parse response",
+						details: parsed.error.message,
 					},
 					500,
 				);

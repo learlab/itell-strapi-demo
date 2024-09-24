@@ -91,14 +91,17 @@ export const users = pgTable("users", {
 	pageSlug: text("page_slug"),
 	email: text("email"),
 	role: text("role").default("user").notNull(),
-	condition: text("condition").notNull(),
 	classId: text("class_id"),
 	finished: boolean("finished").default(false).notNull(),
 	preferences: jsonb("preferences").$type<UserPreferences>(),
+	conditionAssignments: jsonb("condition_assignments")
+		.$type<ConditionAssignments>()
+		.notNull(),
 	createdAt: CreatedAt,
 	updatedAt: UpdatedAt,
 });
 
+export type ConditionAssignments = Record<string, string>;
 export type User = InferSelectModel<typeof users>;
 export type CreateUserInput = InferInsertModel<typeof users>;
 export const UserPreferencesSchema = z

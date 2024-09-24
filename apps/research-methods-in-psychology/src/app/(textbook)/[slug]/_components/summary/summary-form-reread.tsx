@@ -8,15 +8,18 @@ import {
 	useQuestionStore,
 	useQuizStore,
 } from "@/components/provider/page-provider";
+import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
 import { PageData, isLastPage } from "@/lib/pages/pages.client";
 import { SelectSummaryReady } from "@/lib/store/question-store";
+import { SelectQuizFinished } from "@/lib/store/quiz-store";
 import { reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 import {
 	useDebounce,
+	useIsMobile,
 	useKeystroke,
 	usePortal,
 	useTimer,
@@ -39,6 +42,7 @@ import { SendHorizontalIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
+import { PageQuizModal } from "../page-quiz-modal";
 import {
 	SummaryInput,
 	getSummaryLocal,
@@ -61,7 +65,8 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const questionStore = useQuestionStore();
 	const chunks = useChunks();
 	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
-	const isMobile = /Mobi/i.test(window.navigator.userAgent);
+	const quizFinished = useSelector(quizStore, SelectQuizFinished);
+	const isMobile = useIsMobile();
 
 	const randomChunkSlug = useMemo(() => {
 		// skip first chunk, which is typically learning objectives
@@ -97,12 +102,11 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				page_slug: pageSlug,
 			});
 			console.log("requestBody", requestBodyRef.current);
-			const response = await fetch("/api/itell/score/summary", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const response = await apiClient.api.summary.$post({
+				json: {
+					summary: input,
+					page_slug: pageSlug,
 				},
-				body: requestBodyRef.current,
 			});
 			const json = await response.json();
 			const parsed = SummaryResponseSchema.safeParse(json);
@@ -245,7 +249,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 								You have finished this page and can move on. You are still
 								welcome to improve the summary.
 							</p>
-							<NextPageButton pageSlug={page.next_slug} />
+							<div className="flex gap-2 items-center">
+								<PageQuizModal
+									page={page}
+									showTrigger={pageStatus.unlocked && quizFinished === false}
+								/>
+								<NextPageButton pageSlug={page.next_slug} />
+							</div>
 						</div>
 					)}
 				</div>
