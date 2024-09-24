@@ -1,5 +1,5 @@
-import { allPagesSorted } from "@/lib/pages";
-import { PageData, getPageData } from "@/lib/utils";
+import { PageData, getPageData } from "@/lib/pages/pages.client";
+import { allPagesSorted } from "@/lib/pages/pages.server";
 import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
@@ -29,7 +29,7 @@ const getPageLink = (
 	const page = allPagesSorted[index];
 	if (!page) return null;
 
-	const disabled = userPage ? userPage.index < index : index !== 0 && index > 1;
+	const disabled = userPage ? userPage.order < index : index !== 0 && index > 1;
 	return {
 		text: page.title,
 		href: page.href,

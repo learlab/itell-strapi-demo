@@ -3,7 +3,6 @@ import { resetUserAction, updateUserAction } from "@/actions/user";
 import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Condition } from "@/lib/constants";
-import { allAssignmentPagesSorted } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import {
 	AlertDialog,
@@ -40,9 +39,11 @@ import { SettingsIcon } from "lucide-react";
 import { startTransition, useState } from "react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
+import { Page } from "#content";
 
 type Props = {
 	condition: string;
+	pages: Page[];
 };
 
 const conditions = [
@@ -66,7 +67,7 @@ const conditions = [
 	},
 ];
 
-export const AdminTools = ({ condition }: Props) => {
+export const AdminToolsClient = ({ condition, pages }: Props) => {
 	const store = useQuestionStore();
 	const [open, setOpen] = useState(false);
 	const { execute, isPending, isError } = useServerAction(updateUserAction);
@@ -167,7 +168,7 @@ export const AdminTools = ({ condition }: Props) => {
 								<SelectContent>
 									<SelectGroup>
 										<SelectLabel>Page</SelectLabel>
-										{allAssignmentPagesSorted.map((page) => (
+										{pages.map((page) => (
 											<SelectItem key={page.slug} value={page.slug}>
 												{page.title}
 											</SelectItem>

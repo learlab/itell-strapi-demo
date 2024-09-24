@@ -1,5 +1,6 @@
-import { allPagesSorted } from "@/lib/pages";
-import { getPageData, makePageHref } from "@/lib/utils";
+import { getPageData } from "@/lib/pages/pages.client";
+import { allPagesSorted } from "@/lib/pages/pages.server";
+import { makePageHref } from "@/lib/utils";
 import Link from "next/link";
 import pluralize from "pluralize";
 

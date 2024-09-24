@@ -1,7 +1,7 @@
 "use client";
 import { isProduction } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
-import { TocPageItem } from "@/lib/pages";
+import type { TocPageItem } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/utils";
 import Link from "next/link";
@@ -63,7 +63,7 @@ export const TocItem = ({
 				aria-disabled={disabled}
 			>
 				<span className="flex-1">{item.title}</span>
-				<span className="hidden xl:inline">{icon}</span>
+				<span className="hidden lg:inline">{icon}</span>
 			</Link>
 		</li>
 	);

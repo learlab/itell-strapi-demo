@@ -1,7 +1,7 @@
 import { MainNav } from "@/components/main-nav";
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
-import { allPagesSorted } from "@/lib/pages";
+import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { Fragment } from "react";
 
@@ -14,7 +14,7 @@ export const generateStaticParams = async () => {
 };
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-	const page = allPagesSorted.find((page) => page.slug === params.slug);
+	const page = getPage(params.slug);
 	if (!page) {
 		return {
 			title: "Not Found",

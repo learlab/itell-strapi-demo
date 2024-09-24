@@ -3,7 +3,7 @@ import { getSummariesAction } from "@/actions/summary";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
-import { allPagesSorted } from "@/lib/pages";
+import { allPagesSorted } from "@/lib/pages/pages.server";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
@@ -95,7 +95,7 @@ export default async function ({ searchParams }: { searchParams: unknown }) {
 						/>
 						<div className="space-y-4">
 							<div className="flex flex-col gap-2 sm:flex-row items-center justify-between">
-								<SummaryListSelect pageSlug={page} />
+								<SummaryListSelect defaultValue={page} pages={allPagesSorted} />
 								<p className="text-sm text-muted-foreground">
 									{summariesByPassing.passed} passed,{" "}
 									{summariesByPassing.failed} failed

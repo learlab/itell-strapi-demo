@@ -1,8 +1,8 @@
 import { getClassStudentsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { allPagesSorted } from "@/lib/pages";
-import { getPageData } from "@/lib/utils";
+import { getPageData } from "@/lib/pages/pages.client";
+import { allPagesSorted } from "@/lib/pages/pages.server";
 import {
 	Card,
 	CardContent,
@@ -50,8 +50,8 @@ export const ClassInfo = async ({ classId }: { classId: string }) => {
 		const page = getPageData(s.pageSlug);
 		const progress = page
 			? {
-					index: page.index,
-					text: `${Math.round((page.index + 1) / numChapters) * 100}%`,
+					index: page.order,
+					text: `${Math.round((page.order + 1) / numChapters) * 100}%`,
 				}
 			: { index: 0, text: "0%" };
 

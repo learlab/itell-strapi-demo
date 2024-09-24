@@ -1,6 +1,5 @@
 "use client";
 
-import { allPagesSorted } from "@/lib/pages";
 import {
 	Select,
 	SelectContent,
@@ -11,21 +10,19 @@ import {
 	SelectValue,
 } from "@itell/ui/select";
 import { useRouter } from "next/navigation";
-
-const allPages = allPagesSorted.map((p) => ({
-	title: p.title,
-	slug: p.slug,
-}));
+import { Page } from "#content";
 
 export const SummaryListSelect = ({
-	pageSlug,
+	defaultValue,
+	pages,
 }: {
-	pageSlug: string | undefined;
+	defaultValue: string | undefined;
+	pages: Page[];
 }) => {
 	const router = useRouter();
 	return (
 		<Select
-			defaultValue={pageSlug}
+			defaultValue={defaultValue}
 			onValueChange={(val) => {
 				if (val === "all") {
 					router.push("/dashboard/summaries");
@@ -43,7 +40,7 @@ export const SummaryListSelect = ({
 				<SelectGroup>
 					<SelectLabel>Select a page</SelectLabel>
 					<SelectItem value="all">All pages</SelectItem>
-					{allPages.map((p) => (
+					{pages.map((p) => (
 						<SelectItem key={p.slug} value={p.slug}>
 							{p.title}
 						</SelectItem>

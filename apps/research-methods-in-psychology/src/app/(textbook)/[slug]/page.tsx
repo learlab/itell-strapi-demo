@@ -3,7 +3,7 @@ import { getSession } from "@/lib/auth";
 import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
-import { allPagesSorted } from "@/lib/pages";
+import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
@@ -26,15 +26,12 @@ import { Suspense } from "react";
 export default async function ({ params }: { params: { slug: string } }) {
 	const { slug } = routes.textbook.$parseParams(params);
 	const { user } = await getSession();
-	const pageIndex = allPagesSorted.findIndex((page) => {
-		return page.slug === slug;
-	});
+	const page = getPage(slug);
 
-	if (pageIndex === -1) {
+	if (!page) {
 		return notFound();
 	}
 
-	const page = allPagesSorted[pageIndex];
 	const pageSlug = page.slug;
 
 	const userId = user?.id || null;
@@ -67,7 +64,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<PageTitle className="mb-8">{page.title}</PageTitle>
 					<PageContent title={page.title} html={page.html} />
 					<SelectionPopover user={user} pageSlug={pageSlug} />
-					<Pager pageIndex={pageIndex} userPageSlug={user?.pageSlug || null} />
+					<Pager pageIndex={page.order} userPageSlug={user?.pageSlug || null} />
 					<p className="text-right text-sm text-muted-foreground mt-4">
 						<span>Last updated at </span>
 						<time>{page.last_modified}</time>

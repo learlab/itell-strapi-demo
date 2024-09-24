@@ -1,6 +1,5 @@
 "use client";
 
-import { CommandMenu } from "@/components/command-menu";
 import { MobileNav } from "@/components/mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserAccountNav } from "@/components/user-account-nav";
@@ -18,7 +17,6 @@ export const DashboardNavMenu = ({
 		<div className="flex items-center justify-between flex-1 md:flex-initial">
 			<MobileNav items={dashboardConfig.mobileNav[role]} />
 			<div className="hidden sm:flex items-center gap-2">
-				<CommandMenu />
 				<ThemeToggle />
 				<UserAccountNav user={user} />
 			</div>

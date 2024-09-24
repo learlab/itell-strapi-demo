@@ -6,9 +6,9 @@ import {
 	useQuizStore,
 } from "@/components/provider/page-provider";
 import { PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages";
+import { PageData, isLastPage } from "@/lib/pages/pages.client";
 import { SelectSummaryReady } from "@/lib/store/question-store";
-import { PageData, reportSentry } from "@/lib/utils";
+import { reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/callout";
@@ -59,7 +59,7 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 				return;
 			}
 
-			if (isLastPage(page.slug)) {
+			if (isLastPage(page)) {
 				toast.info("You have finished the entire textbook!", {
 					important: true,
 					duration: 100000,

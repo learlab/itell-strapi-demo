@@ -2,7 +2,6 @@ import { env } from "@/env.mjs";
 import * as Sentry from "@sentry/nextjs";
 import { redirect } from "next/navigation";
 import { Page } from "#content";
-import { allPagesSorted } from "./pages";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
 	const regex = /embed\/([\w-]+)\?/;
@@ -21,36 +20,11 @@ export const makeInputKey = (slug: string) => {
 	return `${slug}-summary`;
 };
 
-export const makePageHref = (slug: string, chunk?: string) => {
-	return `/${slug}${chunk ? `#${chunk}` : ""}`;
-};
-
-export type PageData = {
-	id: string;
-	index: number;
-	title: string;
-	slug: string;
-	order: number;
-	quiz: Page["quiz"];
-	next_slug: string | null;
-};
-
-export const getPageData = (slug: string | null): PageData | null => {
-	const index = allPagesSorted.findIndex((s) => s.slug === slug);
-	if (index === -1) {
-		return null;
+export const makePageHref = (slug: string | null, chunk?: string) => {
+	if (!slug) {
+		return "/";
 	}
-	const page = allPagesSorted[index];
-
-	return {
-		id: page.title,
-		index,
-		title: page.title,
-		slug: page.slug,
-		next_slug: page.next_slug,
-		order: page.order,
-		quiz: page.quiz,
-	};
+	return `/${slug}${chunk ? `#${chunk}` : ""}`;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {

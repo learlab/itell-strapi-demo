@@ -5,9 +5,9 @@ import {
 	useSummaryStore,
 } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
-import { isLastPage } from "@/lib/pages";
+import { PageData } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages/pages.client";
 import { SelectQuizOpen } from "@/lib/store/quiz-store";
-import { PageData } from "@/lib/utils";
 import {
 	Dialog,
 	DialogContent,
@@ -49,7 +49,7 @@ export const PageQuizModal = ({ page }: { page: PageData }) => {
 						quizStore.send({ type: "toggleQuiz" });
 						summaryStore.send({
 							type: "finish",
-							isNextPageVisible: !isLastPage(page.slug),
+							isNextPageVisible: !isLastPage(page),
 							input: "",
 						});
 					}}

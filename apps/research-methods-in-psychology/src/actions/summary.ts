@@ -13,7 +13,8 @@ import {
 	isProduction,
 } from "@/lib/constants";
 import { Condition } from "@/lib/constants";
-import { isLastPage, isPageAfter, nextPage } from "@/lib/pages";
+import { getPageData, isLastPage } from "@/lib/pages/pages.client";
+import { getPage, isPageAfter, nextPage } from "@/lib/pages/pages.server";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
@@ -95,13 +96,17 @@ export const createSummaryAction = authedProcedure
 
 			if (canProceed) {
 				shouldRevalidate = true;
-				await tx
-					.update(users)
-					.set({
-						pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
-						finished: isLastPage(input.summary.pageSlug),
-					})
-					.where(eq(users.id, ctx.user.id));
+
+				const page = getPageData(input.summary.pageSlug);
+				if (page) {
+					await tx
+						.update(users)
+						.set({
+							pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
+							finished: isLastPage(page),
+						})
+						.where(eq(users.id, ctx.user.id));
+				}
 			}
 
 			return {

@@ -16,7 +16,7 @@ import { apiClient } from "@/lib/api-client";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages";
+import { PageData, isLastPage } from "@/lib/pages/pages.client";
 import { SelectStairsAnswered, getHistory } from "@/lib/store/chat-store";
 import {
 	SelectSummaryReady,
@@ -30,12 +30,7 @@ import {
 	SelectStairs,
 	StairsQuestion,
 } from "@/lib/store/summary-store";
-import {
-	PageData,
-	makePageHref,
-	reportSentry,
-	scrollToElement,
-} from "@/lib/utils";
+import { makePageHref, reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 import {
 	useDebounce,
@@ -82,6 +77,7 @@ type Props = {
 
 export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.slug;
+	const isLast = isLastPage(page);
 	const { portals, addPortal, removePortals } = usePortal();
 	const router = useRouter();
 	const { addStage, clearStages, finishStage, stages } = useSummaryStage();
@@ -266,9 +262,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 				summaryStore.send({
 					type: "finish",
-					isNextPageVisible: data.canProceed
-						? !isLastPage(pageSlug)
-						: undefined,
+					isNextPageVisible: data.canProceed ? !isLast : undefined,
 					input,
 				});
 
@@ -290,7 +284,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 	useEffect(() => {
 		if (summaryResponseRef.current) {
-			if (isLastPage(pageSlug)) {
+			if (isLast) {
 				toast.info("You have finished the entire textbook!");
 			} else {
 				const title = feedback?.isPassed
@@ -427,9 +421,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					<SummaryFeedback
 						className={isPending ? "opacity-70" : ""}
 						feedback={feedback}
-						needRevision={
-							isLastPage(pageSlug) ? !user.finished : !isNextPageVisible
-						}
+						needRevision={isLast ? !user.finished : !isNextPageVisible}
 					/>
 				)}
 

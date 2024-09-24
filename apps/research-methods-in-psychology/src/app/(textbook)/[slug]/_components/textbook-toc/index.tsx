@@ -1,6 +1,6 @@
 import { getPageStatus } from "@/lib/page-status";
 
-import { tocPages } from "@/lib/pages";
+import { tocPages } from "@/lib/pages/pages.server";
 import { Page } from "#content";
 import { PageControl } from "./page-control";
 import { TextbookTocList } from "./toc-list";

@@ -3,8 +3,9 @@ import { getAnswerStatsAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
 import { ConstructedResponse } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { allPagesSorted } from "@/lib/pages";
-import { getPageData, redirectWithSearchParams } from "@/lib/utils";
+import { getPageData } from "@/lib/pages/pages.client";
+import { allPagesSorted } from "@/lib/pages/pages.server";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import {
 	Card,

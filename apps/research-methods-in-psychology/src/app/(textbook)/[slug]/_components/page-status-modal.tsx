@@ -1,7 +1,6 @@
 "use client";
 import { isProduction } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
-import { firstPage } from "@/lib/pages";
 import { makePageHref } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { Button } from "@itell/ui/button";
@@ -33,7 +32,7 @@ export const PageStatusModal = ({ user, pageStatus }: Props) => {
 			return null;
 		}
 
-		const href = makePageHref(user.pageSlug || firstPage.slug);
+		const href = makePageHref(user.pageSlug);
 
 		// user with locked page
 		return (
@@ -83,7 +82,6 @@ const Modal = ({
 	children: React.ReactNode;
 }) => {
 	const [open, setOpen] = useState(true);
-	const href = makePageHref(userPageSlug || firstPage.slug);
 
 	return (
 		<Dialog

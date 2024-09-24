@@ -1,6 +1,6 @@
 import { Condition } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
-import { getPageData } from "@/lib/utils";
+import { getPageData } from "@/lib/pages/pages.client";
 import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
 import { User } from "lucia";

@@ -1,6 +1,6 @@
 import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
-import { allPagesSorted } from "@/lib/pages";
+import { allPagesSorted } from "@/lib/pages/pages.server";
 import { Elements } from "@itell/constants";
 import Image from "next/image";
 import Link from "next/link";

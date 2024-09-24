@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-import { firstPage } from "@/lib/pages";
+import { firstPage } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import type { Button } from "@itell/ui/button";
 import React from "react";

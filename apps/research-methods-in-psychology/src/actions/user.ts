@@ -14,7 +14,8 @@ import {
 	users,
 } from "@/drizzle/schema";
 import { Tags, isProduction } from "@/lib/constants";
-import { firstPage, isLastPage, isPageAfter, nextPage } from "@/lib/pages";
+import { getPageData, isLastPage } from "@/lib/pages/pages.client";
+import { firstPage, isPageAfter, nextPage } from "@/lib/pages/pages.server";
 import { and, eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
@@ -208,13 +209,16 @@ export const incrementUserPageSlugAction = authedProcedure
 			nextPageSlug,
 			ctx.user.pageSlug,
 		);
-		await db
-			.update(users)
-			.set({
-				pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
-				finished: isLastPage(input.currentPageSlug),
-			})
-			.where(eq(users.id, ctx.user.id));
+		const page = getPageData(input.currentPageSlug);
+		if (page) {
+			await db
+				.update(users)
+				.set({
+					pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
+					finished: isLastPage(page),
+				})
+				.where(eq(users.id, ctx.user.id));
+		}
 
 		revalidateTag(Tags.GET_SESSION);
 

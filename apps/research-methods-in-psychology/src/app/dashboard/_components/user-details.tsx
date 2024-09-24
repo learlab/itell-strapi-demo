@@ -6,7 +6,7 @@ import {
 } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getPageData } from "@/lib/utils";
+import { getPageData } from "@/lib/pages/pages.client";
 import { DashboardBadge } from "@itell/ui/dashboard-badge";
 import { Skeleton } from "@itell/ui/skeleton";
 import { cn, median } from "@itell/utils";
@@ -46,10 +46,10 @@ export const UserDetails = async ({ classId, pageSlug }: Props) => {
 		throw new Error(err2.message);
 	}
 
-	const pageIndex = getPageData(pageSlug)?.index;
+	const pageIndex = getPageData(pageSlug)?.order;
 	const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
 	const otherProgress = otherUsers.map((user) => {
-		const pageIndex = getPageData(pageSlug)?.index;
+		const pageIndex = getPageData(user.pageSlug)?.order;
 		return pageIndex !== undefined ? pageIndex + 1 : 0;
 	});
 

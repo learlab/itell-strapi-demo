@@ -8,13 +8,12 @@ import {
 	useQuestionStore,
 	useQuizStore,
 } from "@/components/provider/page-provider";
-import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages";
+import { PageData, isLastPage } from "@/lib/pages/pages.client";
 import { SelectSummaryReady } from "@/lib/store/question-store";
-import { PageData, reportSentry, scrollToElement } from "@/lib/utils";
+import { reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 import {
 	useDebounce,
@@ -139,7 +138,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			setFinished(true);
 			prevInput.current = input;
 
-			if (isLastPage(pageSlug)) {
+			if (isLastPage(page)) {
 				toast.info("You have finished the entire textbook!");
 				return;
 			}

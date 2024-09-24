@@ -1,6 +1,5 @@
 "use client";
 
-import { allPagesSorted } from "@/lib/pages";
 import { Button } from "@itell/ui/button";
 import {
 	CommandDialog,
@@ -16,8 +15,9 @@ import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { Page } from "#content";
 
-export const CommandMenu = () => {
+export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const { setTheme } = useTheme();
@@ -80,17 +80,17 @@ export const CommandMenu = () => {
 						))}
 					</CommandGroup>
 					<CommandGroup heading="Textbook">
-						{config.textbookPages.map((navItem) => (
+						{pages.map((item) => (
 							<CommandItem
-								key={navItem.href}
-								value={navItem.title}
+								key={item.href}
+								value={item.title}
 								onSelect={() => {
-									runCommand(() => router.push(navItem.href as string));
+									runCommand(() => router.push(item.href));
 								}}
 							>
 								<span className="flex items-center gap-2">
 									<File className="size-4" />
-									{navItem.title}
+									{item.title}
 								</span>
 							</CommandItem>
 						))}
@@ -124,12 +124,6 @@ export const CommandMenu = () => {
 };
 
 const config = {
-	textbookPages: allPagesSorted.map((s) => {
-		return {
-			title: `${s.title}`,
-			href: s.href,
-		};
-	}),
 	tools: [
 		{
 			title: "Dashboard",

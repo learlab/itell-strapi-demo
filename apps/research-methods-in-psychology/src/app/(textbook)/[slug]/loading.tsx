@@ -1,5 +1,5 @@
 import { lucia } from "@/lib/auth/lucia";
-import { allPagesSorted } from "@/lib/pages";
+import { getPage } from "@/lib/pages/pages.server";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
@@ -23,7 +23,7 @@ export default async function () {
 	}
 
 	// if this is not found, 404 will be throw at page.tsx
-	const page = allPagesSorted.find((page) => page.slug === pageSlug);
+	const page = getPage(pageSlug as string);
 	if (!page) {
 		return notFound();
 	}

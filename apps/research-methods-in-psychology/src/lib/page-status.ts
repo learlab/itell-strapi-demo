@@ -1,7 +1,12 @@
-import { firstPage, isLastPage, isPageAfter } from "./pages";
+import { PageData, getPageData, isLastPage } from "./pages/pages.client";
+import {
+	firstAssignmentPage,
+	firstPage,
+	isPageAfter,
+} from "./pages/pages.server";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
-	return false;
+	return pageSlug === firstPage.slug;
 };
 
 export type PageStatus = {
@@ -27,7 +32,9 @@ export const getPageStatus = ({
 	if (!userPageSlug) {
 		return {
 			unlocked: isPageUnlockedWithoutUser(pageSlug),
-			latest: pageSlug === firstPage.slug,
+			latest:
+				pageSlug ===
+				(firstAssignmentPage ? firstAssignmentPage.slug : firstPage.slug),
 		};
 	}
 
@@ -36,7 +43,8 @@ export const getPageStatus = ({
 		return { unlocked: true, latest };
 	}
 
-	const unlocked = isLastPage(pageSlug)
+	const page = getPageData(pageSlug) as PageData;
+	const unlocked = isLastPage(page)
 		? userFinished
 		: isPageAfter(userPageSlug, pageSlug);
 	return { unlocked, latest };

@@ -1,9 +1,21 @@
 import { groupBy } from "es-toolkit";
+import "server-only";
 import { pages } from "#content";
 
 export const allPagesSorted = pages.sort((a, b) => {
 	return a.order - b.order;
 });
+
+export const allAssignmentPagesSorted = allPagesSorted.filter(
+	(page) => page.assignments.length > 0,
+);
+export const firstAssignmentPage = allAssignmentPagesSorted.find(
+	(page) => page.assignments.length > 0,
+);
+export const firstPage = allPagesSorted[0];
+
+export const getPage = (slug: string) =>
+	allPagesSorted.find((p) => p.slug === slug);
 
 export const tocPages = pages.reduce(
 	(acc, page) => {
@@ -18,7 +30,7 @@ export const tocPages = pages.reduce(
 			return acc;
 		}
 
-        // if page have a parent, treat it as the children of the latest group
+		// if page have a parent, treat it as the children of the latest group
 		const group = acc.at(-1);
 		if (group?.group && group.slug === page.parent.slug) {
 			group.pages.push(item);
@@ -59,19 +71,6 @@ export const pagesByParent = groupBy(
 	})),
 	(page) => page.parentTitle,
 );
-
-export const allAssignmentPagesSorted = allPagesSorted.filter(
-	(page) => page.assignments.length > 0,
-);
-export const firstAssignmentPage = allAssignmentPagesSorted.find(
-	(page) => page.assignments.length > 0,
-);
-export const firstPage = firstAssignmentPage || allPagesSorted[0];
-
-export const isLastPage = (slug: string) => {
-	const lastPage = allPagesSorted[allPagesSorted.length - 1];
-	return lastPage.slug === slug;
-};
 
 export const isPageAfter = (a: string | undefined, b: string | null) => {
 	const aIndex = allPagesSorted.findIndex((s) => s.slug === a);
