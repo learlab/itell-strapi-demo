@@ -1,5 +1,6 @@
 "use client";
 import { useAddChat, useChatStore } from "@/components/provider/page-provider";
+import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
 import { SelectOpen } from "@/lib/store/chat-store";
 import { noteStore } from "@/lib/store/note-store";
@@ -84,10 +85,10 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
 		},
 	};
 
-	const commands =
-		user?.condition === Condition.STAIRS
-			? [askAction, takeNoteAction]
-			: [takeNoteAction];
+	const isStairs = user
+		? getUserCondition(user, pageSlug) === Condition.STAIRS
+		: false;
+	const commands = isStairs ? [askAction, takeNoteAction] : [takeNoteAction];
 	type cmd = (typeof commands)[number];
 	const [pending, setPending] = useState<cmd["label"] | undefined>();
 

@@ -8,7 +8,7 @@ import { guides } from "#content";
 
 export default async function () {
 	const { user } = await getSession();
-	const userCondition = user?.condition || Condition.STAIRS;
+	const userCondition = Condition.STAIRS;
 	const guide = guides.find((g) => g.condition === userCondition);
 
 	if (!guide) {

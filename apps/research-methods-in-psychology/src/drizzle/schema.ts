@@ -114,6 +114,7 @@ export const UserPreferencesSchema = z
 
 export const CreateUserSchema = createInsertSchema(users, {
 	preferences: UserPreferencesSchema.optional(),
+	conditionAssignments: z.record(z.string()),
 });
 export const UpdateUserSchema = CreateUserSchema.partial();
 

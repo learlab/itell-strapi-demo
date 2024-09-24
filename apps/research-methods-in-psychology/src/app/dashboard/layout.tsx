@@ -50,24 +50,24 @@ export default async function DashboardLayout({
 		return redirectWithSearchParams("auth");
 	}
 
-	if (user?.condition === Condition.SIMPLE) {
-		return (
-			<main className="flex items-center justify-center min-h-screen">
-				<Card className="w-80 ">
-					<CardHeader>
-						<CardTitle>data unavailable</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<ContinueReading
-							text="Back to textbook"
-							variant="outline"
-							className="w-full"
-						/>
-					</CardContent>
-				</Card>
-			</main>
-		);
-	}
+	// if (user?.condition === Condition.SIMPLE) {
+	// 	return (
+	// 		<main className="flex items-center justify-center min-h-screen">
+	// 			<Card className="w-80 ">
+	// 				<CardHeader>
+	// 					<CardTitle>data unavailable</CardTitle>
+	// 				</CardHeader>
+	// 				<CardContent>
+	// 					<ContinueReading
+	// 						text="Back to textbook"
+	// 						variant="outline"
+	// 						className="w-full"
+	// 					/>
+	// 				</CardContent>
+	// 			</Card>
+	// 		</main>
+	// 	);
+	// }
 
 	const [teacher, _] = await getTeacherAction();
 	const isTeacher = !!teacher;

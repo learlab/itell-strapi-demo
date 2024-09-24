@@ -111,7 +111,9 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			const json = await response.json();
 			const parsed = SummaryResponseSchema.safeParse(json);
 			if (!parsed.success) {
-				throw parsed.error;
+				throw new Error("summary response in wrong shape", {
+					cause: parsed.error,
+				});
 			}
 			const scores = parsed.data;
 			summaryResponseRef.current = scores;
@@ -130,7 +132,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				keystroke: {
 					start: prevInput.current || getSummaryLocal(pageSlug) || "",
 					data: keystrokes,
-					isMobile,
+					isMobile: isMobile || false,
 				},
 			});
 			if (err) {
