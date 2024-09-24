@@ -80,11 +80,8 @@ export const QuestionBoxReread = ({
 			},
 		});
 		if (!response.ok) {
-			setState((state) => ({
-				...state,
-				error: "Failed to evaluate answer, please try again later",
-			}));
-			return;
+			const { error, details } = await response.json();
+			throw new Error(error, { cause: details });
 		}
 
 		const data = await response.json();
