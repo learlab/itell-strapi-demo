@@ -179,10 +179,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							clearStages();
 							summaryStore.send({ type: "fail", error: ErrorType.INTERNAL });
 							// summaryResponse parsing failed, return early
-							reportSentry("parse summary stairs", {
-								body,
-								chunk: data,
-							});
+							reportSentry(
+								"first chunk of stairs summary response in wrong shape",
+								{
+									body,
+									chunk: data,
+								},
+							);
 							return;
 						}
 					} else {

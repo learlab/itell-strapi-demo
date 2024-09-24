@@ -114,7 +114,7 @@ export const QuestionBoxReread = ({
 				...state,
 				error: "Failed to evaluate answer, please try again later",
 			}));
-			reportSentry("evaluate constructed response", { error });
+			reportSentry("evaluate constructed response", { error: error?.cause });
 		}
 	}, [isError]);
 
