@@ -145,13 +145,13 @@ __**Table 4.1 Summary of Levels of Measurements**__
 
 ## References {#References-257pt} 
 
-1.  Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. __Psychological Assessment, 4__, 5–13. ↵
-2.  Rosenberg, M. (1965). __Society and the adolescent self-image.__ Princeton, NJ: Princeton University Press ↵
-3.  Bandura, A., Ross, D., & Ross, S. A. (1961). Transmission of aggression through imitation of aggressive models. __Journal of Abnormal and Social Psychology, 63__, 575–582. ↵
-4.  Holmes, T. H., & Rahe, R. H. (1967). The Social Readjustment Rating Scale. __Journal of Psychosomatic Research, 11__(2), 213-218. ↵
-5.  Delongis, A., Coyne, J. C., Dakof, G., Folkman, S., & Lazarus, R. S. (1982). Relationships of daily hassles, uplifts, and major life events to health status. __Health Psychology, 1__(2), 119-136. ↵
-6.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. __Journal of Health and Social Behavior, 24,__ 386-396. ↵
-7.  Segerstrom, S. E., & Miller, G. E. (2004). Psychological stress and the human immune system: A meta-analytic study of 30 years of inquiry. __Psychological Bulletin, 130__, 601–630. ↵
-8.  Stevens, S. S. (1946). On the theory of scales of measurement. __Science, 103__, 677–680. ↵
-9.  Levels of Measurement. Retrieved from http://wikieducator.org/Introduction\_to\_Research\_Methods\_In\_Psychology/Theories\_and\_Measurement/Levels\_of_Measurement ↵
+1.  Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. __Psychological Assessment, 4__, 5–13. 
+2.  Rosenberg, M. (1965). __Society and the adolescent self-image.__ Princeton, NJ: Princeton University Press 
+3.  Bandura, A., Ross, D., & Ross, S. A. (1961). Transmission of aggression through imitation of aggressive models. __Journal of Abnormal and Social Psychology, 63__, 575–582. 
+4.  Holmes, T. H., & Rahe, R. H. (1967). The Social Readjustment Rating Scale. __Journal of Psychosomatic Research, 11__(2), 213-218. 
+5.  Delongis, A., Coyne, J. C., Dakof, G., Folkman, S., & Lazarus, R. S. (1982). Relationships of daily hassles, uplifts, and major life events to health status. __Health Psychology, 1__(2), 119-136. 
+6.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. __Journal of Health and Social Behavior, 24,__ 386-396. 
+7.  Segerstrom, S. E., & Miller, G. E. (2004). Psychological stress and the human immune system: A meta-analytic study of 30 years of inquiry. __Psychological Bulletin, 130__, 601–630. 
+8.  Stevens, S. S. (1946). On the theory of scales of measurement. __Science, 103__, 677–680. 
+9.  Levels of Measurement. Retrieved from http://wikieducator.org/Introduction\_to\_Research\_Methods\_In\_Psychology/Theories\_and\_Measurement/Levels\_of_Measurement
 

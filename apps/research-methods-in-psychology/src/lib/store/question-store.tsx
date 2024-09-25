@@ -40,7 +40,7 @@ export const createQuestionStore = (
 				chunks.map(({ slug, type }) => [
 					slug,
 					{
-						hasQuestion: chunkQuestion[slug],
+						hasQuestion: Boolean(chunkQuestion[slug]),
 						status: type === "regular" ? undefined : "completed",
 					},
 				]),
@@ -65,6 +65,13 @@ export const createQuestionStore = (
 					return;
 				}
 
+				const nextSlug = chunks[nextIndex].slug;
+				if (context.chunkStatus[nextSlug].hasQuestion) {
+					context.currentChunk = nextSlug;
+					return;
+				}
+
+				// otherwise, unlock following chunks till we encounter the next regular chunk
 				while (
 					nextIndex + 1 <= lastIndex &&
 					chunks[nextIndex + 1].type !== "regular"

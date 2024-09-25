@@ -2,8 +2,8 @@
 assignments:
 - summary
 chunks:
-- title: learning objectives
-  slug: learning-objectives-200pt
+- title: Learning objectives
+  slug: Learning-objectives-200pt
   type: plain
 - title: What Is Science?
   slug: What-Is-Science?-758t
@@ -46,15 +46,17 @@ slug: 2-understanding-science
 title: 2. Understanding Science
 ---
 
-## learning objectives {#learning-objectives-200pt .sr-only} 
+## Learning objectives {#Learning-objectives-200pt .sr-only} 
 
 <i-callout variant="info" title="Learning Objectives">
 
-\- Define science.Describe the three fundamental features of science.
+1\. Define science.
 
-\- Explain why psychology is a science. 
+2\. Describe the three fundamental features of science.
 
-\- Define pseudoscience and give some examples.
+3\. Explain why psychology is a science. 
+
+4\. Define pseudoscience and give some examples.
 
 </i-callout>
 

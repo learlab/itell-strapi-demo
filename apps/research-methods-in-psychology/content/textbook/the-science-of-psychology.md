@@ -26,7 +26,7 @@ Psychology is usually defined as the scientific study of human behavior and ment
 
 ## References {#References-250pt} 
 
-1.  Mehl, M. R., Vazire, S., Ramirez-Esparza, N., Slatcher, R. B., & Pennebaker, J. W. (2007). Are women really more talkative than men? __Science__, 317, 82. ↵
+1.  Mehl, M. R., Vazire, S., Ramirez-Esparza, N., Slatcher, R. B., & Pennebaker, J. W. (2007). Are women really more talkative than men? __Science__, 317, 82. 
 
 Previous/next navigation
 
