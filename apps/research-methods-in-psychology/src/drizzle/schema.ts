@@ -235,6 +235,7 @@ export const notes = pgTable(
 	(table) => {
 		return {
 			notes_user_id_idx: index("notes_user_id_idx").on(table.userId),
+			notes_page_slug_idx: index("notes_page_slug_idx").on(table.pageSlug),
 		};
 	},
 );
@@ -262,6 +263,9 @@ export const constructed_responses = pgTable(
 	(table) => {
 		return {
 			user_id_idx: index("constructed_responses_user_id_idx").on(table.userId),
+			page_slug_idx: index("constructed_responses_page_slug_idx").on(
+				table.pageSlug,
+			),
 		};
 	},
 );
