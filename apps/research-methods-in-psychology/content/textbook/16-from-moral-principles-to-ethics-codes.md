@@ -1,27 +1,82 @@
 ---
-title: "16. From Moral Principles to Ethics Codes"
-page_slug: 16-from-moral-principles-to-ethics-codes
-summary: true
-quiz: false
-reference_summary: This section outlines the ethical guidelines governing psychological research, emphasizing the history and importance of ethics codes, particularly the American Psychological Association (APA) Ethics Code. Key principles include informed consent, the ethical treatment of nonhuman animals, and scholarly integrity. Historical codes like the Nuremberg Code and the Belmont Report established foundational ethical standards, such as weighing risks against benefits and ensuring justice. The APA Ethics Code, particularly Standard 8, details requirements for informed consent, deception, debriefing, and humane treatment of animal subjects. Researchers must uphold integrity by avoiding data fabrication, plagiarism, and ensuring proper credit for contributions.
+assignments:
+- summary
+chunks:
+- title: Learning Objectives
+  slug: Learning-Objectives-246pt
+  type: plain
+- title: Historical Overview
+  slug: Historical-Overview-873t
+  type: regular
+- title: Ethics Codes
+  slug: Ethics-Codes-875t
+  type: regular
+  headings:
+  - level: 3
+    slug: apa-ethics-code
+    title: APA Ethics Code
+- title: Ethics Codes 2
+  slug: Ethics-Codes-2-874t
+  type: regular
+  headings:
+  - level: 3
+    slug: informed-consent
+    title: Informed Consent
+  - level: 3
+    slug: deception
+    title: Deception
+- title: Ethics Codes 3
+  slug: Ethics-Codes-3-876t
+  type: regular
+  headings:
+  - level: 3
+    slug: debriefing
+    title: Debriefing
+  - level: 3
+    slug: nonhuman-animal-subjects
+    title: Nonhuman Animal Subjects
+  - level: 3
+    slug: scholarly-integrity
+    title: Scholarly Integrity
+- title: References
+  slug: References-247pt
+  type: plain
+cri:
+- question: What are the three levels of risk for research as defined by federal regulations?
+  answer: Exempt, expedited, and greater than minimal risk research.
+  slug: Historical-Overview-873t
+- question: What is the purpose of the APA Ethics Code concerning research and publication?
+  answer: To establish ethical standards for psychologists and their students to follow when conducting research and publishing findings.
+  slug: Ethics-Codes-875t
+- question: What are some situations in psychological research where informed consent is not necessary?
+  answer: Research that is not expected to cause harm, has a straightforward procedure, or is conducted in the context of people's ordinary activities do not require informed consent.
+  slug: Ethics-Codes-2-874t
+- question: What is the process of debriefing in psychological research?
+  answer: Debriefing involves informing research participants of the study's purpose, revealing any deception, correcting misconceptions, and minimizing harm.
+  slug: Ethics-Codes-3-876t
+next_slug: 17-putting-ethics-into-practice
+order: 16
+parent:
+  title: III. Research Ethics
+  slug: iii-research-ethics
+quiz: null
+slug: 16-from-moral-principles-to-ethics-codes
+title: 16. From Moral Principles to Ethics Codes
 ---
-<section className="content-chunk" aria-labelledby="Learning-Objectives-246pt" data-subsection-id="Learning-Objectives-246pt" data-show-header="false">
 
-<h2 className="sr-only" id="Learning-Objectives-246pt">Learning Objectives</h2>
+## Learning Objectives {#Learning-Objectives-246pt .sr-only} 
 
-<Info title="Learning Objectives">
+<i-callout variant="info" title="Learning Objectives">
+
 _1\._ Describe the history of ethics codes for scientific research with human participants.
 
 2\. Summarize the American Psychological Association Ethics Code—especially as it relates to informed consent, deception, debriefing, research with nonhuman animals, and scholarly integrity.
-</Info>
+
+</i-callout>
 
 The general moral principles of weighing risks against benefits, acting with integrity, seeking justice, and respecting people’s rights and dignity provide a useful starting point for thinking about the ethics of psychological research because essentially everyone agrees on them. As we have seen, however, even people who agree on these general principles can disagree about specific ethical issues that arise in the course of conducting research. This is why there also exist more detailed and enforceable ethics codes that provide guidance on important issues that arise frequently. In this section, we begin with a brief historical overview of such ethics codes and then look closely at the one that is most relevant to psychological research—that of the American Psychological Association (APA).
 
-</section>
-
-<section className="content-chunk" aria-labelledby="Historical-Overview-873t" data-subsection-id="Historical-Overview-873t" data-show-header="true">
-
-## Historical Overview \{#Historical-Overview-873t}
+## Historical Overview {#Historical-Overview-873t} 
 
 One of the earliest ethics codes was the Nuremberg Code—a set of 10 principles written in 1947 in conjunction with the trials of Nazi physicians accused of shockingly cruel research on concentration camp prisoners during World War II. It provided a standard against which to compare the behavior of the men on trial—many of whom were eventually convicted and either imprisoned or sentenced to death. The Nuremberg Code was particularly clear about the importance of carefully weighing risks against benefits and the need for informed consent. The Declaration of Helsinki is a similar ethics code that was created by the World Medical Council in 1964. Among the standards that it added to the Nuremberg Code was that research with human participants should be based on a written protocol—a detailed description of the research—that is reviewed by an independent committee. The Declaration of Helsinki has been revised several times, most recently in 2004.
 
@@ -29,11 +84,7 @@ In the United States, concerns about the Tuskegee study and others led to the pu
 
 The federal regulations also distinguish research that poses three levels of risk. Exempt research is the lowest level or risk and includes research on the effectiveness of normal educational activities, the use of standard psychological measures and surveys of a nonsensitive nature that are administered in a way that maintains confidentiality, and research using existing data from public sources. It is called exempt because once approved, it is exempt from regular, continuous review. Expedited research poses a somewhat higher risk than exempt, but still exposes participants to risks that are no greater than minimal risk (those encountered by healthy people in daily life or during routine physical or psychological examinations). Expedited review is done by by one member of the IRB or by a separate committee under the authority of the IRB that can only approve minimal risk research (many departments of psychology have such separate committees). Finally, research that does not qualify for exempt or expedited review is greater than minimal risk research must be reviewed by the full board of IRB members.
 
-</section>
-
-<section className="content-chunk" aria-labelledby="Ethics-Codes-875t" data-subsection-id="Ethics-Codes-875t" data-show-header="true">
-
-## Ethics Codes \{#Ethics-Codes-875t}
+## Ethics Codes {#Ethics-Codes-875t} 
 
 The link that follows the list—from the Office of Human Subjects Research at the National Institutes of Health—allows you to read the ethics codes discussed in this section in their entirety. They are all highly recommended and, with the exception of the Federal Policy, short and easy to read.
 
@@ -47,13 +98,14 @@ Federal Policy for the Protection of Human Subjects
 
 https://www.hhs.gov/ohrp/international/ethical-codes-and-research-standards/index.html
 
-### APA Ethics Code
+### APA Ethics Code {#apa-ethics-code}
 
-The APA’s__Ethical Principles of Psychologists and Code of Conduct__(also known as the**APAEthicsCode**) was first published in 1953 and has been revised several times since then, most recently in 2010. It includes about 150 specific ethical standards that psychologists and their students are expected to follow. Much of the APA Ethics Code concerns the clinical practice of psychology—advertising one’s services, setting and collecting fees, having personal relationships with clients, and so on. For our purposes, the most relevant part is __Standard 8: Research and Publication__. Although__Standard 8__ is reproduced here in its entirety, we will consider some of its most important aspects—informed consent, deception, debriefing, the use of nonhuman animal subjects, and scholarly integrity—in more detail.
+The APA’s __Ethical Principles of Psychologists and Code of Conduct__ (also known as the **APA Ethics Code**) was first published in 1953 and has been revised several times since then, most recently in 2010. It includes about 150 specific ethical standards that psychologists and their students are expected to follow. Much of the APA Ethics Code concerns the clinical practice of psychology—advertising one’s services, setting and collecting fees, having personal relationships with clients, and so on. For our purposes, the most relevant part is __Standard 8: Research and Publication__. Although __Standard 8__ is reproduced here in its entirety, we will consider some of its most important aspects—informed consent, deception, debriefing, the use of nonhuman animal subjects, and scholarly integrity—in more detail.
 
+ 
 
+<i-callout>
 
-<Callout>
 _APA Ethics Code Standard 8: Research and Publication_
 
 8.01 Institutional Approval
@@ -134,23 +186,20 @@ Psychologists do not publish, as original data, data that have been previously p
 Psychologists who review material submitted for presentation, publication, grant, or research proposal review respect the confidentiality of and the proprietary rights in such information of those who submitted it.
 
 Source: You can read the full APA Ethics Code at http://www.apa.org/ethics/code/index.aspx.
-</Callout>
 
-</section>
+</i-callout>
 
-<section className="content-chunk" aria-labelledby="Ethics-Codes-2-874t" data-subsection-id="Ethics-Codes-2-874t" data-show-header="false">
+## Ethics Codes 2 {#Ethics-Codes-2-874t .sr-only} 
 
-<h2 className="sr-only" id="Ethics-Codes-2-874t">Ethics Codes 2</h2>
-
-### Informed Consent
+### Informed Consent {#informed-consent}
 
 Standards 8.02 to 8.05 are about informed consent. Again, informed consent means obtaining and documenting people’s agreement to participate in a study, having informed them of everything that might reasonably be expected to affect their decision. This includes details of the procedure, the risks and benefits of the research, the fact that they have the right to decline to participate or to withdraw from the study, the consequences of doing so, and any legal limits to confidentiality. For example, some states require researchers who learn of child abuse or other crimes to report this information to authorities.
 
-Although the process of obtaining informed consent often involves having participants read and sign a[**consentform**](https://kpu.pressbooks.pub/psychmethods4e/chapter/from-moral-principles-to-ethics-codes/#term_49_947), it is important to understand that this is not all it is. Although having participants read and sign a consent form might be enough when they are competent adults with the necessary ability and motivation, many participants do not actually read consent forms or read them but do not understand them. For example, participants often mistake consent forms for legal documents and mistakenly believe that by signing them they give up their right to sue the researcher (Mann, 1994).\[1\] Even with competent adults, therefore, it is good practice to tell participants about the risks and benefits, demonstrate the procedure, ask them if they have questions, and remind them of their right to withdraw at any time—in addition to having them read and sign a consent form.
+Although the process of obtaining informed consent often involves having participants read and sign a [**consent form**](https://kpu.pressbooks.pub/psychmethods4e/chapter/from-moral-principles-to-ethics-codes/#term_49_947), it is important to understand that this is not all it is. Although having participants read and sign a consent form might be enough when they are competent adults with the necessary ability and motivation, many participants do not actually read consent forms or read them but do not understand them. For example, participants often mistake consent forms for legal documents and mistakenly believe that by signing them they give up their right to sue the researcher (Mann, 1994).\[1\] Even with competent adults, therefore, it is good practice to tell participants about the risks and benefits, demonstrate the procedure, ask them if they have questions, and remind them of their right to withdraw at any time—in addition to having them read and sign a consent form.
 
 Note also that there are situations in which informed consent is not necessary. These include situations in which the research is not expected to cause any harm and the procedure is straightforward or the study is conducted in the context of people’s ordinary activities. For example, if you wanted to sit outside a public building and observe whether people hold the door open for people behind them, you would not need to obtain their informed consent. Similarly, if a college instructor wanted to compare two legitimate teaching methods across two sections of his research methods course, he would not need to obtain informed consent from his students.
 
-### Deception
+### Deception {#deception}
 
 [**Deception**](https://kpu.pressbooks.pub/psychmethods4e/chapter/from-moral-principles-to-ethics-codes/#term_49_948) of participants in psychological research can take a variety of forms: misinforming participants about the purpose of a study, using confederates, using phony equipment like Milgram’s shock generator, and presenting participants with false feedback about their performance (e.g., telling them they did poorly on a test when they actually did well). Deception also includes not informing participants of the full design or true purpose of the research even if they are not actively misinformed (Sieber, Iannuzzo, & Rodriguez, 1995).\[2\] For example, a study on incidental learning—learning without conscious effort—might involve having participants read through a list of words in preparation for a “memory test” later. Although participants are likely to assume that the memory test will require them to recall the words, it might instead require them to recall the contents of the room or the appearance of the research assistant.
 
@@ -158,17 +207,13 @@ Some researchers have argued that deception of research participants is rarely i
 
 Note, however, that the APA Ethics Code takes a more moderate approach—allowing deception when the benefits of the study outweigh the risks, participants cannot reasonably be expected to be harmed, the research question cannot be answered without the use of deception, and participants are informed about the deception as soon as possible. This approach acknowledges that not all forms of deception are equally bad. Compare, for example, Milgram’s study in which he deceived his participants in several significant ways that resulted in their experiencing severe psychological stress with an incidental learning study in which a “memory test” turns out to be slightly different from what participants were expecting. It also acknowledges that some scientifically and socially important research questions can be difficult or impossible to answer without deceiving participants. Knowing that a study concerns the extent to which they obey authority, act aggressively toward a peer, or help a stranger is likely to change the way people behave so that the results no longer generalize to the real world.
 
-</section>
+## Ethics Codes 3 {#Ethics-Codes-3-876t .sr-only} 
 
-<section className="content-chunk" aria-labelledby="Ethics-Codes-3-876t" data-subsection-id="Ethics-Codes-3-876t" data-show-header="false">
+### Debriefing {#debriefing}
 
-<h2 className="sr-only" id="Ethics-Codes-3-876t">Ethics Codes 3</h2>
+Standard 8.08 is about [**debriefing**](https://kpu.pressbooks.pub/psychmethods4e/chapter/from-moral-principles-to-ethics-codes/#term_49_949). This is the process of informing research participants as soon as possible of the purpose of the study, revealing any deception, and correcting any other misconceptions they might have as a result of participating. Debriefing also involves minimizing harm that might have occurred. For example, an experiment on the effects of being in a sad mood on memory might involve inducing a sad mood in participants by having them think sad thoughts, watch a sad video, and/or listen to sad music. Debriefing would be the time to return participants’ moods to normal by having them think happy thoughts, watch a happy video, or listen to happy music.
 
-### Debriefing
-
-Standard 8.08 is about[**debriefing**](https://kpu.pressbooks.pub/psychmethods4e/chapter/from-moral-principles-to-ethics-codes/#term_49_949). This is the process of informing research participants as soon as possible of the purpose of the study, revealing any deception, and correcting any other misconceptions they might have as a result of participating. Debriefing also involves minimizing harm that might have occurred. For example, an experiment on the effects of being in a sad mood on memory might involve inducing a sad mood in participants by having them think sad thoughts, watch a sad video, and/or listen to sad music. Debriefing would be the time to return participants’ moods to normal by having them think happy thoughts, watch a happy video, or listen to happy music.
-
-### Nonhuman Animal Subjects
+### Nonhuman Animal Subjects {#nonhuman-animal-subjects}
 
 Standard 8.09 is about the humane treatment and care of nonhuman animal subjects. Although most contemporary research in psychology does not involve nonhuman animal subjects, a significant minority of it does—especially in the study of learning and conditioning, behavioral neuroscience, and the development of drug and surgical therapies for psychological disorders.
 
@@ -176,23 +221,17 @@ The use of nonhuman animal subjects in psychological research is similar to the 
 
 As with deception, the APA acknowledges that the benefits of research on nonhuman animals can outweigh the costs, in which case it is ethically acceptable. However, researchers must use alternative methods when they can. When they cannot, they must acquire and care for their subjects humanely and minimize the harm to them. For more information on the APA’s position on nonhuman animal subjects, see the website of the APA’s Committee on Animal Research and Ethics (http://www.apa.org/science/leadership/care/index.aspx).
 
-### Scholarly Integrity
+### Scholarly Integrity {#scholarly-integrity}
 
-Standards 8.10 to 8.15 are about scholarly integrity. These include the obvious points that researchers must not fabricate data or plagiarize. Plagiarism means using others’ words or ideas without proper acknowledgment. Proper acknowledgment generally means indicating direct quotations with quotation marks__and__providing a citation to the source of any quotation or idea used. Self-plagiarism is also considered unethical and refers to publishing the same material more than once. In other words, researchers should not borrow prior phrasing from their other published works, just as students should not submit the same work to more than one class.
+Standards 8.10 to 8.15 are about scholarly integrity. These include the obvious points that researchers must not fabricate data or plagiarize. Plagiarism means using others’ words or ideas without proper acknowledgment. Proper acknowledgment generally means indicating direct quotations with quotation marks __and__ providing a citation to the source of any quotation or idea used. Self-plagiarism is also considered unethical and refers to publishing the same material more than once. In other words, researchers should not borrow prior phrasing from their other published works, just as students should not submit the same work to more than one class.
 
 The remaining standards make some less obvious but equally important points. Researchers should not publish the same data a second time as though it were new, they should share their data with other researchers, and as peer reviewers, they should keep the unpublished research they review confidential. Note that the authors’ names on published research—and the order in which those names appear—should reflect the importance of each person’s contribution to the research. It would be unethical, for example, to include as an author someone who had made only minor contributions to the research (e.g., analyzing some of the data) or for a faculty member to make himself or herself the first author on research that was largely conducted by a student.
 
-</section>
+## References {#References-247pt} 
 
-<section className="content-chunk" aria-labelledby="References-247pt" data-subsection-id="References-247pt" data-show-header="true">
-
-## References \{#References-247pt}
-
-1.  Mann, T. (1994). Informed consent for psychological research: Do subjects comprehend consent forms and understand their legal rights?__Psychological Science, 5__, 140–143. ↵
-2.  Sieber, J. E., Iannuzzo, R., & Rodriguez, B. (1995). Deception methods in psychology: Have they changed in 23 years?__Ethics & Behavior, 5__, 67–85. ↵
+1.  Mann, T. (1994). Informed consent for psychological research: Do subjects comprehend consent forms and understand their legal rights? __Psychological Science, 5__, 140–143. ↵
+2.  Sieber, J. E., Iannuzzo, R., & Rodriguez, B. (1995). Deception methods in psychology: Have they changed in 23 years? __Ethics & Behavior, 5__, 67–85. ↵
 3.  Baumrind, D. (1985). Research using intentional deception: Ethical issues revisited. __American Psychologist, 40__, 165–174. ↵
-4.  Bowd, A. D., & Shapiro, K. J. (1993). The case against animal laboratory research in psychology.__Journal of Social Issues, 49__, 133–142. ↵
-5.  Miller, N. E. (1985). The value of behavioral research on animals.__American Psychologist, 40__, 423–440. ↵
-
-</section>
+4.  Bowd, A. D., & Shapiro, K. J. (1993). The case against animal laboratory research in psychology. __Journal of Social Issues, 49__, 133–142. ↵
+5.  Miller, N. E. (1985). The value of behavioral research on animals. __American Psychologist, 40__, 423–440. ↵
 
