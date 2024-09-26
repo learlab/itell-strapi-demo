@@ -2,8 +2,8 @@
 assignments:
 - summary
 chunks:
-- title: Learning objectives
-  slug: Learning-objectives-200pt
+- title: Learning Objectives
+  slug: Learning-Objectives-200pt
   type: plain
 - title: What Is Science?
   slug: What-Is-Science?-758t
@@ -46,7 +46,7 @@ slug: 2-understanding-science
 title: 2. Understanding Science
 ---
 
-## Learning objectives {#Learning-objectives-200pt .sr-only} 
+## Learning Objectives {#Learning-Objectives-200pt .sr-only} 
 
 <i-callout variant="info" title="Learning Objectives">
 
