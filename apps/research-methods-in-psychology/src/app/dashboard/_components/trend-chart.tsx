@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@itell/ui/chart";
 import { Line, LineChart, XAxis, YAxis } from "recharts";
 

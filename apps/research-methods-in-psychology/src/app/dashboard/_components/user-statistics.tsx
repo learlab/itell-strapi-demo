@@ -14,11 +14,7 @@ type Props = {
   pageSlug: string | null;
   readingTimeLevel: ReadingTimeChartLevel;
 };
-export function UserStatistics({
-  classId,
-  pageSlug,
-  readingTimeLevel,
-}: Props) {
+export function UserStatistics({ classId, pageSlug, readingTimeLevel }: Props) {
   // if searchParams is not passed as prop here, readingTimeParams will always be week 1
   // and switching levels in UserStatisticsControl won't work (although query params are set)
   // future work is to restructure the component hierarchy

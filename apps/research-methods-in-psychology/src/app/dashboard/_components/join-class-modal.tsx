@@ -25,11 +25,7 @@ type Props = {
   classId: string;
 };
 
-export function JoinClassModal({
-  userClassId,
-  teacherName,
-  classId,
-}: Props) {
+export function JoinClassModal({ userClassId, teacherName, classId }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(true);
   const { isPending, execute, isError, error } =
@@ -89,14 +85,16 @@ export function JoinClassModal({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
-          {canJoinClass ? <Button
+          {canJoinClass ? (
+            <Button
               onClick={joinClass}
               disabled={isPending}
               pending={isPending}
               className="bg-primary focus:ring-primary"
             >
               Confirm
-            </Button> : null}
+            </Button>
+          ) : null}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

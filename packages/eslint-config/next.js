@@ -55,6 +55,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/no-empty-interface": "warn",
     "@typescript-eslint/only-throw-error": "warn",
     "@typescript-eslint/no-floating-promises": "off",
     "react/jsx-no-leaked-render": "error",

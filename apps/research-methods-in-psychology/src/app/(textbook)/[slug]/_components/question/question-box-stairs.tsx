@@ -33,7 +33,7 @@ import { useActionStatus } from "use-action-status";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
-import { borderColors, type QuestionScore, StatusStairs } from "./types";
+import { borderColors, StatusStairs, type QuestionScore } from "./types";
 
 type Props = {
   question: string;
@@ -141,7 +141,6 @@ export function QuestionBoxStairs({
         input,
         show: true,
       });
-      
     }
   });
 
@@ -168,7 +167,9 @@ export function QuestionBoxStairs({
     return (
       <Button
         variant="outline"
-        onClick={() => { setState((state) => ({ ...state, show: true })); }}
+        onClick={() => {
+          setState((state) => ({ ...state, show: true }));
+        }}
       >
         Reveal optional question
       </Button>
@@ -234,12 +235,14 @@ export function QuestionBoxStairs({
               <p className="text-xl2 text-center text-emerald-600">
                 Your answer is correct!
               </p>
-              {shouldBlur ? <p className="text-sm">
+              {shouldBlur ? (
+                <p className="text-sm">
                   Click on the button below to continue reading. Please use the
                   thumbs-up or thumbs-down icons on the top right side of this
                   box if you have any feedback about this question that you
                   would like to provide before you continue reading.
-                </p> : null}
+                </p>
+              ) : null}
             </div>
           ) : (
             question && (
@@ -278,7 +281,6 @@ export function QuestionBoxStairs({
                 if (e.key === "Enter") {
                   e.preventDefault();
                   form.current?.requestSubmit();
-                  
                 }
               }}
               onPaste={(e) => {
@@ -329,16 +331,19 @@ export function QuestionBoxStairs({
                   </StatusButton>
                 )}
 
-                {status !== StatusStairs.UNANSWERED &&
-                  isNextButtonDisplayed ? <FinishQuestionButton
-                      chunkSlug={chunkSlug}
-                      pageSlug={pageSlug}
-                      condition={Condition.STAIRS}
-                    /> : null}
+                {status !== StatusStairs.UNANSWERED && isNextButtonDisplayed ? (
+                  <FinishQuestionButton
+                    chunkSlug={chunkSlug}
+                    pageSlug={pageSlug}
+                    condition={Condition.STAIRS}
+                  />
+                ) : null}
               </>
             )}
           </div>
-          {state.error ? <p className="text-center text-sm text-red-500">{state.error}</p> : null}
+          {state.error ? (
+            <p className="text-center text-sm text-red-500">{state.error}</p>
+          ) : null}
           <div className="mt-4 flex items-center justify-center">
             {(status === StatusStairs.SEMI_CORRECT ||
               status === StatusStairs.BOTH_INCORRECT) && (

@@ -16,10 +16,12 @@ type Props = {
 export function AuthForm({ joinClassCode }: Props) {
   return (
     <div className="grid gap-4 px-4">
-      {joinClassCode ? <p className="text-center font-light leading-relaxed tracking-tight">
+      {joinClassCode ? (
+        <p className="text-center font-light leading-relaxed tracking-tight">
           After you log in via one of the following options, you will be
           automatically added to the class.
-        </p> : null}
+        </p>
+      ) : null}
       <p className="text-center text-sm text-muted-foreground">
         Please log in using your school email
       </p>

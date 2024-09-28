@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
 import { FinishQuestionButton } from "./finish-question-button";
-import { type QuestionScore, StatusReread } from "./types";
+import { StatusReread, type QuestionScore } from "./types";
 
 type Props = {
   question: string;
@@ -123,7 +123,9 @@ export function QuestionBoxReread({
     return (
       <Button
         variant="outline"
-        onClick={() => { setState((state) => ({ ...state, show: true })); }}
+        onClick={() => {
+          setState((state) => ({ ...state, show: true }));
+        }}
       >
         Reveal optional question
       </Button>
@@ -138,11 +140,13 @@ export function QuestionBoxReread({
       )}
     >
       <CardContent className="mx-auto flex w-4/5 flex-col items-center justify-center gap-4">
-        {question ? <p>
+        {question ? (
+          <p>
             <span className="font-bold">Question </span>
             {!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
             {question}
-          </p> : null}
+          </p>
+        ) : null}
 
         <div role="status">
           {state.status === StatusReread.ANSWERED && (
@@ -184,25 +188,22 @@ export function QuestionBoxReread({
                 if (e.key === "Enter") {
                   e.preventDefault();
                   form.current?.requestSubmit();
-                  
                 }
               }}
             />
           </Label>
 
-          {state.error ? <InternalError className="text-center">
+          {state.error ? (
+            <InternalError className="text-center">
               <p>{state.error}</p>
-            </InternalError> : null}
+            </InternalError>
+          ) : null}
 
           <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
             {state.status === StatusReread.ANSWERED && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button
-                    variant="outline"
-                    type="button"
-                    disabled={isPending}
-                  >
+                  <Button variant="outline" type="button" disabled={isPending}>
                     <span className="flex items-center gap-2">
                       <KeyRoundIcon className="size-4" />
                       Reveal Answer
@@ -228,11 +229,13 @@ export function QuestionBoxReread({
             </StatusButton>
 
             {state.status !== StatusReread.UNANSWERED &&
-              isNextButtonDisplayed ? <FinishQuestionButton
-                  pageSlug={pageSlug}
-                  chunkSlug={chunkSlug}
-                  condition={Condition.RANDOM_REREAD}
-                /> : null}
+            isNextButtonDisplayed ? (
+              <FinishQuestionButton
+                pageSlug={pageSlug}
+                chunkSlug={chunkSlug}
+                condition={Condition.RANDOM_REREAD}
+              />
+            ) : null}
           </div>
         </form>
       </CardContent>

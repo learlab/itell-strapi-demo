@@ -31,7 +31,9 @@ function ColumnWithSorting({
   return (
     <Button
       variant="ghost"
-      onClick={() => { column.toggleSorting(column.getIsSorted() === "asc"); }}
+      onClick={() => {
+        column.toggleSorting(column.getIsSorted() === "asc");
+      }}
       className="px-1"
     >
       <span className="flex items-center gap-2">

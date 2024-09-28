@@ -1,6 +1,6 @@
 "use client";
 
-import { type HTMLAttributes, useRef, useState } from "react";
+import { useRef, useState, type HTMLAttributes } from "react";
 
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/internal-error";
@@ -295,9 +295,11 @@ export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
           </div>
         ) : null}
       </form>
-      {isError ? <InternalError className="px-2">
+      {isError ? (
+        <InternalError className="px-2">
           <p>Failed to save chat</p>
-        </InternalError> : null}
+        </InternalError>
+      ) : null}
     </div>
   );
 }

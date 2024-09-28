@@ -71,11 +71,13 @@ export function JoinClassForm({ user }: Props) {
         </Button>
       </form>
       {/* dialog to confirm joining a class */}
-      {teacherName ? <JoinClassModal
+      {teacherName ? (
+        <JoinClassModal
           userClassId={user.classId}
           teacherName={teacherName}
           classId={classId}
-        /> : null}
+        />
+      ) : null}
       {teacherName === null && (
         <p className="text-sm text-muted-foreground">
           No teacher found associated with the code, please make sure you are

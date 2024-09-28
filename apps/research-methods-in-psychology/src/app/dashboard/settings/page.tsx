@@ -58,16 +58,16 @@ export default async function ({ searchParams }: Props) {
       userClassId = null;
     }
   } else if (join_class_code) {
-      const [data, err] = await getTeacherByClassAction({
-        classId: join_class_code,
-      });
-      if (err) {
-        throw new Error("failed to get teacher by class", { cause: err });
-      }
-      if (data) {
-        teacherName = data.name;
-      }
+    const [data, err] = await getTeacherByClassAction({
+      classId: join_class_code,
+    });
+    if (err) {
+      throw new Error("failed to get teacher by class", { cause: err });
     }
+    if (data) {
+      teacherName = data.name;
+    }
+  }
 
   if (user.classId) {
     const [data, err] = await getTeacherByClassAction({
@@ -113,11 +113,13 @@ export default async function ({ searchParams }: Props) {
           )}
         </CardContent>
       </Card>
-      {join_class_code && !userClassId ? <JoinClassModal
+      {join_class_code && !userClassId ? (
+        <JoinClassModal
           userClassId={user.classId}
           teacherName={teacherName}
           classId={join_class_code}
-        /> : null}
+        />
+      ) : null}
     </DashboardShell>
   );
 }

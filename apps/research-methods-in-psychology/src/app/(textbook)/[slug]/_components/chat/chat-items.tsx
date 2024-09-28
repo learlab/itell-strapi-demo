@@ -34,11 +34,15 @@ export function ChatItems({
         {prevData?.map((message) => {
           return <MessageItem key={message.id} message={message} />;
         })}
-        {prevData && prevData.length > 0 ? <div className="my-4 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
+        {prevData && prevData.length > 0 ? (
+          <div className="my-4 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
             <div className="h-1 w-16 bg-muted" />
-            {updatedAt ? `Last visited at ${updatedAt.toLocaleTimeString()}` : null}
+            {updatedAt
+              ? `Last visited at ${updatedAt.toLocaleTimeString()}`
+              : null}
             <div className="h-1 w-16 bg-muted" />
-          </div> : null}
+          </div>
+        ) : null}
         {initialMessage ? <MessageItem message={initialMessage} /> : null}
         {data.map((message) => {
           return <MessageItem key={message.id} message={message} />;

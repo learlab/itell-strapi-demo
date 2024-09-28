@@ -31,18 +31,23 @@ export function MobileNav({ items }: MobileNavProps) {
   const [activeRoute, setActiveRoute] = useOptimistic(
     items.find((item) => item.href === pathname)?.href
   );
-  const ref = useClickOutside<HTMLDivElement>(() => { setShowMobileMenu(false); });
+  const ref = useClickOutside<HTMLDivElement>(() => {
+    setShowMobileMenu(false);
+  });
   return (
     <div className="block md:hidden">
       <button
         type="button"
         className="flex items-center space-x-2"
-        onClick={() => { setShowMobileMenu(!showMobileMenu); }}
+        onClick={() => {
+          setShowMobileMenu(!showMobileMenu);
+        }}
       >
         {showMobileMenu ? <XIcon /> : <MenuIcon />}
         <span className="font-bold">Menu</span>
       </button>
-      {showMobileMenu ? <div
+      {showMobileMenu ? (
+        <div
           ref={ref}
           className={cn(
             "fixed inset-0 top-16 z-50 grid h-fit grid-flow-row auto-rows-max overflow-auto bg-background shadow-md animate-in slide-in-from-bottom-80 md:hidden"
@@ -82,7 +87,8 @@ export function MobileNav({ items }: MobileNavProps) {
               ))}
             </nav>
           </div>
-        </div> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -105,22 +105,26 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
     const selection = window.getSelection();
 
     if (!selection?.rangeCount) {
-      setState(null); return;
+      setState(null);
+      return;
     }
 
     const range = selection.getRangeAt(0);
     if (!range || range.collapsed) {
-      setState(null); return;
+      setState(null);
+      return;
     }
 
     const el = range.commonAncestorContainer;
     if (!el || !target.current?.contains(el)) {
-      setState(null); return;
+      setState(null);
+      return;
     }
 
     const rect = range.getClientRects()[0];
     if (!rect) {
-      setState(null); return;
+      setState(null);
+      return;
     }
 
     setState({

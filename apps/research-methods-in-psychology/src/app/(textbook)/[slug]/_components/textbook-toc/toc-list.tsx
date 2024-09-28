@@ -36,11 +36,11 @@ export function TextbookTocList({ page, pages }: Props) {
               <TocItem
                 key={item.slug}
                 inGroup={false}
-                onClick={(slug) =>
-                  { startTransition(() => {
+                onClick={(slug) => {
+                  startTransition(() => {
                     setActivePage(slug);
-                  }); }
-                }
+                  });
+                }}
                 activePage={activePage}
                 item={item}
               />

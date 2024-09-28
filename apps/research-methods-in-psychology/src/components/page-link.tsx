@@ -8,12 +8,7 @@ interface Props {
   chunkSlug?: string;
 }
 
-export function PageLink({
-  children,
-  pageSlug,
-  chunkSlug,
-  className,
-}: Props) {
+export function PageLink({ children, pageSlug, chunkSlug, className }: Props) {
   return (
     <Link
       href={makePageHref(pageSlug, chunkSlug)}

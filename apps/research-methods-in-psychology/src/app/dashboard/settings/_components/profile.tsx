@@ -20,10 +20,12 @@ export function Profile({ user }: { user: User }) {
   );
 }
 
-Profile.Skeleton = function() {
-  return <>
-    <h3 className="mb-4 text-lg font-semibold leading-relaxed">Profile</h3>
-    <Skeleton className="h-8 w-[120px]" />
-    <Skeleton className="h-16 w-[400px]" />
-  </>
+Profile.Skeleton = function () {
+  return (
+    <>
+      <h3 className="mb-4 text-lg font-semibold leading-relaxed">Profile</h3>
+      <Skeleton className="h-8 w-[120px]" />
+      <Skeleton className="h-16 w-[400px]" />
+    </>
+  );
 };

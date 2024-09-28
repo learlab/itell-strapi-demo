@@ -31,9 +31,9 @@ export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
       id={Elements.CHATBOT_CONTAINER}
       type="single"
       value={open ? "chat" : ""}
-      onValueChange={(val) =>
-        { store.send({ type: "setOpen", value: val === "chat" }); }
-      }
+      onValueChange={(val) => {
+        store.send({ type: "setOpen", value: val === "chat" });
+      }}
       collapsible
       className="fixed bottom-12 right-8 z-30 w-80 rounded-md border border-border bg-background text-foreground lg:w-96"
     >

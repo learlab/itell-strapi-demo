@@ -19,15 +19,15 @@ import {
   TableRow,
 } from "@itell/ui/table";
 import {
-  type ColumnDef,
-  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  type SortingState,
   useReactTable,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
@@ -104,9 +104,9 @@ export function StudentsTable<TData, TValue>({
                     key={column.id}
                     className="capitalize"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      { column.toggleVisibility(Boolean(value)); }
-                    }
+                    onCheckedChange={(value) => {
+                      column.toggleVisibility(Boolean(value));
+                    }}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
@@ -174,7 +174,9 @@ export function StudentsTable<TData, TValue>({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => { table.previousPage(); }}
+            onClick={() => {
+              table.previousPage();
+            }}
             disabled={pagination.pageIndex === 0}
           >
             Previous
@@ -182,7 +184,9 @@ export function StudentsTable<TData, TValue>({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => { table.nextPage(); }}
+            onClick={() => {
+              table.nextPage();
+            }}
             disabled={pagination.pageIndex === table.getPageCount() - 1}
           >
             Next

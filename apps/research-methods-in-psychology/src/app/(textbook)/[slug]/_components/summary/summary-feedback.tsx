@@ -9,11 +9,7 @@ type Props = {
   needRevision: boolean;
 };
 
-export function SummaryFeedback({
-  feedback,
-  needRevision,
-  className,
-}: Props) {
+export function SummaryFeedback({ feedback, needRevision, className }: Props) {
   return (
     <div
       className={cn(
@@ -28,11 +24,13 @@ export function SummaryFeedback({
             ? feedback?.prompt
             : "You have completed all assessments on this page, but you are still welcome to summarize the text."}
         </p>
-        {feedback && !feedback.isPassed ? <p>
+        {feedback && !feedback.isPassed ? (
+          <p>
             When revising your summary, please make substantial changes to the
             entire summary. If only small changes are made, you will be asked to
             make additional revisions.
-          </p> : null}
+          </p>
+        ) : null}
       </header>
       {feedback ? <SummaryFeedbackDetails feedback={feedback} /> : null}
     </div>
@@ -69,7 +67,8 @@ export function SummaryFeedbackDetails({
           </li>
         ))}
       </ul>
-      {feedback.promptDetails ? <Accordion value="first">
+      {feedback.promptDetails ? (
+        <Accordion value="first">
           <AccordionItem
             value="first"
             title="Scoring details"
@@ -87,7 +86,8 @@ export function SummaryFeedbackDetails({
                 )
             )}
           </AccordionItem>
-        </Accordion> : null}
+        </Accordion>
+      ) : null}
     </div>
   );
 }

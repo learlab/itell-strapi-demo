@@ -14,19 +14,22 @@ import { apiClient } from "@/lib/api-client";
 import { type PageStatus } from "@/lib/page-status";
 import {
   botMessage,
-  type ChatStore,
   createChatStore,
   getHistory,
   userMessage,
+  type ChatStore,
 } from "@/lib/store/chat-store";
 import {
-  type ChunkQuestion,
   createQuestionStore,
+  type ChunkQuestion,
   type QuestionSnapshot,
   type QuestionStore,
 } from "@/lib/store/question-store";
 import { createQuizStore, type QuizStore } from "@/lib/store/quiz-store";
-import { createSummaryStore, type SummaryStore } from "@/lib/store/summary-store";
+import {
+  createSummaryStore,
+  type SummaryStore,
+} from "@/lib/store/summary-store";
 import { reportSentry } from "@/lib/utils";
 import { useLocalStorage } from "@itell/core/hooks";
 import { parseEventStream } from "@itell/utils";
@@ -51,12 +54,7 @@ type State = {
 };
 const PageContext = createContext<State>({} as State);
 
-export function PageProvider({
-  children,
-  condition,
-  page,
-  pageStatus,
-}: Props) {
+export function PageProvider({ children, condition, page, pageStatus }: Props) {
   const slugs = page.chunks.map(({ slug }) => slug);
   const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
     `question-store-${page.slug}`,

@@ -2,13 +2,7 @@ import { TextbookComponents } from "@/components/content-components";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { Elements } from "@itell/constants";
 
-export function PageContent({
-  html,
-  title,
-}: {
-  html: string;
-  title?: string;
-}) {
+export function PageContent({ html, title }: { html: string; title?: string }) {
   return (
     <HtmlRenderer
       components={TextbookComponents}

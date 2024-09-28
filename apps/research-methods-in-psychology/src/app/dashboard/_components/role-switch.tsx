@@ -54,7 +54,9 @@ export function RoleSwitcher() {
         {roles.map((role) => (
           <DropdownMenuItem
             key={role.name}
-            onClick={() => { onRoleChange(role.name); }}
+            onClick={() => {
+              onRoleChange(role.name);
+            }}
             className="items-start gap-2 px-1.5"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary text-primary-foreground">

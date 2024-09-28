@@ -35,7 +35,12 @@ export function QuestionFeedback({ type, pageSlug, chunkSlug }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild onClick={() => { setOpen(true); }}>
+      <DialogTrigger
+        asChild
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
         <button
           type="button"
           aria-label={
@@ -106,9 +111,11 @@ export function QuestionFeedback({ type, pageSlug, chunkSlug }: Props) {
               </Label>
             ))}
           </div>
-          {isError ? <InternalError>
+          {isError ? (
+            <InternalError>
               <p>Failed to submit feedback, please try again later.</p>
-            </InternalError> : null}
+            </InternalError>
+          ) : null}
           <div className="flex justify-end">
             <Button type="submit" disabled={pending} pending={pending}>
               <span className="flex items-center gap-2">

@@ -15,11 +15,7 @@ interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
   pageSlug: string;
 }
 
-export function ChatInput({
-  className,
-  pageSlug,
-  ...props
-}: ChatInputProps) {
+export function ChatInput({ className, pageSlug, ...props }: ChatInputProps) {
   const { action, pending, isError } = useAddChat();
 
   return (
@@ -74,7 +70,9 @@ export function ChatInput({
           aria-hidden="true"
         />
       </form>
-      {isError ? <InternalError className="px-2">Failed to save chat</InternalError> : null}
+      {isError ? (
+        <InternalError className="px-2">Failed to save chat</InternalError>
+      ) : null}
     </div>
   );
 }

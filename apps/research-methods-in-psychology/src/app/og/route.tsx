@@ -86,7 +86,8 @@ export const GET = async (req: Request) => {
             {heading}
           </h1>
         </div>
-        {isDashboard ? <img
+        {isDashboard ? (
+          <img
             height="250"
             style={{ marginTop: "auto", width: "100%" }}
             // @ts-ignore
@@ -94,7 +95,8 @@ export const GET = async (req: Request) => {
               new URL("../../../public/images/chart.png", import.meta.url)
             ).then((res) => res.arrayBuffer())}
             alt="example line chart"
-          /> : null}
+          />
+        ) : null}
         <footer
           style={{
             display: "flex",
