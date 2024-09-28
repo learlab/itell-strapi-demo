@@ -5,7 +5,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@itell/ui/hover-card";
-import { User } from "lucia";
+import { type User } from "lucia";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 
 type Props = {
@@ -13,11 +13,11 @@ type Props = {
   pageSlug: string;
 };
 
-export const PageInfo = ({ user, pageSlug }: Props) => {
+export function PageInfo({ user, pageSlug }: Props) {
   const status = getPageStatus({
     pageSlug,
-    userPageSlug: user?.pageSlug || null,
-    userFinished: user?.finished || false,
+    userPageSlug: user?.pageSlug ?? null,
+    userFinished: user?.finished ?? false,
   });
 
   return (
@@ -51,4 +51,4 @@ export const PageInfo = ({ user, pageSlug }: Props) => {
       </HoverCardContent>
     </HoverCard>
   );
-};
+}

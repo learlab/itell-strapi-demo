@@ -12,7 +12,7 @@ import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 import data from "public/knowledge-cards.json";
 
-export const KnowledgeCarousel = () => {
+export function KnowledgeCarousel() {
   return (
     <Carousel className="mx-auto max-w-lg">
       <CarouselContent>
@@ -26,9 +26,9 @@ export const KnowledgeCarousel = () => {
       <CarouselNext />
     </Carousel>
   );
-};
+}
 
-export const KnowledgeCard = ({
+export function KnowledgeCard({
   text,
   source,
   href,
@@ -36,7 +36,7 @@ export const KnowledgeCard = ({
   text: string;
   source: string;
   href: string;
-}) => {
+}) {
   return (
     <div className="p-1">
       <Card>
@@ -79,4 +79,4 @@ export const KnowledgeCard = ({
       </Card>
     </div>
   );
-};
+}

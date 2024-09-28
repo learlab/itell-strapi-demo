@@ -1,6 +1,6 @@
-import { PageStatus } from "@/lib/page-status";
-import { ErrorType, SummaryResponse } from "@itell/core/summary";
-import { createStoreWithProducer, SnapshotFromStore } from "@xstate/store";
+import { type PageStatus } from "@/lib/page-status";
+import { type ErrorType, type SummaryResponse } from "@itell/core/summary";
+import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
 
 export type StairsQuestion = {
@@ -49,7 +49,7 @@ export const createSummaryStore = ({
   });
 };
 
-type Selector<T> = (snap: SnapshotFromStore<SummaryStore>) => T;
+type Selector<T> = (_: SnapshotFromStore<SummaryStore>) => T;
 export const SelectResponse: Selector<SummaryResponse | null> = (state) =>
   state.context.response;
 export const SelectPrevInput: Selector<string | undefined> = (state) =>

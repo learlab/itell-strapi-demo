@@ -31,11 +31,12 @@ const themes = [
   },
 ];
 
-export const ThemeToggle = () => {
+export function ThemeToggle() {
   const { setTheme: _setTheme } = useTheme();
   const { execute } = useServerAction(updateUserPrefsAction);
 
   const setTheme = (theme: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!document.startViewTransition) _setTheme(theme);
     document.startViewTransition(() => {
       if (isProduction) {
@@ -58,7 +59,9 @@ export const ThemeToggle = () => {
         {themes.map((theme) => (
           <DropdownMenuItem
             key={theme.label}
-            onClick={() => setTheme(theme.theme)}
+            onClick={() => {
+              setTheme(theme.theme);
+            }}
           >
             <span className="flex items-center gap-2">
               {theme.icon}
@@ -69,4 +72,4 @@ export const ThemeToggle = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

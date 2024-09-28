@@ -13,7 +13,7 @@ type Props = {
   pageSlug: string;
 };
 
-export const EventTracker = ({ pageSlug }: Props) => {
+export function EventTracker({ pageSlug }: Props) {
   const [mounted, setMounted] = useState(false);
   const [elements, setElements] = useState<HTMLElement[]>([]);
   const chunks = useChunks();
@@ -25,7 +25,7 @@ export const EventTracker = ({ pageSlug }: Props) => {
   useEffect(() => {
     const chunkElements = chunks
       .map((slug) => getChunkElement(slug, "data-chunk-slug"))
-      .filter((element) => element !== null) as HTMLElement[];
+      .filter((element) => element !== null);
     setElements(chunkElements);
   }, [chunks]);
 
@@ -38,7 +38,7 @@ export const EventTracker = ({ pageSlug }: Props) => {
         const buttonContainer = target.closest("button");
         if (buttonContainer) {
           if (buttonContainer.dataset.event === "true") {
-            createEventAction({
+            await createEventAction({
               type: EventType.CLICK,
               pageSlug,
               data,
@@ -47,7 +47,7 @@ export const EventTracker = ({ pageSlug }: Props) => {
         }
       }}
       onScrollEvent={async (data) => {
-        createEventAction({
+        await createEventAction({
           type: EventType.SCROLL,
           pageSlug,
           data,
@@ -55,7 +55,7 @@ export const EventTracker = ({ pageSlug }: Props) => {
       }}
       onFocusTimeEvent={async (data, total) => {
         if (total > 0) {
-          createFocusTimeAction({
+          await createFocusTimeAction({
             pageSlug,
             data,
           });
@@ -66,4 +66,4 @@ export const EventTracker = ({ pageSlug }: Props) => {
       focusTimeSaveInterval={FOCUS_TIME_SAVE_INTERVAL}
     />
   );
-};
+}

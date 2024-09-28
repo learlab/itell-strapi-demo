@@ -3,7 +3,7 @@ import { CreateErrorFallback } from "@/components/error-fallback";
 import {
   getReadingTimeChartData,
   PrevDaysLookup,
-  ReadingTimeChartParams,
+  type ReadingTimeChartParams,
 } from "@itell/core/dashboard";
 import { Button } from "@itell/ui/button";
 import {
@@ -32,7 +32,7 @@ type Props = {
   name?: string;
 };
 
-export const ReadingTime = async ({ params, name }: Props) => {
+export async function ReadingTime({ params, name }: Props) {
   const startDate = subDays(new Date(), PrevDaysLookup[params.level]);
   const intervalDates = getDatesBetween(startDate, new Date());
   const [[summaryCount, err1], [readingTimeGrouped, err2]] = await Promise.all([
@@ -81,7 +81,7 @@ export const ReadingTime = async ({ params, name }: Props) => {
         </CardTitle>
         <CardDescription>
           {name ? name : "You"} spent {Math.round(totalViewTime / 60)} minutes
-          reading the textbook, wrote {""}
+          reading the textbook, wrote
           <Link className="font-semibold underline" href="/dashboard/summaries">
             {pluralize("summary", summaryCount, true)}
           </Link>{" "}
@@ -94,9 +94,11 @@ export const ReadingTime = async ({ params, name }: Props) => {
       </CardContent>
     </Card>
   );
-};
+}
 
-ReadingTime.Skeleton = () => <Skeleton className="h-[350px] w-full" />;
+ReadingTime.Skeleton = function () {
+  return <Skeleton className="h-[350px] w-full" />;
+};
 ReadingTime.ErrorFallback = CreateErrorFallback(
   "Failed to calculate total reading time"
 );

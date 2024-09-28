@@ -12,7 +12,7 @@ import { serializeRange } from "@itell/core/note";
 import { Button } from "@itell/ui/button";
 import { cn, getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { User } from "lucia";
+import { type User } from "lucia";
 import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { createPortal } from "react-dom";
@@ -71,7 +71,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
     action: async () => {
       if (state && user) {
         const range = normalizeRange(state.range.cloneRange());
-        const text = range.cloneContents().textContent as string;
+        const text = range.cloneContents().textContent!;
         const chunkSlug = findParentChunk(range);
         noteStore.send({
           type: "create",
@@ -105,22 +105,22 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
     const selection = window.getSelection();
 
     if (!selection?.rangeCount) {
-      return setState(null);
+      setState(null); return;
     }
 
     const range = selection.getRangeAt(0);
     if (!range || range.collapsed) {
-      return setState(null);
+      setState(null); return;
     }
 
     const el = range.commonAncestorContainer;
-    if (!el || !target?.current?.contains(el)) {
-      return setState(null);
+    if (!el || !target.current?.contains(el)) {
+      setState(null); return;
     }
 
     const rect = range.getClientRects()[0];
     if (!rect) {
-      return setState(null);
+      setState(null); return;
     }
 
     setState({
@@ -229,7 +229,7 @@ function findParentChunk(range: Range) {
       node instanceof HTMLElement &&
       node.classList.contains("content-chunk")
     ) {
-      return node.dataset.chunkSlug as string;
+      return node.dataset.chunkSlug!;
     }
     node = node.parentElement;
   }

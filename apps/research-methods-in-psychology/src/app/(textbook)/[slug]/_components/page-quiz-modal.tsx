@@ -5,7 +5,7 @@ import {
   useSummaryStore,
 } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
-import { isLastPage, PageData } from "@/lib/pages/pages.client";
+import { isLastPage, type PageData } from "@/lib/pages/pages.client";
 import { SelectQuizOpen } from "@/lib/store/quiz-store";
 import { Button } from "@itell/ui/button";
 import {
@@ -21,13 +21,13 @@ import { BookCheckIcon } from "lucide-react";
 
 import { PageQuiz } from "./page-quiz";
 
-export const PageQuizModal = ({
+export function PageQuizModal({
   page,
   showTrigger = false,
 }: {
   page: PageData;
   showTrigger: boolean;
-}) => {
+}) {
   const quizStore = useQuizStore();
   const summaryStore = useSummaryStore();
   const quizOpen = useSelector(quizStore, SelectQuizOpen);
@@ -35,20 +35,20 @@ export const PageQuizModal = ({
   return (
     <Dialog
       open={quizOpen}
-      onOpenChange={(open) => {
+      onOpenChange={() => {
         if (!quizOpen) {
           quizStore.send({ type: "toggleQuiz" });
         }
       }}
     >
-      {showTrigger && (
+      {showTrigger ? (
         <DialogTrigger asChild>
-          <Button variant={"outline"} className="flex items-center gap-2">
+          <Button variant="outline" className="flex items-center gap-2">
             <BookCheckIcon className="size-4" />
             Quiz
           </Button>
         </DialogTrigger>
-      )}
+      ) : null}
       <DialogContent
         className="h-[80vh] max-w-4xl overflow-y-auto"
         canClose={!isProduction}
@@ -75,4 +75,4 @@ export const PageQuizModal = ({
       </DialogContent>
     </Dialog>
   );
-};
+}

@@ -11,27 +11,27 @@ import {
 
 import { createChatsAction } from "@/actions/chat";
 import { apiClient } from "@/lib/api-client";
-import { PageStatus } from "@/lib/page-status";
+import { type PageStatus } from "@/lib/page-status";
 import {
   botMessage,
-  ChatStore,
+  type ChatStore,
   createChatStore,
   getHistory,
   userMessage,
 } from "@/lib/store/chat-store";
 import {
-  ChunkQuestion,
+  type ChunkQuestion,
   createQuestionStore,
-  QuestionSnapshot,
-  QuestionStore,
+  type QuestionSnapshot,
+  type QuestionStore,
 } from "@/lib/store/question-store";
-import { createQuizStore, QuizStore } from "@/lib/store/quiz-store";
-import { createSummaryStore, SummaryStore } from "@/lib/store/summary-store";
+import { createQuizStore, type QuizStore } from "@/lib/store/quiz-store";
+import { createSummaryStore, type SummaryStore } from "@/lib/store/summary-store";
 import { reportSentry } from "@/lib/utils";
 import { useLocalStorage } from "@itell/core/hooks";
 import { parseEventStream } from "@itell/utils";
-import { Subscription } from "@xstate/store";
-import { Page } from "#content";
+import { type Subscription } from "@xstate/store";
+import { type Page } from "#content";
 import { useServerAction } from "zsa-react";
 
 type Props = {
@@ -51,12 +51,12 @@ type State = {
 };
 const PageContext = createContext<State>({} as State);
 
-export const PageProvider = ({
+export function PageProvider({
   children,
   condition,
   page,
   pageStatus,
-}: Props) => {
+}: Props) {
   const slugs = page.chunks.map(({ slug }) => slug);
   const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
     `question-store-${page.slug}`,
@@ -163,7 +163,7 @@ export const PageProvider = ({
       {children}
     </PageContext.Provider>
   );
-};
+}
 
 export const useCondition = () => {
   const state = useContext(PageContext);

@@ -9,9 +9,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@itell/ui/accordion";
-import { Page } from "#content";
+import { type Page } from "#content";
 
-import { TocPagesWithStatus } from ".";
+import { type TocPagesWithStatus } from ".";
 import { TocItem } from "./toc-item";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   pages: TocPagesWithStatus;
 };
 
-export const TextbookTocList = ({ page, pages }: Props) => {
+export function TextbookTocList({ page, pages }: Props) {
   const [activePage, setActivePage] = useOptimistic(page.slug);
   return (
     <nav aria-label="textbook primary">
@@ -37,9 +37,9 @@ export const TextbookTocList = ({ page, pages }: Props) => {
                 key={item.slug}
                 inGroup={false}
                 onClick={(slug) =>
-                  startTransition(() => {
+                  { startTransition(() => {
                     setActivePage(slug);
-                  })
+                  }); }
                 }
                 activePage={activePage}
                 item={item}
@@ -69,7 +69,7 @@ export const TextbookTocList = ({ page, pages }: Props) => {
                         });
                       }}
                       item={p}
-                      inGroup={true}
+                      inGroup
                       activePage={activePage}
                     />
                   ))}
@@ -81,4 +81,4 @@ export const TextbookTocList = ({ page, pages }: Props) => {
       </ol>
     </nav>
   );
-};
+}

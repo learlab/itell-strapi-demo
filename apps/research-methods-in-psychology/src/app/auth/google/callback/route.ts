@@ -7,7 +7,6 @@ import {
   readGoogleOAuthState,
   readJoinClassCode,
 } from "@/lib/auth/provider";
-import { Condition } from "@/lib/constants";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { reportSentry } from "@/lib/utils";
 import { generateIdFromEntropySize } from "lucia";
@@ -75,7 +74,7 @@ export async function GET(req: Request) {
       provider_user_id: googleUser.id,
     });
     if (err) {
-      throw new Error(err?.message);
+      throw new Error(err.message);
     }
 
     if (!user) {
@@ -93,7 +92,7 @@ export async function GET(req: Request) {
         provider_user_id: googleUser.id,
       });
       if (err) {
-        throw new Error(err?.message);
+        throw new Error(err.message);
       }
 
       user = newUser;

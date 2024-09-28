@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, useRef, useState } from "react";
+import { type HTMLAttributes, useRef, useState } from "react";
 
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/internal-error";
@@ -30,7 +30,7 @@ interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
   pageSlug: string;
 }
 
-export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
+export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
   const store = useChatStore();
   const messages = useSelector(store, SelectStairsMessages);
   const stairsQuestion = useSelector(store, SelectStairsQuestion);
@@ -295,11 +295,9 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
           </div>
         ) : null}
       </form>
-      {isError && (
-        <InternalError className="px-2">
+      {isError ? <InternalError className="px-2">
           <p>Failed to save chat</p>
-        </InternalError>
-      )}
+        </InternalError> : null}
     </div>
   );
-};
+}

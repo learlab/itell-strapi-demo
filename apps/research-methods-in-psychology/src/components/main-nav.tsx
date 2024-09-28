@@ -18,7 +18,7 @@ type Props = {
   read?: boolean;
 };
 
-export const MainNav = async ({ scrollProgress, read }: Props) => {
+export async function MainNav({ scrollProgress, read }: Props) {
   const { user } = await getSession();
 
   return (
@@ -36,14 +36,14 @@ export const MainNav = async ({ scrollProgress, read }: Props) => {
               {SiteConfig.title}
             </span>
           </Link>
-          {read && (
+          {read ? (
             <ContinueReading
               className="hidden w-28 md:block"
               text="Read"
               variant="outline"
-              size={"default"}
+              size="default"
             />
-          )}
+          ) : null}
           <MobileNav
             items={allPagesSorted.map((page) => ({
               title: page.title,
@@ -59,7 +59,7 @@ export const MainNav = async ({ scrollProgress, read }: Props) => {
         </div>
       </div>
 
-      {scrollProgress && <ScrollProgress />}
+      {scrollProgress ? <ScrollProgress /> : null}
     </SiteNav>
   );
-};
+}

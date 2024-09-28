@@ -46,6 +46,6 @@ export const getNotesAction = authedProcedure
  */
 export const deleteNoteAction = authedProcedure
   .input(z.object({ id: z.number() }))
-  .handler(async ({ input, ctx }) => {
+  .handler(async ({ input }) => {
     return await db.delete(notes).where(eq(notes.id, input.id));
   });

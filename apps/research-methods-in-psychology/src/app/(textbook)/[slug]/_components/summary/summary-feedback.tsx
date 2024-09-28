@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
+import { type SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { cn } from "@itell/utils";
 import { Lightbulb } from "lucide-react";
 
@@ -9,11 +9,11 @@ type Props = {
   needRevision: boolean;
 };
 
-export const SummaryFeedback = ({
+export function SummaryFeedback({
   feedback,
   needRevision,
   className,
-}: Props) => {
+}: Props) {
   return (
     <div
       className={cn(
@@ -28,25 +28,23 @@ export const SummaryFeedback = ({
             ? feedback?.prompt
             : "You have completed all assessments on this page, but you are still welcome to summarize the text."}
         </p>
-        {feedback && !feedback.isPassed && (
-          <p>
+        {feedback && !feedback.isPassed ? <p>
             When revising your summary, please make substantial changes to the
             entire summary. If only small changes are made, you will be asked to
             make additional revisions.
-          </p>
-        )}
+          </p> : null}
       </header>
-      {feedback && <SummaryFeedbackDetails feedback={feedback} />}
+      {feedback ? <SummaryFeedbackDetails feedback={feedback} /> : null}
     </div>
   );
-};
+}
 
-export const SummaryFeedbackDetails = ({
+export function SummaryFeedbackDetails({
   feedback,
 }: {
   feedback: SummaryFeedbackType;
-}) => {
-  const terms = feedback?.suggestedKeyphrases
+}) {
+  const terms = feedback.suggestedKeyphrases
     ? Array.from(new Set(feedback.suggestedKeyphrases))
     : [];
   return (
@@ -71,8 +69,7 @@ export const SummaryFeedbackDetails = ({
           </li>
         ))}
       </ul>
-      {feedback.promptDetails && (
-        <Accordion value="first">
+      {feedback.promptDetails ? <Accordion value="first">
           <AccordionItem
             value="first"
             title="Scoring details"
@@ -90,8 +87,7 @@ export const SummaryFeedbackDetails = ({
                 )
             )}
           </AccordionItem>
-        </Accordion>
-      )}
+        </Accordion> : null}
     </div>
   );
-};
+}

@@ -8,12 +8,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-export const SiteNav = ({
+export function SiteNav({
   children,
   className,
   mainContentId,
   ...rest
-}: Props) => {
+}: Props) {
   return (
     <header
       id={Elements.SITE_NAV}
@@ -24,11 +24,11 @@ export const SiteNav = ({
       {...rest}
     >
       <div className="skip-links">
-        <a className="skip-link" href={`#${mainContentId}`}>
+        <a className="skip-link" href={`#${mainContentId ?? ""}`}>
           skip to main content
         </a>
       </div>
       {children}
     </header>
   );
-};
+}

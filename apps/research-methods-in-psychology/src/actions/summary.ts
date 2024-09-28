@@ -15,7 +15,7 @@ import {
   Tags,
 } from "@/lib/constants";
 import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { getPage, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isPageAfter, nextPage } from "@/lib/pages/pages.server";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { memoize } from "nextjs-better-unstable-cache";
@@ -119,6 +119,7 @@ export const createSummaryAction = authedProcedure
       };
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (shouldRevalidate) {
       revalidateTag(Tags.GET_SESSION);
     }

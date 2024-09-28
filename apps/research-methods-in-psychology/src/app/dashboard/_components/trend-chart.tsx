@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -14,7 +14,7 @@ type Props = {
   prev: number | null;
 };
 
-export const TrendChart = ({ label, prev, current }: Props) => {
+export function TrendChart({ label, prev, current }: Props) {
   const chartConfig = {
     value: {
       label,
@@ -41,7 +41,7 @@ export const TrendChart = ({ label, prev, current }: Props) => {
           type="linear"
           stroke="var(--color-value)"
           strokeWidth={2}
-          dot={true}
+          dot
         />
         <YAxis
           domain={["dataMin", "dataMax"]}
@@ -52,4 +52,4 @@ export const TrendChart = ({ label, prev, current }: Props) => {
       </LineChart>
     </ChartContainer>
   );
-};
+}

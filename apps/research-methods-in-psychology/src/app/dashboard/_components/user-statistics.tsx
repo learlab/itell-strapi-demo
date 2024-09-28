@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 
 import {
-  ReadingTimeChartLevel,
-  ReadingTimeChartParams,
+  type ReadingTimeChartLevel,
+  type ReadingTimeChartParams,
 } from "@itell/core/dashboard";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -14,11 +14,11 @@ type Props = {
   pageSlug: string | null;
   readingTimeLevel: ReadingTimeChartLevel;
 };
-export const UserStatistics = ({
+export function UserStatistics({
   classId,
   pageSlug,
   readingTimeLevel,
-}: Props) => {
+}: Props) {
   // if searchParams is not passed as prop here, readingTimeParams will always be week 1
   // and switching levels in UserStatisticsControl won't work (although query params are set)
   // future work is to restructure the component hierarchy
@@ -41,4 +41,4 @@ export const UserStatistics = ({
       </Suspense>
     </div>
   );
-};
+}

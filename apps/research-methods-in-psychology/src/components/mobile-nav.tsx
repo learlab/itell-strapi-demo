@@ -22,7 +22,7 @@ export type MobileNavItem = {
 type MobileNavProps = {
   items: MobileNavItem[];
 };
-export const MobileNav = ({ items }: MobileNavProps) => {
+export function MobileNav({ items }: MobileNavProps) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -31,19 +31,18 @@ export const MobileNav = ({ items }: MobileNavProps) => {
   const [activeRoute, setActiveRoute] = useOptimistic(
     items.find((item) => item.href === pathname)?.href
   );
-  const ref = useClickOutside<HTMLDivElement>(() => setShowMobileMenu(false));
+  const ref = useClickOutside<HTMLDivElement>(() => { setShowMobileMenu(false); });
   return (
     <div className="block md:hidden">
       <button
         type="button"
         className="flex items-center space-x-2"
-        onClick={() => setShowMobileMenu(!showMobileMenu)}
+        onClick={() => { setShowMobileMenu(!showMobileMenu); }}
       >
         {showMobileMenu ? <XIcon /> : <MenuIcon />}
         <span className="font-bold">Menu</span>
       </button>
-      {showMobileMenu && (
-        <div
+      {showMobileMenu ? <div
           ref={ref}
           className={cn(
             "fixed inset-0 top-16 z-50 grid h-fit grid-flow-row auto-rows-max overflow-auto bg-background shadow-md animate-in slide-in-from-bottom-80 md:hidden"
@@ -78,18 +77,17 @@ export const MobileNav = ({ items }: MobileNavProps) => {
                   )}
                 >
                   <span>{item.title}</span>
-                  {isPending && item.href === activeRoute && <Spinner />}
+                  {isPending && item.href === activeRoute ? <Spinner /> : null}
                 </Link>
               ))}
             </nav>
           </div>
-        </div>
-      )}
+        </div> : null}
     </div>
   );
-};
+}
 
-const TopLink = ({
+function TopLink({
   href,
   text,
   active,
@@ -97,7 +95,7 @@ const TopLink = ({
   href: string;
   text: string;
   active: boolean;
-}) => {
+}) {
   return (
     <Link
       href={href}
@@ -109,4 +107,4 @@ const TopLink = ({
       <span className="font-bold">{text}</span>
     </Link>
   );
-};
+}

@@ -1,5 +1,5 @@
 import { allAssignmentPagesSorted } from "@/lib/pages/pages.server";
-import { User } from "lucia";
+import { type User } from "lucia";
 
 import { AdminToolsClient } from "./admin-tools.client";
 

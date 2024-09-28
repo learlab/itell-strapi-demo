@@ -1,4 +1,4 @@
-import { getPageData, isLastPage, PageData } from "./pages/pages.client";
+import { getPageData, isLastPage } from "./pages/pages.client";
 import {
   firstAssignmentPage,
   firstPage,
@@ -43,7 +43,10 @@ export const getPageStatus = ({
     return { unlocked: true, latest };
   }
 
-  const page = getPageData(pageSlug) as PageData;
+  const page = getPageData(pageSlug);
+  if (!page) {
+    return { unlocked: false, latest: false };
+  }
   const unlocked = isLastPage(page)
     ? userFinished
     : isPageAfter(userPageSlug, pageSlug);

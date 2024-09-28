@@ -1,5 +1,4 @@
 import { getSession } from "@/lib/auth";
-import { getUserCondition } from "@/lib/auth/conditions";
 import { isAdmin } from "@/lib/auth/role";
 import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/button";
@@ -15,7 +14,7 @@ interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   icon: React.ReactNode;
 }
 
-const AnchorLink = ({ text, href, icon, className, ...rest }: LinkProps) => {
+function AnchorLink({ text, href, icon, className, ...rest }: LinkProps) {
   return (
     <a
       href={href}
@@ -32,30 +31,30 @@ const AnchorLink = ({ text, href, icon, className, ...rest }: LinkProps) => {
       </span>
     </a>
   );
-};
+}
 
-export const PageControl = async ({
+export async function PageControl({
   assignment,
   pageSlug,
 }: {
   assignment: boolean;
   pageSlug: string;
-}) => {
+}) {
   const { user } = await getSession();
   return (
     <div className="mt-12 space-y-2">
       <p className="sr-only">page control</p>
-      {user && isAdmin(user.role) && (
+      {user && isAdmin(user.role) ? (
         <AdminTools user={user} pageSlug={pageSlug} />
-      )}
-      {assignment && (
+      ) : null}
+      {assignment ? (
         <AnchorLink
           icon={<PencilIcon className="size-4 xl:size-6" />}
           text="Assignment"
           href={`#${Elements.PAGE_ASSIGNMENTS}`}
           aria-label="assignments for this page"
         />
-      )}
+      ) : null}
       <RestartPageButton pageSlug={pageSlug} />
 
       <AnchorLink
@@ -65,4 +64,4 @@ export const PageControl = async ({
       />
     </div>
   );
-};
+}

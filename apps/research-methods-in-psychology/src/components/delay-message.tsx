@@ -1,4 +1,4 @@
-export const DelayMessage = () => {
+export function DelayMessage() {
   return (
     <p className="text-sm text-muted-foreground" role="status">
       The request is taking longer than usual, if this keeps loading without a
@@ -6,4 +6,4 @@ export const DelayMessage = () => {
       report to lear.lab.vu@gmail.com.
     </p>
   );
-};
+}

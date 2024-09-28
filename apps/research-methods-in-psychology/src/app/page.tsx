@@ -26,7 +26,7 @@ export default async function () {
   );
 }
 
-const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
+function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
     <footer
       id={Elements.SITE_FOOTER}
@@ -44,4 +44,4 @@ const SiteFooter = async ({ className }: React.HTMLAttributes<HTMLElement>) => {
       </a>
     </footer>
   );
-};
+}

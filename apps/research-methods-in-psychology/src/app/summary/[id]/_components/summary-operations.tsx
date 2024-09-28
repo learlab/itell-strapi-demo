@@ -13,10 +13,9 @@ type Props = {
   pageHref: string;
 };
 
-export const SummaryOperations = ({ pageHref }: Props) => {
+export function SummaryOperations({ pageHref }: Props) {
   return (
-    <>
-      <DropdownMenu>
+    <DropdownMenu>
         <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
           <CircleEllipsisIcon className="size-4" />
           <span className="sr-only">Open</span>
@@ -27,6 +26,5 @@ export const SummaryOperations = ({ pageHref }: Props) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
   );
-};
+}

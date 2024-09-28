@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { isProduction } from "@/lib/constants";
-import { PageStatus } from "@/lib/page-status";
+import { type PageStatus } from "@/lib/page-status";
 import { makePageHref } from "@/lib/utils";
 import { LoginButton } from "@auth//auth-form";
 import { Button } from "@itell/ui/button";
@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@itell/ui/dialog";
-import { User } from "lucia";
+import { type User } from "lucia";
 import Link from "next/link";
 
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
   pageStatus: PageStatus;
 };
 
-export const PageStatusModal = ({ user, pageStatus }: Props) => {
+export function PageStatusModal({ user, pageStatus }: Props) {
   const { latest, unlocked } = pageStatus;
   if (unlocked) {
     return null;
@@ -38,10 +38,7 @@ export const PageStatusModal = ({ user, pageStatus }: Props) => {
 
     // user with locked page
     return (
-      <Modal
-        title="You haven't unlocked this page yet"
-        userPageSlug={user.pageSlug}
-      >
+      <Modal title="You haven't unlocked this page yet">
         <div>
           Submit a passing summary for
           <Link href={href} className="mx-1 font-semibold underline">
@@ -62,7 +59,6 @@ export const PageStatusModal = ({ user, pageStatus }: Props) => {
   return (
     <Modal
       title="Log in to access the textbook"
-      userPageSlug={null}
       description="We collects anonymous data to improve learning experience."
     >
       <div className="flex justify-center">
@@ -70,19 +66,17 @@ export const PageStatusModal = ({ user, pageStatus }: Props) => {
       </div>
     </Modal>
   );
-};
+}
 
-const Modal = ({
-  userPageSlug,
+function Modal({
   title,
   description,
   children,
 }: {
-  userPageSlug: string | null;
   title: string;
   description?: string;
   children: React.ReactNode;
-}) => {
+}) {
   const [open, setOpen] = useState(true);
 
   return (
@@ -97,10 +91,12 @@ const Modal = ({
       <DialogContent canClose={!isProduction}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          {description ? (
+            <DialogDescription>{description}</DialogDescription>
+          ) : null}
         </DialogHeader>
         {children}
       </DialogContent>
     </Dialog>
   );
-};
+}

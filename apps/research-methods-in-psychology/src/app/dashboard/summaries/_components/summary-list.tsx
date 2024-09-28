@@ -13,11 +13,7 @@ type SummaryData = {
   pageTitle: string;
 };
 
-export const SummaryList = ({
-  data,
-}: {
-  data: Record<string, SummaryData[]>;
-}) => {
+export function SummaryList({ data }: { data: Record<string, SummaryData[]> }) {
   return (
     <ol className="mt-4 divide-y divide-border rounded-md border">
       {Object.entries(data).map(([title, summaries]) => (
@@ -38,16 +34,16 @@ export const SummaryList = ({
       ))}
     </ol>
   );
-};
+}
 
 interface SummaryItemProps {
   summary: SummaryData;
 }
 
-export const SummaryItem = ({ summary }: SummaryItemProps) => {
+export function SummaryItem({ summary }: SummaryItemProps) {
   return (
     <Link
-      href={`/summary/${summary.id}`}
+      href={`/summary/${String(summary.id)}`}
       className="flex flex-col rounded-md px-2 py-4 transition-all duration-150 ease-out hover:bg-accent hover:text-accent-foreground"
       aria-label="user summary"
     >
@@ -64,13 +60,15 @@ export const SummaryItem = ({ summary }: SummaryItemProps) => {
       </div>
     </Link>
   );
-};
+}
 
-export const SummaryItemSkeleton = () => (
-  <div className="p-4">
-    <div className="space-y-3">
-      <Skeleton className="h-5 w-2/5" />
-      <Skeleton className="h-4 w-4/5" />
+export function SummaryItemSkeleton() {
+  return (
+    <div className="p-4">
+      <div className="space-y-3">
+        <Skeleton className="h-5 w-2/5" />
+        <Skeleton className="h-4 w-4/5" />
+      </div>
     </div>
-  </div>
-);
+  );
+}

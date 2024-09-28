@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { Note } from "@/drizzle/schema";
+import { type Note } from "@/drizzle/schema";
 import { noteStore, SelectNotes } from "@/lib/store/note-store";
 import { useSelector } from "@xstate/store/react";
 
@@ -13,14 +13,14 @@ type Props = {
   pageSlug: string;
 };
 
-export const NoteList = ({ notes, pageSlug }: Props) => {
+export function NoteList({ notes, pageSlug }: Props) {
   const data = useSelector(noteStore, SelectNotes);
 
   useEffect(() => {
     noteStore.send({ type: "initialize", data: notes });
-  }, []);
+  }, [notes]);
 
-  if (data) {
+  if (data.length > 0) {
     return (
       <div className="note-list mx-auto flex max-w-2xl flex-row gap-2">
         <p className="sr-only">list of notes</p>
@@ -37,4 +37,4 @@ export const NoteList = ({ notes, pageSlug }: Props) => {
   }
 
   return null;
-};
+}

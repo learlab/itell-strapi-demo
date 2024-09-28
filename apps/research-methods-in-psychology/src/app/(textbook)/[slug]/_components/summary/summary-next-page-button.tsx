@@ -36,10 +36,7 @@ type Props = {
   text?: string;
 };
 
-export const NextPageButton = ({
-  text = "Go to next page",
-  pageSlug,
-}: Props) => {
+export function NextPageButton({ text = "Go to next page", pageSlug }: Props) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -48,7 +45,7 @@ export const NextPageButton = ({
       {...animationProps}
       disabled={pending}
       onClick={() => {
-        startTransition(async () => {
+        startTransition(() => {
           router.push(makePageHref(pageSlug));
         });
       }}
@@ -72,11 +69,11 @@ export const NextPageButton = ({
           transition={{ type: "spring", duration: 0.3, bounce: 0 }}
           key={String(pending)}
         >
-          {pending && (
+          {pending ? (
             <span className="absolute inset-0 flex items-center justify-center">
               <Spinner />
             </span>
-          )}
+          ) : null}
           <span
             className={cn(
               "relative flex h-full w-full items-center gap-2 text-sm tracking-wide",
@@ -101,4 +98,4 @@ export const NextPageButton = ({
       </AnimatePresence>
     </motion.button>
   );
-};
+}

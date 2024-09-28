@@ -1,6 +1,6 @@
 import { getTeacherAction, getUserAction } from "@/actions/user";
 import { Meta } from "@/config/metadata";
-import { User } from "@/drizzle/schema";
+import { type User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { getPageData } from "@/lib/pages/pages.client";
@@ -32,7 +32,7 @@ export default async function ({ params, searchParams }: PageProps) {
     throw new Error("failed to get teacher", { cause: error });
   }
 
-  const isTeacher = !!teacher;
+  const isTeacher = Boolean(teacher);
   if (!isTeacher) {
     throw new Error("teacher only");
   }
@@ -62,13 +62,13 @@ export default async function ({ params, searchParams }: PageProps) {
   );
 }
 
-const StudentProfile = ({
+function StudentProfile({
   student,
   searchParams,
 }: {
   student: User;
   searchParams: unknown;
-}) => {
+}) {
   const page = getPageData(student.pageSlug);
   const { reading_time_level } =
     routes.student.$parseSearchParams(searchParams);
@@ -122,4 +122,4 @@ const StudentProfile = ({
       </CardContent>
     </Card>
   );
-};
+}

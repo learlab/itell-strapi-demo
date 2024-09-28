@@ -7,7 +7,6 @@ import {
   readAzureOAuthState,
   readJoinClassCode,
 } from "@/lib/auth/provider";
-import { Condition } from "@/lib/constants";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { reportSentry } from "@/lib/utils";
 import { jwtDecode } from "jwt-decode";
@@ -50,14 +49,14 @@ export const GET = async (req: Request) => {
       storedCodeVerifier
     );
     const idToken = tokens.idToken();
-    const azureUser = jwtDecode(idToken) as AzureUser;
+    const azureUser = jwtDecode<AzureUser>(idToken);
 
     let [user, err] = await getUserByProviderAction({
       provider_id: "azure",
       provider_user_id: azureUser.oid,
     });
     if (err) {
-      throw new Error(err?.message);
+      throw new Error(err.message);
     }
 
     if (!user) {
@@ -68,13 +67,13 @@ export const GET = async (req: Request) => {
           name: azureUser.name || azureUser.preferred_username,
           email: azureUser.email,
           conditionAssignments: pageConditions,
-          role: env.ADMINS?.includes(azureUser.email || "") ? "admin" : "user",
+          role: env.ADMINS?.includes(azureUser.email ?? "") ? "admin" : "user",
         },
         provider_id: "azure",
         provider_user_id: azureUser.oid,
       });
       if (err) {
-        throw new Error(err?.message);
+        throw new Error(err.message);
       }
 
       user = newUser;

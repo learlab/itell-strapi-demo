@@ -3,7 +3,7 @@ import { SidebarTrigger } from "@/components/sidebar";
 import { getSession } from "@/lib/auth";
 import { DashboardNavMenu } from "@dashboard/nav";
 
-export const DashboardNav = async () => {
+export async function DashboardNav() {
   const { user } = await getSession();
 
   return (
@@ -16,7 +16,7 @@ export const DashboardNav = async () => {
         />
         <SidebarTrigger />
       </div>
-      {user && <DashboardNavMenu user={user} />}
+      {user ? <DashboardNavMenu user={user} /> : null}
     </div>
   );
-};
+}

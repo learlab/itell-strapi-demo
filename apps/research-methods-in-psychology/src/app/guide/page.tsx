@@ -18,7 +18,7 @@ export default async function () {
   // use the handler directly instead of action here because we allow
   // unauthenticated users to access this page
   incrementViewHandler(
-    user?.id || "",
+    user?.id ?? "",
     "guide",
     {
       condition: userCondition,

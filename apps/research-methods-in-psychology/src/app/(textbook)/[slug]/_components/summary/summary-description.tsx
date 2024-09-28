@@ -5,7 +5,7 @@ import { Elements } from "@itell/constants";
 import { Image } from "@itell/ui/image";
 import { guides } from "#content";
 
-export const SummaryDescription = ({ condition }: { condition: string }) => {
+export function SummaryDescription({ condition }: { condition: string }) {
   const guideCondition =
     condition === Condition.STAIRS
       ? "summary_description_stairs"
@@ -34,4 +34,4 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
       />
     </section>
   );
-};
+}

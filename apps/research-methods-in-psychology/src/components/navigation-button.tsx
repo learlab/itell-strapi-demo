@@ -3,7 +3,7 @@
 import React, { useTransition } from "react";
 
 import { useDebounce } from "@itell/core/hooks";
-import { Button } from "@itell/ui/button";
+import { type Button } from "@itell/ui/button";
 import { StatusButton } from "@itell/ui/status-button";
 import { useRouter } from "next/navigation";
 
@@ -12,12 +12,7 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   href: string;
 }
 
-export const NavigationButton = ({
-  children,
-  href,
-  onClick,
-  ...props
-}: Props) => {
+export function NavigationButton({ children, href, onClick, ...props }: Props) {
   const [pending, startTransition] = useTransition();
   const pendingDebounced = useDebounce(pending, 100);
   const router = useRouter();
@@ -25,7 +20,7 @@ export const NavigationButton = ({
     <StatusButton
       pending={pendingDebounced}
       disabled={pending}
-      size={"lg"}
+      size="lg"
       {...props}
       onClick={(e) => {
         startTransition(() => {
@@ -37,4 +32,4 @@ export const NavigationButton = ({
       {children}
     </StatusButton>
   );
-};
+}

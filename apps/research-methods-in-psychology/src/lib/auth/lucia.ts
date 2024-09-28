@@ -1,13 +1,15 @@
 import { db } from "@/actions/db";
 import {
-  ConditionAssignments,
   sessions,
-  UserPreferences,
   users,
+  type ConditionAssignments,
+  type UserPreferences,
 } from "@/drizzle/schema";
 import { DefaultPreferences } from "@itell/constants";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
+
+import { isProduction } from "../constants";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
@@ -15,7 +17,7 @@ export const lucia = new Lucia(adapter, {
   sessionCookie: {
     expires: false,
     attributes: {
-      secure: process.env.NODE_ENV === "production",
+      secure: isProduction,
     },
   },
   getUserAttributes: (attributes) => {
@@ -60,7 +62,7 @@ interface DatabaseUserAttributes {
   classId: string | null;
   pageSlug: string | null;
   conditionAssignments: ConditionAssignments;
-  preferences: UserPreferences;
+  preferences: UserPreferences | null;
 }
 
 interface DatabaseSessionAttributes {}

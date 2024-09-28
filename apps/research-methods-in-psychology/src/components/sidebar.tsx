@@ -9,7 +9,6 @@ import { Button } from "@itell/ui/button";
 import { Sheet, SheetContent } from "@itell/ui/sheet";
 import { cn } from "@itell/utils";
 import { PanelLeft } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 
 /**
  * cookie name for sidebar state
@@ -18,12 +17,12 @@ import { usePathname, useRouter } from "next/navigation";
  * cookies().get(SIDEBAR_STATE_COOKIE)?.value === "true"
  */
 
-type SidebarContext = {
+type SidebarContextType = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
-const SidebarContext = React.createContext<SidebarContext>(
-  {} as SidebarContext
+const SidebarContext = React.createContext<SidebarContextType>(
+  {} as SidebarContextType
 );
 
 function useSidebar() {
@@ -81,7 +80,9 @@ const SidebarTrigger = React.forwardRef<
       variant="ghost"
       size="icon"
       className={cn("size-6", className)}
-      onClick={() => onOpenChange(!open)}
+      onClick={() => {
+        onOpenChange(!open);
+      }}
       {...props}
     >
       <PanelLeft className="size-6" />
@@ -91,7 +92,7 @@ const SidebarTrigger = React.forwardRef<
 });
 SidebarTrigger.displayName = "SidebarTrigger";
 
-const Sidebar = ({ children, className }: React.ComponentProps<"div">) => {
+function Sidebar({ children, className }: React.ComponentProps<"div">) {
   const isMobile = useIsMobile();
   const { open, onOpenChange } = useSidebar();
 
@@ -99,7 +100,10 @@ const Sidebar = ({ children, className }: React.ComponentProps<"div">) => {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent
-          className="w-[260px] p-0 md:w-[--sidebar-width] [&>button]:hidden"
+          className={cn(
+            "w-[260px] p-0 md:w-[--sidebar-width] [&>button]:hidden",
+            className
+          )}
           side="left"
         >
           <SidebarInner>{children}</SidebarInner>
@@ -113,15 +117,15 @@ const Sidebar = ({ children, className }: React.ComponentProps<"div">) => {
       <SidebarInner>{children}</SidebarInner>
     </aside>
   );
-};
+}
 
-const SidebarInner = ({ children }: { children: React.ReactNode }) => {
+function SidebarInner({ children }: { children: React.ReactNode }) {
   return (
-    <div className={"flex h-full flex-col border-r bg-background"}>
+    <div className="flex h-full flex-col border-r bg-background">
       {children}
     </div>
   );
-};
+}
 
 const SidebarHeader = React.forwardRef<
   HTMLDivElement,

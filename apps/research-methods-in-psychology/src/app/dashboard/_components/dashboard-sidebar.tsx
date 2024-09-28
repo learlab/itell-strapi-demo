@@ -9,19 +9,15 @@ import {
 import { NavStatistics } from "./nav-statistics";
 import { RoleSwitcher } from "./role-switch";
 
-export const DashboardSidebar = async ({
-  isTeacher,
-}: {
-  isTeacher: boolean;
-}) => {
+export function DashboardSidebar({ isTeacher }: { isTeacher: boolean }) {
   return (
     <Sidebar>
       <SidebarContent className="gap-2">
-        {isTeacher && (
+        {isTeacher ? (
           <SidebarHeader>
             <RoleSwitcher />
           </SidebarHeader>
-        )}
+        ) : null}
         <SidebarItem>
           <SidebarLabel>Statistics</SidebarLabel>
           <NavStatistics />
@@ -32,4 +28,4 @@ export const DashboardSidebar = async ({
 			</SidebarFooter> */}
     </Sidebar>
   );
-};
+}

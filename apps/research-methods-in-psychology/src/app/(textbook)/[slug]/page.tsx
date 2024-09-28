@@ -36,9 +36,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 
   const pageSlug = page.slug;
 
-  const userId = user?.id || null;
-  const userFinished = user?.finished || false;
-  const userPageSlug = user?.pageSlug || null;
+  const userId = user?.id ?? null;
+  const userFinished = user?.finished ?? false;
+  const userPageSlug = user?.pageSlug ?? null;
   const userCondition = user
     ? getUserCondition(user, pageSlug)
     : Condition.STAIRS;
@@ -68,7 +68,7 @@ export default async function ({ params }: { params: { slug: string } }) {
           <PageTitle className="mb-8">{page.title}</PageTitle>
           <PageContent title={page.title} html={page.html} />
           <SelectionPopover user={user} pageSlug={pageSlug} />
-          <Pager pageIndex={page.order} userPageSlug={user?.pageSlug || null} />
+          <Pager pageIndex={page.order} userPageSlug={user?.pageSlug ?? null} />
           <p className="mt-4 text-right text-sm text-muted-foreground">
             <span>Last updated at </span>
             <time>{page.last_modified}</time>
@@ -94,24 +94,26 @@ export default async function ({ params }: { params: { slug: string } }) {
         <ChatLoader user={user} pageSlug={pageSlug} pageTitle={page.title} />
       </Suspense>
 
-      {user && <NoteLoader pageSlug={pageSlug} />}
-      {user && page.summary && (
+      {user ? <NoteLoader pageSlug={pageSlug} /> : null}
+      {user && page.summary ? (
         <PageAssignments
           pageSlug={pageSlug}
           pageStatus={pageStatus}
           user={user}
           condition={userCondition}
         />
-      )}
+      ) : null}
 
-      {isProduction && <PageStatusModal user={user} pageStatus={pageStatus} />}
+      {isProduction ? (
+        <PageStatusModal user={user} pageStatus={pageStatus} />
+      ) : null}
       <QuestionControl
         userId={userId}
         pageSlug={pageSlug}
         hasAssignments={page.assignments.length > 0}
         condition={userCondition}
       />
-      {user && <EventTracker pageSlug={pageSlug} />}
+      {user ? <EventTracker pageSlug={pageSlug} /> : null}
     </PageProvider>
   );
 }

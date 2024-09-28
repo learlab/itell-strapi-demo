@@ -2,10 +2,10 @@ import { buttonVariants } from "@itell/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
-export const SummaryBackButton = () => {
+export function SummaryBackButton() {
   return (
     <Link
-      href={"/dashboard/summaries"}
+      href="/dashboard/summaries"
       className={buttonVariants({ variant: "ghost" })}
     >
       <span className="flex items-center gap-2">
@@ -14,4 +14,4 @@ export const SummaryBackButton = () => {
       </span>
     </Link>
   );
-};
+}

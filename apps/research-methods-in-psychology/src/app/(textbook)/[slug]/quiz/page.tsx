@@ -13,7 +13,7 @@ export default async function ({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
   const page = getPageData(slug);
-  if (!page || !page.quiz) {
+  if (!page?.quiz) {
     return notFound();
   }
 
@@ -31,7 +31,7 @@ export default async function ({ params }: { params: { slug: string } }) {
     return (
       <div className="grid gap-6">
         <p>You have not unlocked this page yet.</p>
-        <NavigationButton href={makePageHref(user.pageSlug || firstPage.slug)}>
+        <NavigationButton href={makePageHref(user.pageSlug ?? firstPage.slug)}>
           Continue reading
         </NavigationButton>
       </div>

@@ -19,11 +19,11 @@ type Props = {
   condition: string;
 };
 
-export const FinishQuestionButton = ({
+export function FinishQuestionButton({
   chunkSlug,
   pageSlug,
   condition,
-}: Props) => {
+}: Props) {
   const store = useQuestionStore();
   const currentChunk = useSelector(store, SelectCurrentChunk);
   const isSummaryReady = useSelector(store, SelectSummaryReady);
@@ -56,4 +56,4 @@ export const FinishQuestionButton = ({
       {text}
     </Button>
   );
-};
+}

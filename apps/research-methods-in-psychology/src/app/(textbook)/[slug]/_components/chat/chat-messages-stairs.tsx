@@ -4,13 +4,13 @@ import { useMemo } from "react";
 
 import { useChatStore } from "@/components/provider/page-provider";
 import { SelectStairsMessages } from "@/lib/store/chat-store";
-import { BotMessage } from "@itell/core/chat";
+import { type BotMessage } from "@itell/core/chat";
 import { useSelector } from "@xstate/store/react";
 
 import { ChatItems } from "./chat-items";
 import { StairsReadyButton } from "./stairs-button";
 
-export const ChatMessagesStairs = () => {
+export function ChatMessagesStairs() {
   const store = useChatStore();
   const messages = useSelector(store, SelectStairsMessages);
   const initialMessage = useMemo<BotMessage>(
@@ -30,4 +30,4 @@ export const ChatMessagesStairs = () => {
   );
 
   return <ChatItems data={messages} initialMessage={initialMessage} />;
-};
+}

@@ -1,9 +1,9 @@
 import * as Sentry from "@sentry/nextjs";
 import NextError from "next/error";
 
-const CustomErrorComponent = (props) => {
+function CustomErrorComponent(props) {
   return <NextError statusCode={props.statusCode} />;
-};
+}
 
 CustomErrorComponent.getInitialProps = async (contextData) => {
   // In case this is running in a serverless function, await this in order to give Sentry

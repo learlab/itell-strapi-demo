@@ -7,7 +7,7 @@ type Props = {
   pageSlug: string;
 };
 
-export const SummaryCount = async ({ pageSlug }: Props) => {
+export async function SummaryCount({ pageSlug }: Props) {
   const [data, err] = await countSummaryByPassingAction({ pageSlug });
   if (err) {
     return null;
@@ -31,6 +31,8 @@ export const SummaryCount = async ({ pageSlug }: Props) => {
       </p>
     </Link>
   );
-};
+}
 
-SummaryCount.Skeleton = () => <Skeleton className="h-8 w-48" />;
+SummaryCount.Skeleton = function () {
+  return <Skeleton className="h-8 w-48" />;
+};

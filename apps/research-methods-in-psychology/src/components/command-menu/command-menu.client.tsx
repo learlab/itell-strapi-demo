@@ -13,12 +13,12 @@ import {
   CommandSeparator,
 } from "@itell/ui/command";
 import { cn } from "@itell/utils";
-import { Page } from "#content";
+import { type Page } from "#content";
 import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 
-export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
+export function CommandMenuClient({ pages }: { pages: Page[] }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { setTheme } = useTheme();
@@ -32,7 +32,9 @@ export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
     };
 
     document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    return () => {
+      document.removeEventListener("keydown", down);
+    };
   }, []);
 
   const runCommand = useCallback((command: () => unknown) => {
@@ -47,7 +49,9 @@ export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
         className={cn(
           "relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-32 lg:w-48"
         )}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+        }}
       >
         <span className="inline-flex">Search...</span>
         <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
@@ -64,7 +68,9 @@ export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
                 key={navItem.href}
                 value={navItem.title}
                 onSelect={() => {
-                  runCommand(() => router.push(navItem.href as string));
+                  runCommand(() => {
+                    router.push(navItem.href);
+                  });
                 }}
                 className="flex items-center gap-2"
               >
@@ -86,7 +92,9 @@ export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
                 key={item.href}
                 value={item.title}
                 onSelect={() => {
-                  runCommand(() => router.push(item.href));
+                  runCommand(() => {
+                    router.push(item.href);
+                  });
                 }}
               >
                 <span className="flex items-center gap-2">
@@ -99,19 +107,37 @@ export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
 
           <CommandSeparator />
           <CommandGroup heading="Theme">
-            <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
+            <CommandItem
+              onSelect={() => {
+                runCommand(() => {
+                  setTheme("light");
+                });
+              }}
+            >
               <span className="flex items-center gap-2">
                 <SunMedium className="size-4" />
                 Light
               </span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
+            <CommandItem
+              onSelect={() => {
+                runCommand(() => {
+                  setTheme("dark");
+                });
+              }}
+            >
               <span className="flex items-center gap-2">
                 <Moon className="size-4" />
                 Dark
               </span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
+            <CommandItem
+              onSelect={() => {
+                runCommand(() => {
+                  setTheme("system");
+                });
+              }}
+            >
               <span className="flex items-center gap-2">
                 <Laptop className="size-4" />
                 System
@@ -122,7 +148,7 @@ export const CommandMenuClient = ({ pages }: { pages: Page[] }) => {
       </CommandDialog>
     </search>
   );
-};
+}
 
 const config = {
   tools: [

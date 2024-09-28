@@ -5,14 +5,13 @@ import {
   CreateFocusTimeSchema,
   events,
   focus_times,
-  FocusTimeData,
+  type FocusTimeData,
 } from "@/drizzle/schema";
 import {
   EventType,
   FOCUS_TIME_SAVE_INTERVAL,
   isProduction,
 } from "@/lib/constants";
-import { reportSentry } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
@@ -56,7 +55,7 @@ export const createFocusTimeAction = authedProcedure
         if (record) {
           const newData: FocusTimeData = {};
           const updateData = input.data as FocusTimeData;
-          const oldData = record.data as FocusTimeData;
+          const oldData = record.data;
           // if there are legacy chunk ids that's not present in the new data
           // they will dropped during the update
           for (const chunkId in updateData) {

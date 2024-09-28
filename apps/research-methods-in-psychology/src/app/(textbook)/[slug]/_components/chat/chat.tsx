@@ -3,7 +3,7 @@
 import { useChatStore } from "@/components/provider/page-provider";
 import { SelectOpen } from "@/lib/store/chat-store";
 import { Elements } from "@itell/constants";
-import { Message } from "@itell/core/chat";
+import { type Message } from "@itell/core/chat";
 import {
   Accordion,
   AccordionContent,
@@ -23,7 +23,7 @@ type Props = {
   data: Message[];
 };
 
-export const Chat = ({ pageSlug, pageTitle, updatedAt, data }: Props) => {
+export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
   const store = useChatStore();
   const open = useSelector(store, SelectOpen);
   return (
@@ -32,7 +32,7 @@ export const Chat = ({ pageSlug, pageTitle, updatedAt, data }: Props) => {
       type="single"
       value={open ? "chat" : ""}
       onValueChange={(val) =>
-        store.send({ type: "setOpen", value: val === "chat" })
+        { store.send({ type: "setOpen", value: val === "chat" }); }
       }
       collapsible
       className="fixed bottom-12 right-8 z-30 w-80 rounded-md border border-border bg-background text-foreground lg:w-96"
@@ -58,4 +58,4 @@ export const Chat = ({ pageSlug, pageTitle, updatedAt, data }: Props) => {
       </AccordionItem>
     </Accordion>
   );
-};
+}

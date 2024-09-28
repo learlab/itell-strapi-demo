@@ -16,7 +16,7 @@ import { Button } from "@itell/ui/button";
 import { useRouter } from "next/navigation";
 import { useServerAction } from "zsa-react";
 
-export const QuitClass = () => {
+export function QuitClass() {
   const router = useRouter();
   const { execute, isPending, isError } = useServerAction(updateUserAction);
 
@@ -33,7 +33,7 @@ export const QuitClass = () => {
           <AlertDialogDescription asChild>
             <div className="text-sm text-muted-foreground">
               <p>Your data will no longer be shared with the teacher</p>
-              {isError && <InternalError />}
+              {isError ? <InternalError /> : null}
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -55,4 +55,4 @@ export const QuitClass = () => {
       </AlertDialogContent>
     </AlertDialog>
   );
-};
+}

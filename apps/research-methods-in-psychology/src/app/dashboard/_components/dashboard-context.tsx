@@ -13,12 +13,12 @@ import { setCookie } from "@/lib/cookie";
 import { usePathname, useRouter } from "next/navigation";
 
 export type Role = (typeof ClassRole)[keyof typeof ClassRole];
-type DashboardContext = {
+type DashboardContextType = {
   role: Role;
   onRoleChange: (role: Role) => void;
 };
-const DashboardContext = createContext<DashboardContext>(
-  {} as DashboardContext
+const DashboardContext = createContext<DashboardContextType>(
+  {} as DashboardContextType
 );
 
 const routeMappings: Record<Role, Record<string, string | undefined>> = {
@@ -34,13 +34,13 @@ const routeMappings: Record<Role, Record<string, string | undefined>> = {
   },
 };
 
-export const DashboardProvider = ({
+export function DashboardProvider({
   children,
   defaultRole,
 }: {
   children: React.ReactNode;
   defaultRole?: Role;
-}) => {
+}) {
   const [role, setRole] = useState(defaultRole ?? ClassRole.STUDENT);
   const pathname = usePathname();
   const router = useRouter();
@@ -72,7 +72,7 @@ export const DashboardProvider = ({
       </div>
     </DashboardContext.Provider>
   );
-};
+}
 
 export const useDashboard = () => {
   return useContext(DashboardContext);

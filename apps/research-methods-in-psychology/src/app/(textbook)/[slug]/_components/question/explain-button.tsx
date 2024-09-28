@@ -21,7 +21,7 @@ type Props = {
   input: string;
 };
 
-export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
+export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
   const [response, setResponse] = useState("");
   const { pending: formPending } = useFormStatus();
   const { action, isPending, isDelayed, isError, error } = useActionStatus(
@@ -70,9 +70,7 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div role="status">
-        {response && (
-          <p className="text-sm text-muted-foreground">{response}</p>
-        )}
+        {response ? <p className="text-sm text-muted-foreground">{response}</p> : null}
       </div>
 
       <Button
@@ -89,9 +87,9 @@ export const ExplainButton = ({ pageSlug, chunkSlug, input }: Props) => {
         </span>
       </Button>
 
-      {isError && <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning>}
+      {isError ? <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning> : null}
 
-      {isDelayed && <DelayMessage />}
+      {isDelayed ? <DelayMessage /> : null}
     </div>
   );
-};
+}

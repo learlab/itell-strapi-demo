@@ -7,7 +7,7 @@ import { SelectSummaryReady } from "@/lib/store/question-store";
 import { Button } from "@itell/ui/button";
 import { useSelector } from "@xstate/store/react";
 
-export const UnlockAssignmentsButton = ({
+export function UnlockAssignmentsButton({
   pageSlug,
   chunkSlug,
   condition,
@@ -15,7 +15,7 @@ export const UnlockAssignmentsButton = ({
   pageSlug: string;
   chunkSlug: string;
   condition: string;
-}) => {
+}) {
   const store = useQuestionStore();
   const isSummaryReady = useSelector(store, SelectSummaryReady);
 
@@ -38,4 +38,4 @@ export const UnlockAssignmentsButton = ({
       Unlock assignments
     </Button>
   );
-};
+}

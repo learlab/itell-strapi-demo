@@ -11,13 +11,13 @@ import { Label } from "@itell/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@itell/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@itell/ui/tabs";
 import { cn } from "@itell/utils";
-import { User } from "lucia";
+import { type User } from "lucia";
 import { Paintbrush } from "lucide-react";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 
-export const SettingsForm = ({ user }: { user: User }) => {
+export function SettingsForm({ user }: { user: User }) {
   const { execute, isError, isPending } = useServerAction(
     updateUserPrefsAction
   );
@@ -69,7 +69,7 @@ export const SettingsForm = ({ user }: { user: User }) => {
           />
         </Label>
 
-        {isError && <InternalError />}
+        {isError ? <InternalError /> : null}
         <footer>
           <Button disabled={isPending} pending={isPending} type="submit">
             Save
@@ -78,7 +78,7 @@ export const SettingsForm = ({ user }: { user: User }) => {
       </form>
     </div>
   );
-};
+}
 
 export function ColorPicker({
   className,
@@ -105,7 +105,7 @@ export function ColorPicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant="outline"
           className={cn(
             "w-[220px] justify-start text-left font-normal text-muted-foreground",
             className
@@ -130,7 +130,7 @@ export function ColorPicker({
               <TabsContent
                 key={theme}
                 value={theme}
-                className={"grid grid-cols-8 gap-1"}
+                className="grid grid-cols-8 gap-1"
               >
                 {(isLight ? lightColors : darkColors).map((s) => (
                   <button

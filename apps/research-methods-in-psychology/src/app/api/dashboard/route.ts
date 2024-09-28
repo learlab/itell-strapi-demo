@@ -10,7 +10,7 @@ export const GET = async (req: Request) => {
     return redirect("/auth");
   }
   const [teacher, _] = await getTeacherAction();
-  const isTeacher = !!teacher;
+  const isTeacher = Boolean(teacher);
 
   if (isTeacher) {
     cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);

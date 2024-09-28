@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@itell/ui/avatar";
-import { User } from "lucia";
+import { type User } from "lucia";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Avatar> {
   user: User;
@@ -7,14 +7,14 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Avatar> {
   alt?: string;
 }
 
-export const UserAvatar = ({ user, className, alt, ...rest }: Props) => {
-  const name = user.name?.[0]?.toUpperCase() || "User";
+export function UserAvatar({ user, className, alt, ...rest }: Props) {
+  const name = user.name?.[0]?.toUpperCase() ?? "User";
 
   return (
     <Avatar className={className} {...rest}>
       {user.image ? (
         <>
-          <AvatarImage src={user.image} alt={alt || "user profile photo"} />
+          <AvatarImage src={user.image} alt={alt ?? "user profile photo"} />
           <AvatarFallback>{name}</AvatarFallback>
         </>
       ) : (
@@ -22,4 +22,4 @@ export const UserAvatar = ({ user, className, alt, ...rest }: Props) => {
       )}
     </Avatar>
   );
-};
+}

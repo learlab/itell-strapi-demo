@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 
 import { isProduction } from "@/lib/constants";
-import { PageStatus } from "@/lib/page-status";
+import { type PageStatus } from "@/lib/page-status";
 import type { TocPageItem } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { cn } from "@itell/utils";
@@ -18,13 +18,13 @@ type TocItemProps = {
   className?: string;
 };
 
-export const TocItem = ({
+export function TocItem({
   item,
   inGroup,
   activePage,
   className,
   onClick,
-}: TocItemProps) => {
+}: TocItemProps) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
   const { visible, label, icon } = getPageState({
@@ -69,7 +69,7 @@ export const TocItem = ({
       </Link>
     </li>
   );
-};
+}
 
 const getPageState = ({
   status,

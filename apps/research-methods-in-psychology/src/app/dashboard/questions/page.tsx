@@ -1,7 +1,7 @@
 import { incrementViewAction } from "@/actions/dashboard";
 import { getAnswerStatsAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
-import { ConstructedResponse } from "@/drizzle/schema";
+import { type ConstructedResponse } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { getPageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
@@ -20,16 +20,15 @@ import pluralize from "pluralize";
 
 import { getLabel } from "./get-label";
 
-const questions = allPagesSorted.reduce(
-  (acc, page) => {
-    if (page.cri) {
-      acc[page.slug] = page.cri;
-    }
+const questions = allPagesSorted.reduce<
+  Record<string, { slug: string; question: string; answer: string }[]>
+>((acc, page) => {
+  if (page.cri.length > 0) {
+    acc[page.slug] = page.cri;
+  }
 
-    return acc;
-  },
-  {} as Record<string, { slug: string; question: string; answer: string }[]>
-);
+  return acc;
+}, {});
 
 export default async function () {
   const { user } = await getSession();
@@ -127,7 +126,7 @@ export default async function () {
   );
 }
 
-const AnswerItem = ({
+function AnswerItem({
   answers,
   question,
   refAnswer,
@@ -135,7 +134,7 @@ const AnswerItem = ({
   answers: ConstructedResponse[];
   question: string;
   refAnswer: string;
-}) => {
+}) {
   return (
     <div className="space-y-2 rounded-md p-4 lg:p-6">
       <div className="space-y-1">
@@ -165,4 +164,4 @@ const AnswerItem = ({
       </div>
     </div>
   );
-};
+}

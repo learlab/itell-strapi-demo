@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@itell/ui/chart";
 import { Bar, BarChart, CartesianGrid, LabelList } from "recharts";
 
@@ -19,7 +19,7 @@ type Props = {
   data: { name: string; value: number }[];
 };
 
-export const ReadingTimeChart = ({ data }: Props) => {
+export function ReadingTimeChart({ data }: Props) {
   return (
     <ChartContainer config={chartConfig} className="h-[350px] w-full">
       <BarChart
@@ -34,7 +34,7 @@ export const ReadingTimeChart = ({ data }: Props) => {
           cursor={false}
           content={<ChartTooltipContent hideLabel indicator="line" />}
           labelClassName="mr-1"
-          formatter={(value: number) => `${Math.round(value)} minutes`}
+          formatter={(value: number) => `${String(Math.round(value))} minutes`}
         />
         <Bar dataKey="value" fill="var(--color-value)" radius={8}>
           <LabelList
@@ -52,11 +52,11 @@ export const ReadingTimeChart = ({ data }: Props) => {
             fontSize={12}
             formatter={(value: number) => {
               if (Math.round(value) === 0) return "";
-              return `${Math.round(value)} minutes`;
+              return `${String(Math.round(value))} minutes`;
             }}
           />
         </Bar>
       </BarChart>
     </ChartContainer>
   );
-};
+}

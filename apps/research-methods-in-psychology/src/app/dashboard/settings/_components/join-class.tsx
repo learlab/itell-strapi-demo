@@ -8,14 +8,14 @@ import { useSafeSearchParams } from "@/lib/navigation";
 import { JoinClassModal } from "@dashboard/join-class-modal";
 import { Button } from "@itell/ui/button";
 import { Input } from "@itell/ui/input";
-import { User } from "lucia";
+import { type User } from "lucia";
 import { useServerAction } from "zsa-react";
 
 type Props = {
   user: User;
 };
 
-export const JoinClassForm = ({ user }: Props) => {
+export function JoinClassForm({ user }: Props) {
   const { join_class_code } = useSafeSearchParams("settings");
   const { execute, isPending, isError } = useServerAction(
     getTeacherByClassAction
@@ -65,26 +65,24 @@ export const JoinClassForm = ({ user }: Props) => {
           required
           defaultValue={join_class_code || ""}
         />
-        {isError && <InternalError />}
+        {isError ? <InternalError /> : null}
         <Button disabled={isPending} type="submit" pending={isPending}>
           Submit
         </Button>
       </form>
       {/* dialog to confirm joining a class */}
-      {teacherName && (
-        <JoinClassModal
+      {teacherName ? <JoinClassModal
           userClassId={user.classId}
           teacherName={teacherName}
           classId={classId}
-        />
-      )}
+        /> : null}
       {teacherName === null && (
         <p className="text-sm text-muted-foreground">
           No teacher found associated with the code, please make sure you are
           using the exact code received from your teacher.
         </p>
       )}
-      {isError && <InternalError />}
+      {isError ? <InternalError /> : null}
     </div>
   );
-};
+}

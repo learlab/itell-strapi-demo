@@ -1,13 +1,12 @@
 import { Suspense } from "react";
 
 import { Condition } from "@/lib/constants";
-import { PageStatus } from "@/lib/page-status";
+import { type PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/pages/pages.client";
 import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
-import { User } from "lucia";
+import { type User } from "lucia";
 
-import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
@@ -21,12 +20,12 @@ type Props = {
   condition: string;
 };
 
-export const PageAssignments = async ({
+export function PageAssignments({
   pageSlug,
   pageStatus,
   user,
   condition,
-}: Props) => {
+}: Props) {
   const page = getPageData(pageSlug);
   if (!page) {
     return <Errorbox>failed to load assignments</Errorbox>;
@@ -77,4 +76,4 @@ export const PageAssignments = async ({
       )}
     </section>
   );
-};
+}

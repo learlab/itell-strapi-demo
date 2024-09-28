@@ -8,7 +8,7 @@ import { DashboardHeader, DashboardShell } from "../_components/shell";
 export default function () {
   return (
     <DashboardShell>
-      <DashboardHeader heading={"Class Information"} />
+      <DashboardHeader heading="Class Information" />
       <TeacherOnly />
     </DashboardShell>
   );

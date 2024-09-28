@@ -53,7 +53,7 @@ export async function ClassInfo({ classId }: { classId: string }) {
     const progress = page
       ? {
           index: page.order,
-          text: `${Math.round((page.order + 1) / numChapters) * 100}%`,
+          text: `${String(Math.round((page.order + 1) / numChapters) * 100)}%`,
         }
       : { index: 0, text: "0%" };
 
@@ -67,7 +67,7 @@ export async function ClassInfo({ classId }: { classId: string }) {
     };
   });
 
-  const classIndex = median(studentData.map((s) => s.progress.index)) || 0;
+  const classIndex = median(studentData.map((s) => s.progress.index)) ?? 0;
   const classProgress = ((classIndex + 1) / allPagesSorted.length) * 100;
 
   return (
@@ -75,7 +75,7 @@ export async function ClassInfo({ classId }: { classId: string }) {
       <CardHeader>
         <CardTitle>Your Class</CardTitle>
         <CardDescription>
-          {`You have ${students.length} ${
+          {`You have ${String(students.length)} ${
             students.length > 1 ? "students" : "student"
           } under class code `}
           <span className="font-semibold">{classId}</span>
@@ -110,7 +110,7 @@ ClassInfo.ErrorFallback = CreateErrorFallback(
   "Failed to get students in the class"
 );
 
-ClassInfo.Skeleton = () => {
+ClassInfo.Skeleton = function () {
   return (
     <Card className="p-4">
       <CardHeader>

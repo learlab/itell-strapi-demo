@@ -11,12 +11,12 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   text?: string;
 }
 
-export const ContinueReading = async ({ text, ...rest }: Props) => {
+export async function ContinueReading({ text, ...rest }: Props) {
   const { user } = await getSession();
   const href = user?.pageSlug ? makePageHref(user.pageSlug) : firstPage.href;
   return (
-    <NavigationButton href={href} size={"lg"} {...rest}>
-      {text || (user ? "Continue Reading" : "Start Reading")}
+    <NavigationButton href={href} size="lg" {...rest}>
+      {text ?? (user ? "Continue Reading" : "Start Reading")}
     </NavigationButton>
   );
-};
+}

@@ -1,11 +1,11 @@
 import { env } from "@/env.mjs";
 import * as Sentry from "@sentry/nextjs";
-import { Page } from "#content";
 import { redirect } from "next/navigation";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
+  // eslint-disable-next-line prefer-named-capture-group
   const regex = /embed\/([\w-]+)\?/;
-  const match = url.match(regex);
+  const match = regex.exec(url);
 
   if (match) {
     return `https://www.youtube.com/watch?v=${match[1]}`;
@@ -27,18 +27,15 @@ export const makePageHref = (slug: string | null, chunk?: string) => {
   return `/${slug}${chunk ? `#${chunk}` : ""}`;
 };
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== undefined;
-}
-
 export const redirectWithSearchParams = (
   path: string,
   searchParams?: unknown
 ) => {
   const url = new URL(path, env.NEXT_PUBLIC_HOST);
-  if (isRecord(searchParams)) {
+  if (typeof searchParams === "object" && searchParams !== null) {
     for (const key in searchParams) {
-      url.searchParams.append(key, String(searchParams[key]));
+      // @ts-ignore
+      url.searchParams.append(key, searchParams[key]);
     }
   }
   return redirect(url.toString());

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { ComponentProps } from "react";
+import React, { type ComponentProps } from "react";
 
 import { Spinner } from "@/components/spinner";
-import { StageItem } from "@/lib/hooks/use-summary-stage";
+import { type StageItem } from "@/lib/hooks/use-summary-stage";
 import { cn } from "@itell/utils";
 import { motion } from "framer-motion";
 
@@ -11,7 +11,7 @@ type Props = {
   items: StageItem[];
 };
 
-export const SummaryProgress = ({ items }: Props) => {
+export function SummaryProgress({ items }: Props) {
   return (
     <div className="my-4 flex h-full items-center justify-center rounded">
       {items.map((item, index) => (
@@ -115,7 +115,7 @@ export const SummaryProgress = ({ items }: Props) => {
       ))}
     </div>
   );
-};
+}
 
 function CheckIcon(props: ComponentProps<"svg">) {
   return (

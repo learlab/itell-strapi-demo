@@ -10,14 +10,14 @@ import {
 import { useSelector } from "@xstate/store/react";
 import pluralize from "pluralize";
 
-export const NoteCount = () => {
+export function NoteCount() {
   const count = useSelector(noteStore, SelectNoteCount);
 
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <Button variant={"link"} className="px-0 text-left text-sm">
-          {`${pluralize("note", count, true)}`}
+        <Button variant="link" className="px-0 text-left text-sm">
+          {pluralize("note", count, true)}
         </Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-48 text-sm">
@@ -27,4 +27,4 @@ export const NoteCount = () => {
       </HoverCardContent>
     </HoverCard>
   );
-};
+}

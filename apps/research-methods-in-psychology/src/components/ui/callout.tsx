@@ -21,7 +21,6 @@ const titles = {
 
 /**
  * General callout component for displaying information, warnings, and cautions.
- * @module Callout
  * @param title - The title of the callout, optional. If not provided, the title will be "Note", "Warning", or "Caution" based on the variant. Defaults to "Note".
  * @param variant - The variant of the callout, "info", "warning", or "danger". Defaults to "info".
  * @param children - nested elements
@@ -30,13 +29,13 @@ const titles = {
  * 	this is **important**
  * </i-callout>
  */
-export const Callout = ({
+export function Callout({
   variant = "info",
   title,
   className,
   children,
   ...props
-}: CalloutProps) => {
+}: CalloutProps) {
   return (
     <div
       className={cn(
@@ -54,9 +53,9 @@ export const Callout = ({
         {icons[variant]}
       </div>
       <strong className="mb-2 block text-[1.1em] font-bold">
-        {title || titles[variant]}
+        {title ?? titles[variant]}
       </strong>
       {children}
     </div>
   );
-};
+}

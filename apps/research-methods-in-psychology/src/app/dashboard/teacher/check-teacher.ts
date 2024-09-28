@@ -16,7 +16,7 @@ export const checkTeacher = async () => {
     throw new Error("failed to get teacher", { cause: error });
   }
 
-  const isTeacher = !!teacher;
+  const isTeacher = Boolean(teacher);
   if (!isTeacher) {
     throw new Error("teacher only");
   }

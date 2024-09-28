@@ -7,11 +7,11 @@ interface Props extends Omit<Prose.Props, "children"> {
   components?: Record<string, any>;
 }
 
-export const HtmlRenderer = ({
+export function HtmlRenderer({
   html,
   components = { "i-image": Image },
   ...rest
-}: Props) => {
+}: Props) {
   return (
     <Prose {...rest}>
       {htmr(html, {
@@ -19,4 +19,4 @@ export const HtmlRenderer = ({
       })}
     </Prose>
   );
-};
+}

@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 
 type Props = {
-  students: Array<{ id: string }>;
+  students: { id: string }[];
 };
 
-export const ClassBadges = async ({ students }: Props) => {
+export async function ClassBadges({ students }: Props) {
   const [classStats, err] = await getOtherStatsAction({
     ids: students.map((student) => student.id),
   });
@@ -52,13 +52,15 @@ export const ClassBadges = async ({ students }: Props) => {
       </DashboardBadge>
     </div>
   );
-};
+}
 
-ClassBadges.Skeleton = () => (
-  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-    <DashboardBadge.Skeletons />
-  </div>
-);
+ClassBadges.Skeleton = function () {
+  return (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <DashboardBadge.Skeletons />
+    </div>
+  );
+};
 
 ClassBadges.ErrorFallback = CreateErrorFallback(
   "Failed to calculate class statistics"

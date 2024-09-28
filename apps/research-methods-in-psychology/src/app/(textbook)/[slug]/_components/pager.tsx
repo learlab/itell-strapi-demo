@@ -1,4 +1,4 @@
-import { getPageData, PageData } from "@/lib/pages/pages.client";
+import { getPageData, type PageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/button";
@@ -30,7 +30,6 @@ const getPageLink = (
   userPage: PageData | null
 ): PageLinkData | null => {
   const page = allPagesSorted[index];
-  if (!page) return null;
 
   const disabled = userPage ? userPage.order < index : index !== 0 && index > 1;
   return {
@@ -46,7 +45,7 @@ export type PageLinkData = {
   disabled: boolean;
   icon?: React.ReactNode;
 };
-const PageLink = ({
+function PageLink({
   href,
   disabled,
   children,
@@ -56,7 +55,7 @@ const PageLink = ({
   disabled: boolean;
   children: React.ReactNode;
   dir: "prev" | "next";
-}) => {
+}) {
   return (
     <Link
       className={cn(
@@ -64,7 +63,7 @@ const PageLink = ({
         "flex h-14 max-w-sm items-center gap-2 text-balance xl:h-20 xl:text-lg",
         { "pointer-events-none opacity-50": disabled }
       )}
-      data-no-events={true}
+      data-no-events
       aria-disabled={disabled}
       aria-label={`Go to ${dir === "prev" ? "previous" : "next"} page`}
       href={href}
@@ -72,14 +71,14 @@ const PageLink = ({
       {children}
     </Link>
   );
-};
+}
 
 type Props = {
   userPageSlug: string | null;
   pageIndex: number;
 };
 
-export const Pager = ({ userPageSlug, pageIndex }: Props) => {
+export function Pager({ userPageSlug, pageIndex }: Props) {
   const { prev, next } = getPagerLinks({
     pageIndex,
     userPageSlug,
@@ -93,7 +92,7 @@ export const Pager = ({ userPageSlug, pageIndex }: Props) => {
       id={Elements.PAGE_PAGER}
       aria-label="pagination"
     >
-      {prev && (
+      {prev ? (
         <PageLink href={prev.href} disabled={prev.disabled} dir="prev">
           {prev.disabled ? (
             <BanIcon className="size-4 shrink-0" />
@@ -102,8 +101,8 @@ export const Pager = ({ userPageSlug, pageIndex }: Props) => {
           )}
           <span className="line-clamp-2">{prev.text}</span>
         </PageLink>
-      )}
-      {next && (
+      ) : null}
+      {next ? (
         <PageLink href={next.href} disabled={next.disabled} dir="next">
           <span className="line-clamp-2">{next.text}</span>
           {next.disabled ? (
@@ -112,7 +111,7 @@ export const Pager = ({ userPageSlug, pageIndex }: Props) => {
             <ChevronRightIcon className="size-4 shrink-0" />
           )}
         </PageLink>
-      )}
+      ) : null}
     </nav>
   );
-};
+}

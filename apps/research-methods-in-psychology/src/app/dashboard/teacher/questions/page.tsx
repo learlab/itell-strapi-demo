@@ -4,7 +4,7 @@ import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import { QuestionChart } from "@questions/question-chart";
-import { delay } from "es-toolkit";
+import { notFound } from "next/navigation";
 import pluralize from "pluralize";
 
 import { getLabel } from "../../questions/get-label";
@@ -12,6 +12,9 @@ import { checkTeacher } from "../check-teacher";
 
 export default async function () {
   const teacher = await checkTeacher();
+  if (!teacher) {
+    return notFound();
+  }
 
   incrementViewAction({ pageSlug: Meta.questionsTeacher.slug });
   const [data, err] = await getAnswerStatsClassAction({

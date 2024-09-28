@@ -1,6 +1,6 @@
 "use server";
 
-import { Session as _Session, User } from "lucia";
+import { type Session as _Session, type User } from "lucia";
 import { cookies } from "next/headers";
 import { memoize } from "nextjs-better-unstable-cache";
 

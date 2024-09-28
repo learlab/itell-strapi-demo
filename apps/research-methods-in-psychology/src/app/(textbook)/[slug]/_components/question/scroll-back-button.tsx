@@ -8,7 +8,7 @@ import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { MoveUpIcon } from "lucide-react";
 
-export const ScrollBackButton = () => {
+export function ScrollBackButton() {
   const store = useQuestionStore();
   const currentChunk = useSelector(store, SelectCurrentChunk);
 
@@ -29,4 +29,4 @@ export const ScrollBackButton = () => {
       Back to current section
     </Button>
   );
-};
+}

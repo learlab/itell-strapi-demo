@@ -1,6 +1,6 @@
 import { getPageStatus } from "@/lib/page-status";
 import { tocPages } from "@/lib/pages/pages.server";
-import { Page } from "#content";
+import { type Page } from "#content";
 
 import { PageControl } from "./page-control";
 import { TextbookTocList } from "./toc-list";
@@ -43,7 +43,7 @@ const getPagesWithStatus = (
   });
 };
 
-export const TextbookToc = ({ page, userPageSlug, userFinished }: Props) => {
+export function TextbookToc({ page, userPageSlug, userFinished }: Props) {
   const pagesWithStatus = getPagesWithStatus(userPageSlug, userFinished);
 
   return (
@@ -52,4 +52,4 @@ export const TextbookToc = ({ page, userPageSlug, userFinished }: Props) => {
       <PageControl assignment={page.summary} pageSlug={page.slug} />
     </>
   );
-};
+}

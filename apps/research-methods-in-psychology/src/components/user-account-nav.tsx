@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@itell/ui/dropdown";
-import { User } from "lucia";
+import { type User } from "lucia";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -52,7 +52,7 @@ const items = [
   },
 ];
 
-export const UserAccountNav = ({ user }: { user: User | null }) => {
+export function UserAccountNav({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const router = useRouter();
@@ -63,7 +63,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Button size={"lg"}>Sign in</Button>
+          <Button size="lg">Sign in</Button>
         </DialogTrigger>
         <DialogContent>
           <AuthForm />
@@ -74,7 +74,12 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
 
   return (
     <div className="ml-auto flex items-center gap-1">
-      <DropdownMenu open={open} onOpenChange={(val) => setOpen(val)}>
+      <DropdownMenu
+        open={open}
+        onOpenChange={(val) => {
+          setOpen(val);
+        }}
+      >
         <DropdownMenuTrigger
           className="flex items-center gap-1"
           aria-label="user navigation menu"
@@ -90,18 +95,18 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
           {/* user name and email */}
           <div className="flex items-center justify-start gap-2 p-2">
             <div className="flex flex-col space-y-1 leading-none">
-              {user.name && (
+              {user.name ? (
                 <p className="font-medium">
                   <span className="sr-only">username</span>
                   {user.name}
                 </p>
-              )}
-              {user.email && (
+              ) : null}
+              {user.email ? (
                 <p className="w-[200px] truncate text-sm text-muted-foreground">
                   <span className="sr-only">user email</span>
                   {user.email}
                 </p>
-              )}
+              ) : null}
             </div>
           </div>
           <DropdownMenuSeparator />
@@ -132,7 +137,7 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
           <DropdownMenuItem
             className="cursor-pointer"
             disabled={logoutPending}
-            onSelect={async (event) => {
+            onSelect={(event) => {
               event.preventDefault();
               setLogoutPending(true);
               startTransition(async () => {
@@ -156,4 +161,4 @@ export const UserAccountNav = ({ user }: { user: User | null }) => {
       </DropdownMenu>
     </div>
   );
-};
+}

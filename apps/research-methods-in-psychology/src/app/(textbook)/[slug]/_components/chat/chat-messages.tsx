@@ -6,9 +6,9 @@ import { useChatStore } from "@/components/provider/page-provider";
 import {
   botMessage,
   SelectMessages,
-  StoreMessage,
+  type StoreMessage,
 } from "@/lib/store/chat-store";
-import { Message } from "@itell/core/chat";
+import { type Message } from "@itell/core/chat";
 import { useSelector } from "@xstate/store/react";
 
 import { ChatItems } from "./chat-items";
@@ -19,7 +19,7 @@ type Props = {
   pageTitle: string;
 };
 
-export const ChatMessages = ({ data, updatedAt, pageTitle }: Props) => {
+export function ChatMessages({ data, updatedAt, pageTitle }: Props) {
   const store = useChatStore();
   const messages = useSelector(store, SelectMessages);
 
@@ -46,4 +46,4 @@ export const ChatMessages = ({ data, updatedAt, pageTitle }: Props) => {
       updatedAt={updatedAt}
     />
   );
-};
+}

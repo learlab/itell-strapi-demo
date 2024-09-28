@@ -13,15 +13,13 @@ type Props = {
   joinClassCode?: string;
 };
 
-export const AuthForm = ({ joinClassCode }: Props) => {
+export function AuthForm({ joinClassCode }: Props) {
   return (
     <div className="grid gap-4 px-4">
-      {joinClassCode && (
-        <p className="text-center font-light leading-relaxed tracking-tight">
+      {joinClassCode ? <p className="text-center font-light leading-relaxed tracking-tight">
           After you log in via one of the following options, you will be
           automatically added to the class.
-        </p>
-      )}
+        </p> : null}
       <p className="text-center text-sm text-muted-foreground">
         Please log in using your school email
       </p>
@@ -31,9 +29,9 @@ export const AuthForm = ({ joinClassCode }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const GoogleLoginButton = () => {
+export function GoogleLoginButton() {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,7 +50,7 @@ export const GoogleLoginButton = () => {
         });
       }}
       aria-label="log in via google"
-      variant={"outline"}
+      variant="outline"
       disabled={pending}
       pending={pending}
     >
@@ -67,9 +65,9 @@ export const GoogleLoginButton = () => {
       </span>
     </Button>
   );
-};
+}
 
-export const OutlookLoginButton = () => {
+export function OutlookLoginButton() {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -88,7 +86,7 @@ export const OutlookLoginButton = () => {
         });
       }}
       aria-label="log in via outlook"
-      variant={"outline"}
+      variant="outline"
       disabled={pending}
       pending={pending}
     >
@@ -103,13 +101,13 @@ export const OutlookLoginButton = () => {
       </span>
     </Button>
   );
-};
+}
 
-export const LoginButton = () => {
+export function LoginButton() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant={"outline"} className="gap-2">
+        <Button variant="outline" className="gap-2">
           <LogInIcon className="size-4" />
           Log in
         </Button>
@@ -119,9 +117,9 @@ export const LoginButton = () => {
       </DialogContent>
     </Dialog>
   );
-};
+}
 
-export const LogoutButton = () => {
+export function LogoutButton() {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -134,7 +132,7 @@ export const LogoutButton = () => {
         });
       }}
       disabled={pending}
-      variant={"outline"}
+      variant="outline"
       pending={pending}
     >
       <span className="flex items-center gap-2">
@@ -143,4 +141,4 @@ export const LogoutButton = () => {
       </span>
     </Button>
   );
-};
+}

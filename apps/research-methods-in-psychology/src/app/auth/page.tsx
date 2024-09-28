@@ -7,7 +7,7 @@ import { KnowledgeCarousel } from "@auth/knowledge-carousel";
 import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 
 type PageProps = {
@@ -20,12 +20,12 @@ const ErrorDict: Record<string, string> = {
     "This application needs your consent to access your social account. You may come back at any time.",
 };
 
-export const generateMetadata = async ({
+export const generateMetadata = ({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}): Promise<Metadata> => {
-  const fromDashboard = searchParams && searchParams.from_dashboard === "true";
+  searchParams: Record<string, string | string[] | undefined>;
+}): Metadata => {
+  const fromDashboard = searchParams.from_dashboard === "true";
   if (fromDashboard) {
     const title = "Dashboard";
     const description = `Learning statistics on the ${SiteConfig.title} intelligent textbook`;
@@ -83,7 +83,7 @@ export default async function ({ searchParams }: PageProps) {
     <div className="grid h-screen w-screen items-center lg:grid-cols-2">
       <div className="col-span-2 lg:col-span-1 lg:p-8">
         <header>
-          <Link href="/" className={"absolute left-4 top-4 md:left-8 md:top-8"}>
+          <Link href="/" className="absolute left-4 top-4 md:left-8 md:top-8">
             <Button variant="ghost" className="gap-2">
               <ChevronLeftIcon />
               Home
@@ -98,11 +98,11 @@ export default async function ({ searchParams }: PageProps) {
               {SiteConfig.title}
             </p>
           </div>
-          {error && (
+          {error ? (
             <Warning role="alert">
               {errorMessage ? errorMessage : error}
             </Warning>
-          )}
+          ) : null}
           {user ? (
             <div className="space-y-2 text-center">
               <p className="font-light">

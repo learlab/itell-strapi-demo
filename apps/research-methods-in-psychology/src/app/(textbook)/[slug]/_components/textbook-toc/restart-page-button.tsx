@@ -8,13 +8,13 @@ import { RotateCcwIcon } from "lucide-react";
 
 import { clearSummaryLocal } from "../summary/summary-input";
 
-export const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
+export function RestartPageButton({ pageSlug }: { pageSlug: string }) {
   const [pending, startTransition] = useTransition();
   const store = useQuestionStore();
   return (
     <Button
       className="flex w-full items-center justify-start p-2 xl:text-lg"
-      variant={"ghost"}
+      variant="ghost"
       onClick={() => {
         startTransition(() => {
           store.send({ type: "resetPage" });
@@ -31,4 +31,4 @@ export const RestartPageButton = ({ pageSlug }: { pageSlug: string }) => {
       </span>
     </Button>
   );
-};
+}

@@ -1,4 +1,4 @@
-import { createStoreWithProducer, SnapshotFromStore } from "@xstate/store";
+import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
 
 export type QuizStore = ReturnType<typeof createQuizStore>;
@@ -25,7 +25,7 @@ export const createQuizStore = ({
   });
 };
 
-type Selector<T> = (snap: SnapshotFromStore<QuizStore>) => T;
+type Selector<T> = (_: SnapshotFromStore<QuizStore>) => T;
 
 export const SelectQuizOpen: Selector<boolean> = (state) => state.context.open;
 export const SelectQuizFinished: Selector<boolean | undefined> = (state) =>

@@ -37,7 +37,7 @@ export function RoleSwitcher() {
             <activeRole.icon className="h-3.5 w-3.5 shrink-0" />
           </div>
           <div className="line-clamp-1 flex-1 pr-2 font-medium">
-            {activeRole?.label}
+            {activeRole.label}
           </div>
           <ChevronsUpDown className="ml-auto h-4 w-4 text-muted-foreground/50" />
         </div>
@@ -54,7 +54,7 @@ export function RoleSwitcher() {
         {roles.map((role) => (
           <DropdownMenuItem
             key={role.name}
-            onClick={() => onRoleChange(role.name)}
+            onClick={() => { onRoleChange(role.name); }}
             className="items-start gap-2 px-1.5"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary text-primary-foreground">

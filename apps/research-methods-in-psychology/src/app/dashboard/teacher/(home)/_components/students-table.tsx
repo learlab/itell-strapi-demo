@@ -19,16 +19,16 @@ import {
   TableRow,
 } from "@itell/ui/table";
 import {
-  ColumnDef,
-  ColumnFiltersState,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
-  VisibilityState,
+  type VisibilityState,
 } from "@tanstack/react-table";
 import pluralize from "pluralize";
 
@@ -105,7 +105,7 @@ export function StudentsTable<TData, TValue>({
                     className="capitalize"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
+                      { column.toggleVisibility(Boolean(value)); }
                     }
                   >
                     {column.id}
@@ -136,7 +136,7 @@ export function StudentsTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody className="text-center">
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -174,7 +174,7 @@ export function StudentsTable<TData, TValue>({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
+            onClick={() => { table.previousPage(); }}
             disabled={pagination.pageIndex === 0}
           >
             Previous
@@ -182,7 +182,7 @@ export function StudentsTable<TData, TValue>({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
+            onClick={() => { table.nextPage(); }}
             disabled={pagination.pageIndex === table.getPageCount() - 1}
           >
             Next

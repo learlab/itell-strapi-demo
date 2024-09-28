@@ -15,7 +15,7 @@ type Props = {
   pageSlug: string;
 };
 
-export const Question = ({ question, answer, chunkSlug, pageSlug }: Props) => {
+export function Question({ question, answer, chunkSlug, pageSlug }: Props) {
   const store = useQuestionStore();
   const condition = useCondition();
   const chunkStatus = useSelector(
@@ -23,7 +23,7 @@ export const Question = ({ question, answer, chunkSlug, pageSlug }: Props) => {
     (store) => store.context.chunkStatus[chunkSlug]
   );
 
-  if (!chunkStatus || !chunkStatus.hasQuestion) return null;
+  if (!chunkStatus.hasQuestion) return null;
 
   return (
     <div className="question-container my-6">
@@ -53,4 +53,4 @@ export const Question = ({ question, answer, chunkSlug, pageSlug }: Props) => {
       )}
     </div>
   );
-};
+}

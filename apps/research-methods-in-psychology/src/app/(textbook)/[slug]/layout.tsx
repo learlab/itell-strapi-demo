@@ -47,9 +47,9 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 
 export default async function ({ children }: { children: React.ReactNode }) {
   return (
-    <Fragment>
+    <>
       <MainNav scrollProgress />
       {children}
-    </Fragment>
+    </>
   );
 }

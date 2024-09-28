@@ -1,8 +1,8 @@
 import { UserAvatar } from "@/components/user-avatar";
 import { Skeleton } from "@itell/ui/skeleton";
-import { User } from "lucia";
+import { type User } from "lucia";
 
-export const Profile = ({ user }: { user: User }) => {
+export function Profile({ user }: { user: User }) {
   return (
     <div className="space-y-4">
       <h3 className="mb-4 text-lg font-medium">Profile</h3>
@@ -18,12 +18,12 @@ export const Profile = ({ user }: { user: User }) => {
       </div>
     </div>
   );
-};
+}
 
-Profile.Skeleton = () => (
-  <>
+Profile.Skeleton = function() {
+  return <>
     <h3 className="mb-4 text-lg font-semibold leading-relaxed">Profile</h3>
     <Skeleton className="h-8 w-[120px]" />
     <Skeleton className="h-16 w-[400px]" />
   </>
-);
+};

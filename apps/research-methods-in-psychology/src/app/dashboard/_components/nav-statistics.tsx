@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { dashboardConfig } from "./config";
 import { useDashboard } from "./dashboard-context";
 
-export const NavStatistics = () => {
+export function NavStatistics() {
   const { role } = useDashboard();
   const [pending, startTransition] = useTransition();
   const pathname = usePathname();
@@ -43,4 +43,4 @@ export const NavStatistics = () => {
       ))}
     </ul>
   );
-};
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import {
   createNoteAction,
@@ -8,7 +8,7 @@ import {
   updateNoteAction,
 } from "@/actions/note";
 import { Spinner } from "@/components/spinner";
-import { NoteData, noteStore } from "@/lib/store/note-store";
+import { noteStore, type NoteData } from "@/lib/store/note-store";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { darkColors, lightColors } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
@@ -36,7 +36,6 @@ import {
   PaletteIcon,
   StickyNoteIcon,
   TrashIcon,
-  TwitterIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import Textarea from "react-textarea-autosize";
@@ -46,7 +45,7 @@ interface Props extends NoteData {
   pageSlug: string;
 }
 
-export const NotePopover = React.memo(
+export const NotePopover = memo(
   ({
     id,
     highlightedText,
@@ -72,7 +71,7 @@ export const NotePopover = React.memo(
     const [text, setText] = useState(noteText);
 
     const getInput = useCallback(
-      () => textareaRef.current?.value.trim() || "",
+      () => textareaRef.current?.value.trim() ?? "",
       []
     );
 
@@ -82,10 +81,10 @@ export const NotePopover = React.memo(
     const [pending, setPending] = useState(false);
     const pendingDebounced = useDebounce(pending, 500);
 
-    const shouldUpdate = !!recordId;
-    const triggerId = `note-${id}-trigger`;
-    const popoverId = `note-${id}-popover`;
-    const anchorName = `note-${id}-anchor`;
+    const shouldUpdate = Boolean(recordId);
+    const triggerId = `note-${String(id)}-trigger`;
+    const popoverId = `note-${String(id)}-popover`;
+    const anchorName = `note-${String(id)}-anchor`;
 
     useEffect(() => {
       if (isPopoverOpen) {
@@ -171,7 +170,7 @@ export const NotePopover = React.memo(
             id,
             range: deserializeRange(
               range,
-              getChunkElement(chunkSlug, "data-chunk-slug") || undefined
+              getChunkElement(chunkSlug, "data-chunk-slug") ?? undefined
             ),
             color,
           });
@@ -205,8 +204,8 @@ export const NotePopover = React.memo(
           middleware: [flip(), shift({ padding: 5 }), offset(3)],
         }).then(({ x, y }) => {
           if (triggerRef.current) {
-            button.style.left = `${x}px`;
-            button.style.top = `${y}px`;
+            button.style.left = `${String(x)}px`;
+            button.style.top = `${String(y)}px`;
           }
         });
 
@@ -265,13 +264,13 @@ export const NotePopover = React.memo(
             "absolute z-10": !positionFailed,
           })}
           style={{
-            // @ts-ignore
+            // @ts-expect-error anchorName is not typed
             anchorName,
             border: positionFailed ? `2px solid ${noteColor}` : undefined,
           }}
           type="button"
           aria-label="toggle note"
-          popoverTarget={popoverId}
+          popovertarget={popoverId}
           ref={triggerRef}
         >
           {pendingDebounced ? (
@@ -374,11 +373,11 @@ export const NotePopover = React.memo(
               </time>
             </p>
           )}
-          {positionFailed && (
+          {positionFailed ? (
             <p className="text-sm text-muted-foreground">
-              can't find reference text for this note
+              Can&apos;t find reference text for this note
             </p>
-          )}
+          ) : null}
         </div>
       </div>
     );
@@ -390,8 +389,8 @@ type ColorPickerProps = {
   color: string;
   onChange: (color: string) => void;
 };
-const ColorPicker = ({ id, color, onChange }: ColorPickerProps) => {
-  const popoverId = `color-picker-${id}`;
+function ColorPicker({ id, color, onChange }: ColorPickerProps) {
+  const popoverId = `color-picker-${String(id)}`;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
@@ -405,7 +404,8 @@ const ColorPicker = ({ id, color, onChange }: ColorPickerProps) => {
         type="button"
         className="p-2 hover:bg-muted/50"
         aria-label="change note color"
-        popoverTarget={popoverId}
+        // @ts-expect-error popoverTarget is not typed
+        popovertarget={popoverId}
         ref={triggerRef}
       >
         <PaletteIcon className="size-3" />
@@ -458,7 +458,7 @@ const ColorPicker = ({ id, color, onChange }: ColorPickerProps) => {
       </div>
     </div>
   );
-};
+}
 
 // unused anchor position style
 /*

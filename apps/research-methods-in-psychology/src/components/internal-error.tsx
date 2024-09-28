@@ -2,13 +2,13 @@ import React from "react";
 
 import { cn } from "@itell/utils";
 
-export const InternalError = ({
+export function InternalError({
   className,
   children,
 }: {
   className?: string;
   children?: React.ReactNode;
-}) => {
+}) {
   return (
     <div
       className={cn("tex-sm font-light leading-snug text-red-500", className)}
@@ -20,4 +20,4 @@ export const InternalError = ({
       )}
     </div>
   );
-};
+}

@@ -9,16 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@itell/ui/select";
-import { Page } from "#content";
+import { type Page } from "#content";
 import { useRouter } from "next/navigation";
 
-export const SummaryListSelect = ({
+export function SummaryListSelect({
   defaultValue,
   pages,
 }: {
   defaultValue: string | undefined;
   pages: Page[];
-}) => {
+}) {
   const router = useRouter();
   return (
     <Select
@@ -49,4 +49,4 @@ export const SummaryListSelect = ({
       </SelectContent>
     </Select>
   );
-};
+}

@@ -29,7 +29,7 @@ type Props = {
   pageSlug: string | null;
 };
 
-export const UserDetails = async ({ classId, pageSlug }: Props) => {
+export async function UserDetails({ classId, pageSlug }: Props) {
   const [otherUsers, err] = await getOtherUsersAction();
   if (err) {
     throw new Error("failed to get other users", { cause: err });
@@ -55,7 +55,7 @@ export const UserDetails = async ({ classId, pageSlug }: Props) => {
     return pageIndex !== undefined ? pageIndex + 1 : 0;
   });
 
-  const midProgress = median(otherProgress) || 0;
+  const midProgress = median(otherProgress) ?? 0;
 
   const diffs = {
     totalSummaries: userStats.totalSummaries - otherStats.totalSummaries,
@@ -162,13 +162,13 @@ export const UserDetails = async ({ classId, pageSlug }: Props) => {
                 ? userStats.contentScore.toFixed(2)
                 : "NA"}
             </div>
-            {userStats.contentScoreLastWeek && (
+            {userStats.contentScoreLastWeek ? (
               <TrendChart
                 prev={userStats.contentScoreLastWeek}
                 current={userStats.contentScore}
                 label="Content Score"
               />
-            )}
+            ) : null}
           </div>
           <p className="text-xs text-muted-foreground">
             {diffs.contentScore
@@ -194,13 +194,13 @@ export const UserDetails = async ({ classId, pageSlug }: Props) => {
                 ? userStats.languageScore.toFixed(2)
                 : "NA"}
             </div>
-            {userStats.languageScoreLastWeek && (
+            {userStats.languageScoreLastWeek ? (
               <TrendChart
                 prev={userStats.languageScoreLastWeek}
                 current={userStats.languageScore}
                 label="Language Score"
               />
-            )}
+            ) : null}
           </div>
           <p className="text-xs text-muted-foreground">
             {diffs.languageScore
@@ -214,26 +214,28 @@ export const UserDetails = async ({ classId, pageSlug }: Props) => {
       </div>
     </div>
   );
-};
+}
 
 UserDetails.ErrorFallback = CreateErrorFallback(
   "Failed to calculate learning statistics"
 );
 
-UserDetails.Skeleton = () => (
-  <div className="space-y-4">
-    <div className="flex flex-col items-center justify-center gap-2">
-      <Skeleton className="aspect-square h-[300px]" />
+UserDetails.Skeleton = function () {
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col items-center justify-center gap-2">
+        <Skeleton className="aspect-square h-[300px]" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <DashboardBadge.Skeletons />
+      </div>
     </div>
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <DashboardBadge.Skeletons />
-    </div>
-  </div>
-);
+  );
+};
 
-const StudentCount = async ({ classId }: { classId: string }) => {
+async function StudentCount({ classId }: { classId: string }) {
   const [numStudents, err] = await countStudentAction({ classId });
   if (!err) {
     return <span>{pluralize("student", numStudents, true)}</span>;
   }
-};
+}

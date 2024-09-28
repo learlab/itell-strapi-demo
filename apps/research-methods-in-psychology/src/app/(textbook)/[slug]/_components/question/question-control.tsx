@@ -28,12 +28,12 @@ type Props = {
   hasAssignments: boolean;
 };
 
-export const QuestionControl = ({
+export function QuestionControl({
   userId,
   pageSlug,
   condition,
   hasAssignments,
-}: Props) => {
+}: Props) {
   const store = useQuestionStore();
   const currentChunk = useSelector(store, SelectCurrentChunk);
   const chunks = useChunks();
@@ -122,17 +122,22 @@ export const QuestionControl = ({
       }
     }
 
-    return () => removePortals();
+    return () => {
+      removePortals();
+    };
   }, []);
 
   useEffect(() => {
     const currentChunkElement = getChunkElement(
       currentChunk,
       "data-chunk-slug"
-    ) as HTMLElement;
+    );
+    if (!currentChunkElement) {
+      return;
+    }
     const isLastChunk = currentChunk === chunks[chunks.length - 1];
 
-    if (isLastChunk && currentChunkElement) {
+    if (isLastChunk) {
       removePortal(portalIds.current.scrollBack);
       if (hasAssignments) {
         insertUnlockAssignmentsButton(currentChunkElement, currentChunk);
@@ -140,7 +145,7 @@ export const QuestionControl = ({
     }
 
     if (shouldBlur) {
-      const hasQuestion = status[currentChunk]?.hasQuestion;
+      const hasQuestion = status[currentChunk].hasQuestion;
       const idx = chunks.indexOf(currentChunk);
       if (idx === -1) return;
 
@@ -172,7 +177,7 @@ export const QuestionControl = ({
   }, [currentChunk]);
 
   return <PortalContainer portals={portals} />;
-};
+}
 
 type PortalIds = {
   scrollBack: string;

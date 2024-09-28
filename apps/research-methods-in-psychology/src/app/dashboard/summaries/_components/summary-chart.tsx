@@ -8,10 +8,10 @@ import {
   CardTitle,
 } from "@itell/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@itell/ui/chart";
 import { CheckIcon, XIcon } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
@@ -37,13 +37,13 @@ type Props = {
   chartTitle?: string;
 };
 
-export const SummaryChart = ({
+export function SummaryChart({
   data,
   totalCount,
   startDate,
   endDate,
   chartTitle = "Summary Submission History",
-}: Props) => {
+}: Props) {
   return (
     <Card className="flex flex-col border-none">
       <CardHeader className="items-center pb-0">
@@ -54,7 +54,7 @@ export const SummaryChart = ({
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <p className="sr-only" id="summary-chart-title">
-          A pie chart of user's summaries,{" "}
+          A pie chart of user&apos;s summaries,{" "}
           {data.find((d) => d.name === "passed")?.value} passed,{" "}
           {data.find((d) => d.name === "failed")?.value} failed
         </p>
@@ -92,7 +92,7 @@ export const SummaryChart = ({
                   >
                     {`${
                       chartConfig[payload.name as keyof typeof chartConfig]
-                        ?.label
+                        .label
                     } (${payload.value})`}
                   </text>
                 );
@@ -133,4 +133,4 @@ export const SummaryChart = ({
       </CardContent>
     </Card>
   );
-};
+}

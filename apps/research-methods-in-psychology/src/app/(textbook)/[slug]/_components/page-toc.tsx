@@ -4,13 +4,13 @@ import { useEffect } from "react";
 
 import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
-import { Page } from "#content";
+import { type Page } from "#content";
 
 type TocSidebarProps = {
   chunks: Page["chunks"];
 };
 
-export const PageToc = ({ chunks }: TocSidebarProps) => {
+export function PageToc({ chunks }: TocSidebarProps) {
   useEffect(() => {
     let mostRecentHeading: string | null = null;
     let isUsingMostRecentHeading = false;
@@ -24,7 +24,7 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
           if (isUsingMostRecentHeading) {
             document
               .querySelector(
-                `div.page-toc ol li a[href="#${mostRecentHeading}"]`
+                `div.page-toc ol li a[href="#${String(mostRecentHeading)}"]`
               )
               ?.classList.remove(Elements.PAGE_NAV_ACTIVE);
           }
@@ -42,7 +42,9 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
       ) {
         isUsingMostRecentHeading = true;
         document
-          .querySelector(`.page-toc ol li a[href="#${mostRecentHeading}"]`)
+          .querySelector(
+            `.page-toc ol li a[href="#${String(mostRecentHeading)}"]`
+          )
           ?.classList.add(Elements.PAGE_NAV_ACTIVE);
       }
     });
@@ -84,7 +86,7 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
               {chunk.title}
             </a>
 
-            {chunk.headings && chunk.headings.length > 0 && (
+            {chunk.headings && chunk.headings.length > 0 ? (
               <ol className="ml-2 flex flex-col gap-2 text-sm text-muted-foreground">
                 {chunk.headings.map((heading) => (
                   <li key={heading.slug}>
@@ -98,10 +100,10 @@ export const PageToc = ({ chunks }: TocSidebarProps) => {
                   </li>
                 ))}
               </ol>
-            )}
+            ) : null}
           </li>
         ))}
       </ol>
     </div>
   );
-};
+}

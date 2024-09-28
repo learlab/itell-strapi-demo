@@ -2,7 +2,7 @@ import { useChatStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { SelectActiveMessageId } from "@/lib/store/chat-store";
 import { scrollToElement } from "@/lib/utils";
-import { Message } from "@itell/core/chat";
+import { type Message } from "@itell/core/chat";
 import { Avatar, AvatarFallback, AvatarImage } from "@itell/ui/avatar";
 import { Button } from "@itell/ui/button";
 import { cn, getChunkElement } from "@itell/utils";
@@ -18,12 +18,12 @@ type Props = {
   data: Message[];
 };
 
-export const ChatItems = ({
+export function ChatItems({
   initialMessage,
   data,
   prevData,
   updatedAt,
-}: Props) => {
+}: Props) {
   return (
     <div
       className={cn(
@@ -34,35 +34,33 @@ export const ChatItems = ({
         {prevData?.map((message) => {
           return <MessageItem key={message.id} message={message} />;
         })}
-        {prevData && prevData.length > 0 && (
-          <div className="my-4 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
+        {prevData && prevData.length > 0 ? <div className="my-4 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
             <div className="h-1 w-16 bg-muted" />
-            {updatedAt && `Last visited at ${updatedAt.toLocaleTimeString()}`}
+            {updatedAt ? `Last visited at ${updatedAt.toLocaleTimeString()}` : null}
             <div className="h-1 w-16 bg-muted" />
-          </div>
-        )}
-        {initialMessage && <MessageItem message={initialMessage} />}
+          </div> : null}
+        {initialMessage ? <MessageItem message={initialMessage} /> : null}
         {data.map((message) => {
           return <MessageItem key={message.id} message={message} />;
         })}
       </div>
     </div>
   );
-};
+}
 
-const Blockquote = ({ children }: { children?: React.ReactNode }) => {
+function Blockquote({ children }: { children?: React.ReactNode }) {
   return (
     <blockquote className="mt-2 border-l-4 border-primary bg-accent pl-4 italic">
       {children}
     </blockquote>
   );
-};
+}
 
 const components = {
   blockquote: Blockquote,
 };
 
-const MessageItem = ({ message }: { message: Message }) => {
+function MessageItem({ message }: { message: Message }) {
   const store = useChatStore();
   const activeMessageId = useSelector(store, SelectActiveMessageId);
 
@@ -87,7 +85,7 @@ const MessageItem = ({ message }: { message: Message }) => {
           </Avatar>
         ) : (
           <Avatar className="h-8 w-8 rounded-none">
-            <AvatarImage src="/images/itell-ai.svg" alt={"itell ai says"} />
+            <AvatarImage src="/images/itell-ai.svg" alt="itell ai says" />
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
         )}
@@ -107,9 +105,9 @@ const MessageItem = ({ message }: { message: Message }) => {
       </div>
     </div>
   );
-};
+}
 
-const Transform = ({ message }: { message: Message }) => {
+function Transform({ message }: { message: Message }) {
   const router = useRouter();
 
   if (message.node) {
@@ -132,8 +130,8 @@ const Transform = ({ message }: { message: Message }) => {
       <>
         <p>{message.text}</p>
         <Button
-          size={"sm"}
-          variant={"outline"}
+          size="sm"
+          variant="outline"
           className="mt-1"
           onClick={() => {
             if (message.context === "[User Guide]") {
@@ -166,4 +164,4 @@ const Transform = ({ message }: { message: Message }) => {
   ) : (
     <p>{message.text}</p>
   );
-};
+}

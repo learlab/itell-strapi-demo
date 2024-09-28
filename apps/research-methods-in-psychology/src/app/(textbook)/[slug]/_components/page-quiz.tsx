@@ -5,19 +5,19 @@ import { useState } from "react";
 import { createEventAction } from "@/actions/event";
 import { NavigationButton } from "@/components/navigation-button";
 import { EventType } from "@/lib/constants";
-import { PageData } from "@/lib/pages/pages.client";
+import { type PageData } from "@/lib/pages/pages.client";
 import { makePageHref } from "@/lib/utils";
 import { Button } from "@itell/ui/button";
 import { Label } from "@itell/ui/label";
 import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
 
-export const PageQuiz = ({
+export function PageQuiz({
   page,
   afterSubmit,
 }: {
   page: PageData;
   afterSubmit?: () => void;
-}) => {
+}) {
   const [pending, setPending] = useState(false);
   const [finished, setFinished] = useState(false);
 
@@ -56,9 +56,9 @@ export const PageQuiz = ({
               >
                 <RadioGroupItem
                   value={answer.answer}
-                  id={`q${index}-a${answerIndex}`}
+                  id={`q${String(index)}-a${String(answerIndex)}`}
                 />
-                <Label htmlFor={`q${index}-a${answerIndex}`}>
+                <Label htmlFor={`q${String(index)}-a${String(answerIndex)}`}>
                   {answer.answer}
                 </Label>
               </div>
@@ -83,4 +83,4 @@ export const PageQuiz = ({
       </footer>
     </form>
   );
-};
+}

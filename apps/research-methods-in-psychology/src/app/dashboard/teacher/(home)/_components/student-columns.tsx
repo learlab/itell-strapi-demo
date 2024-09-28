@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/drizzle/schema";
+import { type User } from "@/drizzle/schema";
 import { Button } from "@itell/ui/button";
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@itell/ui/dropdown";
-import { Column, ColumnDef } from "@tanstack/react-table";
+import { type Column, type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
@@ -21,17 +21,17 @@ export type StudentData = Pick<User, "id" | "email" | "name" | "createdAt"> & {
   summaryCount: number;
 };
 
-const ColumnWithSorting = ({
+function ColumnWithSorting({
   column,
   text,
 }: {
-  column: Column<StudentData, unknown>;
+  column: Column<StudentData>;
   text: string;
-}) => {
+}) {
   return (
     <Button
       variant="ghost"
-      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      onClick={() => { column.toggleSorting(column.getIsSorted() === "asc"); }}
       className="px-1"
     >
       <span className="flex items-center gap-2">
@@ -40,7 +40,7 @@ const ColumnWithSorting = ({
       </span>
     </Button>
   );
-};
+}
 
 export const columns: ColumnDef<StudentData>[] = [
   {
@@ -75,7 +75,7 @@ export const columns: ColumnDef<StudentData>[] = [
     },
     cell: ({ row }) => {
       const progress = row.original.progress;
-      return `${progress.text}`;
+      return progress.text;
     },
   },
   {

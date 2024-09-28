@@ -14,7 +14,7 @@ import {
 import { isProduction } from "@/lib/constants";
 import { getGroupedReadingTime } from "@itell/core/dashboard";
 import { and, count, eq, gte, inArray, ne, sql } from "drizzle-orm";
-import { User } from "lucia";
+import { type User } from "lucia";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
@@ -290,10 +290,10 @@ const getOtherStatsHandler = memoize(
     return {
       contentScore: summaryScores[0].contentScore,
       languageScore: summaryScores[0].languageScore,
-      totalSummaries: summaryCount[0].total || 0,
-      totalPassedSummaries: summaryCount[0].passed || 0,
-      totalAnswers: answerCount[0].total || 0,
-      totalPassedAnswers: answerCount[0].passed || 0,
+      totalSummaries: summaryCount[0].total ?? 0,
+      totalPassedSummaries: summaryCount[0].passed ?? 0,
+      totalAnswers: answerCount[0].total ?? 0,
+      totalPassedAnswers: answerCount[0].passed ?? 0,
     };
   },
   {

@@ -1,7 +1,7 @@
-import React from "react";
+import type React from "react";
 
-import { BotMessage, Message, UserMessage } from "@itell/core/chat";
-import { createStoreWithProducer, SnapshotFromStore } from "@xstate/store";
+import { type Message } from "@itell/core/chat";
+import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
 
 type StairsQuestion = {
@@ -87,7 +87,7 @@ export const createChatStore = () => {
         context.stairsMessages.push({
           id: crypto.randomUUID(),
           isUser: false,
-          text: context.stairsQuestion?.text || "",
+          text: context.stairsQuestion?.text ?? "",
         });
       },
 
@@ -111,7 +111,7 @@ export const userMessage = ({
   transform,
   isStairs,
 }: CreateUserMessageInput): StoreMessage => ({
-  id: id || crypto.randomUUID(),
+  id: id ?? crypto.randomUUID(),
   isUser: true,
   transform,
   isStairs,
@@ -134,7 +134,7 @@ export const botMessage = ({
   node,
   context,
 }: CreateBotMessageInput): StoreMessage => ({
-  id: id || crypto.randomUUID(),
+  id: id ?? crypto.randomUUID(),
   isUser: false,
   isStairs,
   transform,
@@ -152,7 +152,7 @@ export const getHistory = (store: ChatStore) => {
   }));
 };
 
-type Selector<T> = (state: SnapshotFromStore<ChatStore>) => T;
+type Selector<T> = (_: SnapshotFromStore<ChatStore>) => T;
 
 export const SelectStairsMessages: Selector<Message[]> = (state) =>
   state.context.stairsMessages;

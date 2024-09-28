@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes } from "react";
+import { type HTMLAttributes } from "react";
 
 import { InternalError } from "@/components/internal-error";
 import { useAddChat } from "@/components/provider/page-provider";
@@ -15,11 +15,11 @@ interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
   pageSlug: string;
 }
 
-export const ChatInput = ({
+export function ChatInput({
   className,
   pageSlug,
   ...props
-}: ChatInputProps) => {
+}: ChatInputProps) {
   const { action, pending, isError } = useAddChat();
 
   return (
@@ -74,9 +74,7 @@ export const ChatInput = ({
           aria-hidden="true"
         />
       </form>
-      {isError && (
-        <InternalError className="px-2">Failed to save chat</InternalError>
-      )}
+      {isError ? <InternalError className="px-2">Failed to save chat</InternalError> : null}
     </div>
   );
-};
+}

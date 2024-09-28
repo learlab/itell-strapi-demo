@@ -39,8 +39,8 @@ import {
   SheetTrigger,
 } from "@itell/ui/sheet";
 import { Switch } from "@itell/ui/switch";
-import { Page } from "#content";
-import { User } from "lucia";
+import { type Page } from "#content";
+import { type User } from "lucia";
 import { SettingsIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
@@ -72,7 +72,7 @@ const conditions = [
   },
 ];
 
-export const AdminToolsClient = ({ user, pageSlug, pages }: Props) => {
+export function AdminToolsClient({ user, pageSlug, pages }: Props) {
   const store = useQuestionStore();
   const condition = getUserCondition(user, pageSlug);
   const [open, setOpen] = useState(false);
@@ -206,14 +206,14 @@ export const AdminToolsClient = ({ user, pageSlug, pages }: Props) => {
             </Button>
           </footer>
 
-          {isError && <InternalError />}
+          {isError ? <InternalError /> : null}
         </form>
       </SheetContent>
     </Sheet>
   );
-};
+}
 
-const RestartTextbook = () => {
+function RestartTextbook() {
   const { isPending, isError, execute } = useServerAction(resetUserAction);
 
   return (
@@ -231,7 +231,7 @@ const RestartTextbook = () => {
                 delete all of your data, including summaries, chat messages,
                 question answers, etc.
               </p>
-              {isError && <InternalError />}
+              {isError ? <InternalError /> : null}
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -257,4 +257,4 @@ const RestartTextbook = () => {
       </AlertDialogContent>
     </AlertDialog>
   );
-};
+}

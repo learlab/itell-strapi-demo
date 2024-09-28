@@ -2,13 +2,13 @@ import { NavigationButton } from "@/components/navigation-button";
 import { makePageHref } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 
-export const SummaryReviseButton = ({
+export function SummaryReviseButton({
   pageSlug,
   text,
 }: {
   pageSlug: string;
   text: string;
-}) => {
+}) {
   const buf = Buffer.from(text);
 
   return (
@@ -16,9 +16,9 @@ export const SummaryReviseButton = ({
       href={`${makePageHref(pageSlug)}#${
         Elements.PAGE_ASSIGNMENTS
       }?summary=${buf.toString("base64")}`}
-      size={"default"}
+      size="default"
     >
       Revise this summary
     </NavigationButton>
   );
-};
+}

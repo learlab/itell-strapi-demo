@@ -1,8 +1,8 @@
-import { createStoreWithProducer, SnapshotFromStore } from "@xstate/store";
-import { Page } from "#content";
+import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
+import { type Page } from "#content";
 import { produce } from "immer";
 
-import { PageStatus } from "../page-status";
+import { type PageStatus } from "../page-status";
 
 export type Question = { answer: string; question: string };
 export type SelectedQuestions = Record<string, Question>;
@@ -30,13 +30,13 @@ export const createQuestionStore = (
   const slugs = chunks.map(({ slug }) => slug);
 
   const initialChunk =
-    chunks.find(({ type }) => type === "regular")?.slug ||
+    chunks.find(({ type }) => type === "regular")?.slug ??
     chunks[chunks.length - 1].slug;
 
   const initialState: QuestionSnapshot = {
-    currentChunk: snapshot?.currentChunk || initialChunk,
+    currentChunk: snapshot?.currentChunk ?? initialChunk,
     chunkStatus:
-      snapshot?.chunkStatus ||
+      snapshot?.chunkStatus ??
       Object.fromEntries(
         chunks.map(({ slug, type }) => [
           slug,
@@ -46,8 +46,8 @@ export const createQuestionStore = (
           },
         ])
       ),
-    isSummaryReady: snapshot?.isSummaryReady || pageStatus.unlocked,
-    shouldBlur: snapshot?.shouldBlur || !pageStatus.unlocked,
+    isSummaryReady: snapshot?.isSummaryReady ?? pageStatus.unlocked,
+    shouldBlur: snapshot?.shouldBlur ?? !pageStatus.unlocked,
   };
 
   return createStoreWithProducer(produce, initialState, {
@@ -120,7 +120,7 @@ type ChunkStatus = Record<
   }
 >;
 
-type Selector<T> = (state: SnapshotFromStore<QuestionStore>) => T;
+type Selector<T> = (_: SnapshotFromStore<QuestionStore>) => T;
 
 export const SelectChunkStatus: Selector<ChunkStatus> = (state) =>
   state.context.chunkStatus;

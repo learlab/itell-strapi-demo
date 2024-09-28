@@ -33,7 +33,7 @@ import { useActionStatus } from "use-action-status";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
-import { borderColors, QuestionScore, StatusStairs } from "./types";
+import { borderColors, type QuestionScore, StatusStairs } from "./types";
 
 type Props = {
   question: string;
@@ -49,12 +49,12 @@ type State = {
   input: string;
 };
 
-export const QuestionBoxStairs = ({
+export function QuestionBoxStairs({
   question,
   answer,
   chunkSlug,
   pageSlug,
-}: Props) => {
+}: Props) {
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
@@ -141,7 +141,7 @@ export const QuestionBoxStairs = ({
         input,
         show: true,
       });
-      return;
+      
     }
   });
 
@@ -167,8 +167,8 @@ export const QuestionBoxStairs = ({
   if (!state.show) {
     return (
       <Button
-        variant={"outline"}
-        onClick={() => setState((state) => ({ ...state, show: true }))}
+        variant="outline"
+        onClick={() => { setState((state) => ({ ...state, show: true })); }}
       >
         Reveal optional question
       </Button>
@@ -179,7 +179,7 @@ export const QuestionBoxStairs = ({
     <Card
       className={cn(
         "zoom-10 flex flex-col items-center justify-center space-y-2 px-6 py-4 animate-in fade-in",
-        `${borderColor}`,
+        borderColor,
         { shake: state.status === StatusStairs.BOTH_INCORRECT }
       )}
     >
@@ -234,14 +234,12 @@ export const QuestionBoxStairs = ({
               <p className="text-xl2 text-center text-emerald-600">
                 Your answer is correct!
               </p>
-              {shouldBlur && (
-                <p className="text-sm">
+              {shouldBlur ? <p className="text-sm">
                   Click on the button below to continue reading. Please use the
                   thumbs-up or thumbs-down icons on the top right side of this
                   box if you have any feedback about this question that you
                   would like to provide before you continue reading.
-                </p>
-              )}
+                </p> : null}
             </div>
           ) : (
             question && (
@@ -280,7 +278,7 @@ export const QuestionBoxStairs = ({
                 if (e.key === "Enter") {
                   e.preventDefault();
                   form.current?.requestSubmit();
-                  return;
+                  
                 }
               }}
               onPaste={(e) => {
@@ -296,7 +294,7 @@ export const QuestionBoxStairs = ({
             {status !== StatusStairs.UNANSWERED && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button variant={"outline"} type="button" className="gap-2">
+                  <Button variant="outline" type="button" className="gap-2">
                     <KeyRoundIcon className="size-4" />
                     Reveal Answer
                   </Button>
@@ -322,7 +320,7 @@ export const QuestionBoxStairs = ({
                     pending={isPending}
                     type="submit"
                     disabled={_isPending}
-                    variant={"outline"}
+                    variant="outline"
                   >
                     <span className="flex items-center gap-2">
                       <PencilIcon className="size-4" />
@@ -332,19 +330,15 @@ export const QuestionBoxStairs = ({
                 )}
 
                 {status !== StatusStairs.UNANSWERED &&
-                  isNextButtonDisplayed && (
-                    <FinishQuestionButton
+                  isNextButtonDisplayed ? <FinishQuestionButton
                       chunkSlug={chunkSlug}
                       pageSlug={pageSlug}
                       condition={Condition.STAIRS}
-                    />
-                  )}
+                    /> : null}
               </>
             )}
           </div>
-          {state.error && (
-            <p className="text-center text-sm text-red-500">{state.error}</p>
-          )}
+          {state.error ? <p className="text-center text-sm text-red-500">{state.error}</p> : null}
           <div className="mt-4 flex items-center justify-center">
             {(status === StatusStairs.SEMI_CORRECT ||
               status === StatusStairs.BOTH_INCORRECT) && (
@@ -359,4 +353,4 @@ export const QuestionBoxStairs = ({
       </CardContent>
     </Card>
   );
-};
+}

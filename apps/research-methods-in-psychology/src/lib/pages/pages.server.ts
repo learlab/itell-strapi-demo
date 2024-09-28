@@ -19,7 +19,7 @@ export const firstPage = allPagesSorted[0];
 export const getPage = (slug: string) =>
   allPagesSorted.find((p) => p.slug === slug);
 
-export const tocPages = pages.reduce(
+export const tocPages = pages.reduce<(TocPageItem | TocGroup)[]>(
   (acc, page) => {
     const item: TocPageItem = {
       group: false,
@@ -47,7 +47,7 @@ export const tocPages = pages.reduce(
 
     return acc;
   },
-  [] as Array<TocPageItem | TocGroup>
+  []
 );
 
 export type TocPageItem = {
@@ -66,7 +66,7 @@ type TocGroup = {
 
 export const pagesByParent = groupBy(
   pages.map((page) => ({
-    parentTitle: page.parent?.title || "root",
+    parentTitle: page.parent?.title ?? "root",
     title: page.title,
     slug: page.slug,
     href: page.href,
@@ -95,20 +95,16 @@ export const nextPage = (slug: string): string => {
   // Get the next page
   const nextPage = allPagesSorted[currentPageIndex + 1];
 
-  if (nextPage) {
-    if (nextPage.summary) {
-      return nextPage.slug;
-    }
-
-    // find the next page that requires a summary
-    const nextPageWithSummary = allPagesSorted
-      .slice(currentPageIndex + 1)
-      .find((s) => s.summary);
-    if (nextPageWithSummary) {
-      return nextPageWithSummary.slug;
-    }
-    return slug;
+  if (nextPage.summary) {
+    return nextPage.slug;
   }
 
+  // find the next page that requires a summary
+  const nextPageWithSummary = allPagesSorted
+    .slice(currentPageIndex + 1)
+    .find((s) => s.summary);
+  if (nextPageWithSummary) {
+    return nextPageWithSummary.slug;
+  }
   return slug;
 };

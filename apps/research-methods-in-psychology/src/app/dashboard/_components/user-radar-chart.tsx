@@ -1,13 +1,13 @@
 "use client";
 
-import { OtherStats, UserStats } from "@/actions/dashboard";
+import { type OtherStats, type UserStats } from "@/actions/dashboard";
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@itell/ui/chart";
 import { isNil } from "es-toolkit/predicate";
 import {
@@ -35,12 +35,12 @@ type Props = {
   otherProgress: number;
 };
 
-export const UserRadarChart = ({
+export function UserRadarChart({
   userStats,
   otherStats,
   userProgress,
   otherProgress,
-}: Props) => {
+}: Props) {
   const data = [
     {
       label: "Progress",
@@ -131,12 +131,12 @@ export const UserRadarChart = ({
           </li>
           <li>
             User submitted {data[1].user} summaries, median is{" "}
-            {Math.round(data[1].other || 0)}, user is{" "}
+            {Math.round(data[1].other ?? 0)}, user is{" "}
             {data[1].userScaled > 1 ? "ahead of" : "behind"} the median.
           </li>
           <li>
             User passed {data[2].user} summaries, median is{" "}
-            {Math.round(data[2].other || 0)}, user is{" "}
+            {Math.round(data[2].other ?? 0)}, user is{" "}
             {data[2].userScaled > 1 ? "ahead of" : "behind"} the median.
           </li>
           <li>
@@ -195,7 +195,8 @@ export const UserRadarChart = ({
           <PolarGrid />
           <PolarAngleAxis
             dataKey="label"
-            tick={({ x, y, textAnchor, value, index, ...props }) => {
+            // eslint-disable-next-line react/no-unstable-nested-components
+            tick={({ x, y, textAnchor, index, ...props }) => {
               const d = data[index];
               const label = getComparisonText(d.user, d.other);
               return (
@@ -223,7 +224,7 @@ export const UserRadarChart = ({
                   </tspan>
                   <tspan
                     x={x}
-                    dy={"1rem"}
+                    dy="1rem"
                     fontSize={12}
                     className="fill-muted-foreground lg:text-sm"
                   >
@@ -250,7 +251,7 @@ export const UserRadarChart = ({
       </ChartContainer>
     </div>
   );
-};
+}
 
 const getComparisonText = (user: number | null, other: number | null) => {
   const pct = user && other ? getRelativePct(user, other) : undefined;

@@ -1,4 +1,4 @@
-import { MobileNavItem } from "@/components/mobile-nav";
+import { type MobileNavItem } from "@/components/mobile-nav";
 import {
   BarChartIcon,
   FileEditIcon,

@@ -11,7 +11,7 @@ import { notFound } from "next/navigation";
 export default async function () {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
   const result = sessionId ? await lucia.validateSession(sessionId) : null;
-  const userPageSlug = result?.user?.pageSlug || null;
+  const userPageSlug = result?.user?.pageSlug ?? null;
   const headersList = headers();
   const pathname = headersList.get("x-pathname");
   let pageSlug: string | null = null;
@@ -23,7 +23,7 @@ export default async function () {
   }
 
   // if this is not found, 404 will be throw at page.tsx
-  const page = getPage(pageSlug as string);
+  const page = getPage(pageSlug!);
   if (!page) {
     return notFound();
   }

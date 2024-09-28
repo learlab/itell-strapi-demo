@@ -11,19 +11,18 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   height?: number;
 }
 
-export const BrandIcon = ({
-  className,
+export function BrandIcon({
   name,
   alt,
   width = 24,
   height = 24,
   ...rest
-}: Props) => {
+}: Props) {
   if (name === "outlook") {
     return (
       <Image
         src="/images/outlook.png"
-        alt={alt || ""}
+        alt={alt ?? ""}
         width={width}
         height={height}
         {...rest}
@@ -35,7 +34,7 @@ export const BrandIcon = ({
     return (
       <Image
         src="/images/google.svg"
-        alt={alt || ""}
+        alt={alt ?? ""}
         width={width}
         height={height}
         {...rest}
@@ -46,10 +45,10 @@ export const BrandIcon = ({
   return (
     <Image
       src={`https://cdn.simpleicons.org/${name}`}
-      alt={alt || ""}
+      alt={alt ?? ""}
       width={width}
       height={height}
       {...rest}
     />
   );
-};
+}

@@ -4,7 +4,7 @@ import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { animationProps, EventType } from "@/lib/constants";
 import { SelectChunkStatus } from "@/lib/store/question-store";
-import { Button, buttonVariants } from "@itell/ui/button";
+import { buttonVariants, type Button } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { motion } from "framer-motion";
@@ -16,11 +16,7 @@ interface Props extends React.ComponentPropsWithRef<typeof Button> {
   condition: string;
 }
 
-export const ContinueChunkButton = ({
-  chunkSlug,
-  pageSlug,
-  condition,
-}: Props) => {
+export function ContinueChunkButton({ chunkSlug, pageSlug, condition }: Props) {
   const store = useQuestionStore();
   const status = useSelector(store, SelectChunkStatus);
   const disabled = status[chunkSlug].hasQuestion && !status[chunkSlug].status;
@@ -28,7 +24,7 @@ export const ContinueChunkButton = ({
   const onSubmit = async () => {
     store.send({ type: "advanceChunk", chunkSlug });
 
-    createEventAction({
+    await createEventAction({
       type: EventType.CHUNK_REVEAL,
       pageSlug,
       data: {
@@ -45,7 +41,7 @@ export const ContinueChunkButton = ({
         "relative w-56 rounded-lg px-6 py-2 font-medium backdrop-blur-xl transition-[box-shadow] duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)]",
         buttonVariants({ variant: "default" })
       )}
-      data-no-event={true}
+      data-no-event
       onClick={onSubmit}
       disabled={disabled}
     >
@@ -68,4 +64,4 @@ export const ContinueChunkButton = ({
       />
     </motion.button>
   );
-};
+}

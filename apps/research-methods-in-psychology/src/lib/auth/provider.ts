@@ -5,8 +5,10 @@ import {
   Google,
   MicrosoftEntraId,
 } from "arctic";
-import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { type ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
+
+import { isProduction } from "../constants";
 
 export type OAuthProvider = "google" | "azure";
 
@@ -25,7 +27,7 @@ export const googleProvider = new Google(
 
 const cookieOptions: Partial<ResponseCookie> = {
   path: "/",
-  secure: process.env.NODE_ENV === "production",
+  secure: isProduction,
   httpOnly: true,
   maxAge: 60 * 10,
   sameSite: "lax",

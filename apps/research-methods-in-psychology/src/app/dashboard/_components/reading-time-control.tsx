@@ -13,7 +13,7 @@ import {
 } from "@itell/ui/select";
 import { useRouter } from "next/navigation";
 
-export const ReadingTimeControl = () => {
+export function ReadingTimeControl() {
   const router = useRouter();
   const { reading_time_level } = useSafeSearchParams("dashboard");
   const [pending, startTransition] = useTransition();
@@ -55,4 +55,4 @@ export const ReadingTimeControl = () => {
       </Select>
     </div>
   );
-};
+}

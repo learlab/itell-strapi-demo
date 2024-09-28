@@ -1,10 +1,10 @@
 "use client";
 
-import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState, type ForwardedRef } from "react";
 
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
-import { StageItem } from "@/lib/hooks/use-summary-stage";
+import { type StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
 import { makeInputKey } from "@/lib/utils";
 import { Elements } from "@itell/constants";
@@ -75,9 +75,9 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 
     useEffect(() => {
       if (!summary) {
-        setInput(getSummaryLocal(pageSlug) || value);
+        setInput(getSummaryLocal(pageSlug) ?? value);
       }
-    }, []);
+    }, [pageSlug, summary, value]);
 
     return (
       <div className="relative">
@@ -92,14 +92,16 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
         <Label>
           <span className="sr-only">your summary</span>
           <textarea
-            spellCheck={true}
+            spellCheck
             id={Elements.SUMMARY_INPUT}
             name="input"
             ref={ref as ForwardedRef<HTMLTextAreaElement>}
             value={input}
             disabled={disabled}
-            placeholder={"Write your summary here"}
-            onChange={(e) => setInput(e.currentTarget.value)}
+            placeholder="Write your summary here"
+            onChange={(e) => {
+              setInput(e.currentTarget.value);
+            }}
             rows={10}
             onPaste={(e) => {
               if (isProduction && !isAdmin(userRole)) {
@@ -131,7 +133,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 );
 const distanceThreshold = 60;
 
-const Distance = ({ distance }: { distance: number }) => {
+function Distance({ distance }: { distance: number }) {
   return (
     <div className="mb-2 flex items-center gap-2">
       <div className="relative h-8 flex-1 overflow-hidden rounded-full bg-accent">
@@ -139,11 +141,11 @@ const Distance = ({ distance }: { distance: number }) => {
           className={`absolute left-0 top-0 h-full transition-all duration-300 ease-out ${
             distance >= distanceThreshold ? "bg-info" : "bg-warning"
           }`}
-          style={{ width: `${distance}%` }}
+          style={{ width: `${String(distance)}%` }}
         />
         <div
           className="absolute bottom-0 top-0 w-[4px] bg-info"
-          style={{ left: `${distanceThreshold}%` }}
+          style={{ left: `${String(distanceThreshold)}%` }}
         />
         <div className="absolute inset-0 flex items-center justify-between px-3">
           <span className="z-10 text-sm font-medium">Uniqueness</span>
@@ -165,4 +167,4 @@ const Distance = ({ distance }: { distance: number }) => {
       </TooltipProvider>
     </div>
   );
-};
+}

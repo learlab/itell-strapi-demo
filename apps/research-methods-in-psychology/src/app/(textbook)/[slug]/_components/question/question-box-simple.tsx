@@ -22,12 +22,12 @@ type Props = {
   chunkSlug: string;
 };
 
-export const QuestionBoxSimple = ({
+export function QuestionBoxSimple({
   question,
   answer,
   pageSlug,
   chunkSlug,
-}: Props) => {
+}: Props) {
   const store = useQuestionStore();
   const currentChunk = useSelector(store, SelectCurrentChunk);
   const isSummaryReady = useSelector(store, SelectSummaryReady);
@@ -78,7 +78,7 @@ export const QuestionBoxSimple = ({
           className="w-full space-y-2"
         >
           <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
-            <Button type="submit" variant={"outline"} disabled={disabled}>
+            <Button type="submit" variant="outline" disabled={disabled}>
               Continue
             </Button>
           </div>
@@ -86,4 +86,4 @@ export const QuestionBoxSimple = ({
       </CardContent>
     </Card>
   );
-};
+}

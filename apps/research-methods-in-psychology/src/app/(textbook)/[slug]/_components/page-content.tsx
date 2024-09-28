@@ -2,13 +2,13 @@ import { TextbookComponents } from "@/components/content-components";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { Elements } from "@itell/constants";
 
-export const PageContent = ({
+export function PageContent({
   html,
   title,
 }: {
   html: string;
   title?: string;
-}) => {
+}) {
   return (
     <HtmlRenderer
       components={TextbookComponents}
@@ -17,4 +17,4 @@ export const PageContent = ({
       id={Elements.PAGE_CONTENT}
     />
   );
-};
+}

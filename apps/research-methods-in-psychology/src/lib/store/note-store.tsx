@@ -1,4 +1,4 @@
-import { createStoreWithProducer, SnapshotFromStore } from "@xstate/store";
+import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
 
 export type NoteData = {
@@ -63,7 +63,7 @@ export const noteStore = createStoreWithProducer(
   }
 );
 
-type Selector<T> = (state: SnapshotFromStore<NoteStore>) => T;
+type Selector<T> = (_: SnapshotFromStore<NoteStore>) => T;
 export const SelectNotes: Selector<NoteData[]> = (state) => state.context.notes;
 export const SelectNoteCount: Selector<number> = (state) =>
   state.context.notes.length;

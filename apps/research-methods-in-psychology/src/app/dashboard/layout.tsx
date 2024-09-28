@@ -1,5 +1,4 @@
 import { getTeacherAction } from "@/actions/user";
-import { ContinueReading } from "@/components/continue-reading";
 import { SidebarLayout } from "@/components/sidebar";
 import { SiteNav } from "@/components/site-nav";
 import { SiteConfig } from "@/config/site";
@@ -7,7 +6,6 @@ import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import {
   ClassRole,
-  Condition,
   DASHBOARD_ROLE_COOKIE,
   SIDEBAR_STATE_COOKIE,
 } from "@/lib/constants";
@@ -15,10 +13,9 @@ import { redirectWithSearchParams } from "@/lib/utils";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 import { Elements } from "@itell/constants";
-import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { cookies } from "next/headers";
 
-import { DashboardProvider, Role } from "./_components/dashboard-context";
+import { DashboardProvider, type Role } from "./_components/dashboard-context";
 
 export const generateMetadata = () => {
   const title = "Dashboard";
@@ -71,13 +68,13 @@ export default async function DashboardLayout({
   // }
 
   const [teacher, _] = await getTeacherAction();
-  const isTeacher = !!teacher;
+  const isTeacher = Boolean(teacher);
   const sidebarState = cookies().get(SIDEBAR_STATE_COOKIE)?.value;
   return (
     <DashboardProvider
       defaultRole={
-        (cookies().get(DASHBOARD_ROLE_COOKIE)?.value as Role) ||
-        (isTeacher ? ClassRole.TEACHER : ClassRole.STUDENT)
+        (cookies().get(DASHBOARD_ROLE_COOKIE)?.value ??
+          (isTeacher ? ClassRole.TEACHER : ClassRole.STUDENT)) as Role
       }
     >
       <SidebarLayout

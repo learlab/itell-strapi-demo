@@ -6,12 +6,17 @@ import { allPagesSorted } from "@/lib/pages/pages.server";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent } from "@itell/ui/card";
 import { SummaryChart } from "@summaries/summary-chart";
+import { notFound } from "next/navigation";
 
 import { SummaryListSelect } from "../../summaries/_components/summary-list-select";
 import { checkTeacher } from "../check-teacher";
 
 export default async function ({ searchParams }: { searchParams: unknown }) {
   const teacher = await checkTeacher();
+  if (!teacher) {
+    return notFound();
+  }
+
   incrementViewAction({ pageSlug: Meta.summariesTeacher.slug });
 
   const { page } = routes.summariesTeacher.$parseSearchParams(searchParams);

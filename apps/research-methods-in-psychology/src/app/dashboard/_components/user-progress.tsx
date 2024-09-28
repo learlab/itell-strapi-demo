@@ -4,13 +4,13 @@ import { makePageHref } from "@/lib/utils";
 import Link from "next/link";
 import pluralize from "pluralize";
 
-export const UserProgress = ({
+export function UserProgress({
   pageSlug,
   finished,
 }: {
   pageSlug: string | null;
   finished: boolean;
-}) => {
+}) {
   const pageData = getPageData(pageSlug);
   let displayProgress = "0";
   const validPages = allPagesSorted.filter((page) => page.summary);
@@ -46,4 +46,4 @@ export const UserProgress = ({
       </p>
     </div>
   );
-};
+}

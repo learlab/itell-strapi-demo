@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@itell/ui/chart";
 import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
 
@@ -30,14 +30,14 @@ type Props = {
   data: { name: string; value: number; fill: string }[];
 };
 
-export const QuestionChart = ({ data }: Props) => {
+export function QuestionChart({ data }: Props) {
   return (
     <>
       <p className="sr-only" id="question-chart-title">
-        A bar chart of user's answers,{" "}
-        {data.find((d) => d.name === "poor")?.value} poor,{" "}
-        {data.find((d) => d.name === "average")?.value || 0} average,{" "}
-        {data.find((d) => d.name === "excellent")?.value || 0} excellent
+        A bar chart of user&apos;s answers,{" "}
+        {data.find((d) => d.name === "poor")?.value ?? 0} poor,{" "}
+        {data.find((d) => d.name === "average")?.value ?? 0} average,{" "}
+        {data.find((d) => d.name === "excellent")?.value ?? 0} excellent
       </p>
       <ChartContainer
         config={chartConfig}
@@ -71,7 +71,7 @@ export const QuestionChart = ({ data }: Props) => {
               className="fill-[--color-label] text-base font-light xl:text-lg"
               fontSize={12}
               formatter={(value: string) => {
-                return chartConfig[value as keyof typeof chartConfig]?.label;
+                return chartConfig[value as keyof typeof chartConfig].label;
               }}
             />
             <LabelList
@@ -86,4 +86,4 @@ export const QuestionChart = ({ data }: Props) => {
       </ChartContainer>
     </>
   );
-};
+}

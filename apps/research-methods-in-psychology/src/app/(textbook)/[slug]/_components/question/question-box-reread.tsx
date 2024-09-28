@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
 import { FinishQuestionButton } from "./finish-question-button";
-import { QuestionScore, StatusReread } from "./types";
+import { type QuestionScore, StatusReread } from "./types";
 
 type Props = {
   question: string;
@@ -42,12 +42,12 @@ type State = {
   error: string | null;
 };
 
-export const QuestionBoxReread = ({
+export function QuestionBoxReread({
   question,
   answer,
   chunkSlug,
   pageSlug,
-}: Props) => {
+}: Props) {
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
@@ -122,8 +122,8 @@ export const QuestionBoxReread = ({
   if (!state.show) {
     return (
       <Button
-        variant={"outline"}
-        onClick={() => setState((state) => ({ ...state, show: true }))}
+        variant="outline"
+        onClick={() => { setState((state) => ({ ...state, show: true })); }}
       >
         Reveal optional question
       </Button>
@@ -138,13 +138,11 @@ export const QuestionBoxReread = ({
       )}
     >
       <CardContent className="mx-auto flex w-4/5 flex-col items-center justify-center gap-4">
-        {question && (
-          <p>
+        {question ? <p>
             <span className="font-bold">Question </span>
             {!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
             {question}
-          </p>
-        )}
+          </p> : null}
 
         <div role="status">
           {state.status === StatusReread.ANSWERED && (
@@ -186,24 +184,22 @@ export const QuestionBoxReread = ({
                 if (e.key === "Enter") {
                   e.preventDefault();
                   form.current?.requestSubmit();
-                  return;
+                  
                 }
               }}
             />
           </Label>
 
-          {state.error && (
-            <InternalError className="text-center">
+          {state.error ? <InternalError className="text-center">
               <p>{state.error}</p>
-            </InternalError>
-          )}
+            </InternalError> : null}
 
           <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
             {state.status === StatusReread.ANSWERED && (
               <HoverCard>
                 <HoverCardTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant="outline"
                     type="button"
                     disabled={isPending}
                   >
@@ -223,7 +219,7 @@ export const QuestionBoxReread = ({
               pending={isPending}
               type="submit"
               disabled={_isPending}
-              variant={"outline"}
+              variant="outline"
             >
               <span className="flex items-center gap-2">
                 <PencilIcon className="size-4" />
@@ -232,16 +228,14 @@ export const QuestionBoxReread = ({
             </StatusButton>
 
             {state.status !== StatusReread.UNANSWERED &&
-              isNextButtonDisplayed && (
-                <FinishQuestionButton
+              isNextButtonDisplayed ? <FinishQuestionButton
                   pageSlug={pageSlug}
                   chunkSlug={chunkSlug}
                   condition={Condition.RANDOM_REREAD}
-                />
-              )}
+                /> : null}
           </div>
         </form>
       </CardContent>
     </Card>
   );
-};
+}
