@@ -2,21 +2,21 @@ import { cn } from "@itell/utils";
 import { CircleAlertIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
 
 interface CalloutProps extends React.ComponentProps<"div"> {
-	title?: string;
-	variant?: "info" | "warning" | "danger";
-	children: React.ReactNode;
+  title?: string;
+  variant?: "info" | "warning" | "danger";
+  children: React.ReactNode;
 }
 
 const icons = {
-	info: <InfoIcon className="size-8 text-info" />,
-	warning: <CircleAlertIcon className="size-8 text-warning" />,
-	danger: <TriangleAlertIcon className="size-8 text-destructive" />,
+  info: <InfoIcon className="size-8 text-info" />,
+  warning: <CircleAlertIcon className="size-8 text-warning" />,
+  danger: <TriangleAlertIcon className="size-8 text-destructive" />,
 };
 
 const titles = {
-	info: "Note",
-	warning: "Warning",
-	danger: "Caution",
+  info: "Note",
+  warning: "Warning",
+  danger: "Caution",
 };
 
 /**
@@ -31,32 +31,32 @@ const titles = {
  * </i-callout>
  */
 export const Callout = ({
-	variant = "info",
-	title,
-	className,
-	children,
-	...props
+  variant = "info",
+  title,
+  className,
+  children,
+  ...props
 }: CalloutProps) => {
-	return (
-		<div
-			className={cn(
-				"relative bg-accent p-6 rounded-md leading-relaxed border-l-4 transition-colors duration-350 my-4",
-				{
-					"border-l-info": variant === "info",
-					"border-l-warning": variant === "warning",
-					"border-l-destructive": variant === "danger",
-				},
-				className,
-			)}
-			{...props}
-		>
-			<div className="leading-[calc(1em+0.725rem)] absolute top-0 left-0 transform -translate-x-[calc(50%+1.5px)] -translate-y-1/2 p-2 bg-background rounded-full">
-				{icons[variant]}
-			</div>
-			<strong className="block font-bold mb-2 text-[1.1em]">
-				{title || titles[variant]}
-			</strong>
-			{children}
-		</div>
-	);
+  return (
+    <div
+      className={cn(
+        "duration-350 relative my-4 rounded-md border-l-4 bg-accent p-6 leading-relaxed transition-colors",
+        {
+          "border-l-info": variant === "info",
+          "border-l-warning": variant === "warning",
+          "border-l-destructive": variant === "danger",
+        },
+        className
+      )}
+      {...props}
+    >
+      <div className="absolute left-0 top-0 -translate-x-[calc(50%+1.5px)] -translate-y-1/2 transform rounded-full bg-background p-2 leading-[calc(1em+0.725rem)]">
+        {icons[variant]}
+      </div>
+      <strong className="mb-2 block text-[1.1em] font-bold">
+        {title || titles[variant]}
+      </strong>
+      {children}
+    </div>
+  );
 };

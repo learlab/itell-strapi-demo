@@ -3,20 +3,20 @@ import { Prose } from "@itell/ui/prose";
 import htmr from "htmr";
 
 interface Props extends Omit<Prose.Props, "children"> {
-	html: string;
-	components?: Record<string, any>;
+  html: string;
+  components?: Record<string, any>;
 }
 
 export const HtmlRenderer = ({
-	html,
-	components = { "i-image": Image },
-	...rest
+  html,
+  components = { "i-image": Image },
+  ...rest
 }: Props) => {
-	return (
-		<Prose {...rest}>
-			{htmr(html, {
-				transform: components,
-			})}
-		</Prose>
-	);
+  return (
+    <Prose {...rest}>
+      {htmr(html, {
+        transform: components,
+      })}
+    </Prose>
+  );
 };

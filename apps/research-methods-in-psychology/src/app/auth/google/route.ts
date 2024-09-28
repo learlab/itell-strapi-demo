@@ -1,19 +1,19 @@
 import {
-	googleProvider,
-	setGoogleOAuthState,
-	setJoinClassCode,
+  googleProvider,
+  setGoogleOAuthState,
+  setJoinClassCode,
 } from "@/lib/auth/provider";
 
 export async function GET(req: Request): Promise<Response> {
-	const searchParams = new URL(req.url).searchParams;
-	const referer = req.headers.get("referer");
-	const { state, codeVerifier } = setGoogleOAuthState(
-		referer && !referer.endsWith("/auth") ? referer : undefined,
-	);
-	setJoinClassCode(searchParams.get("join_class_code"));
+  const searchParams = new URL(req.url).searchParams;
+  const referer = req.headers.get("referer");
+  const { state, codeVerifier } = setGoogleOAuthState(
+    referer && !referer.endsWith("/auth") ? referer : undefined
+  );
+  setJoinClassCode(searchParams.get("join_class_code"));
 
-	const url = googleProvider.createAuthorizationURL(state, codeVerifier);
-	url.addScopes("openid", "profile", "email");
+  const url = googleProvider.createAuthorizationURL(state, codeVerifier);
+  url.addScopes("openid", "profile", "email");
 
-	return Response.redirect(url);
+  return Response.redirect(url);
 }

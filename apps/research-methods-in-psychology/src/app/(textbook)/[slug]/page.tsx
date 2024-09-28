@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
 import { getPageConditions, getUserCondition } from "@/lib/auth/conditions";
@@ -22,95 +24,94 @@ import { QuestionControl } from "@textbook/question/question-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 export default async function ({ params }: { params: { slug: string } }) {
-	const { slug } = routes.textbook.$parseParams(params);
-	const { user } = await getSession();
-	const page = getPage(slug);
+  const { slug } = routes.textbook.$parseParams(params);
+  const { user } = await getSession();
+  const page = getPage(slug);
 
-	if (!page) {
-		return notFound();
-	}
+  if (!page) {
+    return notFound();
+  }
 
-	const pageSlug = page.slug;
+  const pageSlug = page.slug;
 
-	const userId = user?.id || null;
-	const userFinished = user?.finished || false;
-	const userPageSlug = user?.pageSlug || null;
-	const userCondition = user
-		? getUserCondition(user, pageSlug)
-		: Condition.STAIRS;
-	const pageStatus = getPageStatus({
-		pageSlug,
-		userPageSlug,
-		userFinished,
-	});
+  const userId = user?.id || null;
+  const userFinished = user?.finished || false;
+  const userPageSlug = user?.pageSlug || null;
+  const userCondition = user
+    ? getUserCondition(user, pageSlug)
+    : Condition.STAIRS;
+  const pageStatus = getPageStatus({
+    pageSlug,
+    userPageSlug,
+    userFinished,
+  });
 
-	return (
-		<PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
-			<main
-				id={Elements.TEXTBOOK_MAIN_WRAPPER}
-				className="max-w-[1800px] mx-auto"
-			>
-				<div id={Elements.TEXTBOOK_NAV}>
-					<ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
-						<TextbookToc
-							page={page}
-							userPageSlug={userPageSlug}
-							userFinished={userFinished}
-						/>
-					</ScrollArea>
-				</div>
+  return (
+    <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
+      <main
+        id={Elements.TEXTBOOK_MAIN_WRAPPER}
+        className="mx-auto max-w-[1800px]"
+      >
+        <div id={Elements.TEXTBOOK_NAV}>
+          <ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
+            <TextbookToc
+              page={page}
+              userPageSlug={userPageSlug}
+              userFinished={userFinished}
+            />
+          </ScrollArea>
+        </div>
 
-				<div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
-					<PageTitle className="mb-8">{page.title}</PageTitle>
-					<PageContent title={page.title} html={page.html} />
-					<SelectionPopover user={user} pageSlug={pageSlug} />
-					<Pager pageIndex={page.order} userPageSlug={user?.pageSlug || null} />
-					<p className="text-right text-sm text-muted-foreground mt-4">
-						<span>Last updated at </span>
-						<time>{page.last_modified}</time>
-					</p>
-				</div>
+        <div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
+          <PageTitle className="mb-8">{page.title}</PageTitle>
+          <PageContent title={page.title} html={page.html} />
+          <SelectionPopover user={user} pageSlug={pageSlug} />
+          <Pager pageIndex={page.order} userPageSlug={user?.pageSlug || null} />
+          <p className="mt-4 text-right text-sm text-muted-foreground">
+            <span>Last updated at </span>
+            <time>{page.last_modified}</time>
+          </p>
+        </div>
 
-				<aside id={Elements.PAGE_NAV} aria-label="table of contents">
-					<div className="sticky top-20 -mt-10">
-						<ScrollArea className="pb-10">
-							<div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
-								<PageToc chunks={page.chunks} />
-								<div className="mt-8 flex flex-col gap-1">
-									<PageInfo pageSlug={pageSlug} user={user} />
-									<NoteCount />
-								</div>
-							</div>
-						</ScrollArea>
-					</div>
-				</aside>
-			</main>
+        <aside id={Elements.PAGE_NAV} aria-label="table of contents">
+          <div className="sticky top-20 -mt-10">
+            <ScrollArea className="pb-10">
+              <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
+                <PageToc chunks={page.chunks} />
+                <div className="mt-8 flex flex-col gap-1">
+                  <PageInfo pageSlug={pageSlug} user={user} />
+                  <NoteCount />
+                </div>
+              </div>
+            </ScrollArea>
+          </div>
+        </aside>
+      </main>
 
-			<Suspense fallback={<ChatLoader.Skeleton />}>
-				<ChatLoader user={user} pageSlug={pageSlug} pageTitle={page.title} />
-			</Suspense>
+      <Suspense fallback={<ChatLoader.Skeleton />}>
+        <ChatLoader user={user} pageSlug={pageSlug} pageTitle={page.title} />
+      </Suspense>
 
-			{user && <NoteLoader pageSlug={pageSlug} />}
-			{user && page.summary && (
-				<PageAssignments
-					pageSlug={pageSlug}
-					pageStatus={pageStatus}
-					user={user}
-					condition={userCondition}
-				/>
-			)}
+      {user && <NoteLoader pageSlug={pageSlug} />}
+      {user && page.summary && (
+        <PageAssignments
+          pageSlug={pageSlug}
+          pageStatus={pageStatus}
+          user={user}
+          condition={userCondition}
+        />
+      )}
 
-			{isProduction && <PageStatusModal user={user} pageStatus={pageStatus} />}
-			<QuestionControl
-				userId={userId}
-				pageSlug={pageSlug}
-				hasAssignments={page.assignments.length > 0}
-				condition={userCondition}
-			/>
-			{user && <EventTracker pageSlug={pageSlug} />}
-		</PageProvider>
-	);
+      {isProduction && <PageStatusModal user={user} pageStatus={pageStatus} />}
+      <QuestionControl
+        userId={userId}
+        pageSlug={pageSlug}
+        hasAssignments={page.assignments.length > 0}
+        condition={userCondition}
+      />
+      {user && <EventTracker pageSlug={pageSlug} />}
+    </PageProvider>
+  );
 }

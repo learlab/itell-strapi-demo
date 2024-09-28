@@ -5,14 +5,14 @@ import { createServerActionProcedure } from "zsa";
 // procedure for protected actions
 
 export const authedProcedure = createServerActionProcedure()
-	.onError((e) => {
-		reportSentry("in authed procedure", { error: e });
-	})
-	.handler(async () => {
-		const { user } = await getSession();
-		if (!user) {
-			throw "action unauthorized";
-		}
-		return { user };
-	})
-	.createServerAction();
+  .onError((e) => {
+    reportSentry("in authed procedure", { error: e });
+  })
+  .handler(async () => {
+    const { user } = await getSession();
+    if (!user) {
+      throw "action unauthorized";
+    }
+    return { user };
+  })
+  .createServerAction();

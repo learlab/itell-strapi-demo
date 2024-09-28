@@ -1,19 +1,23 @@
-import { cn } from "@itell/utils";
 import React from "react";
 
+import { cn } from "@itell/utils";
+
 export const InternalError = ({
-	className,
-	children,
-}: { className?: string; children?: React.ReactNode }) => {
-	return (
-		<div
-			className={cn("text-red-500 tex-sm font-light leading-snug", className)}
-		>
-			{children ? (
-				children
-			) : (
-				<p>An internal error occurred. Please try again later.</p>
-			)}
-		</div>
-	);
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) => {
+  return (
+    <div
+      className={cn("tex-sm font-light leading-snug text-red-500", className)}
+    >
+      {children ? (
+        children
+      ) : (
+        <p>An internal error occurred. Please try again later.</p>
+      )}
+    </div>
+  );
 };

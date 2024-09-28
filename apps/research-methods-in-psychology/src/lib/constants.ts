@@ -6,50 +6,50 @@ export const SIDEBAR_STATE_COOKIE = "sidebar:state";
 export const DASHBOARD_ROLE_COOKIE = "dashboard:role";
 export const isProduction = process.env.NODE_ENV === "production";
 export const ClassRole = {
-	TEACHER: "teacher",
-	STUDENT: "student",
+  TEACHER: "teacher",
+  STUDENT: "student",
 } as const;
 
 export const EventType = {
-	KEYSTROKE: "keystroke",
-	CLICK: "click",
-	FOCUS_TIME: "focus-time",
-	SCROLL: "scroll",
-	CHUNK_REVEAL: "chunk-reveal",
-	CHUNK_REVEAL_QUESTION: "post-question-chunk-reveal",
-	EXPLAIN: "explain-constructed-response",
-	STAIRS: "stairs",
-	RANDOM_REREAD: "random_reread",
-	SIMPLE: "simple",
-	QUIZ: "quiz",
+  KEYSTROKE: "keystroke",
+  CLICK: "click",
+  FOCUS_TIME: "focus-time",
+  SCROLL: "scroll",
+  CHUNK_REVEAL: "chunk-reveal",
+  CHUNK_REVEAL_QUESTION: "post-question-chunk-reveal",
+  EXPLAIN: "explain-constructed-response",
+  STAIRS: "stairs",
+  RANDOM_REREAD: "random_reread",
+  SIMPLE: "simple",
+  QUIZ: "quiz",
 } as const;
 
 export const Condition = {
-	SIMPLE: "simple",
-	RANDOM_REREAD: "random_reread",
-	STAIRS: "stairs",
+  SIMPLE: "simple",
+  RANDOM_REREAD: "random_reread",
+  STAIRS: "stairs",
 };
 export const Tags = {
-	GET_SESSION: "get-session",
+  GET_SESSION: "get-session",
 } as const;
 
 export const animationProps = {
-	initial: { "--x": "100%", scale: 0.8 },
-	animate: { "--x": "-100%", scale: 1 },
-	whileTap: { scale: 0.95 },
-	transition: {
-		repeat: Number.POSITIVE_INFINITY,
-		repeatType: "loop",
-		repeatDelay: 1,
-		type: "spring",
-		stiffness: 20,
-		damping: 15,
-		mass: 2,
-		scale: {
-			type: "spring",
-			stiffness: 200,
-			damping: 5,
-			mass: 0.5,
-		},
-	},
+  initial: { "--x": "100%", scale: 0.8 },
+  animate: { "--x": "-100%", scale: 1 },
+  whileTap: { scale: 0.95 },
+  transition: {
+    repeat: Number.POSITIVE_INFINITY,
+    repeatType: "loop",
+    repeatDelay: 1,
+    type: "spring",
+    stiffness: 20,
+    damping: 15,
+    mass: 2,
+    scale: {
+      type: "spring",
+      stiffness: 200,
+      damping: 5,
+      mass: 0.5,
+    },
+  },
 } as AnimationProps;
