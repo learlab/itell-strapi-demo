@@ -22,7 +22,7 @@ export function StairsReadyButton({ onClick }: Props) {
       onClick={onClick}
       disabled={ready}
     >
-      I'm ready for question
+      I&apos;m ready for question
     </Button>
   );
 }

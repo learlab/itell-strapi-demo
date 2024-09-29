@@ -36,11 +36,10 @@ export function ChatInput({ className, pageSlug, ...props }: ChatInputProps) {
             name="input"
             rows={2}
             maxRows={4}
-            autoFocus
             disabled={pending}
             placeholder="Message ITELL AI..."
             className="block w-full resize-none rounded-md border border-border bg-background/90 px-4 py-1.5 pr-14 text-sm font-normal leading-5 focus:ring-0 disabled:pointer-events-none disabled:opacity-50"
-            onKeyDown={async (e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 const input = e.currentTarget.value.trim();

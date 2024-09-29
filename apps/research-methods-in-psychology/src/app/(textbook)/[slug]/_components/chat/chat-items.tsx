@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useChatStore } from "@/components/provider/page-provider";
 import { Spinner } from "@/components/spinner";
 import { SelectActiveMessageId } from "@/lib/store/chat-store";
@@ -43,7 +45,7 @@ export function ChatItems({
             <div className="h-1 w-16 bg-muted" />
           </div>
         ) : null}
-        {initialMessage ? <MessageItem message={initialMessage} /> : null}
+        <MessageItem message={initialMessage} />
         {data.map((message) => {
           return <MessageItem key={message.id} message={message} />;
         })}
@@ -142,7 +144,7 @@ function Transform({ message }: { message: Message }) {
               router.push("/guide");
             } else {
               const element = getChunkElement(
-                message.context || null,
+                message.context ?? null,
                 "data-chunk-slug"
               );
               if (element) {

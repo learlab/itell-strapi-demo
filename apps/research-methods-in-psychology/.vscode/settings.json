@@ -1,9 +1,9 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
-  },
-  "eslint.codeActionsOnSave.mode": "problems",
+  //   "editor.codeActionsOnSave": {
+  //     "source.fixAll.eslint": "always"
+  //   },
+  //   "eslint.codeActionsOnSave.mode": "problems",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

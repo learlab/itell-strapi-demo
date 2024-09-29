@@ -57,7 +57,7 @@ export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
     store.send({
       type: "addMessage",
       data: botMessage({
-        text: stairsQuestion?.text || "",
+        text: stairsQuestion?.text ?? "",
         isStairs: false,
       }),
     });
@@ -103,7 +103,7 @@ export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
           page_slug: pageSlug,
           message: text,
           history: history.current,
-          current_chunk: stairsQuestion?.chunk || "",
+          current_chunk: stairsQuestion?.chunk ?? "",
         },
       });
       store.send({
@@ -256,7 +256,6 @@ export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
               name="input"
               rows={2}
               maxRows={4}
-              autoFocus
               disabled={pending || overMessageLimit || !stairsReady}
               placeholder={
                 overMessageLimit
@@ -264,7 +263,7 @@ export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
                   : "Answer the question"
               }
               className="block w-full resize-none rounded-md border border-border bg-background/90 px-4 py-1.5 pr-14 text-sm focus:ring-0 disabled:pointer-events-none disabled:opacity-50 sm:leading-6"
-              onKeyDown={async (e) => {
+              onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   if (!e.currentTarget.value) return;

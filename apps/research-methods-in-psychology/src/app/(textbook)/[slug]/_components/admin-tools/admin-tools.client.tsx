@@ -131,7 +131,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
           <SheetTitle>Configure ITELL</SheetTitle>
           <SheetDescription className="text-left">
             You can view this because you are recognized as an admin. Apply the
-            configuration by clicking "Save Changes".
+            configuration by clicking &quot;Save Changes&quot;.
           </SheetDescription>
         </SheetHeader>
         <form className="grid gap-8 py-4" onSubmit={onSubmit}>
