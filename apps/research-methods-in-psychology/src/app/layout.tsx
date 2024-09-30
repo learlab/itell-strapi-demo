@@ -11,7 +11,7 @@ import { GeistSans as FontSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Roboto_Slab as FontSerif } from "next/font/google";
 
-export async function generateMetadata(): Promise<Metadata> {
+export function generateMetadata(): Metadata {
   return {
     title: {
       default: SiteConfig.title,
@@ -38,7 +38,7 @@ const fontSerif = FontSerif({
   variable: "--font-serif",
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
