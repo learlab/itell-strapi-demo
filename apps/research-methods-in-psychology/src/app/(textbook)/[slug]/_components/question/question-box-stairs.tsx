@@ -269,7 +269,7 @@ export const QuestionBoxStairs = async ({
                 {!shouldBlur && (
                   <span className="font-bold">(Optional)</span>
                 )}: {question}
-                {streak >= 0 && (
+                {streak >= 2 && (
                   <span className="flex items-center space-x-1 text-sm text-zinc-500">
                     <Flame color="#71717a" size={16} />
                     <span>{streak}</span>
