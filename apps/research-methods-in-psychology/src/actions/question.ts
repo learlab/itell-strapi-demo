@@ -22,12 +22,12 @@ import { authedProcedure } from "./utils";
 export const createQuestionAnswerAction = authedProcedure
   .input(CreateConstructedResponseSchema.omit({ userId: true }))
   .handler(async ({ input, ctx }) => {
-    // if (isProduction) {
-    return await db.insert(constructed_responses).values({
-      ...input,
-      userId: ctx.user.id,
-    });
-    // }
+    if (isProduction) {
+      return await db.insert(constructed_responses).values({
+        ...input,
+        userId: ctx.user.id,
+      });
+    }
   });
 
 /**
