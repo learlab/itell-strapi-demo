@@ -66,7 +66,7 @@ const pages = defineCollection({
 
 const guides = defineCollection({
 	name: "Guide",
-	pattern: "guide/**/*.md",
+	pattern: "guide/**/*.mdx",
 	schema: s.object({
 		condition: s.string(),
 		code: s.mdx(),
@@ -75,7 +75,7 @@ const guides = defineCollection({
 
 const home = defineCollection({
 	name: "Home",
-	pattern: `${TEXTBOOK_NAME}/home.md`,
+	pattern: `${TEXTBOOK_NAME}/home.mdx`,
 	single: true,
 	schema: s.object({
 		code: s.mdx(),
