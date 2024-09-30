@@ -25,12 +25,12 @@ export const generateMetadata = () => {
 	return {
 		title,
 		description,
-		metadataBase: new URL(env.HOST),
+		metadataBase: new URL(env.NEXT_PUBLIC_HOST),
 		openGraph: {
 			title: `${title} | ${SiteConfig.title}`,
 			description,
 			type: "article",
-			url: `${env.HOST}/dashboard`,
+			url: `${env.NEXT_PUBLIC_HOST}/dashboard`,
 			images: [
 				{
 					url: "/og?dashboard=true",

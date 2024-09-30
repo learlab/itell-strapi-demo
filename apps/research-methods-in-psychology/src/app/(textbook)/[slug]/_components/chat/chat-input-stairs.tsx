@@ -3,6 +3,7 @@
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/internal-error";
 import { useChatStore } from "@/components/provider/page-provider";
+import { apiClient } from "@/lib/api-client";
 import { isProduction } from "@/lib/constants";
 import {
 	SelectStairsAnswered,
@@ -96,17 +97,13 @@ export const ChatInputStairs = ({ className, pageSlug }: ChatInputProps) => {
 		});
 
 		try {
-			const response = await fetch("/api/itell/chat/stairs", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
+			const response = await apiClient.api.chat.stairs.$post({
+				json: {
 					page_slug: pageSlug,
 					message: text,
 					history: history.current,
-					current_chunk: stairsQuestion?.chunk,
-				}),
+					current_chunk: stairsQuestion?.chunk || "",
+				},
 			});
 			store.send({
 				type: "setActive",

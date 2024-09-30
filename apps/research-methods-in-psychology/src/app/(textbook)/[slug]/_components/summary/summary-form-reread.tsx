@@ -6,7 +6,9 @@ import { DelayMessage } from "@/components/delay-message";
 import {
 	useChunks,
 	useQuestionStore,
+	useQuizStore,
 } from "@/components/provider/page-provider";
+import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -54,11 +56,13 @@ type Props = {
 export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 	const pageSlug = page.slug;
 	const prevInput = useRef<string | undefined>();
+	const quizStore = useQuizStore();
 	const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 	const questionStore = useQuestionStore();
 	const chunks = useChunks();
 	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
+	const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
 	const randomChunkSlug = useMemo(() => {
 		// skip first chunk, which is typically learning objectives
@@ -123,6 +127,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 				keystroke: {
 					start: prevInput.current || getSummaryLocal(pageSlug) || "",
 					data: keystrokes,
+					isMobile,
 				},
 			});
 			if (err) {
@@ -136,6 +141,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 
 			if (isLastPage(pageSlug)) {
 				toast.info("You have finished the entire textbook!");
+				return;
+			}
+
+			if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
+				quizStore.send({
+					type: "toggleQuiz",
+				});
 				return;
 			}
 
@@ -228,13 +240,13 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 			<PortalContainer portals={portals} />
 			<div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
 				<div role="status">
-					{finished && page.nextPageSlug && (
+					{finished && page.next_slug && (
 						<div className="space-y-2 space-x-2">
 							<p>
 								You have finished this page and can move on. You are still
 								welcome to improve the summary.
 							</p>
-							<NextPageButton pageSlug={page.nextPageSlug} />
+							<NextPageButton pageSlug={page.next_slug} />
 						</div>
 					)}
 				</div>
@@ -266,7 +278,7 @@ export const SummaryFormReread = ({ user, page, pageStatus }: Props) => {
 							type="submit"
 						>
 							<span className="flex items-center gap-2">
-								<SendHorizontalIcon className="size-4" />
+								<SendHorizontalIcon className="size-3" />
 								Submit
 							</span>
 						</Button>
@@ -285,7 +297,9 @@ const exitChunk = () => {
 
 const FinishReadingButton = ({
 	onClick,
-}: { onClick: (time: number) => void }) => {
+}: {
+	onClick: (time: number) => void;
+}) => {
 	const { time, clearTimer } = useTimer();
 	const ref = useRef<HTMLDivElement>(null);
 

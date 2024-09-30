@@ -23,7 +23,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 
 	const title = page.title;
 	const description = page.description || page.excerpt;
-	const ogUrl = new URL(`${env.HOST}/og`);
+	const ogUrl = new URL(`${env.NEXT_PUBLIC_HOST}/og`);
 	ogUrl.searchParams.set("title", page.title);
 	ogUrl.searchParams.set("slug", page.slug);
 
@@ -34,7 +34,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 			title: `${title} | ${SiteConfig.title}`,
 			description,
 			type: "article",
-			url: `${env.HOST}${makePageHref(page.slug)}`,
+			url: `${env.NEXT_PUBLIC_HOST}${makePageHref(page.slug)}`,
 			images: [
 				{
 					url: ogUrl,

@@ -107,7 +107,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
 						}}
 						className={cn(
 							"flex min-h-[80px] w-full font-normal rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-							"resize-none rounded-md shadow-md p-4 w-full ",
+							"resize-none rounded-md shadow-md p-4 w-full xl:text-lg",
 						)}
 					/>
 				</Label>
@@ -131,7 +131,7 @@ const distanceThreshold = 60;
 
 const Distance = ({ distance }: { distance: number }) => {
 	return (
-		<div className="flex items-center gap-2  mb-2">
+		<div className="flex items-center gap-2 mb-2">
 			<div className="relative flex-1 h-8 bg-accent rounded-full overflow-hidden">
 				<div
 					className={`absolute top-0 left-0 h-full transition-all duration-300 ease-out ${

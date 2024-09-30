@@ -1,7 +1,7 @@
 import { PageStatus } from "@/lib/page-status";
 import { ErrorType, SummaryResponse } from "@itell/core/summary";
 import { SnapshotFromStore, createStoreWithProducer } from "@xstate/store";
-import produce from "immer";
+import { produce } from "immer";
 
 export type StairsQuestion = {
 	text: string;

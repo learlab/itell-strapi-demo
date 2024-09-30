@@ -7,10 +7,12 @@ import { DelayMessage } from "@/components/delay-message";
 import {
 	useChatStore,
 	useQuestionStore,
+	useQuizStore,
 	useSummaryStore,
 } from "@/components/provider/page-provider";
 
 import { Callout } from "@/components/ui/callout";
+import { apiClient } from "@/lib/api-client";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { PageStatus } from "@/lib/page-status";
@@ -37,6 +39,7 @@ import {
 import { Elements } from "@itell/constants";
 import {
 	useDebounce,
+	useIsMobile,
 	useKeystroke,
 	usePortal,
 	useTimer,
@@ -53,7 +56,6 @@ import { SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 import "@itell/driver.js/dist/driver.css";
 import { Button } from "@itell/ui/button";
-import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
 import { ChatStairs } from "@textbook/chat-stairs";
 import { useSelector } from "@xstate/store/react";
@@ -90,11 +92,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 	const summaryResponseRef = useRef<SummaryResponse | null>(null);
 	const stairsDataRef = useRef<StairsQuestion | null>(null);
 	const stairsAnsweredRef = useRef(false);
+	const isMobile = useIsMobile();
 
 	// stores
 	const chatStore = useChatStore();
 	const questionStore = useQuestionStore();
 	const summaryStore = useSummaryStore();
+	const quizStore = useQuizStore();
 
 	// states
 	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
@@ -133,20 +137,16 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 			if (err) {
 				throw new Error("get focus time action", { cause: err });
 			}
-			const body = JSON.stringify({
+			const body = {
 				summary: input,
 				page_slug: pageSlug,
 				focus_time: focusTime?.data,
 				chat_history: getHistory(chatStore),
 				excluded_chunks: getExcludedChunks(questionStore),
-			});
-			requestBodyRef.current = body;
-			const response = await fetch("/api/itell/score/stairs", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body,
+			};
+			requestBodyRef.current = JSON.stringify(body);
+			const response = await apiClient.api.summary.stairs.$post({
+				json: body,
 			});
 
 			if (response.ok && response.body) {
@@ -160,7 +160,6 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					const { value, done: doneReading } = await reader.read();
 					done = doneReading;
 					const chunk = decoder.decode(value, { stream: true });
-
 					if (chunkIndex === 0) {
 						const data = chunk
 							.trim()
@@ -246,6 +245,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					keystroke: {
 						start: prevInput || getSummaryLocal(pageSlug) || "",
 						data: keystrokes,
+						isMobile: isMobile || false,
 					},
 				});
 				if (err) {
@@ -256,28 +256,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				finishStage("Saving");
 
 				if (data.canProceed) {
-					if (isLastPage(pageSlug)) {
-						toast.info("You have finished the entire textbook!");
-					} else {
-						// check if we can already proceed to prevent excessive toasts
-						if (isNextPageVisible) {
-							const title = feedback?.isPassed
-								? "Good job summarizing 🎉"
-								: "You can now move on 👏";
-							toast(title, {
-								className: "toast",
-								description: "Move to the next page to continue reading",
-								duration: 5000,
-								action: page.nextPageSlug
-									? {
-											label: "Proceed",
-											onClick: () => {
-												router.push(makePageHref(page.nextPageSlug as string));
-											},
-										}
-									: undefined,
-							});
-						}
+					if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
+						quizStore.send({
+							type: "toggleQuiz",
+						});
+						return;
 					}
 				}
 
@@ -304,6 +287,31 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 		{ delayTimeout: 20000 },
 	);
 	const isPending = useDebounce(_isPending, 100);
+
+	useEffect(() => {
+		if (summaryResponseRef.current) {
+			if (isLastPage(pageSlug)) {
+				toast.info("You have finished the entire textbook!");
+			} else {
+				const title = feedback?.isPassed
+					? "Good job summarizing 🎉"
+					: "You can now move on 👏";
+				toast(title, {
+					className: "toast",
+					description: "Move to the next page to continue reading",
+					duration: 5000,
+					action: page.next_slug
+						? {
+								label: "Proceed",
+								onClick: () => {
+									router.push(makePageHref(page.next_slug as string));
+								},
+							}
+						: undefined,
+				});
+			}
+		}
+	}, [isNextPageVisible]);
 
 	useEffect(() => {
 		driverObj.setConfig({
@@ -426,8 +434,8 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 				)}
 
 				<div className="flex gap-2 items-center">
-					{isNextPageVisible && page.nextPageSlug && (
-						<NextPageButton pageSlug={page.nextPageSlug} />
+					{isNextPageVisible && page.next_slug && (
+						<NextPageButton pageSlug={page.next_slug} />
 					)}
 					{stairsQuestion && (
 						<Button
@@ -436,12 +444,11 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						>
 							<span className="flex items-center gap-2">
 								<FileQuestionIcon className="size-4" />
-								See question
+								Reflection
 							</span>
 						</Button>
 					)}
 				</div>
-
 				<Confetti active={feedback?.isPassed || false} />
 				<h2 id="summary-form-heading" className="sr-only">
 					submit summary
@@ -451,6 +458,13 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 					onSubmit={action}
 					aria-labelledby="summary-form-heading"
 				>
+					{submissionError && (
+						<Callout variant="warning" title="Error">
+							{ErrorFeedback[submissionError]}
+						</Callout>
+					)}
+					{isDelayed && <DelayMessage />}
+
 					<SummaryInput
 						disabled={!isSummaryReady}
 						pageSlug={pageSlug}
@@ -461,11 +475,7 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 						prevInput={prevInput}
 						ref={ref}
 					/>
-					{submissionError && (
-						<Callout variant="warning" title="Error">
-							{ErrorFeedback[submissionError]}
-						</Callout>
-					)}
+
 					<div className="flex justify-end">
 						<Button
 							type="submit"
@@ -473,13 +483,12 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 							pending={isPending}
 						>
 							<span className="inline-flex items-center gap-2">
-								<SendHorizontalIcon className="size-4" />
+								<SendHorizontalIcon className="size-3" />
 								Submit
 							</span>
 						</Button>
 					</div>
 				</form>
-				{isDelayed && <DelayMessage />}
 			</div>
 		</>
 	);
@@ -487,7 +496,9 @@ export const SummaryFormStairs = ({ user, page, pageStatus }: Props) => {
 
 const FinishReadingButton = ({
 	onClick,
-}: { onClick: (val: number) => void }) => {
+}: {
+	onClick: (val: number) => void;
+}) => {
 	const store = useChatStore();
 	const stairsAnswered = useSelector(store, SelectStairsAnswered);
 	const { time, clearTimer } = useTimer();

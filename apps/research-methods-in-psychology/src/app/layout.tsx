@@ -16,12 +16,12 @@ export async function generateMetadata(): Promise<Metadata> {
 			template: `%s | ${SiteConfig.title}`,
 		},
 		description: SiteConfig.description,
-		metadataBase: new URL(env.HOST),
+		metadataBase: new URL(env.NEXT_PUBLIC_HOST),
 		openGraph: {
 			title: SiteConfig.title,
 			description: SiteConfig.description,
 			type: "article",
-			url: env.HOST,
+			url: env.NEXT_PUBLIC_HOST,
 			images: [
 				{
 					url: "/og",

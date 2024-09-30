@@ -24,6 +24,7 @@ export const SummaryDescription = ({ condition }: { condition: string }) => {
 				skip to summary submission
 			</a>
 			<HtmlRenderer
+				className="xl:text-lg xl:leading-relaxed"
 				components={{
 					"i-image": Image,
 					"i-accordion": Accordion,

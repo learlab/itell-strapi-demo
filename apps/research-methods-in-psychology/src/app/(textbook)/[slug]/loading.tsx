@@ -43,7 +43,7 @@ export default async function () {
 			</div>
 
 			<div id={Elements.TEXTBOOK_MAIN}>
-				<PageTitle>{page.title}</PageTitle>
+				<PageTitle className="mb-8">{page.title}</PageTitle>
 
 				{arr.map((i) => (
 					<Skeleton className="w-full h-28 mb-4" key={i} />

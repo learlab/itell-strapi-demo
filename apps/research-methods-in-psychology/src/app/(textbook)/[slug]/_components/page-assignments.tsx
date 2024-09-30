@@ -2,8 +2,10 @@ import { Condition } from "@/lib/constants";
 import { PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/utils";
 import { Elements } from "@itell/constants";
+import { Errorbox } from "@itell/ui/callout";
 import { User } from "lucia";
 import { Suspense } from "react";
+import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
@@ -25,12 +27,12 @@ export const PageAssignments = async ({
 }: Props) => {
 	const page = getPageData(pageSlug);
 	if (!page) {
-		return <p>no summary found</p>;
+		return <Errorbox>failed to load assignments</Errorbox>;
 	}
 
 	return (
 		<section
-			className="grid gird-cols-1 lg:grid-cols-3 gap-8 p-4 lg:p-8 border-t-2 mb-20 "
+			className="grid gird-cols-1 lg:grid-cols-3 gap-8 p-4 lg:p-8 border-t-2 mb-20 max-w-[1800px] mx-auto"
 			id={Elements.PAGE_ASSIGNMENTS}
 			aria-labelledby="page-assignments-heading"
 		>
@@ -71,6 +73,8 @@ export const PageAssignments = async ({
 					</div>
 				</>
 			)}
+
+			<PageQuizModal page={page} />
 		</section>
 	);
 };

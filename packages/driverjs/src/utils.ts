@@ -86,8 +86,12 @@ export function isElementVisible(el: HTMLElement) {
 export const fixHighlight = (activeHighlight: Element) => {
 	if (!document.body.contains(activeHighlight)) {
 		if (activeHighlight.classList.contains("content-chunk")) {
-			const id = (activeHighlight as HTMLElement).dataset.subsectionId;
-			const el = document.querySelector(`[data-subsection-id="${id}"]`);
+			const id =
+				(activeHighlight as HTMLElement).dataset.subsectionId ||
+				(activeHighlight as HTMLElement).dataset.chunkSlug;
+			const el =
+				document.querySelector(`[data-subsection-id="${id}"]`) ||
+				document.querySelector(`[data-chunk-slug="${id}"]`);
 			if (el) {
 				el.classList.add("driver-active-element");
 				el.setAttribute("tabIndex", "0");
@@ -125,7 +129,10 @@ export const setInertBackground = (slug: string) => {
 		?.setAttribute("inert", "true");
 	document.getElementById(Elements.PAGE_PAGER)?.setAttribute("inert", "true");
 	document.querySelectorAll(".content-chunk").forEach((el) => {
-		const chunk = el.getAttribute("data-subsection-id");
+		let chunk = el.getAttribute("data-subsection-id");
+		if (!chunk) {
+			chunk = el.getAttribute("data-chunk-slug");
+		}
 		if (chunk !== slug) {
 			el.setAttribute("inert", "true");
 		}

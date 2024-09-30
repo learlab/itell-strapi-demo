@@ -3,7 +3,7 @@ import { Meta } from "@/config/metadata";
 import { User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
-import { firstAssignmentPage, firstPage } from "@/lib/pages";
+import { firstAssignmentPage } from "@/lib/pages";
 import { getPageData } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";

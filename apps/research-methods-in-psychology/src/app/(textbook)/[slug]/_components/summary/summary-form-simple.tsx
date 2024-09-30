@@ -1,7 +1,10 @@
 "use client";
 import { incrementUserPageSlugAction } from "@/actions/user";
 import { DelayMessage } from "@/components/delay-message";
-import { useQuestionStore } from "@/components/provider/page-provider";
+import {
+	useQuestionStore,
+	useQuizStore,
+} from "@/components/provider/page-provider";
 import { PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
@@ -24,8 +27,8 @@ type Props = {
 
 export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 	const questionStore = useQuestionStore();
+	const quizStore = useQuizStore();
 	const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
-
 	const router = useRouter();
 	const [finished, setFinished] = useState(pageStatus.unlocked);
 
@@ -38,8 +41,8 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 	} = useActionStatus(
 		async (e: FormEvent) => {
 			e.preventDefault();
-			if (finished && page.nextPageSlug) {
-				router.push(page.nextPageSlug);
+			if (finished && page.next_slug) {
+				router.push(page.next_slug);
 				return;
 			}
 			const [data, err] = await incrementUserPageSlugAction({
@@ -48,6 +51,14 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 			if (err) {
 				throw new Error("increment user page slug action", { cause: err });
 			}
+
+			if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
+				quizStore.send({
+					type: "toggleQuiz",
+				});
+				return;
+			}
+
 			if (isLastPage(page.slug)) {
 				toast.info("You have finished the entire textbook!", {
 					important: true,
@@ -97,14 +108,14 @@ export const SummaryFormSimple = React.memo(({ pageStatus, page }: Props) => {
 			>
 				<StatusButton
 					pending={isPending}
-					disabled={finished && !page.nextPageSlug}
+					disabled={finished && !page.next_slug}
 					className="w-44"
 				>
 					{!finished ? (
 						<span className="inline-flex gap-1 items-center">
 							<CheckSquare2Icon className="size-4" /> Mark as completed
 						</span>
-					) : page.nextPageSlug ? (
+					) : page.next_slug ? (
 						<span className="inline-flex gap-1 items-center">
 							<ArrowRightIcon className="size-4" /> Go to next page
 						</span>

@@ -1,6 +1,5 @@
 import {
 	APIResponseCollection,
-	ApiResponseChunk,
 	ApiResponsePage,
 	ApiResponsePages,
 	ApiResponseVolumes,
@@ -120,7 +119,6 @@ export const getPage = cache(async (id: number) => {
 	if (!response.ok) {
 		return null;
 	}
-
 	const { data } = (await response.json()) as ApiResponsePage;
 	return {
 		id: data.id,
@@ -144,5 +142,6 @@ const getChunkContent = (chunk: any, pageSlug: string) => {
 	const heading = `## ${chunk.Header} {#${chunk.Slug}${
 		chunk.ShowHeader ? "" : " .sr-only"
 	}}`;
-	return `${heading}\n${chunk.MDX}${cri}`;
+	const content = "MD" in chunk ? chunk.MD : chunk.MDX;
+	return `${heading}\n${content}${cri}`;
 };
