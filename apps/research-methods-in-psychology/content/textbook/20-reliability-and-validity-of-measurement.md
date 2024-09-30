@@ -150,6 +150,6 @@ When they created the Need for Cognition Scale, Cacioppo and Petty also provided
 
 ## References {#References-259pt} 
 
-1.  Cacioppo, J. T., & Petty, R. E. (1982). The need for cognition. __Journal of Personality and Social Psychology, 42__, 116–131. ↵
-2.  Petty, R. E, Briñol, P., Loersch, C., & McCaslin, M. J. (2009). The need for cognition. In M. R. Leary & R. H. Hoyle (Eds.), __Handbook of individual differences in social behavior__ (pp. 318–329). New York, NY: Guilford Press. ↵
+1.  Cacioppo, J. T., & Petty, R. E. (1982). The need for cognition. __Journal of Personality and Social Psychology, 42__, 116–131. 
+2.  Petty, R. E, Briñol, P., Loersch, C., & McCaslin, M. J. (2009). The need for cognition. In M. R. Leary & R. H. Hoyle (Eds.), __Handbook of individual differences in social behavior__ (pp. 318–329). New York, NY: Guilford Press.
 

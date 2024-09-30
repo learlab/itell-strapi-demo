@@ -8,25 +8,25 @@ import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { MoveUpIcon } from "lucide-react";
 
-export const ScrollBackButton = () => {
-	const store = useQuestionStore();
-	const currentChunk = useSelector(store, SelectCurrentChunk);
+export function ScrollBackButton() {
+  const store = useQuestionStore();
+  const currentChunk = useSelector(store, SelectCurrentChunk);
 
-	const scrollToCurrentChunk = () => {
-		const element = getChunkElement(currentChunk, "data-chunk-slug");
-		if (element) {
-			scrollToElement(element);
-		}
-	};
+  const scrollToCurrentChunk = () => {
+    const element = getChunkElement(currentChunk, "data-chunk-slug");
+    if (element) {
+      scrollToElement(element);
+    }
+  };
 
-	return (
-		<Button
-			onClick={scrollToCurrentChunk}
-			type="button"
-			className="uppercase gap-2"
-		>
-			<MoveUpIcon className="size-4" />
-			Back to current section
-		</Button>
-	);
-};
+  return (
+    <Button
+      onClick={scrollToCurrentChunk}
+      type="button"
+      className="gap-2 uppercase"
+    >
+      <MoveUpIcon className="size-4" />
+      Back to current section
+    </Button>
+  );
+}

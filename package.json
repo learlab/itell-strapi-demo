@@ -20,6 +20,7 @@
         "dev:docs": "turbo run dev --filter @itell/docs",
         "start": "turbo run start",
         "lint": "turbo run lint",
+        "format": "turbo run format",
         "clean": "turbo run clean",
         "patch": "pnpm patch-package"
     },

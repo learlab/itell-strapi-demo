@@ -16,9 +16,9 @@ We would like to thank [the authors and contributors of the original textbook](h
 
 #### Surveys
 
-*BEFORE* you start using iTELL, make sure that you have completed your intake survey and have been explicitly redirected to this page.
+_BEFORE_ you start using iTELL, make sure that you have completed your intake survey and have been explicitly redirected to this page.
 
-You are also required to complete an outtake survey *AFTER* you FINISH using iTELL. You will be automatically redirected to the outtake survey after you have completed all iTELL tasks. The outtake survey will require you to input a completion code which will be provided at the end of the task.
+You are also required to complete an outtake survey _AFTER_ you FINISH using iTELL. You will be automatically redirected to the outtake survey after you have completed all iTELL tasks. The outtake survey will require you to input a completion code which will be provided at the end of the task.
 
 #### External Plugins
 
@@ -41,9 +41,9 @@ You will be automatically logged in using your Prolific ID. If you have not been
 2. You can use your Prolific ID to log in
 
 <Image
-  src="/images/userguide/userguide_prolific_1.png"
->
-  Sign in with your Prolific ID.
+src="/images/userguide/userguide_prolific_1.png"
+
+> Sign in with your Prolific ID.
 
 The card on the right shows a preview of the textbook content.
 
@@ -69,7 +69,7 @@ Below is an overview of what a Page in an iTELL book looks like.
 
 #### Making Progress
 
-In most Pages, you will be asked to read the page and also read **1)** constructed response items and **2)** a  reference summary. You will not be able to proceed to the next page without successfully completing all tasks on your current page.
+In most Pages, you will be asked to read the page and also read **1)** constructed response items and **2)** a reference summary. You will not be able to proceed to the next page without successfully completing all tasks on your current page.
 
 ##### 1) Read
 

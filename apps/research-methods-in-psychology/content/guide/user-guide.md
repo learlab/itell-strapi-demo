@@ -16,9 +16,9 @@ We would like to thank [the authors and contributors of the original textbook](h
 
 #### Surveys
 
-*BEFORE* you start using iTELL, make sure that you have completed your intake survey and have been explicitly redirected to this page.
+_BEFORE_ you start using iTELL, make sure that you have completed your intake survey and have been explicitly redirected to this page.
 
-You are also required to complete an outtake survey *AFTER* you FINISH using iTELL. You will be automatically redirected to the outtake survey after you have completed all iTELL tasks. The outtake survey will require you to input a completion code which will be provided at the end of the task.
+You are also required to complete an outtake survey _AFTER_ you FINISH using iTELL. You will be automatically redirected to the outtake survey after you have completed all iTELL tasks. The outtake survey will require you to input a completion code which will be provided at the end of the task.
 
 #### External Plugins
 

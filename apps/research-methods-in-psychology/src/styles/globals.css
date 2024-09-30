@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 .tooltip {
-    position: absolute;
-    width: max-content;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
 }
 
 .page-nav-active {
-    @apply text-primary font-semibold
+  @apply font-semibold text-primary;
 }
 
 .question-container {
-    margin: 1em 0;
-    user-select: none;
+  margin: 1em 0;
+  user-select: none;
 }
 
 .driver-active #page-nav,
@@ -23,137 +23,134 @@
 .driver-active #site-nav,
 .driver-active #chatbot-container,
 .driver-active .question-container {
-    display: none;
+  display: none;
 }
 
 .driver-active #textbook-main-wrapper {
-    grid-template-columns: 1fr;
-    max-width: 60%;
+  grid-template-columns: 1fr;
+  max-width: 60%;
 }
 
 .driver-popover {
-    @apply max-w-80 bg-background text-foreground !important;
+  @apply max-w-80 bg-background text-foreground !important;
 }
-
 
 #page-content button,
 #page-content #page-pager,
 #page-content .note {
-    user-select: none;
+  user-select: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    html {
-        scroll-behavior: smooth;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::view-transition-group(root) {
+    animation-duration: 0.7s;
+    animation-timing-function: var(--expo-out);
+  }
+
+  ::view-transition-new(root) {
+    animation-name: reveal-light;
+  }
+
+  ::view-transition-old(root),
+  .dark::view-transition-old(root) {
+    z-index: -1;
+    animation: none;
+  }
+
+  .dark::view-transition-new(root) {
+    animation-name: reveal-dark;
+  }
+
+  @keyframes reveal-dark {
+    from {
+      clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
     }
 
+    to {
+      clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+    }
+  }
 
-    ::view-transition-group(root) {
-        animation-duration: 0.7s;
-        animation-timing-function: var(--expo-out);
+  @keyframes reveal-light {
+    from {
+      clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
     }
 
-    ::view-transition-new(root) {
-        animation-name: reveal-light;
+    to {
+      clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+    }
+  }
+
+  [popover] {
+    animation: popover 0.2s ease-out;
+  }
+
+  @keyframes popover {
+    0% {
+      opacity: 0;
     }
 
-    ::view-transition-old(root),
-    .dark::view-transition-old(root) {
-        animation: none;
-        z-index: -1;
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .shake {
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 2;
+    animation-name: shake;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
     }
 
-    .dark::view-transition-new(root) {
-        animation-name: reveal-dark;
+    20% {
+      transform: translateX(-10px);
     }
 
-    @keyframes reveal-dark {
-        from {
-            clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
-        }
-
-        to {
-            clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
-        }
+    40% {
+      transform: translateX(10px);
     }
 
-    @keyframes reveal-light {
-        from {
-            clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
-        }
-
-        to {
-            clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
-        }
+    60% {
+      transform: translateX(-10px);
     }
 
-    [popover] {
-        animation: popover 0.2s ease-out;
+    80% {
+      transform: translateX(10px);
     }
 
-    @keyframes popover {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
+    100% {
+      transform: translateX(0);
     }
-
-    .shake {
-        animation-name: shake;
-        animation-duration: 0.3s;
-        animation-timing-function: ease-out;
-        animation-iteration-count: 2;
-    }
-
-    @keyframes shake {
-        0% {
-            transform: translateX(0);
-        }
-
-        20% {
-            transform: translateX(-10px);
-        }
-
-        40% {
-            transform: translateX(10px);
-        }
-
-        60% {
-            transform: translateX(-10px);
-        }
-
-        80% {
-            transform: translateX(10px);
-        }
-
-        100% {
-            transform: translateX(0);
-        }
-    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-    html {
-        scroll-behavior: auto;
-    }
+  ::view-transition-group(root),
+  ::view-transition-new(root),
+  ::view-transition-old(root),
+  .dark::view-transition-old(root),
+  .dark::view-transition-new(root) {
+    animation: none;
+  }
 
-    ::view-transition-group(root),
-    ::view-transition-new(root),
-    ::view-transition-old(root),
-    .dark::view-transition-old(root),
-    .dark::view-transition-new(root) {
-        animation: none;
-    }
+  .shake {
+    animation: none;
+  }
 
-    .shake {
-        animation: none;
-    }
-
-    [popover] {
-        animation: none;
-    }
+  [popover] {
+    animation: none;
+  }
 }

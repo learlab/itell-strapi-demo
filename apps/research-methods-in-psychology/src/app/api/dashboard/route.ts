@@ -5,18 +5,18 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const GET = async (req: Request) => {
-	const { user } = await getSession();
-	if (!user) {
-		return redirect("/auth");
-	}
-	const [teacher, _] = await getTeacherAction();
-	const isTeacher = !!teacher;
+  const { user } = await getSession();
+  if (!user) {
+    return redirect("/auth");
+  }
+  const [teacher, _] = await getTeacherAction();
+  const isTeacher = Boolean(teacher);
 
-	if (isTeacher) {
-		cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);
-	} else {
-		cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.STUDENT);
-	}
-	const redirectPath = isTeacher ? "/dashboard/teacher" : "/dashboard";
-	return redirect(redirectPath);
+  if (isTeacher) {
+    cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);
+  } else {
+    cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.STUDENT);
+  }
+  const redirectPath = isTeacher ? "/dashboard/teacher" : "/dashboard";
+  return redirect(redirectPath);
 };

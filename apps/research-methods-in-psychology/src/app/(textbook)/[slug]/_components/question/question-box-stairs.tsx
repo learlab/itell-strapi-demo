@@ -1,19 +1,21 @@
 "use client";
 
-import { client } from "@/actions/db";
-import { createQuestionAnswerAction } from "@/actions/question";
+import React, { useEffect, useRef, useState } from "react";
+
+import {
+  createQuestionAnswerAction,
+  getUserQuestionStreakAction,
+} from "@/actions/question";
 import {
   useChunks,
   useQuestionStore,
-  useCondition,
 } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { apiClient } from "@/lib/api-client";
-import { isProduction } from "@/lib/constants";
-import { Condition } from "@/lib/constants";
+import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
-import { useDebounce, useLocalStorage } from "@itell/core/hooks";
+import { useDebounce } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import {
@@ -27,15 +29,14 @@ import { TextArea } from "@itell/ui/textarea";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { AlertTriangle, Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
+import { useServerAction } from "zsa-react";
+
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
-import { QuestionScore, StatusStairs, borderColors } from "./types";
-import { useServerAction } from "zsa-react";
-import { getUserQuestionStreakAction } from "@/actions/question";
+import { borderColors, StatusStairs, type QuestionScore } from "./types";
 
 type Props = {
   question: string;
@@ -51,12 +52,12 @@ type State = {
   input: string;
 };
 
-export const QuestionBoxStairs = async ({
+export function QuestionBoxStairs({
   question,
   answer,
   chunkSlug,
   pageSlug,
-}: Props) => {
+}: Props) {
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
@@ -149,7 +150,6 @@ export const QuestionBoxStairs = async ({
         input,
         show: true,
       });
-      return;
     }
   });
 
@@ -178,16 +178,17 @@ export const QuestionBoxStairs = async ({
         reportSentry("get user question streak", { err });
         return;
       }
-      console.log(streak);
-      setStreak(streak ?? 0);
+      setStreak(streak);
     });
   }, []);
 
   if (!state.show) {
     return (
       <Button
-        variant={"outline"}
-        onClick={() => setState((state) => ({ ...state, show: true }))}
+        variant="outline"
+        onClick={() => {
+          setState((state) => ({ ...state, show: true }));
+        }}
       >
         Reveal optional question
       </Button>
@@ -197,17 +198,17 @@ export const QuestionBoxStairs = async ({
   return (
     <Card
       className={cn(
-        "flex justify-center items-center flex-col py-4 px-6 space-y-2 animate-in fade-in zoom-10",
-        `${borderColor}`,
+        "zoom-10 flex flex-col items-center justify-center space-y-2 px-6 py-4 animate-in fade-in",
+        borderColor,
         { shake: state.status === StatusStairs.BOTH_INCORRECT }
       )}
     >
       <Confetti active={status === StatusStairs.BOTH_CORRECT} />
 
-      <CardHeader className="flex flex-row justify-center items-baseline w-full p-2 gap-1">
-        <CardDescription className="flex justify-center items-center font-light text-zinc-500 w-10/12 mr-4 text-xs">
+      <CardHeader className="flex w-full flex-row items-baseline justify-center gap-1 p-2">
+        <CardDescription className="mr-4 flex w-10/12 items-center justify-center text-xs font-light text-zinc-500">
           {" "}
-          <AlertTriangle className="stroke-yellow-400 mr-4" /> iTELL AI is in
+          <AlertTriangle className="mr-4 stroke-yellow-400" /> iTELL AI is in
           alpha testing. It will try its best to help you but it can still make
           mistakes. Let us know how you feel about iTELL AI's performance using
           the feedback icons to the right (thumbs up or thumbs down).{" "}
@@ -224,7 +225,7 @@ export const QuestionBoxStairs = async ({
         />
       </CardHeader>
 
-      <CardContent className="flex flex-col justify-center items-center space-y-4 w-4/5 mx-auto">
+      <CardContent className="mx-auto flex w-4/5 flex-col items-center justify-center space-y-4">
         <div role="status" className="spacey-y-4">
           {status === StatusStairs.BOTH_INCORRECT && (
             <div className="text-sm">
@@ -241,7 +242,7 @@ export const QuestionBoxStairs = async ({
           )}
 
           {status === StatusStairs.SEMI_CORRECT && (
-            <p className="text-yellow-600 text-xs">
+            <p className="text-xs text-yellow-600">
               <b>iTELL AI says:</b> You may have missed something, but you were
               generally close. You can click on the "Continue reading" button
               below go to the next part or try again with a different response.{" "}
@@ -249,18 +250,18 @@ export const QuestionBoxStairs = async ({
           )}
 
           {status === StatusStairs.BOTH_CORRECT ? (
-            <div className="flex items-center flex-col">
-              <p className="text-xl2 text-emerald-600 text-center">
+            <div className="flex flex-col items-center">
+              <p className="text-xl2 text-center text-emerald-600">
                 Your answer is correct!
               </p>
-              {shouldBlur && (
+              {shouldBlur ? (
                 <p className="text-sm">
                   Click on the button below to continue reading. Please use the
                   thumbs-up or thumbs-down icons on the top right side of this
                   box if you have any feedback about this question that you
                   would like to provide before you continue reading.
                 </p>
-              )}
+              ) : null}
             </div>
           ) : (
             question && (
@@ -294,7 +295,7 @@ export const QuestionBoxStairs = async ({
             <TextArea
               name="input"
               rows={2}
-              className="max-w-lg mx-auto rounded-md shadow-md p-4"
+              className="mx-auto max-w-lg rounded-md p-4 shadow-md"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && e.shiftKey) {
                   e.preventDefault();
@@ -305,7 +306,6 @@ export const QuestionBoxStairs = async ({
                 if (e.key === "Enter") {
                   e.preventDefault();
                   form.current?.requestSubmit();
-                  return;
                 }
               }}
               onPaste={(e) => {
@@ -317,17 +317,17 @@ export const QuestionBoxStairs = async ({
             />
           </Label>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
             {status !== StatusStairs.UNANSWERED && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <Button variant={"outline"} type="button" className="gap-2">
+                  <Button variant="outline" type="button" className="gap-2">
                     <KeyRoundIcon className="size-4" />
                     Reveal Answer
                   </Button>
                 </HoverCardTrigger>
-                <HoverCardContent className="w-80 ">
-                  <p className="leading-relaxed no-select">{answer}</p>
+                <HoverCardContent className="w-80">
+                  <p className="no-select leading-relaxed">{answer}</p>
                 </HoverCardContent>
               </HoverCard>
             )}
@@ -347,7 +347,7 @@ export const QuestionBoxStairs = async ({
                     pending={isPending}
                     type="submit"
                     disabled={_isPending}
-                    variant={"outline"}
+                    variant="outline"
                   >
                     <span className="flex items-center gap-2">
                       <PencilIcon className="size-4" />
@@ -356,21 +356,20 @@ export const QuestionBoxStairs = async ({
                   </StatusButton>
                 )}
 
-                {status !== StatusStairs.UNANSWERED &&
-                  isNextButtonDisplayed && (
-                    <FinishQuestionButton
-                      chunkSlug={chunkSlug}
-                      pageSlug={pageSlug}
-                      condition={Condition.STAIRS}
-                    />
-                  )}
+                {status !== StatusStairs.UNANSWERED && isNextButtonDisplayed ? (
+                  <FinishQuestionButton
+                    chunkSlug={chunkSlug}
+                    pageSlug={pageSlug}
+                    condition={Condition.STAIRS}
+                  />
+                ) : null}
               </>
             )}
           </div>
-          {state.error && (
-            <p className="text-red-500 text-sm text-center">{state.error}</p>
-          )}
-          <div className="flex items-center justify-center mt-4">
+          {state.error ? (
+            <p className="text-center text-sm text-red-500">{state.error}</p>
+          ) : null}
+          <div className="mt-4 flex items-center justify-center">
             {(status === StatusStairs.SEMI_CORRECT ||
               status === StatusStairs.BOTH_INCORRECT) && (
               <ExplainButton
@@ -384,4 +383,4 @@ export const QuestionBoxStairs = async ({
       </CardContent>
     </Card>
   );
-};
+}

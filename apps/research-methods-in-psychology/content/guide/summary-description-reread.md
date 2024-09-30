@@ -9,14 +9,14 @@ condition: summary_description_reread
 
 A successful summary will
 
-* Be within 50 ~ 200 words long
+- Be within 50 ~ 200 words long
 
-* Be written in English
+- Be written in English
 
-* Be on topic
+- Be on topic
 
-* Not be plagiarized
+- Not be plagiarized
 
-* Use appropriate language
+- Use appropriate language
 
 </div>

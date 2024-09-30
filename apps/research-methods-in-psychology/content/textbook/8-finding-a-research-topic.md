@@ -126,7 +126,7 @@ The research literature in psychology is enormous—including millions of schola
 
 ## Professional Journals {#Professional-Journals-725t} 
 
-[**Professional journals**](https://kpu.pressbooks.pub/psychmethods4e/chapter/finding-a-research-topic/#term_34_861) are periodicals that publish original research articles. There are thousands of professional journals that publish research in psychology and related fields. They are usually published monthly or quarterly in individual issues, each of which contains several articles. The issues are organized into volumes, which usually consist of all the issues for a calendar year. Some journals are published in hard copy only, others in both hard copy and electronic form, and still others in electronic form only.
+**Professional journals** are periodicals that publish original research articles. There are thousands of professional journals that publish research in psychology and related fields. They are usually published monthly or quarterly in individual issues, each of which contains several articles. The issues are organized into volumes, which usually consist of all the issues for a calendar year. Some journals are published in hard copy only, others in both hard copy and electronic form, and still others in electronic form only.
 
 Most articles in professional journals are one of two basic types: empirical research reports and review articles. **Empirical research reports** describe one or more new empirical studies conducted by the authors. They introduce a research question, explain why it is interesting, review previous research, describe their method and results, and draw their conclusions. **Review articles** summarize previously published research on a topic and usually present new ways to organize or explain the results. When a review article is devoted primarily to presenting a new theory, it is often referred to as a **theoretical article**. When a review article provides a statistical summary of all of the previous results it is referred to as a **meta-analysis**.
 
@@ -182,7 +182,7 @@ How many sources are enough for your literature review? This is a difficult ques
 
 * * *
 
-1.  Weisberg, R. W. (1993). __Creativity: Beyond the myth of genius__. New York, NY: Freeman. ↵
-2.  Milgram, S. (1963). Behavioral study of obedience. __Journal of Abnormal and Social Psychology, 67__, 371–378. ↵
-3.  Adair, J. G., & Vohra, N. (2003). The explosion of knowledge, references, and citations: Psychology’s unique response to a crisis. __American Psychologist, 58__, 15–23. ↵
+1.  Weisberg, R. W. (1993). __Creativity: Beyond the myth of genius__. New York, NY: Freeman. 
+2.  Milgram, S. (1963). Behavioral study of obedience. __Journal of Abnormal and Social Psychology, 67__, 371–378. 
+3.  Adair, J. G., & Vohra, N. (2003). The explosion of knowledge, references, and citations: Psychology’s unique response to a crisis. __American Psychologist, 58__, 15–23.
 

@@ -5,8 +5,8 @@ import { QuestionBoxReread } from "@textbook/question/question-box-reread";
 import { QuestionBoxSimple } from "@textbook/question/question-box-simple";
 import { QuestionBoxStairs } from "@textbook/question/question-box-stairs";
 import { useSelector } from "@xstate/store/react";
+
 import { useCondition, useQuestionStore } from "../provider/page-provider";
-// import { getSession } from "@/lib/auth";
 
 type Props = {
   question: string;
@@ -15,12 +15,7 @@ type Props = {
   pageSlug: string;
 };
 
-export const Question = async ({
-  question,
-  answer,
-  chunkSlug,
-  pageSlug,
-}: Props) => {
+export function Question({ question, answer, chunkSlug, pageSlug }: Props) {
   const store = useQuestionStore();
   const condition = useCondition();
   const chunkStatus = useSelector(
@@ -28,10 +23,7 @@ export const Question = async ({
     (store) => store.context.chunkStatus[chunkSlug]
   );
 
-  // const userId = (await getSession()).user?.id;
-  // console.log(userId);
-
-  if (!chunkStatus || !chunkStatus.hasQuestion) return null;
+  if (!chunkStatus.hasQuestion) return null;
 
   return (
     <div className="question-container my-6">
@@ -61,4 +53,4 @@ export const Question = async ({
       )}
     </div>
   );
-};
+}

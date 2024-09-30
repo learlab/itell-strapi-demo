@@ -47,12 +47,8 @@
           "name": "chat_messages_user_id_users_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -60,10 +56,7 @@
       "compositePrimaryKeys": {
         "chat_messages_pkey": {
           "name": "chat_messages_pkey",
-          "columns": [
-            "user_id",
-            "page_slug"
-          ]
+          "columns": ["user_id", "page_slug"]
         }
       },
       "uniqueConstraints": {}
@@ -125,9 +118,7 @@
       "indexes": {
         "constructed_responses_user_id_idx": {
           "name": "constructed_responses_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -136,12 +127,8 @@
           "name": "constructed_responses_user_id_users_id_fk",
           "tableFrom": "constructed_responses",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -209,12 +196,8 @@
           "name": "constructed_responses_feedback_user_id_users_id_fk",
           "tableFrom": "constructed_responses_feedback",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -273,9 +256,7 @@
       "indexes": {
         "events_user_id_idx": {
           "name": "events_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -284,12 +265,8 @@
           "name": "events_user_id_users_id_fk",
           "tableFrom": "events",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -340,12 +317,8 @@
           "name": "focus_times_user_id_users_id_fk",
           "tableFrom": "focus_times",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -353,10 +326,7 @@
       "compositePrimaryKeys": {
         "focus_times_pkey": {
           "name": "focus_times_pkey",
-          "columns": [
-            "user_id",
-            "page_slug"
-          ]
+          "columns": ["user_id", "page_slug"]
         }
       },
       "uniqueConstraints": {}
@@ -431,9 +401,7 @@
       "indexes": {
         "notes_user_id_idx": {
           "name": "notes_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -442,12 +410,8 @@
           "name": "notes_user_id_users_id_fk",
           "tableFrom": "notes",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -484,12 +448,8 @@
           "name": "oauth_accounts_user_id_users_id_fk",
           "tableFrom": "oauth_accounts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -497,10 +457,7 @@
       "compositePrimaryKeys": {
         "oauth_accounts_pk": {
           "name": "oauth_accounts_pk",
-          "columns": [
-            "provider_id",
-            "provider_user_id"
-          ]
+          "columns": ["provider_id", "provider_user_id"]
         }
       },
       "uniqueConstraints": {}
@@ -538,9 +495,7 @@
       "indexes": {
         "sessions_user_id_idx": {
           "name": "sessions_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -549,12 +504,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -644,9 +595,7 @@
       "indexes": {
         "summaries_user_id_idx": {
           "name": "summaries_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -655,12 +604,8 @@
           "name": "summaries_user_id_users_id_fk",
           "tableFrom": "summaries",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -795,69 +740,37 @@
     "public.aal_level": {
       "name": "aal_level",
       "schema": "public",
-      "values": [
-        "aal1",
-        "aal2",
-        "aal3"
-      ]
+      "values": ["aal1", "aal2", "aal3"]
     },
     "public.action": {
       "name": "action",
       "schema": "public",
-      "values": [
-        "INSERT",
-        "UPDATE",
-        "DELETE",
-        "TRUNCATE",
-        "ERROR"
-      ]
+      "values": ["INSERT", "UPDATE", "DELETE", "TRUNCATE", "ERROR"]
     },
     "public.code_challenge_method": {
       "name": "code_challenge_method",
       "schema": "public",
-      "values": [
-        "s256",
-        "plain"
-      ]
+      "values": ["s256", "plain"]
     },
     "public.equality_op": {
       "name": "equality_op",
       "schema": "public",
-      "values": [
-        "eq",
-        "neq",
-        "lt",
-        "lte",
-        "gt",
-        "gte",
-        "in"
-      ]
+      "values": ["eq", "neq", "lt", "lte", "gt", "gte", "in"]
     },
     "public.factor_status": {
       "name": "factor_status",
       "schema": "public",
-      "values": [
-        "unverified",
-        "verified"
-      ]
+      "values": ["unverified", "verified"]
     },
     "public.factor_type": {
       "name": "factor_type",
       "schema": "public",
-      "values": [
-        "totp",
-        "webauthn"
-      ]
+      "values": ["totp", "webauthn"]
     },
     "public.key_status": {
       "name": "key_status",
       "schema": "public",
-      "values": [
-        "default",
-        "valid",
-        "invalid",
-        "expired"
-      ]
+      "values": ["default", "valid", "invalid", "expired"]
     },
     "public.key_type": {
       "name": "key_type",

@@ -1,0 +1,2 @@
+CREATE INDEX IF NOT EXISTS "constructed_responses_page_slug_idx" ON "constructed_responses" ("page_slug");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "notes_page_slug_idx" ON "notes" ("page_slug");

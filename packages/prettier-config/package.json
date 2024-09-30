@@ -1,0 +1,11 @@
+{
+    "name": "@itell/prettier-config",
+    "version": "0.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "devDependencies": {
+        "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+        "prettier-plugin-css-order": "^2.1.2",
+        "prettier-plugin-tailwindcss": "^0.6.8"
+    }
+}
