@@ -5,8 +5,9 @@ import {
   useSummaryStore,
 } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
+import { PageStatus } from "@/lib/page-status";
 import { isLastPage, type PageData } from "@/lib/pages/pages.client";
-import { SelectQuizOpen } from "@/lib/store/quiz-store";
+import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
 import { Button } from "@itell/ui/button";
 import {
   Dialog,
@@ -23,15 +24,15 @@ import { PageQuiz } from "./page-quiz";
 
 export function PageQuizModal({
   page,
-  showTrigger = false,
+  pageStatus,
 }: {
   page: PageData;
-  showTrigger: boolean;
+  pageStatus: PageStatus;
 }) {
   const quizStore = useQuizStore();
   const summaryStore = useSummaryStore();
   const quizOpen = useSelector(quizStore, SelectQuizOpen);
-
+  const quizFinished = useSelector(quizStore, SelectQuizFinished);
   return (
     <Dialog
       open={quizOpen}
@@ -41,7 +42,9 @@ export function PageQuizModal({
         }
       }}
     >
-      {showTrigger ? (
+      {/* show button if page is unlocked but quiz is not finished in localStorage, this might happen if user refreshes the page
+       */}
+      {pageStatus.unlocked && quizFinished === false ? (
         <DialogTrigger asChild>
           <Button variant="outline" className="flex items-center gap-2">
             <BookCheckIcon className="size-4" />

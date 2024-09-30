@@ -105,8 +105,8 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
     });
     if (!err) {
       setOpen(false);
-      if (pageSlug) {
-        window.location.href = makePageHref(pageSlug);
+      if (newPageSlug) {
+        window.location.href = makePageHref(newPageSlug);
       } else {
         window.location.reload();
       }

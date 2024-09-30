@@ -85,6 +85,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
       });
 
       // Each page will have at least one question
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!withQuestion) {
         const randomQuestion =
           page.cri[Math.floor(Math.random() * page.cri.length)];
@@ -122,7 +123,10 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
 
   const quizStoreRef = useRef<QuizStore>();
   if (!quizStoreRef.current) {
-    quizStoreRef.current = createQuizStore({ finished: quizFinished });
+    quizStoreRef.current = createQuizStore({
+      finished: quizFinished,
+      pageStatus,
+    });
   }
 
   useEffect(() => {
@@ -135,8 +139,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     }
 
     if (quizStoreRef.current) {
-      quizSubscription = quizStoreRef.current.on("finishQuiz", (context) => {
-        console.log("finish quiz");
+      quizSubscription = quizStoreRef.current.on("finishQuiz", () => {
         setQuizFinished(true);
       });
     }
@@ -246,7 +249,7 @@ export const useAddChat = () => {
 
       let data = {} as { text: string; context?: string[] };
 
-      if (response.ok && response.body) {
+      if (response.body) {
         await parseEventStream(response.body, (d, done) => {
           if (!done) {
             try {

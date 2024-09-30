@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 
 import { Condition } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
@@ -7,6 +7,7 @@ import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
 import { type User } from "lucia";
 
+import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
@@ -58,6 +59,9 @@ export function PageAssignments({
           </div>
 
           <div className="col-span-full lg:col-span-2">
+            {condition !== Condition.SIMPLE ? (
+              <PageQuizModal page={page} pageStatus={pageStatus} />
+            ) : null}
             {condition === Condition.RANDOM_REREAD ? (
               <SummaryFormReread
                 user={user}

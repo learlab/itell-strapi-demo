@@ -1,15 +1,19 @@
 import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
 
+import { type PageStatus } from "../page-status";
+
 export type QuizStore = ReturnType<typeof createQuizStore>;
 export const createQuizStore = ({
   finished,
+  pageStatus,
 }: {
   finished: boolean | undefined;
+  pageStatus: PageStatus;
 }) => {
   return createStoreWithProducer(produce, {
     context: {
-      open: false,
+      open: pageStatus.unlocked && finished === false,
       finished,
     },
     on: {

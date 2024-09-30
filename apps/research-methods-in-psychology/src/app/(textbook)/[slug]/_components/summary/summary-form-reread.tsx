@@ -14,7 +14,6 @@ import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
 import { isLastPage, type PageData } from "@/lib/pages/pages.client";
 import { SelectSummaryReady } from "@/lib/store/question-store";
-import { SelectQuizFinished } from "@/lib/store/quiz-store";
 import { reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 import {
@@ -46,7 +45,6 @@ import { SendHorizontalIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
-import { PageQuizModal } from "../page-quiz-modal";
 import {
   getSummaryLocal,
   saveSummaryLocal,
@@ -69,7 +67,6 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
   const questionStore = useQuestionStore();
   const chunks = useChunks();
   const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
-  const quizFinished = useSelector(quizStore, SelectQuizFinished);
   const isMobile = useIsMobile();
 
   const randomChunkSlug = useMemo(() => {
@@ -256,12 +253,6 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
                 welcome to improve the summary.
               </p>
               <div className="flex items-center gap-2">
-                <PageQuizModal
-                  page={page}
-                  showTrigger={
-                    pageStatus.unlocked ? quizFinished === false : false
-                  }
-                />
                 <NextPageButton pageSlug={page.next_slug} />
               </div>
             </div>
