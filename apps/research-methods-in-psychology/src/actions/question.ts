@@ -1,5 +1,7 @@
 "use server";
 
+import { cache } from "react";
+
 import { db } from "@/actions/db";
 import {
   constructed_responses,
@@ -9,11 +11,10 @@ import {
   users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
-import { count, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { authedProcedure } from "./utils";
-import { desc } from "drizzle-orm";
 
 /**
  * Create constructed response item
@@ -21,12 +22,12 @@ import { desc } from "drizzle-orm";
 export const createQuestionAnswerAction = authedProcedure
   .input(CreateConstructedResponseSchema.omit({ userId: true }))
   .handler(async ({ input, ctx }) => {
-    if (isProduction) {
-      return await db.insert(constructed_responses).values({
-        ...input,
-        userId: ctx.user.id,
-      });
-    }
+    // if (isProduction) {
+    return await db.insert(constructed_responses).values({
+      ...input,
+      userId: ctx.user.id,
+    });
+    // }
   });
 
 /**
@@ -71,21 +72,19 @@ export const getAnswerStatsAction = authedProcedure.handler(async ({ ctx }) => {
  * Get streak of correctly answered questions for user
  */
 export const getUserQuestionStreakAction = authedProcedure.handler(
-	async ({ ctx }) => {
-		return await db.transaction(async (tx) => {
-			const records = await tx
-				.select()
-				.from(constructed_responses)
-				.where(eq(constructed_responses.userId, ctx.user.id))
-				.orderBy(desc(constructed_responses.createdAt));
-			let streak = 0;
-			while (records[streak]?.score === 2) {
-				streak++;
-			}
-			return streak;
-		});
-	},
+  async ({ ctx }) => getUserQuestionStreakHandler(ctx.user.id)
 );
+
+const getUserQuestionStreakHandler = cache(async (userId: string) => {
+  const records = await db
+    .select()
+    .from(constructed_responses)
+    .where(eq(constructed_responses.userId, userId))
+    .orderBy(desc(constructed_responses.createdAt));
+
+  const idx = records.findIndex((record) => record.score !== 2);
+  return idx === -1 ? records.length : idx;
+});
 
 /**
  * Get question-answer statistics for class

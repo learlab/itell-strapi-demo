@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   createQuestionAnswerAction,
@@ -48,8 +48,8 @@ type Props = {
 type State = {
   status: StatusStairs;
   error: string | null;
-  show: boolean;
   input: string;
+  streak: number;
 };
 
 export function QuestionBoxStairs({
@@ -61,18 +61,27 @@ export function QuestionBoxStairs({
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
-  const { execute } = useServerAction(getUserQuestionStreakAction);
 
-  const [streak, setStreak] = useState(0);
-
+  const [collapsed, setCollapsed] = useState(!shouldBlur);
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
     error: null,
-    show: shouldBlur,
     input: "",
+    streak: 0,
   });
   const chunks = useChunks();
   const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+
+  // correct answer streak
+  const { execute } = useServerAction(getUserQuestionStreakAction);
+  const getAnswerStreak = useCallback(async () => {
+    const [data, error] = await execute();
+    if (error) {
+      reportSentry("get user question streak", { error });
+    }
+
+    setState((state) => ({ ...state, streak: data ?? 0 }));
+  }, [execute]);
 
   const {
     action: onSubmit,
@@ -120,37 +129,32 @@ export function QuestionBoxStairs({
     // this will add the chunk to the list of finished chunks that gets excluded from stairs question
     if (score === 2) {
       store.send({ type: "finishChunk", chunkSlug, passed: true });
-      setStreak((streak) => streak + 1);
 
-      setState({
+      setState((state) => ({
         status: StatusStairs.BOTH_CORRECT,
         error: null,
         input,
-        show: true,
-      });
+        streak: state.streak + 1,
+      }));
       return;
     }
 
     if (score === 1) {
-      setStreak(0);
       setState({
         status: StatusStairs.SEMI_CORRECT,
         error: null,
         input,
-        show: true,
+        streak: 0,
       });
       return;
     }
 
-    if (score === 0) {
-      setStreak(0);
-      setState({
-        status: StatusStairs.BOTH_INCORRECT,
-        error: null,
-        input,
-        show: true,
-      });
-    }
+    setState({
+      status: StatusStairs.BOTH_INCORRECT,
+      error: null,
+      input,
+      streak: 0,
+    });
   });
 
   const isPending = useDebounce(_isPending, 100);
@@ -173,21 +177,15 @@ export function QuestionBoxStairs({
   }, [isError]);
 
   useEffect(() => {
-    execute().then(([streak, err]) => {
-      if (err) {
-        reportSentry("get user question streak", { err });
-        return;
-      }
-      setStreak(streak);
-    });
+    getAnswerStreak();
   }, []);
 
-  if (!state.show) {
+  if (collapsed) {
     return (
       <Button
         variant="outline"
         onClick={() => {
-          setState((state) => ({ ...state, show: true }));
+          setCollapsed(false);
         }}
       >
         Reveal optional question
@@ -210,8 +208,8 @@ export function QuestionBoxStairs({
           {" "}
           <AlertTriangle className="mr-4 stroke-yellow-400" /> iTELL AI is in
           alpha testing. It will try its best to help you but it can still make
-          mistakes. Let us know how you feel about iTELL AI's performance using
-          the feedback icons to the right (thumbs up or thumbs down).{" "}
+          mistakes. Let us know how you feel about iTELL AI&apos;s performance
+          using the feedback icons to the right (thumbs up or thumbs down).{" "}
         </CardDescription>
         <QuestionFeedback
           type="positive"
@@ -244,8 +242,9 @@ export function QuestionBoxStairs({
           {status === StatusStairs.SEMI_CORRECT && (
             <p className="text-xs text-yellow-600">
               <b>iTELL AI says:</b> You may have missed something, but you were
-              generally close. You can click on the "Continue reading" button
-              below go to the next part or try again with a different response.{" "}
+              generally close. You can click on the &quot;Continue reading&quot;
+              button below go to the next part or try again with a different
+              response.{" "}
             </p>
           )}
 
@@ -265,15 +264,16 @@ export function QuestionBoxStairs({
             </div>
           ) : (
             question && (
-              <p>
-                <span className="font-bold">Question </span>
-                {!shouldBlur && (
-                  <span className="font-bold">(Optional)</span>
-                )}: {question}
-                {streak >= 2 && (
-                  <span className="flex items-center space-x-1 text-sm text-zinc-500">
+              <p className="flex items-baseline gap-2">
+                <span className="flex-1">
+                  <span className="font-bold">Question </span>
+                  {!shouldBlur && <span className="font-bold">(Optional)</span>}
+                  : <span>{question}</span>
+                </span>
+                {state.streak >= 2 && (
+                  <span className="flex items-center space-x-1 text-sm text-muted-foreground">
                     <Flame color="#71717a" size={16} />
-                    <span>{streak}</span>
+                    <span>{state.streak}</span>
                   </span>
                 )}
               </p>
