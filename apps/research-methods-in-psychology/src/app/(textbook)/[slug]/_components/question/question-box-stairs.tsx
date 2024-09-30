@@ -2,8 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import { client } from "@/actions/db";
-import { createQuestionAnswerAction } from "@/actions/question";
+import {
+  createQuestionAnswerAction,
+  getUserQuestionStreakAction,
+} from "@/actions/question";
 import {
   useChunks,
   useQuestionStore,
@@ -26,9 +28,10 @@ import { StatusButton } from "@itell/ui/status-button";
 import { TextArea } from "@itell/ui/textarea";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { AlertTriangle, KeyRoundIcon, PencilIcon } from "lucide-react";
+import { AlertTriangle, Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
+import { useServerAction } from "zsa-react";
 
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
@@ -58,6 +61,10 @@ export function QuestionBoxStairs({
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
+  const { execute } = useServerAction(getUserQuestionStreakAction);
+
+  const [streak, setStreak] = useState(0);
+
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
     error: null,
@@ -97,8 +104,7 @@ export function QuestionBoxStairs({
       },
     });
     if (!res.ok) {
-      const { error, details } = await res.json();
-      throw new Error(error, { cause: details });
+      throw new Error("Failed to evaluate answer");
     }
     const response = await res.json();
     const score = response.score as QuestionScore;
@@ -114,6 +120,7 @@ export function QuestionBoxStairs({
     // this will add the chunk to the list of finished chunks that gets excluded from stairs question
     if (score === 2) {
       store.send({ type: "finishChunk", chunkSlug, passed: true });
+      setStreak((streak) => streak + 1);
 
       setState({
         status: StatusStairs.BOTH_CORRECT,
@@ -125,6 +132,7 @@ export function QuestionBoxStairs({
     }
 
     if (score === 1) {
+      setStreak(0);
       setState({
         status: StatusStairs.SEMI_CORRECT,
         error: null,
@@ -135,6 +143,7 @@ export function QuestionBoxStairs({
     }
 
     if (score === 0) {
+      setStreak(0);
       setState({
         status: StatusStairs.BOTH_INCORRECT,
         error: null,
@@ -159,9 +168,19 @@ export function QuestionBoxStairs({
         status: StatusStairs.PASSED,
         error: "Failed to evaluate answer, please try again later",
       }));
-      reportSentry("evaluate constructed response", { error: error?.cause });
+      reportSentry("evaluate constructed response", { error });
     }
   }, [isError]);
+
+  useEffect(() => {
+    execute().then(([streak, err]) => {
+      if (err) {
+        reportSentry("get user question streak", { err });
+        return;
+      }
+      setStreak(streak);
+    });
+  }, []);
 
   if (!state.show) {
     return (
@@ -251,6 +270,12 @@ export function QuestionBoxStairs({
                 {!shouldBlur && (
                   <span className="font-bold">(Optional)</span>
                 )}: {question}
+                {streak >= 2 && (
+                  <span className="flex items-center space-x-1 text-sm text-zinc-500">
+                    <Flame color="#71717a" size={16} />
+                    <span>{streak}</span>
+                  </span>
+                )}
               </p>
             )
           )}

@@ -97,6 +97,7 @@ export const updateUserPrefsAction = authedProcedure
       }
     });
   });
+
 /**
  * Reset user progress, also deletes all user data, including summaries, answers, events, etc.
  */
