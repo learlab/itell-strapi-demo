@@ -28,9 +28,12 @@ Once the Render instance has been redeployed, the administration panel will have
 ## Database Setup
 In order to store user data, a Postgress database needs to be set up in [Supabase](https://supabase.com/) specific to the volume. 
 
-Log into Supabase and create a new database. It will ask you to create a password. Save this password somewhere safe as you will not see this again. 
+Log into Supabase and create a new database. It will ask you to create a password. Save this password somewhere safe as you will not see this again.
 
 Then, once the database is set up, go to database settings and get the database access url. Retrieve the one that is marked for node.js. You will use this link to set up the online deployment in the next step. 
+However, you still need to push the schema to the database. Go into the your local deployment and run the command `[insert drizzle command here` to push the schema to the remote database. 
+
+The structure of the database can be found [here](https://docs.google.com/document/d/19k3G-9yRdXJx5H8iOKEw-1Ry12TnUhIfjdZ6HmOLvEs/edit#heading=h.fy27n2q590a8)
 
 ## Vercel Setup
 
