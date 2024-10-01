@@ -38,8 +38,8 @@ cri:
 - question: Why is it usually a good idea to use an existing measure when operationally defining a variable?
   answer: You save time, benefit from existing evidence of validity, and facilitate comparison with previous research results.
   slug: Operationally-Defining-the-Construct-894t
-- question: Automatic question-generation has failed. Please try again.
-  answer: Automatic answer-generation has failed. Please try again.
+- question: Why is it important to strive for simplicity when creating a new measure?
+  answer: To ensure that participants can understand and carry out the task without becoming bored or frustrated, leading to unreliable responses.
   slug: Operationally-Defining-the-Construct-2-893t
 - question: How can researchers minimize participants' reactivity in studies?
   answer: Researchers can make procedures clear and brief, guarantee anonymity, seat participants far apart in groups, use the same writing implement for all, ensure questionnaires are sealed immediately, avoid revealing hypotheses, and standardize interactions between researchers and participants.

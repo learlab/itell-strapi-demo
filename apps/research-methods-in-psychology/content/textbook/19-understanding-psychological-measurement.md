@@ -25,8 +25,8 @@ chunks:
   slug: References-257pt
   type: plain
 cri:
-- question: Automatic question-generation has failed. Please try again.
-  answer: Automatic answer-generation has failed. Please try again.
+- question: What is the key requirement for measurement according to the passage?
+  answer: Measurement requires a systematic procedure for assigning scores to individuals or objects so that those scores represent the characteristic of interest.
   slug: What-Is-Measurement?-884t
 - question: Why do researchers not simply look up psychological constructs like self-esteem or neuroticism in the dictionary?
   answer: Because many scientific constructs do not have counterparts in everyday language and researchers aim to develop more detailed and precise definitions through empirical testing and revision.

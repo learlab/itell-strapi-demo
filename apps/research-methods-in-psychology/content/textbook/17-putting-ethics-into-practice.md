@@ -30,8 +30,8 @@ chunks:
   slug: References-249pt
   type: plain
 cri:
-- question: Automatic question-generation has failed. Please try again.
-  answer: Automatic answer-generation has failed. Please try again.
+- question: What is the first thing a new researcher must do in order to fulfill their ethical responsibilities?
+  answer: Know and accept their ethical responsibilities, including understanding the relevant sections of the APA Ethics Code and institutional policies.
   slug: Know-and-Accept-Your-Ethical-Responsibilities-878t
 - question: How can researchers minimize risks to participants in a study?
   answer: Researchers can minimize risks to participants by identifying all risks, modifying research designs to reduce harm, using pre-screening procedures, and taking active steps to maintain confidentiality.
