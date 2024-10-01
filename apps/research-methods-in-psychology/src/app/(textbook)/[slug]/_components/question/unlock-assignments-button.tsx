@@ -6,6 +6,7 @@ import { EventType } from "@/lib/constants";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { Button } from "@itell/ui/button";
 import { useSelector } from "@xstate/store/react";
+import { KeyIcon } from "lucide-react";
 
 export function UnlockAssignmentsButton({
   pageSlug,
@@ -35,7 +36,8 @@ export function UnlockAssignmentsButton({
         });
       }}
     >
-      Unlock assignments
+      <KeyIcon className="mr-2 h-4 w-4" />
+      <span>Unlock assignments</span>
     </Button>
   );
 }

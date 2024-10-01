@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 
 import { Condition } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
@@ -7,6 +7,7 @@ import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
 import { type User } from "lucia";
 
+import { FinishedLink } from "./finished-link";
 import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
@@ -59,6 +60,9 @@ export function PageAssignments({
           </div>
 
           <div className="col-span-full lg:col-span-2">
+            {user.finished ? (
+              <FinishedLink href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+            ) : null}
             {condition !== Condition.SIMPLE ? (
               <PageQuizModal page={page} pageStatus={pageStatus} />
             ) : null}
