@@ -2,6 +2,7 @@ import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { MainNav } from "@/components/main-nav";
+import { MobilePopup } from "@/components/mobile-popup";
 import { SiteConfig } from "@/config/site";
 import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
@@ -17,6 +18,7 @@ export default async function () {
         tabIndex={-1}
       >
         <HtmlRenderer html={home.html} />
+        <MobilePopup />
         <div className="flex items-center justify-center">
           <ContinueReading className="w-48" />
         </div>
