@@ -83,10 +83,22 @@ export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
         onClick={action}
         pending={isPending}
       >
-        <span className="flex items-center gap-2">
-          <HelpCircleIcon className="size-4" />
-          How can I improve my answer?
-        </span>
+
+      {/* <div className="relative flex items-center">
+        <HelpCircleIcon className="size-4 text-sky-500 animate-ping absolute" />
+        <HelpCircleIcon className="size-4 text-sky-500 absolute" />
+      </div>
+      <span className="ml-2">How can I improve my answer?</span> */}
+
+      <div className="flex items-center">
+        <div className="relative flex items-center">
+          <HelpCircleIcon className="size-4 text-sky-500 animate-ping absolute" />
+          <HelpCircleIcon className="size-4 text-sky-500 absolute" />
+        </div>
+        <span className="ml-4">&nbsp;How can I improve my answer?</span>
+      </div>
+
+
       </Button>
 
       {isError ? <Warning>{ErrorFeedback[ErrorType.INTERNAL]}</Warning> : null}

@@ -204,63 +204,66 @@ export function QuestionBoxStairs({
       <Confetti active={status === StatusStairs.BOTH_CORRECT} />
 
       <CardHeader className="flex w-full flex-row items-baseline justify-center gap-1 p-2">
-        <CardDescription className="mr-4 flex w-10/12 items-center justify-center text-xs font-light text-zinc-500">
+        <CardDescription className="mr-4 my-0.5 flex w-10/12 items-center justify-center text-xs font-light text-zinc-500">
           {" "}
-          <AlertTriangle className="mr-4 stroke-yellow-400" /> iTELL AI is in
-          alpha testing. It will try its best to help you but it can still make
-          mistakes. Let us know how you feel about iTELL AI&apos;s performance
-          using the feedback icons to the right (thumbs up or thumbs down).{" "}
+          🔍 iTELL evaluation is based on AI and may not always be accurate
+          {" "}
         </CardDescription>
-        <QuestionFeedback
-          type="positive"
-          pageSlug={pageSlug}
-          chunkSlug={chunkSlug}
-        />
-        <QuestionFeedback
-          type="negative"
-          pageSlug={pageSlug}
-          chunkSlug={chunkSlug}
-        />
+
+        {state.streak >= 1 && (
+            <span className="flex items-center space-x-1 text-sm text-muted-foreground">
+              <Flame 
+                color="#b91c1c" 
+                size={16} 
+                className={
+                  state.streak >= 3
+                  ? "animate-pulse"
+                  : state.streak >= 2
+                  ? "animate-ping"
+                  : state.streak >= 1
+                  ? "animate-bounce"
+                  : ""
+                }
+              />
+              <span>{state.streak}</span>
+            </span>
+          )}
+
       </CardHeader>
 
-      <CardContent className="mx-auto flex w-4/5 flex-col items-center justify-center space-y-4">
-        <div role="status" className="spacey-y-4">
+      <CardContent className="mx-auto flex w-4/5 flex-col items-center justify-center space-y-4 mt-0.5">
+        <div role="status" className="space-y-4">
           {status === StatusStairs.BOTH_INCORRECT && (
             <div className="text-sm">
-              <p className="text-red-400">
+              <p className="text-red-400 mt-0.5">
                 <b>iTELL AI says:</b> You likely got a part of the answer wrong.
                 Please try again.
               </p>
-              <p className="underline">
+              {/* <p className="underline">
                 {isLastQuestion
                   ? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
-                  : 'If you believe iTELL AI has made an error, you can click on the "Skip this question" button to skip this question.'}
-              </p>
+                  : 'If you believe iTELL AI has made an error, you can click on the "Continue reading" button to skip this question.'}
+              </p> */}
             </div>
           )}
 
           {status === StatusStairs.SEMI_CORRECT && (
-            <p className="text-xs text-yellow-600">
-              <b>iTELL AI says:</b> You may have missed something, but you were
-              generally close. You can click on the &quot;Continue reading&quot;
-              button below go to the next part or try again with a different
-              response.{" "}
+            <p className="text-xs text-yellow-600 mt-0.5">
+              <b>iTELL AI says:</b> You may have missed something, but you were generally close. 
+              Or your answer may be correct, but it may not have been phrased in the way that iTELL AI is expecting.{" "}
             </p>
           )}
 
           {status === StatusStairs.BOTH_CORRECT ? (
             <div className="flex flex-col items-center">
-              <p className="text-xl2 text-center text-emerald-600">
+              <p className="text-xl2 text-center text-emerald-600 mt-0.5">
                 Your answer is correct!
               </p>
-              {shouldBlur ? (
+              {/* {shouldBlur ? (
                 <p className="text-sm">
-                  Click on the button below to continue reading. Please use the
-                  thumbs-up or thumbs-down icons on the top right side of this
-                  box if you have any feedback about this question that you
-                  would like to provide before you continue reading.
+                  Click on the button below to continue reading. 
                 </p>
-              ) : null}
+              ) : null} */}
             </div>
           ) : (
             question && (
@@ -270,12 +273,6 @@ export function QuestionBoxStairs({
                   {!shouldBlur && <span className="font-bold">(Optional)</span>}
                   : <span>{question}</span>
                 </span>
-                {state.streak >= 2 && (
-                  <span className="flex items-center space-x-1 text-sm text-muted-foreground">
-                    <Flame color="#71717a" size={16} />
-                    <span>{state.streak}</span>
-                  </span>
-                )}
               </p>
             )
           )}
@@ -369,16 +366,43 @@ export function QuestionBoxStairs({
           {state.error ? (
             <p className="text-center text-sm text-red-500">{state.error}</p>
           ) : null}
+
           <div className="mt-4 flex items-center justify-center">
             {(status === StatusStairs.SEMI_CORRECT ||
               status === StatusStairs.BOTH_INCORRECT) && (
-              <ExplainButton
-                chunkSlug={chunkSlug}
-                pageSlug={pageSlug}
-                input={state.input}
-              />
+              <span className="flex items-center gap-2 mx-2">
+                <ExplainButton
+                  chunkSlug={chunkSlug}
+                  pageSlug={pageSlug}
+                  input={state.input}
+                />
+              </span>
             )}
           </div>
+          
+
+          {status !== StatusStairs.UNANSWERED && isNextButtonDisplayed ? (
+
+            <div className="flex w-7/12 items-center justify-between mx-auto">
+              <div className="mr-0.5 my-0.5 flex w-10/12 items-center justify-center text-xs font-light text-zinc-500">
+                  What did you think about the feedback?
+              </div>  
+              <div className="flex ml-auto space-x-2">
+                <QuestionFeedback
+                  type="positive"
+                  pageSlug={pageSlug}
+                  chunkSlug={chunkSlug}
+                />
+                <QuestionFeedback
+                  type="negative"
+                  pageSlug={pageSlug}
+                  chunkSlug={chunkSlug}
+                />
+              </div>
+            </div>
+                ) : null}
+
+
         </form>
       </CardContent>
     </Card>

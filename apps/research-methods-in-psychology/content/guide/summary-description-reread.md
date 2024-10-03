@@ -17,6 +17,4 @@ A successful summary will
 
 - Not be plagiarized
 
-- Use appropriate language
-
 </div>
