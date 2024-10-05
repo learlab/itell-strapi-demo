@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 
+import { MobilePopup } from "@/components/mobile-popup";
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
-import { getPageConditions, getUserCondition } from "@/lib/auth/conditions";
+import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
-import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
+import { getPage } from "@/lib/pages/pages.server";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
@@ -63,6 +64,7 @@ export default async function ({ params }: { params: { slug: string } }) {
             />
           </ScrollArea>
         </div>
+        <MobilePopup />
 
         <div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
           <PageTitle className="mb-8">{page.title}</PageTitle>

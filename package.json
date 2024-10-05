@@ -2,22 +2,19 @@
     "name": "itell-monorepo",
     "authors": "learlab",
     "version": "1.0.0",
-    "description": "A framework for building intelligent digital textbooks",
+    "description": "A Framework for Building Intelligent Digital Textbooks",
     "workspaces": [
         "apps/*",
         "packages/*",
+        "toolings/*",
         "docs"
     ],
     "scripts": {
         "build": "turbo run build",
         "build:core": "turbo run build --filter @itell/core",
-        "build:blle": "turbo run build --scope @itell/blle",
         "build:ui": "turbo run build --filter @itell/ui",
         "build:tailwind": "turbo run build --filter @itell/tailwind",
         "dev": "turbo run dev",
-        "dev:poe": "turbo run dev --filter @itell/example-poe",
-        "dev:tp": "turbo run dev --filter @itell/example-think-python",
-        "dev:docs": "turbo run dev --filter @itell/docs",
         "start": "turbo run start",
         "lint": "turbo run lint",
         "format": "turbo run format",
@@ -29,7 +26,6 @@
     ],
     "license": "MIT",
     "devDependencies": {
-        "@biomejs/biome": "^1.5.2",
         "@types/node": "^22.4.1",
         "patch-package": "^8.0.0",
         "tsx": "^4.17.0",
