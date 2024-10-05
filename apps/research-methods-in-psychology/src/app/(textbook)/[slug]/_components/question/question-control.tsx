@@ -173,10 +173,12 @@ export function QuestionControl({
     if (shouldBlur) {
       let hasQuestion = status[currentChunk].hasQuestion;
 
-      if (state.streak >= 2) {
-        hasQuestion = Math.random() < 0.5 ? false : hasQuestion;
+      if (state.streak >= 7) {
+        hasQuestion = Math.random() < 0.7 ? false : hasQuestion;
       } else if (state.streak >= 5) {
-        hasQuestion = Math.random() < 0.75 ? false : hasQuestion;
+        hasQuestion = Math.random() < 0.5 ? false : hasQuestion;
+      } else if (state.streak >= 2) {
+        hasQuestion = Math.random() < 0.3 ? false : hasQuestion;
       }
 
       const idx = chunks.indexOf(currentChunk);

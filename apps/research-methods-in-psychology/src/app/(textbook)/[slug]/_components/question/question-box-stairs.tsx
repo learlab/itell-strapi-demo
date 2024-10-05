@@ -210,22 +210,21 @@ export function QuestionBoxStairs({
           {" "}
         </CardDescription>
 
-        {state.streak >= 1 && (
+        {state.streak >= 2 && (
             <span className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Flame 
                 color="#b91c1c" 
                 size={16} 
                 className={
-                  state.streak >= 3
+                  state.streak >= 7
+                  ? "animate-ping"
+                  : state.streak >= 5
                   ? "animate-pulse"
                   : state.streak >= 2
-                  ? "animate-ping"
-                  : state.streak >= 1
                   ? "animate-bounce"
                   : ""
                 }
               />
-              <span>{state.streak}</span>
             </span>
           )}
 
@@ -250,7 +249,6 @@ export function QuestionBoxStairs({
           {status === StatusStairs.SEMI_CORRECT && (
             <p className="text-xs text-yellow-600 mt-0.5">
               <b>iTELL AI says:</b> You may have missed something, but you were generally close. 
-              Or your answer may be correct, but it may not have been phrased in the way that iTELL AI is expecting.{" "}
             </p>
           )}
 
