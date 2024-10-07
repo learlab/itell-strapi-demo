@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useIsMobile } from "@itell/core/hooks";
 import {
@@ -15,7 +15,12 @@ import {
 
 export function MobilePopup() {
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(isMobile);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (isMobile) {
+      setOpen(true);
+    }
+  }, [isMobile]);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
