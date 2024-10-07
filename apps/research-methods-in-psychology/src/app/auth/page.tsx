@@ -5,7 +5,7 @@ import { routes } from "@/lib/navigation";
 import { AuthForm, LogoutButton } from "@auth/auth-form";
 import { KnowledgeCarousel } from "@auth/knowledge-carousel";
 import { Button } from "@itell/ui/button";
-import { Warning } from "@itell/ui/callout";
+import { Errorbox } from "@itell/ui/callout";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 import { type Metadata } from "next";
 import Link from "next/link";
@@ -18,6 +18,7 @@ const ErrorDict: Record<string, string> = {
   oauth: "A problem occurred while logging in. Please try again later.",
   access_denied:
     "This application needs your consent to access your social account. You may come back at any time.",
+  wrong_email: "Please sign in with your school email (ending with 'mga.edu').",
 };
 
 export const generateMetadata = ({
@@ -99,9 +100,9 @@ export default async function ({ searchParams }: PageProps) {
             </p>
           </div>
           {error ? (
-            <Warning role="alert">
+            <Errorbox role="alert">
               {errorMessage ? errorMessage : error}
-            </Warning>
+            </Errorbox>
           ) : null}
           {user ? (
             <div className="space-y-2 text-center">

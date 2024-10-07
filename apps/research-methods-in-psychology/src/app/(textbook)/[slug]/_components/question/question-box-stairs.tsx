@@ -30,7 +30,6 @@ import {
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
-import { revalidateTag } from "next/cache";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
@@ -141,7 +140,10 @@ export function QuestionBoxStairs({
       });
     }
 
-    revalidateTag(Tags.GET_ANSWER_STREAK);
+    fetch("/api/revalidate", {
+      method: "POST",
+      body: JSON.stringify({ tag: Tags.GET_ANSWER_STREAK }),
+    });
   });
 
   const isPending = useDebounce(_isPending, 100);
