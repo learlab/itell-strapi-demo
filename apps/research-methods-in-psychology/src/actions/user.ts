@@ -73,7 +73,7 @@ export const updateUserPrefsAction = authedProcedure
         await tx.select().from(users).where(eq(users.id, ctx.user.id))
       );
       if (user) {
-        const prefs = user.preferences || {};
+        const prefs = user.preferences ?? {};
         if (input.preferences.theme) {
           prefs.theme = input.preferences.theme;
         }
