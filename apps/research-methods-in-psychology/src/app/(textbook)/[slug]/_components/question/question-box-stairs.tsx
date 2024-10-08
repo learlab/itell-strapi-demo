@@ -2,12 +2,14 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import { createQuestionAnswerAction } from "@/actions/question";
+import {
+  createQuestionAnswerAction,
+  getUserQuestionStreakAction,
+} from "@/actions/question";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { apiClient } from "@/lib/api-client";
-import { Condition, isProduction, Tags } from "@/lib/constants";
-import { useAnswerStreak } from "@/lib/hooks/use-answer-streak";
+import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
@@ -32,6 +34,7 @@ import { useSelector } from "@xstate/store/react";
 import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
+import { useServerAction } from "zsa-react";
 
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
@@ -61,7 +64,11 @@ export function QuestionBoxStairs({
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
 
-  const { data: streak } = useAnswerStreak();
+  const {
+    data: streak,
+    setOptimistic: setOptimisticStreak,
+    execute: getStreak,
+  } = useServerAction(getUserQuestionStreakAction);
   const [collapsed, setCollapsed] = useState(!shouldBlur);
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
@@ -140,10 +147,7 @@ export function QuestionBoxStairs({
       });
     }
 
-    fetch("/api/revalidate", {
-      method: "POST",
-      body: JSON.stringify({ tag: Tags.GET_ANSWER_STREAK }),
-    });
+    setOptimisticStreak((streak) => (streak ? streak + 1 : 1));
   });
 
   const isPending = useDebounce(_isPending, 100);
@@ -164,6 +168,10 @@ export function QuestionBoxStairs({
       reportSentry("evaluate constructed response", { error: error?.cause });
     }
   }, [isError]);
+
+  useEffect(() => {
+    getStreak();
+  }, []);
 
   if (collapsed) {
     return (
@@ -196,7 +204,7 @@ export function QuestionBoxStairs({
           </span>
         </CardDescription>
 
-        {streak >= 2 && (
+        {streak !== undefined && streak >= 2 && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>

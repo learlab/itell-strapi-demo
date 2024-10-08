@@ -11,7 +11,6 @@ import {
 
 import { createChatsAction } from "@/actions/chat";
 import { apiClient } from "@/lib/api-client";
-import { useAnswerStreak } from "@/lib/hooks/use-answer-streak";
 import { type PageStatus } from "@/lib/page-status";
 import {
   botMessage,
@@ -66,8 +65,6 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     page.quiz ? false : undefined
   );
 
-  const { data: streak } = useAnswerStreak();
-
   const questions = useMemo(() => {
     if (page.cri.length === 0) {
       return {};
@@ -83,13 +80,13 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
         let baseProb = 1 / 3;
 
         // adjust the probability of cri based on the current streak
-        if (streak >= 7) {
-          baseProb = baseProb * 0.3;
-        } else if (streak >= 5) {
-          baseProb = baseProb * 0.5;
-        } else if (streak >= 2) {
-          baseProb = baseProb * 0.7;
-        }
+        // if (answerStreak >= 7) {
+        //   baseProb = baseProb * 0.3;
+        // } else if (answerStreak >= 5) {
+        //   baseProb = baseProb * 0.5;
+        // } else if (answerStreak >= 2) {
+        //   baseProb = baseProb * 0.7;
+        // }
 
         if (Math.random() < baseProb) {
           chunkQuestion[item.slug] = true;
@@ -110,7 +107,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     }
 
     return chunkQuestion;
-  }, [page, streak]);
+  }, [page]);
 
   const questionStoreRef = useRef<QuestionStore>();
   if (!questionStoreRef.current) {

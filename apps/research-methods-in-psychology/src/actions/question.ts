@@ -1,5 +1,7 @@
 "use server";
 
+import { cache } from "react";
+
 import { db } from "@/actions/db";
 import {
   constructed_responses,
@@ -8,9 +10,8 @@ import {
   CreateConstructedResponseSchema,
   users,
 } from "@/drizzle/schema";
-import { isProduction, Tags } from "@/lib/constants";
+import { isProduction } from "@/lib/constants";
 import { count, desc, eq } from "drizzle-orm";
-import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
 import { authedProcedure } from "./utils";
@@ -76,22 +77,16 @@ export const getUserQuestionStreakAction = authedProcedure.handler(
   }
 );
 
-const getUserQuestionStreakHandler = memoize(
-  async (userId: string) => {
-    const records = await db
-      .select()
-      .from(constructed_responses)
-      .where(eq(constructed_responses.userId, userId))
-      .orderBy(desc(constructed_responses.createdAt));
+const getUserQuestionStreakHandler = cache(async (userId: string) => {
+  const records = await db
+    .select()
+    .from(constructed_responses)
+    .where(eq(constructed_responses.userId, userId))
+    .orderBy(desc(constructed_responses.createdAt));
 
-    const idx = records.findIndex((record) => record.score !== 2);
-    return idx === -1 ? records.length : idx;
-  },
-  {
-    persist: false,
-    revalidateTags: [Tags.GET_ANSWER_STREAK],
-  }
-);
+  const idx = records.findIndex((record) => record.score !== 2);
+  return idx === -1 ? records.length : idx;
+});
 
 /**
  * Get question-answer statistics for class
