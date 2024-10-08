@@ -30,7 +30,17 @@ title: 12. Analyzing the Data
 
 ## Learning Objectives {#Learning-Objectives-190pt .sr-only} 
 
-1\. Distinguish between descriptive and inferential statistics 2. Identify the different kinds of descriptive statistics researchers use to summarize their data 3. Describe the purpose of inferential statistics. 4. Distinguish between Type I and Type II errors.
+<i-callout variant="info" title="Learning Objectives">
+
+1\. Distinguish between descriptive and inferential statistics
+
+2\. Identify the different kinds of descriptive statistics researchers use to summarize their data
+
+3\. Describe the purpose of inferential statistics.
+
+4\. Distinguish between Type I and Type II errors.
+
+</i-callout>
 
 Once the study is complete and the observations have been made and recorded the researchers need to analyze the data and draw their conclusions. Typically, data are analyzed using both descriptive and inferential statistics. Descriptive statistics are used to summarize the data and inferential statistics are used to generalize the results from the sample to the population. In turn, inferential statistics are used to make conclusions about whether or not a theory has been supported, refuted, or requires modification.
 

@@ -261,6 +261,6 @@ Finally, you must maintain your integrity through the publication process and be
 
 ## References {#References-249pt .sr-only} 
 
-1.  Burger, J. M. (2009). Replicating Milgram: Would people still obey today? __American Psychologist, 64__, 1–11. ↵
-2.  Baumrind, D. (1985). Research using intentional deception: Ethical issues revisited. __American Psychologist, 40__, 165–174. ↵
+1.  Burger, J. M. (2009). Replicating Milgram: Would people still obey today? _American Psychologist, 64_, 1–11.
+2.  Baumrind, D. (1985). Research using intentional deception: Ethical issues revisited. _American Psychologist, 40_, 165–174.
 

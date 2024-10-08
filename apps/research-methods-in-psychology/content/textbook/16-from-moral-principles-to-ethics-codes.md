@@ -229,9 +229,9 @@ The remaining standards make some less obvious but equally important points. Res
 
 ## References {#References-247pt} 
 
-1.  Mann, T. (1994). Informed consent for psychological research: Do subjects comprehend consent forms and understand their legal rights? __Psychological Science, 5__, 140–143. ↵
-2.  Sieber, J. E., Iannuzzo, R., & Rodriguez, B. (1995). Deception methods in psychology: Have they changed in 23 years? __Ethics & Behavior, 5__, 67–85. ↵
-3.  Baumrind, D. (1985). Research using intentional deception: Ethical issues revisited. __American Psychologist, 40__, 165–174. ↵
-4.  Bowd, A. D., & Shapiro, K. J. (1993). The case against animal laboratory research in psychology. __Journal of Social Issues, 49__, 133–142. ↵
-5.  Miller, N. E. (1985). The value of behavioral research on animals. __American Psychologist, 40__, 423–440. ↵
+1.  Mann, T. (1994). Informed consent for psychological research: Do subjects comprehend consent forms and understand their legal rights? _Psychological Science, 5_, 140–143.
+2.  Sieber, J. E., Iannuzzo, R., & Rodriguez, B. (1995). Deception methods in psychology: Have they changed in 23 years? _Ethics & Behavior, 5_, 67–85.
+3.  Baumrind, D. (1985). Research using intentional deception: Ethical issues revisited. _American Psychologist, 40_, 165–174.
+4.  Bowd, A. D., & Shapiro, K. J. (1993). The case against animal laboratory research in psychology. _Journal of Social Issues, 49_, 133–142.
+5.  Miller, N. E. (1985). The value of behavioral research on animals. _American Psychologist, 40_, 423–440.
 
