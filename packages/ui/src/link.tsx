@@ -1,30 +1,30 @@
-import NextLink, { LinkProps } from "next/link";
+import NextLink, { type LinkProps } from "next/link";
 
 interface CustomLinkProps extends LinkProps {
-	href: string;
-	children: React.ReactNode;
+  href: string;
+  children: React.ReactNode;
 }
 
-export const Link = ({ href, children, ...rest }: CustomLinkProps) => {
-	if (href.startsWith("/")) {
-		return (
-			<NextLink href={href} {...rest}>
-				{children}
-			</NextLink>
-		);
-	}
+export function Link({ href, children, ...rest }: CustomLinkProps) {
+  if (href.startsWith("/")) {
+    return (
+      <NextLink href={href} {...rest}>
+        {children}
+      </NextLink>
+    );
+  }
 
-	if (href.startsWith("#")) {
-		return (
-			<a href={href} {...rest}>
-				{children}
-			</a>
-		);
-	}
+  if (href.startsWith("#")) {
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
+  }
 
-	return (
-		<a target="_blank" rel="noopener noreferrer" {...rest}>
-			{children}
-		</a>
-	);
-};
+  return (
+    <a target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
+  );
+}

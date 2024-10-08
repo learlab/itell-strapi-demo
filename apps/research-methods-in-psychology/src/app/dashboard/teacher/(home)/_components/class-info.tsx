@@ -1,5 +1,3 @@
-import { text } from "node:stream/consumers";
-
 import { Suspense } from "react";
 
 import { getClassStudentsAction } from "@/actions/dashboard";
@@ -17,13 +15,8 @@ import {
 } from "@itell/ui/card";
 import { Progress } from "@itell/ui/progress";
 import { Skeleton } from "@itell/ui/skeleton";
-import { cn, median } from "@itell/utils";
-import { index } from "drizzle-orm/mysql-core";
-import { round } from "es-toolkit";
-import { progress } from "framer-motion";
+import { median } from "@itell/utils";
 import { ErrorBoundary } from "react-error-boundary";
-import { data, order } from "tailwindcss/defaultTheme";
-import { map } from "zod";
 
 import { ClassBadges } from "./class-badges";
 import { columns, type StudentData } from "./student-columns";

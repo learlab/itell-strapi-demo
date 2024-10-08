@@ -89,12 +89,12 @@ export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
       </div>
       <span className="ml-2">How can I improve my answer?</span> */}
 
-        <div className="flex items-center">
-          <div className="relative flex items-center">
-            <HelpCircleIcon className="absolute size-4 animate-ping text-sky-500" />
-            <HelpCircleIcon className="absolute size-4 text-sky-500" />
+        <div className="flex items-center gap-2">
+          <div className="grid grid-cols-1 grid-rows-1">
+            <HelpCircleIcon className="col-start-1 row-start-1 size-4 text-sky-500 motion-safe:animate-ping" />
+            <HelpCircleIcon className="col-start-1 row-start-1 size-4 text-sky-500" />
           </div>
-          <span className="ml-4">&nbsp;How can I improve my answer?</span>
+          <p>How can I improve my answer?</p>
         </div>
       </Button>
 

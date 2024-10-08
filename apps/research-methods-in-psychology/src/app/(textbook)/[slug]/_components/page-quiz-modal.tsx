@@ -5,7 +5,7 @@ import {
   useSummaryStore,
 } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
-import { PageStatus } from "@/lib/page-status";
+import { type PageStatus } from "@/lib/page-status";
 import { isLastPage, type PageData } from "@/lib/pages/pages.client";
 import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
 import { Button } from "@itell/ui/button";
@@ -37,7 +37,7 @@ export function PageQuizModal({
     <Dialog
       open={quizOpen}
       onOpenChange={() => {
-        if (!quizOpen) {
+        if (!quizOpen || !isProduction) {
           quizStore.send({ type: "toggleQuiz" });
         }
       }}
@@ -54,7 +54,7 @@ export function PageQuizModal({
       ) : null}
       <DialogContent
         className="h-[80vh] max-w-4xl overflow-y-auto"
-        canClose={!isProduction}
+        canClose={false}
       >
         <DialogHeader>
           <DialogTitle>Quiz</DialogTitle>

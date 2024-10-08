@@ -189,9 +189,11 @@ export function QuestionBoxStairs({
       <Confetti active={status === StatusStairs.BOTH_CORRECT} />
 
       <CardHeader className="flex w-full flex-row items-baseline justify-center gap-1 p-2">
-        <CardDescription className="my-0.5 mr-4 flex w-10/12 items-center justify-center text-xs font-light text-muted-foreground">
-          {" "}
-          🔍 iTELL evaluation is based on AI and may not always be accurate{" "}
+        <CardDescription className="mx-auto flex max-w-96 items-center justify-center gap-2 text-xs font-light text-muted-foreground">
+          <span>🔍</span>
+          <span>
+            iTELL evaluation is based on AI and may not always be accurate
+          </span>
         </CardDescription>
 
         {streak >= 2 && (
@@ -370,11 +372,11 @@ export function QuestionBoxStairs({
           </div>
 
           {status !== StatusStairs.UNANSWERED && isNextButtonDisplayed ? (
-            <div className="mx-auto flex w-7/12 items-center justify-between">
-              <div className="my-0.5 mr-0.5 flex w-10/12 items-center justify-center text-xs font-light text-muted-foreground">
+            <div className="mx-auto flex max-w-80 items-center justify-around">
+              <div className="flex items-center justify-center text-xs font-light text-muted-foreground">
                 What did you think about the feedback?
               </div>
-              <div className="ml-auto flex space-x-2">
+              <div className="space-x-2">
                 <QuestionFeedback
                   type="positive"
                   pageSlug={pageSlug}
