@@ -19,6 +19,7 @@ import {
 } from "@itell/ui/dialog";
 import { useSelector } from "@xstate/store/react";
 import { BookCheckIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import { PageQuiz } from "./page-quiz";
 
@@ -31,13 +32,15 @@ export function PageQuizModal({
 }) {
   const quizStore = useQuizStore();
   const summaryStore = useSummaryStore();
+  const searchParams = useSearchParams();
   const quizOpen = useSelector(quizStore, SelectQuizOpen);
+  const open = searchParams?.get("quiz") === "true" || quizOpen;
   const quizFinished = useSelector(quizStore, SelectQuizFinished);
   return (
     <Dialog
-      open={quizOpen}
+      open={open}
       onOpenChange={() => {
-        if (!quizOpen || !isProduction) {
+        if (!open || !isProduction) {
           quizStore.send({ type: "toggleQuiz" });
         }
       }}

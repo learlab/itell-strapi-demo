@@ -54,7 +54,7 @@ export function FinishedLink({ href }: Props) {
   }, [visited, href]);
 
   return (
-    <div className="r mb-8 space-y-2 rounded-md border-2 border-info p-4 xl:text-lg xl:leading-relaxed">
+    <div className="mb-8 space-y-4 rounded-md border-2 border-info p-4 xl:text-lg xl:leading-relaxed">
       <p>
         You have finished the entire textbook. Please visit the link below to
         complete the course.
@@ -93,21 +93,21 @@ function QuizList() {
   }, []);
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <h3 className="text-lg font-medium">Quizzes Checklist</h3>
       <p className="text-muted-foreground">
         Make sure you finished all the quizzes to get full credit.
       </p>
-      <ul className="list-disc pl-4">
+      <ul className="pl-4">
         {items.map((item) => (
           <li key={item.href}>
             <a href={item.href} className="flex items-center gap-2">
-              <span>{item.title}</span>
               {item.finished ? (
                 <CheckCircleIcon className="size-4 text-green-500" />
               ) : (
                 <CircleIcon className="size-4 text-muted-foreground" />
               )}
+              <span>{item.title}</span>
             </a>
           </li>
         ))}
