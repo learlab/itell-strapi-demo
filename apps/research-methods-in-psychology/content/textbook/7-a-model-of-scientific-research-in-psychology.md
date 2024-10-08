@@ -39,7 +39,11 @@ title: 7. A Model of Scientific Research in Psychology
 
 ## Learning Objectives {#Learning-Objectives-182pt} 
 
-\- Review a general model of scientific research in psychology.
+<i-callout variant="info" title="Learning Objectives">
+
+1\. Review a general model of scientific research in psychology.
+
+</i-callout>
 
 ## Continue {#Continue-717t .sr-only} 
 
