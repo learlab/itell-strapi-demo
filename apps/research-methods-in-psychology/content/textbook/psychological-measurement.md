@@ -45,6 +45,6 @@ The Rosenberg Self-Esteem Scale (Rosenberg, 1989)\[2\] is one of the most common
 
 ## References {#References-254pt} 
 
-1.  MacDonald, T. K., & Martineau, A. M. (2002). Self-esteem, mood, and intentions to use condoms: When does low self-esteem lead to risky health behaviors? __Journal of Experimental Social Psychology, 38__, 299–306. ↵
-2.  Rosenberg, M. (1989). __Society and the adolescent self-image__ (rev. ed.). Middletown, CT: Wesleyan University Press. ↵
+1.  MacDonald, T. K., & Martineau, A. M. (2002). Self-esteem, mood, and intentions to use condoms: When does low self-esteem lead to risky health behaviors? _Journal of Experimental Social Psychology, 38_, 299–306.
+2.  Rosenberg, M. (1989). _Society and the adolescent self-image_ (rev. ed.). Middletown, CT: Wesleyan University Press.
 

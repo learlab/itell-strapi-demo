@@ -245,8 +245,8 @@ But what if your newly collected data cast doubt on the reliability or validity 
 
 ## References {#References-261pt} 
 
-1.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. __Journal of Health and Social Behavior, 24,__ 386-396. ↵
-2.  Gosling, S. D., Rentfrow, P. J., & Swann, W. B., Jr. (2003). A very brief measure of the Big Five personality domains. __Journal of Research in Personality, 37__, 504–528. ↵
-3.  Stroop, J. R. (1935). Studies of interference in serial verbal reactions. __Journal of Experimental Psychology, 18__, 643–662. ↵
-4.  Amir, N., Freshman, M., & Foa, E. (2002). Enhanced Stroop interference for threat in social phobia. __Journal of Anxiety Disorders, 16__, 1–9. ↵
+1.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. _Journal of Health and Social Behavior, 24_, 386-396.
+2.  Gosling, S. D., Rentfrow, P. J., & Swann, W. B., Jr. (2003). A very brief measure of the Big Five personality domains. _Journal of Research in Personality, 37_, 504–528.
+3.  Stroop, J. R. (1935). Studies of interference in serial verbal reactions. _Journal of Experimental Psychology, 18_, 643–662.
+4.  Amir, N., Freshman, M., & Foa, E. (2002). Enhanced Stroop interference for threat in social phobia. _Journal of Anxiety Disorders, 16_, 1–9.
 

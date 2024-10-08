@@ -148,10 +148,10 @@ The point here is that although it may not be possible to eliminate ethical conf
 
 ## References {#References-245pt} 
 
-1.  Rosenthal, R. M. (1994). Science and ethics in conducting, analyzing, and reporting psychological research. __Psychological Science, 5__, 127–133. 
-2.  Milgram, S. (1963). Behavioral study of obedience. __Journal of Abnormal and Social Psychology, 67,__ 371–378. 
-3.  Reverby, S. M. (2009). __Examining Tuskegee: The infamous syphilis study and its legacy.__ Chapel Hill, NC: University of North Carolina Press. 
-4.  Middlemist, R. D., Knowles, E. S., & Matter, C. F. (1976). Personal space invasions in the lavatory: Suggestive evidence for arousal. __Journal of Personality and Social Psychology, 33__, 541–546. 
-5.  Koocher, G. P. (1977). Bathroom behavior and human dignity. __Journal of Personality and Social Psychology, 35__, 120–121. 
-6.  Middlemist, R. D., Knowles, E. S., & Matter, C. F. (1977). What to do and what to report: A reply to Koocher. __Journal of Personality and Social Psychology, 35__, 122–125.
+1.  Rosenthal, R. M. (1994). Science and ethics in conducting, analyzing, and reporting psychological research. _Psychological Science, 5_, 127–133.
+2.  Milgram, S. (1963). Behavioral study of obedience. _Journal of Abnormal and Social Psychology, 67_, 371–378.
+3.  Reverby, S. M. (2009). _Examining Tuskegee: The infamous syphilis study and its legacy_. Chapel Hill, NC: University of North Carolina Press.
+4.  Middlemist, R. D., Knowles, E. S., & Matter, C. F. (1976). Personal space invasions in the lavatory: Suggestive evidence for arousal. _Journal of Personality and Social Psychology, 33_, 541–546.
+5.  Koocher, G. P. (1977). Bathroom behavior and human dignity. _Journal of Personality and Social Psychology, 35_, 120–121.
+6.  Middlemist, R. D., Knowles, E. S., & Matter, C. F. (1977). What to do and what to report: A reply to Koocher. _Journal of Personality and Social Psychology, 35_, 122–125.
 

@@ -33,7 +33,7 @@ title: 4.  Science and Common Sense
 
 ## Learning Objectives {#Learning-Objectives-220pt .sr-only} 
 
-<i-callout variant="info" title="Learninb Objectives">
+<i-callout variant="info" title="Learning Objectives">
 
 1\. Explain the limitations of common sense when it comes to achieving a detailed and accurate understanding of human behavior.
 
@@ -45,23 +45,19 @@ title: 4.  Science and Common Sense
 
 ## Can We Rely on Common Sense? {#Can-We-Rely-on-Common-Sense?-815t} 
 
-Some people wonder whether the scientific approach to psychology is necessary. Can we not reach the same conclusions based on common sense or intuition? Certainly we all have intuitive beliefs about people’s behavior, thoughts, and feelings—and these beliefs are collectively referred to as **folk psychology**. Although much of our folk psychology is probably reasonably accurate, it is clear that much of it is not. For example, most people believe that anger can be relieved by “letting it out”—perhaps by punching something or screaming loudly. Scientific research, however, has shown that this approach tends to leave people feeling more angry, not less (Bushman, 2002)\[1\]. Likewise, most people believe that no one would confess to a crime that they  had not committed unless perhaps that person was being physically tortured. But again, extensive empirical research has shown that false confessions are surprisingly common and occur for a variety of reasons (Kassin & Gudjonsson, 2004). 
+Some people wonder whether the scientific approach to psychology is necessary. Can we not reach the same conclusions based on common sense or intuition? Certainly we all have intuitive beliefs about people’s behavior, thoughts, and feelings—and these beliefs are collectively referred to as **folk psychology**. Although much of our folk psychology is probably reasonably accurate, it is clear that much of it is not. For example, most people believe that anger can be relieved by “letting it out”—perhaps by punching something or screaming loudly. Scientific research, however, has shown that this approach tends to leave people feeling more angry, not less (Bushman, 2002)\[1\]. Likewise, most people believe that no one would confess to a crime that they had not committed unless perhaps that person was being physically tortured. But again, extensive empirical research has shown that false confessions are surprisingly common and occur for a variety of reasons (Kassin & Gudjonsson, 2004). 
 
 <i-callout>
 
-**_**Some Great Myths**_**
+_**Some Great Myths**_
 
-In __50 Great Myths of Popular Psychology__, psychologist Scott Lilienfeld and colleagues discuss several widely held commonsense beliefs about human behavior that scientific research has shown to be incorrect (Lilienfeld, Lynn, Ruscio, & Beyerstein, 2010)\[3\]. Here is a short list:
+In __50 Great Myths of Popular Psychology__, psychologist Scott Lilienfeld and colleagues discuss several widely held commonsense beliefs about human behavior that scientific research has shown to be incorrect (Lilienfeld, Lynn, Ruscio, & Beyerstein, 2010)[\[3\]](https://kpu.pressbooks.pub/psychmethods4e/chapter/science-and-common-sense/#footnote-27-3 "Lilienfeld, S. O., Lynn, S. J., Ruscio, J., & Beyerstein, B. L. (2010). 50 great myths of popular psychology. Malden, MA: Wiley-Blackwell."). Here is a short list:
 
-“People use only 10% of their brain power.”
-
-“Most people experience a midlife crisis in their 40’s or 50’s.”
-
-“Students learn best when teaching styles are matched to their learning styles.”
-
-“Low self-esteem is a major cause of psychological problems.”
-
-“Psychiatric admissions and crimes increase during full moons.”
+* “People use only 10% of their brain power.”
+* “Most people experience a midlife crisis in their 40’s or 50’s.”
+* “Students learn best when teaching styles are matched to their learning styles.”
+* “Low self-esteem is a major cause of psychological problems.”
+* “Psychiatric admissions and crimes increase during full moons.”
 
 </i-callout>
 
@@ -75,9 +71,9 @@ Because there is often not enough evidence to fully evaluate a belief or claim, 
 
 ## References {#References-221pt} 
 
-1.  Bushman, B. J. (2002). Does venting anger feed or extinguish the flame? Catharsis, rumination, distraction, anger, and aggressive responding. __Personality and Social Psychology Bulletin, 28__, 724–731. 
-2.  Kassin, S. M., & Gudjonsson, G. H. (2004). The psychology of confession evidence: A review of the literature and issues. __Psychological Science in the Public Interest, 5__, 33–67. 
-3.  Lilienfeld, S. O., Lynn, S. J., Ruscio, J., & Beyerstein, B. L. (2010). __50 great myths of popular psychology__. Malden, MA: Wiley-Blackwell. 
-4.  Gilovich, T. (1991). __How we know what isn’t so: The fallibility of human reason in everyday life__. New York, NY: Free Press. 
-5.  Mann, T., Tomiyama, A. J., Westling, E., Lew, A., Samuels, B., & Chatman, J. (2007). Medicare’s search for effective obesity treatments: Diets are not the answer. __American Psychologist, 62__, 220–233.
+1.  Bushman, B. J. (2002). Does venting anger feed or extinguish the flame? Catharsis, rumination, distraction, anger, and aggressive responding. _Personality and Social Psychology Bulletin, 28_, 724–731.
+2.  Kassin, S. M., & Gudjonsson, G. H. (2004). The psychology of confession evidence: A review of the literature and issues. _Psychological Science in the Public Interest, 5_, 33–67.
+3.  Lilienfeld, S. O., Lynn, S. J., Ruscio, J., & Beyerstein, B. L. (2010). _50 great myths of popular psychology_. Malden, MA: Wiley-Blackwell.
+4.  Gilovich, T. (1991). _How we know what isn’t so: The fallibility of human reason in everyday life_. New York, NY: Free Press.
+5.  Mann, T., Tomiyama, A. J., Westling, E., Lew, A., Samuels, B., & Chatman, J. (2007). Medicare’s search for effective obesity treatments: Diets are not the answer. _American Psychologist, 62_, 220–233.
 

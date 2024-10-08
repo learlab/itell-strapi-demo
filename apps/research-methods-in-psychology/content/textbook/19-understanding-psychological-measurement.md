@@ -11,10 +11,6 @@ chunks:
 - title: Psychological Constructs
   slug: Psychological-Constructs-886t
   type: regular
-  headings:
-  - level: 3
-    slug: _the-big-five_
-    title: _**The Big Five**_
 - title: Operational Definitions
   slug: Operational-Definitions-885t
   type: regular
@@ -75,7 +71,7 @@ Many variables studied by psychologists are straightforward and simple to measur
 
 Psychological constructs cannot be observed directly. One reason is that they often represent __tendencies__ to think, feel, or act in certain ways. For example, to say that a particular university student is highly extraverted does not necessarily mean that she is behaving in an extraverted way right now. In fact, she might be sitting quietly by herself, reading a book. Instead, it means that she has a general tendency to behave in extraverted ways (e.g., being outgoing, enjoying social interactions) across a variety of situations. Another reason psychological constructs cannot be observed directly is that they often involve internal processes. Fear, for example, involves the activation of certain central and peripheral nervous system structures, along with certain kinds of thoughts, feelings, and behaviors—none of which is necessarily obvious to an outside observer. Notice also that neither extraversion nor fear “reduces to” any particular thought, feeling, act, or physiological structure or process. Instead, each is a kind of summary of a complex set of behaviors and internal processes.
 
-### _**The Big Five**_ {#_the-big-five_}
+_**The Big Five**_
 
 The Big Five is a set of five broad dimensions that capture much of the variation in human personality. Each of the Big Five can even be defined in terms of six more specific constructs called “facets” (Costa & McCrae, 1992)[\[1\]](https://kpu.pressbooks.pub/psychmethods4e/chapter/understanding-psychological-measurement/#footnote-54-1 "Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. Psychological Assessment, 4, 5–13.").
 
@@ -145,13 +141,13 @@ __**Table 4.1 Summary of Levels of Measurements**__
 
 ## References {#References-257pt} 
 
-1.  Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. __Psychological Assessment, 4__, 5–13. 
-2.  Rosenberg, M. (1965). __Society and the adolescent self-image.__ Princeton, NJ: Princeton University Press 
-3.  Bandura, A., Ross, D., & Ross, S. A. (1961). Transmission of aggression through imitation of aggressive models. __Journal of Abnormal and Social Psychology, 63__, 575–582. 
-4.  Holmes, T. H., & Rahe, R. H. (1967). The Social Readjustment Rating Scale. __Journal of Psychosomatic Research, 11__(2), 213-218. 
-5.  Delongis, A., Coyne, J. C., Dakof, G., Folkman, S., & Lazarus, R. S. (1982). Relationships of daily hassles, uplifts, and major life events to health status. __Health Psychology, 1__(2), 119-136. 
-6.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. __Journal of Health and Social Behavior, 24,__ 386-396. 
-7.  Segerstrom, S. E., & Miller, G. E. (2004). Psychological stress and the human immune system: A meta-analytic study of 30 years of inquiry. __Psychological Bulletin, 130__, 601–630. 
-8.  Stevens, S. S. (1946). On the theory of scales of measurement. __Science, 103__, 677–680. 
+1.  Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. _Psychological Assessment, 4_, 5–13.
+2.  Rosenberg, M. (1965). _Society and the adolescent self-image_. Princeton, NJ: Princeton University Press
+3.  Bandura, A., Ross, D., & Ross, S. A. (1961). Transmission of aggression through imitation of aggressive models. _Journal of Abnormal and Social Psychology, 63_, 575–582.
+4.  Holmes, T. H., & Rahe, R. H. (1967). The Social Readjustment Rating Scale. _Journal of Psychosomatic Research, 11_(2), 213-218.
+5.  Delongis, A., Coyne, J. C., Dakof, G., Folkman, S., & Lazarus, R. S. (1982). Relationships of daily hassles, uplifts, and major life events to health status. _Health Psychology, 1_(2), 119-136.
+6.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. _Journal of Health and Social Behavior, 24_, 386-396.
+7.  Segerstrom, S. E., & Miller, G. E. (2004). Psychological stress and the human immune system: A meta-analytic study of 30 years of inquiry. _Psychological Bulletin, 130_, 601–630.
+8.  Stevens, S. S. (1946). On the theory of scales of measurement. _Science, 103_, 677–680.
 9.  Levels of Measurement. Retrieved from http://wikieducator.org/Introduction\_to\_Research\_Methods\_In\_Psychology/Theories\_and\_Measurement/Levels\_of_Measurement
 

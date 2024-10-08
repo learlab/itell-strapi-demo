@@ -17,6 +17,9 @@ chunks:
 - title: Characteristics of a Good Hypothesis
   slug: Characteristics-of-a-Good-Hypothesis-735t
   type: regular
+- title: References
+  slug: References-264pt
+  type: plain
 cri:
 - question: What is the difference between a theory and a hypothesis?
   answer: A theory is an explanation or interpretation of phenomena that goes beyond what is observed directly, while a hypothesis is a specific prediction about a new phenomenon that should be observed if a particular theory is accurate.
@@ -84,10 +87,10 @@ To use theories in your research will not only give you guidance in coming up wi
 
 There are three general characteristics of a good hypothesis. First, a good hypothesis must be **testable and falsifiable**. We must be able to test the hypothesis using the methods of science and if you’ll recall Popper’s falsifiability criterion, it must be possible to gather evidence that will disconfirm the hypothesis if it is indeed false. Second, a good hypothesis must be **logical.** As described above, hypotheses are more than just a random guess. Hypotheses should be informed by previous theories or observations and logical reasoning. Typically, we begin with a broad and general theory and use __deductive reasoning__ to generate a more specific hypothesis to test based on that theory. Occasionally, however, when there is no theory to inform our hypothesis, we use__inductive reasoning __which involves using specific observations or research findings to form a more general hypothesis. Finally, the hypothesis should be **positive.** That is, the hypothesis should make a positive statement about the existence of a relationship or effect, rather than a statement that a relationship or effect does not exist. As scientists, we don’t set out to show that relationships do not exist or that effects do not occur so our hypotheses should not be worded in a way to suggest that an effect or relationship does not exist. The nature of science is to assume that something does not exist and then seek to find evidence to prove this wrong, to show that it really does exist. That may seem backward to you but that is the nature of the scientific method. The underlying reason for this is beyond the scope of this chapter but it has to do with statistical theory.
 
-* * *
+## References {#References-264pt} 
 
-1.  Zajonc, R. B. (1965). Social facilitation. _Science, 149_, 269–274 
-2.  Schwarz, N., Bless, H., Strack, F., Klumpp, G., Rittenauer-Schatka, H., & Simons, A. (1991). Ease of retrieval as information: Another look at the availability heuristic. __Journal of Personality and Social Psychology, 61__, 195–202. 
-3.  Zajonc, R. B., Heingartner, A., & Herman, E. M. (1969). Social enhancement and impairment of performance in the cockroach. __Journal of Personality and Social Psychology, 13__, 83–92. 
-4.  Zajonc, R.B. & Sales, S.M. (1966). Social facilitation of dominant and subordinate responses. __Journal of Experimental Social Psychology, 2__, 160-168.
+1.  Zajonc, R. B. (1965). Social facilitation. _Science, 149_, 269–274
+2.  Schwarz, N., Bless, H., Strack, F., Klumpp, G., Rittenauer-Schatka, H., & Simons, A. (1991). Ease of retrieval as information: Another look at the availability heuristic. _Journal of Personality and Social Psychology, 61_, 195–202.
+3.  Zajonc, R. B., Heingartner, A., & Herman, E. M. (1969). Social enhancement and impairment of performance in the cockroach. _Journal of Personality and Social Psychology, 13_, 83–92.
+4.  Zajonc, R.B. & Sales, S.M. (1966). Social facilitation of dominant and subordinate responses. _Journal of Experimental Social Psychology, 2_, 160-168.
 

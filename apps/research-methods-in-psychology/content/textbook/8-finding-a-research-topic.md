@@ -39,6 +39,10 @@ chunks:
 - title: Video Attributions
   slug: Video-Attributions-186pt
   type: plain
+  headings:
+  - level: 3
+    slug: references
+    title: References
 cri:
 - question: What are three common sources of inspiration for research ideas?
   answer: Informal observations, practical problems, and previous research.
@@ -180,9 +184,11 @@ How many sources are enough for your literature review? This is a difficult ques
 * “Sample PsycINFO Search on EBSCOhost” by APA Publishing Training. Standard YouTube Licence.
 * “Using Google Scholar (CLIP)” by clipinfolit. CC BY (Attribution)
 
+### References {#references}
+
 * * *
 
-1.  Weisberg, R. W. (1993). __Creativity: Beyond the myth of genius__. New York, NY: Freeman. 
-2.  Milgram, S. (1963). Behavioral study of obedience. __Journal of Abnormal and Social Psychology, 67__, 371–378. 
-3.  Adair, J. G., & Vohra, N. (2003). The explosion of knowledge, references, and citations: Psychology’s unique response to a crisis. __American Psychologist, 58__, 15–23.
+1.  Weisberg, R. W. (1993). _Creativity: Beyond the myth of genius_. New York, NY: Freeman.
+2.  Milgram, S. (1963). Behavioral study of obedience. _Journal of Abnormal and Social Psychology, 67_, 371–378.
+3.  Adair, J. G., & Vohra, N. (2003). The explosion of knowledge, references, and citations: Psychology’s unique response to a crisis. _American Psychologist, 58_, 15–23.
 

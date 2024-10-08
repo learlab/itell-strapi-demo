@@ -65,5 +65,5 @@ Scientific research is often classified as being either basic or applied. **Basi
 
 ## References {#References-219pt} 
 
-Sexton, M., Cuttler, C., Finnell, J., & Mischley, L (2016). A cross-sectional survey of medical cannabis users: Patterns of use and perceived efficacy. __Cannabis and Cannabinoid Research, 1,__ 131-138. doi: 10.1089/can.2016.0007.
+1.  Sexton, M., Cuttler, C., Finnell, J., & Mischley, L (2016). A cross-sectional survey of medical cannabis users: Patterns of use and perceived efficacy. _Cannabis and Cannabinoid Research, 1_, 131-138. doi: 10.1089/can.2016.0007.
 

@@ -11,8 +11,8 @@ chunks:
 - title: Features of Science
   slug: Features-of-Science-757t
   type: regular
-- title: Features of Science 2
-  slug: Features-of-Science-2-759t
+- title: Features of Science II
+  slug: Features-of-Science-II-759t
   type: regular
 - title: Science Versus Pseudoscience
   slug: Science-Versus-Pseudoscience-760t
@@ -32,7 +32,7 @@ cri:
   slug: Features-of-Science-757t
 - question: Why is publication considered an essential feature of science?
   answer: Publication is essential in science because it allows for collaboration among researchers, sharing of work, and self-correction of flawed methods and conclusions.
-  slug: Features-of-Science-2-759t
+  slug: Features-of-Science-II-759t
 - question: Why should we concern ourselves with pseudoscience?
   answer: Learning about pseudoscience helps bring the fundamental features of science into sharper focus, pseudoscientific beliefs are widely held and promoted, and many pseudosciences purport to explain aspects of human behavior and mental processes.
   slug: Science-Versus-Pseudoscience-760t
@@ -72,7 +72,7 @@ The second feature of the scientific approach—which follows in a straightforwa
 
 The third feature of science is that it creates public knowledge. After asking their empirical questions, making their systematic observations, and drawing their conclusions, scientists publish their work. This usually means writing an article for publication in a professional journal, in which they put their research question in the context of previous research, describe in detail the methods they used to answer their question, and clearly present their results and conclusions. Increasingly, scientists are opting to publish their work in open access journals, in which the articles are freely available to all – scientists and nonscientists alike. This important choice allows publicly-funded research to create knowledge that is truly public.
 
-## Features of Science 2 {#Features-of-Science-2-759t .sr-only} 
+## Features of Science II {#Features-of-Science-II-759t .sr-only} 
 
 Publication is an essential feature of science for two reasons. One is that science is a social process—a large-scale collaboration among many researchers distributed across both time and space. Our current scientific knowledge of most topics is based on many different studies conducted by many different researchers who have shared their work publicly over many years. The second is that publication allows science to be self-correcting. Individual scientists understand that, despite their best efforts, their methods can be flawed and their conclusions incorrect. Publication allows others in the scientific community to detect and correct these errors so that, over time, scientific knowledge increasingly reflects the way the world actually is.
 
@@ -92,14 +92,27 @@ Why should we concern ourselves with pseudoscience? There are at least three rea
 
 ## The Skeptic’s Dictionary {#The-Skeptics-Dictionary-202pt .sr-only} 
 
-> The Skeptic’s Dictionary An excellent source for information on pseudoscience is The Skeptic’s Dictionary (http://www.skepdic.com). Among the pseudoscientific beliefs and practices you can learn about are the following: - Cryptozoology. The study of “hidden” creatures like Bigfoot, the Loch Ness monster, and the chupacabra. - Pseudoscientific psychotherapies. Past-life regression, rebirthing therapy, and bioscream therapy, among others. - Homeopathy. The treatment of medical conditions using natural substances that have been diluted sometimes to the point of no longer being present. - Pyramidology. Odd theories about the origin and function of the Egyptian pyramids (e.g., that they were built by extraterrestrials) and the idea that pyramids, in general, have healing and other special powers. Another excellent online resource is Neurobonkers (http://neurobonkers.com), which regularly posts articles that investigate claims that pertain specifically to psychological science.
+<i-callout>
+
+_**The Skeptic’s Dictionary**_
+
+An excellent source for information on pseudoscience is __The Skeptic’s Dictionary__ ([http://www.skepdic.com](http://www.skepdic.com/)). Among the pseudoscientific beliefs and practices you can learn about are the following:
+
+* **Cryptozoology.** The study of “hidden” creatures like Bigfoot, the Loch Ness monster, and the chupacabra.
+* **Pseudoscientific psychotherapies.** Past-life regression, rebirthing therapy, and bioscream therapy, among others.
+* **Homeopathy.** The treatment of medical conditions using natural substances that have been diluted sometimes to the point of no longer being present.
+* **Pyramidology.** Odd theories about the origin and function of the Egyptian pyramids (e.g., that they were built by extraterrestrials) and the idea that pyramids, in general, have healing and other special powers.
+
+Another excellent online resource is __Neurobonkers__ ([http://neurobonkers.com](http://neurobonkers.com/)), which regularly posts articles that investigate claims that pertain specifically to psychological science.
+
+</i-callout>
 
 ## References {#References-201pt} 
 
-1.  Stanovich, K. E. (2010). How to think straight about psychology (9th ed.). Boston, MA: Allyn & Bacon. 
-2.  Klein, R. A., Ratliff, K. A., Vianello, M., Adams, R. B., Bahník, S., Bernstein, M. J., . . . Nosek, B. A. (2013). Investigating variation in replicability: A “many labs” replication project. Social Psychology, 45(3), 142-152. doi: 10.1027/1864-9335/a000178 
-3.  Schnall, S., Benton, J., & Harvey, S. (2008). With a clean conscience: Cleanliness reduces the severity of moral judgments. Psychological Science, 19(12), 1219-1222. doi: 10.1111/j.1467-9280.2008.02227.x 
-4.  Johnson, D. J., Cheung, F., & Donnellan, M. B. (2013). Does cleanliness influence moral judgments? A direct replication of Schnall, Benton, and Harvey (2008). Social Psychology, 45(3), 209-215. doi: 10.1027/1864-9335/a000186 
-5.  Hines, T. M. (1998). Comprehensive review of biorhythm theory. Psychological Reports, 83, 19–64. 
-6.  Popper, K. R. (2002). Conjectures and refutations: The growth of scientific knowledge. New York, NY: Routledge.
+1.  Stanovich, K. E. (2010). _How to think straight about psychology_ (9th ed.). Boston, MA: Allyn & Bacon. 
+2.  Klein, R. A., Ratliff, K. A., Vianello, M., Adams, R. B., Bahník, S., Bernstein, M. J., . . . Nosek, B. A. (2013). Investigating variation in replicability: A “many labs” replication project. _Social Psychology, 45_(3), 142-152. doi: 10.1027/1864-9335/a000178 
+3.  Schnall, S., Benton, J., & Harvey, S. (2008). With a clean conscience: Cleanliness reduces the severity of moral judgments. _Psychological Science, 19_(12), 1219-1222. doi: 10.1111/j.1467-9280.2008.02227.x 
+4.  Johnson, D. J., Cheung, F., & Donnellan, M. B. (2013). Does cleanliness influence moral judgments? A direct replication of Schnall, Benton, and Harvey (2008). _Social Psychology, 45_(3), 209-215. doi: 10.1027/1864-9335/a000186 
+5.  Hines, T. M. (1998). Comprehensive review of biorhythm theory. _Psychological Reports, 83_, 19–64. 
+6.  Popper, K. R. (2002). _Conjectures and refutations: The growth of scientific knowledge_. New York, NY: Routledge.
 

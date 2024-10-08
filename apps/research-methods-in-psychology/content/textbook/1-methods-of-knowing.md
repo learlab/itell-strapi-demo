@@ -5,8 +5,8 @@ chunks:
 - title: Learning Objectives
   slug: Learning-Objectives-198pt
   type: plain
-- title: Intuition
-  slug: Intuition-752t
+- title: Intuition and Authority
+  slug: Intuition-and-Authority-752t
   type: regular
   headings:
   - level: 3
@@ -15,8 +15,8 @@ chunks:
   - level: 3
     slug: authority
     title: Authority
-- title: Rationalism
-  slug: Rationalism-754t
+- title: Rationalism and Empiricism
+  slug: Rationalism-and-Empiricism-754t
   type: regular
   headings:
   - level: 3
@@ -34,10 +34,10 @@ chunks:
 cri:
 - question: What is one of the most common methods of acquiring knowledge according to the passage?
   answer: Acquiring knowledge through authority is one of the most common methods.
-  slug: Intuition-752t
+  slug: Intuition-and-Authority-752t
 - question: What is the scientific method?
   answer: The scientific method is a process of systematically collecting and evaluating evidence to test ideas and answer questions.
-  slug: Rationalism-754t
+  slug: Rationalism-and-Empiricism-754t
 next_slug: 2-understanding-science
 order: 1
 parent:
@@ -60,7 +60,7 @@ title: 1. Methods of Knowing
 
 Take a minute to ponder some of what you know and how you acquired that knowledge. Perhaps you know that you should make your bed in the morning because your mother or father told you this is what you should do, perhaps you know that swans are white because all of the swans you have seen are white, or perhaps you know that your friend is lying to you because she is acting strange and won’t look you in the eye. But should we trust knowledge from these sources? The methods of acquiring knowledge can be broken down into five categories each with its own strengths and weaknesses.
 
-## Intuition {#Intuition-752t .sr-only} 
+## Intuition and Authority {#Intuition-and-Authority-752t .sr-only} 
 
 ### Intuition {#intuition}
 
@@ -70,7 +70,7 @@ The first method of knowing is intuition. When we use our intuition, we are rely
 
 Perhaps one of the most common methods of acquiring knowledge is through authority. This method involves accepting new ideas because some authority figure states that they are true. These authorities include parents, the media, doctors, Priests and other religious authorities, the government, and professors. While in an ideal world we should be able to trust authority figures, history has taught us otherwise and many instances of atrocities against humanity are a consequence of people unquestioningly following authority (e.g., Salem Witch Trials, Nazi War Crimes). On a more benign level, while your parents may have told you that you should make your bed in the morning, making your bed provides the warm damp environment in which mites thrive. Keeping the sheets open provides a less hospitable environment for mites. These examples illustrate that the problem with using authority to obtain knowledge is that they may be wrong, they may just be using their intuition to arrive at their conclusions, and they may have their own reasons to mislead you. Nevertheless, much of the information we acquire is through authority because we don’t have time to question and independently research every piece of knowledge we learn through authority. But we can learn to evaluate the credentials of authority figures, to evaluate the methods they used to arrive at their conclusions, and evaluate whether they have any reasons to mislead us.
 
-## Rationalism {#Rationalism-754t .sr-only} 
+## Rationalism and Empiricism {#Rationalism-and-Empiricism-754t .sr-only} 
 
 ### Rationalism {#rationalism}
 
@@ -86,5 +86,5 @@ The scientific method is a process of systematically collecting and evaluating e
 
 ## References {#References-199pt} 
 
-1.  Gladwell, M. E. (2005). __Blink: The power of thinking without thinking.__ (9th ed.). New York: Little, Brown & Co.
+1.  Gladwell, M. E. (2005). _Blink: The power of thinking without thinking_. (9th ed.). New York: Little, Brown & Co.
 
