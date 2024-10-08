@@ -48,6 +48,7 @@ Below is an overview of a Page in iTELL.
 
 Most iTELL pages will have one more short answer questions and a single summary writing activity at the end of the page. You will not be able to proceed to the next page without successfully completing all tasks on your current page.
 
+
 ##### 1 Read
 
 Most of the content in a page will be blurred at the beginning. As you read through the page, click on the red button that reads "Click here to continue reading" to unblur the next section and continue reading.
@@ -55,6 +56,7 @@ Most of the content in a page will be blurred at the beginning. As you read thro
 <Image src="/images/userguide/userguide_read.png">
   Unblur the next section by clicking on the red button when you are ready to continue
 </Image>
+
 
 ##### 2 Answer Questions
 
@@ -72,6 +74,7 @@ Sometimes you will see "Click here to see question" button. After clicking the b
   After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Skip this question".
 </Image>
 
+
 ##### 3 Write a Summary
 
 A summary writing activity is located at the bottom of each page. After you answer all short answer questions on the current page, you will be asked to summarize the contents of the page before you can move on to the next page. Write a summary and submit it to receive feedback.
@@ -80,7 +83,7 @@ A summary writing activity is located at the bottom of each page. After you answ
   The summary feature is disabled until you finish reading the whole page and answer all constructed response items on the page.
 </Image>
 
-_> Evaluation_
+###### Evaluation
 
 Your summary will be evaluated according to four metrics:
 
@@ -89,7 +92,7 @@ Language: Whether your summary shows effective and varied use of sentence struct
 Language Borrowing: Whether you have written the summary in your own words or borrowed language from the text.
 Relevance: Whether the topics and ideas discussed in your summary are sufficiently relevant to the content of the page.
 
-_> Feedback_
+###### Feedback
 
 If your summary fails to pass the evaluation, you will be given additional attempts to revise and resubmit your summary. Click on the _Details_ tab to access more detailed feedback to help you write a better summary.
 
@@ -97,11 +100,11 @@ If your summary fails to pass the evaluation, you will be given additional attem
   Summaries that do not receive a passing grade will be given detailed feedback.
 </Image>
 
-_> Re-reading_
+###### Re-reading
 
 If your summary fails to pass the evaluation, iTELL's conversational agent (iTELL AI) will analyze your summary and redirect you to a part of the textbook that you could re-read to write a better summary. Read more about this process below in the iTELL AI section.
 
-_> Notes_
+###### Notes
 
 - Your past summaries will be accessible from your dashboard.
 
@@ -137,7 +140,7 @@ iTELL AI will only automatically redirect you for re-reading one time per page. 
   Click on the `See question` button to start the assisted re-reading feature
 </Image>
 
-_> Notes_
+###### Notes
 
 - Like any other conversational agents, iTELL AI can make mistakes. Make sure to double check any important information.
 - Some chapters in this iTELL volume will not support STAIRS
@@ -156,7 +159,7 @@ From the statistics dashboard, you can access different learning statistics such
 
 #### Summaries
 
-You will be able to access your past summaries in the summaries tab (<span style= {{ color: 'red' }}>**1**</span>) of your dashboard. Below is an overview of the Summaries page’s layout.
+You will be able to access your past summaries in the summaries tab (**1**) of your dashboard. Below is an overview of the Summaries page’s layout.
 
 <Image src="/images/userguide/userguide12.png">
   An overview of the summaries tab.
@@ -170,10 +173,6 @@ You will be able to access your past summaries in the summaries tab (<span style
 #### Questions
 
 In the `Questions` tab, you will have access to all the constructed response items that you have responded to while reading the text. Each row will contain your answer to a constructed response item. Clicking on the row will take you to the relevant chunk. The emojis to the right side denotes your score (poor, fair, excellent).
-
-<Image src="/images/userguide/userguide_cri.png">
-  An overview of the summaries tab.
-</Image>
 
 ### 5. Notes and Highlights
 
