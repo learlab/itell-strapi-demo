@@ -1,3 +1,5 @@
+import { text } from "node:stream/consumers";
+
 import { Suspense } from "react";
 
 import { getClassStudentsAction } from "@/actions/dashboard";
@@ -5,6 +7,7 @@ import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
 import { getPageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
+import { buttonVariants } from "@itell/ui/button";
 import {
   Card,
   CardContent,
@@ -14,8 +17,13 @@ import {
 } from "@itell/ui/card";
 import { Progress } from "@itell/ui/progress";
 import { Skeleton } from "@itell/ui/skeleton";
-import { median } from "@itell/utils";
+import { cn, median } from "@itell/utils";
+import { index } from "drizzle-orm/mysql-core";
+import { round } from "es-toolkit";
+import { progress } from "framer-motion";
 import { ErrorBoundary } from "react-error-boundary";
+import { data, order } from "tailwindcss/defaultTheme";
+import { map } from "zod";
 
 import { ClassBadges } from "./class-badges";
 import { columns, type StudentData } from "./student-columns";
@@ -82,6 +90,13 @@ export async function ClassInfo({ classId }: { classId: string }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        <a
+          href=" https://ocular.cc.gatech.edu/itell/?volume=research-methods-in-psychology"
+          className={buttonVariants({ variant: "secondary", size: "lg" })}
+          target="_blank"
+        >
+          Detailed dashboard
+        </a>
         <h3 className="mb-4 text-lg font-medium">Median Class Statistics</h3>
         <Suspense fallback={<ClassBadges.Skeleton />}>
           <ErrorBoundary fallback={<ClassBadges.ErrorFallback />}>
