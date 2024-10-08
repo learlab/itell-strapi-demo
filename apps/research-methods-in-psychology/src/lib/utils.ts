@@ -14,7 +14,10 @@ export const getYoutubeLinkFromEmbed = (url: string) => {
   return url;
 };
 
-export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+export const delay = (ms: number) =>
+  new Promise((res) => {
+    setTimeout(res, ms);
+  });
 
 export const makeInputKey = (slug: string) => {
   return `${slug}-summary`;
@@ -34,8 +37,8 @@ export const redirectWithSearchParams = (
   const url = new URL(path, env.NEXT_PUBLIC_HOST);
   if (typeof searchParams === "object" && searchParams !== null) {
     for (const key in searchParams) {
-      // @ts-ignore
-      url.searchParams.append(key, searchParams[key]);
+      // @ts-expect-error search params is not typed
+      url.searchParams.append(key, searchParams[key] as string);
     }
   }
   return redirect(url.toString());

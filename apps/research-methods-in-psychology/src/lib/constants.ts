@@ -32,6 +32,7 @@ export const Condition = {
 };
 export const Tags = {
   GET_SESSION: "get-session",
+  GET_ANSWER_STREAK: "get-answer-streak",
 } as const;
 
 export const animationProps = {

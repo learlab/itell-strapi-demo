@@ -5,6 +5,7 @@ import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
 import { getPageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
+import { buttonVariants } from "@itell/ui/button";
 import {
   Card,
   CardContent,
@@ -82,6 +83,13 @@ export async function ClassInfo({ classId }: { classId: string }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        <a
+          href=" https://ocular.cc.gatech.edu/itell/?volume=research-methods-in-psychology"
+          className={buttonVariants({ variant: "secondary", size: "lg" })}
+          target="_blank"
+        >
+          Detailed dashboard
+        </a>
         <h3 className="mb-4 text-lg font-medium">Median Class Statistics</h3>
         <Suspense fallback={<ClassBadges.Skeleton />}>
           <ErrorBoundary fallback={<ClassBadges.ErrorFallback />}>

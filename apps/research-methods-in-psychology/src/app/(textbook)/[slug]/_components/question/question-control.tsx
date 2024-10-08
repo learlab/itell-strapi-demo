@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef } from "react";
+
 import {
   useChunks,
   useQuestionStore,
@@ -15,23 +16,16 @@ import { usePortal } from "@itell/core/hooks";
 import { PortalContainer } from "@itell/core/portal-container";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
+
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
 import { UnlockAssignmentsButton } from "./unlock-assignments-button";
-
-import { useServerAction } from "zsa-react";
-import { getUserQuestionStreakAction } from "@/actions/question";
-import { reportSentry } from "@/lib/utils";
 
 type Props = {
   userId: string | null;
   pageSlug: string;
   condition: string;
   hasAssignments: boolean;
-};
-
-type State = {
-  streak: number;
 };
 
 export function QuestionControl({
@@ -48,10 +42,6 @@ export function QuestionControl({
   const prevChunkIdx = useRef(0);
 
   const { portals, addPortal, removePortal, removePortals } = usePortal();
-
-  const [state, setState] = useState<State>({
-    streak: 0,
-  });
 
   const portalIds = useRef<PortalIds>({} as PortalIds);
 
@@ -105,22 +95,6 @@ export function QuestionControl({
     el.appendChild(buttonContainer);
   };
 
-  // correct answer streak
-  const { execute } = useServerAction(getUserQuestionStreakAction);
-  const getAnswerStreak = useCallback(async () => {
-    const [data, error] = await execute();
-    if (error) {
-      reportSentry("get user question streak", { error });
-    }
-
-    setState((state) => ({ ...state, streak: data ?? 0 }));
-  }, [execute]);
-
-
-  useEffect(() => {
-    getAnswerStreak();
-  }, []);
-
   useEffect(() => {
     chunks.forEach((chunkSlug, chunkIndex) => {
       const el = getChunkElement(chunkSlug, "data-chunk-slug");
@@ -171,16 +145,7 @@ export function QuestionControl({
     }
 
     if (shouldBlur) {
-      let hasQuestion = status[currentChunk].hasQuestion;
-
-      if (state.streak >= 7) {
-        hasQuestion = Math.random() < 0.7 ? false : hasQuestion;
-      } else if (state.streak >= 5) {
-        hasQuestion = Math.random() < 0.5 ? false : hasQuestion;
-      } else if (state.streak >= 2) {
-        hasQuestion = Math.random() < 0.3 ? false : hasQuestion;
-      }
-
+      const hasQuestion = status[currentChunk].hasQuestion;
       const idx = chunks.indexOf(currentChunk);
       if (idx === -1) return;
 

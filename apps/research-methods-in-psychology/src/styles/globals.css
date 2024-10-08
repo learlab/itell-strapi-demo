@@ -28,6 +28,8 @@
 
 .driver-active #textbook-main-wrapper {
   grid-template-columns: 1fr;
+  margin-right: auto;
+  margin-left: 1rem;
   max-width: 60%;
 }
 

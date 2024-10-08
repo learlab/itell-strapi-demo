@@ -52,7 +52,6 @@ export const GET = async (req: Request) => {
 
 		if (azureUser.email) {
 			const emailLower = azureUser.email.toLocaleLowerCase();
-			console.log("emiallower", emailLower);
 			if (
 				!emailLower.endsWith("vanderbilt.edu") &&
 				!emailLower.endsWith("augustatech.edu")

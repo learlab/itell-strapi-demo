@@ -5,7 +5,7 @@ import {
   useSummaryStore,
 } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
-import { PageStatus } from "@/lib/page-status";
+import { type PageStatus } from "@/lib/page-status";
 import { isLastPage, type PageData } from "@/lib/pages/pages.client";
 import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
 import { Button } from "@itell/ui/button";
@@ -19,6 +19,7 @@ import {
 } from "@itell/ui/dialog";
 import { useSelector } from "@xstate/store/react";
 import { BookCheckIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import { PageQuiz } from "./page-quiz";
 
@@ -31,13 +32,15 @@ export function PageQuizModal({
 }) {
   const quizStore = useQuizStore();
   const summaryStore = useSummaryStore();
+  const searchParams = useSearchParams();
   const quizOpen = useSelector(quizStore, SelectQuizOpen);
+  const open = searchParams?.get("quiz") === "true" || quizOpen;
   const quizFinished = useSelector(quizStore, SelectQuizFinished);
   return (
     <Dialog
-      open={quizOpen}
+      open={open}
       onOpenChange={() => {
-        if (!quizOpen) {
+        if (!open || !isProduction) {
           quizStore.send({ type: "toggleQuiz" });
         }
       }}
@@ -54,7 +57,7 @@ export function PageQuizModal({
       ) : null}
       <DialogContent
         className="h-[80vh] max-w-4xl overflow-y-auto"
-        canClose={!isProduction}
+        canClose={false}
       >
         <DialogHeader>
           <DialogTitle>Quiz</DialogTitle>
