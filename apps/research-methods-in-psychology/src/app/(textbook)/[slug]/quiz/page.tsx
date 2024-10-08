@@ -9,7 +9,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { PageQuiz } from "../_components/page-quiz";
 
-export default async function ({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
   const page = getPageData(slug);

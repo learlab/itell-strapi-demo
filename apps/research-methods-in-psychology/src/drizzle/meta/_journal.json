@@ -36,6 +36,13 @@
       "when": 1727234063029,
       "tag": "0004_minor_unicorn",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1728427744185,
+      "tag": "0005_complete_prodigy",
+      "breakpoints": true
     }
   ]
 }

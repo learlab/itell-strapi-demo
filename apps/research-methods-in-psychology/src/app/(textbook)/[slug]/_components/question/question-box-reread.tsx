@@ -195,17 +195,19 @@ export function QuestionBoxReread({
           ) : null}
 
           <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
-            <StatusButton
-              pending={isPending}
-              type="submit"
-              disabled={_isPending}
-              variant="outline"
-            >
-              <span className="flex items-center gap-2">
-                <PencilIcon className="size-4" />
-                Answer
-              </span>
-            </StatusButton>
+            {state.status === StatusReread.UNANSWERED ? (
+              <StatusButton
+                pending={isPending}
+                type="submit"
+                disabled={_isPending}
+                variant="outline"
+              >
+                <span className="flex items-center gap-2">
+                  <PencilIcon className="size-4" />
+                  Answer
+                </span>
+              </StatusButton>
+            ) : null}
 
             {state.status !== StatusReread.UNANSWERED &&
             isNextButtonDisplayed ? (

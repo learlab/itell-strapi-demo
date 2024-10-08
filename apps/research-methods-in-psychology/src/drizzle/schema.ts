@@ -174,6 +174,7 @@ export const events = pgTable(
   (table) => {
     return {
       events_user_id_idx: index("events_user_id_idx").on(table.userId),
+      events_type_idx: index("events_type_idx").on(table.type),
     };
   }
 );
