@@ -160,7 +160,15 @@ title: 13. Drawing Conclusions and Reporting the Results
 
 ## Learning Objectives {#Learning-Objectives-191pt} 
 
-1\. Identify the conclusions researchers can make based on the outcome of their studies. 2. Describe why scientists avoid the term “scientific proof.” 3. Explain the different ways that scientists share their findings.
+<i-callout variant="info" title="Learning Objectives">
+
+1\. Identify the conclusions researchers can make based on the outcome of their studies.
+
+2\. Describe why scientists avoid the term “scientific proof.”
+
+3\. Explain the different ways that scientists share their findings.
+
+</i-callout>
 
 ## Drawing Conclusions {#Drawing-Conclusions-746t} 
 
