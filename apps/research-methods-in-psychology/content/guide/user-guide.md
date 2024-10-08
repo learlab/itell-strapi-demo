@@ -6,46 +6,22 @@ condition: stairs
 
 #### Introduction
 
-This document provides guidelines for using Intelligent Text for Enhanced Lifelong Learning (iTELL) for Prolific users. We cover the iTELL adaptation of Principles of Macroeconomics. The textbook was redesigned into an interactive web version by a team comprising a subject matter expert, a content and assessment developer, a multimedia and web developer, and an instructional designer from Georgia Tech.
-
-#### Acknowledgements
-
-We would like to thank [the authors and contributors of the original textbook](https://openstax.org/books/principles-macroeconomics-2e/pages/preface). We also appreciate Affordable Learning Georgia, the National Science Foundation, and The National AI Institute for Adult Learning and Online Education (AI-ALOE) for providing funds to support this project.
+This document provides guidelines for using Intelligent Texts for Enhanced Lifelong Learning (iTELL). iTELL is a webapp that presents text-based learning materials alongside videos and learning activities. It includes an AI assistant as well as automated feedback.
 
 ### 1. Getting Started
 
-#### Surveys
-
-_BEFORE_ you start using iTELL, make sure that you have completed your intake survey and have been explicitly redirected to this page.
-
-You are also required to complete an outtake survey _AFTER_ you FINISH using iTELL. You will be automatically redirected to the outtake survey after you have completed all iTELL tasks. The outtake survey will require you to input a completion code which will be provided at the end of the task.
-
-#### External Plugins
-
-Please ensure that you have disabled all external plugins (e.g., adblock) before using this application.
-
-#### Access the App
-
-Use the url ([https://itell-poe.vercel.app/](https://itell-poe.vercel.app/)) to access the web app.
-
 #### Sign in
 
-You will be automatically logged in using your Prolific ID. If you have not been logged in using your Prolific ID, follow the steps below:
-
-1. Click on the _sign in_ button (<span style= {{ color: 'red' }}>**1**</span>) on the top right of your screen.
+1. Click on the _sign in_ button **1** on the top right of your screen.
 
 <i-image src="/images/userguide/userguide1.png">
   The landing page. Sign in button is on the top right.
 </i-image>
 
-2. You can use your Prolific ID to log in
+2. Login using your Google or Microsoft account; whichever is available. If you are part of a class, make sure to use the account that was provided by to you by your school.
 
 <i-image src="/images/userguide/userguide_prolific_1.png">
-
-Sign in with your Prolific ID.
-
-The card on the right shows a preview of the textbook content.
-
+Sign in to iTELL.
 </i-image>
 
 ### 2. Making Progress in iTELL
@@ -54,35 +30,35 @@ The card on the right shows a preview of the textbook content.
 
 The textbook's contents are divided into Pages. You can access different Pages using the left-side navigation bar.
 
-Below is an overview of what a Page in an iTELL book looks like.
+Below is an overview of a Page in iTELL.
 
 <i-image src="/images/userguide/userguide_prolific_2.png">
   What each Page looks like.
 </i-image>
 
-(<span className="text-red-500 font-semibold">1</span>) The progress bar (in (<span className="text-blue-500 font-semibold">blue</span>)) shows how far you have scrolled down the page.
-(<span className="text-red-500 font-semibold">2</span>) The left-side navigation bar will have links to different Chapters and Sections within the Module. Pages with checkmarks mean that you have completed those pages. Pages with locks mean that you have to complete the preceding page to unlock those pages.
-(<span className="text-red-500 font-semibold">3</span>) If you get stuck at any point, click on this **Reset page** button to restart your progress for the page.
-(<span className="text-red-500 font-semibold">4</span>) Click on this quick link to move to the bottom of the page where the Summary-writing textbox is located.
-(<span className="text-red-500 font-semibold">5</span>) Click on this quick link to move to the top of the page.
-(<span className="text-red-500 font-semibold">6</span>) The right-side navigation bar will have quick links to different subsections within the page.
-(<span className="text-red-500 font-semibold">7</span>) Click on this box to start engaging with iTELL's conversational AI.
+1. The progress bar (in blue) shows how far you have scrolled down the page.
+2. The left hand navigation bar will have links to different Chapters and Sections within the Module. Pages with checkmarks mean that you have completed those pages. Pages with locks mean that you have to complete the preceding page to unlock those pages.
+3. Click on the "Reset page" link to reset page progress in case you are stuck.
+4. Click on the "Write summary" link to move to the bottom of the page where the Summary-writing activity is located.
+5. Click on the "Back to top" link to move to the top of the page.
+6. The right hand navigation bar contains links to subsections within the current page.
+7. iTELL AI is a conversational agent that is available to discuss the page that you are currently reading. To interact with iTELL AI, click on the chat box in the bottom right of your screen.
 
 #### Making Progress
 
-In most Pages, you will be asked to **1)** answer constructed response items and **2)** write a summary. You will not be able to proceed to the next page without successfully completing all tasks on your current page.
+Most iTELL pages will have one more short answer questions and a single summary writing activity at the end of the page. You will not be able to proceed to the next page without successfully completing all tasks on your current page.
 
-##### 1) Read
+##### 1 Read
 
-Most of the contents in a page will be blurred at the beginning. As you read through the page, click on the red button (**1**) that reads "Click here to continue reading" to _unblur_ the next section (**2**) and continue reading.
+Most of the content in a page will be blurred at the beginning. As you read through the page, click on the red button that reads "Click here to continue reading" to unblur the next section and continue reading.
 
 <Image src="/images/userguide/userguide_read.png">
   Unblur the next section by clicking on the red button when you are ready to continue
 </Image>
 
-##### 2) Answer Constructed Response Items
+##### 2 Answer Questions
 
-Some parts of the text will have constructed response items instead of the "Click here to continue reading" button. These items are short written questions where you provide a brief explanation of a concept to demonstrate your understanding of the text that you have read.
+Sometimes you will see "Click here to see question" button. After clicking the button, you will provide a brief explanation of a concept to demonstrate your understanding of the text that you have read.
 
 <Image src="/images/userguide/userguide_prolific_3.png">
   You will need to answer the constructed response item first to unblur the next section
@@ -96,32 +72,22 @@ Some parts of the text will have constructed response items instead of the "Clic
   After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Skip this question".
 </Image>
 
-##### 3) Write a Summary
+##### 3 Write a Summary
 
-A summary text box is located at the bottom of each page. After you answer all constructed response items on your current page, you will be asked to summarize the contents of the page before you can move on to the next Section. Write a summary and submit it to have it evaluated by the AI tutor.
+A summary writing activity is located at the bottom of each page. After you answer all short answer questions on the current page, you will be asked to summarize the contents of the page before you can move on to the next page. Write a summary and submit it to receive feedback.
 
 <Image src="/images/userguide/userguide_summary.png">
   The summary feature is disabled until you finish reading the whole page and answer all constructed response items on the page.
 </Image>
 
-_> What makes a successful summary_
-
-A successful summary will…
-
-- Be within 50 ~ 200 words long
-- Be written in English
-- Be on topic
-- Not be plagiarized
-- Use appropriate language
-
 _> Evaluation_
 
-Your summary will be evaluated by the AI engine and give it a passing or a failing grade. The evaluation will be based on four different factors:
+Your summary will be evaluated according to four metrics:
 
-- <span style={{ color: "#60a5fa" }}>Content</span>: which will include main points, details to support those main points, and general organization of summary
-- <span style={{ color: "#60a5fa" }}>Language</span>: which will evaluate the lexical and syntactic structures of your summary.
-- <span style={{ color: "#60a5fa" }}>Paraphrasing</span>: which will include appropriate paraphrasing of text and using objective language
-- <span style={{ color: "#60a5fa" }}>Key words</span>: which will include the use of important terms and phases from the text
+Content: Whether your summary shows good coverage of the page's main points and provides details to support those points.
+Language: Whether your summary shows effective and varied use of sentence structures and vocabulary.
+Language Borrowing: Whether you have written the summary in your own words or borrowed language from the text.
+Relevance: Whether the topics and ideas discussed in your summary are sufficiently relevant to the content of the page.
 
 _> Feedback_
 
@@ -151,7 +117,7 @@ iTELL provides a conversational agent that will answer any questions related to 
 
 #### Assisted Re-reading
 
-If you submit a summary that does not pass the evaluation, iTELL AI will automatically redirect you to a part of the textbook that you should re-read to improve your understanding of the textbook and to write a better summary.
+If you submit a summary that does not pass the evaluation, iTELL AI will automatically redirect you to a part of the textbook that you should re-read to improve your understanding of the reading material and to write a better summary.
 
 <Image src="/images/userguide/userguide_iTELLAI_2.png">
   iTELL AI will redirect you to a relevant chunk
@@ -163,7 +129,7 @@ Make sure to spend enough time re-reading the highlighted text. Click on the `I'
   iTELL AI will ask you a question about the highlighted passage.
 </Image>
 
-Answer the question and engage in a conversation with iTELL AI to gain a better understanding of the passage. Once you feel that you have a better understanding of the text, click on the `Return to summary` button to go back to the summary module and rewrite your summary.After responding to iTELL AI's question, you can continue to engage with iTELL AI, or go back to the summary module
+Answer the question and engage in a conversation with iTELL AI to gain a better understanding of the passage. Once you feel that you have a better understanding of the text, click on the `Return to summary` button to go back to the summary module and rewrite your summary. After responding to iTELL AI's question, you can continue to engage with iTELL AI, or go back to the summary module
 
 iTELL AI will only automatically redirect you for re-reading one time per page. If you submit more summaries that fail the evaluation, you will have the choice to manually engage in this re-reading activity by clicking on the `See question` button. Please note that this button will only appear if you submit a **failing** summary.
 
@@ -196,10 +162,10 @@ You will be able to access your past summaries in the summaries tab (<span style
   An overview of the summaries tab.
 </Image>
 
-(<span style= {{ color: 'red' }}>**1**</span>) Summaries tab. You can access the summaries page by clicking on this tab (or by clicking on your profile icon on the top right corner, then clicking on a separate summaries button)
-(<span style= {{ color: 'red' }}>**2**</span>) Your past summaries are categorized by modules. Use this dropdown menu to access summaries from different modules (default is set to Module 1).
-(<span style= {{ color: 'red' }}>**3**</span>) Click on this button to move to a specific section and write a new summary.
-(<span style= {{ color: 'red' }}>**4**</span>) This part shows the time your past summaries were written on, and whether they passed (light blue check mark) or failed (light pink x mark) the AI’s evaluation.
+1. Summaries tab. You can access the summaries dashboard by clicking on the "summaries" tab.
+2. Your past summaries are categorized by modules. Use this menu to access summaries from different modules (some texts only have one module).
+3. Click on the "New summary" button to move to a specific section and write a new summary.
+4. You can see your past summaries and whether they passed (light blue check mark) or failed (light pink x mark).
 
 #### Questions
 
@@ -209,25 +175,7 @@ In the `Questions` tab, you will have access to all the constructed response ite
   An overview of the summaries tab.
 </Image>
 
-### 5. Other Features
-
-#### Search Bar
-
-iTELL has a search bar function that helps you find sections within the text that are most relevant to your designated search word.
-Access the search function by clicking on the search bar on the top right corner.
-
-<Image src="/images/userguide/userguide13.png">
-  Find your target keywords inside the textbook.
-</Image>
-
-Clicking on the button will prompt a pop-up search bar where you can enter your target search word.
-
-<Image src="/images/userguide/userguide14.png">
-  It seems Chapters 1, 3, 4, and 5 from Module 5 are most relevant to the search
-  word GDP
-</Image>
-
-#### Notes and Highlights
+### 5. Notes and Highlights
 
 You can leave notes and highlight parts of the textbook for future reference. Click and drag through the text to activate the notes and highlights function.
 
@@ -252,7 +200,7 @@ Click on the highlighted text and you will be asked to confirm that you want to 
 
 _> Notes_
 
-Click and drag through the text to activate the notes and highlights function. Click on the Note button to open up a notepad on the right side of your screen. Type your note into the textbox and click on the return button (<span style= {{ color: 'red' }}>**1**</span>) to save your note. The text color will change for the relevant part of the text.
+Click and drag through the text to activate the notes and highlights function. Click on the Note button to open up a notepad on the right side of your screen. Type your note into the textbox and click on the return button (**1**) to save your note. The text color will change for the relevant part of the text.
 
 <Image src="/images/userguide/userguide18.png">
   Text color is blue for the relevant part of the text.
@@ -262,7 +210,7 @@ Click and drag through the text to activate the notes and highlights function. C
   You can view your notes at the right side of your screen.
 </Image>
 
-You can also click on the created notes to edit them. You can change their color by clicking on (<span style= {{ color: 'red' }}>**1**</span>) or edit the text contents by clicking on (<span style= {{ color: 'red' }}>**2**</span>).
+You can also click on the created notes to edit them. You can change their color by clicking on (**1**) or edit the text contents by clicking on (**2**).
 
 <Image src="/images/userguide/userguide20.png">
   Note color can also be changed when initially creating the note.
@@ -274,15 +222,32 @@ You can also click on the created notes to edit them. You can change their color
   scheme.
 </Image>
 
+### 6. Other Features
+
+#### Search Bar
+
+iTELL has a search bar function that helps you find sections within the text that are most relevant to your designated search word.
+Access the search function by clicking on the search bar on the top right corner.
+
+<Image src="/images/userguide/userguide13.png">
+  Find your target keywords inside the textbook.
+</Image>
+
+Clicking on the button will prompt a pop-up search bar where you can enter your target search word.
+
+<Image src="/images/userguide/userguide14.png">
+  It seems Chapters 1, 3, 4, and 5 from Module 5 are most relevant to the search
+  word GDP
+</Image>
+
 #### Dark Mode
 
-Transition to dark mode by clicking on the sun icon on the top right corner (<span style= {{ color: 'red' }}>**1**</span>) then on the Dark button (<span style= {{ color: 'red' }}>**2**</span>). Switch back to Light mode by clicking on the Light button. You can also use your system setting by clicking on the System button.
+Transition to dark mode by clicking on the sun icon on the top right corner (**1**) then on the Dark button (**2**). Switch back to Light mode by clicking on the Light button. You can also use your system setting by clicking on the System button.
 
 <Image src="/images/userguide/userguide22.png">
   Dark mode can be accessed from the top right corner.
 </Image>
----
-<Image src="/images/userguide/userguide23.png">Voila.</Image>
+<Image src="/images/userguide/userguide23.png">Dark mode enabled.</Image>
 
 ### 6. Others
 
