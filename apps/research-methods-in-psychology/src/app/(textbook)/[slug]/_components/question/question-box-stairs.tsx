@@ -221,7 +221,7 @@ export function QuestionBoxStairs({
               </TooltipTrigger>
               <TooltipContent>
                 <p>
-                  You have answered {streak} questions correctly in a row! Good
+                  You have answered {streak} questions correctly in a row, good
                   job!
                 </p>
               </TooltipContent>
