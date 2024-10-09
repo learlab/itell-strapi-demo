@@ -19,6 +19,7 @@ import { median } from "@itell/utils";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { ClassBadges } from "./class-badges";
+import { ClassQuizList } from "./quiz-list";
 import { columns, type StudentData } from "./student-columns";
 import { StudentsTable } from "./students-table";
 
@@ -82,7 +83,7 @@ export async function ClassInfo({ classId }: { classId: string }) {
           <span className="font-semibold">{classId}</span>
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8">
         <a
           href=" https://ocular.cc.gatech.edu/itell/?volume=research-methods-in-psychology"
           className={buttonVariants({ variant: "secondary", size: "lg" })}
@@ -90,25 +91,46 @@ export async function ClassInfo({ classId }: { classId: string }) {
         >
           Detailed dashboard
         </a>
-        <h3 className="mb-4 text-lg font-medium">Median Class Statistics</h3>
-        <Suspense fallback={<ClassBadges.Skeleton />}>
-          <ErrorBoundary fallback={<ClassBadges.ErrorFallback />}>
-            <ClassBadges
-              students={students.map((student) => ({ id: student.id }))}
-            />
-          </ErrorBoundary>
-        </Suspense>
 
-        <h3 className="mb-4 mt-4 text-lg font-medium">Median Progress</h3>
-        <div className="flex items-center gap-4">
-          <Progress value={classProgress} className="w-1/3" />
-          <p className="text-muted-foreground">
-            {classProgress.toFixed(2)}% completed
-          </p>
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Median Class Statistics</h3>
+          <Suspense fallback={<ClassBadges.Skeleton />}>
+            <ErrorBoundary fallback={<ClassBadges.ErrorFallback />}>
+              <ClassBadges
+                students={students.map((student) => ({ id: student.id }))}
+              />
+            </ErrorBoundary>
+          </Suspense>
         </div>
 
-        <h3 className="mb-4 text-lg font-medium">Student Statistics</h3>
-        <StudentsTable columns={columns} data={studentData} />
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <h3 className="col-span-1 text-lg font-medium">Median Progress</h3>
+          <div className="col-span-1 flex items-center gap-4">
+            <Progress value={classProgress} />
+            <p className="shrink-0 text-muted-foreground">
+              {classProgress.toFixed(2)}% completed
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="mb-4 text-lg font-medium">Quiz</h3>
+          <ErrorBoundary fallback={<ClassQuizList.ErrorFallback />}>
+            <Suspense fallback={<ClassQuizList.Skeleton />}>
+              <ClassQuizList
+                students={students.map((s) => ({
+                  id: s.id,
+                  name: s.name ?? s.email ?? "Unknown",
+                }))}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="mb-4 text-lg font-medium">Student Statistics</h3>
+          <StudentsTable columns={columns} data={studentData} />
+        </div>
       </CardContent>
     </Card>
   );

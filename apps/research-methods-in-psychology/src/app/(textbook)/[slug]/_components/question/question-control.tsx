@@ -137,15 +137,15 @@ export function QuestionControl({
     }
     const isLastChunk = currentChunk === chunks[chunks.length - 1];
 
+    const hasQuestion = status[currentChunk].hasQuestion;
     if (isLastChunk) {
       removePortal(portalIds.current.scrollBack);
-      if (hasAssignments) {
+      if (hasAssignments && !hasQuestion) {
         insertUnlockAssignmentsButton(currentChunkElement, currentChunk);
       }
     }
 
     if (shouldBlur) {
-      const hasQuestion = status[currentChunk].hasQuestion;
       const idx = chunks.indexOf(currentChunk);
       if (idx === -1) return;
 

@@ -60,7 +60,7 @@ export function PageAssignments({
             )}
           </div>
 
-          <div className="col-span-full lg:col-span-2">
+          <div className="col-span-full space-y-2 lg:col-span-2">
             {user.finished ? (
               <Suspense fallback={<FinishedPrompt.Skeleton />}>
                 <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />

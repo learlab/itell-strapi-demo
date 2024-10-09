@@ -8,6 +8,8 @@ export const allPagesSorted = pages.sort((a, b) => {
   return a.order - b.order;
 });
 
+export const quizPages = allPagesSorted.filter((page) => page.quiz);
+
 export const allAssignmentPagesSorted = allPagesSorted.filter(
   (page) => page.assignments.length > 0
 );

@@ -1,5 +1,5 @@
 import { getUserQuizAttempts } from "@/actions/event";
-import { allPagesSorted } from "@/lib/pages/pages.server";
+import { allPagesSorted, quizPages } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { Spinner } from "@itell/ui/spinner";
 import { delay } from "es-toolkit";
@@ -25,15 +25,13 @@ export async function FinishedPrompt({ href }: Props) {
       </div>
     );
   }
-  const quizPages = allPagesSorted
-    .filter((p) => p.quiz)
-    .map((p) => ({
-      title: p.title,
-      href: `${makePageHref(p.slug)}?quiz=true`,
-      finished: attempts.find((a) => a.pageSlug === p.slug) !== undefined,
-    }));
+  const pages = quizPages.map((p) => ({
+    title: p.title,
+    href: `${makePageHref(p.slug)}?quiz=true`,
+    finished: attempts.find((a) => a.pageSlug === p.slug) !== undefined,
+  }));
 
-  const allQuizFinished = quizPages.every((p) => p.finished);
+  const allQuizFinished = pages.every((p) => p.finished);
 
   return (
     <div className="mb-8 space-y-6 rounded-md border-2 border-info p-4 xl:text-lg xl:leading-relaxed">
