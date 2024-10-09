@@ -65,48 +65,8 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     page.quiz ? false : undefined
   );
 
-  const questions = useMemo(() => {
-    if (page.cri.length === 0) {
-      return {};
-    }
-
-    const chunkQuestion: ChunkQuestion = Object.fromEntries(
-      page.chunks.map((chunk) => [chunk, false])
-    );
-
-    if (page.chunks.length > 0) {
-      let withQuestion = false;
-      page.cri.forEach((item) => {
-        let baseProb = 1 / 3;
-
-        // adjust the probability of cri based on the current streak
-        // if (answerStreak >= 7) {
-        //   baseProb = baseProb * 0.3;
-        // } else if (answerStreak >= 5) {
-        //   baseProb = baseProb * 0.5;
-        // } else if (answerStreak >= 2) {
-        //   baseProb = baseProb * 0.7;
-        // }
-
-        if (Math.random() < baseProb) {
-          chunkQuestion[item.slug] = true;
-          if (!withQuestion) {
-            withQuestion = true;
-          }
-        }
-      });
-
-      // Each page will have at least one question
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!withQuestion) {
-        const randomQuestion =
-          page.cri[Math.floor(Math.random() * page.cri.length)];
-
-        chunkQuestion[randomQuestion.slug] = true;
-      }
-    }
-
-    return chunkQuestion;
+  const chunkQuestion = useMemo(() => {
+    return getPageQuestions(page);
   }, [page]);
 
   const questionStoreRef = useRef<QuestionStore>();
@@ -115,7 +75,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
       {
         chunks: page.chunks,
         pageStatus,
-        chunkQuestion: questions,
+        chunkQuestion,
       },
       snapshot
     );
@@ -331,4 +291,48 @@ export const useAddChat = () => {
   }, [isError]);
 
   return { action, pending, isError, error };
+};
+
+const getPageQuestions = (page: Page): ChunkQuestion => {
+  if (page.cri.length === 0) {
+    return {};
+  }
+
+  const chunkQuestion: ChunkQuestion = Object.fromEntries(
+    page.chunks.map((chunk) => [chunk, false])
+  );
+
+  if (page.chunks.length > 0) {
+    let withQuestion = false;
+    page.cri.forEach((item) => {
+      let baseProb = 1 / 3;
+
+      // adjust the probability of cri based on the current streak
+      // if (answerStreak >= 7) {
+      //   baseProb = baseProb * 0.3;
+      // } else if (answerStreak >= 5) {
+      //   baseProb = baseProb * 0.5;
+      // } else if (answerStreak >= 2) {
+      //   baseProb = baseProb * 0.7;
+      // }
+
+      if (Math.random() < baseProb) {
+        chunkQuestion[item.slug] = true;
+        if (!withQuestion) {
+          withQuestion = true;
+        }
+      }
+    });
+
+    // Each page will have at least one question
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!withQuestion) {
+      const randomQuestion =
+        page.cri[Math.floor(Math.random() * page.cri.length)];
+
+      chunkQuestion[randomQuestion.slug] = true;
+    }
+  }
+
+  return chunkQuestion;
 };
