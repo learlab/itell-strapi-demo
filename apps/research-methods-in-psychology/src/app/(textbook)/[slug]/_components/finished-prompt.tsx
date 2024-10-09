@@ -38,23 +38,21 @@ export async function FinishedPrompt({ href }: Props) {
   return (
     <div className="mb-8 space-y-6 rounded-md border-2 border-info p-4 xl:text-lg xl:leading-relaxed">
       {allQuizFinished ? (
-        <p>
-          You have finished the entire textbook. Please visit the link below to
-          complete the course.
-        </p>
-      ) : (
         <>
           <p>
-            You have finished all pages in the textbook. Please also make sure
-            you finished all the following quizzes to get full credit. Once you
-            finished all the quizzes, you will get a link to complete the
-            course.
+            You have finished the entire textbook. Please visit the link below
+            to complete the course.
           </p>
-          <QuizList pages={quizPages} />
+          <FinishedLink href={href} />
         </>
+      ) : (
+        <p>
+          You have finished all pages in the textbook. Please also make sure you
+          finished all the following quizzes to get full credit. Once you
+          finished all the quizzes, you will get a link to complete the course.
+        </p>
       )}
-
-      {allQuizFinished ? <FinishedLink href={href} /> : null}
+      <QuizList pages={quizPages} />
     </div>
   );
 }
