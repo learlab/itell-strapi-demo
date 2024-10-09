@@ -24,8 +24,8 @@ cri:
 - question: What is the difference between a theory and a hypothesis?
   answer: A theory is an explanation or interpretation of phenomena that goes beyond what is observed directly, while a hypothesis is a specific prediction about a new phenomenon that should be observed if a particular theory is accurate.
   slug: Theories-and-Hypotheses-733t
-- question: What is the primary way scientific researchers use theories according to the passage?
-  answer: They construct or choose a theory to explain phenomena, make predictions (hypotheses) based on the theory, conduct empirical studies to test the hypotheses, and revise the theory based on new results.
+- question: What is the primary way that scientific researchers use theories according to the passage?
+  answer: Scientists use the hypothetico-deductive method to construct, test, and revise theories based on empirical evidence.
   slug: Theory-Testing-734t
 - question: What are the two basic ways that researchers usually include theory in their research reports or presentations?
   answer: The first way is to raise a research question, conduct a new study, and offer theories to explain the results, while the second way is to describe existing theories, derive a hypothesis, test it, and reevaluate the theory.
