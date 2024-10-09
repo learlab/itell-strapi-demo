@@ -55,6 +55,7 @@ Most of the content in a page will be blurred at the beginning. As you read thro
 <Image src="/images/userguide/userguide_read.png">
   Unblur the next section by clicking on the red button when you are ready to continue
 </Image>
+&nbsp;
 
 ##### 2 Answer Questions
 
@@ -71,6 +72,7 @@ Sometimes you will see "Click here to see question" button. After clicking the b
 <Image src="/images/userguide/userguide_prolific_5.png">
   After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Skip this question".
 </Image>
+&nbsp;
 
 ##### 3 Write a Summary
 
@@ -80,7 +82,7 @@ A summary writing activity is located at the bottom of each page. After you answ
   The summary feature is disabled until you finish reading the whole page and answer all constructed response items on the page.
 </Image>
 
-_> Evaluation_
+###### Evaluation
 
 Your summary will be evaluated according to four metrics:
 
@@ -89,19 +91,20 @@ Language: Whether your summary shows effective and varied use of sentence struct
 Language Borrowing: Whether you have written the summary in your own words or borrowed language from the text.
 Relevance: Whether the topics and ideas discussed in your summary are sufficiently relevant to the content of the page.
 
-_> Feedback_
+###### Feedback
 
 If your summary fails to pass the evaluation, you will be given additional attempts to revise and resubmit your summary. Click on the _Details_ tab to access more detailed feedback to help you write a better summary.
 
 <Image src="/images/userguide/userguide9.png">
   Summaries that do not receive a passing grade will be given detailed feedback.
 </Image>
+&nbsp;
 
-_> Re-reading_
+###### Re-reading
 
 If your summary fails to pass the evaluation, iTELL's conversational agent (iTELL AI) will analyze your summary and redirect you to a part of the textbook that you could re-read to write a better summary. Read more about this process below in the iTELL AI section.
 
-_> Notes_
+###### Notes
 
 - Your past summaries will be accessible from your dashboard.
 
@@ -137,7 +140,7 @@ iTELL AI will only automatically redirect you for re-reading one time per page. 
   Click on the `See question` button to start the assisted re-reading feature
 </Image>
 
-_> Notes_
+###### Notes
 
 - Like any other conversational agents, iTELL AI can make mistakes. Make sure to double check any important information.
 - Some chapters in this iTELL volume will not support STAIRS
@@ -156,7 +159,7 @@ From the statistics dashboard, you can access different learning statistics such
 
 #### Summaries
 
-You will be able to access your past summaries in the summaries tab (<span style= {{ color: 'red' }}>**1**</span>) of your dashboard. Below is an overview of the Summaries page’s layout.
+You will be able to access your past summaries in the summaries tab (**1**) of your dashboard. Below is an overview of the Summaries page’s layout.
 
 <Image src="/images/userguide/userguide12.png">
   An overview of the summaries tab.
@@ -171,10 +174,6 @@ You will be able to access your past summaries in the summaries tab (<span style
 
 In the `Questions` tab, you will have access to all the constructed response items that you have responded to while reading the text. Each row will contain your answer to a constructed response item. Clicking on the row will take you to the relevant chunk. The emojis to the right side denotes your score (poor, fair, excellent).
 
-<Image src="/images/userguide/userguide_cri.png">
-  An overview of the summaries tab.
-</Image>
-
 ### 5. Notes and Highlights
 
 You can leave notes and highlight parts of the textbook for future reference. Click and drag through the text to activate the notes and highlights function.
@@ -184,13 +183,13 @@ You can leave notes and highlight parts of the textbook for future reference. Cl
   highlights function.
 </Image>
 
-_> Highlighting_
+#### Highlighting
 
 Click on the Highlight button and the text block will be permanently highlighted unless you choose to delete it later.
 
 <Image src="/images/userguide/userguide16.png">Highlighted text.</Image>
 
-_> Removing highlights_
+#### Removing highlights
 
 Click on the highlighted text and you will be asked to confirm that you want to remove the highlight.
 
@@ -198,14 +197,16 @@ Click on the highlighted text and you will be asked to confirm that you want to 
   Click on the highlighted text to remove the highlight.
 </Image>
 
-_> Notes_
+#### Notes
 
 Click and drag through the text to activate the notes and highlights function. Click on the Note button to open up a notepad on the right side of your screen. Type your note into the textbox and click on the return button (**1**) to save your note. The text color will change for the relevant part of the text.
 
 <Image src="/images/userguide/userguide18.png">
   Text color is blue for the relevant part of the text.
 </Image>
+
 ---
+
 <Image src="/images/userguide/userguide19.png">
   You can view your notes at the right side of your screen.
 </Image>
@@ -217,7 +218,7 @@ You can also click on the created notes to edit them. You can change their color
 </Image>
 ---
 <Image src="/images/userguide/userguide21.png">
-  Clicking on (**1**) prompts a color palette. Note color has been changed to
+  Clicking on (1) prompts a color palette. Note color has been changed to
   orange. You can also enter a hex color code to use your own custom color
   scheme.
 </Image>

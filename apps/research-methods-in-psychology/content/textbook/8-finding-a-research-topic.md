@@ -68,8 +68,8 @@ cri:
 - question: What are some techniques for searching the research literature aside from using databases like PsycINFO?
   answer: You can look through the reference list of a good article or book chapter, search for classic articles in PsycINFO and find related works, conduct a general Internet search, or ask knowledgeable individuals for suggestions.
   slug: Using-Other-Search-Techniques-727t
-- question: How many sources are enough for your literature review?
-  answer: This is a difficult question because it depends on how extensively your topic has been studied and also on your own goals.
+- question: What is the average number of sources cited per article in psychology journals?
+  answer: About 50 sources.
   slug: What-to-Search-For-726t
 next_slug: 9-generating-good-research-questions
 order: 8
