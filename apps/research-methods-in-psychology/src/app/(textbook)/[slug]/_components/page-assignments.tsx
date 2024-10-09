@@ -8,6 +8,7 @@ import { Errorbox } from "@itell/ui/callout";
 import { type User } from "lucia";
 
 import { FinishedLink } from "./finished-link";
+import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
@@ -61,7 +62,9 @@ export function PageAssignments({
 
           <div className="col-span-full lg:col-span-2">
             {user.finished ? (
-              <FinishedLink href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+              <Suspense fallback={<FinishedPrompt.Skeleton />}>
+                <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+              </Suspense>
             ) : null}
             {condition !== Condition.SIMPLE ? (
               <PageQuizModal page={page} pageStatus={pageStatus} />

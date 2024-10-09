@@ -37,12 +37,7 @@ type State = {
   error: string | null;
 };
 
-export function QuestionBoxReread({
-  question,
-  answer,
-  chunkSlug,
-  pageSlug,
-}: Props) {
+export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);

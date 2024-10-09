@@ -4,7 +4,7 @@ import {
   useQuizStore,
   useSummaryStore,
 } from "@/components/provider/page-provider";
-import { isProduction } from "@/lib/constants";
+import { isProduction, Tags } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { isLastPage, type PageData } from "@/lib/pages/pages.client";
 import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
@@ -75,6 +75,16 @@ export function PageQuizModal({
               type: "finishPage",
               isNextPageVisible: !isLastPage(page),
               input: "",
+            });
+
+            fetch("/api/revalidate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                tag: Tags.GET_QUIZ_ATTEMPTS,
+              }),
             });
           }}
         />
