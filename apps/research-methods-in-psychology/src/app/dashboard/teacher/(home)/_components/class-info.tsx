@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getClassStudentsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
+import { TEXTBOOK_SLUG } from "@/config/site";
 import { getPageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { buttonVariants } from "@itell/ui/button";
@@ -25,7 +26,13 @@ import { StudentsTable } from "./students-table";
 
 const numChapters = allPagesSorted.length;
 
-export async function ClassInfo({ classId }: { classId: string }) {
+export async function ClassInfo({
+  classId,
+  userId,
+}: {
+  classId: string;
+  userId: string;
+}) {
   const [students, err] = await getClassStudentsAction({ classId });
   if (err) {
     throw new Error("failed to get students in the class", { cause: err });
@@ -85,7 +92,8 @@ export async function ClassInfo({ classId }: { classId: string }) {
       </CardHeader>
       <CardContent className="space-y-8">
         <a
-          href=" https://ocular.cc.gatech.edu/itell/?volume=research-methods-in-psychology"
+          href={`
+            https://ocular.cc.gatech.edu/itell?volume=${TEXTBOOK_SLUG}&uuid=${userId}`}
           className={buttonVariants({ variant: "secondary", size: "lg" })}
           target="_blank"
         >

@@ -22,7 +22,7 @@ export default async function () {
         text={Meta.homeTeacher.description}
       />
       <ErrorBoundary fallback={<ClassInfo.ErrorFallback />}>
-        <ClassInfo classId={teacher.classId} />
+        <ClassInfo userId={teacher.id} classId={teacher.classId} />
       </ErrorBoundary>
     </DashboardShell>
   );
