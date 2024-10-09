@@ -1,6 +1,6 @@
 import { getQuizAttemptsByClass } from "@/actions/event";
 import { CreateErrorFallback } from "@/components/error-fallback";
-import { allPagesSorted, quizPages } from "@/lib/pages/pages.server";
+import { quizPages } from "@/lib/pages/pages.server";
 import { Skeleton } from "@itell/ui/skeleton";
 import {
   Table,

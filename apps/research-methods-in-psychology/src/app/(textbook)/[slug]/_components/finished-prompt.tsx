@@ -1,8 +1,7 @@
 import { getUserQuizAttempts } from "@/actions/event";
-import { allPagesSorted, quizPages } from "@/lib/pages/pages.server";
+import { quizPages } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { Spinner } from "@itell/ui/spinner";
-import { delay } from "es-toolkit";
 import { CheckCircleIcon, CircleIcon } from "lucide-react";
 
 import { FinishedLink } from "./finished-link";
@@ -50,7 +49,7 @@ export async function FinishedPrompt({ href }: Props) {
           finished all the quizzes, you will get a link to complete the course.
         </p>
       )}
-      <QuizList pages={quizPages} />
+      <QuizList pages={pages} />
     </div>
   );
 }
