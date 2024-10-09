@@ -48,7 +48,6 @@ Below is an overview of a Page in iTELL.
 
 Most iTELL pages will have one more short answer questions and a single summary writing activity at the end of the page. You will not be able to proceed to the next page without successfully completing all tasks on your current page.
 
-
 ##### 1 Read
 
 Most of the content in a page will be blurred at the beginning. As you read through the page, click on the red button that reads "Click here to continue reading" to unblur the next section and continue reading.
@@ -56,7 +55,7 @@ Most of the content in a page will be blurred at the beginning. As you read thro
 <Image src="/images/userguide/userguide_read.png">
   Unblur the next section by clicking on the red button when you are ready to continue
 </Image>
-
+&nbsp;
 
 ##### 2 Answer Questions
 
@@ -73,7 +72,7 @@ Sometimes you will see "Click here to see question" button. After clicking the b
 <Image src="/images/userguide/userguide_prolific_5.png">
   After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Skip this question".
 </Image>
-
+&nbsp;
 
 ##### 3 Write a Summary
 
@@ -99,6 +98,7 @@ If your summary fails to pass the evaluation, you will be given additional attem
 <Image src="/images/userguide/userguide9.png">
   Summaries that do not receive a passing grade will be given detailed feedback.
 </Image>
+&nbsp;
 
 ###### Re-reading
 
@@ -183,13 +183,13 @@ You can leave notes and highlight parts of the textbook for future reference. Cl
   highlights function.
 </Image>
 
-_> Highlighting_
+#### Highlighting
 
 Click on the Highlight button and the text block will be permanently highlighted unless you choose to delete it later.
 
 <Image src="/images/userguide/userguide16.png">Highlighted text.</Image>
 
-_> Removing highlights_
+#### Removing highlights
 
 Click on the highlighted text and you will be asked to confirm that you want to remove the highlight.
 
@@ -197,14 +197,16 @@ Click on the highlighted text and you will be asked to confirm that you want to 
   Click on the highlighted text to remove the highlight.
 </Image>
 
-_> Notes_
+#### Notes
 
 Click and drag through the text to activate the notes and highlights function. Click on the Note button to open up a notepad on the right side of your screen. Type your note into the textbox and click on the return button (**1**) to save your note. The text color will change for the relevant part of the text.
 
 <Image src="/images/userguide/userguide18.png">
   Text color is blue for the relevant part of the text.
 </Image>
+
 ---
+
 <Image src="/images/userguide/userguide19.png">
   You can view your notes at the right side of your screen.
 </Image>
@@ -216,7 +218,7 @@ You can also click on the created notes to edit them. You can change their color
 </Image>
 ---
 <Image src="/images/userguide/userguide21.png">
-  Clicking on (**1**) prompts a color palette. Note color has been changed to
+  Clicking on (1) prompts a color palette. Note color has been changed to
   orange. You can also enter a hex color code to use your own custom color
   scheme.
 </Image>
