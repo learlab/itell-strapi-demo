@@ -62,7 +62,7 @@ export async function ClassInfo({
     const progress = page
       ? {
           index: page.order,
-          text: `${String(Math.round((page.order + 1) / numChapters) * 100)}%`,
+          text: `${String(Math.round(((page.order + 1) / numChapters) * 100))}%`,
         }
       : { index: 0, text: "0%" };
 

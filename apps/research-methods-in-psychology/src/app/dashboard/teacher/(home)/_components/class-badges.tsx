@@ -21,7 +21,7 @@ export async function ClassBadges({ students }: Props) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <DashboardBadge title="Total Summaries" icon={<PencilIcon />}>
         <div className="text-2xl font-bold">{classStats.totalSummaries}</div>
       </DashboardBadge>

@@ -107,7 +107,7 @@ function StudentProfile({
             <p className="text-sm font-semibold text-muted-foreground">
               You are viewing a student in your class
             </p>
-            <Link className={buttonVariants()} href="/dashboard?tab=class">
+            <Link className={buttonVariants()} href="/dashboard/teacher">
               Back to all students
             </Link>
           </div>

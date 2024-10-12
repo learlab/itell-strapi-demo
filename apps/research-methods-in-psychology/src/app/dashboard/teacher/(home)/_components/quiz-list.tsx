@@ -37,9 +37,11 @@ export async function ClassQuizList({ students }: Props) {
           : false,
       ])
     );
+    const total = records?.length ?? 0;
     return {
       id: s.id,
       name: s.name,
+      total,
       quizStatus,
     };
   });
@@ -48,6 +50,7 @@ export async function ClassQuizList({ students }: Props) {
     <Table>
       <TableHeader>
         <TableHead className="w-40" />
+        <TableHead className="w-20">Total</TableHead>
         {quizPages.map((page) => (
           <TableHead key={page.slug}>{page.title}</TableHead>
         ))}
@@ -56,6 +59,7 @@ export async function ClassQuizList({ students }: Props) {
         {studentsWithQuiz.map((student) => (
           <TableRow key={student.id}>
             <TableCell className="font-semibold">{student.name}</TableCell>
+            <TableCell className="font-semibold">{student.total}</TableCell>
             {quizPages.map((page) => (
               <TableCell key={page.slug}>
                 {student.quizStatus[page.slug] ? (
