@@ -20,7 +20,7 @@ import { median } from "@itell/utils";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { ClassBadges } from "./class-badges";
-import { ClassQuizList } from "./quiz-list";
+import { ClassQuizTable } from "./quiz-table";
 import { columns, type StudentData } from "./student-columns";
 import { StudentsTable } from "./students-table";
 
@@ -123,9 +123,9 @@ export async function ClassInfo({
 
         <div className="space-y-4">
           <h3 className="mb-4 text-lg font-medium">Quiz</h3>
-          <ErrorBoundary fallback={<ClassQuizList.ErrorFallback />}>
-            <Suspense fallback={<ClassQuizList.Skeleton />}>
-              <ClassQuizList
+          <ErrorBoundary fallback={<ClassQuizTable.ErrorFallback />}>
+            <Suspense fallback={<ClassQuizTable.Skeleton />}>
+              <ClassQuizTable
                 students={students.map((s) => ({
                   id: s.id,
                   name: s.name ?? s.email ?? "Unknown",
