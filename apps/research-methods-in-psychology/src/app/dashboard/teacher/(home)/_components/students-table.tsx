@@ -59,14 +59,12 @@ export function StudentsTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
-    initialState: {
-      pagination,
-    },
 
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      pagination,
     },
   });
 

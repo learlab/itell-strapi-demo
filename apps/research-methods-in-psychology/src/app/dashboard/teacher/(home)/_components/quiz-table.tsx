@@ -24,14 +24,22 @@ export async function ClassQuizTable({ students }: Props) {
     throw new Error("failed to get class quiz stats", { cause: err });
   }
 
-  const byStudent = data.reduce(
+  const byStudent = students.reduce(
     (acc, cur) => {
-      if (!acc[cur.name]) {
+      const entries = data.filter((d) => d.userId === cur.id);
+
+      if (entries.length === 0) {
         acc[cur.name] = {};
+        return acc;
+      }
+      const name = entries[0].name;
+
+      if (!acc[name]) {
+        acc[name] = {};
       }
 
-      if (!acc[cur.name][cur.pageSlug]) {
-        acc[cur.name][cur.pageSlug] = cur.count;
+      for (const entry of entries) {
+        acc[name][entry.pageSlug] = entry.count;
       }
 
       return acc;
@@ -41,11 +49,13 @@ export async function ClassQuizTable({ students }: Props) {
   return (
     <Table>
       <TableHeader>
-        <TableHead className="w-40" />
-        <TableHead className="w-20">Total</TableHead>
-        {quizPages.map((page) => (
-          <TableHead key={page.slug}>{page.title}</TableHead>
-        ))}
+        <TableRow>
+          <TableHead className="w-40" />
+          <TableHead className="w-20">Total</TableHead>
+          {quizPages.map((page) => (
+            <TableHead key={page.slug}>{page.title}</TableHead>
+          ))}
+        </TableRow>
       </TableHeader>
       <TableBody>
         {Object.entries(byStudent).map(([name, records]) => (
@@ -56,7 +66,7 @@ export async function ClassQuizTable({ students }: Props) {
             </TableCell>
             {quizPages.map((page) => (
               <TableCell key={page.slug}>
-                {records[page.slug] ? (
+                {records[page.slug] !== undefined ? (
                   <span>
                     {records[page.slug]} / {page.quiz?.length}
                   </span>
