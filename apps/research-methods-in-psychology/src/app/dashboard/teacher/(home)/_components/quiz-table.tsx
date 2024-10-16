@@ -24,6 +24,8 @@ export async function ClassQuizTable({ students }: Props) {
     throw new Error("failed to get class quiz stats", { cause: err });
   }
 
+  // loop through students instead of data to show all students in the table
+  // for each student, generate the object {page1: correctCount, page2: correctCount, ...}
   const byStudent = students.reduce(
     (acc, cur) => {
       const entries = data.filter((d) => d.userId === cur.id);

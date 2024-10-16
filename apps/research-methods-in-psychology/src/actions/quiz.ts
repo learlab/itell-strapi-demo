@@ -55,6 +55,8 @@ const analyzeClassQuizhandler = memoize(
           userId: events.userId,
           name: users.name,
           pageSlug: events.pageSlug,
+          // the `answers` field has shape {answers: [[index, answer], ...]}
+          // extract into an array of answer items for each submission
           answers: sql<
             string[]
           >`jsonb_array_elements(${events.data}->'answers')->1`.as("answers"),
@@ -69,8 +71,8 @@ const analyzeClassQuizhandler = memoize(
     );
     const results = await db
       .with(cte)
-      // if a student answer the same quiz multiple times
-      // this will only count the last submission
+      // if a student answers the same quiz multiple times
+      // only pick the last submission
       .selectDistinctOn([cte.userId, cte.pageSlug], {
         userId: cte.userId,
         name: cte.name,
