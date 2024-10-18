@@ -2,9 +2,8 @@
 
 import { events, users } from "@/drizzle/schema";
 import { EventType, isProduction } from "@/lib/constants";
-import { allPagesSorted, quizPages } from "@/lib/pages/pages.server";
+import { quizPages } from "@/lib/pages/pages.server";
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
-import { groupBy } from "es-toolkit";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 

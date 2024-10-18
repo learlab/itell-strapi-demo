@@ -165,7 +165,7 @@ export function StudentsTable<TData, TValue>({
       </div>
       <div className="flex items-center justify-between pt-4">
         <p className="text-sm text-muted-foreground">
-          showing {`${pageStart} to ${pageEnd}`} of{" "}
+          showing {`${String(pageStart)} to ${String(pageEnd)}`} of{" "}
           {pluralize("student", numRows, true)}
         </p>
         <div className="flex items-center gap-2">
