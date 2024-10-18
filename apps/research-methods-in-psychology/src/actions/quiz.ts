@@ -20,14 +20,11 @@ const correctAnswers = quizPages
     )
   )
   .filter(Boolean)
-  .reduce(
-    (acc, { answer, pageSlug }) => {
-      acc[pageSlug] = acc[pageSlug] || [];
-      acc[pageSlug].push(answer);
-      return acc;
-    },
-    {} as Record<string, string[]>
-  );
+  .reduce<Record<string, string[]>>((acc, { answer, pageSlug }) => {
+    acc[pageSlug] = acc[pageSlug] || [];
+    acc[pageSlug].push(answer);
+    return acc;
+  }, {});
 
 const getCorrectCount = (answers: string[], correctAnswers: string[]) => {
   if (answers.length !== correctAnswers.length) return 0;
@@ -89,7 +86,7 @@ const analyzeClassQuizhandler = memoize(
       return {
         userId: result.userId,
         pageSlug: result.pageSlug,
-        name: result.name || "Anonymous",
+        name: result.name ?? "Anonymous",
         count,
       };
     });

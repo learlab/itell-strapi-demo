@@ -26,7 +26,7 @@ export async function ClassQuizTable({ students }: Props) {
 
   // loop through students instead of data to show all students in the table
   // for each student, generate the object {page1: correctCount, page2: correctCount, ...}
-  const byStudent = students.reduce(
+  const byStudent = students.reduce<Record<string, Record<string, number>>>(
     (acc, cur) => {
       const entries = data.filter((d) => d.userId === cur.id);
 
@@ -46,7 +46,7 @@ export async function ClassQuizTable({ students }: Props) {
 
       return acc;
     },
-    {} as Record<string, Record<string, number>>
+    {}
   );
   return (
     <Table>

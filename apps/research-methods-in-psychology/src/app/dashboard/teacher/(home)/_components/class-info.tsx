@@ -92,6 +92,7 @@ export async function ClassInfo({
       </CardHeader>
       <CardContent className="space-y-8">
         <a
+          rel="noreferrer"
           href={`
             https://ocular.cc.gatech.edu/itell?volume=${TEXTBOOK_SLUG}&uuid=${userId}`}
           className={buttonVariants({ variant: "secondary", size: "lg" })}
