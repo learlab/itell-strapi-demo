@@ -217,12 +217,12 @@ const getUserStatsHandler = memoize(
  */
 export const getOtherStatsAction = authedProcedure
   .input(z.object({ ids: z.array(z.string()) }))
-  .handler(async ({ input }) => {
-    return await getOtherStatsHandler(input.ids);
+  .handler(async ({ input, ctx }) => {
+    return await getOtherStatsHandler(input.ids, ctx.user.id);
   });
 
 const getOtherStatsHandler = memoize(
-  async (ids: string[]) => {
+  async (ids: string[], _: string) => {
     const _summaryCount = db.$with("_summaryCount").as(
       db
         .select({
@@ -299,7 +299,7 @@ const getOtherStatsHandler = memoize(
   {
     persist: true,
     duration: 60 * 5,
-    revalidateTags: ["other-stats"],
+    revalidateTags: (_, userId) => ["other-stats", userId],
     log: isProduction ? undefined : ["dedupe", "datacache", "verbose"],
     logid: "Other stats",
   }
@@ -339,7 +339,7 @@ const getOtherUsersHandler = memoize(
   {
     persist: true,
     duration: 60 * 5,
-    revalidateTags: ["get-other-users"],
+    revalidateTags: (user) => ["get-other-users", user.id],
     log: isProduction ? undefined : ["dedupe", "datacache", "verbose"],
     logid: "Get other users",
   }
@@ -374,7 +374,7 @@ const getClassStudentsHandler = memoize(
   {
     persist: true,
     duration: 60 * 5,
-    revalidateTags: ["get-class-students"],
+    revalidateTags: (classId) => ["get-class-students", classId],
     log: isProduction ? undefined : ["dedupe", "datacache", "verbose"],
     logid: "Get class students",
   }

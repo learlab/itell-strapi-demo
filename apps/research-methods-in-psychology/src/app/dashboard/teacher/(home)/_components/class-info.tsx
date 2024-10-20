@@ -105,9 +105,7 @@ export async function ClassInfo({
           <h3 className="text-lg font-medium">Median Class Statistics</h3>
           <Suspense fallback={<ClassBadges.Skeleton />}>
             <ErrorBoundary fallback={<ClassBadges.ErrorFallback />}>
-              <ClassBadges
-                students={students.map((student) => ({ id: student.id }))}
-              />
+              <ClassBadges ids={students.map((s) => s.id)} />
             </ErrorBoundary>
           </Suspense>
         </div>
@@ -127,6 +125,7 @@ export async function ClassInfo({
           <ErrorBoundary fallback={<ClassQuizTable.ErrorFallback />}>
             <Suspense fallback={<ClassQuizTable.Skeleton />}>
               <ClassQuizTable
+                classId={classId}
                 students={students.map((s) => ({
                   id: s.id,
                   name: s.name ?? s.email ?? "Unknown",

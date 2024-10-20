@@ -36,15 +36,16 @@ const getCorrectCount = (answers: string[], correctAnswers: string[]) => {
 export const analyzeClassQuizAction = authedProcedure
   .input(
     z.object({
-      ids: z.array(z.string()),
+      studentIds: z.array(z.string()),
+      classId: z.string(),
     })
   )
-  .handler(async ({ input }) => {
-    return await analyzeClassQuizhandler(input.ids);
+  .handler(async ({ input, ctx }) => {
+    return await analyzeClassQuizHandler(input.studentIds, ctx.user.id);
   });
 
-const analyzeClassQuizhandler = memoize(
-  async (ids: string[]) => {
+const analyzeClassQuizHandler = memoize(
+  async (ids: string[], _: string) => {
     const cte = db.$with("class_quiz").as(
       db
         .select({
@@ -95,7 +96,7 @@ const analyzeClassQuizhandler = memoize(
   {
     persist: true,
     duration: 60 * 5,
-    revalidateTags: ["get-class-quiz"],
+    revalidateTags: (_, userId) => ["get-class-quiz", userId],
     log: isProduction ? undefined : ["dedupe", "datacache", "verbose"],
     logid: "Analyze class quiz",
   }

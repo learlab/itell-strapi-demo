@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 
 type Props = {
-  students: { id: string }[];
+  ids: string[];
 };
 
-export async function ClassBadges({ students }: Props) {
+export async function ClassBadges({ ids }: Props) {
   const [classStats, err] = await getOtherStatsAction({
-    ids: students.map((student) => student.id),
+    ids,
   });
   if (err) {
     throw new Error("failed to get class statistics", { cause: err });

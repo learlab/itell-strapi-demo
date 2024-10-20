@@ -13,12 +13,14 @@ import {
 import { CircleIcon } from "lucide-react";
 
 type Props = {
+  classId: string;
   students: { name: string; id: string }[];
 };
 
-export async function ClassQuizTable({ students }: Props) {
+export async function ClassQuizTable({ students, classId }: Props) {
   const [data, err] = await analyzeClassQuizAction({
-    ids: students.map((s) => s.id),
+    studentIds: students.map((s) => s.id),
+    classId,
   });
   if (err) {
     throw new Error("failed to get class quiz stats", { cause: err });
