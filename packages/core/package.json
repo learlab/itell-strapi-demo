@@ -1,78 +1,82 @@
 {
-    "name": "@itell/core",
-    "version": "0.0.0",
-    "description": "",
-    "type": "module",
-    "exports": {
-        "./event-tracker": {
-            "types": "./src/event-tracker.tsx",
-            "default": "./dist/event-tracker.js"
-        },
-        "./portal-container": {
-            "types": "./src/portal-container.tsx",
-            "default": "./dist/portal-container.js"
-        },
-        "./hooks": {
-            "types": "./src/hooks/index.ts",
-            "default": "./dist/hooks.js"
-        },
-        "./note": {
-            "types": "./src/note/index.ts",
-            "default": "./dist/note.js"
-        },
-        "./config": {
-            "types": "./src/config/index.ts",
-            "default": "./dist/config.js"
-        },
-        "./dashboard": {
-            "types": "./src/dashboard/index.ts",
-            "default": "./dist/dashboard.js"
-        },
-        "./summary": {
-            "types": "./src/summary/index.ts",
-            "default": "./dist/summary.js"
-        },
-        "./question": {
-            "types": "./src/question/index.ts",
-            "default": "./dist/question.js"
-        },
-        "./chat": {
-            "types": "./src/chat/index.ts",
-            "default": "./dist/chat.js"
-        }
+  "name": "@itell/core",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "exports": {
+    "./event-tracker": {
+      "types": "./src/event-tracker.tsx",
+      "default": "./dist/event-tracker.js"
     },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "vite build",
-        "test": "vitest"
+    "./portal-container": {
+      "types": "./src/portal-container.tsx",
+      "default": "./dist/portal-container.js"
     },
-    "keywords": [],
-    "author": "",
-    "license": "MIT",
-    "dependencies": {
-        "@itell/constants": "workspace:^",
-        "@itell/utils": "workspace:^",
-        "github-slugger": "^2.0.0",
-        "js-yaml": "^4.1.0",
-        "range-serializer": "^0.0.2"
+    "./hooks": {
+      "types": "./src/hooks/index.ts",
+      "default": "./dist/hooks.js"
     },
-    "peerDependencies": {
-        "react": "^18",
-        "react-dom": "^18",
-        "zod": "^3"
+    "./note": {
+      "types": "./src/note/index.ts",
+      "default": "./dist/note.js"
     },
-    "devDependencies": {
-        "@itell/tsconfig": "workspace:^",
-        "@types/js-yaml": "^4.0.5",
-        "@types/react": "^18.2.21",
-        "@types/react-dom": "^18.2.19",
-        "rollup-plugin-visualizer": "^5.12.0",
-        "rollup-preserve-directives": "^1.1.1",
-        "vite": "^5.4.0",
-        "vite-plugin-dts": "^2.3.0",
-        "vite-plugin-node-polyfills": "^0.11.3",
-        "vitest": "^0.31.4"
+    "./config": {
+      "types": "./src/config/index.ts",
+      "default": "./dist/config.js"
+    },
+    "./dashboard": {
+      "types": "./src/dashboard/index.ts",
+      "default": "./dist/dashboard.js"
+    },
+    "./summary": {
+      "types": "./src/summary/index.ts",
+      "default": "./dist/summary.js"
+    },
+    "./question": {
+      "types": "./src/question/index.ts",
+      "default": "./dist/question.js"
+    },
+    "./chat": {
+      "types": "./src/chat/index.ts",
+      "default": "./dist/chat.js"
     }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@itell/constants": "workspace:^",
+    "@itell/utils": "workspace:^",
+    "github-slugger": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "range-serializer": "^0.0.2"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18",
+    "zod": "^3",
+    "framer-motion": "^10"
+  },
+  "devDependencies": {
+    "@itell/eslint-config": "workspace:^",
+    "@itell/prettier-config": "workspace:^",
+    "@itell/tsconfig": "workspace:^",
+    "@types/js-yaml": "^4.0.5",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.19",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "rollup-preserve-directives": "^1.1.1",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-node-polyfills": "^0.11.3",
+    "vitest": "^0.31.4"
+  }
 }

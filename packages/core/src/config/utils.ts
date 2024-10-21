@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
+
 import { load } from "js-yaml";
 
 export const readYAML = async (path: string) => {
-	return load(await readFile(path, "utf-8"));
+  return load(await readFile(path, "utf-8"));
 };
