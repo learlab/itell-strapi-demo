@@ -1,24 +1,9 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 
-import { createChatsAction } from "@/actions/chat";
-import { apiClient } from "@/lib/api-client";
 import { type PageStatus } from "@/lib/page-status";
-import {
-  botMessage,
-  createChatStore,
-  getHistory,
-  userMessage,
-  type ChatStore,
-} from "@/lib/store/chat-store";
+import { createChatStore, type ChatStore } from "@/lib/store/chat-store";
 import {
   createQuestionStore,
   type ChunkQuestion,
@@ -30,12 +15,9 @@ import {
   createSummaryStore,
   type SummaryStore,
 } from "@/lib/store/summary-store";
-import { reportSentry } from "@/lib/utils";
 import { useLocalStorage } from "@itell/core/hooks";
-import { parseEventStream } from "@itell/utils";
 import { type Subscription } from "@xstate/store";
 import { type Page } from "#content";
-import { useServerAction } from "zsa-react";
 
 type Props = {
   children: React.ReactNode;
@@ -166,131 +148,6 @@ export const useQuestionStore = () => {
 export const useQuizStore = () => {
   const value = useContext(PageContext);
   return value.quizStore;
-};
-
-export const useAddChat = () => {
-  const store = useChatStore();
-  const [pending, setPending] = useState(false);
-
-  const { execute, isError, error } = useServerAction(createChatsAction);
-
-  const action = async ({
-    text,
-    pageSlug,
-    transform,
-    currentChunk,
-  }: {
-    text: string;
-    pageSlug: string;
-    transform?: boolean;
-    currentChunk?: string | null;
-  }) => {
-    setPending(true);
-    const userTimestamp = Date.now();
-    store.send({
-      type: "addMessage",
-      data: userMessage({ text, transform, isStairs: false }),
-    });
-
-    const botMessageId = crypto.randomUUID();
-    store.send({
-      type: "addMessage",
-      data: botMessage({
-        id: botMessageId,
-        text: "",
-        isStairs: false,
-      }),
-      setActive: true,
-    });
-
-    try {
-      // init response message
-      const response = await apiClient.api.chat.$post({
-        json: {
-          page_slug: pageSlug,
-          message: text,
-          history: getHistory(store),
-          current_chunk: currentChunk,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch chat response");
-      }
-      store.send({ type: "setActive", id: null });
-
-      let data = {} as { text: string; context?: string[] };
-
-      if (response.body) {
-        await parseEventStream(response.body, (d, done) => {
-          if (!done) {
-            try {
-              data = JSON.parse(d) as typeof data;
-              store.send({
-                type: "updateMessage",
-                id: botMessageId,
-                text: data.text,
-                isStairs: false,
-              });
-            } catch (err) {
-              console.log("invalid json", data);
-            }
-          }
-        });
-
-        store.send({
-          type: "updateMessage",
-          id: botMessageId,
-          isStairs: false,
-          text: data.text,
-          context: data.context?.at(0),
-        });
-
-        const botTimestamp = Date.now();
-        execute({
-          pageSlug,
-          messages: [
-            {
-              text,
-              is_user: true,
-              timestamp: userTimestamp,
-              is_stairs: false,
-              transform,
-            },
-            {
-              text: data.text,
-              is_user: false,
-              timestamp: botTimestamp,
-              is_stairs: false,
-              context: data.context?.at(0),
-              transform,
-            },
-          ],
-        });
-      } else {
-        console.log("invalid response", response);
-        throw new Error("invalid response");
-      }
-    } catch (err) {
-      reportSentry("eval chat", { error: err, input: text, pageSlug });
-      store.send({
-        type: "updateMessage",
-        id: botMessageId,
-        text: "Sorry, I'm having trouble connecting to ITELL AI, please try again later.",
-        isStairs: false,
-      });
-    }
-
-    setPending(false);
-  };
-
-  useEffect(() => {
-    if (isError) {
-      reportSentry("create chat", { error });
-    }
-  }, [isError]);
-
-  return { action, pending, isError, error };
 };
 
 const getPageQuestions = (page: Page): ChunkQuestion => {

@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { useAddChat, useChatStore } from "@/components/provider/page-provider";
+import { useChatStore } from "@/components/provider/page-provider";
 import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
+import { useAddChat } from "@/lib/hooks/use-add-chat";
 import { SelectOpen } from "@/lib/store/chat-store";
 import { noteStore } from "@/lib/store/note-store";
 import { DefaultPreferences, Elements } from "@itell/constants";
@@ -42,7 +43,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
   const askAction = {
     label: "Ask AI",
     icon: <SparklesIcon className="size-5" />,
-    action: async () => {
+    action: () => {
       if (state) {
         if (!open) {
           store.send({ type: "setOpen", value: true });
@@ -50,6 +51,9 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
         const range = normalizeRange(state.range.cloneRange());
         const chunkSlug = findParentChunk(range);
         const content = range.cloneContents().textContent;
+        if (!content) {
+          return toast.warning("Selection is empty");
+        }
 
         const text = `Please explain the following:\n\n <blockquote>${content}</blockquote> `;
         addChat({ text, pageSlug, transform: true, currentChunk: chunkSlug });
@@ -68,10 +72,13 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
   const takeNoteAction = {
     label: "Take Note",
     icon: <PencilIcon className="size-5" />,
-    action: async () => {
+    action: () => {
       if (state && user) {
         const range = normalizeRange(state.range.cloneRange());
-        const text = range.cloneContents().textContent!;
+        const text = range.cloneContents().textContent;
+        if (!text) {
+          return toast.warning("Selection is empty");
+        }
         const chunkSlug = findParentChunk(range);
         noteStore.send({
           type: "create",
@@ -81,7 +88,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
           chunkSlug,
           range: serializeRange(
             range,
-            getChunkElement(chunkSlug, "data-chunk-slug") || undefined
+            getChunkElement(chunkSlug, "data-chunk-slug") ?? undefined
           ),
         });
       }
@@ -101,7 +108,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
     range: Range;
   } | null>(null);
 
-  const handler = (e: Event) => {
+  const handler = () => {
     const selection = window.getSelection();
 
     if (!selection?.rangeCount) {
@@ -152,8 +159,8 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
           "absolute -ml-[75px] flex flex-row items-center justify-between gap-2 rounded-md border-2 border-gray-100 bg-background px-2 py-1 shadow-sm"
         )}
         style={{
-          left: `calc(${state.left}px + 4.6rem)`,
-          top: `calc(${state.top}px - 4rem)`,
+          left: `calc(${state.left.toString()}px + 4.6rem)`,
+          top: `calc(${state.top.toString()}px - 4rem)`,
         }}
       >
         {commands.map((command) => (
@@ -161,14 +168,14 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
             variant="ghost"
             color="blue-gray"
             className="flex w-28 items-center gap-2 p-2"
-            onClick={async (e) => {
+            onClick={() => {
               if (!user) {
                 toast.warning("Please login to use this feature");
                 return;
               }
 
               setPending(command.label);
-              await command.action();
+              command.action();
               setPending(undefined);
             }}
             key={command.label}
@@ -233,6 +240,7 @@ function findParentChunk(range: Range) {
       node instanceof HTMLElement &&
       node.classList.contains("content-chunk")
     ) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return node.dataset.chunkSlug!;
     }
     node = node.parentElement;

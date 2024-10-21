@@ -23,10 +23,10 @@ export function ChatMessages({ data, updatedAt, pageTitle }: Props) {
   const store = useChatStore();
   const messages = useSelector(store, SelectMessages);
 
-  const welcomeMessage = useMemo<StoreMessage>(
+  const initialMessage = useMemo<StoreMessage>(
     () =>
       botMessage({
-        text: "",
+        text: "initial-message",
         isStairs: false,
         node: (
           <p>
@@ -35,12 +35,12 @@ export function ChatMessages({ data, updatedAt, pageTitle }: Props) {
           </p>
         ),
       }),
-    []
+    [pageTitle]
   );
 
   return (
     <ChatItems
-      initialMessage={welcomeMessage}
+      initialMessage={initialMessage}
       data={messages}
       prevData={data}
       updatedAt={updatedAt}

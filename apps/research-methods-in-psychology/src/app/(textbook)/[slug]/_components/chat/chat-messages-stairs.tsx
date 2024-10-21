@@ -17,7 +17,7 @@ export function ChatMessagesStairs() {
     () => ({
       id: crypto.randomUUID(),
       isUser: false,
-      text: "",
+      text: "initial-message",
       node: (
         <StairsReadyButton
           onClick={() => {

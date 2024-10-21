@@ -3,8 +3,8 @@
 import { type HTMLAttributes } from "react";
 
 import { InternalError } from "@/components/internal-error";
-import { useAddChat } from "@/components/provider/page-provider";
 import { isProduction } from "@/lib/constants";
+import { useAddChat } from "@/lib/hooks/use-add-chat";
 import { Label } from "@itell/ui/label";
 import { cn } from "@itell/utils";
 import { CornerDownLeft } from "lucide-react";
