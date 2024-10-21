@@ -1,3 +1,5 @@
+![itell_panoramic](https://github.com/user-attachments/assets/97897488-c989-4856-98b6-62abb33985b9)
+
 # iTELL
 
 See our documentation here: [iTELL Wiki](https://github.com/learlab/itell-strapi-demo/wiki)
