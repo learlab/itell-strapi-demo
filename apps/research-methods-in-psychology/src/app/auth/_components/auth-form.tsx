@@ -1,13 +1,13 @@
 "use client";
 
 import { useTransition } from "react";
-
-import { BrandIcon } from "@/components/brand-icon";
-import { logout } from "@/lib/auth/actions";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import { LogInIcon, LogOutIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+
+import { BrandIcon } from "@/components/brand-icon";
+import { logout } from "@/lib/auth/actions";
 
 type Props = {
   joinClassCode?: string;

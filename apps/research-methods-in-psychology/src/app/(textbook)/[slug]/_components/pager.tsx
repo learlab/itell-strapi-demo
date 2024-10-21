@@ -1,10 +1,12 @@
-import { getPageData, type PageData } from "@/lib/pages/pages.client";
-import { allPagesSorted } from "@/lib/pages/pages.server";
+import Link from "next/link";
 import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import Link from "next/link";
+
+import { getPageData } from "@/lib/pages/pages.client";
+import { allPagesSorted } from "@/lib/pages/pages.server";
+import type { PageData } from "@/lib/pages/pages.client";
 
 const getPagerLinks = ({
   pageIndex,

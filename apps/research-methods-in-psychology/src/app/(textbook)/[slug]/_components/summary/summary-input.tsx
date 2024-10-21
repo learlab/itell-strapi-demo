@@ -1,12 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useState, type ForwardedRef } from "react";
-
-import { isAdmin } from "@/lib/auth/role";
-import { isProduction } from "@/lib/constants";
-import { type StageItem } from "@/lib/hooks/use-summary-stage";
-import { useSafeSearchParams } from "@/lib/navigation";
-import { makeInputKey } from "@/lib/utils";
+import { forwardRef, useEffect, useState } from "react";
 import { Elements } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
 import { levenshteinDistance } from "@itell/core/summary";
@@ -22,7 +16,13 @@ import { InfoIcon } from "lucide-react";
 import pluralize from "pluralize";
 import { toast } from "sonner";
 
+import { isAdmin } from "@/lib/auth/role";
+import { isProduction } from "@/lib/constants";
+import { type StageItem } from "@/lib/hooks/use-summary-stage";
+import { useSafeSearchParams } from "@/lib/navigation";
+import { makeInputKey } from "@/lib/utils";
 import { SummaryProgress } from "./summary-progress";
+import type { ForwardedRef } from "react";
 
 export const saveSummaryLocal = (pageSlug: string, text: string) => {
   localStorage.setItem(makeInputKey(pageSlug), text);

@@ -1,8 +1,9 @@
-import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { type Page } from "#content";
 import { produce } from "immer";
 
+import { createStoreWithProducer } from "@xstate/store";
 import { type PageStatus } from "../page-status";
+import type { SnapshotFromStore } from "@xstate/store";
 
 export type Question = { answer: string; question: string };
 export type SelectedQuestions = Record<string, Question>;

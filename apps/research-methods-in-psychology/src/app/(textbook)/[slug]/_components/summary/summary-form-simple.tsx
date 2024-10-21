@@ -1,6 +1,14 @@
 "use client";
 
-import React, { memo, useEffect, useState, type FormEvent } from "react";
+import React, { memo, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useDebounce } from "@itell/core/hooks";
+import { ErrorFeedback, ErrorType } from "@itell/core/summary";
+import { Warning } from "@itell/ui/callout";
+import { StatusButton } from "@itell/ui/status-button";
+import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
+import { toast } from "sonner";
+import { useActionStatus } from "use-action-status";
 
 import { incrementUserPageSlugAction } from "@/actions/user";
 import { DelayMessage } from "@/components/delay-message";
@@ -9,18 +17,12 @@ import {
   useQuizStore,
 } from "@/components/provider/page-provider";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage, type PageData } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages/pages.client";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import { useDebounce } from "@itell/core/hooks";
-import { ErrorFeedback, ErrorType } from "@itell/core/summary";
-import { Warning } from "@itell/ui/callout";
-import { StatusButton } from "@itell/ui/status-button";
 import { useSelector } from "@xstate/store/react";
-import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useActionStatus } from "use-action-status";
+import type { PageData } from "@/lib/pages/pages.client";
+import type { FormEvent } from "react";
 
 type Props = {
   pageStatus: PageStatus;

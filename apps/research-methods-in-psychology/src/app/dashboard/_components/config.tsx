@@ -1,10 +1,11 @@
-import { type MobileNavItem } from "@/components/mobile-nav";
 import {
   BarChartIcon,
   FileEditIcon,
   MessageCircleQuestion,
   SettingsIcon,
 } from "lucide-react";
+
+import { type MobileNavItem } from "@/components/mobile-nav";
 
 export const dashboardConfig = {
   mobileNav: {

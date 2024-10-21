@@ -1,7 +1,6 @@
 "use client";
 
-import { updateUserAction } from "@/actions/user";
-import { InternalError } from "@/components/internal-error";
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -13,8 +12,10 @@ import {
   AlertDialogTrigger,
 } from "@itell/ui/alert-dialog";
 import { Button } from "@itell/ui/button";
-import { useRouter } from "next/navigation";
 import { useServerAction } from "zsa-react";
+
+import { updateUserAction } from "@/actions/user";
+import { InternalError } from "@/components/internal-error";
 
 export function QuitClass() {
   const router = useRouter();

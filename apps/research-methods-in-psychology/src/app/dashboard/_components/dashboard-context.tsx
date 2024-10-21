@@ -7,10 +7,10 @@ import {
   useState,
   useTransition,
 } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 import { ClassRole, DASHBOARD_ROLE_COOKIE } from "@/lib/constants";
 import { setCookie } from "@/lib/cookie";
-import { usePathname, useRouter } from "next/navigation";
 
 export type Role = (typeof ClassRole)[keyof typeof ClassRole];
 type DashboardContextType = {

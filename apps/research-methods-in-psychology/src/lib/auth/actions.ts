@@ -2,8 +2,8 @@
 
 import "server-only";
 
-import { type Session as _Session, type User } from "lucia";
 import { cookies } from "next/headers";
+import { type Session as _Session, type User } from "lucia";
 import { memoize } from "nextjs-better-unstable-cache";
 
 import { Tags } from "../constants";

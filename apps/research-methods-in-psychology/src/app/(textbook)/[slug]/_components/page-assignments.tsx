@@ -1,12 +1,11 @@
 import { Suspense } from "react";
-
-import { Condition } from "@/lib/constants";
-import { type PageStatus } from "@/lib/page-status";
-import { getPageData } from "@/lib/pages/pages.client";
 import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
 import { type User } from "lucia";
 
+import { Condition } from "@/lib/constants";
+import { type PageStatus } from "@/lib/page-status";
+import { getPageData } from "@/lib/pages/pages.client";
 import { FinishedLink } from "./finished-link";
 import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";

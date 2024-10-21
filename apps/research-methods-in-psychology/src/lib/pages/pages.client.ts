@@ -1,4 +1,6 @@
-import { pages, type Page } from "#content";
+import { pages } from "#content";
+
+import type { Page } from "#content";
 
 export type PageData = {
   title: string;

@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { buttonVariants } from "@itell/ui/button";
 import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 
 export function SummaryBackButton() {
   return (

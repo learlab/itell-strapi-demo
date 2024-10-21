@@ -1,7 +1,5 @@
 "use client";
 
-import { updateUserPrefsAction } from "@/actions/user";
-import { isProduction } from "@/lib/constants";
 import { Button } from "@itell/ui/button";
 import {
   DropdownMenu,
@@ -12,6 +10,9 @@ import {
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useServerAction } from "zsa-react";
+
+import { updateUserPrefsAction } from "@/actions/user";
+import { isProduction } from "@/lib/constants";
 
 const themes = [
   {

@@ -1,5 +1,3 @@
-import { Meta } from "@/config/metadata";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import {
   Card,
   CardContent,
@@ -9,6 +7,9 @@ import {
 } from "@itell/ui/card";
 import { Separator } from "@itell/ui/separator";
 import { Skeleton } from "@itell/ui/skeleton";
+
+import { Meta } from "@/config/metadata";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Profile } from "@settings/profile";
 
 export default function DashboardSettingsLoading() {

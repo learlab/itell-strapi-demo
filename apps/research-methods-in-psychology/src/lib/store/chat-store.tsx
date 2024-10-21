@@ -1,8 +1,9 @@
-import type React from "react";
-
 import { type Message } from "@itell/core/chat";
-import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
+
+import { createStoreWithProducer } from "@xstate/store";
+import type { SnapshotFromStore } from "@xstate/store";
+import type React from "react";
 
 type StairsQuestion = {
   text: string;

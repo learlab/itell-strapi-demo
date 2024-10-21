@@ -1,8 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-
-import { useSafeSearchParams } from "@/lib/navigation";
+import { useRouter } from "next/navigation";
 import { ReadingTimeChartLevel } from "@itell/core/dashboard";
 import {
   Select,
@@ -11,7 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@itell/ui/select";
-import { useRouter } from "next/navigation";
+
+import { useSafeSearchParams } from "@/lib/navigation";
 
 export function ReadingTimeControl() {
   const router = useRouter();

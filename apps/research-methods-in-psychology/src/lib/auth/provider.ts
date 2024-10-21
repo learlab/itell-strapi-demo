@@ -1,13 +1,13 @@
-import { env } from "@/env.mjs";
+import { type ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { cookies } from "next/headers";
 import {
   generateCodeVerifier,
   generateState,
   Google,
   MicrosoftEntraId,
 } from "arctic";
-import { type ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { cookies } from "next/headers";
 
+import { env } from "@/env.mjs";
 import { isProduction } from "../constants";
 
 export type OAuthProvider = "google" | "azure";

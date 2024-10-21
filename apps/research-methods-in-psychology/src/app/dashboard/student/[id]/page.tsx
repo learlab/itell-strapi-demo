@@ -1,3 +1,10 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
+import { buttonVariants } from "@itell/ui/button";
+import { Errorbox } from "@itell/ui/callout";
+import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
+
 import { getTeacherAction, getUserAction } from "@/actions/user";
 import { Meta } from "@/config/metadata";
 import { type User } from "@/drizzle/schema";
@@ -8,12 +15,6 @@ import { firstAssignmentPage } from "@/lib/pages/pages.server";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";
 import { UserStatistics } from "@dashboard/user-statistics";
-import { ReadingTimeChartLevel } from "@itell/core/dashboard";
-import { buttonVariants } from "@itell/ui/button";
-import { Errorbox } from "@itell/ui/callout";
-import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 
 interface PageProps {
   params: unknown;

@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, type AnchorHTMLAttributes } from "react";
-
+import { useEffect } from "react";
 import { useLocalStorage } from "@itell/core/hooks";
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { toast } from "sonner";
+
+import type { AnchorHTMLAttributes } from "react";
 
 type Props = {
   href: string;

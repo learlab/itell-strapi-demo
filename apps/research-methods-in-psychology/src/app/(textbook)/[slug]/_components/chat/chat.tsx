@@ -1,7 +1,5 @@
 "use client";
 
-import { useChatStore } from "@/components/provider/page-provider";
-import { SelectOpen } from "@/lib/store/chat-store";
 import { Elements } from "@itell/constants";
 import { type Message } from "@itell/core/chat";
 import {
@@ -10,8 +8,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@itell/ui/accordion";
-import { useSelector } from "@xstate/store/react";
 
+import { useChatStore } from "@/components/provider/page-provider";
+import { SelectOpen } from "@/lib/store/chat-store";
+import { useSelector } from "@xstate/store/react";
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
 import { ChatMessages } from "./chat-messages";

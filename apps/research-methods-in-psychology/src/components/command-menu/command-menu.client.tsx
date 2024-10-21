@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import {
   CommandDialog,
@@ -16,7 +16,6 @@ import { cn } from "@itell/utils";
 import { type Page } from "#content";
 import { Circle, File, Laptop, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
 
 export function CommandMenuClient({ pages }: { pages: Page[] }) {
   const router = useRouter();

@@ -4,9 +4,10 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@itell/ui/chart";
 import { Line, LineChart, XAxis, YAxis } from "recharts";
+
+import type { ChartConfig } from "@itell/ui/chart";
 
 type Props = {
   label: string;

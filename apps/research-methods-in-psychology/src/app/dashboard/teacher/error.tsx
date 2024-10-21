@@ -1,8 +1,8 @@
 "use client";
 
 import { TeacherOnly } from "@/components/teacher-only";
-import { Meta } from "@/config/metadata";
 
+import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "../_components/shell";
 
 export default function () {

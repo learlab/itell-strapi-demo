@@ -1,22 +1,18 @@
 "use server";
 
+import { and, eq } from "drizzle-orm";
+import { memoize } from "nextjs-better-unstable-cache";
+import { z } from "zod";
+
 import { db, first } from "@/actions/db";
-import {
-  CreateFocusTimeSchema,
-  events,
-  focus_times,
-  type FocusTimeData,
-} from "@/drizzle/schema";
+import { CreateFocusTimeSchema, events, focus_times } from "@/drizzle/schema";
 import {
   EventType,
   FOCUS_TIME_SAVE_INTERVAL,
   isProduction,
 } from "@/lib/constants";
-import { and, eq } from "drizzle-orm";
-import { memoize } from "nextjs-better-unstable-cache";
-import { z } from "zod";
-
 import { authedProcedure } from "./utils";
+import type { FocusTimeData } from "@/drizzle/schema";
 
 /**
  * Response to focus time event

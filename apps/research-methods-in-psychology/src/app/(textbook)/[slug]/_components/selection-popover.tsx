@@ -1,6 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { DefaultPreferences, Elements } from "@itell/constants";
+import { serializeRange } from "@itell/core/note";
+import { Button } from "@itell/ui/button";
+import { cn, getChunkElement } from "@itell/utils";
+import { type User } from "lucia";
+import { PencilIcon, SparklesIcon } from "lucide-react";
+import { useTheme } from "next-themes";
+import { createPortal } from "react-dom";
+import { toast } from "sonner";
 
 import { useChatStore } from "@/components/provider/page-provider";
 import { getUserCondition } from "@/lib/auth/conditions";
@@ -8,16 +17,7 @@ import { Condition } from "@/lib/constants";
 import { useAddChat } from "@/lib/hooks/use-add-chat";
 import { SelectOpen } from "@/lib/store/chat-store";
 import { noteStore } from "@/lib/store/note-store";
-import { DefaultPreferences, Elements } from "@itell/constants";
-import { serializeRange } from "@itell/core/note";
-import { Button } from "@itell/ui/button";
-import { cn, getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { type User } from "lucia";
-import { PencilIcon, SparklesIcon } from "lucide-react";
-import { useTheme } from "next-themes";
-import { createPortal } from "react-dom";
-import { toast } from "sonner";
 
 type Props = {
   pageSlug: string;

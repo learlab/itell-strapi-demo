@@ -1,9 +1,9 @@
 "use client";
 
-import { InternalError } from "@/components/internal-error";
-import { Meta } from "@/config/metadata";
 import { Card, CardContent } from "@itell/ui/card";
 
+import { InternalError } from "@/components/internal-error";
+import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "../_components/shell";
 
 export default function () {

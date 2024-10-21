@@ -1,7 +1,8 @@
-import { countSummaryByPassingAction } from "@/actions/summary";
-import { Skeleton } from "@itell/ui/skeleton";
 import Link from "next/link";
+import { Skeleton } from "@itell/ui/skeleton";
 import pluralize from "pluralize";
+
+import { countSummaryByPassingAction } from "@/actions/summary";
 
 type Props = {
   pageSlug: string;

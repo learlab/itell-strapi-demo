@@ -1,14 +1,14 @@
 "use client";
 
 import { useTransition } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { cn } from "@itell/utils";
 
 import { isProduction } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
-import type { TocPageItem } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
-import { cn } from "@itell/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import type { TocPageItem } from "@/lib/pages/pages.server";
 
 type TocItemProps = {
   item: TocPageItem & { status: PageStatus };

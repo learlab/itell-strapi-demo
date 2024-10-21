@@ -1,7 +1,8 @@
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { type SummaryFeedback as SummaryFeedbackType } from "@itell/core/summary";
 import { cn } from "@itell/utils";
 import { Lightbulb } from "lucide-react";
+
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
 
 type Props = {
   className?: string;

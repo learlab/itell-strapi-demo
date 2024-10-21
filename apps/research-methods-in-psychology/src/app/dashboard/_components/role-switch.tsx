@@ -1,6 +1,5 @@
 "use client";
 
-import { ClassRole } from "@/lib/constants";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +9,7 @@ import {
 } from "@itell/ui/dropdown";
 import { ChevronsUpDown, User, UserPlus } from "lucide-react";
 
+import { ClassRole } from "@/lib/constants";
 import { useDashboard } from "./dashboard-context";
 
 const roles = [

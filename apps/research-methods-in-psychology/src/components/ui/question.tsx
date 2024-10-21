@@ -5,7 +5,6 @@ import { QuestionBoxReread } from "@textbook/question/question-box-reread";
 import { QuestionBoxSimple } from "@textbook/question/question-box-simple";
 import { QuestionBoxStairs } from "@textbook/question/question-box-stairs";
 import { useSelector } from "@xstate/store/react";
-
 import { useCondition, useQuestionStore } from "../provider/page-provider";
 
 type Props = {

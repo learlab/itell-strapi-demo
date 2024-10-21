@@ -1,9 +1,10 @@
-import { HtmlRenderer } from "@/components/html-renderer";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { Condition } from "@/lib/constants";
 import { Elements } from "@itell/constants";
 import { Image } from "@itell/ui/image";
 import { guides } from "#content";
+
+import { HtmlRenderer } from "@/components/html-renderer";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
+import { Condition } from "@/lib/constants";
 
 export function SummaryDescription({ condition }: { condition: string }) {
   const guideCondition =

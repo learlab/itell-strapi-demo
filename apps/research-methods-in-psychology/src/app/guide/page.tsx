@@ -1,10 +1,11 @@
+import { notFound } from "next/navigation";
+import { guides } from "#content";
+
 import { incrementViewHandler } from "@/actions/dashboard";
 import { TextbookComponents } from "@/components/content-components";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
-import { guides } from "#content";
-import { notFound } from "next/navigation";
 
 export default async function () {
   const { user } = await getSession();

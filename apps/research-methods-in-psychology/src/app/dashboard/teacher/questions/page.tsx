@@ -1,12 +1,12 @@
+import { notFound } from "next/navigation";
+import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
+import pluralize from "pluralize";
+
 import { incrementViewAction } from "@/actions/dashboard";
 import { getAnswerStatsClassAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import { QuestionChart } from "@questions/question-chart";
-import { notFound } from "next/navigation";
-import pluralize from "pluralize";
-
 import { getLabel } from "../../questions/get-label";
 import { checkTeacher } from "../check-teacher";
 

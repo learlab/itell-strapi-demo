@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@itell/ui/dropdown";
 import { CircleEllipsisIcon } from "lucide-react";
-import Link from "next/link";
 
 type Props = {
   pageHref: string;

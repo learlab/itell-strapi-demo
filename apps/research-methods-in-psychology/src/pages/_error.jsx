@@ -1,5 +1,6 @@
-import * as Sentry from "@sentry/nextjs";
 import NextError from "next/error";
+
+import * as Sentry from "@sentry/nextjs";
 
 function CustomErrorComponent(props) {
   return <NextError statusCode={props.statusCode} />;

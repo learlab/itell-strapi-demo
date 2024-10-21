@@ -1,11 +1,11 @@
-import { getChatsAction } from "@/actions/chat";
-import { Spinner } from "@/components/spinner";
-import { getUserCondition } from "@/lib/auth/conditions";
-import { Condition } from "@/lib/constants";
 import { type Message } from "@itell/core/chat";
 import { Avatar, AvatarImage } from "@itell/ui/avatar";
 import { type User } from "lucia";
 
+import { getChatsAction } from "@/actions/chat";
+import { Spinner } from "@/components/spinner";
+import { getUserCondition } from "@/lib/auth/conditions";
+import { Condition } from "@/lib/constants";
 import { Chat } from "./chat/chat";
 
 type Props = {

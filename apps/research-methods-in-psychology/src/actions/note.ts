@@ -1,10 +1,10 @@
 "use server";
 
-import { db } from "@/actions/db";
-import { CreateNoteSchema, notes, UpdateNoteSchema } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { db } from "@/actions/db";
+import { CreateNoteSchema, notes, UpdateNoteSchema } from "@/drizzle/schema";
 import { authedProcedure } from "./utils";
 
 export const createNoteAction = authedProcedure

@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-
-import { Spinner } from "@/components/spinner";
-import { scrollToElement } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { type Message } from "@itell/core/chat";
 import { useAnimatedText } from "@itell/core/hooks";
 import { Avatar, AvatarFallback, AvatarImage } from "@itell/ui/avatar";
 import { Button } from "@itell/ui/button";
 import { cn, getChunkElement } from "@itell/utils";
 import htmr from "htmr";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
+import { Spinner } from "@/components/spinner";
+import { scrollToElement } from "@/lib/utils";
 
 type Props = {
   initialMessage: Message;

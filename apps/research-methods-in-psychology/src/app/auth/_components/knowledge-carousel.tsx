@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent } from "@itell/ui/card";
 import {
   Carousel,
@@ -9,7 +10,6 @@ import {
   CarouselPrevious,
 } from "@itell/ui/carousel";
 import { LinkIcon } from "lucide-react";
-import Link from "next/link";
 import data from "public/knowledge-cards.json";
 
 export function KnowledgeCarousel() {

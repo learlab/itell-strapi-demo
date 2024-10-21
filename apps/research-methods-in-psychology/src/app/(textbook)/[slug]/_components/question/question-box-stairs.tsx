@@ -1,17 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
-import {
-  createQuestionAnswerAction,
-  getUserQuestionStreakAction,
-} from "@/actions/question";
-import { useQuestionStore } from "@/components/provider/page-provider";
-import { Confetti } from "@/components/ui/confetti";
-import { apiClient } from "@/lib/api-client";
-import { Condition, isProduction } from "@/lib/constants";
-import { SelectShouldBlur } from "@/lib/store/question-store";
-import { insertNewline, reportSentry } from "@/lib/utils";
 import { useDebounce } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
@@ -30,16 +19,27 @@ import {
   TooltipTrigger,
 } from "@itell/ui/tooltip";
 import { cn } from "@itell/utils";
-import { useSelector } from "@xstate/store/react";
 import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useServerAction } from "zsa-react";
 
+import {
+  createQuestionAnswerAction,
+  getUserQuestionStreakAction,
+} from "@/actions/question";
+import { useQuestionStore } from "@/components/provider/page-provider";
+import { Confetti } from "@/components/ui/confetti";
+import { apiClient } from "@/lib/api-client";
+import { Condition, isProduction } from "@/lib/constants";
+import { SelectShouldBlur } from "@/lib/store/question-store";
+import { insertNewline, reportSentry } from "@/lib/utils";
+import { useSelector } from "@xstate/store/react";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";
-import { borderColors, StatusStairs, type QuestionScore } from "./types";
+import { borderColors, StatusStairs } from "./types";
+import type { QuestionScore } from "./types";
 
 type Props = {
   question: string;

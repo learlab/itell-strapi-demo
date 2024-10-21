@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { updateUserAction } from "@/actions/user";
-import { InternalError } from "@/components/internal-error";
-import { reportSentry } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -15,9 +12,12 @@ import {
   AlertDialogTitle,
 } from "@itell/ui/alert-dialog";
 import { Button } from "@itell/ui/button";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
+
+import { updateUserAction } from "@/actions/user";
+import { InternalError } from "@/components/internal-error";
+import { reportSentry } from "@/lib/utils";
 
 type Props = {
   userClassId: string | null;

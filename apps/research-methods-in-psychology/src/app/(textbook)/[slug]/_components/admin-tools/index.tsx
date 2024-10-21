@@ -1,6 +1,6 @@
-import { allAssignmentPagesSorted } from "@/lib/pages/pages.server";
 import { type User } from "lucia";
 
+import { allAssignmentPagesSorted } from "@/lib/pages/pages.server";
 import { AdminToolsClient } from "./admin-tools.client";
 
 type Props = {

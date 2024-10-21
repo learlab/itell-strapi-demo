@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { Elements } from "@itell/constants";
 import { cn } from "@itell/utils";
 import { type Page } from "#content";

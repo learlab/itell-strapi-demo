@@ -1,13 +1,11 @@
 "use client";
 
-import { type OtherStats, type UserStats } from "@/actions/dashboard";
 import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@itell/ui/chart";
 import { isNil } from "es-toolkit/predicate";
 import {
@@ -16,6 +14,9 @@ import {
   PolarGrid,
   Radar,
 } from "recharts";
+
+import { type OtherStats, type UserStats } from "@/actions/dashboard";
+import type { ChartConfig } from "@itell/ui/chart";
 
 const chartConfig = {
   userScaled: {

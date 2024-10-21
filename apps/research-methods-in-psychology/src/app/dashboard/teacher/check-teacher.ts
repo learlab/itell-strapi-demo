@@ -1,6 +1,7 @@
+import { redirect } from "next/navigation";
+
 import { getTeacherAction } from "@/actions/user";
 import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 import "server-only";
 

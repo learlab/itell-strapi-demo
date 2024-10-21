@@ -1,14 +1,15 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { buttonVariants } from "@itell/ui/button";
+import { cn } from "@itell/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRightIcon } from "lucide-react";
 
 import { Spinner } from "@/components/spinner";
 import { makePageHref } from "@/lib/utils";
-import { buttonVariants } from "@itell/ui/button";
-import { cn } from "@itell/utils";
-import { AnimatePresence, motion, type AnimationProps } from "framer-motion";
-import { ArrowRightIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import type { AnimationProps } from "framer-motion";
 
 const animationProps = {
   initial: { "--x": "100%", scale: 0.8 },

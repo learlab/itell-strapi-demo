@@ -1,13 +1,6 @@
 "use client";
 
 import { startTransition, useState } from "react";
-
-import { resetUserAction, updateUserAction } from "@/actions/user";
-import { InternalError } from "@/components/internal-error";
-import { useQuestionStore } from "@/components/provider/page-provider";
-import { getUserCondition } from "@/lib/auth/conditions";
-import { Condition } from "@/lib/constants";
-import { makePageHref } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -44,6 +37,13 @@ import { type User } from "lucia";
 import { SettingsIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
+
+import { resetUserAction, updateUserAction } from "@/actions/user";
+import { InternalError } from "@/components/internal-error";
+import { useQuestionStore } from "@/components/provider/page-provider";
+import { getUserCondition } from "@/lib/auth/conditions";
+import { Condition } from "@/lib/constants";
+import { makePageHref } from "@/lib/utils";
 
 type Props = {
   user: User;

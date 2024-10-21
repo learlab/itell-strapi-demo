@@ -1,6 +1,6 @@
 "use client";
 
-import { type User } from "@/drizzle/schema";
+import Link from "next/link";
 import { Button } from "@itell/ui/button";
 import {
   DropdownMenu,
@@ -10,9 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@itell/ui/dropdown";
-import { type Column, type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
+
+import { type User } from "@/drizzle/schema";
+import { type Column, type ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

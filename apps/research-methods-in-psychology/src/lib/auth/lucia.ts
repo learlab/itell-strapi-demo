@@ -1,15 +1,11 @@
-import { db } from "@/actions/db";
-import {
-  sessions,
-  users,
-  type ConditionAssignments,
-  type UserPreferences,
-} from "@/drizzle/schema";
 import { DefaultPreferences } from "@itell/constants";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
 
+import { db } from "@/actions/db";
+import { sessions, users } from "@/drizzle/schema";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { isProduction } from "../constants";
+import type { ConditionAssignments, UserPreferences } from "@/drizzle/schema";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 

@@ -1,9 +1,9 @@
-import { incrementViewAction } from "@/actions/dashboard";
-import { Meta } from "@/config/metadata";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { notFound } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { incrementViewAction } from "@/actions/dashboard";
+import { Meta } from "@/config/metadata";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { checkTeacher } from "../check-teacher";
 import { ClassInfo } from "./_components/class-info";
 

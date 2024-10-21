@@ -1,5 +1,6 @@
-import { makePageHref } from "@/lib/utils";
 import Link from "next/link";
+
+import { makePageHref } from "@/lib/utils";
 
 interface Props {
   pageSlug: string;

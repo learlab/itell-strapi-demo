@@ -1,5 +1,4 @@
 import { getNotesAction } from "@/actions/note";
-
 import { NoteList } from "./note-list";
 
 type Props = {

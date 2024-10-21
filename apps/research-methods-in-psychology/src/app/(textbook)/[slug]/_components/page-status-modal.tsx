@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-import { isProduction } from "@/lib/constants";
-import { type PageStatus } from "@/lib/page-status";
-import { makePageHref } from "@/lib/utils";
-import { LoginButton } from "@auth//auth-form";
+import Link from "next/link";
 import { Button } from "@itell/ui/button";
 import {
   Dialog,
@@ -16,7 +12,11 @@ import {
   DialogTitle,
 } from "@itell/ui/dialog";
 import { type User } from "lucia";
-import Link from "next/link";
+
+import { isProduction } from "@/lib/constants";
+import { type PageStatus } from "@/lib/page-status";
+import { makePageHref } from "@/lib/utils";
+import { LoginButton } from "@auth//auth-form";
 
 type Props = {
   user: User | null;

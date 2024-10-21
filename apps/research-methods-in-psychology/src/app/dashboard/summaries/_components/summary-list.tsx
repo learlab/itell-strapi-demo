@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
 import { CheckCircle, XCircle } from "lucide-react";
-import Link from "next/link";
 
 type SummaryData = {
   id: number;

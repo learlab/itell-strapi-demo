@@ -4,7 +4,7 @@ export const CreateErrorFallback = (
   title = "An error occurred",
   description = "Contact lear.lab.vu@gmail.com if the error persists"
 ) => {
-  return function () {
+  return function ErrorFeedback() {
     return (
       <Card>
         <CardHeader>

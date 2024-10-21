@@ -1,7 +1,8 @@
-import { env } from "@/env.mjs";
 import { createApp } from "@itell/api";
 import { createFetchWithBearerToken } from "@itell/utils";
 import { handle } from "hono/vercel";
+
+import { env } from "@/env.mjs";
 
 export const dynamic = "force-dynamic";
 

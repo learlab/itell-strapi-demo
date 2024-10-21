@@ -1,12 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { createEventAction } from "@/actions/event";
-import { DelayMessage } from "@/components/delay-message";
-import { apiClient } from "@/lib/api-client";
-import { EventType } from "@/lib/constants";
-import { reportSentry } from "@/lib/utils";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
@@ -14,6 +8,12 @@ import { parseEventStream } from "@itell/utils";
 import { HelpCircleIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { useActionStatus } from "use-action-status";
+
+import { createEventAction } from "@/actions/event";
+import { DelayMessage } from "@/components/delay-message";
+import { apiClient } from "@/lib/api-client";
+import { EventType } from "@/lib/constants";
+import { reportSentry } from "@/lib/utils";
 
 type Props = {
   pageSlug: string;

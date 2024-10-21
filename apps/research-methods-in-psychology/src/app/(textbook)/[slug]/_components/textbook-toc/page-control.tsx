@@ -1,10 +1,10 @@
-import { getSession } from "@/lib/auth";
-import { isAdmin } from "@/lib/auth/role";
 import { Elements } from "@itell/constants";
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { ArrowUpIcon, PencilIcon } from "lucide-react";
 
+import { getSession } from "@/lib/auth";
+import { isAdmin } from "@/lib/auth/role";
 import { AdminTools } from "../admin-tools";
 import { RestartPageButton } from "./restart-page-button";
 

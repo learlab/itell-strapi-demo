@@ -1,6 +1,12 @@
 "use client";
 
-import { useRef, useState, type HTMLAttributes } from "react";
+import { useRef, useState } from "react";
+import { Elements } from "@itell/constants";
+import { cn, parseEventStream } from "@itell/utils";
+import { CornerDownLeft } from "lucide-react";
+import TextArea from "react-textarea-autosize";
+import { toast } from "sonner";
+import { useServerAction } from "zsa-react";
 
 import { createChatsAction } from "@/actions/chat";
 import { InternalError } from "@/components/internal-error";
@@ -17,14 +23,9 @@ import {
   userMessage,
 } from "@/lib/store/chat-store";
 import { reportSentry } from "@/lib/utils";
-import { Elements } from "@itell/constants";
-import type { ChatHistory } from "@itell/core/chat";
-import { cn, parseEventStream } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { CornerDownLeft } from "lucide-react";
-import TextArea from "react-textarea-autosize";
-import { toast } from "sonner";
-import { useServerAction } from "zsa-react";
+import type { ChatHistory } from "@itell/core/chat";
+import type { HTMLAttributes } from "react";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
   pageSlug: string;

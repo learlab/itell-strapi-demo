@@ -4,9 +4,10 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@itell/ui/chart";
 import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
+
+import type { ChartConfig } from "@itell/ui/chart";
 
 const chartConfig = {
   value: {

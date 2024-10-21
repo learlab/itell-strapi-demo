@@ -1,14 +1,15 @@
+import { Elements } from "@itell/constants";
+import { cn } from "@itell/utils";
+import { home } from "#content";
+
 import { BrandIcon } from "@/components/brand-icon";
 import { ContinueReading } from "@/components/continue-reading";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { MainNav } from "@/components/main-nav";
 import { MobilePopup } from "@/components/mobile-popup";
 import { SiteConfig } from "@/config/site";
-import { Elements } from "@itell/constants";
-import { cn } from "@itell/utils";
-import { home } from "#content";
 
-export default async function () {
+export default function Page() {
   return (
     <>
       <MainNav read />

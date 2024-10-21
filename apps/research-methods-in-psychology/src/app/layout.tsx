@@ -6,10 +6,11 @@ import { isProduction } from "@/lib/constants";
 import "@/styles/globals.css";
 import "@itell/ui/dist/style.css";
 
+import { Roboto_Slab as FontSerif } from "next/font/google";
 import { cn } from "@itell/utils";
 import { GeistSans as FontSans } from "geist/font/sans";
+
 import type { Metadata } from "next";
-import { Roboto_Slab as FontSerif } from "next/font/google";
 
 export function generateMetadata(): Metadata {
   return {

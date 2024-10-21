@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-
-import { updateUserPrefsAction } from "@/actions/user";
-import { InternalError } from "@/components/internal-error";
 import { darkColors, lightColors } from "@itell/constants";
 import { Button } from "@itell/ui/button";
 import { Input } from "@itell/ui/input";
@@ -16,6 +13,9 @@ import { Paintbrush } from "lucide-react";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
+
+import { updateUserPrefsAction } from "@/actions/user";
+import { InternalError } from "@/components/internal-error";
 
 export function SettingsForm({ user }: { user: User }) {
   const { execute, isError, isPending } = useServerAction(

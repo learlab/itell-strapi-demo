@@ -1,6 +1,3 @@
-import { analyzeClassQuizAction } from "@/actions/quiz";
-import { CreateErrorFallback } from "@/components/error-fallback";
-import { quizPages } from "@/lib/pages/pages.server";
 import { Skeleton } from "@itell/ui/skeleton";
 import {
   Table,
@@ -11,6 +8,10 @@ import {
   TableRow,
 } from "@itell/ui/table";
 import { CircleIcon } from "lucide-react";
+
+import { analyzeClassQuizAction } from "@/actions/quiz";
+import { CreateErrorFallback } from "@/components/error-fallback";
+import { quizPages } from "@/lib/pages/pages.server";
 
 type Props = {
   classId: string;

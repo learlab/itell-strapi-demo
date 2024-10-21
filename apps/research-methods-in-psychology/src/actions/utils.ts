@@ -1,6 +1,7 @@
+import { createServerActionProcedure } from "zsa";
+
 import { getSession } from "@/lib/auth";
 import { reportSentry } from "@/lib/utils";
-import { createServerActionProcedure } from "zsa";
 
 // procedure for protected actions
 

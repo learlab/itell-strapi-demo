@@ -1,11 +1,4 @@
 import { Suspense } from "react";
-
-import { getClassStudentsAction } from "@/actions/dashboard";
-import { CreateErrorFallback } from "@/components/error-fallback";
-import { Spinner } from "@/components/spinner";
-import { TEXTBOOK_SLUG } from "@/config/site";
-import { getPageData } from "@/lib/pages/pages.client";
-import { allPagesSorted } from "@/lib/pages/pages.server";
 import { buttonVariants } from "@itell/ui/button";
 import {
   Card,
@@ -19,10 +12,17 @@ import { Skeleton } from "@itell/ui/skeleton";
 import { median } from "@itell/utils";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { getClassStudentsAction } from "@/actions/dashboard";
+import { CreateErrorFallback } from "@/components/error-fallback";
+import { Spinner } from "@/components/spinner";
+import { TEXTBOOK_SLUG } from "@/config/site";
+import { getPageData } from "@/lib/pages/pages.client";
+import { allPagesSorted } from "@/lib/pages/pages.server";
 import { ClassBadges } from "./class-badges";
 import { ClassQuizTable } from "./quiz-table";
-import { columns, type StudentData } from "./student-columns";
+import { columns } from "./student-columns";
 import { StudentsTable } from "./students-table";
+import type { StudentData } from "./student-columns";
 
 const numChapters = allPagesSorted.length;
 

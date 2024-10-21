@@ -1,14 +1,14 @@
 "use client";
 
 import * as React from "react";
-
-import { SIDEBAR_STATE_COOKIE } from "@/lib/constants";
-import { setCookie } from "@/lib/cookie";
 import { useIsMobile } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
 import { Sheet, SheetContent } from "@itell/ui/sheet";
 import { cn } from "@itell/utils";
 import { PanelLeft } from "lucide-react";
+
+import { SIDEBAR_STATE_COOKIE } from "@/lib/constants";
+import { setCookie } from "@/lib/cookie";
 
 /**
  * cookie name for sidebar state

@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
-import { createQuestionFeedbackAction } from "@/actions/question";
-import { InternalError } from "@/components/internal-error";
 import { Button } from "@itell/ui/button";
 import { Checkbox } from "@itell/ui/checkbox";
 import {
@@ -17,6 +14,9 @@ import { TextArea } from "@itell/ui/textarea";
 import { SendHorizontalIcon, ThumbsDown, ThumbsUp } from "lucide-react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
+
+import { createQuestionFeedbackAction } from "@/actions/question";
+import { InternalError } from "@/components/internal-error";
 
 type Props = {
   type: "positive" | "negative";

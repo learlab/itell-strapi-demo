@@ -1,6 +1,7 @@
+import { ImageResponse } from "next/og";
+
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
-import { ImageResponse } from "next/og";
 
 const size = {
   width: 1200,

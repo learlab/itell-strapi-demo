@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useLocalStorage } from "@itell/core/hooks";
 
 import { makePageHref } from "@/lib/utils";
-import { useLocalStorage } from "@itell/core/hooks";
-import { usePathname } from "next/navigation";
 
 const key = "last-visited-page";
 

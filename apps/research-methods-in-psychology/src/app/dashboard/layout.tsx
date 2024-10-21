@@ -1,3 +1,6 @@
+import { cookies } from "next/headers";
+import { Elements } from "@itell/constants";
+
 import { getTeacherAction } from "@/actions/user";
 import { SidebarLayout } from "@/components/sidebar";
 import { SiteNav } from "@/components/site-nav";
@@ -12,10 +15,8 @@ import {
 import { redirectWithSearchParams } from "@/lib/utils";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
-import { Elements } from "@itell/constants";
-import { cookies } from "next/headers";
-
-import { DashboardProvider, type Role } from "./_components/dashboard-context";
+import { DashboardProvider } from "./_components/dashboard-context";
+import type { Role } from "./_components/dashboard-context";
 
 export const generateMetadata = () => {
   const title = "Dashboard";

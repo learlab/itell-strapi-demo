@@ -1,10 +1,5 @@
-import { countSummaryAction, getReadingTimeAction } from "@/actions/dashboard";
-import { CreateErrorFallback } from "@/components/error-fallback";
-import {
-  getReadingTimeChartData,
-  PrevDaysLookup,
-  type ReadingTimeChartParams,
-} from "@itell/core/dashboard";
+import Link from "next/link";
+import { getReadingTimeChartData, PrevDaysLookup } from "@itell/core/dashboard";
 import { Button } from "@itell/ui/button";
 import {
   Card,
@@ -21,11 +16,13 @@ import {
 import { Skeleton } from "@itell/ui/skeleton";
 import { getDatesBetween } from "@itell/utils";
 import { InfoIcon } from "lucide-react";
-import Link from "next/link";
 import pluralize from "pluralize";
 
+import { countSummaryAction, getReadingTimeAction } from "@/actions/dashboard";
+import { CreateErrorFallback } from "@/components/error-fallback";
 import { ReadingTimeChart } from "./reading-time-chart";
 import { ReadingTimeControl } from "./reading-time-control";
+import type { ReadingTimeChartParams } from "@itell/core/dashboard";
 
 type Props = {
   params: ReadingTimeChartParams;

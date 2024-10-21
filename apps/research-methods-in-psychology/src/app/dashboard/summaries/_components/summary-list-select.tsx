@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -10,7 +11,6 @@ import {
   SelectValue,
 } from "@itell/ui/select";
 import { type Page } from "#content";
-import { useRouter } from "next/navigation";
 
 export function SummaryListSelect({
   defaultValue,

@@ -1,6 +1,7 @@
-import { UserAvatar } from "@/components/user-avatar";
 import { Skeleton } from "@itell/ui/skeleton";
 import { type User } from "lucia";
+
+import { UserAvatar } from "@/components/user-avatar";
 
 export function Profile({ user }: { user: User }) {
   return (

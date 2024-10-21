@@ -1,12 +1,11 @@
 "use client";
 
 import { useOptimistic, useState, useTransition } from "react";
-
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useClickOutside, useDebounce } from "@itell/core/hooks";
 import { cn } from "@itell/utils";
 import { MenuIcon, XIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 
 import { Spinner } from "./spinner";
 

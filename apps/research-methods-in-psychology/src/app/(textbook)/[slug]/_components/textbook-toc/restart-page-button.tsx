@@ -1,11 +1,10 @@
 "use client";
 
 import { useTransition } from "react";
-
-import { useQuestionStore } from "@/components/provider/page-provider";
 import { Button } from "@itell/ui/button";
 import { RotateCcwIcon } from "lucide-react";
 
+import { useQuestionStore } from "@/components/provider/page-provider";
 import { clearSummaryLocal } from "../summary/summary-input";
 
 export function RestartPageButton({ pageSlug }: { pageSlug: string }) {

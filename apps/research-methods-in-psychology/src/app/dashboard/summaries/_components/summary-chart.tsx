@@ -11,10 +11,11 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@itell/ui/chart";
 import { CheckIcon, XIcon } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
+
+import type { ChartConfig } from "@itell/ui/chart";
 
 const chartConfig = {
   passed: {

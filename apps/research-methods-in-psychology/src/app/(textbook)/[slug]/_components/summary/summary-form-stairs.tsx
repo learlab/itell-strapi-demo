@@ -1,5 +1,22 @@
 "use client";
 
+import { Elements } from "@itell/constants";
+import {
+  useDebounce,
+  useIsMobile,
+  useKeystroke,
+  usePortal,
+  useTimer,
+} from "@itell/core/hooks";
+import { PortalContainer } from "@itell/core/portal-container";
+import {
+  ErrorFeedback,
+  ErrorType,
+  SummaryResponseSchema,
+  validateSummary,
+} from "@itell/core/summary";
+import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+
 import { createEventAction } from "@/actions/event";
 import { getFocusTimeAction } from "@/actions/focus-time";
 import { createSummaryAction } from "@/actions/summary";
@@ -15,7 +32,7 @@ import { apiClient } from "@/lib/api-client";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage, type PageData } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages/pages.client";
 import { getHistory, SelectStairsAnswered } from "@/lib/store/chat-store";
 import {
   getExcludedChunks,
@@ -27,43 +44,29 @@ import {
   SelectPrevInput,
   SelectResponse,
   SelectStairs,
-  type StairsQuestion,
 } from "@/lib/store/summary-store";
 import { makePageHref, reportSentry, scrollToElement } from "@/lib/utils";
-import { Elements } from "@itell/constants";
-import {
-  useDebounce,
-  useIsMobile,
-  useKeystroke,
-  usePortal,
-  useTimer,
-} from "@itell/core/hooks";
-import { PortalContainer } from "@itell/core/portal-container";
-import {
-  ErrorFeedback,
-  ErrorType,
-  SummaryResponseSchema,
-  validateSummary,
-  type SummaryFeedback as SummaryFeedbackType,
-  type SummaryResponse,
+import type { PageData } from "@/lib/pages/pages.client";
+import type { StairsQuestion } from "@/lib/store/summary-store";
+import type {
+  SummaryFeedback as SummaryFeedbackType,
+  SummaryResponse,
 } from "@itell/core/summary";
-import { driver, removeInert, setInertBackground } from "@itell/driver.js";
 
 import "@itell/driver.js/dist/driver.css";
 
 import { useEffect, useRef } from "react";
-
+import { useRouter } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import { getChunkElement } from "@itell/utils";
-import { ChatStairs } from "@textbook/chat-stairs";
-import { useSelector } from "@xstate/store/react";
 import { type User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
+import { ChatStairs } from "@textbook/chat-stairs";
+import { useSelector } from "@xstate/store/react";
 import { SummaryFeedback, SummaryFeedbackDetails } from "./summary-feedback";
 import {
   getSummaryLocal,

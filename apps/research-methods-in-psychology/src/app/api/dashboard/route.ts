@@ -1,8 +1,9 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 import { getTeacherAction } from "@/actions/user";
 import { getSession } from "@/lib/auth";
 import { ClassRole, DASHBOARD_ROLE_COOKIE } from "@/lib/constants";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const GET = async (req: Request) => {
   const { user } = await getSession();

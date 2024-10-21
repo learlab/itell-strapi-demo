@@ -1,6 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useDebounce } from "@itell/core/hooks";
+import { Button } from "@itell/ui/button";
+import { Card, CardContent } from "@itell/ui/card";
+import { Label } from "@itell/ui/label";
+import { StatusButton } from "@itell/ui/status-button";
+import { TextArea } from "@itell/ui/textarea";
+import { cn } from "@itell/utils";
+import { PencilIcon } from "lucide-react";
+import { toast } from "sonner";
+import { useActionStatus } from "use-action-status";
 
 import { createQuestionAnswerAction } from "@/actions/question";
 import { InternalError } from "@/components/internal-error";
@@ -9,20 +19,10 @@ import { apiClient } from "@/lib/api-client";
 import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
-import { useDebounce } from "@itell/core/hooks";
-import { Button } from "@itell/ui/button";
-import { Card, CardContent } from "@itell/ui/card";
-import { Label } from "@itell/ui/label";
-import { StatusButton } from "@itell/ui/status-button";
-import { TextArea } from "@itell/ui/textarea";
-import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { PencilIcon } from "lucide-react";
-import { toast } from "sonner";
-import { useActionStatus } from "use-action-status";
-
 import { FinishQuestionButton } from "./finish-question-button";
-import { StatusReread, type QuestionScore } from "./types";
+import { StatusReread } from "./types";
+import type { QuestionScore } from "./types";
 
 type Props = {
   question: string;

@@ -1,15 +1,6 @@
 "use client";
 
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
-
-import {
-  createNoteAction,
-  deleteNoteAction,
-  updateNoteAction,
-} from "@/actions/note";
-import { Spinner } from "@/components/spinner";
-import { noteStore, type NoteData } from "@/lib/store/note-store";
-import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { darkColors, lightColors } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
 import {
@@ -40,6 +31,16 @@ import {
 import { useTheme } from "next-themes";
 import Textarea from "react-textarea-autosize";
 import { toast } from "sonner";
+
+import {
+  createNoteAction,
+  deleteNoteAction,
+  updateNoteAction,
+} from "@/actions/note";
+import { Spinner } from "@/components/spinner";
+import { noteStore } from "@/lib/store/note-store";
+import { computePosition, flip, offset, shift } from "@floating-ui/dom";
+import type { NoteData } from "@/lib/store/note-store";
 
 interface Props extends NoteData {
   pageSlug: string;

@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useQuizStore,
-  useSummaryStore,
-} from "@/components/provider/page-provider";
-import { isProduction, Tags } from "@/lib/constants";
-import { type PageStatus } from "@/lib/page-status";
-import { isLastPage, type PageData } from "@/lib/pages/pages.client";
-import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import {
   Dialog,
@@ -17,11 +10,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@itell/ui/dialog";
-import { useSelector } from "@xstate/store/react";
 import { BookCheckIcon } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 
+import {
+  useQuizStore,
+  useSummaryStore,
+} from "@/components/provider/page-provider";
+import { isProduction, Tags } from "@/lib/constants";
+import { type PageStatus } from "@/lib/page-status";
+import { isLastPage } from "@/lib/pages/pages.client";
+import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
+import { useSelector } from "@xstate/store/react";
 import { PageQuiz } from "./page-quiz";
+import type { PageData } from "@/lib/pages/pages.client";
 
 export function PageQuizModal({
   page,

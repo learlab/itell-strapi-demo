@@ -1,7 +1,8 @@
-import { Meta } from "@/config/metadata";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Card, CardContent } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
+
+import { Meta } from "@/config/metadata";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { SummaryItemSkeleton } from "@summaries/summary-list";
 
 export default function () {

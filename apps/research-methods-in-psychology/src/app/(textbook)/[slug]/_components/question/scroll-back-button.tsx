@@ -1,12 +1,13 @@
 "use client";
 
+import { Button } from "@itell/ui/button";
+import { getChunkElement } from "@itell/utils";
+import { MoveUpIcon } from "lucide-react";
+
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { SelectCurrentChunk } from "@/lib/store/question-store";
 import { scrollToElement } from "@/lib/utils";
-import { Button } from "@itell/ui/button";
-import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { MoveUpIcon } from "lucide-react";
 
 export function ScrollBackButton() {
   const store = useQuestionStore();

@@ -1,4 +1,3 @@
-import { getPageStatus } from "@/lib/page-status";
 import { Button } from "@itell/ui/button";
 import {
   HoverCard,
@@ -7,6 +6,8 @@ import {
 } from "@itell/ui/hover-card";
 import { type User } from "lucia";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
+
+import { getPageStatus } from "@/lib/page-status";
 
 type Props = {
   user: User | null;

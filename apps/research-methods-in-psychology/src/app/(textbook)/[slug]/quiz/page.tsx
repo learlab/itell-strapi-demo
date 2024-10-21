@@ -1,12 +1,12 @@
+import { notFound, redirect } from "next/navigation";
+import { PageTitle } from "@itell/ui/page-title";
+
 import { NavigationButton } from "@/components/navigation-button";
 import { getSession } from "@/lib/auth";
 import { getPageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/pages/pages.client";
 import { firstPage } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
-import { PageTitle } from "@itell/ui/page-title";
-import { notFound, redirect } from "next/navigation";
-
 import { PageQuiz } from "../_components/page-quiz";
 
 export default async function Page({ params }: { params: { slug: string } }) {

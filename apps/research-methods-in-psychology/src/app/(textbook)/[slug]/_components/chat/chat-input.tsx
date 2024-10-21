@@ -1,15 +1,15 @@
 "use client";
 
 import { type HTMLAttributes } from "react";
-
-import { InternalError } from "@/components/internal-error";
-import { isProduction } from "@/lib/constants";
-import { useAddChat } from "@/lib/hooks/use-add-chat";
 import { Label } from "@itell/ui/label";
 import { cn } from "@itell/utils";
 import { CornerDownLeft } from "lucide-react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
+
+import { InternalError } from "@/components/internal-error";
+import { isProduction } from "@/lib/constants";
+import { useAddChat } from "@/lib/hooks/use-add-chat";
 
 interface ChatInputProps extends HTMLAttributes<HTMLDivElement> {
   pageSlug: string;

@@ -1,9 +1,9 @@
-import { getUserQuizAttempts } from "@/actions/event";
-import { quizPages } from "@/lib/pages/pages.server";
-import { makePageHref } from "@/lib/utils";
 import { Spinner } from "@itell/ui/spinner";
 import { CheckCircleIcon, CircleIcon } from "lucide-react";
 
+import { getUserQuizAttempts } from "@/actions/event";
+import { quizPages } from "@/lib/pages/pages.server";
+import { makePageHref } from "@/lib/utils";
 import { FinishedLink } from "./finished-link";
 
 type Props = {

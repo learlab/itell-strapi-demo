@@ -1,12 +1,13 @@
-import { lucia } from "@/lib/auth/lucia";
-import { getPage } from "@/lib/pages/pages.server";
+import { cookies, headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
 import { Skeleton } from "@itell/ui/skeleton";
+
+import { lucia } from "@/lib/auth/lucia";
+import { getPage } from "@/lib/pages/pages.server";
 import { TextbookToc } from "@textbook/textbook-toc";
-import { cookies, headers } from "next/headers";
-import { notFound } from "next/navigation";
 
 export default async function () {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;

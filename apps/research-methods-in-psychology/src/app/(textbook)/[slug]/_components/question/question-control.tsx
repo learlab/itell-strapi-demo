@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePortal } from "@itell/core/hooks";
+import { PortalContainer } from "@itell/core/portal-container";
+import { getChunkElement } from "@itell/utils";
 
 import {
   useChunks,
@@ -12,11 +15,7 @@ import {
   SelectShouldBlur,
 } from "@/lib/store/question-store";
 import { LoginButton } from "@auth/auth-form";
-import { usePortal } from "@itell/core/hooks";
-import { PortalContainer } from "@itell/core/portal-container";
-import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-
 import { ContinueChunkButton } from "./continue-chunk-button";
 import { ScrollBackButton } from "./scroll-back-button";
 import { UnlockAssignmentsButton } from "./unlock-assignments-button";

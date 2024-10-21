@@ -1,14 +1,15 @@
+import { type Metadata } from "next";
+import Link from "next/link";
+import { Button } from "@itell/ui/button";
+import { Errorbox } from "@itell/ui/callout";
+import { ChevronLeftIcon, CommandIcon } from "lucide-react";
+
 import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { AuthForm, LogoutButton } from "@auth/auth-form";
 import { KnowledgeCarousel } from "@auth/knowledge-carousel";
-import { Button } from "@itell/ui/button";
-import { Errorbox } from "@itell/ui/callout";
-import { ChevronLeftIcon, CommandIcon } from "lucide-react";
-import { type Metadata } from "next";
-import Link from "next/link";
 
 type PageProps = {
   searchParams?: unknown;

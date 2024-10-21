@@ -1,5 +1,4 @@
 import React from "react";
-
 import { cn } from "@itell/utils";
 
 export function InternalError({

@@ -1,7 +1,9 @@
-import { type PageStatus } from "@/lib/page-status";
 import { type ErrorType, type SummaryResponse } from "@itell/core/summary";
-import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
+
+import { type PageStatus } from "@/lib/page-status";
+import { createStoreWithProducer } from "@xstate/store";
+import type { SnapshotFromStore } from "@xstate/store";
 
 export type StairsQuestion = {
   text: string;

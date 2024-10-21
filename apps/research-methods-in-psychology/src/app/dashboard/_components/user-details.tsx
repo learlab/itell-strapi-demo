@@ -1,4 +1,15 @@
 import { Suspense } from "react";
+import Link from "next/link";
+import { DashboardBadge } from "@itell/ui/dashboard-badge";
+import { Skeleton } from "@itell/ui/skeleton";
+import { cn, median } from "@itell/utils";
+import {
+  FileTextIcon,
+  FlagIcon,
+  PencilIcon,
+  WholeWordIcon,
+} from "lucide-react";
+import pluralize from "pluralize";
 
 import {
   countStudentAction,
@@ -9,18 +20,6 @@ import {
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
 import { getPageData } from "@/lib/pages/pages.client";
-import { DashboardBadge } from "@itell/ui/dashboard-badge";
-import { Skeleton } from "@itell/ui/skeleton";
-import { cn, median } from "@itell/utils";
-import {
-  FileTextIcon,
-  FlagIcon,
-  PencilIcon,
-  WholeWordIcon,
-} from "lucide-react";
-import Link from "next/link";
-import pluralize from "pluralize";
-
 import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
 

@@ -5,7 +5,6 @@ import {
   SidebarItem,
   SidebarLabel,
 } from "@/components/sidebar";
-
 import { NavStatistics } from "./nav-statistics";
 import { RoleSwitcher } from "./role-switch";
 

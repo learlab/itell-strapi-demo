@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-
 import {
   type ReadingTimeChartLevel,
   type ReadingTimeChartParams,

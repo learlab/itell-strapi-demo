@@ -1,10 +1,10 @@
 "use client";
 
+import { type User } from "lucia";
+
 import { MobileNav } from "@/components/mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserAccountNav } from "@/components/user-account-nav";
-import { type User } from "lucia";
-
 import { dashboardConfig } from "./config";
 import { useDashboard } from "./dashboard-context";
 

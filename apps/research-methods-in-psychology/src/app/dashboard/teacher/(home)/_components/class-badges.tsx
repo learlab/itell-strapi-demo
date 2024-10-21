@@ -1,5 +1,3 @@
-import { getOtherStatsAction } from "@/actions/dashboard";
-import { CreateErrorFallback } from "@/components/error-fallback";
 import { DashboardBadge } from "@itell/ui/dashboard-badge";
 import {
   FileTextIcon,
@@ -7,6 +5,9 @@ import {
   PencilIcon,
   WholeWordIcon,
 } from "lucide-react";
+
+import { getOtherStatsAction } from "@/actions/dashboard";
+import { CreateErrorFallback } from "@/components/error-fallback";
 
 type Props = {
   ids: string[];

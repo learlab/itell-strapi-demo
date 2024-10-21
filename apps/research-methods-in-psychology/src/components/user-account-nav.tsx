@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-
-import { AuthForm } from "@/app/auth/_components/auth-form";
-import { logout } from "@/lib/auth/actions";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@itell/ui/dialog";
 import {
@@ -23,9 +22,9 @@ import {
   LogOutIcon,
   SettingsIcon,
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
+import { AuthForm } from "@/app/auth/_components/auth-form";
+import { logout } from "@/lib/auth/actions";
 import { Spinner } from "./spinner";
 import { UserAvatar } from "./user-avatar";
 

@@ -1,5 +1,7 @@
-import { createStoreWithProducer, type SnapshotFromStore } from "@xstate/store";
 import { produce } from "immer";
+
+import { createStoreWithProducer } from "@xstate/store";
+import type { SnapshotFromStore } from "@xstate/store";
 
 export type NoteData = {
   id: number;

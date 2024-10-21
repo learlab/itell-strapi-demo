@@ -1,3 +1,6 @@
+import { ReadingTimeChartLevel } from "@itell/core/dashboard";
+import { Card, CardContent } from "@itell/ui/card";
+
 import { incrementViewAction } from "@/actions/dashboard";
 import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
@@ -6,8 +9,6 @@ import { redirectWithSearchParams } from "@/lib/utils";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserProgress } from "@dashboard/user-progress";
 import { UserStatistics } from "@dashboard/user-statistics";
-import { ReadingTimeChartLevel } from "@itell/core/dashboard";
-import { Card, CardContent } from "@itell/ui/card";
 
 type Props = {
   searchParams?: unknown;

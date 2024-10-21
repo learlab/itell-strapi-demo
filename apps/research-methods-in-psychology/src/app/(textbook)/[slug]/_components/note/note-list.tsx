@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { type Note } from "@/drizzle/schema";
 import { noteStore, SelectNotes } from "@/lib/store/note-store";
 import { useSelector } from "@xstate/store/react";
-
 import { NotePopover } from "./note-popover";
 
 type Props = {

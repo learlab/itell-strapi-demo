@@ -1,20 +1,5 @@
 "use client";
 
-import { createEventAction } from "@/actions/event";
-import { createSummaryAction } from "@/actions/summary";
-import { DelayMessage } from "@/components/delay-message";
-import {
-  useChunks,
-  useQuestionStore,
-  useQuizStore,
-} from "@/components/provider/page-provider";
-import { apiClient } from "@/lib/api-client";
-import { Condition, EventType } from "@/lib/constants";
-import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
-import { type PageStatus } from "@/lib/page-status";
-import { isLastPage, type PageData } from "@/lib/pages/pages.client";
-import { SelectSummaryReady } from "@/lib/store/question-store";
-import { reportSentry, scrollToElement } from "@/lib/utils";
 import { Elements } from "@itell/constants";
 import {
   useDebounce,
@@ -28,23 +13,39 @@ import {
   ErrorFeedback,
   ErrorType,
   SummaryResponseSchema,
-  type SummaryResponse,
 } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+
+import { createEventAction } from "@/actions/event";
+import { createSummaryAction } from "@/actions/summary";
+import { DelayMessage } from "@/components/delay-message";
+import {
+  useChunks,
+  useQuestionStore,
+  useQuizStore,
+} from "@/components/provider/page-provider";
+import { apiClient } from "@/lib/api-client";
+import { Condition, EventType } from "@/lib/constants";
+import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
+import { type PageStatus } from "@/lib/page-status";
+import { isLastPage } from "@/lib/pages/pages.client";
+import { SelectSummaryReady } from "@/lib/store/question-store";
+import { reportSentry, scrollToElement } from "@/lib/utils";
+import type { PageData } from "@/lib/pages/pages.client";
+import type { SummaryResponse } from "@itell/core/summary";
 
 import "@itell/driver.js/dist/driver.css";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-
 import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
-import { useSelector } from "@xstate/store/react";
 import { type User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
+import { useSelector } from "@xstate/store/react";
 import {
   getSummaryLocal,
   saveSummaryLocal,

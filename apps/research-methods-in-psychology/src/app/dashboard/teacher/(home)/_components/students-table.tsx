@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { Button } from "@itell/ui/button";
 import {
   DropdownMenu,
@@ -18,6 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@itell/ui/table";
+import pluralize from "pluralize";
+
 import {
   flexRender,
   getCoreRowModel,
@@ -25,12 +26,13 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
 } from "@tanstack/react-table";
-import pluralize from "pluralize";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
