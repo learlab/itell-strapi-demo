@@ -51,6 +51,11 @@ export async function ClassQuizTable({ students, classId }: Props) {
     },
     {}
   );
+  const studentsArr = Object.entries(byStudent);
+  studentsArr.sort(
+    (a, b) => Object.keys(b[1]).length - Object.keys(a[1]).length
+  );
+
   return (
     <Table>
       <TableHeader>
@@ -63,7 +68,7 @@ export async function ClassQuizTable({ students, classId }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Object.entries(byStudent).map(([name, records]) => (
+        {studentsArr.map(([name, records]) => (
           <TableRow key={name}>
             <TableCell className="font-semibold">{name}</TableCell>
             <TableCell className="font-semibold">
