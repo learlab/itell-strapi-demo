@@ -44,7 +44,8 @@
     ".velite",
     ".next/types/**/*.ts",
     "src/env.mjs",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    ".eslintrc.js"
   ],
   "exclude": ["node_modules", "scripts"]
 }
