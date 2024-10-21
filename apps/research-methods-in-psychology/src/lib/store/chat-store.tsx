@@ -1,7 +1,7 @@
 import { type Message } from "@itell/core/chat";
+import { createStoreWithProducer } from "@xstate/store";
 import { produce } from "immer";
 
-import { createStoreWithProducer } from "@xstate/store";
 import type { SnapshotFromStore } from "@xstate/store";
 import type React from "react";
 

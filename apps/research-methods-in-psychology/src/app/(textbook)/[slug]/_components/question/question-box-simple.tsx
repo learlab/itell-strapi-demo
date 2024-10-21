@@ -3,6 +3,7 @@
 import { Button } from "@itell/ui/button";
 import { Card, CardContent } from "@itell/ui/card";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 
 import { createEventAction } from "@/actions/event";
 import {
@@ -14,7 +15,6 @@ import {
   SelectCurrentChunk,
   SelectSummaryReady,
 } from "@/lib/store/question-store";
-import { useSelector } from "@xstate/store/react";
 
 type Props = {
   question: string;

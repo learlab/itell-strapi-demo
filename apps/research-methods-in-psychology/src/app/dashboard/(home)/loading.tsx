@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
-
-import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { UserDetails } from "@dashboard/user-details";
+
+import { Meta } from "@/config/metadata";
 
 export default function () {
   return (

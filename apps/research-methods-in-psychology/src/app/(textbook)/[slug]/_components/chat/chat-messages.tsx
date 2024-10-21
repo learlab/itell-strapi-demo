@@ -2,10 +2,10 @@
 
 import { useMemo } from "react";
 import { type Message } from "@itell/core/chat";
+import { useSelector } from "@xstate/store/react";
 
 import { useChatStore } from "@/components/provider/page-provider";
 import { botMessage, SelectMessages } from "@/lib/store/chat-store";
-import { useSelector } from "@xstate/store/react";
 import { ChatItems } from "./chat-items";
 import type { StoreMessage } from "@/lib/store/chat-store";
 

@@ -17,8 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from "@itell/ui/table";
-import pluralize from "pluralize";
-
 import {
   flexRender,
   getCoreRowModel,
@@ -27,6 +25,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import pluralize from "pluralize";
+
 import type {
   ColumnDef,
   ColumnFiltersState,

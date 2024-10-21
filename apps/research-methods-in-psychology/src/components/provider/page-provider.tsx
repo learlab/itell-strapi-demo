@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 import { useLocalStorage } from "@itell/core/hooks";
+import { type Subscription } from "@xstate/store";
 import { type Page } from "#content";
 
 import { type PageStatus } from "@/lib/page-status";
@@ -9,7 +10,6 @@ import { createChatStore } from "@/lib/store/chat-store";
 import { createQuestionStore } from "@/lib/store/question-store";
 import { createQuizStore } from "@/lib/store/quiz-store";
 import { createSummaryStore } from "@/lib/store/summary-store";
-import { type Subscription } from "@xstate/store";
 import type { ChatStore } from "@/lib/store/chat-store";
 import type {
   ChunkQuestion,

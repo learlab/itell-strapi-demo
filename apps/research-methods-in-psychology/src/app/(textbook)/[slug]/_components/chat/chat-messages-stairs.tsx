@@ -2,10 +2,10 @@
 
 import { useMemo } from "react";
 import { type BotMessage } from "@itell/core/chat";
+import { useSelector } from "@xstate/store/react";
 
 import { useChatStore } from "@/components/provider/page-provider";
 import { SelectStairsMessages } from "@/lib/store/chat-store";
-import { useSelector } from "@xstate/store/react";
 import { ChatItems } from "./chat-items";
 import { StairsReadyButton } from "./stairs-button";
 

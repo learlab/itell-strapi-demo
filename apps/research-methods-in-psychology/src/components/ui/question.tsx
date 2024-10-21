@@ -1,10 +1,11 @@
 "use client";
 
-import { Condition } from "@/lib/constants";
 import { QuestionBoxReread } from "@textbook/question/question-box-reread";
 import { QuestionBoxSimple } from "@textbook/question/question-box-simple";
 import { QuestionBoxStairs } from "@textbook/question/question-box-stairs";
 import { useSelector } from "@xstate/store/react";
+
+import { Condition } from "@/lib/constants";
 import { useCondition, useQuestionStore } from "../provider/page-provider";
 
 type Props = {

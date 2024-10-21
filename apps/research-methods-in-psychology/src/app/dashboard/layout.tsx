@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
 import { Elements } from "@itell/constants";
+import { DashboardNav } from "@dashboard/dashboard-nav";
+import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 
 import { getTeacherAction } from "@/actions/user";
 import { SidebarLayout } from "@/components/sidebar";
@@ -13,8 +15,6 @@ import {
   SIDEBAR_STATE_COOKIE,
 } from "@/lib/constants";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { DashboardNav } from "@dashboard/dashboard-nav";
-import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
 import { DashboardProvider } from "./_components/dashboard-context";
 import type { Role } from "./_components/dashboard-context";
 

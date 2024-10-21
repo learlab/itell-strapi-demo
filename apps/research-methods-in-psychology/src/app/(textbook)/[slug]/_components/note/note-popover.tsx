@@ -22,6 +22,7 @@ import { Button } from "@itell/ui/button";
 import { Input } from "@itell/ui/input";
 import { Label } from "@itell/ui/label";
 import { cn, getChunkElement } from "@itell/utils";
+import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import {
   ForwardIcon,
   PaletteIcon,
@@ -39,7 +40,6 @@ import {
 } from "@/actions/note";
 import { Spinner } from "@/components/spinner";
 import { noteStore } from "@/lib/store/note-store";
-import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import type { NoteData } from "@/lib/store/note-store";
 
 interface Props extends NoteData {

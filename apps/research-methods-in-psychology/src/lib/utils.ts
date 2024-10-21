@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
+import * as Sentry from "@sentry/nextjs";
 
 import { env } from "@/env.mjs";
-import * as Sentry from "@sentry/nextjs";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
   // eslint-disable-next-line prefer-named-capture-group

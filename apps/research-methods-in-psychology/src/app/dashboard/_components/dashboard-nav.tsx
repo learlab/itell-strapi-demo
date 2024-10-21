@@ -1,7 +1,8 @@
+import { DashboardNavMenu } from "@dashboard/nav";
+
 import { ContinueReading } from "@/components/continue-reading";
 import { SidebarTrigger } from "@/components/sidebar";
 import { getSession } from "@/lib/auth";
-import { DashboardNavMenu } from "@dashboard/nav";
 
 export async function DashboardNav() {
   const { user } = await getSession();

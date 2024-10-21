@@ -59,14 +59,14 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import { getChunkElement } from "@itell/utils";
+import { ChatStairs } from "@textbook/chat-stairs";
+import { useSelector } from "@xstate/store/react";
 import { type User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
-import { ChatStairs } from "@textbook/chat-stairs";
-import { useSelector } from "@xstate/store/react";
 import { SummaryFeedback, SummaryFeedbackDetails } from "./summary-feedback";
 import {
   getSummaryLocal,

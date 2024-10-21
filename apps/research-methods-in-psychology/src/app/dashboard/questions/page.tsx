@@ -5,6 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@itell/ui/card";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { QuestionChart } from "@questions/question-chart";
 import { groupBy } from "es-toolkit";
 import pluralize from "pluralize";
 
@@ -16,8 +18,6 @@ import { getSession } from "@/lib/auth";
 import { getPageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { QuestionChart } from "@questions/question-chart";
 import { getLabel } from "./get-label";
 
 const questions = allPagesSorted.reduce<

@@ -6,6 +6,11 @@ import {
   CardTitle,
 } from "@itell/ui/card";
 import { Separator } from "@itell/ui/separator";
+import { JoinClassModal } from "@dashboard/join-class-modal";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { JoinClassForm } from "@settings/join-class";
+import { Profile } from "@settings/profile";
+import { QuitClass } from "@settings/quit-class";
 
 import {
   getTeacherByClassAction,
@@ -18,11 +23,6 @@ import { getSession } from "@/lib/auth";
 import { isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { JoinClassModal } from "@dashboard/join-class-modal";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { JoinClassForm } from "@settings/join-class";
-import { Profile } from "@settings/profile";
-import { QuitClass } from "@settings/quit-class";
 
 type Props = {
   searchParams?: Record<string, string>;

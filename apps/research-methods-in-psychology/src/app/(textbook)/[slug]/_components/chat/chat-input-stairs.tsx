@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Elements } from "@itell/constants";
 import { cn, parseEventStream } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { CornerDownLeft } from "lucide-react";
 import TextArea from "react-textarea-autosize";
 import { toast } from "sonner";
@@ -23,7 +24,6 @@ import {
   userMessage,
 } from "@/lib/store/chat-store";
 import { reportSentry } from "@/lib/utils";
-import { useSelector } from "@xstate/store/react";
 import type { ChatHistory } from "@itell/core/chat";
 import type { HTMLAttributes } from "react";
 

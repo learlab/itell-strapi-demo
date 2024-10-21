@@ -40,12 +40,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { type User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
-import { useSelector } from "@xstate/store/react";
 import {
   getSummaryLocal,
   saveSummaryLocal,

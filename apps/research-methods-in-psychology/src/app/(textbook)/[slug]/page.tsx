@@ -3,15 +3,6 @@ import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
-
-import { MobilePopup } from "@/components/mobile-popup";
-import { PageProvider } from "@/components/provider/page-provider";
-import { getSession } from "@/lib/auth";
-import { getUserCondition } from "@/lib/auth/conditions";
-import { Condition, isProduction } from "@/lib/constants";
-import { routes } from "@/lib/navigation";
-import { getPageStatus } from "@/lib/page-status";
-import { getPage } from "@/lib/pages/pages.server";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
 import { NoteCount } from "@textbook/note/note-count";
@@ -25,6 +16,15 @@ import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
+
+import { MobilePopup } from "@/components/mobile-popup";
+import { PageProvider } from "@/components/provider/page-provider";
+import { getSession } from "@/lib/auth";
+import { getUserCondition } from "@/lib/auth/conditions";
+import { Condition, isProduction } from "@/lib/constants";
+import { routes } from "@/lib/navigation";
+import { getPageStatus } from "@/lib/page-status";
+import { getPage } from "@/lib/pages/pages.server";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = routes.textbook.$parseParams(params);

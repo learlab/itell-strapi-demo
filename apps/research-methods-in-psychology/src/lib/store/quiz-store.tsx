@@ -1,6 +1,6 @@
+import { createStoreWithProducer } from "@xstate/store";
 import { produce } from "immer";
 
-import { createStoreWithProducer } from "@xstate/store";
 import { type PageStatus } from "../page-status";
 import type { SnapshotFromStore } from "@xstate/store";
 

@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import { Card, CardContent } from "@itell/ui/card";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { SummaryChart } from "@summaries/summary-chart";
 
 import { incrementViewAction } from "@/actions/dashboard";
 import { getSummariesClassAction } from "@/actions/summary";
 import { Meta } from "@/config/metadata";
 import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages/pages.server";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryListSelect } from "../../summaries/_components/summary-list-select";
 import { checkTeacher } from "../check-teacher";
 

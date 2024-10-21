@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
 import { Card, CardContent } from "@itell/ui/card";
+import { DashboardHeader, DashboardShell } from "@dashboard/shell";
+import { SummaryChart } from "@summaries/summary-chart";
+import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";
 
 import { incrementViewAction } from "@/actions/dashboard";
@@ -8,9 +11,6 @@ import { Meta } from "@/config/metadata";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages/pages.server";
-import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { SummaryChart } from "@summaries/summary-chart";
-import { SummaryList } from "@summaries/summary-list";
 import { SummaryListSelect } from "./_components/summary-list-select";
 
 export default async function ({ searchParams }: { searchParams: unknown }) {

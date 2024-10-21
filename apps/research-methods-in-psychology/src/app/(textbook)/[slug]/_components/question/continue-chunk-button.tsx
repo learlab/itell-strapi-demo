@@ -2,6 +2,7 @@
 
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
 
@@ -9,7 +10,6 @@ import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { animationProps, EventType } from "@/lib/constants";
 import { SelectChunkStatus } from "@/lib/store/question-store";
-import { useSelector } from "@xstate/store/react";
 import type { Button } from "@itell/ui/button";
 
 interface Props extends React.ComponentPropsWithRef<typeof Button> {

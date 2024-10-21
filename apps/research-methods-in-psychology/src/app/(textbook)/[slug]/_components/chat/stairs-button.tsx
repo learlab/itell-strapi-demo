@@ -2,10 +2,10 @@
 
 import { Elements } from "@itell/constants";
 import { Button } from "@itell/ui/button";
+import { useSelector } from "@xstate/store/react";
 
 import { useChatStore } from "@/components/provider/page-provider";
 import { SelectStairsReady } from "@/lib/store/chat-store";
-import { useSelector } from "@xstate/store/react";
 
 type Props = {
   onClick: () => void;

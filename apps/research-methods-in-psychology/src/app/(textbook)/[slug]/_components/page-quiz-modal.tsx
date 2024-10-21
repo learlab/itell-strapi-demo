@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@itell/ui/dialog";
+import { useSelector } from "@xstate/store/react";
 import { BookCheckIcon } from "lucide-react";
 
 import {
@@ -20,7 +21,6 @@ import { isProduction, Tags } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages/pages.client";
 import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
-import { useSelector } from "@xstate/store/react";
 import { PageQuiz } from "./page-quiz";
 import type { PageData } from "@/lib/pages/pages.client";
 

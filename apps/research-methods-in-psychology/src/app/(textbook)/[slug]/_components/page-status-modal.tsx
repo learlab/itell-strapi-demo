@@ -11,12 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@itell/ui/dialog";
+import { LoginButton } from "@auth//auth-form";
 import { type User } from "lucia";
 
 import { isProduction } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { makePageHref } from "@/lib/utils";
-import { LoginButton } from "@auth//auth-form";
 
 type Props = {
   user: User | null;

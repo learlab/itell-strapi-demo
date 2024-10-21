@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from "@itell/ui/tooltip";
 import { cn } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
@@ -34,7 +35,6 @@ import { apiClient } from "@/lib/api-client";
 import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
-import { useSelector } from "@xstate/store/react";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import { QuestionFeedback } from "./question-feedback";

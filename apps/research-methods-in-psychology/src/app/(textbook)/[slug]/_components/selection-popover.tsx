@@ -5,6 +5,7 @@ import { DefaultPreferences, Elements } from "@itell/constants";
 import { serializeRange } from "@itell/core/note";
 import { Button } from "@itell/ui/button";
 import { cn, getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { type User } from "lucia";
 import { PencilIcon, SparklesIcon } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -17,7 +18,6 @@ import { Condition } from "@/lib/constants";
 import { useAddChat } from "@/lib/hooks/use-add-chat";
 import { SelectOpen } from "@/lib/store/chat-store";
 import { noteStore } from "@/lib/store/note-store";
-import { useSelector } from "@xstate/store/react";
 
 type Props = {
   pageSlug: string;

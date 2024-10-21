@@ -7,10 +7,10 @@ import {
 } from "@itell/ui/card";
 import { Separator } from "@itell/ui/separator";
 import { Skeleton } from "@itell/ui/skeleton";
-
-import { Meta } from "@/config/metadata";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { Profile } from "@settings/profile";
+
+import { Meta } from "@/config/metadata";
 
 export default function DashboardSettingsLoading() {
   return (

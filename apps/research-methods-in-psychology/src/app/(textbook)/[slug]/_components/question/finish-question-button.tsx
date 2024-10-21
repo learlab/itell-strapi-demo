@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@itell/ui/button";
+import { useSelector } from "@xstate/store/react";
 
 import { createEventAction } from "@/actions/event";
 import {
@@ -12,7 +13,6 @@ import {
   SelectCurrentChunk,
   SelectSummaryReady,
 } from "@/lib/store/question-store";
-import { useSelector } from "@xstate/store/react";
 
 type Props = {
   chunkSlug: string;

@@ -17,7 +17,7 @@ module.exports = {
     "^(@itell)(/.*)$",
     "<THIRD_PARTY_MODULES>",
     "",
-    "^@.*",
+    "^@/.*",
     "^[./]",
     "<TYPES>^(node:)",
     "<TYPES>",
