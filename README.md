@@ -1,6 +1,6 @@
 # iTELL
 
-See our documentation here: [iTELL Wiki]([https://learlab.org/itellguide/](https://github.com/learlab/itell-strapi-demo/wiki))
+See our documentation here: [iTELL Wiki](https://github.com/learlab/itell-strapi-demo/wiki)
 
 ## Development Instructions (using devcontainer)
 
