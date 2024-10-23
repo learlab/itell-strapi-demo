@@ -4,7 +4,7 @@ export const SiteConfig = {
     "A comprehensive textbook for research methods classes. A peer-reviewed inter-institutional project",
   footer:
     "A project by the Language and Educational Analytics Research (Lear)Lab",
-  latex: true,
+  latex: false,
   favicon: "/images/avatars/favicon.png",
 } as const;
 
