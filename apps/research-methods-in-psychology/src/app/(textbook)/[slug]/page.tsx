@@ -56,7 +56,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         className="mx-auto max-w-[1800px]"
       >
         <div id={Elements.TEXTBOOK_NAV}>
-          <ScrollArea className="h-full w-full px-6 py-6 lg:py-8">
+          <ScrollArea className="h-full w-full px-6 py-2">
             <TextbookToc
               page={page}
               userPageSlug={userPageSlug}

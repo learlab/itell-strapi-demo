@@ -2,6 +2,7 @@ import { Skeleton } from "@itell/ui/skeleton";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -57,7 +58,11 @@ export async function ClassQuizTable({ students, classId }: Props) {
   );
 
   return (
-    <Table>
+    <Table style={{ captionSide: "top" }}>
+      <TableCaption className="mb-6 text-left">
+        Showing accuracy ratios (correct/total) for each student in quiz, sorted
+        by total quizzes taken
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-40" />
