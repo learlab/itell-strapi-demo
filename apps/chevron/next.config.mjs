@@ -1,4 +1,9 @@
+import analyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
+
+const withBundleAnalyzer = analyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const isDev = process.argv.indexOf("dev") !== -1;
 const isBuild = process.argv.indexOf("build") !== -1;
@@ -80,7 +85,7 @@ const securityHeaders = [
 ];
 
 export default withSentryConfig(
-  nextConfig,
+  withBundleAnalyzer(nextConfig),
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options

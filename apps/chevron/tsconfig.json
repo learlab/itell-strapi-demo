@@ -45,7 +45,8 @@
     ".next/types/**/*.ts",
     "src/env.mjs",
     "tailwind.config.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "next.config.mjs"
   ],
   "exclude": ["node_modules", "scripts"]
 }
