@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Elements } from "@itell/constants";
+import { volume } from "#content";
 
-import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { CommandMenu } from "./command-menu";
@@ -33,7 +33,7 @@ export async function MainNav({ scrollProgress, read }: Props) {
               height={32}
             />
             <span className="hidden font-bold md:inline-block">
-              {SiteConfig.title}
+              {volume.title}
             </span>
           </Link>
           {read ? (

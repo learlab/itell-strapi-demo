@@ -116,9 +116,21 @@ const home = defineCollection({
   }),
 });
 
+const volume = defineCollection({
+  name: "Volume",
+  single: true,
+  pattern: "textbook/volume.yaml",
+  schema: s.object({
+    title: s.string(),
+    description: s.string(),
+    slug: s.string(),
+    latex: s.boolean().default(false),
+  }),
+});
+
 export default defineConfig({
   root: "./content",
-  collections: { pages, guides, home },
+  collections: { pages, guides, home, volume },
   markdown: {
     remarkPlugins: [remarkGfm, remarkUnwrapImage],
     rehypePlugins: [],

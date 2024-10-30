@@ -10,12 +10,12 @@ import {
 import { Progress } from "@itell/ui/progress";
 import { Skeleton } from "@itell/ui/skeleton";
 import { median } from "@itell/utils";
+import { volume } from "#content";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { getClassStudentsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { TEXTBOOK_SLUG } from "@/config/site";
 import { getPageData } from "@/lib/pages/pages.client";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { ClassBadges } from "./class-badges";
@@ -94,7 +94,7 @@ export async function ClassInfo({
         <a
           rel="noreferrer"
           href={`
-            https://ocular.cc.gatech.edu/itell?volume=${TEXTBOOK_SLUG}&uuid=${userId}`}
+            https://ocular.cc.gatech.edu/itell?volume=${volume.slug}&uuid=${userId}`}
           className={buttonVariants({ variant: "secondary", size: "lg" })}
           target="_blank"
         >

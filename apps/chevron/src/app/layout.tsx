@@ -1,5 +1,4 @@
 import { RootProvider } from "@/components/provider/root-provider";
-import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { isProduction } from "@/lib/constants";
 
@@ -8,6 +7,7 @@ import "@itell/ui/dist/style.css";
 
 import { Roboto_Slab as FontSerif } from "next/font/google";
 import { cn } from "@itell/utils";
+import { volume } from "#content";
 import { GeistSans as FontSans } from "geist/font/sans";
 
 import type { Metadata } from "next";
@@ -15,14 +15,14 @@ import type { Metadata } from "next";
 export function generateMetadata(): Metadata {
   return {
     title: {
-      default: SiteConfig.title,
-      template: `%s | ${SiteConfig.title}`,
+      default: volume.title,
+      template: `%s | ${volume.title}`,
     },
-    description: SiteConfig.description,
+    description: volume.description,
     metadataBase: new URL(env.NEXT_PUBLIC_HOST),
     openGraph: {
-      title: SiteConfig.title,
-      description: SiteConfig.description,
+      title: volume.title,
+      description: volume.description,
       type: "article",
       url: env.NEXT_PUBLIC_HOST,
       images: [
@@ -47,15 +47,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/x-icon" href={SiteConfig.favicon} />
-        {SiteConfig.latex ? (
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
-            integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"
-            crossOrigin="anonymous"
-          />
-        ) : null}
+        <link
+          rel="icon"
+          type="image/x-icon"
+          href="/images/avatars/favicon.png"
+        />
       </head>
       <body
         className={cn(

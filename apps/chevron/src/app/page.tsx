@@ -7,7 +7,6 @@ import { ContinueReading } from "@/components/continue-reading";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { MainNav } from "@/components/main-nav";
 import { MobilePopup } from "@/components/mobile-popup";
-import { SiteConfig } from "@/config/site";
 
 export default function Page() {
   return (
@@ -39,7 +38,7 @@ function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
       )}
     >
       <p className="text-center text-sm leading-loose md:text-left">
-        {SiteConfig.footer}
+        A project by the Language and Educational Analytics Research (Lear)Lab
       </p>
       <a href="https://github.com/learlab/itell">
         <BrandIcon name="github/_/eee" />

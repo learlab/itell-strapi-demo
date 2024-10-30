@@ -18,8 +18,8 @@ cri:
 next_slug: appendix-b-roles-and-responsibilities
 order: 1
 parent:
-  title: confined space entry oe standard
-  slug: confined-space-entry-oe-standard
+  title: Confined Space Entry Standard
+  slug: confined-space-entry-standard
 quiz: null
 slug: appendix-a-terms-and-definitions
 title: 'Appendix A: Terms and definitions'

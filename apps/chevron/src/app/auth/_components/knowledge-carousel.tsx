@@ -11,13 +11,19 @@ import {
 } from "@itell/ui/carousel";
 import { LinkIcon } from "lucide-react";
 
-import { SiteConfig } from "@/config/site";
+const cards = [
+  {
+    text: "Openings large enough to allow a person to enter a permit-required confined space and is readily accessible under normal conditions, shall be visibly identified as a confided space when the attendant is not present. (e.g., signage or other effective means of communication)",
+    source: "Confined Space Entry OE Standard",
+    href: "/confined-space-entry",
+  },
+];
 
 export function KnowledgeCarousel() {
   return (
     <Carousel className="mx-auto max-w-lg">
       <CarouselContent>
-        {SiteConfig.knowledgeCards.map((item, index) => (
+        {cards.map((item, index) => (
           <CarouselItem key={index}>
             <KnowledgeCard {...item} />
           </CarouselItem>

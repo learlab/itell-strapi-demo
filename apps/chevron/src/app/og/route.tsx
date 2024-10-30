@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
+import { volume } from "#content";
 
-import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 
 const size = {
@@ -13,7 +13,7 @@ export const GET = async (req: Request) => {
   const url = new URL(req.url);
   const isDashboard = url.searchParams.get("dashboard") === "true";
   const isAuth = url.searchParams.get("auth") === "true";
-  const heading = url.searchParams.get("title") || SiteConfig.title;
+  const heading = url.searchParams.get("title") ?? volume.title;
   const slug = url.searchParams.get("slug");
 
   const header = isDashboard
@@ -27,7 +27,7 @@ export const GET = async (req: Request) => {
     ? "Learning statistics"
     : isAuth
       ? "Getting started"
-      : url.searchParams.get("title") && `A chapter from "${SiteConfig.title}"`;
+      : url.searchParams.get("title") && `A chapter from "${volume.title}"`;
 
   const font = fetch(
     new URL("../../../public/fonts/kaisei-tokumin-bold.ttf", import.meta.url)
@@ -70,7 +70,7 @@ export const GET = async (req: Request) => {
           <img
             width="96"
             height="96"
-            // @ts-ignore
+            // @ts-expect-error imageData is an ArrayBuffer
             src={imageData}
             alt="itell icon"
           />

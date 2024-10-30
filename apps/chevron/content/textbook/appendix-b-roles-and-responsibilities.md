@@ -15,8 +15,8 @@ cri: []
 next_slug: appendix-c-references
 order: 2
 parent:
-  title: confined space entry oe standard
-  slug: confined-space-entry-oe-standard
+  title: Confined Space Entry Standard
+  slug: confined-space-entry-standard
 quiz: null
 slug: appendix-b-roles-and-responsibilities
 title: 'Appendix B: Roles and responsibilities'

@@ -2,11 +2,11 @@ import { cookies } from "next/headers";
 import { Elements } from "@itell/constants";
 import { DashboardNav } from "@dashboard/dashboard-nav";
 import { DashboardSidebar } from "@dashboard/dashboard-sidebar";
+import { volume } from "#content";
 
 import { getTeacherAction } from "@/actions/user";
 import { SidebarLayout } from "@/components/sidebar";
 import { SiteNav } from "@/components/site-nav";
-import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import {
@@ -20,13 +20,13 @@ import type { Role } from "./_components/dashboard-context";
 
 export const generateMetadata = () => {
   const title = "Dashboard";
-  const description = `Learning statistics on the ${SiteConfig.title} intelligent textbook`;
+  const description = `Learning statistics on the ${volume.title} intelligent textbook`;
   return {
     title,
     description,
     metadataBase: new URL(env.NEXT_PUBLIC_HOST),
     openGraph: {
-      title: `${title} | ${SiteConfig.title}`,
+      title: `${title} | ${volume.title}`,
       description,
       type: "article",
       url: `${env.NEXT_PUBLIC_HOST}/dashboard`,

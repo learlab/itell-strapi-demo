@@ -1,12 +1,11 @@
-import { Fragment } from "react";
+import { volume } from "#content";
 
 import { MainNav } from "@/components/main-nav";
-import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 
-export const generateStaticParams = async () => {
+export const generateStaticParams = () => {
   return allPagesSorted.map((page) => {
     return {
       slug: page.slug,
@@ -23,7 +22,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   }
 
   const title = page.title;
-  const description = page.description || page.excerpt;
+  const description = page.description ?? page.excerpt;
   const ogUrl = new URL(`${env.NEXT_PUBLIC_HOST}/og`);
   ogUrl.searchParams.set("title", page.title);
   ogUrl.searchParams.set("slug", page.slug);
@@ -32,7 +31,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
     title,
     description,
     openGraph: {
-      title: `${title} | ${SiteConfig.title}`,
+      title: `${title} | ${volume.title}`,
       description,
       type: "article",
       url: `${env.NEXT_PUBLIC_HOST}${makePageHref(page.slug)}`,
@@ -45,7 +44,7 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   };
 };
 
-export default async function ({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <MainNav scrollProgress />

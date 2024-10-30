@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Head from "next/head";
 import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
@@ -16,6 +17,7 @@ import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
+import { volume } from "#content";
 
 import { MobilePopup } from "@/components/mobile-popup";
 import { PageProvider } from "@/components/provider/page-provider";
@@ -51,6 +53,16 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
+      {volume.latex ? (
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
+            integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"
+            crossOrigin="anonymous"
+          />
+        </Head>
+      ) : null}
       <main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
         <div id={Elements.TEXTBOOK_NAV}>
           <ScrollArea className="h-full w-full px-6 py-2">

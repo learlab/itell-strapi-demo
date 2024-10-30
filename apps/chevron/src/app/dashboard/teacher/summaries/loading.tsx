@@ -1,11 +1,10 @@
 import { Card, CardContent } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { SummaryItemSkeleton } from "@summaries/summary-list";
 
 import { Meta } from "@/config/metadata";
 
-export default function () {
+export default function Loading() {
   return (
     <DashboardShell>
       <DashboardHeader

@@ -99,8 +99,8 @@ cri:
 next_slug: appendix-a-terms-and-definitions
 order: 0
 parent:
-  title: confined space entry oe standard
-  slug: confined-space-entry-oe-standard
+  title: Confined Space Entry Standard
+  slug: confined-space-entry-standard
 quiz: null
 slug: confined-space-entry
 title: Confined Space Entry

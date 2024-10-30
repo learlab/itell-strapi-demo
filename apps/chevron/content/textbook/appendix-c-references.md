@@ -9,8 +9,8 @@ cri: []
 next_slug: null
 order: 3
 parent:
-  title: confined space entry oe standard
-  slug: confined-space-entry-oe-standard
+  title: Confined Space Entry Standard
+  slug: confined-space-entry-standard
 quiz: null
 slug: appendix-c-references
 title: 'Appendix C: References'
