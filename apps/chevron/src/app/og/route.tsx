@@ -91,7 +91,7 @@ export const GET = async (req: Request) => {
           <img
             height="250"
             style={{ marginTop: "auto", width: "100%" }}
-            // @ts-expect error imageData is an ArrayBuffer
+            // @ts-ignore
             src={await fetch(
               new URL("../../../public/images/chart.png", import.meta.url)
             ).then((res) => res.arrayBuffer())}
