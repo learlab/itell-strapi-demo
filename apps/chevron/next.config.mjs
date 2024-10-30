@@ -48,6 +48,10 @@ const nextConfig = {
 };
 
 const securityHeaders = [
+  {
+    key: "Access-Control-Allow-Origin",
+    value: "*",
+  },
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
   {
     key: "Referrer-Policy",
