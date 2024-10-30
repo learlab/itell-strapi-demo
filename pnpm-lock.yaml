@@ -296,6 +296,9 @@ importers:
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.0.7
         version: 1.0.7(lucia@3.2.0)
+      '@next/bundle-analyzer':
+        specifier: ^14.2.6
+        version: 14.2.6
       '@next/eslint-plugin-next':
         specifier: ^14.2.13
         version: 14.2.13
@@ -420,9 +423,6 @@ importers:
       '@itell/rehype-wrap-heading-section':
         specifier: workspace:^
         version: link:../../packages/rehype-wrap-heading-section
-      '@next/bundle-analyzer':
-        specifier: ^14.2.6
-        version: 14.2.6
       '@total-typescript/ts-reset':
         specifier: ^0.4.2
         version: 0.4.2
