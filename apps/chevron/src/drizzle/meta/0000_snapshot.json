@@ -1,5 +1,5 @@
 {
-  "id": "b05993b8-ec10-45e5-8ac3-63cb3d704865",
+  "id": "db69c50e-a2a0-4d5c-9a72-ab5c6f524638",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -129,6 +129,13 @@
             "user_id"
           ],
           "isUnique": false
+        },
+        "constructed_responses_page_slug_idx": {
+          "name": "constructed_responses_page_slug_idx",
+          "columns": [
+            "page_slug"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
@@ -193,7 +200,7 @@
           "name": "tags",
           "type": "text[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -269,6 +276,13 @@
           "name": "events_user_id_idx",
           "columns": [
             "user_id"
+          ],
+          "isUnique": false
+        },
+        "events_type_idx": {
+          "name": "events_type_idx",
+          "columns": [
+            "event_type"
           ],
           "isUnique": false
         }
@@ -371,17 +385,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "y": {
-          "name": "y",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
         "note_text": {
           "name": "note_text",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "highlighted_text": {
           "name": "highlighted_text",
@@ -395,12 +403,17 @@
           "primaryKey": false,
           "notNull": true
         },
+        "chunk_slug": {
+          "name": "chunk_slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "color": {
           "name": "color",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'#3730a3'"
+          "notNull": true
         },
         "range": {
           "name": "range",
@@ -430,6 +443,13 @@
             "user_id"
           ],
           "isUnique": false
+        },
+        "notes_page_slug_idx": {
+          "name": "notes_page_slug_idx",
+          "columns": [
+            "page_slug"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
@@ -448,6 +468,56 @@
         }
       },
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.oauth_accounts": {
+      "name": "oauth_accounts",
+      "schema": "",
+      "columns": {
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_user_id": {
+          "name": "provider_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "oauth_accounts_user_id_users_id_fk": {
+          "name": "oauth_accounts_user_id_users_id_fk",
+          "tableFrom": "oauth_accounts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "oauth_accounts_pk": {
+          "name": "oauth_accounts_pk",
+          "columns": [
+            "provider_id",
+            "provider_user_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.sessions": {
@@ -541,8 +611,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "isPassed": {
-          "name": "isPassed",
+        "is_passed": {
+          "name": "is_passed",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
@@ -677,18 +747,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "time_zone": {
-          "name": "time_zone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "google_id": {
-          "name": "google_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "email": {
           "name": "email",
           "type": "text",
@@ -702,12 +760,6 @@
           "notNull": true,
           "default": "'user'"
         },
-        "condition": {
-          "name": "condition",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "class_id": {
           "name": "class_id",
           "type": "text",
@@ -720,6 +772,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
+        },
+        "preferences": {
+          "name": "preferences",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "condition_assignments": {
+          "name": "condition_assignments",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",

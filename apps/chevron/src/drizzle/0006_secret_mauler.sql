@@ -1,1 +1,0 @@
-ALTER TABLE "notes" ADD COLUMN "chunk_slug" text;

@@ -1,123 +1,116 @@
-import { incrementViewAction } from "@/actions/dashboard";
-import { getSummariesAction } from "@/actions/summary";
-import { PageLink } from "@/components/page-link";
-import { Meta } from "@/config/metadata";
-import { getSession } from "@/lib/auth";
-import { allPagesSorted, firstPage } from "@/lib/pages";
+import { redirect } from "next/navigation";
+import { Card, CardContent } from "@itell/ui/card";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
-import { Card, CardContent } from "@itell/ui/server";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
 import { groupBy } from "es-toolkit";
-import { redirect } from "next/navigation";
 
-export default async function () {
-	const { user } = await getSession();
-	if (!user) {
-		return redirect("/auth");
-	}
+import { incrementViewAction } from "@/actions/dashboard";
+import { getSummariesAction } from "@/actions/summary";
+import { Meta } from "@/config/metadata";
+import { getSession } from "@/lib/auth";
+import { routes } from "@/lib/navigation";
+import { allPagesSorted } from "@/lib/pages/pages.server";
+import { SummaryListSelect } from "./_components/summary-list-select";
 
-	incrementViewAction({ pageSlug: Meta.summaries.slug });
+export default async function ({ searchParams }: { searchParams: unknown }) {
+  const { user } = await getSession();
+  if (!user) {
+    return redirect("/auth");
+  }
 
-	const [summaries, err] = await getSummariesAction({});
-	if (err) {
-		throw new Error(err.message);
-	}
+  incrementViewAction({ pageSlug: Meta.summaries.slug });
 
-	if (summaries.length === 0) {
-		return (
-			<DashboardShell>
-				<DashboardHeader
-					heading={Meta.summaries.title}
-					text={Meta.summaries.description}
-				/>
-				<Card>
-					<CardContent>
-						You have not made any summary yet. Start with{" "}
-						<PageLink
-							pageSlug={firstPage.page_slug}
-							className="underline font-medium"
-						>
-							{firstPage.title}
-						</PageLink>
-						!
-					</CardContent>
-				</Card>
-			</DashboardShell>
-		);
-	}
+  const { page } = routes.summaries.$parseSearchParams(searchParams);
+  const [summaries, err] = await getSummariesAction({});
+  if (err) {
+    throw new Error("failed to get summaries", { cause: err });
+  }
 
-	const summariesWithPage = summaries
-		.map((s) => {
-			const page = allPagesSorted.find((page) => page.page_slug === s.pageSlug);
+  const summariesWithPage = summaries
+    .map((s) => {
+      const page = allPagesSorted.find((page) => page.slug === s.pageSlug);
+      if (!page) {
+        return undefined;
+      }
 
-			if (!page) {
-				return undefined;
-			}
+      return {
+        ...s,
+        pageTitle: page.title,
+      };
+    })
+    .filter((s) => s !== undefined);
 
-			return {
-				...s,
-				chapter: page.chapter,
-				pageTitle: page.title,
-			};
-		})
-		.filter((s) => s !== undefined);
+  const summariesByPage = groupBy(
+    summariesWithPage,
+    (summary) => summary.pageTitle
+  );
 
-	const summariesByChapter = groupBy(
-		summariesWithPage,
-		(summary) => summary.chapter,
-	);
+  const summariesByPassing = summaries.reduce(
+    (acc, summary) => {
+      if (summary.isPassed) {
+        acc.passed += 1;
+      } else {
+        acc.failed += 1;
+      }
 
-	const summariesByPassing = summaries.reduce(
-		(acc, summary) => {
-			if (summary.isPassed) {
-				acc.passed += 1;
-			} else {
-				acc.failed += 1;
-			}
+      if (summary.updatedAt < acc.startDate) {
+        acc.startDate = summary.createdAt;
+      }
 
-			if (summary.updatedAt < acc.startDate) {
-				acc.startDate = summary.createdAt;
-			}
+      if (summary.updatedAt > acc.endDate) {
+        acc.endDate = summary.createdAt;
+      }
 
-			if (summary.updatedAt > acc.endDate) {
-				acc.endDate = summary.createdAt;
-			}
+      return acc;
+    },
+    { passed: 0, failed: 0, startDate: new Date(), endDate: new Date() }
+  );
+  const chartData = [
+    {
+      name: "passed",
+      value: summariesByPassing.passed,
+      fill: "var(--color-passed)",
+    },
+    {
+      name: "failed",
+      value: summariesByPassing.failed,
+      fill: "var(--color-failed)",
+    },
+  ];
 
-			return acc;
-		},
-		{ passed: 0, failed: 0, startDate: new Date(), endDate: new Date() },
-	);
-	const chartData = [
-		{
-			name: "passed",
-			value: summariesByPassing.passed,
-			fill: "var(--color-passed)",
-		},
-		{
-			name: "failed",
-			value: summariesByPassing.failed,
-			fill: "var(--color-failed)",
-		},
-	];
-
-	return (
-		<DashboardShell>
-			<DashboardHeader
-				heading={Meta.summaries.title}
-				text={Meta.summaries.description}
-			/>
-			<Card className="w-full">
-				<CardContent className="space-y-4">
-					<SummaryChart
-						data={chartData}
-						startDate={summariesByPassing.startDate.toLocaleDateString()}
-						endDate={summariesByPassing.endDate.toLocaleDateString()}
-						totalCount={summaries.length}
-					/>
-					<SummaryList data={summariesByChapter} />
-				</CardContent>
-			</Card>
-		</DashboardShell>
-	);
+  return (
+    <DashboardShell>
+      <DashboardHeader
+        heading={Meta.summaries.title}
+        text={Meta.summaries.description}
+      />
+      <Card className="w-full">
+        <CardContent className="space-y-4">
+          <div className="space-y-4">
+            <SummaryChart
+              data={chartData}
+              startDate={summariesByPassing.startDate.toLocaleDateString()}
+              endDate={summariesByPassing.endDate.toLocaleDateString()}
+              totalCount={summaries.length}
+            />
+            <div className="space-y-4">
+              <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
+                <SummaryListSelect defaultValue={page} pages={allPagesSorted} />
+                <p className="text-sm text-muted-foreground">
+                  {summariesByPassing.passed} passed,{" "}
+                  {summariesByPassing.failed} failed
+                </p>
+              </div>
+              {summaries.length > 0 ? (
+                <SummaryList data={summariesByPage} />
+              ) : (
+                <p>No summaries yet.</p>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </DashboardShell>
+  );
 }

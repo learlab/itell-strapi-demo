@@ -125,7 +125,7 @@ export const AppPlugin = plugin(({ addBase, config }) => {
       "z-index": "1",
     },
     [`#${Elements.TEXTBOOK_MAIN_WRAPPER}`]: {
-      "@apply grid md:grid-cols-[minmax(200px,1fr)_minmax(auto,65ch)] lg:grid-cols-[minmax(200px,1fr)_3fr_minmax(auto,200px)] gap-2 lg:gap-4 flex-1":
+      "@apply max-w-[1800px] mx-auto grid md:grid-cols-[minmax(200px,1fr)_minmax(auto,65ch)] lg:grid-cols-[minmax(200px,1fr)_3fr_minmax(auto,200px)] gap-2 lg:gap-4 flex-1":
         {},
     },
     [`#${Elements.TEXTBOOK_NAV}`]: {

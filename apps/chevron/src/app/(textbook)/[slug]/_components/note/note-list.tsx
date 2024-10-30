@@ -1,38 +1,39 @@
 "use client";
 
-import { Note } from "@/drizzle/schema";
-import { SelectNotes, noteStore } from "@/lib/store/note-store";
-import { useSelector } from "@xstate/store/react";
 import { useEffect } from "react";
+import { useSelector } from "@xstate/store/react";
+
+import { type Note } from "@/drizzle/schema";
+import { noteStore, SelectNotes } from "@/lib/store/note-store";
 import { NotePopover } from "./note-popover";
 
 type Props = {
-	notes: Note[];
-	pageSlug: string;
+  notes: Note[];
+  pageSlug: string;
 };
 
-export const NoteList = ({ notes, pageSlug }: Props) => {
-	const data = useSelector(noteStore, SelectNotes);
+export function NoteList({ notes, pageSlug }: Props) {
+  const data = useSelector(noteStore, SelectNotes);
 
-	useEffect(() => {
-		noteStore.send({ type: "initialize", data: notes });
-	}, []);
+  useEffect(() => {
+    noteStore.send({ type: "initialize", data: notes });
+  }, [notes]);
 
-	if (data) {
-		return (
-			<div className="note-list flex flex-row gap-2 max-w-2xl mx-auto my-2">
-				<p className="sr-only">list of notes</p>
-				{data.map((note) => (
-					<NotePopover
-						key={note.id}
-						local={false}
-						{...note}
-						pageSlug={pageSlug}
-					/>
-				))}
-			</div>
-		);
-	}
+  if (data.length > 0) {
+    return (
+      <div className="note-list mx-auto flex max-w-2xl flex-row gap-2">
+        <p className="sr-only">list of notes</p>
+        {data.map((note) => (
+          <NotePopover
+            key={note.id}
+            local={false}
+            {...note}
+            pageSlug={pageSlug}
+          />
+        ))}
+      </div>
+    );
+  }
 
-	return null;
-};
+  return null;
+}

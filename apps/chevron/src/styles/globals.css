@@ -4,13 +4,13 @@
 
 .tooltip {
   position: absolute;
-  width: max-content;
   top: 0;
   left: 0;
+  width: max-content;
 }
 
 .page-nav-active {
-  @apply text-primary font-semibold
+  @apply font-semibold text-primary;
 }
 
 .question-container {
@@ -28,13 +28,14 @@
 
 .driver-active #textbook-main-wrapper {
   grid-template-columns: 1fr;
+  margin-right: auto;
+  margin-left: 1rem;
   max-width: 60%;
 }
 
 .driver-popover {
   @apply max-w-80 bg-background text-foreground !important;
 }
-
 
 #page-content button,
 #page-content #page-pager,
@@ -47,7 +48,6 @@
     scroll-behavior: smooth;
   }
 
-
   ::view-transition-group(root) {
     animation-duration: 0.7s;
     animation-timing-function: var(--expo-out);
@@ -59,8 +59,8 @@
 
   ::view-transition-old(root),
   .dark::view-transition-old(root) {
-    animation: none;
     z-index: -1;
+    animation: none;
   }
 
   .dark::view-transition-new(root) {
@@ -102,10 +102,10 @@
   }
 
   .shake {
-    animation-name: shake;
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
     animation-iteration-count: 2;
+    animation-name: shake;
   }
 
   @keyframes shake {
@@ -136,7 +136,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   html {
     scroll-behavior: auto;
   }

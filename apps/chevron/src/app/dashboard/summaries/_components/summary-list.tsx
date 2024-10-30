@@ -1,83 +1,74 @@
 "use client";
-import { Summary } from "@/drizzle/schema";
-import { Skeleton, buttonVariants } from "@itell/ui/server";
-import { cn, keyof } from "@itell/utils";
-import { CheckCircle, XCircle } from "lucide-react";
+
 import Link from "next/link";
-import pluralize from "pluralize";
-import { useState } from "react";
-import { ChapterSelect } from "./chapter-select";
+import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
+import { Skeleton } from "@itell/ui/skeleton";
+import { CheckCircle, XCircle } from "lucide-react";
 
-type SummaryData = Summary & { pageTitle: string };
-
-export const SummaryList = ({
-	data,
-}: {
-	data: Record<string, SummaryData[]>;
-}) => {
-	const chapters = keyof(data);
-	const [selectedChapter, setSelectedChapter] = useState(chapters[0]);
-	const chapterSummaries = data[selectedChapter];
-	return (
-		<div className="spacey-4">
-			<div className="flex items-center justify-between">
-				<ChapterSelect
-					chapters={chapters}
-					value={selectedChapter}
-					onValueChange={(val) => setSelectedChapter(val)}
-				/>
-				<p className="text-muted-foreground text-sm">
-					{`${pluralize("summary", chapterSummaries.length, true)}`}
-				</p>
-			</div>
-
-			<ol className="divide-y divide-border rounded-md border mt-4">
-				{chapterSummaries.map((summary) => (
-					<SummaryItem summary={summary} key={summary.id} />
-				))}
-			</ol>
-		</div>
-	);
+type SummaryData = {
+  id: number;
+  createdAt: Date;
+  isPassed: boolean;
+  text: string;
+  pageTitle: string;
 };
 
-interface SummaryItemProps {
-	summary: SummaryData;
+export function SummaryList({ data }: { data: Record<string, SummaryData[]> }) {
+  return (
+    <ol className="mt-4 divide-y divide-border rounded-md border">
+      {Object.entries(data).map(([title, summaries]) => (
+        <Card key={title}>
+          <CardHeader>
+            <CardTitle>{title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ol className="divide-y divide-border">
+              {summaries.map((summary) => (
+                <li key={summary.id}>
+                  <SummaryItem summary={summary} />
+                </li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
+      ))}
+    </ol>
+  );
 }
 
-export const SummaryItem = ({ summary }: SummaryItemProps) => {
-	return (
-		<Link
-			href={`/summary/${summary.id}`}
-			className={cn(
-				buttonVariants({ variant: "ghost", className: "h-fit" }),
-				"block p-4",
-			)}
-			aria-label="user summary"
-		>
-			<header className="flex flex-col text-sm text-muted-foreground">
-				<p className="font-semibold text-lg leading-relaxed ">
-					{summary.pageTitle}
-				</p>
+interface SummaryItemProps {
+  summary: SummaryData;
+}
 
-				<p>{summary.createdAt.toLocaleDateString()}</p>
-			</header>
-			<div className="flex items-center justify-between">
-				<p className="line-clamp-2">{summary.text}</p>
-				{summary.isPassed ? (
-					<CheckCircle className="size-4 stroke-info" />
-				) : (
-					<XCircle className="size-4 stroke-warning" />
-				)}
-			</div>
-		</Link>
-	);
-};
+export function SummaryItem({ summary }: SummaryItemProps) {
+  return (
+    <Link
+      href={`/summary/${String(summary.id)}`}
+      className="flex flex-col rounded-md px-2 py-4 transition-all duration-150 ease-out hover:bg-accent hover:text-accent-foreground"
+      aria-label="user summary"
+    >
+      <header className="flex flex-col text-sm text-muted-foreground">
+        <p>{summary.createdAt.toLocaleDateString()}</p>
+      </header>
+      <div className="flex items-center justify-between gap-2">
+        <p className="line-clamp-2 flex-1">{summary.text}</p>
+        {summary.isPassed ? (
+          <CheckCircle className="size-4 stroke-info" />
+        ) : (
+          <XCircle className="size-4 stroke-warning" />
+        )}
+      </div>
+    </Link>
+  );
+}
 
-export const SummaryItemSkeleton = () => (
-	<div className="p-4">
-		<div className="space-y-3">
-			<Skeleton className="h-5 w-2/5" />
-			<Skeleton className="h-4 w-4/5" />
-		</div>
-	</div>
-);
+export function SummaryItemSkeleton() {
+  return (
+    <div className="p-4">
+      <div className="space-y-3">
+        <Skeleton className="h-5 w-2/5" />
+        <Skeleton className="h-4 w-4/5" />
+      </div>
+    </div>
+  );
+}

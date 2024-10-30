@@ -10,13 +10,14 @@ import {
   CarouselPrevious,
 } from "@itell/ui/carousel";
 import { LinkIcon } from "lucide-react";
-import data from "public/knowledge-cards.json";
+
+import { SiteConfig } from "@/config/site";
 
 export function KnowledgeCarousel() {
   return (
     <Carousel className="mx-auto max-w-lg">
       <CarouselContent>
-        {data.map((item, index) => (
+        {SiteConfig.knowledgeCards.map((item, index) => (
           <CarouselItem key={index}>
             <KnowledgeCard {...item} />
           </CarouselItem>

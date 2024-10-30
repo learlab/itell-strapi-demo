@@ -1,66 +1,105 @@
-import { MobileNavItem } from "@/components/mobile-nav";
-import { slug } from "github-slugger";
 import {
-	BarChart4Icon,
-	FileEditIcon,
-	MessageCircleQuestion,
-	SettingsIcon,
+  BarChartIcon,
+  FileEditIcon,
+  MessageCircleQuestion,
+  SettingsIcon,
 } from "lucide-react";
 
-const iconClasses = "size-4";
-export const dashboardConfig: DashboardConfig = {
-	mobileNav: [
-		{
-			title: "Summaries",
-			href: "/dashboard/summaries",
-		},
-		{
-			title: "Questions",
-			href: "/dashboard/questions",
-		},
-		{
-			title: "Settings",
-			href: "/dashboard/settings",
-		},
-	],
-	sidebarNav: [
-		{
-			title: "Statistics",
-			href: "/dashboard",
-			icon: <BarChart4Icon className={iconClasses} />,
-		},
-		{
-			title: "Summaries",
-			href: "/dashboard/summaries",
-			icon: <FileEditIcon className={iconClasses} />,
-		},
-		{
-			title: "Questions",
-			href: "/dashboard/questions",
-			icon: <MessageCircleQuestion className={iconClasses} />,
-		},
-		{
-			title: "Settings",
-			href: "/dashboard/settings",
-			icon: <SettingsIcon className={iconClasses} />,
-		},
-	],
+import { type MobileNavItem } from "@/components/mobile-nav";
+
+export const dashboardConfig = {
+  mobileNav: {
+    teacher: [
+      {
+        title: "Summaries",
+        href: "/dashboard/teacher/summaries",
+      },
+      {
+        title: "Questions",
+        href: "/dashboard/teacher/questions",
+      },
+      {
+        title: "Settings",
+        href: "/dashboard/settings",
+      },
+    ],
+    student: [
+      {
+        title: "Summaries",
+        href: "/dashboard/summaries",
+      },
+      {
+        title: "Questions",
+        href: "/dashboard/questions",
+      },
+      {
+        title: "Settings",
+        href: "/dashboard/settings",
+      },
+    ],
+  },
+  sidebarNav: {
+    teacher: [
+      {
+        title: "Overview",
+        href: "/dashboard/teacher",
+        icon: BarChartIcon,
+      },
+      {
+        title: "Summaries",
+        href: "/dashboard/teacher/summaries",
+        icon: FileEditIcon,
+      },
+      {
+        title: "Questions",
+        href: "/dashboard/teacher/questions",
+        icon: MessageCircleQuestion,
+      },
+      {
+        title: "Settings",
+        href: "/dashboard/settings",
+        icon: SettingsIcon,
+      },
+    ],
+    student: [
+      {
+        title: "Overview",
+        href: "/dashboard",
+        icon: BarChartIcon,
+      },
+      {
+        title: "Summaries",
+        href: "/dashboard/summaries",
+        icon: FileEditIcon,
+      },
+      {
+        title: "Questions",
+        href: "/dashboard/questions",
+        icon: MessageCircleQuestion,
+      },
+      {
+        title: "Settings",
+        href: "/dashboard/settings",
+        icon: SettingsIcon,
+      },
+    ],
+  },
 };
 
 export type DashboardNavItem = {
-	title: string;
-	href: string;
-	disabled?: boolean;
+  title: string;
+  href: string;
+  disabled?: boolean;
 };
 
 export type SidebarNavItem = {
-	title: string;
-	href: string;
-	external?: boolean;
-	icon?: React.ReactNode;
+  title: string;
+  href: string;
+  external?: boolean;
+  icon: () => React.ReactNode;
 };
 
 export type DashboardConfig = {
-	mobileNav: MobileNavItem[];
-	sidebarNav: SidebarNavItem[];
+  mobileNav: MobileNavItem[];
+  sidebarNav: SidebarNavItem[];
 };
