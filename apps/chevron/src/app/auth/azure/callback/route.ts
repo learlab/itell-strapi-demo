@@ -52,20 +52,20 @@ export const GET = async (req: Request) => {
     const idToken = tokens.idToken();
     const azureUser = jwtDecode<AzureUser>(idToken);
 
-    if (azureUser.email) {
-      const emailLower = azureUser.email.toLocaleLowerCase();
-      if (
-        !emailLower.endsWith("vanderbilt.edu") &&
-        !emailLower.endsWith("mga.edu")
-      ) {
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: "/auth?error=wrong_email",
-          },
-        });
-      }
-    }
+    // if (azureUser.email) {
+    //   const emailLower = azureUser.email.toLocaleLowerCase();
+    //   if (
+    //     !emailLower.endsWith("vanderbilt.edu") &&
+    //     !emailLower.endsWith("mga.edu")
+    //   ) {
+    //     return new Response(null, {
+    //       status: 302,
+    //       headers: {
+    //         Location: "/auth?error=wrong_email",
+    //       },
+    //     });
+    //   }
+    // }
 
     let [user, err] = await getUserByProviderAction({
       provider_id: "azure",

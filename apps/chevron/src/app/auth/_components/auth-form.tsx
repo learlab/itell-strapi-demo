@@ -22,9 +22,6 @@ export function AuthForm({ joinClassCode }: Props) {
           automatically added to the class.
         </p>
       ) : null}
-      <p className="text-center text-sm text-muted-foreground">
-        Please log in using your school email
-      </p>
       <div className="flex flex-col gap-2">
         <GoogleLoginButton />
         <OutlookLoginButton />

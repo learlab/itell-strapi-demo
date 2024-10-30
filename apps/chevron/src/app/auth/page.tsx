@@ -19,7 +19,7 @@ const ErrorDict: Record<string, string> = {
   oauth: "A problem occurred while logging in. Please try again later.",
   access_denied:
     "This application needs your consent to access your social account. You may come back at any time.",
-  wrong_email: "Please sign in with your school email (ending with 'mga.edu').",
+  wrong_email: "Please sign in with your company email.",
 };
 
 export const generateMetadata = ({
