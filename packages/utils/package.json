@@ -1,34 +1,34 @@
 {
-    "name": "@itell/utils",
-    "version": "0.0.1",
-    "type": "module",
-    "main": "./dist/index.umd.cjs",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./src/index.ts",
-            "default": "./dist/index.js"
-        }
-    },
-    "scripts": {
-        "build": "tsc"
-    },
-    "files": [
-        "dist"
-    ],
-    "keywords": [
-        "itell"
-    ],
-    "author": "",
-    "license": "MIT",
-    "dependencies": {
-        "clsx": "^2.1.1",
-        "tailwind-merge": "^2.4.0"
-    },
-    "devDependencies": {
-        "@itell/tsconfig": "workspace:^",
-        "vite": "^5.4.1",
-        "vite-plugin-dts": "4.0.3"
+  "name": "@itell/utils",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
     }
+  },
+  "scripts": {
+    "build": "pnpm tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "itell"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.4.0"
+  },
+  "devDependencies": {
+    "@itell/tsconfig": "workspace:^",
+    "vite": "^5.4.1",
+    "vite-plugin-dts": "4.0.3"
+  }
 }
