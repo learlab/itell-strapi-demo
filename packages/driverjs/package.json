@@ -1,46 +1,47 @@
 {
-    "name": "@itell/driver.js",
-    "description": "driver.js patched for itell",
-    "license": "MIT",
-    "private": false,
-    "version": "0.0.2",
-    "main": "./dist/driver.js.cjs",
-    "module": "./dist/driver.js.mjs",
-    "types": "./dist/driver.js.d.ts",
-    "exports": {
-        ".": {
-            "types": "./dist/driver.js.d.ts",
-            "require": "./dist/driver.js.cjs",
-            "import": "./dist/driver.js.mjs"
-        },
-        "./dist/driver.css": {
-            "import": "./dist/driver.css",
-            "require": "./dist/driver.css"
-        }
+  "name": "@itell/driver.js",
+  "description": "driver.js patched for itell",
+  "license": "MIT",
+  "private": false,
+  "version": "0.0.2",
+  "main": "./dist/driver.js.cjs",
+  "module": "./dist/driver.js.mjs",
+  "types": "./dist/driver.js.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/driver.js.d.ts",
+      "require": "./dist/driver.js.cjs",
+      "import": "./dist/driver.js.mjs"
     },
-    "scripts": {
-        "dev": "vite --host",
-        "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
-        "test": "vitest"
-    },
-    "files": [
-        "dist/**/*",
-        "!dist/**/*.js.map"
-    ],
-    "devDependencies": {
-        "@itell/tsconfig": "workspace:^",
-        "@types/jsdom": "^21.1.2",
-        "@vitest/coverage-c8": "^0.32.0",
-        "dts-bundle-generator": "^8.0.1",
-        "postcss": "^8.4.29",
-        "postcss-scss": "^4.0.7",
-        "prettier": "^3.0.3",
-        "vite": "^4.4.9"
-    },
-    "keywords": [
-        "itell"
-    ],
-    "dependencies": {
-        "@itell/constants": "workspace:^"
+    "./dist/driver.css": {
+      "import": "./dist/driver.css",
+      "require": "./dist/driver.css"
     }
+  },
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+    "test": "vitest"
+  },
+  "files": [
+    "dist/**/*",
+    "!dist/**/*.js.map"
+  ],
+  "devDependencies": {
+    "@itell/tsconfig": "workspace:^",
+    "@types/jsdom": "^21.1.2",
+    "@vitest/coverage-c8": "^0.32.0",
+    "dts-bundle-generator": "^8.0.1",
+    "postcss": "^8.4.29",
+    "postcss-scss": "^4.0.7",
+    "prettier": "^3.0.3"
+  },
+  "keywords": [
+    "itell"
+  ],
+  "dependencies": {
+    "@itell/constants": "workspace:^",
+    "vite": "^4.4.9",
+    "typescript": "5.6.0-beta"
+  }
 }
