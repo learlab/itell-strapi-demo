@@ -19,7 +19,8 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@hono/zod-validator": "^0.2.2"
+    "@hono/zod-validator": "^0.2.2",
+    "typescript": "5.6.0-beta"
   },
   "devDependencies": {
     "@itell/tsconfig": "workspace:^",
