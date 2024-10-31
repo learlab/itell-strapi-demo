@@ -1369,6 +1369,12 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
+      vite:
+        specifier: ^5.4.1
+        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0)
+      vite-plugin-dts:
+        specifier: ^4.0.3
+        version: 4.3.0(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
     devDependencies:
       '@itell/tsconfig':
         specifier: workspace:^
@@ -1379,12 +1385,6 @@ importers:
       hast:
         specifier: ^1.0.0
         version: 1.0.0
-      vite:
-        specifier: ^5.4.1
-        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0)
-      vite-plugin-dts:
-        specifier: ^4.0.3
-        version: 4.3.0(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
 
   packages/remark-wiki-link:
     dependencies:
