@@ -30,9 +30,10 @@
     "patch-package": "^8.0.0",
     "tsup": "^8.2.4",
     "tsx": "^4.17.0",
-    "turbo": "^1.13.4",
+    "turbo": "^2.2.3",
     "typescript": "5.6.0-beta"
   },
+  "packageManager": "pnpm@9.0.0",
   "pnpm": {
     "overrides": {
       "typescript": "5.6.0-beta",
@@ -41,9 +42,7 @@
       "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
     },
     "patchedDependencies": {
-      "drizzle-orm@0.30.10": "patches/drizzle-orm@0.30.10.patch",
       "decode-named-character-reference@1.0.2": "patches/decode-named-character-reference@1.0.2.patch",
-      "hast-util-from-html-isomorphic@1.0.0": "patches/hast-util-from-html-isomorphic@1.0.0.patch",
       "htmr@1.0.2": "patches/htmr@1.0.2.patch"
     }
   }
