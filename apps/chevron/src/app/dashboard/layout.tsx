@@ -70,11 +70,11 @@ export default async function DashboardLayout({
 
   const [teacher, _] = await getTeacherAction();
   const isTeacher = Boolean(teacher);
-  const sidebarState = cookies().get(SIDEBAR_STATE_COOKIE)?.value;
+  const sidebarState = (await cookies()).get(SIDEBAR_STATE_COOKIE)?.value;
   return (
-    <DashboardProvider
+    (<DashboardProvider
       defaultRole={
-        (cookies().get(DASHBOARD_ROLE_COOKIE)?.value ??
+        ((await cookies()).get(DASHBOARD_ROLE_COOKIE)?.value ??
           (isTeacher ? ClassRole.TEACHER : ClassRole.STUDENT)) as Role
       }
     >
@@ -98,6 +98,6 @@ export default async function DashboardLayout({
           </section>
         </main>
       </SidebarLayout>
-    </DashboardProvider>
+    </DashboardProvider>)
   );
 }

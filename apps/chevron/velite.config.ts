@@ -4,9 +4,9 @@ import { promisify } from "node:util";
 import rehypeAddCri from "@itell/rehype-add-cri";
 import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
 import rehypeFormat from "rehype-format";
+import rehypeUnwrapImages from "rehype-unwrap-images";
 import remarkGfm from "remark-gfm";
 import remarkHeadingAttrs from "remark-heading-attrs";
-import remarkUnwrapImage from "remark-unwrap-images";
 import { defineCollection, defineConfig, defineSchema, s } from "velite";
 
 const execAsync = promisify(exec);
@@ -132,7 +132,7 @@ export default defineConfig({
   root: "./content",
   collections: { pages, guides, home, volume },
   markdown: {
-    remarkPlugins: [remarkGfm, remarkUnwrapImage],
-    rehypePlugins: [],
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypeUnwrapImages],
   },
 });

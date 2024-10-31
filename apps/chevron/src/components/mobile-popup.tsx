@@ -12,11 +12,13 @@ import {
   AlertDialogTitle,
 } from "@itell/ui/alert-dialog";
 
+import { isProduction } from "@/lib/constants";
+
 export function MobilePopup() {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && isProduction) {
       setOpen(true);
     }
   }, [isMobile]);

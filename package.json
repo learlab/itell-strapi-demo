@@ -1,46 +1,50 @@
 {
-    "name": "itell-monorepo",
-    "authors": "learlab",
-    "version": "1.0.0",
-    "description": "A Framework for Building Intelligent Digital Textbooks",
-    "workspaces": [
-        "apps/*",
-        "packages/*",
-        "toolings/*",
-        "docs"
-    ],
-    "scripts": {
-        "build": "turbo run build",
-        "build:core": "turbo run build --filter @itell/core",
-        "build:ui": "turbo run build --filter @itell/ui",
-        "build:tailwind": "turbo run build --filter @itell/tailwind",
-        "dev": "turbo run dev",
-        "start": "turbo run start",
-        "lint": "turbo run lint",
-        "format": "turbo run format",
-        "clean": "turbo run clean",
-        "patch": "pnpm patch-package"
+  "name": "itell-monorepo",
+  "authors": "learlab",
+  "version": "1.0.0",
+  "description": "A Framework for Building Intelligent Digital Textbooks",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "toolings/*",
+    "docs"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "build:core": "turbo run build --filter @itell/core",
+    "build:ui": "turbo run build --filter @itell/ui",
+    "build:tailwind": "turbo run build --filter @itell/tailwind",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "clean": "turbo run clean",
+    "patch": "pnpm patch-package"
+  },
+  "keywords": [
+    "itell"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.4.1",
+    "patch-package": "^8.0.0",
+    "tsup": "^8.2.4",
+    "tsx": "^4.17.0",
+    "turbo": "^1.13.4",
+    "typescript": "5.6.0-beta"
+  },
+  "pnpm": {
+    "overrides": {
+      "typescript": "5.6.0-beta",
+      "react-is": "^19.0.0-rc-02c0e824-20241028",
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
     },
-    "keywords": [
-        "itell"
-    ],
-    "license": "MIT",
-    "devDependencies": {
-        "@types/node": "^22.4.1",
-        "patch-package": "^8.0.0",
-        "tsx": "^4.17.0",
-        "turbo": "^1.13.4",
-        "typescript": "5.6.0-beta",
-        "tsup": "^8.2.4"
-    },
-    "pnpm": {
-        "overrides": {
-            "typescript": "5.6.0-beta"
-        },
-        "patchedDependencies": {
-            "drizzle-orm@0.30.10": "patches/drizzle-orm@0.30.10.patch",
-            "decode-named-character-reference@1.0.2": "patches/decode-named-character-reference@1.0.2.patch",
-            "hast-util-from-html-isomorphic@1.0.0": "patches/hast-util-from-html-isomorphic@1.0.0.patch"
-        }
+    "patchedDependencies": {
+      "drizzle-orm@0.30.10": "patches/drizzle-orm@0.30.10.patch",
+      "decode-named-character-reference@1.0.2": "patches/decode-named-character-reference@1.0.2.patch",
+      "hast-util-from-html-isomorphic@1.0.0": "patches/hast-util-from-html-isomorphic@1.0.0.patch",
+      "htmr@1.0.2": "patches/htmr@1.0.2.patch"
     }
+  }
 }

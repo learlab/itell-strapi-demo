@@ -11,10 +11,6 @@ import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 
-type PageProps = {
-  searchParams?: unknown;
-};
-
 const ErrorDict: Record<string, string> = {
   oauth: "A problem occurred while logging in. Please try again later.",
   access_denied:
@@ -22,11 +18,10 @@ const ErrorDict: Record<string, string> = {
   wrong_email: "Please sign in with your company email.",
 };
 
-export const generateMetadata = ({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}): Metadata => {
+export const generateMetadata = async (props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> => {
+  const searchParams = await props.searchParams;
   const fromDashboard = searchParams.from_dashboard === "true";
   if (fromDashboard) {
     const title = "Dashboard";
@@ -68,7 +63,10 @@ export const generateMetadata = ({
   };
 };
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page(props: {
+  searchParams: Promise<Record<string, string> | undefined>;
+}) {
+  const searchParams = await props.searchParams;
   const { error, join_class_code } =
     routes.auth.$parseSearchParams(searchParams);
   const { user } = await getSession();

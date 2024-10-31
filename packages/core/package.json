@@ -60,18 +60,18 @@
     "range-serializer": "^0.0.2"
   },
   "peerDependencies": {
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^16.8 || ^17.0 || ^18.0 || ^19.0",
+    "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0",
     "zod": "^3",
-    "framer-motion": "^10"
+    "framer-motion": "^12.0.0-alpha.1"
   },
   "devDependencies": {
     "@itell/eslint-config": "workspace:^",
     "@itell/prettier-config": "workspace:^",
     "@itell/tsconfig": "workspace:^",
     "@types/js-yaml": "^4.0.5",
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.19",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "rollup-plugin-visualizer": "^5.12.0",
     "rollup-preserve-directives": "^1.1.1",
     "vite": "^5.4.0",

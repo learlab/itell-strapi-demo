@@ -52,6 +52,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "@typescript-eslint/no-unsafe-assignment": "warn",

@@ -1,268 +1,268 @@
 {
-  "name": "@itell/ui",
-  "version": "0.0.1",
-  "type": "module",
-  "exports": {
-    "./button": {
-      "types": "./src/button.tsx",
-      "default": "./dist/button.js"
+    "name": "@itell/ui",
+    "version": "0.0.1",
+    "type": "module",
+    "exports": {
+        "./button": {
+            "types": "./src/button.tsx",
+            "default": "./dist/button.js"
+        },
+        "./status-button": {
+            "types": "./src/status-button.tsx",
+            "default": "./dist/status-button.js"
+        },
+        "./server": {
+            "types": "./src/components-server.ts",
+            "default": "./dist/server.js"
+        },
+        "./client": {
+            "types": "./src/components-client.ts",
+            "default": "./dist/client.js"
+        },
+        "./accordion": {
+            "types": "./src/accordion.tsx",
+            "default": "./dist/accordion.js"
+        },
+        "./alert-dialog": {
+            "types": "./src/alert-dialog.tsx",
+            "default": "./dist/alert-dialog.js"
+        },
+        "./alert": {
+            "types": "./src/alert.tsx",
+            "default": "./dist/alert.js"
+        },
+        "./avatar": {
+            "types": "./src/avatar.tsx",
+            "default": "./dist/avatar.js"
+        },
+        "./badge": {
+            "types": "./src/badge.tsx",
+            "default": "./dist/badge.js"
+        },
+        "./blockquote": {
+            "types": "./src/blockquote.tsx",
+            "default": "./dist/blockquote.js"
+        },
+        "./callout": {
+            "types": "./src/callout.tsx",
+            "default": "./dist/callout.js"
+        },
+        "./caption": {
+            "types": "./src/caption.tsx",
+            "default": "./dist/caption.js"
+        },
+        "./card": {
+            "types": "./src/card.tsx",
+            "default": "./dist/card.js"
+        },
+        "./carousel": {
+            "types": "./src/carousel.tsx",
+            "default": "./dist/carousel.js"
+        },
+        "./chart": {
+            "types": "./src/chart.tsx",
+            "default": "./dist/chart.js"
+        },
+        "./checkbox": {
+            "types": "./src/checkbox.tsx",
+            "default": "./dist/checkbox.js"
+        },
+        "./collapsible": {
+            "types": "./src/collapsible.tsx",
+            "default": "./dist/collapsible.js"
+        },
+        "./columns": {
+            "types": "./src/columns.tsx",
+            "default": "./dist/columns.js"
+        },
+        "./command": {
+            "types": "./src/command.tsx",
+            "default": "./dist/command.js"
+        },
+        "./dashboard-badge": {
+            "types": "./src/dashboard-badge.tsx",
+            "default": "./dist/dashboard-badge.js"
+        },
+        "./definition": {
+            "types": "./src/definition.tsx",
+            "default": "./dist/definition.js"
+        },
+        "./dialog": {
+            "types": "./src/dialog.tsx",
+            "default": "./dist/dialog.js"
+        },
+        "./dropdown": {
+            "types": "./src/dropdown.tsx",
+            "default": "./dist/dropdown.js"
+        },
+        "./hover-card": {
+            "types": "./src/hover-card.tsx",
+            "default": "./dist/hover-card.js"
+        },
+        "./image": {
+            "types": "./src/image.tsx",
+            "default": "./dist/image.js"
+        },
+        "./input": {
+            "types": "./src/input.tsx",
+            "default": "./dist/input.js"
+        },
+        "./label": {
+            "types": "./src/label.tsx",
+            "default": "./dist/label.js"
+        },
+        "./link": {
+            "types": "./src/link.tsx",
+            "default": "./dist/link.js"
+        },
+        "./login-button": {
+            "types": "./src/login-button.tsx",
+            "default": "./dist/login-button.js"
+        },
+        "./page-title": {
+            "types": "./src/page-title.tsx",
+            "default": "./dist/page-title.js"
+        },
+        "./pager": {
+            "types": "./src/pager.tsx",
+            "default": "./dist/pager.js"
+        },
+        "./popover": {
+            "types": "./src/popover.tsx",
+            "default": "./dist/popover.js"
+        },
+        "./progress": {
+            "types": "./src/progress.tsx",
+            "default": "./dist/progress.js"
+        },
+        "./prose": {
+            "types": "./src/prose.tsx",
+            "default": "./dist/prose.js"
+        },
+        "./radio": {
+            "types": "./src/radio.tsx",
+            "default": "./dist/radio.js"
+        },
+        "./scroll-area": {
+            "types": "./src/scroll-area.tsx",
+            "default": "./dist/scroll-area.js"
+        },
+        "./select": {
+            "types": "./src/select.tsx",
+            "default": "./dist/select.js"
+        },
+        "./separator": {
+            "types": "./src/separator.tsx",
+            "default": "./dist/separator.js"
+        },
+        "./sheet": {
+            "types": "./src/sheet.tsx",
+            "default": "./dist/sheet.js"
+        },
+        "./skeleton": {
+            "types": "./src/skeleton.tsx",
+            "default": "./dist/skeleton.js"
+        },
+        "./spinner": {
+            "types": "./src/spinner.tsx",
+            "default": "./dist/spinner.js"
+        },
+        "./steps": {
+            "types": "./src/steps.tsx",
+            "default": "./dist/steps.js"
+        },
+        "./switch": {
+            "types": "./src/switch.tsx",
+            "default": "./dist/switch.js"
+        },
+        "./table": {
+            "types": "./src/table.tsx",
+            "default": "./dist/table.js"
+        },
+        "./tabs": {
+            "types": "./src/tabs.tsx",
+            "default": "./dist/tabs.js"
+        },
+        "./textarea": {
+            "types": "./src/textarea.tsx",
+            "default": "./dist/textarea.js"
+        },
+        "./tooltip": {
+            "types": "./src/tooltip.tsx",
+            "default": "./dist/tooltip.js"
+        },
+        "./dist/style.css": "./dist/style.css"
     },
-    "./status-button": {
-      "types": "./src/status-button.tsx",
-      "default": "./dist/status-button.js"
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "pnpm tsx build.ts && vite build",
+        "test": "vitest",
+        "clean": "rm -rf .turbo dist",
+        "format": "prettier --write .",
+        "lint": "eslint . --fix"
     },
-    "./server": {
-      "types": "./src/components-server.ts",
-      "default": "./dist/server.js"
+    "dependencies": {
+        "@itell/constants": "workspace:^",
+        "@itell/tailwind": "workspace:^",
+        "@itell/utils": "workspace:^",
+        "@itell/prettier-config": "workspace:^",
+        "@itell/eslint-config": "workspace:^",
+        "@radix-ui/react-accordion": "^1.1.2",
+        "@radix-ui/react-alert-dialog": "^1.0.5",
+        "@radix-ui/react-avatar": "^1.0.3",
+        "@radix-ui/react-checkbox": "^1.0.4",
+        "@radix-ui/react-collapsible": "^1.0.3",
+        "@radix-ui/react-dialog": "^1.0.4",
+        "@radix-ui/react-dropdown-menu": "^2.0.5",
+        "@radix-ui/react-hover-card": "^1.0.6",
+        "@radix-ui/react-label": "^2.0.2",
+        "@radix-ui/react-popover": "^1.0.6",
+        "@radix-ui/react-progress": "^1.0.3",
+        "@radix-ui/react-radio-group": "^1.1.3",
+        "@radix-ui/react-scroll-area": "^1.1.0",
+        "@radix-ui/react-select": "^1.2.2",
+        "@radix-ui/react-separator": "^1.0.3",
+        "@radix-ui/react-slot": "^1.0.2",
+        "@radix-ui/react-switch": "^1.0.3",
+        "@radix-ui/react-tabs": "^1.0.4",
+        "@radix-ui/react-tooltip": "^1.0.6",
+        "@tailwindcss/typography": "^0.5.10",
+        "autoprefixer": "^10.4.15",
+        "class-variance-authority": "^0.6.1",
+        "clsx": "^1.2.1",
+        "cmdk": "^0.2.0",
+        "embla-carousel-react": "8.0.0-rc17",
+        "immer": "^9.0.21",
+        "lucide-react": "^0.263.1",
+        "postcss": "^8.4.29",
+        "tailwind-merge": "^1.14.0",
+        "tailwindcss": "^3.4.0",
+        "use-immer": "^0.9.0"
     },
-    "./client": {
-      "types": "./src/components-client.ts",
-      "default": "./dist/client.js"
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.17.0",
+        "@testing-library/react": "^14.0.0",
+        "@testing-library/user-event": "^14.5.0",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
+        "@types/testing-library__jest-dom": "^5.14.9",
+        "@vitejs/plugin-react": "^4.2.1",
+        "@vitest/ui": "^0.33.0",
+        "happy-dom": "^10.11.2",
+        "next": "^14.2.5",
+        "rollup-plugin-visualizer": "^5.12.0",
+        "rollup-preserve-directives": "^1.1.1",
+        "vite": "^5.4.0",
+        "vite-plugin-dts": "^2.3.0",
+        "vitest": "^0.31.4"
     },
-    "./accordion": {
-      "types": "./src/accordion.tsx",
-      "default": "./dist/accordion.js"
-    },
-    "./alert-dialog": {
-      "types": "./src/alert-dialog.tsx",
-      "default": "./dist/alert-dialog.js"
-    },
-    "./alert": {
-      "types": "./src/alert.tsx",
-      "default": "./dist/alert.js"
-    },
-    "./avatar": {
-      "types": "./src/avatar.tsx",
-      "default": "./dist/avatar.js"
-    },
-    "./badge": {
-      "types": "./src/badge.tsx",
-      "default": "./dist/badge.js"
-    },
-    "./blockquote": {
-      "types": "./src/blockquote.tsx",
-      "default": "./dist/blockquote.js"
-    },
-    "./callout": {
-      "types": "./src/callout.tsx",
-      "default": "./dist/callout.js"
-    },
-    "./caption": {
-      "types": "./src/caption.tsx",
-      "default": "./dist/caption.js"
-    },
-    "./card": {
-      "types": "./src/card.tsx",
-      "default": "./dist/card.js"
-    },
-    "./carousel": {
-      "types": "./src/carousel.tsx",
-      "default": "./dist/carousel.js"
-    },
-    "./chart": {
-      "types": "./src/chart.tsx",
-      "default": "./dist/chart.js"
-    },
-    "./checkbox": {
-      "types": "./src/checkbox.tsx",
-      "default": "./dist/checkbox.js"
-    },
-    "./collapsible": {
-      "types": "./src/collapsible.tsx",
-      "default": "./dist/collapsible.js"
-    },
-    "./columns": {
-      "types": "./src/columns.tsx",
-      "default": "./dist/columns.js"
-    },
-    "./command": {
-      "types": "./src/command.tsx",
-      "default": "./dist/command.js"
-    },
-    "./dashboard-badge": {
-      "types": "./src/dashboard-badge.tsx",
-      "default": "./dist/dashboard-badge.js"
-    },
-    "./definition": {
-      "types": "./src/definition.tsx",
-      "default": "./dist/definition.js"
-    },
-    "./dialog": {
-      "types": "./src/dialog.tsx",
-      "default": "./dist/dialog.js"
-    },
-    "./dropdown": {
-      "types": "./src/dropdown.tsx",
-      "default": "./dist/dropdown.js"
-    },
-    "./hover-card": {
-      "types": "./src/hover-card.tsx",
-      "default": "./dist/hover-card.js"
-    },
-    "./image": {
-      "types": "./src/image.tsx",
-      "default": "./dist/image.js"
-    },
-    "./input": {
-      "types": "./src/input.tsx",
-      "default": "./dist/input.js"
-    },
-    "./label": {
-      "types": "./src/label.tsx",
-      "default": "./dist/label.js"
-    },
-    "./link": {
-      "types": "./src/link.tsx",
-      "default": "./dist/link.js"
-    },
-    "./login-button": {
-      "types": "./src/login-button.tsx",
-      "default": "./dist/login-button.js"
-    },
-    "./page-title": {
-      "types": "./src/page-title.tsx",
-      "default": "./dist/page-title.js"
-    },
-    "./pager": {
-      "types": "./src/pager.tsx",
-      "default": "./dist/pager.js"
-    },
-    "./popover": {
-      "types": "./src/popover.tsx",
-      "default": "./dist/popover.js"
-    },
-    "./progress": {
-      "types": "./src/progress.tsx",
-      "default": "./dist/progress.js"
-    },
-    "./prose": {
-      "types": "./src/prose.tsx",
-      "default": "./dist/prose.js"
-    },
-    "./radio": {
-      "types": "./src/radio.tsx",
-      "default": "./dist/radio.js"
-    },
-    "./scroll-area": {
-      "types": "./src/scroll-area.tsx",
-      "default": "./dist/scroll-area.js"
-    },
-    "./select": {
-      "types": "./src/select.tsx",
-      "default": "./dist/select.js"
-    },
-    "./separator": {
-      "types": "./src/separator.tsx",
-      "default": "./dist/separator.js"
-    },
-    "./sheet": {
-      "types": "./src/sheet.tsx",
-      "default": "./dist/sheet.js"
-    },
-    "./skeleton": {
-      "types": "./src/skeleton.tsx",
-      "default": "./dist/skeleton.js"
-    },
-    "./spinner": {
-      "types": "./src/spinner.tsx",
-      "default": "./dist/spinner.js"
-    },
-    "./steps": {
-      "types": "./src/steps.tsx",
-      "default": "./dist/steps.js"
-    },
-    "./switch": {
-      "types": "./src/switch.tsx",
-      "default": "./dist/switch.js"
-    },
-    "./table": {
-      "types": "./src/table.tsx",
-      "default": "./dist/table.js"
-    },
-    "./tabs": {
-      "types": "./src/tabs.tsx",
-      "default": "./dist/tabs.js"
-    },
-    "./textarea": {
-      "types": "./src/textarea.tsx",
-      "default": "./dist/textarea.js"
-    },
-    "./tooltip": {
-      "types": "./src/tooltip.tsx",
-      "default": "./dist/tooltip.js"
-    },
-    "./dist/style.css": "./dist/style.css"
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "pnpm tsx build.ts && vite build",
-    "test": "vitest",
-    "clean": "rm -rf .turbo dist",
-    "format": "prettier --write .",
-    "lint": "eslint . --fix"
-  },
-  "dependencies": {
-    "@itell/constants": "workspace:^",
-    "@itell/tailwind": "workspace:^",
-    "@itell/utils": "workspace:^",
-    "@itell/prettier-config": "workspace:^",
-    "@itell/eslint-config": "workspace:^",
-    "@radix-ui/react-accordion": "^1.1.2",
-    "@radix-ui/react-alert-dialog": "^1.0.5",
-    "@radix-ui/react-avatar": "^1.0.3",
-    "@radix-ui/react-checkbox": "^1.0.4",
-    "@radix-ui/react-collapsible": "^1.0.3",
-    "@radix-ui/react-dialog": "^1.0.4",
-    "@radix-ui/react-dropdown-menu": "^2.0.5",
-    "@radix-ui/react-hover-card": "^1.0.6",
-    "@radix-ui/react-label": "^2.0.2",
-    "@radix-ui/react-popover": "^1.0.6",
-    "@radix-ui/react-progress": "^1.0.3",
-    "@radix-ui/react-radio-group": "^1.1.3",
-    "@radix-ui/react-scroll-area": "^1.1.0",
-    "@radix-ui/react-select": "^1.2.2",
-    "@radix-ui/react-separator": "^1.0.3",
-    "@radix-ui/react-slot": "^1.0.2",
-    "@radix-ui/react-switch": "^1.0.3",
-    "@radix-ui/react-tabs": "^1.0.4",
-    "@radix-ui/react-tooltip": "^1.0.6",
-    "@tailwindcss/typography": "^0.5.10",
-    "autoprefixer": "^10.4.15",
-    "class-variance-authority": "^0.6.1",
-    "clsx": "^1.2.1",
-    "cmdk": "^0.2.0",
-    "embla-carousel-react": "8.0.0-rc17",
-    "immer": "^9.0.21",
-    "lucide-react": "^0.263.1",
-    "postcss": "^8.4.29",
-    "tailwind-merge": "^1.14.0",
-    "tailwindcss": "^3.4.0",
-    "use-immer": "^0.9.0"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.5.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/testing-library__jest-dom": "^5.14.9",
-    "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/ui": "^0.33.0",
-    "happy-dom": "^10.11.2",
-    "next": "^14.2.5",
-    "rollup-plugin-visualizer": "^5.12.0",
-    "rollup-preserve-directives": "^1.1.1",
-    "vite": "^5.4.0",
-    "vite-plugin-dts": "^2.3.0",
-    "vitest": "^0.31.4"
-  },
-  "peerDependencies": {
-    "framer-motion": "^10.16.4",
-    "next": "14.2.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "recharts": "^2.8.0"
-  }
+    "peerDependencies": {
+        "framer-motion": "^12.0.0-alpha.1",
+        "next": "^15",
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0",
+        "recharts": "^2.8.0"
+    }
 }

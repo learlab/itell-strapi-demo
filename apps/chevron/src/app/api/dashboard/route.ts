@@ -14,9 +14,9 @@ export const GET = async (req: Request) => {
   const isTeacher = Boolean(teacher);
 
   if (isTeacher) {
-    cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);
+    (await cookies()).set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);
   } else {
-    cookies().set(DASHBOARD_ROLE_COOKIE, ClassRole.STUDENT);
+    (await cookies()).set(DASHBOARD_ROLE_COOKIE, ClassRole.STUDENT);
   }
   const redirectPath = isTeacher ? "/dashboard/teacher" : "/dashboard";
   return redirect(redirectPath);

@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { cookies, headers } from "next/headers";
+import { cookies, headers, type UnsafeUnwrappedHeaders } from "next/headers";
 import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
@@ -9,9 +9,11 @@ import { TextbookToc } from "@textbook/textbook-toc";
 
 import { lucia } from "@/lib/auth/lucia";
 import { getPage } from "@/lib/pages/pages.server";
+import { PageContentWrapper } from "./page-content-wrapper";
+import { TextbookWrapper } from "./textbook-wrapper";
 
 const getUserPageSlug = cache(async () => {
-  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  const sessionId = (await cookies()).get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
     return null;
   }
@@ -20,7 +22,7 @@ const getUserPageSlug = cache(async () => {
 });
 
 const getCurrentPage = () => {
-  const headersList = headers();
+  const headersList = (headers() as unknown as UnsafeUnwrappedHeaders);
   const pathname = headersList.get("x-pathname");
   if (pathname === null) {
     return null;
@@ -43,7 +45,7 @@ export default async function Loading() {
   const arr = Array.from(Array(10).keys());
 
   return (
-    <main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
+    <TextbookWrapper>
       <div id={Elements.TEXTBOOK_NAV}>
         <ScrollArea className="h-full w-full px-6 py-2">
           <TextbookToc
@@ -54,13 +56,13 @@ export default async function Loading() {
         </ScrollArea>
       </div>
 
-      <div id={Elements.TEXTBOOK_MAIN}>
+      <PageContentWrapper>
         <PageTitle className="mb-8">{page.title}</PageTitle>
 
         {arr.map((i) => (
           <Skeleton className="mb-4 h-28 w-full" key={i} />
         ))}
-      </div>
+      </PageContentWrapper>
 
       <aside id={Elements.PAGE_NAV} aria-label="table of contents">
         <div className="sticky top-20 -mt-10 space-y-4 px-1 py-6">
@@ -75,6 +77,6 @@ export default async function Loading() {
           </ul>
         </div>
       </aside>
-    </main>
+    </TextbookWrapper>
   );
 }

@@ -1,5 +1,5 @@
 import { type ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import {
   generateCodeVerifier,
   generateState,
@@ -35,13 +35,13 @@ const cookieOptions: Partial<ResponseCookie> = {
 
 export const setJoinClassCode = (join_class_code: string | null) => {
   if (join_class_code !== null) {
-    cookies().set("join_class_code", join_class_code);
+    (cookies() as unknown as UnsafeUnwrappedCookies).set("join_class_code", join_class_code);
   }
 };
 
 export const readJoinClassCode = () => {
-  const join_class_code = cookies().get("join_class_code")?.value ?? null;
-  cookies().delete("join_class_code");
+  const join_class_code = (cookies() as unknown as UnsafeUnwrappedCookies).get("join_class_code")?.value ?? null;
+  (cookies() as unknown as UnsafeUnwrappedCookies).delete("join_class_code");
 
   return join_class_code;
 };
@@ -49,20 +49,20 @@ export const readJoinClassCode = () => {
 export const setAzureOAuthState = (referer?: string) => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
-  cookies().set("azure_oauth_state", state, cookieOptions);
-  cookies().set("azure_oauth_code_verifier", codeVerifier, cookieOptions);
+  (cookies() as unknown as UnsafeUnwrappedCookies).set("azure_oauth_state", state, cookieOptions);
+  (cookies() as unknown as UnsafeUnwrappedCookies).set("azure_oauth_code_verifier", codeVerifier, cookieOptions);
   if (referer) {
-    cookies().set("azure_oauth_referer", referer, cookieOptions);
+    (cookies() as unknown as UnsafeUnwrappedCookies).set("azure_oauth_referer", referer, cookieOptions);
   }
 
   return { state, codeVerifier };
 };
 
 export const readAzureOAuthState = () => {
-  const state = cookies().get("azure_oauth_state")?.value ?? null;
+  const state = (cookies() as unknown as UnsafeUnwrappedCookies).get("azure_oauth_state")?.value ?? null;
   const codeVerifier =
-    cookies().get("azure_oauth_code_verifier")?.value ?? null;
-  const referer = cookies().get("azure_oauth_referer")?.value ?? null;
+    (cookies() as unknown as UnsafeUnwrappedCookies).get("azure_oauth_code_verifier")?.value ?? null;
+  const referer = (cookies() as unknown as UnsafeUnwrappedCookies).get("azure_oauth_referer")?.value ?? null;
 
   return { state, codeVerifier, referer };
 };
@@ -70,19 +70,19 @@ export const readAzureOAuthState = () => {
 export const setGoogleOAuthState = (referer?: string) => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
-  cookies().set("google_oauth_state", state, cookieOptions);
-  cookies().set("google_oauth_code_verifier", codeVerifier, cookieOptions);
+  (cookies() as unknown as UnsafeUnwrappedCookies).set("google_oauth_state", state, cookieOptions);
+  (cookies() as unknown as UnsafeUnwrappedCookies).set("google_oauth_code_verifier", codeVerifier, cookieOptions);
   if (referer) {
-    cookies().set("google_oauth_referer", referer, cookieOptions);
+    (cookies() as unknown as UnsafeUnwrappedCookies).set("google_oauth_referer", referer, cookieOptions);
   }
 
   return { state, codeVerifier };
 };
 
 export const readGoogleOAuthState = () => {
-  const state = cookies().get("google_oauth_state")?.value ?? null;
+  const state = (cookies() as unknown as UnsafeUnwrappedCookies).get("google_oauth_state")?.value ?? null;
   const codeVerifier =
-    cookies().get("google_oauth_code_verifier")?.value ?? null;
-  const referer = cookies().get("google_oauth_referer")?.value ?? null;
+    (cookies() as unknown as UnsafeUnwrappedCookies).get("google_oauth_code_verifier")?.value ?? null;
+  const referer = (cookies() as unknown as UnsafeUnwrappedCookies).get("google_oauth_referer")?.value ?? null;
   return { state, codeVerifier, referer };
 };

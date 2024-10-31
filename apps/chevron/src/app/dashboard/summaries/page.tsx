@@ -13,7 +13,8 @@ import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { SummaryListSelect } from "./_components/summary-list-select";
 
-export default async function ({ searchParams }: { searchParams: unknown }) {
+export default async function(props: { searchParams: Promise<unknown> }) {
+  const searchParams = await props.searchParams;
   const { user } = await getSession();
   if (!user) {
     return redirect("/auth");

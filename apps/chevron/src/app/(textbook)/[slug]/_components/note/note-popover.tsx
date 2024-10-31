@@ -58,7 +58,7 @@ export const NotePopover = memo(
     color,
     local = false,
   }: Props) => {
-    const elements = useRef<HTMLElement[]>();
+    const elements = useRef<HTMLElement[]>(undefined);
     const [positionFailed, setPositionFailed] = useState(
       local ? false : undefined
     );

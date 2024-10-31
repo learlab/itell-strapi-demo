@@ -1,22 +1,8 @@
-import analyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
 
-const withBundleAnalyzer = analyzer({
-  enabled: process.env.ANALYZE === "true",
-});
+import type { NextConfig } from "next";
 
-const isDev = process.argv.indexOf("dev") !== -1;
-const isBuild = process.argv.indexOf("build") !== -1;
-if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
-  process.env.VELITE_STARTED = "1";
-  const { build } = await import("velite");
-  await build({ watch: isDev, clean: !isDev });
-}
-
-/**
- * @type {import('next').NextConfig}
- */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: false,
   images: {
     dangerouslyAllowSVG: true,
@@ -31,8 +17,8 @@ const nextConfig = {
       },
     ],
   },
-  redirects: async () => {
-    return [];
+  experimental: {
+    reactCompiler: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -85,7 +71,7 @@ const securityHeaders = [
 ];
 
 export default withSentryConfig(
-  withBundleAnalyzer(nextConfig),
+  nextConfig,
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options

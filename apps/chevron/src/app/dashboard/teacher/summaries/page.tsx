@@ -11,7 +11,8 @@ import { allPagesSorted } from "@/lib/pages/pages.server";
 import { SummaryListSelect } from "../../summaries/_components/summary-list-select";
 import { checkTeacher } from "../check-teacher";
 
-export default async function ({ searchParams }: { searchParams: unknown }) {
+export default async function(props: { searchParams: Promise<unknown> }) {
+  const searchParams = await props.searchParams;
   const teacher = await checkTeacher();
   if (!teacher) {
     return notFound();

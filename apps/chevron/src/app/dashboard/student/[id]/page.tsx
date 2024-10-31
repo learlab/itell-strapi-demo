@@ -17,11 +17,13 @@ import { getPageData } from "@/lib/pages/pages.client";
 import { firstAssignmentPage } from "@/lib/pages/pages.server";
 
 interface PageProps {
-  params: unknown;
-  searchParams?: unknown;
+  params: Promise<unknown>;
+  searchParams?: Promise<unknown>;
 }
 
-export default async function ({ params, searchParams }: PageProps) {
+export default async function(props: PageProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { user } = await getSession();
 
   if (!user) {

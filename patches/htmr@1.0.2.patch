@@ -1,0 +1,46 @@
+diff --git a/src/types.ts b/src/types.ts
+index c798df5b0ffe472c99079b98b41525e02ad4851e..7ce1004b3644f19e356f36f6e5d176542064d16e 100644
+--- a/src/types.ts
++++ b/src/types.ts
+@@ -1,20 +1,31 @@
+-import React, { ReactHTML, ReactSVG, ReactNode, ComponentType } from "react";
++import React, {
++  ComponentType,
++  HTMLElementType,
++  ReactNode,
++  SVGElementType,
++} from "react";
+ 
+-export type HTMLTags = keyof ReactHTML;
+-export type SVGTags = keyof ReactSVG;
+-type AllTags = HTMLTags | SVGTags
++export type HTMLTags = HTMLElementType;
++export type SVGTags = SVGElementType;
++type AllTags = HTMLTags | SVGTags;
+ 
+ type HTMLTransform = {
+-  [tag in AllTags]: AllTags | ComponentType<Omit<React.ComponentProps<tag>, 'ref'>>;
++  [tag in AllTags]:
++    | AllTags
++    | ComponentType<Omit<React.ComponentProps<tag>, "ref">>;
+ };
+ 
+ type DefaultTransform = {
+-  _: <Props>(element: string | AllTags, props?: Props, children?: ReactNode) => ReactNode
+-}
++  _: <Props>(
++    element: string | AllTags,
++    props?: Props,
++    children?: ReactNode
++  ) => ReactNode;
++};
+ 
+ export type HtmrOptions = {
+-  transform: Partial<HTMLTransform & DefaultTransform>,
+-  preserveAttributes: Array<String | RegExp>,
++  transform: Partial<HTMLTransform & DefaultTransform>;
++  preserveAttributes: Array<String | RegExp>;
+   /** An array of tags in which their children should be set as raw html */
+-  dangerouslySetChildren: HTMLTags[]
++  dangerouslySetChildren: HTMLTags[];
+ };

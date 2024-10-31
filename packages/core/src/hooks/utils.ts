@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
 } from "react";
-
 import { createPortal } from "react-dom";
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
@@ -43,7 +42,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 
 export const useClickOutside = <T extends HTMLElement>(
   handler: () => void
-): RefObject<T> => {
+): RefObject<T | null> => {
   const ref = useRef<T>(null);
 
   useEffect(() => {
@@ -78,7 +77,7 @@ export const useAutosizeTextArea = (
 
       // We then set the height directly, outside of the render loop
       // Trying to set this with state or a ref will product an incorrect value.
-      textAreaRef.style.height = `${scrollHeight}px`;
+      textAreaRef.style.height = `${scrollHeight.toString()}px`;
     }
   }, [textAreaRef, value]);
 };
@@ -110,7 +109,9 @@ export const useWindowSize = () => {
 
     window.addEventListener("resize", handleSize);
 
-    return () => window.removeEventListener("resize", handleSize);
+    return () => {
+      window.removeEventListener("resize", handleSize);
+    };
   }, []);
 
   return windowSize;
@@ -120,7 +121,9 @@ export function useDebounce<T>(value: T, delay?: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedValue(value), delay || 500);
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay ?? 500);
 
     return () => {
       clearTimeout(timer);
@@ -166,13 +169,17 @@ export const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const mql = window.matchMedia(
+      `(max-width: ${(MOBILE_BREAKPOINT - 1).toString()}px)`
+    );
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
     };
     mql.addEventListener("change", onChange);
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    return () => mql.removeEventListener("change", onChange);
+    return () => {
+      mql.removeEventListener("change", onChange);
+    };
   }, []);
 
   return isMobile;

@@ -11,10 +11,11 @@ import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
 
 type Props = {
-  searchParams?: unknown;
+  searchParams?: Promise<Record<string, string> | undefined>;
 };
 
-export default async function ({ searchParams }: Props) {
+export default async function Page(props: Props) {
+  const searchParams = await props.searchParams;
   const { user } = await getSession();
   if (!user) {
     return redirectWithSearchParams("auth", searchParams);

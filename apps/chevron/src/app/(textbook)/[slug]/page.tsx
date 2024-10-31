@@ -27,8 +27,11 @@ import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPage } from "@/lib/pages/pages.server";
+import { PageContentWrapper } from "./page-content-wrapper";
+import { TextbookWrapper } from "./textbook-wrapper";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const { slug } = routes.textbook.$parseParams(params);
   const { user } = await getSession();
   const page = getPage(slug);
@@ -63,7 +66,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           />
         </Head>
       ) : null}
-      <main id={Elements.TEXTBOOK_MAIN_WRAPPER}>
+      <TextbookWrapper>
         <div id={Elements.TEXTBOOK_NAV}>
           <ScrollArea className="h-full w-full px-6 py-2">
             <TextbookToc
@@ -75,7 +78,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
         <MobilePopup />
 
-        <div id={Elements.TEXTBOOK_MAIN} tabIndex={-1}>
+        <PageContentWrapper>
           <PageTitle className="mb-8">{page.title}</PageTitle>
           <PageContent title={page.title} html={page.html} />
           <SelectionPopover user={user} pageSlug={pageSlug} />
@@ -84,22 +87,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <span>Last updated at </span>
             <time>{page.last_modified}</time>
           </p>
-        </div>
-
-        <aside id={Elements.PAGE_NAV} aria-label="table of contents">
-          <div className="sticky top-20 -mt-10">
-            <ScrollArea className="pb-10">
-              <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
-                <PageToc chunks={page.chunks} />
-                <div className="mt-8 flex flex-col gap-1">
-                  <PageInfo pageSlug={pageSlug} user={user} />
-                  <NoteCount />
-                </div>
-              </div>
-            </ScrollArea>
-          </div>
-        </aside>
-      </main>
+        </PageContentWrapper>
+      </TextbookWrapper>
 
       <Suspense fallback={<ChatLoader.Skeleton />}>
         <ChatLoader user={user} pageSlug={pageSlug} pageTitle={page.title} />
