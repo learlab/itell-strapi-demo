@@ -22,8 +22,5 @@
   "license": "MIT",
   "devDependencies": {
     "@itell/tsconfig": "workspace:^"
-  },
-  "dependencies": {
-    "tsup": "^8.2.4"
   }
 }

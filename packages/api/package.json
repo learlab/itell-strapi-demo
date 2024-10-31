@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "tsc",
     "format": "pnpm prettier --write ."
   },
   "keywords": [],
@@ -19,8 +19,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@hono/zod-validator": "^0.2.2",
-    "typescript": "5.6.0-beta"
+    "@hono/zod-validator": "^0.2.2"
   },
   "devDependencies": {
     "@itell/tsconfig": "workspace:^",

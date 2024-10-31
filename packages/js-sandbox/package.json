@@ -1,53 +1,53 @@
 {
-    "name": "@itell/js-sandbox",
-    "version": "0.0.1",
-    "type": "module",
-    "scripts": {
-        "build": "pnpm tsc"
+  "name": "@itell/js-sandbox",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm tsc"
+  },
+  "exports": {
+    "./provider": {
+      "types": "./src/provider.tsx",
+      "default": "./dist/provider.js"
     },
-    "exports": {
-        "./provider": {
-            "types": "./src/provider.tsx",
-            "default": "./dist/provider.js"
-        },
-        "./sandbox": {
-            "types": "./src/sandbox.tsx",
-            "default": "./dist/sandbox.js"
-        },
-        "./runner": {
-            "types": "./src/runner.tsx",
-            "default": "./dist/runner.js"
-        },
-        "./dist/style.css": "./dist/style.css"
+    "./sandbox": {
+      "types": "./src/sandbox.tsx",
+      "default": "./dist/sandbox.js"
     },
-    "keywords": [
-        "itell"
-    ],
-    "license": "MIT",
-    "devDependencies": {
-        "@itell/tsconfig": "workspace:^",
-        "@types/react": "^18.3.3",
-        "@types/react-dom": "^18.3.0",
-        "@vitejs/plugin-react": "^4.2.1",
-        "autoprefixer": "^10.4.19",
-        "monaco-editor": "^0.50.0",
-        "postcss": "^8.4.40",
-        "rollup-preserve-directives": "^1.1.1",
-        "tailwindcss": "^3.4.7",
-        "vite": "^5.4.0",
-        "vite-plugin-dts": "^2.3.0"
+    "./runner": {
+      "types": "./src/runner.tsx",
+      "default": "./dist/runner.js"
     },
-    "dependencies": {
-        "@itell/react-console-viewer": "workspace:^",
-        "@itell/ui": "workspace:^",
-        "@itell/utils": "workspace:^",
-        "@monaco-editor/react": "^4.6.0",
-        "@xstate/store": "^2.0.0",
-        "immer": "^9.0.21"
-    },
-    "peerDependencies": {
-        "lucide-react": "^0.424.0",
-        "react": "^18",
-        "react-dom": "^18"
-    }
+    "./dist/style.css": "./dist/style.css"
+  },
+  "keywords": [
+    "itell"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@itell/tsconfig": "workspace:^",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "monaco-editor": "^0.50.0",
+    "postcss": "^8.4.40",
+    "rollup-preserve-directives": "^1.1.1",
+    "tailwindcss": "^3.4.7",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^2.3.0"
+  },
+  "dependencies": {
+    "@itell/react-console-viewer": "workspace:^",
+    "@itell/ui": "workspace:^",
+    "@itell/utils": "workspace:^",
+    "@monaco-editor/react": "^4.6.0",
+    "@xstate/store": "^2.0.0",
+    "immer": "^9.0.21"
+  },
+  "peerDependencies": {
+    "lucide-react": "^0.424.0",
+    "react": "^18",
+    "react-dom": "^18"
+  }
 }
