@@ -12,8 +12,11 @@ export async function GET(req: Request): Promise<Response> {
   );
   setJoinClassCode(searchParams.get("join_class_code"));
 
-  const url = googleProvider.createAuthorizationURL(state, codeVerifier);
-  url.addScopes("openid", "profile", "email");
+  const url = googleProvider.createAuthorizationURL(state, codeVerifier, [
+    "openid",
+    "profile",
+    "email",
+  ]);
 
   return Response.redirect(url);
 }

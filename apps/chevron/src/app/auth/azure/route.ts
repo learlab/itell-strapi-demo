@@ -12,8 +12,12 @@ export async function GET(req: Request): Promise<Response> {
   );
   setJoinClassCode(searchParams.get("join_class_code"));
 
-  const url = azureProvider.createAuthorizationURL(state, codeVerifier);
-  url.addScopes("openid", "profile", "email", "user.read");
+  const url = azureProvider.createAuthorizationURL(state, codeVerifier, [
+    "openid",
+    "profile",
+    "email",
+    "user.read",
+  ]);
   url.searchParams.set("nonce", "_");
 
   return Response.redirect(url);

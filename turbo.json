@@ -14,6 +14,7 @@
         "SENTRY_AUTH_TOKEN",
         "ADMINS",
         "ITELL_API_KEY",
+        "VELITE_STARTED",
         "NEXT_PUBLIC_API_URL",
         "NEXT_PUBLIC_HOST"
       ],

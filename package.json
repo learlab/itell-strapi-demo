@@ -11,9 +11,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "build:core": "turbo run build --filter @itell/core",
-    "build:ui": "turbo run build --filter @itell/ui",
-    "build:tailwind": "turbo run build --filter @itell/tailwind",
+    "build:packages": "turbo run build --filter={./packages/**}",
     "dev": "turbo run dev",
     "start": "turbo run start",
     "lint": "turbo run lint",

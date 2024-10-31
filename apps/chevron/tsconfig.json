@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2017",
     "types": ["react-dom/experimental"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -45,7 +45,8 @@
     ".next/types/**/*.ts",
     "src/env.mjs",
     "tailwind.config.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "next.config.mjs"
   ],
   "exclude": ["node_modules", "scripts"]
 }
