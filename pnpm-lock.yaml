@@ -1074,6 +1074,10 @@ importers:
         version: link:../../toolings/typescript
 
   packages/constants:
+    dependencies:
+      tsup:
+        specifier: ^8.2.4
+        version: 8.3.5(@microsoft/api-extractor@7.47.11(@types/node@22.8.6))(@swc/core@1.7.42(@swc/helpers@0.5.13))(jiti@2.3.3)(postcss@8.4.47)(tsx@4.19.2)(typescript@5.6.0-beta)(yaml@2.6.0)
     devDependencies:
       '@itell/tsconfig':
         specifier: workspace:^
@@ -1124,6 +1128,15 @@ importers:
       react-dom:
         specifier: ^16.8 || ^17.0 || ^18.0 || ^19.0
         version: 18.3.1(react@18.3.1)
+      vite:
+        specifier: ^5.4.0
+        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0)
+      vite-plugin-dts:
+        specifier: ^2.3.0
+        version: 2.3.0(@types/node@22.8.6)(rollup@4.24.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
+      vite-plugin-node-polyfills:
+        specifier: ^0.11.3
+        version: 0.11.3(rollup@4.24.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
       zod:
         specifier: ^3
         version: 3.23.8
@@ -1152,15 +1165,6 @@ importers:
       rollup-preserve-directives:
         specifier: ^1.1.1
         version: 1.1.2(rollup@4.24.3)
-      vite:
-        specifier: ^5.4.0
-        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0)
-      vite-plugin-dts:
-        specifier: ^2.3.0
-        version: 2.3.0(@types/node@22.8.6)(rollup@4.24.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
-      vite-plugin-node-polyfills:
-        specifier: ^0.11.3
-        version: 0.11.3(rollup@4.24.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
       vitest:
         specifier: ^0.31.4
         version: 0.31.4(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0)
@@ -1561,6 +1565,15 @@ importers:
       use-immer:
         specifier: ^0.9.0
         version: 0.9.0(immer@9.0.21)(react@18.3.1)
+      vite:
+        specifier: ^5.4.0
+        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0)
+      vite-plugin-dts:
+        specifier: ^2.3.0
+        version: 2.3.0(@types/node@22.8.6)(rollup@4.24.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
+      vitest:
+        specifier: ^0.31.4
+        version: 0.31.4(@vitest/ui@0.33.0)(happy-dom@10.11.2)(lightningcss@1.27.0)(terser@5.36.0)
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^5.17.0
@@ -1598,15 +1611,6 @@ importers:
       rollup-preserve-directives:
         specifier: ^1.1.1
         version: 1.1.2(rollup@4.24.3)
-      vite:
-        specifier: ^5.4.0
-        version: 5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0)
-      vite-plugin-dts:
-        specifier: ^2.3.0
-        version: 2.3.0(@types/node@22.8.6)(rollup@4.24.3)(vite@5.4.10(@types/node@22.8.6)(lightningcss@1.27.0)(terser@5.36.0))
-      vitest:
-        specifier: ^0.31.4
-        version: 0.31.4(@vitest/ui@0.33.0)(happy-dom@10.11.2)(lightningcss@1.27.0)(terser@5.36.0)
 
   packages/utils:
     dependencies:
