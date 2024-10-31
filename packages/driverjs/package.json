@@ -31,7 +31,6 @@
     "@itell/tsconfig": "workspace:^",
     "@types/jsdom": "^21.1.2",
     "@vitest/coverage-c8": "^0.32.0",
-    "dts-bundle-generator": "^8.0.1",
     "postcss": "^8.4.29",
     "postcss-scss": "^4.0.7",
     "prettier": "^3.0.3"
@@ -42,6 +41,7 @@
   "dependencies": {
     "@itell/constants": "workspace:^",
     "vite": "^4.4.9",
+    "dts-bundle-generator": "^8.0.1",
     "typescript": "5.6.0-beta"
   }
 }
