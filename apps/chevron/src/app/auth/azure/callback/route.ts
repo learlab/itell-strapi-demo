@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
+import { decodeIdToken } from "arctic";
 import { generateIdFromEntropySize } from "lucia";
 
 import { createUserAction, getUserByProviderAction } from "@/actions/user";
@@ -50,7 +50,7 @@ export const GET = async (req: Request) => {
       storedCodeVerifier
     );
     const idToken = tokens.idToken();
-    const azureUser = jwtDecode<AzureUser>(idToken);
+    const azureUser = decodeIdToken(idToken) as AzureUser;
 
     // if (azureUser.email) {
     //   const emailLower = azureUser.email.toLocaleLowerCase();

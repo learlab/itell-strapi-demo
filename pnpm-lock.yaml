@@ -84,7 +84,7 @@ importers:
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+        version: 7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -304,7 +304,7 @@ importers:
         version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.119.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
+        version: 7.119.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -347,9 +347,6 @@ importers:
       immer:
         specifier: ^10.1.1
         version: 10.1.1
-      jwt-decode:
-        specifier: ^4.0.0
-        version: 4.0.0
       lucia:
         specifier: ^3.2.2
         version: 3.2.2
@@ -19625,6 +19622,29 @@ snapshots:
       - encoding
       - supports-color
 
+  '@sentry/nextjs@7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
+    dependencies:
+      '@rollup/plugin-commonjs': 24.0.0(rollup@2.79.2)
+      '@sentry/core': 7.119.2
+      '@sentry/integrations': 7.119.2
+      '@sentry/node': 7.119.2
+      '@sentry/react': 7.119.2(react@18.3.1)
+      '@sentry/types': 7.119.2
+      '@sentry/utils': 7.119.2
+      '@sentry/vercel-edge': 7.119.2
+      '@sentry/webpack-plugin': 1.21.0
+      chalk: 3.0.0
+      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      resolve: 1.22.8
+      rollup: 2.79.2
+      stacktrace-parser: 0.1.10
+    optionalDependencies:
+      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12)
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
   '@sentry/nextjs@7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
     dependencies:
       '@rollup/plugin-commonjs': 24.0.0(rollup@2.79.2)
@@ -19648,7 +19668,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/nextjs@7.119.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
+  '@sentry/nextjs@7.119.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
     dependencies:
       '@rollup/plugin-commonjs': 24.0.0(rollup@2.79.2)
       '@sentry/core': 7.119.2
@@ -19666,7 +19686,7 @@ snapshots:
       rollup: 2.79.2
       stacktrace-parser: 0.1.10
     optionalDependencies:
-      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12)
+      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0)
     transitivePeerDependencies:
       - encoding
       - supports-color
