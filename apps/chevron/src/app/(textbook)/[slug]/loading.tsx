@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { cookies, headers, type UnsafeUnwrappedHeaders } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
@@ -13,7 +13,8 @@ import { PageContentWrapper } from "./page-content-wrapper";
 import { TextbookWrapper } from "./textbook-wrapper";
 
 const getUserPageSlug = cache(async () => {
-  const sessionId = (await cookies()).get(lucia.sessionCookieName)?.value ?? null;
+  const sessionId =
+    (await cookies()).get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
     return null;
   }
@@ -21,8 +22,8 @@ const getUserPageSlug = cache(async () => {
   return session.user?.pageSlug ?? null;
 });
 
-const getCurrentPage = () => {
-  const headersList = (headers() as unknown as UnsafeUnwrappedHeaders);
+const getCurrentPage = async () => {
+  const headersList = await headers();
   const pathname = headersList.get("x-pathname");
   if (pathname === null) {
     return null;
@@ -37,7 +38,7 @@ const getCurrentPage = () => {
 };
 
 export default async function Loading() {
-  const page = getCurrentPage();
+  const page = await getCurrentPage();
   if (!page) {
     return notFound();
   }

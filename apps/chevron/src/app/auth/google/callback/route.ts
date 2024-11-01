@@ -40,8 +40,8 @@ export async function GET(req: Request) {
     state: storedState,
     codeVerifier: storedCodeVerifier,
     referer,
-  } = readGoogleOAuthState();
-  const join_class_code = readJoinClassCode();
+  } = await readGoogleOAuthState();
+  const join_class_code = await readJoinClassCode();
 
   if (
     !code ||

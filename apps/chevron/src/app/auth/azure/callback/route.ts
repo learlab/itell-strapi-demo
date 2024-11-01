@@ -27,12 +27,12 @@ export const GET = async (req: Request) => {
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
 
-  const join_class_code = readJoinClassCode();
+  const join_class_code = await readJoinClassCode();
   const {
     state: storedState,
     codeVerifier: storedCodeVerifier,
     referer,
-  } = readAzureOAuthState();
+  } = await readAzureOAuthState();
 
   if (
     !code ||
