@@ -84,7 +84,7 @@ importers:
         version: 4.6.0(monaco-editor@0.50.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
+        version: 7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -135,7 +135,7 @@ importers:
         version: 0.50.0
       next:
         specifier: 14.2.5
-        version: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.3(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.0-beta)(zod@3.23.8)
@@ -868,7 +868,7 @@ importers:
         version: link:../../packages/utils
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.0.7
-        version: 1.1.0(drizzle-orm@0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(lucia@3.2.2)
+        version: 1.1.0(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(lucia@3.2.2)
       '@next/eslint-plugin-next':
         specifier: ^14.2.13
         version: 14.2.16
@@ -877,7 +877,7 @@ importers:
         version: 14.2.16(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+        version: 7.119.2(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -894,17 +894,17 @@ importers:
         specifier: ^0.2.0
         version: 0.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(types-react@19.0.0-rc.1)
       drizzle-orm:
-        specifier: ^0.30.10
-        version: 0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1)
+        specifier: ^0.36.0
+        version: 0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(zod@3.23.8)
       es-toolkit:
         specifier: ^1.13.1
         version: 1.26.1
       framer-motion:
-        specifier: ^10.16.4
-        version: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 12.0.0-alpha.0
+        version: 12.0.0-alpha.0(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       geist:
         specifier: ^1.0.0
         version: 1.3.1(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -921,14 +921,14 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       lucia:
-        specifier: ^3.2.0
+        specifier: ^3.2.2
         version: 3.2.2
       lucide-react:
         specifier: ^0.426.0
         version: 0.426.0(react@18.3.1)
       next:
         specifier: 14.2.5
-        version: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.3(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.0-beta)(zod@3.23.8)
@@ -1582,7 +1582,7 @@ importers:
         version: 10.11.2
       next:
         specifier: ^14.2.5
-        version: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rollup-plugin-visualizer:
         specifier: ^5.12.0
         version: 5.12.0(rollup@4.24.3)
@@ -9284,6 +9284,20 @@ packages:
       react: ^18.0.0
       react-dom: ^18.0.0
     peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
+  framer-motion@12.0.0-alpha.0:
+    resolution: {integrity: sha512-rw0+O0kqsSFPrYrSnHXrZTGAKteCj9D9HzDdHjJR8GyPWADLoQstgUYeSvLxrO3P+HlBfQtmu/SOsM9eLhKXtQ==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
       react:
         optional: true
       react-dom:
@@ -17556,6 +17570,11 @@ snapshots:
       drizzle-orm: 0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1)
       lucia: 3.2.2
 
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(lucia@3.2.2)':
+    dependencies:
+      drizzle-orm: 0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1)
+      lucia: 3.2.2
+
   '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@19.0.0-rc-02c0e824-20241028)(types-react@19.0.0-rc.1))(lucia@3.2.2)':
     dependencies:
       drizzle-orm: 0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@19.0.0-rc-02c0e824-20241028)(types-react@19.0.0-rc.1)
@@ -17838,7 +17857,7 @@ snapshots:
 
   '@next/third-parties@14.2.16(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       third-party-capital: 1.0.20
 
@@ -19861,7 +19880,7 @@ snapshots:
       '@sentry/vercel-edge': 7.119.2
       '@sentry/webpack-plugin': 1.21.0
       chalk: 3.0.0
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       resolve: 1.22.8
       rollup: 2.79.2
@@ -19884,7 +19903,7 @@ snapshots:
       '@sentry/vercel-edge': 7.119.2
       '@sentry/webpack-plugin': 1.21.0
       chalk: 3.0.0
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       resolve: 1.22.8
       rollup: 2.79.2
@@ -22023,7 +22042,7 @@ snapshots:
 
   aria-hidden@1.2.4:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   aria-query@5.1.3:
     dependencies:
@@ -23561,6 +23580,16 @@ snapshots:
       postgres: 3.4.5
       react: 18.3.1
 
+  drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1):
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.0
+      '@types/pg': 8.11.10
+      '@types/react': types-react@19.0.0-rc.1
+      knex: 3.1.0(pg@8.13.1)
+      pg: 8.13.1
+      postgres: 3.4.5
+      react: 18.3.1
+
   drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@19.0.0-rc-02c0e824-20241028)(types-react@19.0.0-rc.1):
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
@@ -23574,6 +23603,11 @@ snapshots:
   drizzle-zod@0.5.1(drizzle-orm@0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(zod@3.23.8):
     dependencies:
       drizzle-orm: 0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1)
+      zod: 3.23.8
+
+  drizzle-zod@0.5.1(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(zod@3.23.8):
+    dependencies:
+      drizzle-orm: 0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1)
       zod: 3.23.8
 
   drizzle-zod@0.5.1(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@19.0.0-rc-02c0e824-20241028)(types-react@19.0.0-rc.1))(zod@3.23.8):
@@ -24717,6 +24751,14 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  framer-motion@12.0.0-alpha.0(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      tslib: 2.8.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 1.3.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   framer-motion@12.0.0-alpha.1(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       tslib: 2.6.3
@@ -24805,7 +24847,7 @@ snapshots:
 
   geist@1.3.1(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
     dependencies:
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   geist@1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)):
     dependencies:
@@ -27986,7 +28028,7 @@ snapshots:
 
   next-safe-navigation@0.3.3(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.0-beta)(zod@3.23.8):
     dependencies:
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typescript: 5.6.0-beta
       zod: 3.23.8
 
@@ -28010,7 +28052,7 @@ snapshots:
 
   next-themes@0.2.1(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -28038,7 +28080,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.26.0)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.3
       '@next/swc-darwin-x64': 14.2.3
@@ -28054,7 +28096,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 14.2.5
       '@swc/helpers': 0.5.5
@@ -28064,7 +28106,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.26.0)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.5
       '@next/swc-darwin-x64': 14.2.5
@@ -28136,7 +28178,7 @@ snapshots:
   nextjs-better-unstable-cache@1.1.0(next@14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
     dependencies:
       chalk: 4.1.2
-      next: 14.2.5(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
   nextjs-better-unstable-cache@1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028):
@@ -30634,10 +30676,12 @@ snapshots:
       stylis: 4.3.2
       tslib: 2.6.2
 
-  styled-jsx@5.1.1(react@18.3.1):
+  styled-jsx@5.1.1(@babel/core@7.26.0)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
+    optionalDependencies:
+      '@babel/core': 7.26.0
 
   styled-jsx@5.1.6(@babel/core@7.26.0)(react@19.0.0-rc-02c0e824-20241028):
     dependencies:

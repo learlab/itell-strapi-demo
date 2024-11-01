@@ -51,7 +51,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     return getPageQuestions(page);
   }, [page]);
 
-  const questionStoreRef = useRef<QuestionStore>();
+  const questionStoreRef = useRef<QuestionStore>(null);
   if (!questionStoreRef.current) {
     questionStoreRef.current = createQuestionStore(
       {
@@ -63,19 +63,19 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     );
   }
 
-  const chatStoreRef = useRef<ChatStore>();
+  const chatStoreRef = useRef<ChatStore>(null);
   if (!chatStoreRef.current) {
     chatStoreRef.current = createChatStore();
   }
 
-  const summaryStoreRef = useRef<SummaryStore>();
+  const summaryStoreRef = useRef<SummaryStore>(null);
   if (!summaryStoreRef.current) {
     summaryStoreRef.current = createSummaryStore({
       pageStatus,
     });
   }
 
-  const quizStoreRef = useRef<QuizStore>();
+  const quizStoreRef = useRef<QuizStore>(null);
   if (!quizStoreRef.current) {
     quizStoreRef.current = createQuizStore({
       finished: quizFinished,

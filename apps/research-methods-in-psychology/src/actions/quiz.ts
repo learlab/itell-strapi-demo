@@ -48,7 +48,7 @@ const analyzeClassQuizHandler = memoize(
   async (ids: string[], _: string) => {
     const cte = db.$with("class_quiz").as(
       db
-        .select({
+        .selectDistinctOn([events.userId, events.pageSlug], {
           userId: events.userId,
           name: users.name,
           pageSlug: events.pageSlug,
@@ -70,7 +70,7 @@ const analyzeClassQuizHandler = memoize(
       .with(cte)
       // if a student answers the same quiz multiple times
       // only pick the last submission
-      .selectDistinctOn([cte.userId, cte.pageSlug], {
+      .select({
         userId: cte.userId,
         name: cte.name,
         pageSlug: cte.pageSlug,

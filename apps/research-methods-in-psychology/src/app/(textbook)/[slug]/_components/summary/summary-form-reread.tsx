@@ -61,7 +61,7 @@ type Props = {
 
 export function SummaryFormReread({ user, page, pageStatus }: Props) {
   const pageSlug = page.slug;
-  const prevInput = useRef<string | undefined>();
+  const prevInput = useRef<string | undefined>(undefined);
   const quizStore = useQuizStore();
   const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
   const [finished, setFinished] = useState(pageStatus.unlocked);
