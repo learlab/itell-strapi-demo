@@ -26,9 +26,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    reactCompiler: true,
-  },
+  experimental: {},
   eslint: {
     ignoreDuringBuilds: true,
   },
