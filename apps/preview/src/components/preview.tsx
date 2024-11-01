@@ -19,7 +19,7 @@ type Props = {
 };
 
 export const Preview = ({ html, className }: Props) => {
-	const worker = useRef<Remote<WorkerApi>>();
+	const worker = useRef<Remote<WorkerApi>>(undefined);
 	const [_pending, setPending] = useState(false);
 	const [pending] = useDebounce(_pending, 500);
 	const [workerReady, setWorkerReady] = useState(false);
