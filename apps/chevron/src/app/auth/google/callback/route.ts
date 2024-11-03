@@ -59,7 +59,6 @@ export async function GET(req: Request) {
       code,
       storedCodeVerifier
     );
-    console.log("tokens", tokens);
     const accessToken = tokens.accessToken();
     const googleUserResponse = await fetch(
       "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
@@ -70,13 +69,13 @@ export async function GET(req: Request) {
         },
       }
     );
-    console.log("googleUserResponse", googleUserResponse);
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
-
+    console.log("google user", googleUser);
     let [user, err] = await getUserByProviderAction({
       provider_id: "google",
       provider_user_id: googleUser.id,
     });
+    console.log("err from getUserByProviderAction", err);
     if (err) {
       throw new Error(err.message);
     }
@@ -95,6 +94,7 @@ export async function GET(req: Request) {
         provider_id: "google",
         provider_user_id: googleUser.id,
       });
+      console.log("err from createUserAction", err);
       if (err) {
         throw new Error(err.message);
       }
