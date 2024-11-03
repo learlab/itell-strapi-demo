@@ -7,7 +7,6 @@ const size = {
   width: 1200,
   height: 630,
 };
-export const runtime = "edge";
 
 export const GET = async (req: Request) => {
   const url = new URL(req.url);
