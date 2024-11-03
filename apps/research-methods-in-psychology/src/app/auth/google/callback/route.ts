@@ -58,7 +58,6 @@ export async function GET(req: Request) {
       code,
       storedCodeVerifier
     );
-    console.log("tokens", tokens);
     const accessToken = tokens.accessToken();
     const googleUserResponse = await fetch(
       "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
@@ -69,7 +68,6 @@ export async function GET(req: Request) {
         },
       }
     );
-    console.log("googleUserResponse", googleUserResponse);
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
 
     let [user, err] = await getUserByProviderAction({
