@@ -10,40 +10,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@itell/ui/dropdown";
-import { type Column, type ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, LinkIcon, MoreHorizontal } from "lucide-react";
+import { type ColumnDef } from "@tanstack/react-table";
+import { LinkIcon, MoreHorizontal } from "lucide-react";
 
 import { type User } from "@/drizzle/schema";
+import { ColumnWithSorting } from "./table-utils";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type StudentData = Pick<User, "id" | "email" | "name" | "createdAt"> & {
-  progress: { index: number; text: string };
+  progress: string;
+  pageIndex: number;
+  pageTitle: string;
   summaryCount: number;
 };
-
-function ColumnWithSorting({
-  column,
-  text,
-}: {
-  column: Column<StudentData>;
-  text: string;
-}) {
-  return (
-    <Button
-      variant="ghost"
-      onClick={() => {
-        column.toggleSorting(column.getIsSorted() === "asc");
-      }}
-      className="px-1"
-    >
-      <span className="flex items-center gap-2">
-        <ArrowUpDown className="size-4" />
-        {text}
-      </span>
-    </Button>
-  );
-}
 
 export const columns: ColumnDef<StudentData>[] = [
   {
@@ -71,14 +51,8 @@ export const columns: ColumnDef<StudentData>[] = [
     id: "Progress",
     accessorKey: "progress",
     header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
-    sortingFn: (rowA, rowB, columnId) => {
-      return rowA.original.progress.index > rowB.original.progress.index
-        ? 1
-        : -1;
-    },
-    cell: ({ row }) => {
-      const progress = row.original.progress;
-      return progress.text;
+    sortingFn: (rowA, rowB) => {
+      return rowA.original.pageIndex > rowB.original.pageIndex ? 1 : -1;
     },
   },
   {

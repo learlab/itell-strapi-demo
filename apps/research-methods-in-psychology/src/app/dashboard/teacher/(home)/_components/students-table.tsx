@@ -12,6 +12,7 @@ import { Input } from "@itell/ui/input";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -37,11 +38,15 @@ import type {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  caption?: string;
+  filename?: string;
 }
 
 export function StudentsTable<TData, TValue>({
   columns,
   data,
+  caption,
+  filename,
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -76,7 +81,7 @@ export function StudentsTable<TData, TValue>({
     (pagination.pageIndex + 1) * pagination.pageSize,
     numRows
   );
-
+  table.getFilteredRowModel().rows;
   return (
     <div>
       <div className="flex items-center py-4">
@@ -114,9 +119,22 @@ export function StudentsTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <Button
+          variant="outline"
+          className="ml-2"
+          onClick={() =>
+            exportCsv(
+              table.getFilteredRowModel().rows.map((row) => row.original),
+              filename
+            )
+          }
+        >
+          Export
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
+          {caption && <TableCaption className="my-4">{caption}</TableCaption>}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -196,3 +214,19 @@ export function StudentsTable<TData, TValue>({
     </div>
   );
 }
+
+export const exportCsv = async (rows: any[], filename?: string) => {
+  const { mkConfig, generateCsv, download } = await import("export-to-csv");
+
+  for (const row of rows) {
+    for (const key in row) {
+      if (typeof row[key] === "object") {
+        row[key] = JSON.stringify(row[key]);
+      }
+    }
+  }
+  const csvConfig = mkConfig({ useKeysAsHeaders: true, filename });
+  const csv = generateCsv(csvConfig)(rows);
+
+  download(csvConfig)(csv);
+};

@@ -14,7 +14,8 @@ type Props = {
   searchParams?: unknown;
 };
 
-export default async function ({ searchParams }: Props) {
+export default async function(props: Props) {
+  const searchParams = await props.searchParams;
   const { user } = await getSession();
   if (!user) {
     return redirectWithSearchParams("auth", searchParams);

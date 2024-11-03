@@ -40,11 +40,11 @@ export async function UserDetails({ classId, pageSlug }: Props) {
   ]);
 
   if (err1) {
-    throw new Error(err1.message);
+    throw new Error(err1.message, { cause: err1 });
   }
 
   if (err2) {
-    throw new Error(err2.message);
+    throw new Error(err2.message, { cause: err2 });
   }
 
   const pageIndex = getPageData(pageSlug)?.order;

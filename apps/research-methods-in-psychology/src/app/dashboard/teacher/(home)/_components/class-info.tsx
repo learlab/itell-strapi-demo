@@ -17,14 +17,20 @@ import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
 import { TEXTBOOK_SLUG } from "@/config/site";
 import { getPageData } from "@/lib/pages/pages.client";
-import { allPagesSorted } from "@/lib/pages/pages.server";
+import { allPagesSorted, firstPage } from "@/lib/pages/pages.server";
 import { ClassBadges } from "./class-badges";
+import { ProgressChart } from "./progress-chart";
 import { ClassQuizTable } from "./quiz-table";
 import { columns } from "./student-columns";
 import { StudentsTable } from "./students-table";
 import type { StudentData } from "./student-columns";
 
-const numChapters = allPagesSorted.length;
+const pagesNum = allPagesSorted.length;
+// divide 0 - pagesNum into 4 buckets
+const buckets: [number, number][] = Array.from({ length: 4 }, (_, i) => [
+  Math.round(i * (pagesNum / 4)),
+  i === 3 ? pagesNum : Math.round((i + 1) * (pagesNum / 4)),
+]);
 
 export async function ClassInfo({
   classId,
@@ -59,24 +65,44 @@ export async function ClassInfo({
 
   const studentData: StudentData[] = students.map((s) => {
     const page = getPageData(s.pageSlug);
-    const progress = page
-      ? {
-          index: page.order,
-          text: `${String(Math.round(((page.order + 1) / numChapters) * 100))}%`,
-        }
-      : { index: 0, text: "0%" };
 
     return {
       id: s.id,
       name: s.name,
       email: s.email,
       createdAt: new Date(s.createdAt),
-      progress,
+      progress: page
+        ? `${String(Math.round(((page.order + 1) / pagesNum) * 100))}%`
+        : "0%",
+      pageIndex: page?.order ?? 0,
+      pageTitle: page?.title ?? firstPage.title,
       summaryCount: s.summaryCount,
     };
   });
+  const studentsByProgress = studentData.reduce(
+    (acc, student) => {
+      const bucket = buckets.find(
+        ([start, end]) => student.pageIndex >= start && student.pageIndex < end
+      );
 
-  const classIndex = median(studentData.map((s) => s.progress.index)) ?? 0;
+      if (bucket) {
+        const range = `${bucket[0]} - ${bucket[1]}`;
+        acc[range] = acc[range] || 0;
+        acc[range]++;
+      }
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+  const progressChartData = buckets.map(([start, end]) => {
+    const range = `${start} - ${end}`;
+    return {
+      range,
+      count: studentsByProgress[range] ?? 0,
+    };
+  });
+
+  const classIndex = median(studentData.map((s) => s.pageIndex)) ?? 0;
   const classProgress = ((classIndex + 1) / allPagesSorted.length) * 100;
 
   return (
@@ -110,14 +136,12 @@ export async function ClassInfo({
           </Suspense>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <h3 className="col-span-1 text-lg font-medium">Median Progress</h3>
-          <div className="col-span-1 flex items-center gap-4">
-            <Progress value={classProgress} />
-            <p className="shrink-0 text-muted-foreground">
-              {classProgress.toFixed(2)}% completed
-            </p>
-          </div>
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Progress Distribution</h3>
+          <p className="text-muted-foreground">
+            Median progress: {classProgress.toFixed(2)}%
+          </p>
+          <ProgressChart data={progressChartData} />
         </div>
 
         <div className="space-y-4">
@@ -137,7 +161,12 @@ export async function ClassInfo({
 
         <div className="space-y-4">
           <h3 className="mb-4 text-lg font-medium">Student Statistics</h3>
-          <StudentsTable columns={columns} data={studentData} />
+          <StudentsTable
+            columns={columns}
+            data={studentData}
+            caption="All enrolled students"
+            filename="Student Stats"
+          />
         </div>
       </CardContent>
     </Card>

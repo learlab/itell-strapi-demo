@@ -22,11 +22,12 @@ const ErrorDict: Record<string, string> = {
   wrong_email: "Please sign in with your school email (ending with 'mga.edu').",
 };
 
-export const generateMetadata = ({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}): Metadata => {
+export const generateMetadata = async (
+  props: {
+    searchParams: Promise<Record<string, string | string[] | undefined>>;
+  }
+): Promise<Metadata> => {
+  const searchParams = await props.searchParams;
   const fromDashboard = searchParams.from_dashboard === "true";
   if (fromDashboard) {
     const title = "Dashboard";
@@ -68,7 +69,8 @@ export const generateMetadata = ({
   };
 };
 
-export default async function ({ searchParams }: PageProps) {
+export default async function(props: PageProps) {
+  const searchParams = await props.searchParams;
   const { error, join_class_code } =
     routes.auth.$parseSearchParams(searchParams);
   const { user } = await getSession();

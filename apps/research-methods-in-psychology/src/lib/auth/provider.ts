@@ -33,56 +33,65 @@ const cookieOptions: Partial<ResponseCookie> = {
   sameSite: "lax",
 };
 
-export const setJoinClassCode = (join_class_code: string | null) => {
+export const setJoinClassCode = async (join_class_code: string | null) => {
   if (join_class_code !== null) {
-    cookies().set("join_class_code", join_class_code);
+    (await cookies()).set("join_class_code", join_class_code);
   }
 };
 
-export const readJoinClassCode = () => {
-  const join_class_code = cookies().get("join_class_code")?.value ?? null;
-  cookies().delete("join_class_code");
+export const readJoinClassCode = async () => {
+  const join_class_code =
+    (await cookies()).get("join_class_code")?.value ?? null;
+  (await cookies()).delete("join_class_code");
 
   return join_class_code;
 };
 
-export const setAzureOAuthState = (referer?: string) => {
+export const setAzureOAuthState = async (referer?: string) => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
-  cookies().set("azure_oauth_state", state, cookieOptions);
-  cookies().set("azure_oauth_code_verifier", codeVerifier, cookieOptions);
+  (await cookies()).set("azure_oauth_state", state, cookieOptions);
+  (await cookies()).set(
+    "azure_oauth_code_verifier",
+    codeVerifier,
+    cookieOptions
+  );
   if (referer) {
-    cookies().set("azure_oauth_referer", referer, cookieOptions);
+    (await cookies()).set("azure_oauth_referer", referer, cookieOptions);
   }
 
   return { state, codeVerifier };
 };
 
-export const readAzureOAuthState = () => {
-  const state = cookies().get("azure_oauth_state")?.value ?? null;
+export const readAzureOAuthState = async () => {
+  const state = (await cookies()).get("azure_oauth_state")?.value ?? null;
   const codeVerifier =
-    cookies().get("azure_oauth_code_verifier")?.value ?? null;
-  const referer = cookies().get("azure_oauth_referer")?.value ?? null;
+    (await cookies()).get("azure_oauth_code_verifier")?.value ?? null;
+  const referer = (await cookies()).get("azure_oauth_referer")?.value ?? null;
 
   return { state, codeVerifier, referer };
 };
 
-export const setGoogleOAuthState = (referer?: string) => {
+export const setGoogleOAuthState = async (referer?: string) => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
-  cookies().set("google_oauth_state", state, cookieOptions);
-  cookies().set("google_oauth_code_verifier", codeVerifier, cookieOptions);
+  (await cookies()).set("google_oauth_state", state, cookieOptions);
+  (await cookies()).set(
+    "google_oauth_code_verifier",
+    codeVerifier,
+    cookieOptions
+  );
   if (referer) {
-    cookies().set("google_oauth_referer", referer, cookieOptions);
+    (await cookies()).set("google_oauth_referer", referer, cookieOptions);
   }
 
   return { state, codeVerifier };
 };
 
-export const readGoogleOAuthState = () => {
-  const state = cookies().get("google_oauth_state")?.value ?? null;
+export const readGoogleOAuthState = async () => {
+  const state = (await cookies()).get("google_oauth_state")?.value ?? null;
   const codeVerifier =
-    cookies().get("google_oauth_code_verifier")?.value ?? null;
-  const referer = cookies().get("google_oauth_referer")?.value ?? null;
+    (await cookies()).get("google_oauth_code_verifier")?.value ?? null;
+  const referer = (await cookies()).get("google_oauth_referer")?.value ?? null;
   return { state, codeVerifier, referer };
 };

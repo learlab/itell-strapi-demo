@@ -158,7 +158,8 @@ export const getSummariesClassHandler = memoize(
   },
   {
     persist: false,
-    revalidateTags: (classId, pageSlug) => [
+    // @ts-expect-error make server action check happy
+    revalidateTags: async (classId, pageSlug) => [
       "get-summaries-class",
       classId,
       pageSlug ?? "",
@@ -192,7 +193,8 @@ export const getSummariesHandler = memoize(
   },
   {
     persist: false,
-    revalidateTags: (userId, summaryId) => [
+    // @ts-expect-error make server action check happy
+    revalidateTags: async (userId, summaryId) => [
       "get-summaries",
       userId,
       String(summaryId),

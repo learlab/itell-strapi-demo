@@ -40,8 +40,8 @@ export async function GET(req: Request) {
     state: storedState,
     codeVerifier: storedCodeVerifier,
     referer,
-  } = readGoogleOAuthState();
-  const join_class_code = readJoinClassCode();
+  } = await readGoogleOAuthState();
+  const join_class_code = await readJoinClassCode();
 
   if (
     !code ||
@@ -54,6 +54,7 @@ export async function GET(req: Request) {
   }
 
   try {
+    console.log("validating google oauth code");
     const tokens = await googleProvider.validateAuthorizationCode(
       code,
       storedCodeVerifier
@@ -69,13 +70,12 @@ export async function GET(req: Request) {
       }
     );
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
-
     let [user, err] = await getUserByProviderAction({
       provider_id: "google",
       provider_user_id: googleUser.id,
     });
     if (err) {
-      throw new Error(err.message);
+      throw new Error(err.message, { cause: err });
     }
 
     if (!user) {
@@ -92,8 +92,9 @@ export async function GET(req: Request) {
         provider_id: "google",
         provider_user_id: googleUser.id,
       });
+      console.log("err from createUserAction", err);
       if (err) {
-        throw new Error(err.message);
+        throw new Error(err.message, { cause: err });
       }
 
       user = newUser;
@@ -101,7 +102,7 @@ export async function GET(req: Request) {
 
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes

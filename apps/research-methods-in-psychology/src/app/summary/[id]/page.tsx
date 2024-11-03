@@ -12,12 +12,13 @@ import { getSession } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default async function ({ params }: PageProps) {
+export default async function(props: PageProps) {
+  const params = await props.params;
   const summaryId = Number(params.id);
   const { user } = await getSession();
   if (!user) {

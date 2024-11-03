@@ -9,7 +9,8 @@ import { firstPage } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { PageQuiz } from "../_components/page-quiz";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const { slug } = params;
 
   const page = getPageData(slug);

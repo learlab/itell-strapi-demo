@@ -10,10 +10,10 @@ import { lucia } from "@/lib/auth/lucia";
 import { getPage } from "@/lib/pages/pages.server";
 
 export default async function () {
-  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  const sessionId = (await cookies()).get(lucia.sessionCookieName)?.value ?? null;
   const result = sessionId ? await lucia.validateSession(sessionId) : null;
   const userPageSlug = result?.user?.pageSlug ?? null;
-  const headersList = headers();
+  const headersList = await headers();
   const pathname = headersList.get("x-pathname");
   let pageSlug: string | null = null;
   if (pathname !== null) {

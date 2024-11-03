@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
+import { decodeIdToken } from "arctic";
 import { generateIdFromEntropySize } from "lucia";
 
 import { createUserAction, getUserByProviderAction } from "@/actions/user";
@@ -27,12 +27,12 @@ export const GET = async (req: Request) => {
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
 
-  const join_class_code = readJoinClassCode();
+  const join_class_code = await readJoinClassCode();
   const {
     state: storedState,
     codeVerifier: storedCodeVerifier,
     referer,
-  } = readAzureOAuthState();
+  } = await readAzureOAuthState();
 
   if (
     !code ||
@@ -50,22 +50,22 @@ export const GET = async (req: Request) => {
       storedCodeVerifier
     );
     const idToken = tokens.idToken();
-    const azureUser = jwtDecode<AzureUser>(idToken);
+    const azureUser = decodeIdToken(idToken) as AzureUser;
 
-    if (azureUser.email) {
-      const emailLower = azureUser.email.toLocaleLowerCase();
-      if (
-        !emailLower.endsWith("vanderbilt.edu") &&
-        !emailLower.endsWith("mga.edu")
-      ) {
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: "/auth?error=wrong_email",
-          },
-        });
-      }
-    }
+    // if (azureUser.email) {
+    //   const emailLower = azureUser.email.toLocaleLowerCase();
+    //   if (
+    //     !emailLower.endsWith("vanderbilt.edu") &&
+    //     !emailLower.endsWith("mga.edu")
+    //   ) {
+    //     return new Response(null, {
+    //       status: 302,
+    //       headers: {
+    //         Location: "/auth?error=wrong_email",
+    //       },
+    //     });
+    //   }
+    // }
 
     let [user, err] = await getUserByProviderAction({
       provider_id: "azure",
@@ -97,7 +97,7 @@ export const GET = async (req: Request) => {
 
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes

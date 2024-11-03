@@ -38,11 +38,11 @@ export async function ReadingTime({ params, name }: Props) {
   ]);
 
   if (err1) {
-    throw new Error(err1.message);
+    throw new Error(err1.message, { cause: err1 });
   }
 
   if (err2) {
-    throw new Error(err2.message);
+    throw new Error(err2.message, { cause: err2 });
   }
 
   const { totalViewTime, chartData } = getReadingTimeChartData(
@@ -78,7 +78,7 @@ export async function ReadingTime({ params, name }: Props) {
         </CardTitle>
         <CardDescription>
           {name ? name : "You"} spent {Math.round(totalViewTime / 60)} minutes
-          reading the textbook, wrote
+          reading the textbook, wrote{" "}
           <Link className="font-semibold underline" href="/dashboard/summaries">
             {pluralize("summary", summaryCount, true)}
           </Link>{" "}

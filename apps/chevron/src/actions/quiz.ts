@@ -46,38 +46,25 @@ export const analyzeClassQuizAction = authedProcedure
 
 const analyzeClassQuizHandler = memoize(
   async (ids: string[], _: string) => {
-    const cte = db.$with("class_quiz").as(
-      db
-        .select({
-          userId: events.userId,
-          name: users.name,
-          pageSlug: events.pageSlug,
-          // the `answers` field has shape {answers: [[index, answer], ...]}
-          // extract into an array of answer items for each submission
-          answers: sql<
-            string[]
-          >`jsonb_array_elements(${events.data}->'answers')->1`.as("answers"),
-          createdAt: events.createdAt,
-        })
-        .from(events)
-        .leftJoin(users, eq(events.userId, users.id))
-        .where(
-          and(inArray(events.userId, ids), eq(events.type, EventType.QUIZ))
-        )
-        .orderBy(events.userId, events.pageSlug, desc(events.createdAt))
-    );
     const results = await db
-      .with(cte)
-      // if a student answers the same quiz multiple times
-      // only pick the last submission
-      .selectDistinctOn([cte.userId, cte.pageSlug], {
-        userId: cte.userId,
-        name: cte.name,
-        pageSlug: cte.pageSlug,
-        answers: sql<string[]>`jsonb_agg(${cte.answers})`.as("answers"),
+      // select distinct to only get the latest submission for each user/page
+      .selectDistinctOn([events.userId, events.pageSlug], {
+        userId: events.userId,
+        name: users.name,
+        pageSlug: events.pageSlug,
+        // the `answers` field has shape {answers: [[index, answer], ...]}
+        // extract into an array of answer items for each submission
+        answers: sql<
+          string[]
+        >`jsonb_path_query_array(${events.data},'$.answers[*][1]')`.as(
+          "answers"
+        ),
+        createdAt: events.createdAt,
       })
-      .from(cte)
-      .groupBy(cte.userId, cte.pageSlug, cte.name);
+      .from(events)
+      .leftJoin(users, eq(events.userId, users.id))
+      .where(and(inArray(events.userId, ids), eq(events.type, EventType.QUIZ)))
+      .orderBy(events.userId, events.pageSlug, desc(events.createdAt));
 
     const analyzedResults = results.map((result) => {
       const pageCorrectAnswers = correctAnswers[result.pageSlug];

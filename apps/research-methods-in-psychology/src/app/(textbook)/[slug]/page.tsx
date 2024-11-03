@@ -26,7 +26,8 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPage } from "@/lib/pages/pages.server";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const { slug } = routes.textbook.$parseParams(params);
   const { user } = await getSession();
   const page = getPage(slug);
