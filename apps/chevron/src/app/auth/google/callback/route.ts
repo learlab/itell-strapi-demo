@@ -70,12 +70,10 @@ export async function GET(req: Request) {
       }
     );
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
-    console.log("google user", googleUser);
     let [user, err] = await getUserByProviderAction({
       provider_id: "google",
       provider_user_id: googleUser.id,
     });
-    console.log("err from getUserByProviderAction", err);
     if (err) {
       throw new Error(err.message);
     }
