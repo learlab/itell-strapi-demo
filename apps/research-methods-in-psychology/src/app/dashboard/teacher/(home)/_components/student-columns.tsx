@@ -51,7 +51,7 @@ export const columns: ColumnDef<StudentData>[] = [
     id: "Progress",
     accessorKey: "progress",
     header: ({ column }) => ColumnWithSorting({ column, text: column.id }),
-    sortingFn: (rowA, rowB, columnId) => {
+    sortingFn: (rowA, rowB) => {
       return rowA.original.pageIndex > rowB.original.pageIndex ? 1 : -1;
     },
   },

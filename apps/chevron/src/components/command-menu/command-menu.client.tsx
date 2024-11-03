@@ -153,7 +153,7 @@ const config = {
   tools: [
     {
       title: "Dashboard",
-      href: "/dashboard",
+      href: "/api/dashboard",
       description: "View your learning statistics",
     },
     {

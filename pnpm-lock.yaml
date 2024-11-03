@@ -301,10 +301,10 @@ importers:
         version: 15.0.2
       '@next/third-parties':
         specifier: 15.0.2
-        version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+        version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       '@sentry/nextjs':
-        specifier: ^7.105.0
-        version: 7.119.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+        specifier: ^8.36.0
+        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -340,7 +340,7 @@ importers:
         version: 12.0.0-alpha.1(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       geist:
         specifier: ^1.0.0
-        version: 1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))
+        version: 1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))
       hono:
         specifier: ^4.6.8
         version: 4.6.8
@@ -361,13 +361,13 @@ importers:
         version: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       next-safe-navigation:
         specifier: ^0.3.2
-        version: 0.3.3(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(typescript@5.6.0-beta)(zod@3.23.8)
+        version: 0.3.3(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(typescript@5.6.0-beta)(zod@3.23.8)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+        version: 0.2.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       nextjs-better-unstable-cache:
         specifier: ^1.1.0
-        version: 1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+        version: 1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       oslo:
         specifier: ^1.2.1
         version: 1.2.1
@@ -877,10 +877,10 @@ importers:
         version: 15.0.2
       '@next/third-parties':
         specifier: 15.0.2
-        version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+        version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       '@sentry/nextjs':
         specifier: ^8.36.0
-        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
+        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -913,7 +913,7 @@ importers:
         version: 12.0.0-alpha.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       geist:
         specifier: ^1.0.0
-        version: 1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))
+        version: 1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))
       hono:
         specifier: ^4.6.2
         version: 4.6.8
@@ -937,13 +937,13 @@ importers:
         version: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       next-safe-navigation:
         specifier: ^0.3.2
-        version: 0.3.3(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(typescript@5.6.0-beta)(zod@3.23.8)
+        version: 0.3.3(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(typescript@5.6.0-beta)(zod@3.23.8)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+        version: 0.2.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       nextjs-better-unstable-cache:
         specifier: ^1.1.0
-        version: 1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+        version: 1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -18238,7 +18238,7 @@ snapshots:
   '@next/swc-win32-x64-msvc@15.0.2':
     optional: true
 
-  '@next/third-parties@15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)':
+  '@next/third-parties@15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)':
     dependencies:
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       react: 19.0.0-rc-02c0e824-20241028
@@ -20777,30 +20777,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/nextjs@7.119.2(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
-    dependencies:
-      '@rollup/plugin-commonjs': 24.0.0(rollup@2.79.2)
-      '@sentry/core': 7.119.2
-      '@sentry/integrations': 7.119.2
-      '@sentry/node': 7.119.2
-      '@sentry/react': 7.119.2(react@19.0.0-rc-02c0e824-20241028)
-      '@sentry/types': 7.119.2
-      '@sentry/utils': 7.119.2
-      '@sentry/vercel-edge': 7.119.2
-      '@sentry/webpack-plugin': 1.21.0
-      chalk: 3.0.0
-      next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
-      react: 19.0.0-rc-02c0e824-20241028
-      resolve: 1.22.8
-      rollup: 2.79.2
-      stacktrace-parser: 0.1.10
-    optionalDependencies:
-      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0)
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-
-  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
+  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
@@ -20810,6 +20787,35 @@ snapshots:
       '@sentry/core': 8.36.0
       '@sentry/node': 8.36.0
       '@sentry/opentelemetry': 8.36.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)
+      '@sentry/react': 8.36.0(react@19.0.0-rc-02c0e824-20241028)
+      '@sentry/types': 8.36.0
+      '@sentry/utils': 8.36.0
+      '@sentry/vercel-edge': 8.36.0
+      '@sentry/webpack-plugin': 2.22.6(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+      chalk: 3.0.0
+      next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
+      resolve: 1.22.8
+      rollup: 3.29.5
+      stacktrace-parser: 0.1.10
+    transitivePeerDependencies:
+      - '@opentelemetry/core'
+      - '@opentelemetry/instrumentation'
+      - '@opentelemetry/sdk-trace-base'
+      - encoding
+      - react
+      - supports-color
+      - webpack
+
+  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
+    dependencies:
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.27.0
+      '@rollup/plugin-commonjs': 26.0.1(rollup@3.29.5)
+      '@sentry-internal/browser-utils': 8.36.0
+      '@sentry/core': 8.36.0
+      '@sentry/node': 8.36.0
+      '@sentry/opentelemetry': 8.36.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)
       '@sentry/react': 8.36.0(react@19.0.0-rc-02c0e824-20241028)
       '@sentry/types': 8.36.0
       '@sentry/utils': 8.36.0
@@ -20901,6 +20907,17 @@ snapshots:
       '@sentry/types': 8.36.0
       '@sentry/utils': 8.36.0
 
+  '@sentry/opentelemetry@8.36.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)':
+    dependencies:
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/core': 1.27.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.54.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 1.27.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.27.0
+      '@sentry/core': 8.36.0
+      '@sentry/types': 8.36.0
+      '@sentry/utils': 8.36.0
+
   '@sentry/react@7.119.2(react@18.3.1)':
     dependencies:
       '@sentry/browser': 7.119.2
@@ -20909,15 +20926,6 @@ snapshots:
       '@sentry/utils': 7.119.2
       hoist-non-react-statics: 3.3.2
       react: 18.3.1
-
-  '@sentry/react@7.119.2(react@19.0.0-rc-02c0e824-20241028)':
-    dependencies:
-      '@sentry/browser': 7.119.2
-      '@sentry/core': 7.119.2
-      '@sentry/types': 7.119.2
-      '@sentry/utils': 7.119.2
-      hoist-non-react-statics: 3.3.2
-      react: 19.0.0-rc-02c0e824-20241028
 
   '@sentry/react@8.36.0(react@19.0.0-rc-02c0e824-20241028)':
     dependencies:
@@ -20983,6 +20991,16 @@ snapshots:
       unplugin: 1.0.1
       uuid: 9.0.1
       webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12)
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  '@sentry/webpack-plugin@2.22.6(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
+    dependencies:
+      '@sentry/bundler-plugin-core': 2.22.6
+      unplugin: 1.0.1
+      uuid: 9.0.1
+      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -25842,7 +25860,7 @@ snapshots:
     dependencies:
       next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
-  geist@1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)):
+  geist@1.3.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)):
     dependencies:
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
 
@@ -29051,7 +29069,7 @@ snapshots:
       typescript: 5.6.0-beta
       zod: 3.23.8
 
-  next-safe-navigation@0.3.3(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(typescript@5.6.0-beta)(zod@3.23.8):
+  next-safe-navigation@0.3.3(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(typescript@5.6.0-beta)(zod@3.23.8):
     dependencies:
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       typescript: 5.6.0-beta
@@ -29075,7 +29093,7 @@ snapshots:
       react: 19.0.0-rc-02c0e824-20241028
       react-dom: 19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028)
 
-  next-themes@0.2.1(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028):
+  next-themes@0.2.1(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028):
     dependencies:
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       react: 19.0.0-rc-02c0e824-20241028
@@ -29194,7 +29212,7 @@ snapshots:
       next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
-  nextjs-better-unstable-cache@1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028):
+  nextjs-better-unstable-cache@1.1.0(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028):
     dependencies:
       chalk: 4.1.2
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -31918,7 +31936,6 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.7.42(@swc/helpers@0.5.13)
       esbuild: 0.24.0
-    optional: true
 
   terser@5.36.0:
     dependencies:
@@ -33280,7 +33297,6 @@ snapshots:
       - '@swc/core'
       - esbuild
       - uglify-js
-    optional: true
 
   well-known-symbols@2.0.0: {}
 
