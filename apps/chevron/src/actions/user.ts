@@ -204,28 +204,64 @@ export const createUserAction = createServerAction()
  This should only be used for the simple condition, for conditions with a summary, use createSummaryAction instead.
  */
 
-export const incrementUserPageSlugAction = authedProcedure
-  .input(z.object({ currentPageSlug: z.string() }))
-  .handler(async ({ input, ctx }) => {
-    const nextPageSlug = nextPage(input.currentPageSlug);
-    const shouldUpdateUserPageSlug = isPageAfter(
-      nextPageSlug,
-      ctx.user.pageSlug
-    );
-    const page = getPageData(input.currentPageSlug);
-    if (page) {
-      await db
-        .update(users)
-        .set({
-          pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
-          finished: isLastPage(page),
-        })
-        .where(eq(users.id, ctx.user.id));
-    }
+ export const incrementUserPageSlugAction = authedProcedure
+ .input(z.object({ currentPageSlug: z.string(),
+                   updateStreak: z.boolean().optional(),
+  }))
+ .handler(async ({ input, ctx }) => {
+   const nextPageSlug = nextPage(input.currentPageSlug);
+   const shouldUpdateUserPageSlug = isPageAfter(
+     nextPageSlug,
+     ctx.user.pageSlug
+   );
+   const page = getPageData(input.currentPageSlug);
 
-    revalidateTag(Tags.GET_SESSION);
+   if (page) {
+     const updateResult = await db
+       .update(users)
+       .set({
+         pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
+         finished: isLastPage(page),
+       })
+       .where(eq(users.id, ctx.user.id));
 
-    return {
-      nextPageSlug: shouldUpdateUserPageSlug ? nextPageSlug : ctx.user.pageSlug,
-    };
-  });
+     console.log('Update Result:', updateResult);
+   } else {
+     console.log('Page not found for the given currentPageSlug');
+   }
+
+   if (input.updateStreak !== undefined) {
+      const data = await db.transaction(async (tx) => {
+        // count
+        const user = first(
+          await tx.select().from(users).where(eq(users.id, ctx.user.id))
+        );
+        if (user) {
+          
+          const personalizationData = user.personalizationData || {};
+          // let personalizationData = {};
+          let newSummaryStreak = personalizationData.summary_streak || 0;
+          // let newSummaryStreak = 0;
+
+          newSummaryStreak += 1;
+
+          await tx
+            .update(users)
+            .set({
+              personalizationData: {
+                ...personalizationData,
+                summary_streak: newSummaryStreak,
+              },
+            })
+            .where(eq(users.id, ctx.user.id));
+
+        }
+      })
+   }
+
+   revalidateTag(Tags.GET_SESSION);
+
+   return {
+     nextPageSlug: shouldUpdateUserPageSlug ? nextPageSlug : ctx.user.pageSlug,
+   };
+ });

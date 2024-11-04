@@ -14,6 +14,7 @@ import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
 import { SummaryFormSimple } from "./summary/summary-form-simple";
 import { SummaryFormStairs } from "./summary/summary-form-stairs";
+import { SummaryFormSkip } from "./summary/summary-form-skip";
 
 type Props = {
   pageSlug: string;
@@ -68,7 +69,28 @@ export function PageAssignments({
             {condition !== Condition.SIMPLE ? (
               <PageQuizModal page={page} pageStatus={pageStatus} />
             ) : null}
-            {condition === Condition.RANDOM_REREAD ? (
+
+            {user.personalizationData?.summary_streak !== undefined ? (
+              user.personalizationData.summary_streak !== 0 && user.personalizationData.summary_streak % 2 === 0 ? (
+                <SummaryFormSkip 
+                  page={page} 
+                  pageStatus={pageStatus}
+                  streak={user.personalizationData.summary_streak}
+                />
+              ) : condition === Condition.RANDOM_REREAD ? (
+                <SummaryFormReread
+                  user={user}
+                  page={page}
+                  pageStatus={pageStatus}
+                />
+              ) : condition === Condition.STAIRS ? (
+                <SummaryFormStairs
+                  user={user}
+                  page={page}
+                  pageStatus={pageStatus}
+                />
+              ) : null
+            ) : condition === Condition.RANDOM_REREAD ? (
               <SummaryFormReread
                 user={user}
                 page={page}
@@ -81,6 +103,7 @@ export function PageAssignments({
                 pageStatus={pageStatus}
               />
             ) : null}
+            
           </div>
         </>
       )}

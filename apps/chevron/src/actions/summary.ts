@@ -5,7 +5,7 @@ import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
-import { db } from "@/actions/db";
+import { db, first } from "@/actions/db";
 import {
   CreateSummarySchema,
   events,
@@ -46,6 +46,10 @@ export const createSummaryAction = authedProcedure
     let shouldRevalidate = false;
     const data = await db.transaction(async (tx) => {
       // count
+      const user = first(
+        await tx.select().from(users).where(eq(users.id, ctx.user.id))
+      );
+
       let canProceed =
         input.summary.condition === Condition.STAIRS
           ? input.summary.isPassed
@@ -96,8 +100,17 @@ export const createSummaryAction = authedProcedure
         ctx.user.pageSlug
       );
 
-      if (canProceed) {
+      if (canProceed && user) {
         shouldRevalidate = true;
+
+        const personalizationData = user.personalizationData || {};
+        // let personalizationData = {};
+        let newSummaryStreak = personalizationData.summary_streak || 0;
+        // let newSummaryStreak = 0;
+
+        if (input.summary.isPassed) {
+          newSummaryStreak += 1;
+        };
 
         const page = getPageData(input.summary.pageSlug);
         if (page) {
@@ -106,6 +119,10 @@ export const createSummaryAction = authedProcedure
             .set({
               pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
               finished: isLastPage(page),
+              personalizationData: {
+                ...personalizationData,
+                summary_streak: newSummaryStreak,
+              },
             })
             .where(eq(users.id, ctx.user.id));
         }

@@ -86,6 +86,11 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
         ? String(formData.get("page-progress"))
         : undefined;
 
+    const newSummaryStreak =
+      formData.get("summary-streak") !== ""
+        ? Number(formData.get("summary-streak"))
+        : undefined;
+
     if (formData.get("page-unblur") === "on") {
       startTransition(() => {
         store.send({ type: "finishPage" });
@@ -98,10 +103,15 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
       [pageSlug]: newCondition,
     };
 
+    const personalizationData = {
+      summary_streak: newSummaryStreak,
+    }
+
     const [_, err] = await execute({
       conditionAssignments: newConditionAssignments,
       pageSlug: newPageSlug,
       finished: false,
+      personalizationData: personalizationData,
     });
     if (!err) {
       setOpen(false);
@@ -198,6 +208,28 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
               <Switch name="page-unblur" aria-describedby="unblur-desc" />
             </Label>
             <RestartTextbook />
+          </fieldset>
+
+          <fieldset className="flex flex-col gap-4 border p-4">
+            <legend className="font-semibold">Streak</legend>
+            <Label className="flex flex-col gap-2 font-normal">
+              <p className="font-semibold">Set your summary streak</p>
+              <Select name="summary-streak">
+                <SelectTrigger className="h-fit text-left">
+                  <SelectValue placeholder="Select summary streak" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Streak count</SelectLabel>
+                    {Array.from({ length: 10 }, (_, i) => i + 2).map((value) => (
+                      <SelectItem key={value} value={value.toString()}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Label>
           </fieldset>
 
           <footer className="flex justify-end">

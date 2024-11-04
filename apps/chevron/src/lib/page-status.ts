@@ -6,7 +6,7 @@ import {
 } from "./pages/pages.server";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
-  return false;
+  return pageSlug === firstPage.slug;
 };
 
 export type PageStatus = {

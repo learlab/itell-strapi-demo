@@ -1,4 +1,4 @@
-import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { max, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   doublePrecision,
@@ -94,6 +94,7 @@ export const users = pgTable("users", {
   classId: text("class_id"),
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
+  personalizationData: jsonb("personalization_data").$type<PersonalizationData>(),
   conditionAssignments: jsonb("condition_assignments")
     .$type<ConditionAssignments>()
     .notNull(),
@@ -112,13 +113,24 @@ export const UserPreferencesSchema = z
   })
   .partial();
 
+export const PersonalizationDataSchema = z
+  .object({
+    summary_streak: z.number(),
+    max_summary_streak: z.number(),
+    cri_streak: z.number(),
+    max_cri_streak: z.number(),
+  })
+  .partial();
+
 export const CreateUserSchema = createInsertSchema(users, {
   preferences: UserPreferencesSchema.optional(),
+  personalizationData: PersonalizationDataSchema.optional(),
   conditionAssignments: z.record(z.string()),
 });
 export const UpdateUserSchema = CreateUserSchema.partial();
 
 export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
+export type PersonalizationData = z.infer<typeof PersonalizationDataSchema>;
 
 export const sessions = pgTable(
   "sessions",
@@ -240,9 +252,26 @@ export const notes = pgTable(
     };
   }
 );
+
 export const CreateNoteSchema = createInsertSchema(notes);
 export const UpdateNoteSchema = CreateNoteSchema.partial();
 export type Note = InferSelectModel<typeof notes>;
+
+export const user_model = pgTable("user_model", {
+  id: serial("id").primaryKey().notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  summaryStreak: integer("summary_streak").notNull(),
+  CRIStreak: integer("CRI_streak").notNull(),
+  createdAt: CreatedAt,
+  updatedAt: UpdatedAt,
+});
+
+export const CreateUserModelSchema = createInsertSchema(user_model);
+export const UpdateUserModelSchema = CreateUserModelSchema.partial();
+export type UserModel = InferSelectModel<typeof user_model>;
+export type CreateUserModelInput = InferInsertModel<typeof user_model>;
 
 export const constructed_responses = pgTable(
   "constructed_responses",
