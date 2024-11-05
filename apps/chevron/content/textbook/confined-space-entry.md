@@ -41,8 +41,8 @@ chunks:
   - level: 3
     slug: requirement-7
     title: Requirement 7
-- title: Requirements 8
-  slug: Requirements-8-690t
+- title: Requirement 8
+  slug: Requirement-8-690t
   type: regular
   headings:
   - level: 3
@@ -78,23 +78,23 @@ chunks:
     slug: requirement-15
     title: Requirement 15
 cri:
-- question: What should be done to prevent unauthorized entry into confined spaces when entrance openings cannot be closed and secured?
-  answer: Openings should be guarded by a railing, temporary cover, or other temporary barrier that will prevent entry or an accidental fall through the opening and protect each employee working in the space.
+- question: What type of controls should be in place to prevent unauthorized entry into confined spaces?
+  answer: Controls that visibly identify openings as confined spaces when the attendant is not present.
   slug: Requirement-1-686t
 - question: What elements should the Hazard Analysis and/or CoW documentation address according to the passage?
   answer: Identification of potential hazards, internal configuration, acceptable entry conditions, air ventilation, verification of entry conditions, isolation of hazardous energy, appropriate equipment, specialized equipment, PPE requirements, and heat stress safeguards.
   slug: Requirement-2-4-687t
-- question: What is required prior to Confined Space Entry according to the Portable Gas Detection OE Standard?
-  answer: Gas testing shall be required prior to Confined Space Entry in accordance with the Portable Gas Detection OE Standard.
+- question: What must be in place when work is performed in Permit-Required Confined Spaces?
+  answer: A rescue team, appropriate rescue equipment, Attendant, Entry Supervisor, appropriate air ventilation, isolation of hazardous energy, and an entry log must be maintained.
   slug: Requirements-5-7-688t
 - question: What are the minimum requirements for rescue plans in Permit-Required Confined Space Entry?
   answer: The rescue plan must include rescue methods, means of communication, trained rescue personnel, access to the space, and devices for vertical retrieval, among other things.
-  slug: Requirements-8-690t
-- question: What must be done to reclassify a Permit-Required Confined Space?
-  answer: The characteristics that made the space a permit required confined space must be eliminated, work conducted within the space must not create a hazardous atmosphere, affected personnel must be notified of the reclassification, and proper documentation must be approved.
+  slug: Requirement-8-690t
+- question: What are the circumstances under which Confined Space Entry work shall be stopped or suspended?
+  answer: The attendant leaves the Confined Space Entry area without a qualified replacement, entry conditions exceed acceptable limits, there is a change in isolation points, there is an equipment failure, an order to evacuate is given, an authorized entrant recognizes warning signs, a facility emergency alarm sounds, an incident occurs, unexpected change of conditions or job scope, or loss of communication.
   slug: Requirements-9-10-689t
-- question: What type of sensors are recommended for use in inert atmospheres?
-  answer: Specialty sensors, especially lower explosive limit (LEL) including infrared sensors or dilution tubes, shall be used.
+- question: What are the requirements for the use of gas cylinders (with the exception of breathing air cylinders)?
+  answer: Gas cylinders shall not be taken into confined spaces, be closed when not in use, and be removed from confined space or disconnected when not in use, unless space is being continuously monitored for hazardous atmospheres.
   slug: Requirements-11-15-692t
 next_slug: appendix-a-terms-and-definitions
 order: 0
@@ -113,7 +113,11 @@ title: Confined Space Entry
 Introduction
 ------------
 
-The Confined Space Entry standard is designed to help prevent illnes and injuries to personnel, damage to property or adverse environmental impact when personnel are performing work in confined spaces. Confined Spaces are defined as spaces large enough and so configured that personnel can bodily enter and perform assigned work, have limited or restricted means for entry or exit and are not designed for continuous occupancy. This standard defines the requirements for Confined Space Entry
+The Confined Space Entry standard is designed to help prevent illness and injuries to personnel, damage to property or adverse environmental impact when personnel are performing work in confined spaces.
+
+Confined Spaces are defined as spaces large enough and so configured that personnel can bodily enter and perform assigned work, have limited or restricted means for entry or exit and are not designed for continuous occupancy.
+
+This standard defines the requirements for Confined Space Entry.
 
 ## Requirements {#Requirements-164pt} 
 
@@ -183,7 +187,7 @@ Additional controls shall be in place when work is performed in Permit-Required 
 5.  Isolation of hazardous energy in accordance with the Isolation of Hazardous Energy OE Standard
 6.  Entry log maintained
 
-## Requirements 8 {#Requirements-8-690t .sr-only} 
+## Requirement 8 {#Requirement-8-690t .sr-only} 
 
 ### Requirement 8 {#requirement-8}
 

@@ -8,13 +8,7 @@ chunks:
 - title: Second-half terms
   slug: Second-half-terms-695t
   type: regular
-cri:
-- question: Currently being generated...
-  answer: Currently being generated...
-  slug: First-Half-Terms-694t
-- question: Currently being generated...
-  answer: Currently being generated...
-  slug: Second-half-terms-695t
+cri: []
 next_slug: appendix-b-roles-and-responsibilities
 order: 1
 parent:
