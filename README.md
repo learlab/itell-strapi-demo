@@ -15,7 +15,7 @@ There are two ways to run a iTELL project locally:
 Either way, you can start with cloning this repository
 
 ```
-git clone https://github.com/learlab/itell-strapi-demo.git
+git clone https://github.com/learlab/itell.git
 ```
 
 ## Manual Setup
