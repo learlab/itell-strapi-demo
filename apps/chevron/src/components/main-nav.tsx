@@ -29,8 +29,9 @@ export async function MainNav({ scrollProgress, read }: Props) {
             <Image
               src="/images/itell.svg"
               alt="itell logo"
-              width={24}
-              height={32}
+              width={28}
+              height={30}
+              priority
             />
             <span className="hidden font-bold md:inline-block">
               {volume.title}
