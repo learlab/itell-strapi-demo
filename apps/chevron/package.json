@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "next build",
+    "build:deps": "turbo run build --filter @itell/chevron",
     "clean": "rm -rf .next .turbo .velite",
     "format": "prettier --write .",
     "lint": "eslint .",
