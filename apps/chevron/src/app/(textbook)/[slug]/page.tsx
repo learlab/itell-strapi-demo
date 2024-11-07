@@ -59,7 +59,7 @@ export default async function Page(props: {
   return (
     <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
       <MobilePopup />
-      <ResourceLoader />
+      <ResourceLoader condition={userCondition} />
       <TextbookWrapper>
         <div id={Elements.TEXTBOOK_NAV}>
           <ScrollArea className="h-full w-full px-6 py-2">
