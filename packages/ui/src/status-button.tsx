@@ -24,7 +24,6 @@ export const StatusButton = forwardRef<HTMLButtonElement, Props>(
       <Button
         className={cn("relative", className)}
         disabled={disabled || pending}
-        aria-live="off"
         ref={ref}
         {...rest}
       >

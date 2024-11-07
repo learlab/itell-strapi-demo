@@ -39,7 +39,7 @@ export async function MainNav({ scrollProgress, read }: Props) {
           </Link>
           {read ? (
             <ContinueReading
-              className="hidden w-28 md:block"
+              className="hidden md:flex"
               text="Read"
               variant="outline"
               size="default"

@@ -10,7 +10,8 @@
     "dev": "next dev --turbopack -p 3000",
     "start": "next start -p 3000",
     "analyze": "ANALYZE=true next build",
-    "prestart": "next build"
+    "prestart": "next build",
+    "assets": "tsx assets.ts"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.6.8",

@@ -25,6 +25,7 @@ export function NavigationButton({ children, href, onClick, ...props }: Props) {
       {...props}
     >
       <Link
+        className="block px-8 py-2"
         href={href}
         onClick={() => {
           startTransition(() => {

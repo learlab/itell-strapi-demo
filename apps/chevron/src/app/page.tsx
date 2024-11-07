@@ -20,7 +20,7 @@ export default function Page() {
         <HtmlRenderer html={home.html} />
         <MobilePopup />
         <div className="flex items-center justify-center">
-          <ContinueReading className="w-48" />
+          <ContinueReading />
         </div>
       </main>
       <SiteFooter />
