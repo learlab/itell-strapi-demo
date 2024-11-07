@@ -1,8 +1,5 @@
-import { groupBy } from "es-toolkit";
-
-import "server-only";
-
 import { pages } from "#content";
+import { groupBy } from "es-toolkit";
 
 export const allPagesSorted = pages.sort((a, b) => {
   return a.order - b.order;

@@ -14,7 +14,7 @@ type Props = {
   pageSlug: string;
 };
 
-export function PageInfo({ user, pageSlug }: Props) {
+export function PageStatusInfo({ user, pageSlug }: Props) {
   const status = getPageStatus({
     pageSlug,
     userPageSlug: user?.pageSlug ?? null,

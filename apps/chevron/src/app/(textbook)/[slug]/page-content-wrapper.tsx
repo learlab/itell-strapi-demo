@@ -1,4 +1,5 @@
 import React from "react";
+import { Elements } from "@itell/constants";
 
 export function PageContentWrapper({
   children,
@@ -8,13 +9,14 @@ export function PageContentWrapper({
   // Elements.TEXTBOOK_MAIN
   return (
     <div
-      className="min-h-screen py-6"
+      id={Elements.TEXTBOOK_MAIN}
+      className="min-h-screen !p-0"
       style={{
         display: "grid",
         gridTemplateColumns: "1fr min(85ch, calc(100% - 64px)) 1fr",
       }}
     >
-      <div className="col-span-1 col-start-2">{children}</div>
+      {children}
     </div>
   );
 }

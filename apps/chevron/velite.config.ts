@@ -4,9 +4,11 @@ import { promisify } from "node:util";
 import rehypeAddCri from "@itell/rehype-add-cri";
 import rehypeWrapHeadingSection from "@itell/rehype-wrap-heading-section";
 import rehypeFormat from "rehype-format";
+import rehypeKatex from "rehype-katex";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 import remarkGfm from "remark-gfm";
 import remarkHeadingAttrs from "remark-heading-attrs";
+import remarkMath from "remark-math";
 import { defineCollection, defineConfig, defineSchema, s } from "velite";
 
 const execAsync = promisify(exec);
@@ -85,8 +87,14 @@ const pages = defineCollection({
         })
       ),
       html: s.markdown({
-        remarkPlugins: [remarkHeadingAttrs],
-        rehypePlugins: [rehypeWrapHeadingSection, rehypeAddCri, rehypeFormat],
+        remarkPlugins: [remarkHeadingAttrs, remarkMath],
+        rehypePlugins: [
+          rehypeWrapHeadingSection,
+          // @ts-ignore
+          rehypeKatex,
+          rehypeAddCri,
+          rehypeFormat,
+        ],
       }),
     })
     .transform((data) => {

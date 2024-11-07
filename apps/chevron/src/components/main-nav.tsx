@@ -22,7 +22,7 @@ export async function MainNav({ scrollProgress, read }: Props) {
   const { user } = await getSession();
 
   return (
-    <SiteNav mainContentId={Elements.TEXTBOOK_MAIN}>
+    <SiteNav mainContentId={Elements.TEXTBOOK_MAIN} className="border-b-2">
       <div className="flex h-[var(--nav-height)] items-center justify-between px-6 sm:space-x-0">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-6">
