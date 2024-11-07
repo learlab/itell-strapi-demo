@@ -2,14 +2,14 @@
 
 import { useEffect } from "react";
 import { volume } from "#content";
-import { preconnect } from "react-dom";
+import { prefetchDNS } from "react-dom";
 
 import { env } from "@/env.mjs";
 import { Condition } from "@/lib/constants";
 
 export function ResourceLoader({ condition }: { condition: string }) {
   useEffect(() => {
-    preconnect(env.NEXT_PUBLIC_API_URL);
+    prefetchDNS(env.NEXT_PUBLIC_API_URL);
 
     if (condition !== Condition.SIMPLE) {
       addStylesheet("/driver.css");
