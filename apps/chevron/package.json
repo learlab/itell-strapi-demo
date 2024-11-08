@@ -2,6 +2,7 @@
   "name": "@itell/chevron",
   "version": "0.1.0",
   "scripts": {
+    "setup": "pnpm install && pnpm run build:deps && pnpm run assets",
     "build": "next build",
     "build:deps": "turbo run build --filter @itell/chevron",
     "clean": "rm -rf .next .turbo .velite",
