@@ -2,7 +2,7 @@
   "name": "@itell/chevron",
   "version": "0.1.0",
   "scripts": {
-    "setup": "pnpm install && pnpm run build:deps && pnpm run assets",
+    "setup": "pnpm install && pnpm drizzle-kit migrate && pnpm run build:deps && pnpm run assets",
     "build": "next build",
     "build:deps": "turbo run build --filter @itell/chevron",
     "clean": "rm -rf .next .turbo .velite",
@@ -80,7 +80,7 @@
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "autoprefixer": "^10.4.15",
-    "drizzle-kit": "^0.21.2",
+    "drizzle-kit": "^0.28.0",
     "eslint-plugin-drizzle": "^0.2.3",
     "postcss": "^8.4.29",
     "prettier": "^3.3.3",

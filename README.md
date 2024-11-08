@@ -41,13 +41,7 @@ packages
 package.json
 ```
 
-The `apps` folder contains the different iTELL volumes. Each app is a separate Next.js project. They share common dependencies that you should download via
-
-```
-pnpm install
-```
-
-Then, go the specific volume folder you are working on. For example, if you are working on the `app-1` volume, change directory into `apps/app-1/`.
+Go the specific volume folder you are working on. For example, if you are working on the `app-1` volume, change directory into `apps/app-1/`.
 
 ```bash
 cd apps/app-1
@@ -60,12 +54,11 @@ Create a new file `.env` in the volume folder. Fill in the necessary environment
 
 With the `.env` file in place, you can initialize your database and build the app.
 
-```
-pnpm drizzle-kit migrate
-pnpm run build:deps
+```bash
+pnpm setup
 ```
 
-The commands should finish in less than 5 minutes, the logs at the end looks like
+The command takes care of all the setup jobs including installing dependencies, building internal libraries, initializing the database, etc. It should finish in less than 5 minutes, the logs at the end looks like
 
 ```
 @itell/app-1:build: ○  (Static)   prerendered as static content
@@ -79,7 +72,7 @@ Cached:    0 cached, 10 total
   Time:    1m40.234s
 ```
 
-If you see no error messages from the commands above, all setup work is done. You can now start the development server.
+If no error message is shown, the setup is successful. You can now start the development server via
 
 ```
 pnpm run dev
