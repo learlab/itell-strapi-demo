@@ -55,7 +55,7 @@ Create a new file `.env` in the volume folder. Fill in the necessary environment
 With the `.env` file in place, you can initialize your database and build the app.
 
 ```bash
-pnpm setup
+pnpm run setup
 ```
 
 The command takes care of all the setup jobs including installing dependencies, building internal libraries, initializing the database, etc. It should finish in less than 5 minutes, the logs at the end looks like
