@@ -52,7 +52,6 @@ export default function RootLayout({
           type="image/x-icon"
           href="/images/avatars/favicon.png"
         />
-        <link rel="prefetch" href="/driver.css" />
         {volume.latex ? <link rel="prefetch" href="/katex.min.css" /> : null}
       </head>
       <body
