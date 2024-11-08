@@ -257,22 +257,6 @@ export const CreateNoteSchema = createInsertSchema(notes);
 export const UpdateNoteSchema = CreateNoteSchema.partial();
 export type Note = InferSelectModel<typeof notes>;
 
-export const user_model = pgTable("user_model", {
-  id: serial("id").primaryKey().notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  summaryStreak: integer("summary_streak").notNull(),
-  CRIStreak: integer("CRI_streak").notNull(),
-  createdAt: CreatedAt,
-  updatedAt: UpdatedAt,
-});
-
-export const CreateUserModelSchema = createInsertSchema(user_model);
-export const UpdateUserModelSchema = CreateUserModelSchema.partial();
-export type UserModel = InferSelectModel<typeof user_model>;
-export type CreateUserModelInput = InferInsertModel<typeof user_model>;
-
 export const constructed_responses = pgTable(
   "constructed_responses",
   {
