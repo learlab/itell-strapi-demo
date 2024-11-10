@@ -52,15 +52,6 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
     async (e: FormEvent) => {
       e.preventDefault();
 
-      console.log("Incrementing user page slug");
-      const [_, err] = await incrementUserPageSlugAction({
-        currentPageSlug: page.slug,
-        updateStreak: true,
-      });
-      if (err) {
-        throw new Error("increment user page slug action", { cause: err });
-      }
-
       if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
         quizStore.send({
           type: "toggleQuiz",
@@ -75,13 +66,24 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         });
       }
 
-      // relocated to handle exceptions where page is unlocked for all users initially
-      if (finished && page.next_slug) {
+      if (!finished && page.next_slug) {
+        console.log("Incrementing user page slug");
+        const [_, err] = await incrementUserPageSlugAction({
+          currentPageSlug: page.slug,
+          updateStreak: true,
+        });
+        if (err) {
+          throw new Error("increment user page slug action", { cause: err });
+        }
+        setFinished(true);
         router.push(page.next_slug);
         return;
       }
 
-      setFinished(true);
+      if (finished && page.next_slug) {
+        router.push(page.next_slug);
+        return;
+      }
       
     },
     { delayTimeout: 3000 }

@@ -231,6 +231,7 @@ export const createUserAction = createServerAction()
    }
 
    if (input.updateStreak !== undefined) {
+      // Update skip summary number if user skips summary
       const data = await db.transaction(async (tx) => {
         // count
         const user = first(
@@ -239,18 +240,15 @@ export const createUserAction = createServerAction()
         if (user) {
           
           const personalizationData = user.personalizationData || {};
-          // let personalizationData = {};
-          let newSummaryStreak = personalizationData.summary_streak || 0;
-          // let newSummaryStreak = 0;
-
-          newSummaryStreak += 1;
+          const skipSummaryNumber = personalizationData.skip_summary_number ?? 0;
+          const newSkipSummaryNumber = skipSummaryNumber > 0 ? skipSummaryNumber - 1 : skipSummaryNumber;
 
           await tx
             .update(users)
             .set({
               personalizationData: {
                 ...personalizationData,
-                summary_streak: newSummaryStreak,
+                skip_summary_number: newSkipSummaryNumber,
               },
             })
             .where(eq(users.id, ctx.user.id));

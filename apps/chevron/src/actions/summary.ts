@@ -4,7 +4,7 @@ import { revalidateTag } from "next/cache";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
-
+import { handleSummaryStreak } from "@/lib/summary-streak"
 import { db, first } from "@/actions/db";
 import {
   CreateSummarySchema,
@@ -100,17 +100,11 @@ export const createSummaryAction = authedProcedure
         ctx.user.pageSlug
       );
 
+      // update user summary streak info
       if (canProceed && user) {
         shouldRevalidate = true;
 
-        const personalizationData = user.personalizationData || {};
-        // let personalizationData = {};
-        let newSummaryStreak = personalizationData.summary_streak || 0;
-        // let newSummaryStreak = 0;
-
-        if (input.summary.isPassed) {
-          newSummaryStreak += 1;
-        };
+        const personalizationData = handleSummaryStreak(user.personalizationData ?? {}, input.summary.isPassed);
 
         const page = getPageData(input.summary.pageSlug);
         if (page) {
@@ -121,7 +115,6 @@ export const createSummaryAction = authedProcedure
               finished: isLastPage(page),
               personalizationData: {
                 ...personalizationData,
-                summary_streak: newSummaryStreak,
               },
             })
             .where(eq(users.id, ctx.user.id));

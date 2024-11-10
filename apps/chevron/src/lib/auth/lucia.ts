@@ -29,8 +29,10 @@ export const lucia = new Lucia(adapter, {
       personalizationData: {
         summary_streak: attributes.personalizationData?.summary_streak ?? 0,
         max_summary_streak: attributes.personalizationData?.max_summary_streak ?? 0,
+        skip_summary_number: attributes.personalizationData?.skip_summary_number ?? 0,
         cri_streak: attributes.personalizationData?.cri_streak ?? 0,
         max_cri_streak: attributes.personalizationData?.max_cri_streak ?? 0,
+        skip_cri_number: attributes.personalizationData?.skip_cri_number ?? 0,
       },
       preferences: {
         note_color_light:

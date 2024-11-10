@@ -115,10 +115,14 @@ export const UserPreferencesSchema = z
 
 export const PersonalizationDataSchema = z
   .object({
-    summary_streak: z.number(),
-    max_summary_streak: z.number(),
-    cri_streak: z.number(),
-    max_cri_streak: z.number(),
+    summary_streak: z.number().optional(),
+    max_summary_streak: z.number().optional(),
+    // number of summaries to be skipped based on current streak
+    skip_summary_number: z.number().optional(),
+    cri_streak: z.number().optional(),
+    max_cri_streak: z.number().optional(),
+    // number of CRIs to be skipped based on current streak
+    skip_cri_number: z.number().optional(),
   })
   .partial();
 

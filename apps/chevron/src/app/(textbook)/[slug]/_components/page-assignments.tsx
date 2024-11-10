@@ -70,8 +70,8 @@ export function PageAssignments({
               <PageQuizModal page={page} pageStatus={pageStatus} />
             ) : null}
 
-            {user.personalizationData?.summary_streak !== undefined ? (
-              user.personalizationData.summary_streak !== 0 && user.personalizationData.summary_streak % 2 === 0 ? (
+            {user.personalizationData?.skip_summary_number !== undefined ? (
+              user.personalizationData.skip_summary_number > 0 ? (
                 <SummaryFormSkip 
                   page={page} 
                   pageStatus={pageStatus}

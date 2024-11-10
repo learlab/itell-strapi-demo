@@ -45,6 +45,8 @@ import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
 import { makePageHref } from "@/lib/utils";
 
+import { handleSummaryStreak } from "@/lib/summary-streak"
+
 type Props = {
   user: User;
   pageSlug: string;
@@ -86,10 +88,13 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
         ? String(formData.get("page-progress"))
         : undefined;
 
-    const newSummaryStreak =
+    let newSummaryStreak =
       formData.get("summary-streak") !== ""
         ? Number(formData.get("summary-streak"))
-        : undefined;
+        : 0;
+
+    // subtract one since we'll be treating things as if a new passing summary has been submitted
+    newSummaryStreak = (newSummaryStreak ?? 0) - 1;
 
     if (formData.get("page-unblur") === "on") {
       startTransition(() => {
@@ -103,9 +108,15 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
       [pageSlug]: newCondition,
     };
 
-    const personalizationData = {
-      summary_streak: newSummaryStreak,
+    if (user.personalizationData) {
+      user.personalizationData.summary_streak = newSummaryStreak;
+    } else {
+      user.personalizationData = {
+        summary_streak: newSummaryStreak,
+      } as User['personalizationData'];
     }
+
+    const personalizationData = handleSummaryStreak(user.personalizationData ?? {}, true);
 
     const [_, err] = await execute({
       conditionAssignments: newConditionAssignments,
