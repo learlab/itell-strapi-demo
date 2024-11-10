@@ -232,7 +232,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Streak count</SelectLabel>
-                    {Array.from({ length: 10 }, (_, i) => i + 2).map((value) => (
+                    {Array.from({ length: 10 }, (_, i) => i).map((value) => (
                       <SelectItem key={value} value={value.toString()}>
                         {value}
                       </SelectItem>
