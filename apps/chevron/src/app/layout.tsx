@@ -52,6 +52,7 @@ export default function RootLayout({
           type="image/x-icon"
           href="/images/avatars/favicon.png"
         />
+        {volume.latex ? <link rel="prefetch" href="/katex.min.css" /> : null}
       </head>
       <body
         className={cn(

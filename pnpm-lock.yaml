@@ -304,7 +304,7 @@ importers:
         version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       '@sentry/nextjs':
         specifier: ^8.36.0
-        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
+        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -451,8 +451,8 @@ importers:
         specifier: ^10.4.15
         version: 10.4.20(postcss@8.4.47)
       drizzle-kit:
-        specifier: ^0.21.2
-        version: 0.21.4
+        specifier: ^0.28.0
+        version: 0.28.0
       eslint-plugin-drizzle:
         specifier: ^0.2.3
         version: 0.2.3(eslint@9.13.0(jiti@2.3.3))
@@ -465,6 +465,9 @@ importers:
       rehype-format:
         specifier: ^5.0.0
         version: 5.0.1
+      rehype-katex:
+        specifier: ^6.0.3
+        version: 6.0.3
       rehype-unwrap-images:
         specifier: ^1.0.0
         version: 1.0.0
@@ -474,6 +477,9 @@ importers:
       remark-heading-attrs:
         specifier: ^0.0.2
         version: 0.0.2
+      remark-math:
+        specifier: ^6.0.0
+        version: 6.0.0
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.14(ts-node@10.9.2(@swc/core@1.7.42(@swc/helpers@0.5.13))(@types/node@22.8.6)(typescript@5.6.0-beta))
@@ -506,7 +512,7 @@ importers:
         version: 1.1.0(drizzle-orm@0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1))(lucia@3.2.2)
       '@sentry/nextjs':
         specifier: ^7.105.0
-        version: 7.119.2(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+        version: 7.119.2(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -521,7 +527,7 @@ importers:
         version: 0.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(types-react@19.0.0-rc.1)
       contentlayer:
         specifier: ^0.3.4
-        version: 0.3.4(esbuild@0.24.0)
+        version: 0.3.4(esbuild@0.19.12)
       date-fns:
         specifier: 2.29.3
         version: 2.29.3
@@ -557,7 +563,7 @@ importers:
         version: 14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-contentlayer:
         specifier: ^0.3.4
-        version: 0.3.4(contentlayer@0.3.4(esbuild@0.24.0))(esbuild@0.24.0)(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.3.4(contentlayer@0.3.4(esbuild@0.19.12))(esbuild@0.19.12)(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-safe-navigation:
         specifier: ^0.3.2
         version: 0.3.3(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.0-beta)(zod@3.23.8)
@@ -880,7 +886,7 @@ importers:
         version: 15.0.2(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       '@sentry/nextjs':
         specifier: ^8.36.0
-        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+        version: 8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -1179,7 +1185,7 @@ importers:
         version: 21.1.7
       '@vitest/coverage-c8':
         specifier: ^0.32.0
-        version: 0.32.4(vitest@2.1.4(@types/node@22.8.6)(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0))
+        version: 0.32.4(vitest@2.1.4)
       dts-bundle-generator:
         specifier: ^8.0.1
         version: 8.1.2
@@ -1628,7 +1634,7 @@ importers:
     devDependencies:
       '@vercel/style-guide':
         specifier: latest
-        version: 6.0.0(@next/eslint-plugin-next@14.2.16)(eslint@9.13.0(jiti@2.3.3))(prettier@3.3.3)(typescript@5.6.3)(vitest@2.1.4(@types/node@22.8.6)(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0))
+        version: 6.0.0(@next/eslint-plugin-next@14.2.16)(eslint@9.13.0(jiti@2.3.3))(prettier@3.3.3)(typescript@5.6.3)(vitest@2.1.4)
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.13.0(jiti@2.3.3))
@@ -2518,6 +2524,9 @@ packages:
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
+
+  '@drizzle-team/brocli@0.10.2':
+    resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
 
   '@effect-ts/core@0.60.5':
     resolution: {integrity: sha512-qi1WrtJA90XLMnj2hnUszW9Sx4dXP03ZJtCc5DiUBIOhF4Vw7plfb65/bdBySPoC9s7zy995TdUX1XBSxUkl5w==}
@@ -8694,6 +8703,10 @@ packages:
 
   drizzle-kit@0.21.4:
     resolution: {integrity: sha512-Nxcc1ONJLRgbhmR+azxjNF9Ly9privNLEIgW53c92whb4xp8jZLH1kMCh/54ci1mTMuYxPdOukqLwJ8wRudNwA==}
+    hasBin: true
+
+  drizzle-kit@0.28.0:
+    resolution: {integrity: sha512-KqI+CS2Ga9GYIrXpxpCDUJJrH/AT/k4UY0Pb4oRgQEGkgN1EdCnqp664cXgwPWjDr5RBtTsjZipw8+8C//K63A==}
     hasBin: true
 
   drizzle-orm@0.30.10:
@@ -16792,9 +16805,9 @@ snapshots:
 
   '@colors/colors@1.6.0': {}
 
-  '@contentlayer/cli@0.3.4(esbuild@0.24.0)':
+  '@contentlayer/cli@0.3.4(esbuild@0.19.12)':
     dependencies:
-      '@contentlayer/core': 0.3.4(esbuild@0.24.0)
+      '@contentlayer/core': 0.3.4(esbuild@0.19.12)
       '@contentlayer/utils': 0.3.4
       clipanion: 3.2.1(typanion@3.14.0)
       typanion: 3.14.0
@@ -16804,22 +16817,22 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer/client@0.3.4(esbuild@0.24.0)':
+  '@contentlayer/client@0.3.4(esbuild@0.19.12)':
     dependencies:
-      '@contentlayer/core': 0.3.4(esbuild@0.24.0)
+      '@contentlayer/core': 0.3.4(esbuild@0.19.12)
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - esbuild
       - markdown-wasm
       - supports-color
 
-  '@contentlayer/core@0.3.4(esbuild@0.24.0)':
+  '@contentlayer/core@0.3.4(esbuild@0.19.12)':
     dependencies:
       '@contentlayer/utils': 0.3.4
       camel-case: 4.1.2
       comment-json: 4.2.3
       gray-matter: 4.0.3
-      mdx-bundler: 9.2.1(esbuild@0.24.0)
+      mdx-bundler: 9.2.1(esbuild@0.19.12)
       rehype-stringify: 9.0.4
       remark-frontmatter: 4.0.1
       remark-parse: 10.0.2
@@ -16828,14 +16841,14 @@ snapshots:
       type-fest: 3.13.1
       unified: 10.1.2
     optionalDependencies:
-      esbuild: 0.24.0
+      esbuild: 0.19.12
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - supports-color
 
-  '@contentlayer/source-files@0.3.4(esbuild@0.24.0)':
+  '@contentlayer/source-files@0.3.4(esbuild@0.19.12)':
     dependencies:
-      '@contentlayer/core': 0.3.4(esbuild@0.24.0)
+      '@contentlayer/core': 0.3.4(esbuild@0.19.12)
       '@contentlayer/utils': 0.3.4
       chokidar: 3.6.0
       fast-glob: 3.3.2
@@ -16852,10 +16865,10 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer/source-remote-files@0.3.4(esbuild@0.24.0)':
+  '@contentlayer/source-remote-files@0.3.4(esbuild@0.19.12)':
     dependencies:
-      '@contentlayer/core': 0.3.4(esbuild@0.24.0)
-      '@contentlayer/source-files': 0.3.4(esbuild@0.24.0)
+      '@contentlayer/core': 0.3.4(esbuild@0.19.12)
+      '@contentlayer/source-files': 0.3.4(esbuild@0.19.12)
       '@contentlayer/utils': 0.3.4
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
@@ -16897,6 +16910,8 @@ snapshots:
       kuler: 2.0.0
 
   '@discoveryjs/json-ext@0.5.7': {}
+
+  '@drizzle-team/brocli@0.10.2': {}
 
   '@effect-ts/core@0.60.5':
     dependencies:
@@ -17092,11 +17107,11 @@ snapshots:
       '@esbuild-kit/core-utils': 3.3.2
       get-tsconfig: 4.8.1
 
-  '@esbuild-plugins/node-resolve@0.1.4(esbuild@0.24.0)':
+  '@esbuild-plugins/node-resolve@0.1.4(esbuild@0.19.12)':
     dependencies:
       '@types/resolve': 1.20.6
       debug: 4.3.7(supports-color@5.5.0)
-      esbuild: 0.24.0
+      esbuild: 0.19.12
       escape-string-regexp: 4.0.0
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -17969,10 +17984,10 @@ snapshots:
       drizzle-orm: 0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@19.0.0-rc-02c0e824-20241028)(types-react@19.0.0-rc.1)
       lucia: 3.2.2
 
-  '@mdx-js/esbuild@2.3.0(esbuild@0.24.0)':
+  '@mdx-js/esbuild@2.3.0(esbuild@0.19.12)':
     dependencies:
       '@mdx-js/mdx': 2.3.0
-      esbuild: 0.24.0
+      esbuild: 0.19.12
       node-fetch: 3.3.2
       vfile: 5.3.7
     transitivePeerDependencies:
@@ -20731,7 +20746,7 @@ snapshots:
       '@sentry/types': 6.19.7
       tslib: 1.14.1
 
-  '@sentry/nextjs@7.119.2(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
+  '@sentry/nextjs@7.119.2(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
     dependencies:
       '@rollup/plugin-commonjs': 24.0.0(rollup@2.79.2)
       '@sentry/core': 7.119.2
@@ -20749,7 +20764,7 @@ snapshots:
       rollup: 2.79.2
       stacktrace-parser: 0.1.10
     optionalDependencies:
-      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0)
+      webpack: 5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -20777,7 +20792,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
+  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
@@ -20791,7 +20806,7 @@ snapshots:
       '@sentry/types': 8.36.0
       '@sentry/utils': 8.36.0
       '@sentry/vercel-edge': 8.36.0
-      '@sentry/webpack-plugin': 2.22.6(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
+      '@sentry/webpack-plugin': 2.22.6(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
       chalk: 3.0.0
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       resolve: 1.22.8
@@ -20806,7 +20821,7 @@ snapshots:
       - supports-color
       - webpack
 
-  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))':
+  '@sentry/nextjs@8.36.0(@opentelemetry/core@1.27.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.27.0(@opentelemetry/api@1.9.0))(next@15.0.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
@@ -20820,7 +20835,7 @@ snapshots:
       '@sentry/types': 8.36.0
       '@sentry/utils': 8.36.0
       '@sentry/vercel-edge': 8.36.0
-      '@sentry/webpack-plugin': 2.22.6(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.19.12))
+      '@sentry/webpack-plugin': 2.22.6(webpack@5.95.0(@swc/core@1.7.42(@swc/helpers@0.5.13))(esbuild@0.24.0))
       chalk: 3.0.0
       next: 15.0.2(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       resolve: 1.22.8
@@ -22492,7 +22507,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vercel/style-guide@6.0.0(@next/eslint-plugin-next@14.2.16)(eslint@9.13.0(jiti@2.3.3))(prettier@3.3.3)(typescript@5.6.3)(vitest@2.1.4(@types/node@22.8.6)(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0))':
+  '@vercel/style-guide@6.0.0(@next/eslint-plugin-next@14.2.16)(eslint@9.13.0(jiti@2.3.3))(prettier@3.3.3)(typescript@5.6.3)(vitest@2.1.4)':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/eslint-parser': 7.25.1(@babel/core@7.25.2)(eslint@9.13.0(jiti@2.3.3))
@@ -22500,7 +22515,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
       '@typescript-eslint/parser': 7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
       eslint-config-prettier: 9.1.0(eslint@9.13.0(jiti@2.3.3))
-      eslint-import-resolver-alias: 1.1.2(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3)))
+      eslint-import-resolver-alias: 1.1.2(eslint-plugin-import@2.30.0)
       eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import@2.30.0)(eslint@9.13.0(jiti@2.3.3))
       eslint-plugin-eslint-comments: 3.2.0(eslint@9.13.0(jiti@2.3.3))
       eslint-plugin-import: 2.30.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3))
@@ -22512,7 +22527,7 @@ snapshots:
       eslint-plugin-testing-library: 6.3.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
       eslint-plugin-tsdoc: 0.2.17
       eslint-plugin-unicorn: 51.0.1(eslint@9.13.0(jiti@2.3.3))
-      eslint-plugin-vitest: 0.3.26(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)(vitest@2.1.4(@types/node@22.8.6)(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0))
+      eslint-plugin-vitest: 0.3.26(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)(vitest@2.1.4)
       prettier-plugin-packagejson: 2.5.2(prettier@3.3.3)
     optionalDependencies:
       '@next/eslint-plugin-next': 14.2.16
@@ -22559,7 +22574,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-c8@0.32.4(vitest@2.1.4(@types/node@22.8.6)(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0))':
+  '@vitest/coverage-c8@0.32.4(vitest@2.1.4)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       c8: 7.14.0
@@ -24024,13 +24039,13 @@ snapshots:
 
   content-type@1.0.5: {}
 
-  contentlayer@0.3.4(esbuild@0.24.0):
+  contentlayer@0.3.4(esbuild@0.19.12):
     dependencies:
-      '@contentlayer/cli': 0.3.4(esbuild@0.24.0)
-      '@contentlayer/client': 0.3.4(esbuild@0.24.0)
-      '@contentlayer/core': 0.3.4(esbuild@0.24.0)
-      '@contentlayer/source-files': 0.3.4(esbuild@0.24.0)
-      '@contentlayer/source-remote-files': 0.3.4(esbuild@0.24.0)
+      '@contentlayer/cli': 0.3.4(esbuild@0.19.12)
+      '@contentlayer/client': 0.3.4(esbuild@0.19.12)
+      '@contentlayer/core': 0.3.4(esbuild@0.19.12)
+      '@contentlayer/source-files': 0.3.4(esbuild@0.19.12)
+      '@contentlayer/source-remote-files': 0.3.4(esbuild@0.19.12)
       '@contentlayer/utils': 0.3.4
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
@@ -24594,6 +24609,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  drizzle-kit@0.28.0:
+    dependencies:
+      '@drizzle-team/brocli': 0.10.2
+      '@esbuild-kit/esm-loader': 2.6.5
+      esbuild: 0.19.12
+      esbuild-register: 3.6.0(esbuild@0.19.12)
+    transitivePeerDependencies:
+      - supports-color
+
   drizzle-orm@0.30.10(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)(types-react@19.0.0-rc.1):
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
@@ -25074,7 +25098,7 @@ snapshots:
       eslint: 9.13.0(jiti@2.3.3)
       eslint-plugin-turbo: 2.2.3(eslint@9.13.0(jiti@2.3.3))
 
-  eslint-import-resolver-alias@1.1.2(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3))):
+  eslint-import-resolver-alias@1.1.2(eslint-plugin-import@2.30.0):
     dependencies:
       eslint-plugin-import: 2.30.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3))
 
@@ -25092,7 +25116,7 @@ snapshots:
       debug: 4.3.7(supports-color@5.5.0)
       enhanced-resolve: 5.17.1
       eslint: 9.13.0(jiti@2.3.3)
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import@2.30.0)(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3))
       fast-glob: 3.3.2
       get-tsconfig: 4.7.5
       is-bun-module: 1.2.1
@@ -25105,7 +25129,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import@2.30.0)(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -25137,7 +25161,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.13.0(jiti@2.3.3)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import@2.30.0)(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@9.13.0(jiti@2.3.3))
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -25257,7 +25281,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-vitest@0.3.26(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)(vitest@2.1.4(@types/node@22.8.6)(@vitest/ui@2.1.4)(happy-dom@15.7.4)(lightningcss@1.27.0)(terser@5.36.0)):
+  eslint-plugin-vitest@0.3.26(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)(vitest@2.1.4):
     dependencies:
       '@typescript-eslint/utils': 7.18.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
       eslint: 9.13.0(jiti@2.3.3)
@@ -28240,13 +28264,13 @@ snapshots:
 
   mdurl@2.0.0: {}
 
-  mdx-bundler@9.2.1(esbuild@0.24.0):
+  mdx-bundler@9.2.1(esbuild@0.19.12):
     dependencies:
       '@babel/runtime': 7.26.0
-      '@esbuild-plugins/node-resolve': 0.1.4(esbuild@0.24.0)
+      '@esbuild-plugins/node-resolve': 0.1.4(esbuild@0.19.12)
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@mdx-js/esbuild': 2.3.0(esbuild@0.24.0)
-      esbuild: 0.24.0
+      '@mdx-js/esbuild': 2.3.0(esbuild@0.19.12)
+      esbuild: 0.19.12
       gray-matter: 4.0.3
       remark-frontmatter: 4.0.1
       remark-mdx-frontmatter: 1.1.1
@@ -29037,11 +29061,11 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-contentlayer@0.3.4(contentlayer@0.3.4(esbuild@0.24.0))(esbuild@0.24.0)(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next-contentlayer@0.3.4(contentlayer@0.3.4(esbuild@0.19.12))(esbuild@0.19.12)(next@14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@contentlayer/core': 0.3.4(esbuild@0.24.0)
+      '@contentlayer/core': 0.3.4(esbuild@0.19.12)
       '@contentlayer/utils': 0.3.4
-      contentlayer: 0.3.4(esbuild@0.24.0)
+      contentlayer: 0.3.4(esbuild@0.19.12)
       next: 14.2.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

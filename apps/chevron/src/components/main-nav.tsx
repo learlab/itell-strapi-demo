@@ -22,15 +22,16 @@ export async function MainNav({ scrollProgress, read }: Props) {
   const { user } = await getSession();
 
   return (
-    <SiteNav mainContentId={Elements.TEXTBOOK_MAIN}>
+    <SiteNav mainContentId={Elements.TEXTBOOK_MAIN} className="border-b-2">
       <div className="flex h-[var(--nav-height)] items-center justify-between px-6 sm:space-x-0">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-6">
             <Image
               src="/images/itell.svg"
               alt="itell logo"
-              width={24}
-              height={32}
+              width={28}
+              height={30}
+              priority
             />
             <span className="hidden font-bold md:inline-block">
               {volume.title}
@@ -38,7 +39,7 @@ export async function MainNav({ scrollProgress, read }: Props) {
           </Link>
           {read ? (
             <ContinueReading
-              className="hidden w-28 md:block"
+              className="hidden md:flex"
               text="Read"
               variant="outline"
               size="default"

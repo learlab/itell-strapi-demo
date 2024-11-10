@@ -24,11 +24,12 @@
 .driver-active #textbook-nav,
 .driver-active #site-nav,
 .driver-active #chatbot-container,
+.driver-active #page-header,
 .driver-active .question-container {
   display: none;
 }
 
-.driver-active #textbook-main-wrapper {
+.driver-active #textbook-wrapper {
   grid-template-columns: 1fr;
   margin-right: auto;
   margin-left: 1rem;

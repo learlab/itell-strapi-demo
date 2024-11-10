@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-
 import { cn } from "@itell/utils";
 import * as RechartsPrimitive from "recharts";
 import {
-  type NameType,
-  type Payload,
-  type ValueType,
+  NameType,
+  Payload,
+  ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 
 // Format: { THEME_NAME: CSS_SELECTOR }

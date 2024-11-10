@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { darkColors, lightColors } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
 import {
@@ -25,8 +25,8 @@ import { cn, getChunkElement } from "@itell/utils";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import {
   ForwardIcon,
+  NotepadTextIcon,
   PaletteIcon,
-  StickyNoteIcon,
   TrashIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -279,7 +279,7 @@ export const NotePopover = memo(
           ) : positionFailed ? (
             <span>Note</span>
           ) : (
-            <StickyNoteIcon
+            <NotepadTextIcon
               className="opacity-60 hover:opacity-100"
               style={{ fill: noteColor }}
             />

@@ -1,7 +1,6 @@
 "use client";
 
 import { forwardRef } from "react";
-
 import { cn } from "@itell/utils";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -25,12 +24,11 @@ export const StatusButton = forwardRef<HTMLButtonElement, Props>(
       <Button
         className={cn("relative", className)}
         disabled={disabled || pending}
-        aria-live="off"
         ref={ref}
         {...rest}
       >
         <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
+          <motion.div
             className="flex w-full items-center justify-center"
             style={{ textShadow: "0px 1px 1.5px rgba(0, 0, 0, 0.16)" }}
             initial="initial"
@@ -45,8 +43,8 @@ export const StatusButton = forwardRef<HTMLButtonElement, Props>(
                 <Spinner className="size-4" />
               </span>
             ) : null}
-            <span className={pending ? "invisible" : ""}>{children}</span>
-          </motion.span>
+            <div className={pending ? "invisible" : ""}>{children}</div>
+          </motion.div>
         </AnimatePresence>
       </Button>
     );

@@ -15,7 +15,7 @@ There are two ways to run a iTELL project locally:
 Either way, you can start with cloning this repository
 
 ```
-git clone https://github.com/learlab/itell-strapi-demo.git
+git clone https://github.com/learlab/itell.git
 ```
 
 ## Manual Setup
@@ -41,62 +41,60 @@ packages
 package.json
 ```
 
-The `apps` folder contains the different iTELL volumes. Each app is a separate Next.js project. You only need to work on the one volume that is relevant to you. All the apps need common dependencies that you should download via
-
-```
-pnpm install
-```
-
-Then, find the `package.json` file for the specific volume you are working on. For example, if you are working on the `app-1` volume, go to `apps/app-1/package.json`. Find the `name` field in the `package.json` file, e.g.
-
-```
-"name": "@itell/app-1",
-```
-
-> [!IMPORTANT]
-> Go to the volume-specific package.json, not the package.json file that is in the root of the repository.
-
-After you find the volume name, run the following command from the root directory
+Go the specific volume folder you are working on. For example, if you are working on the `app-1` volume, change directory into `apps/app-1/`.
 
 ```bash
-# replace @itell/app-1 with your volume name
-pnpm turbo run build --filter @itell/app-1
-```
-
-Then, cd into your volume directory
-
-```
 cd apps/app-1
 ```
 
-You will find a `.env.example` file in the root of the volume directory. Copy this file and rename it to `.env`. Fill in the necessary environment variables. Contact a team member for the values.
+Create a new file `.env` in the volume folder. Fill in the necessary environment variables. Contact a team member for the values.
 
 > [!IMPORTANT]
 > Replace the `DATABASE_URL` value in `.env` with the URL of your postgres database.
 
-With the `.env` file in place, you can initialize your database and start the development server with the following commands
+With the `.env` file in place, you can initialize your database and build the app.
+
+```bash
+pnpm run setup
+```
+
+The command takes care of all the setup jobs including installing dependencies, building internal libraries, initializing the database, etc. It should finish in less than 5 minutes, the logs at the end looks like
 
 ```
-pnpm drizzle-kit migrate
+@itell/app-1:build: ○  (Static)   prerendered as static content
+@itell/app-1:build: ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+@itell/app-1:build: ƒ  (Dynamic)  server-rendered on demand
+@itell/app-1:build:
+@itell/app-1:build:
+
+ Tasks:    10 successful, 10 total
+Cached:    0 cached, 10 total
+  Time:    1m40.234s
+```
+
+If no error message is shown, the setup is successful. You can now start the development server via
+
+```
 pnpm run dev
 ```
 
-The `pnpm drizzle-kit migrate` command is only needed once to initialize the database. The `pnpm run dev` command is used to start the development server.
-
 This will print a localhost URL where you can view the app in your browser.
 
-From now on, you typically only need to run commands from the `apps/app-1` directory without worrying about the entire monorepo.
+The next time you want to start the development server, you only need to run `pnpm run dev` in the volume folder. No need to run the other commands again.
 
 ### All commands
 
 ```bash
-
+# install dependencies
 pnpm install
-pnpm turbo run build --filter @itell/app-1
-
+# go to the volume directory
 cd apps/app-1
-# fill in the .env file
+# fill in the .env file and initialize the database
 pnpm drizzle-kit migrate
+# build
+pnpm run build:deps
+
+# start the development server
 pnpm run dev
 ```
 

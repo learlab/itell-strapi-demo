@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Elements } from "@itell/constants";
 import {
   useDebounce,
@@ -15,6 +16,14 @@ import {
   SummaryResponseSchema,
 } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
+import { getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
+import { type User } from "lucia";
+import { SendHorizontalIcon } from "lucide-react";
+import { toast } from "sonner";
+import { useActionStatus } from "use-action-status";
 
 import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
@@ -31,27 +40,14 @@ import { type PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages/pages.client";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry, scrollToElement } from "@/lib/utils";
-import type { PageData } from "@/lib/pages/pages.client";
-import type { SummaryResponse } from "@itell/core/summary";
-
-import "@itell/driver.js/dist/driver.css";
-
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "@itell/ui/button";
-import { Warning } from "@itell/ui/callout";
-import { getChunkElement } from "@itell/utils";
-import { useSelector } from "@xstate/store/react";
-import { type User } from "lucia";
-import { SendHorizontalIcon } from "lucide-react";
-import { toast } from "sonner";
-import { useActionStatus } from "use-action-status";
-
 import {
   getSummaryLocal,
   saveSummaryLocal,
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
+import type { PageData } from "@/lib/pages/pages.client";
+import type { SummaryResponse } from "@itell/core/summary";
 
 type Props = {
   user: User;

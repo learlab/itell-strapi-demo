@@ -1,23 +1,19 @@
 import { Suspense } from "react";
-import Head from "next/head";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
 import { ScrollArea } from "@itell/ui/scroll-area";
 import { ChatLoader } from "@textbook/chat-loader";
 import { EventTracker } from "@textbook/event-tracker";
-import { NoteCount } from "@textbook/note/note-count";
 import { NoteLoader } from "@textbook/note/note-loader";
 import { PageAssignments } from "@textbook/page-assignments";
 import { PageContent } from "@textbook/page-content";
-import { PageInfo } from "@textbook/page-info";
 import { PageStatusModal } from "@textbook/page-status-modal";
-import { PageToc } from "@textbook/page-toc";
 import { Pager } from "@textbook/pager";
 import { QuestionControl } from "@textbook/question/question-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
-import { volume } from "#content";
 
 import { MobilePopup } from "@/components/mobile-popup";
 import { PageProvider } from "@/components/provider/page-provider";
@@ -28,9 +24,16 @@ import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
+import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
 
-export default async function Page(props: { params: Promise<{ slug: string }> }) {
+const ResourceLoader = dynamic(() =>
+  import("./resource-loader").then((mod) => mod.ResourceLoader)
+);
+
+export default async function Page(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const params = await props.params;
   const { slug } = routes.textbook.$parseParams(params);
   const { user } = await getSession();
@@ -53,19 +56,10 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     userPageSlug,
     userFinished,
   });
-
   return (
     <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
-      {volume.latex ? (
-        <Head>
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
-            integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"
-            crossOrigin="anonymous"
-          />
-        </Head>
-      ) : null}
+      <MobilePopup />
+      <ResourceLoader condition={userCondition} />
       <TextbookWrapper>
         <div id={Elements.TEXTBOOK_NAV}>
           <ScrollArea className="h-full w-full px-6 py-2">
@@ -76,17 +70,22 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
             />
           </ScrollArea>
         </div>
-        <MobilePopup />
 
         <PageContentWrapper>
-          <PageTitle className="mb-8">{page.title}</PageTitle>
-          <PageContent title={page.title} html={page.html} />
-          <SelectionPopover user={user} pageSlug={pageSlug} />
-          <Pager pageIndex={page.order} userPageSlug={user?.pageSlug ?? null} />
-          <p className="mt-4 text-right text-sm text-muted-foreground">
-            <span>Last updated at </span>
-            <time>{page.last_modified}</time>
-          </p>
+          <PageHeader page={page} user={user} />
+          <div className="col-span-1 col-start-2">
+            <PageTitle className="mb-8">{page.title}</PageTitle>
+            <PageContent title={page.title} html={page.html} />
+            <SelectionPopover user={user} pageSlug={pageSlug} />
+            <Pager
+              pageIndex={page.order}
+              userPageSlug={user?.pageSlug ?? null}
+            />
+            <p className="mt-4 text-right text-sm text-muted-foreground">
+              <span>Last updated at </span>
+              <time>{page.last_modified}</time>
+            </p>
+          </div>
         </PageContentWrapper>
       </TextbookWrapper>
 

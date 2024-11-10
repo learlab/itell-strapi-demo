@@ -10,16 +10,17 @@ import { TextbookToc } from "@textbook/textbook-toc";
 import { lucia } from "@/lib/auth/lucia";
 import { getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
+import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
 
-const getUserPageSlug = cache(async () => {
+const getUser = cache(async () => {
   const sessionId =
     (await cookies()).get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
     return null;
   }
   const session = await lucia.validateSession(sessionId);
-  return session.user?.pageSlug ?? null;
+  return session.user;
 });
 
 const getCurrentPage = async () => {
@@ -42,7 +43,7 @@ export default async function Loading() {
   if (!page) {
     return notFound();
   }
-  const userPageSlug = await getUserPageSlug();
+  const user = await getUser();
   const arr = Array.from(Array(10).keys());
 
   return (
@@ -51,18 +52,21 @@ export default async function Loading() {
         <ScrollArea className="h-full w-full px-6 py-2">
           <TextbookToc
             page={page}
-            userPageSlug={userPageSlug}
+            userPageSlug={user?.pageSlug ?? null}
             userFinished={false}
           />
         </ScrollArea>
       </div>
 
       <PageContentWrapper>
-        <PageTitle className="mb-8">{page.title}</PageTitle>
+        <PageHeader page={page} user={user} />
+        <div className="col-span-1 col-start-2">
+          <PageTitle className="mb-8">{page.title}</PageTitle>
 
-        {arr.map((i) => (
-          <Skeleton className="mb-4 h-28 w-full" key={i} />
-        ))}
+          {arr.map((i) => (
+            <Skeleton className="mb-4 h-28 w-full" key={i} />
+          ))}
+        </div>
       </PageContentWrapper>
 
       <aside id={Elements.PAGE_NAV} aria-label="table of contents">
