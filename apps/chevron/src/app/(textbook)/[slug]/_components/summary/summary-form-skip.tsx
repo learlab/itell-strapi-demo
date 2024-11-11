@@ -124,7 +124,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
               You have earned the right to skip writing a summary for this page. <br />
             </div>
             <div className="flex">
-              <span className={cn("animate-spin ease", `duration-${duration}`)}>⭐</span> Streak count: <span className="text-rose-700">{streak}</span>{' '}
+              <span className={cn("motion-safe:animate-spin ease", `duration-${duration}`)}>⭐</span> Streak count: <span className="text-rose-700">{streak}</span>{' '}
             </div>
             </>
           )}
