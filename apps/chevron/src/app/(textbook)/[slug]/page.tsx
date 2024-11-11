@@ -56,6 +56,7 @@ export default async function Page(props: {
     userPageSlug,
     userFinished,
   });
+
   return (
     <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
       <MobilePopup />
