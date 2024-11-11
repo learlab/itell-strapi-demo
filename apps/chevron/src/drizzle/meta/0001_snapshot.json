@@ -1,4 +1,6 @@
 {
+  "id": "b5dcf0fb-ac55-47a1-a3ae-3944976a99e0",
+  "prevId": "db69c50e-a2a0-4d5c-9a72-ab5c6f524638",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -44,15 +46,15 @@
         "chat_messages_user_id_users_id_fk": {
           "name": "chat_messages_user_id_users_id_fk",
           "tableFrom": "chat_messages",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -66,8 +68,8 @@
       },
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.constructed_responses": {
       "name": "constructed_responses",
@@ -125,6 +127,7 @@
       },
       "indexes": {
         "constructed_responses_user_id_idx": {
+          "name": "constructed_responses_user_id_idx",
           "columns": [
             {
               "expression": "user_id",
@@ -133,13 +136,13 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "constructed_responses_user_id_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "constructed_responses_page_slug_idx": {
+          "name": "constructed_responses_page_slug_idx",
           "columns": [
             {
               "expression": "page_slug",
@@ -148,33 +151,32 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "constructed_responses_page_slug_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "constructed_responses_user_id_users_id_fk": {
           "name": "constructed_responses_user_id_users_id_fk",
           "tableFrom": "constructed_responses",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.constructed_responses_feedback": {
       "name": "constructed_responses_feedback",
@@ -235,22 +237,22 @@
         "constructed_responses_feedback_user_id_users_id_fk": {
           "name": "constructed_responses_feedback_user_id_users_id_fk",
           "tableFrom": "constructed_responses_feedback",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.events": {
       "name": "events",
@@ -296,6 +298,7 @@
       },
       "indexes": {
         "events_user_id_idx": {
+          "name": "events_user_id_idx",
           "columns": [
             {
               "expression": "user_id",
@@ -304,13 +307,13 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "events_user_id_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "events_type_idx": {
+          "name": "events_type_idx",
           "columns": [
             {
               "expression": "event_type",
@@ -319,33 +322,32 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "events_type_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "events_user_id_users_id_fk": {
           "name": "events_user_id_users_id_fk",
           "tableFrom": "events",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.focus_times": {
       "name": "focus_times",
@@ -389,15 +391,15 @@
         "focus_times_user_id_users_id_fk": {
           "name": "focus_times_user_id_users_id_fk",
           "tableFrom": "focus_times",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -411,8 +413,8 @@
       },
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.notes": {
       "name": "notes",
@@ -483,6 +485,7 @@
       },
       "indexes": {
         "notes_user_id_idx": {
+          "name": "notes_user_id_idx",
           "columns": [
             {
               "expression": "user_id",
@@ -491,13 +494,13 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "notes_user_id_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "notes_page_slug_idx": {
+          "name": "notes_page_slug_idx",
           "columns": [
             {
               "expression": "page_slug",
@@ -506,33 +509,32 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "notes_page_slug_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "notes_user_id_users_id_fk": {
           "name": "notes_user_id_users_id_fk",
           "tableFrom": "notes",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.oauth_accounts": {
       "name": "oauth_accounts",
@@ -562,15 +564,15 @@
         "oauth_accounts_user_id_users_id_fk": {
           "name": "oauth_accounts_user_id_users_id_fk",
           "tableFrom": "oauth_accounts",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -584,8 +586,8 @@
       },
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.sessions": {
       "name": "sessions",
@@ -619,6 +621,7 @@
       },
       "indexes": {
         "sessions_user_id_idx": {
+          "name": "sessions_user_id_idx",
           "columns": [
             {
               "expression": "user_id",
@@ -627,33 +630,32 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "sessions_user_id_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "sessions_user_id_users_id_fk": {
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.summaries": {
       "name": "summaries",
@@ -736,6 +738,7 @@
       },
       "indexes": {
         "summaries_user_id_idx": {
+          "name": "summaries_user_id_idx",
           "columns": [
             {
               "expression": "user_id",
@@ -744,33 +747,32 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "summaries_user_id_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "summaries_user_id_users_id_fk": {
           "name": "summaries_user_id_users_id_fk",
           "tableFrom": "summaries",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.teachers": {
       "name": "teachers",
@@ -808,8 +810,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.users": {
       "name": "users",
@@ -871,6 +873,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "personalization_data": {
+          "name": "personalization_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
         "condition_assignments": {
           "name": "condition_assignments",
           "type": "jsonb",
@@ -897,8 +905,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "isRLSEnabled": false,
-      "checkConstraints": {}
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -1000,15 +1008,13 @@
     }
   },
   "schemas": {},
-  "_meta": {
-    "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "db69c50e-a2a0-4d5c-9a72-ab5c6f524638",
-  "prevId": "00000000-0000-0000-0000-000000000000",
   "sequences": {},
+  "roles": {},
   "policies": {},
   "views": {},
-  "roles": {}
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
 }
