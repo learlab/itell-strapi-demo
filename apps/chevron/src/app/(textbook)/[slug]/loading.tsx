@@ -8,7 +8,8 @@ import { Skeleton } from "@itell/ui/skeleton";
 import { TextbookToc } from "@textbook/textbook-toc";
 
 import { lucia } from "@/lib/auth/lucia";
-import { getPage } from "@/lib/pages/pages.server";
+import { getPageStatus } from "@/lib/page-status";
+import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
@@ -59,7 +60,16 @@ export default async function Loading() {
       </div>
 
       <PageContentWrapper>
-        <PageHeader page={page} user={user} />
+        <PageHeader
+          page={page}
+          user={user}
+          pageCount={allPagesSorted.length}
+          pageStatus={getPageStatus({
+            pageSlug: page.slug,
+            userPageSlug: user?.pageSlug ?? null,
+            userFinished: user?.finished ?? false,
+          })}
+        />
         <div className="col-span-1 col-start-2">
           <PageTitle className="mb-8">{page.title}</PageTitle>
 

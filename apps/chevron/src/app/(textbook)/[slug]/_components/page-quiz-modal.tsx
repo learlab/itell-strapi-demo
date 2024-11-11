@@ -19,10 +19,10 @@ import {
 } from "@/components/provider/page-provider";
 import { isProduction, Tags } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages";
 import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
 import { PageQuiz } from "./page-quiz";
-import type { PageData } from "@/lib/pages/pages.client";
+import type { PageData } from "@/lib/pages";
 
 export function PageQuizModal({
   page,

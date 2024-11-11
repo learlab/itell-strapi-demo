@@ -21,8 +21,13 @@ import {
   users,
 } from "@/drizzle/schema";
 import { isProduction, Tags } from "@/lib/constants";
-import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { firstPage, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isLastPage } from "@/lib/pages";
+import {
+  firstPage,
+  getPageData,
+  isPageAfter,
+  nextPage,
+} from "@/lib/pages/pages.server";
 import { authedProcedure } from "./utils";
 
 /**

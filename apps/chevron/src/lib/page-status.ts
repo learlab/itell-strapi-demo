@@ -1,7 +1,8 @@
-import { getPageData, isLastPage } from "./pages/pages.client";
+import { isLastPage } from "./pages";
 import {
   firstAssignmentPage,
   firstPage,
+  getPageData,
   isPageAfter,
 } from "./pages/pages.server";
 

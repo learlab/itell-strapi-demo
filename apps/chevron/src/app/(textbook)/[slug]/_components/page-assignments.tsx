@@ -5,8 +5,7 @@ import { type User } from "lucia";
 
 import { Condition } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
-import { getPageData } from "@/lib/pages/pages.client";
-import { FinishedLink } from "./finished-link";
+import { getPageData } from "@/lib/pages/pages.server";
 import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";

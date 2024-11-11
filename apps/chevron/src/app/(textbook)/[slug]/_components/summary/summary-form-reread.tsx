@@ -37,7 +37,7 @@ import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry, scrollToElement } from "@/lib/utils";
 import {
@@ -46,7 +46,7 @@ import {
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
-import type { PageData } from "@/lib/pages/pages.client";
+import type { PageData } from "@/lib/pages";
 import type { SummaryResponse } from "@itell/core/summary";
 
 type Props = {
@@ -244,7 +244,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
       <div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
         <div role="status">
           {finished && page.next_slug ? (
-            <div className="space-x-2 space-y-2">
+            <div className="flex flex-col gap-2">
               <p>
                 You have finished this page and can move on. You are still
                 welcome to improve the summary.

@@ -22,7 +22,7 @@ import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
-import { getPage } from "@/lib/pages/pages.server";
+import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
@@ -72,7 +72,12 @@ export default async function Page(props: {
         </div>
 
         <PageContentWrapper>
-          <PageHeader page={page} user={user} />
+          <PageHeader
+            page={page}
+            user={user}
+            pageCount={allPagesSorted.length}
+            pageStatus={pageStatus}
+          />
           <div className="col-span-1 col-start-2">
             <PageTitle className="mb-8">{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />

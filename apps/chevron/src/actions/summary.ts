@@ -19,8 +19,8 @@ import {
   PAGE_SUMMARY_THRESHOLD,
   Tags,
 } from "@/lib/constants";
-import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isLastPage } from "@/lib/pages";
+import { getPageData, isPageAfter, nextPage } from "@/lib/pages/pages.server";
 import { authedProcedure } from "./utils";
 
 /**

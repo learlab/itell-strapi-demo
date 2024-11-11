@@ -19,7 +19,7 @@ import {
 } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getPageData } from "@/lib/pages/pages.client";
+import { getPageData } from "@/lib/pages/pages.server";
 import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
 

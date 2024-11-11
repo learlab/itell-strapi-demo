@@ -1,8 +1,7 @@
 import Link from "next/link";
 import pluralize from "pluralize";
 
-import { getPageData } from "@/lib/pages/pages.client";
-import { allPagesSorted } from "@/lib/pages/pages.server";
+import { allPagesSorted, getPageData } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 
 export function UserProgress({

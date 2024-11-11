@@ -16,8 +16,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import { getClassStudentsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getPageData } from "@/lib/pages/pages.client";
-import { allPagesSorted, firstPage } from "@/lib/pages/pages.server";
+import {
+  allPagesSorted,
+  firstPage,
+  getPageData,
+} from "@/lib/pages/pages.server";
 import { ClassBadges } from "./class-badges";
 import { ProgressChart } from "./progress-chart";
 import { ClassQuizTable } from "./quiz-table";

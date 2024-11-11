@@ -43,7 +43,7 @@ import { apiClient } from "@/lib/api-client";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage, PageData } from "@/lib/pages";
 import { getHistory, SelectStairsAnswered } from "@/lib/store/chat-store";
 import {
   getExcludedChunks,
@@ -64,7 +64,6 @@ import {
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
-import type { PageData } from "@/lib/pages/pages.client";
 import type { StairsQuestion } from "@/lib/store/summary-store";
 import type {
   SummaryFeedback as SummaryFeedbackType,
