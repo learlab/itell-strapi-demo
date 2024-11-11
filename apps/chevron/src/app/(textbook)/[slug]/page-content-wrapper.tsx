@@ -10,7 +10,7 @@ export function PageContentWrapper({
   return (
     <div
       id={Elements.TEXTBOOK_MAIN}
-      className="min-h-screen !p-0"
+      className="min-h-screen !px-0 !pt-0 pb-4"
       style={{
         display: "grid",
         gridTemplateColumns: "1fr min(85ch, calc(100% - 64px)) 1fr",
