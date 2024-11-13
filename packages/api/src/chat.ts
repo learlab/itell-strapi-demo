@@ -17,6 +17,7 @@ export const createChatRouter = ({
         z.object({
           page_slug: z.string(),
           message: z.string(),
+          current_chunk: z.string().optional().nullable(),
           history: z
             .array(
               z.object({
@@ -25,7 +26,6 @@ export const createChatRouter = ({
               })
             )
             .optional(),
-          current_chunk: z.string().optional().nullable(),
           summary: z.string().optional(),
         })
       ),
@@ -48,6 +48,7 @@ export const createChatRouter = ({
         z.object({
           page_slug: z.string(),
           message: z.string(),
+          current_chunk: z.string(),
           history: z
             .array(
               z.object({
@@ -56,7 +57,6 @@ export const createChatRouter = ({
               })
             )
             .optional(),
-          current_chunk: z.string(),
           summary: z.string().optional(),
         })
       ),
