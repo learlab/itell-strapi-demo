@@ -83,18 +83,6 @@ export function UserRadarChart({
       description:
         "Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
     },
-    {
-      label: "Language Score",
-      user: userStats.languageScore,
-      other: otherStats.languageScore,
-      userScaled:
-        userStats.languageScore && otherStats.languageScore
-          ? scale(userStats.languageScore, otherStats.languageScore)
-          : 0,
-      otherScaled: 1,
-      description:
-        "Measures the language quality of the summary. The higher the score, the better the summary wording.",
-    },
 
     {
       label: "Correct Answers",

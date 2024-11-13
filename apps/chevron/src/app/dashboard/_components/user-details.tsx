@@ -74,10 +74,6 @@ export async function UserDetails({ classId, pageSlug }: Props) {
       userStats.contentScore && otherStats.contentScore
         ? userStats.contentScore - otherStats.contentScore
         : null,
-    languageScore:
-      userStats.languageScore && otherStats.languageScore
-        ? userStats.languageScore - otherStats.languageScore
-        : null,
   };
 
   return (
@@ -180,38 +176,6 @@ export async function UserDetails({ classId, pageSlug }: Props) {
             {diffs.contentScore
               ? `
 					${diffs.contentScore > 0 ? "+" : ""}${diffs.contentScore.toFixed(
-            2
-          )} compared to others`
-              : "class stats unavailable"}
-          </p>
-        </DashboardBadge>
-        <DashboardBadge
-          title="Median Language Score"
-          icon={<WholeWordIcon className="size-4" />}
-          className={cn({
-            "border-green-500": diffs.languageScore && diffs.languageScore > 0,
-            "border-destructive":
-              diffs.languageScore && diffs.languageScore < 0,
-          })}
-        >
-          <div className="mb-2 flex h-6 items-baseline gap-2">
-            <div className="text-2xl font-bold">
-              {userStats.languageScore
-                ? userStats.languageScore.toFixed(2)
-                : "NA"}
-            </div>
-            {userStats.languageScoreLastWeek ? (
-              <TrendChart
-                prev={userStats.languageScoreLastWeek}
-                current={userStats.languageScore}
-                label="Language Score"
-              />
-            ) : null}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {diffs.languageScore
-              ? `
-					${diffs.languageScore > 0 ? "+" : ""}${diffs.languageScore.toFixed(
             2
           )} compared to others`
               : "class stats unavailable"}

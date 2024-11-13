@@ -151,14 +151,6 @@ const getUserStatsHandler = memoize(
     const [summary, answer] = await Promise.all([
       db
         .select({
-          languageScore: sql<
-            number | null
-          >`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
-          languageScoreLastWeek: sql<number | null>`
-			PERCENTILE_CONT(0.5) within group (
-			  order by ${summaries.languageScore}
-			) FILTER (WHERE ${summaries.updatedAt} <= now() - INTERVAL '7 DAYS')
-		  `,
           contentScore: sql<
             number | null
           >`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
@@ -192,9 +184,7 @@ const getUserStatsHandler = memoize(
 
     return {
       contentScore: summary[0].contentScore,
-      languageScore: summary[0].languageScore,
       contentScoreLastWeek: summary[0].contentScoreLastWeek,
-      languageScoreLastWeek: summary[0].languageScoreLastWeek,
       totalSummaries: summary[0].count,
       totalPassedSummaries: summary[0].passedCount,
       totalSummariesLastWeek: summary[0].countLastWeek,
@@ -251,9 +241,6 @@ const getOtherStatsHandler = memoize(
     const [summaryScores, summaryCount, answerCount] = await Promise.all([
       db
         .select({
-          languageScore: sql<
-            number | null
-          >`PERCENTILE_CONT(0.5) within group (order by ${summaries.languageScore})`,
           contentScore: sql<
             number | null
           >`PERCENTILE_CONT(0.5) within group (order by ${summaries.contentScore})`,
@@ -288,7 +275,6 @@ const getOtherStatsHandler = memoize(
 
     return {
       contentScore: summaryScores[0].contentScore,
-      languageScore: summaryScores[0].languageScore,
       totalSummaries: summaryCount[0].total ?? 0,
       totalPassedSummaries: summaryCount[0].passed ?? 0,
       totalAnswers: answerCount[0].total ?? 0,

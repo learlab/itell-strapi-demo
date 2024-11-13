@@ -5,10 +5,11 @@ import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
-import { db } from "@/actions/db";
+import { db, first } from "@/actions/db";
 import {
   CreateSummarySchema,
   events,
+  focus_times,
   summaries,
   users,
 } from "@/drizzle/schema";
@@ -125,6 +126,42 @@ export const createSummaryAction = authedProcedure
     }
 
     return data;
+  });
+
+/**
+ * Get data to make the summary scoring request
+ *
+ */
+export const getSummaryScoreRequestAction = authedProcedure
+  .input(z.object({ pageSlug: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    return await db.transaction(async (tx) => {
+      const contentScoreHistory = (
+        await tx
+          .select({
+            content: summaries.contentScore,
+          })
+          .from(summaries)
+          .where(and(eq(summaries.userId, ctx.user.id)))
+      ).map((v) => v.content);
+
+      const focusTimes = first(
+        await tx
+          .select()
+          .from(focus_times)
+          .where(
+            and(
+              eq(focus_times.userId, ctx.user.id),
+              eq(focus_times.pageSlug, input.pageSlug)
+            )
+          )
+      );
+
+      return {
+        contentScoreHistory,
+        focusTimes,
+      };
+    });
   });
 
 /**

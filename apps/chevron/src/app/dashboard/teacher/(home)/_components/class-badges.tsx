@@ -1,10 +1,5 @@
 import { DashboardBadge } from "@itell/ui/dashboard-badge";
-import {
-  FileTextIcon,
-  FlagIcon,
-  PencilIcon,
-  WholeWordIcon,
-} from "lucide-react";
+import { FileTextIcon, FlagIcon, PencilIcon } from "lucide-react";
 
 import { getOtherStatsAction } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
@@ -34,13 +29,6 @@ export async function ClassBadges({ ids }: Props) {
       <DashboardBadge title="Content Score" icon={<FileTextIcon />}>
         <div className="text-2xl font-bold">
           {classStats.contentScore ? classStats.contentScore.toFixed(2) : "NA"}
-        </div>
-      </DashboardBadge>
-      <DashboardBadge title="Language Score" icon={<WholeWordIcon />}>
-        <div className="text-2xl font-bold">
-          {classStats.languageScore
-            ? classStats.languageScore.toFixed(2)
-            : "NA"}
         </div>
       </DashboardBadge>
       <DashboardBadge title="Answers" icon={<PencilIcon />}>

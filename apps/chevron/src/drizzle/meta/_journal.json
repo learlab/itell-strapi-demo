@@ -15,6 +15,20 @@
       "when": 1731065413735,
       "tag": "0001_serious_mandrill",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1731474818220,
+      "tag": "0002_remarkable_roulette",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1731522161495,
+      "tag": "0003_yellow_scarecrow",
+      "breakpoints": true
     }
   ]
 }

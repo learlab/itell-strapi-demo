@@ -30,7 +30,10 @@ import { useActionStatus } from "use-action-status";
 
 import { createEventAction } from "@/actions/event";
 import { getFocusTimeAction } from "@/actions/focus-time";
-import { createSummaryAction } from "@/actions/summary";
+import {
+  createSummaryAction,
+  getSummaryScoreRequestAction,
+} from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import {
   useChatStore,
@@ -57,7 +60,10 @@ import {
   SelectStairs,
 } from "@/lib/store/summary-store";
 import { makePageHref, reportSentry, scrollToElement } from "@/lib/utils";
-import { SummaryFeedback, SummaryFeedbackDetails } from "./summary-feedback";
+import {
+  SummaryFeedbackDetails,
+  SummaryResponseFeedback,
+} from "./summary-feedback";
 import {
   getSummaryLocal,
   saveSummaryLocal,
@@ -65,16 +71,17 @@ import {
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
 import type { StairsQuestion } from "@/lib/store/summary-store";
-import type {
-  SummaryFeedback as SummaryFeedbackType,
-  SummaryResponse,
-} from "@itell/core/summary";
+import type { SummaryResponse } from "@itell/core/summary";
 
 interface Props {
   user: User;
   page: PageData;
   pageStatus: PageStatus;
 }
+
+type ApiRequest = Parameters<
+  typeof apiClient.api.summary.stairs.$post
+>[0]["json"];
 
 export function SummaryFormStairs({ user, page, pageStatus }: Props) {
   const pageSlug = page.slug;
@@ -85,7 +92,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
 
   // for debugging
   const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
-  const requestBodyRef = useRef<string | null>(null);
+  const requestBodyRef = useRef<{} | null>(null);
   const summaryResponseRef = useRef<SummaryResponse | null>(null);
   const stairsDataRef = useRef<StairsQuestion | null>(null);
   const stairsAnsweredRef = useRef(false);
@@ -104,7 +111,6 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
   const isNextPageVisible = useSelector(summaryStore, SelectIsNextPageVisible);
   const stairsQuestion = useSelector(summaryStore, SelectStairs);
   const submissionError = useSelector(summaryStore, SelectError);
-  const feedback = response ? getFeedback(response) : null;
 
   const {
     action,
@@ -130,20 +136,21 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
         return;
       }
 
-      const [focusTime, err] = await getFocusTimeAction({ pageSlug });
+      const [data, err] = await getSummaryScoreRequestAction({ pageSlug });
       if (err) {
         throw new Error("get focus time action", { cause: err });
       }
-      const body = {
+      const requestBody: ApiRequest = {
         summary: input,
         page_slug: pageSlug,
-        focus_time: focusTime?.data,
+        focus_time: data.focusTimes?.data,
         chat_history: getHistory(chatStore),
         excluded_chunks: getExcludedChunks(questionStore),
+        score_history: data.contentScoreHistory.filter(Boolean),
       };
-      requestBodyRef.current = JSON.stringify(body);
+      requestBodyRef.current = requestBody;
       const response = await apiClient.api.summary.stairs.$post({
-        json: body,
+        json: requestBody,
       });
 
       if (response.ok && response.body) {
@@ -182,7 +189,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
               reportSentry(
                 "first chunk of stairs summary response in wrong shape",
                 {
-                  body,
+                  body: requestBody,
                   chunk: data,
                 }
               );
@@ -231,7 +238,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
       }
 
       if (summaryResponseRef.current) {
-        const scores = summaryResponseRef.current;
+        const response = summaryResponseRef.current;
         addStage("Saving");
 
         const [data, err] = await createSummaryAction({
@@ -239,11 +246,11 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
             text: input,
             pageSlug,
             condition: Condition.STAIRS,
-            isPassed: scores.is_passed ?? false,
-            containmentScore: scores.containment,
-            similarityScore: scores.similarity,
-            languageScore: scores.language,
-            contentScore: scores.content,
+            isPassed: response.is_passed ?? false,
+            containmentScore: response.metrics.containment?.score ?? -1,
+            similarityScore: response.metrics.similarity?.score ?? -1,
+            contentScore: response.metrics.content?.score,
+            contentThreshold: response.metrics.content?.threshold,
           },
           keystroke: {
             start: prevInput ?? getSummaryLocal(pageSlug) ?? "",
@@ -294,7 +301,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
       if (isLast) {
         toast.info("You have finished the entire textbook!");
       } else {
-        const title = feedback?.isPassed
+        const title = response?.is_passed
           ? "Good job summarizing 🎉"
           : "You can now move on 👏";
         toast(title, {
@@ -376,9 +383,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
           node.id = Elements.STAIRS_FEEDBACK_CONTAINER;
 
           addPortal(
-            <SummaryFeedbackDetails
-              feedback={getFeedback(summaryResponseRef.current)}
-            />,
+            <SummaryFeedbackDetails response={summaryResponseRef.current} />,
             node
           );
           chunk.prepend(node);
@@ -412,7 +417,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
       summaryStore.send({ type: "fail", error: ErrorType.INTERNAL });
       clearStages();
       reportSentry("score summary stairs", {
-        body: requestBodyRef.current,
+        requestBody: requestBodyRef.current,
         summaryResponse: summaryResponseRef.current,
         stairsData: stairsDataRef.current,
         error: error.cause,
@@ -424,10 +429,10 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
     <>
       <PortalContainer portals={portals} />
       <div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
-        {feedback ? (
-          <SummaryFeedback
+        {response ? (
+          <SummaryResponseFeedback
             className={isPending ? "opacity-70" : ""}
-            feedback={feedback}
+            response={response}
             needRevision={isLast ? !user.finished : !isNextPageVisible}
           />
         ) : null}
@@ -450,7 +455,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
             </Button>
           ) : null}
         </div>
-        <Confetti active={feedback?.isPassed ?? false} />
+        <Confetti active={response?.is_passed ?? false} />
         <h2 id="summary-form-heading" className="sr-only">
           submit summary
         </h2>
@@ -517,14 +522,6 @@ function FinishReadingButton({ onClick }: { onClick: (_: number) => void }) {
   );
 }
 
-const getFeedback = (response: SummaryResponse): SummaryFeedbackType => {
-  return {
-    isPassed: response.is_passed ?? false,
-    prompt: response.prompt ?? "",
-    promptDetails: response.prompt_details ?? [],
-    suggestedKeyphrases: response.suggested_keyphrases,
-  };
-};
 const driverObj = driver();
 
 const exitQuestion = () => {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { animate, Easing, useMotionValue } from "framer-motion";
 
 type Options = {
@@ -33,7 +32,7 @@ export const useAnimatedText = (text: string, options?: Options) => {
       animatedCursor,
       options?.delimiter ? text.split(options.delimiter).length : text.length,
       {
-        duration: 3,
+        duration: 2,
         ease: options?.ease ?? "easeOut",
         onUpdate(latest) {
           setCursor(Math.floor(latest));

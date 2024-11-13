@@ -100,32 +100,32 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         page_slug: pageSlug,
       });
       console.log("requestBody", requestBodyRef.current);
-      const response = await apiClient.api.summary.$post({
+      const apiResponse = await apiClient.api.summary.$post({
         json: {
           summary: input,
           page_slug: pageSlug,
         },
       });
-      const json = await response.json();
+      const json = await apiResponse.json();
       const parsed = SummaryResponseSchema.safeParse(json);
       if (!parsed.success) {
         throw new Error("summary response in wrong shape", {
           cause: parsed.error,
         });
       }
-      const scores = parsed.data;
-      summaryResponseRef.current = scores;
+      const response = parsed.data;
+      summaryResponseRef.current = response;
 
       const [_, err] = await createSummaryAction({
         summary: {
           text: input,
           pageSlug,
           condition: Condition.RANDOM_REREAD,
-          isPassed: scores.is_passed ?? false,
-          containmentScore: scores.containment,
-          similarityScore: scores.similarity,
-          languageScore: scores.language,
-          contentScore: scores.content,
+          isPassed: response.is_passed ?? false,
+          containmentScore: response.metrics.containment?.score ?? -1,
+          similarityScore: response.metrics.similarity?.score ?? -1,
+          contentScore: response.metrics.content?.score,
+          contentThreshold: response.metrics.content?.threshold,
         },
         keystroke: {
           start: prevInput.current ?? getSummaryLocal(pageSlug) ?? "",
