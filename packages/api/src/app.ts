@@ -11,9 +11,12 @@ export const createApp = ({
   fetcher: typeof fetch;
   apiUrl: string;
 }) => {
-  return new Hono()
-    .basePath("/api")
-    .route("/summary", createSummaryRouter({ fetcher, apiUrl }))
-    .route("/chat", createChatRouter({ fetcher, apiUrl }))
-    .route("/cri", createCriRouter({ fetcher, apiUrl }));
+  return (
+    new Hono()
+      // specify basePath here to expect next.js api route path to be app/api/[[...path]]/route.ts
+      .basePath("/api")
+      .route("/summary", createSummaryRouter({ fetcher, apiUrl }))
+      .route("/chat", createChatRouter({ fetcher, apiUrl }))
+      .route("/cri", createCriRouter({ fetcher, apiUrl }))
+  );
 };
