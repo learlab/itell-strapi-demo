@@ -1,7 +1,10 @@
 'use client'
 
 import React, { useState } from "react";
-import { redirect } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
+import { toast } from "sonner"
+
+// const router = useRouter()
 
 const ConsentPage: React.FC = () => {
   const [consentGiven, setConsentGiven] = useState(false);
@@ -14,10 +17,10 @@ const ConsentPage: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (consentGiven) {
-      alert("Consent given. Thank you!");
-      redirect('/intake')
+      toast.success("Consent given. Thank you!");
+      redirect("/intake1")
     } else {
-      alert("Consent not given. You will be redirected to the text anyway.");
+      toast.warning("Consent not given. You will be redirected to the text anyway.");
     }
   };
 

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from "react";
+import { Button } from "@itell/ui/button"
 
 interface SurveyData {
   age: string;
@@ -106,12 +107,12 @@ const SurveyForm: React.FC = () => {
         />
       </div>
 
-      <button
+      <Button
         type="submit"
         className="mt-4 w-full rounded-md bg-indigo-600 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
       >
         Submit Survey
-      </button>
+      </Button>
     </form>
   );
 };

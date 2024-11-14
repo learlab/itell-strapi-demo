@@ -1,6 +1,6 @@
 
 import React from "react";
-import SurveyForm from "@/components/intake-survey-form";
+import SurveyForm from "@/components/survey-forms/intake-survey-form1";
 
 const SurveyPage: React.FC = () => {
   return (
