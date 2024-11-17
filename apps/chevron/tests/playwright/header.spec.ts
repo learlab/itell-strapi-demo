@@ -15,15 +15,3 @@ test("header in textbook pages shows volume title", async ({ page }) => {
   expect(await page.getByTestId("site-title").innerText()).toBe(volume.title);
 });
 
-test("google", async ({ page }) => {
-  await page.goto(`${baseURL}/auth`);
-  await page.getByTestId("google-login-button").click();
-  await page.waitForURL("https://accounts.google.com/**");
-
-  // New Google sign in form
-  await page.fill('input[type="email"]', "qiushi.yann@gmail.com");
-  await page.locator("#identifierNext >> button").click();
-
-  await page.fill('input[type="password"]', "Yanqiushi123");
-  await page.locator("#passwordNext >> button").click();
-});
