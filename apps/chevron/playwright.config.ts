@@ -1,13 +1,14 @@
-import { defineConfig, devices } from "@playwright/test";
+import path from "path";
 
+import { defineConfig, devices } from "@playwright/test";
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from "dotenv";
 
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+export const baseURL = "http://127.0.0.1:3000";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -36,14 +37,30 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Firefox"],
+        // storageState: "playwright/.auth/storage.json",
+        launchOptions: {
+          ignoreDefaultArgs: [
+            "--disable-component-extensions-with-background-pages",
+          ],
+          args: [
+            "--disable-blink-features=AutomationControlled",
+            "--start-maximized", // Start the browser maximized
+            "--no-sandbox", // Required for some environments
+            "--disable-setuid-sandbox",
+            "--disable-infobars", // Hide the infobar about automation
+            "--disable-dev-shm-usage",
+          ],
+        },
+      },
     },
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
     command: "pnpm dev",
-    url: "http://127.0.0.1:3000",
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
   },
 });
