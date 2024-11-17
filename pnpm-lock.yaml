@@ -239,12 +239,18 @@ importers:
       autoprefixer:
         specifier: ^10.4.15
         version: 10.4.20(postcss@8.4.47)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       drizzle-kit:
         specifier: ^0.28.0
         version: 0.28.0
       eslint-plugin-drizzle:
         specifier: ^0.2.3
         version: 0.2.3(eslint@9.13.0(jiti@2.3.3))
+      playwright-extra:
+        specifier: ^4.3.6
+        version: 4.3.6(playwright-core@1.48.2)(playwright@1.48.2)
       postcss:
         specifier: ^8.4.29
         version: 8.4.47
@@ -11388,6 +11394,18 @@ packages:
     resolution: {integrity: sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==}
     engines: {node: '>=18'}
     hasBin: true
+
+  playwright-extra@4.3.6:
+    resolution: {integrity: sha512-q2rVtcE8V8K3vPVF1zny4pvwZveHLH8KBuVU2MoE3Jw4OKVoBWsHI9CH9zPydovHHOCDxjGN2Vg+2m644q3ijA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      playwright: '*'
+      playwright-core: '*'
+    peerDependenciesMeta:
+      playwright:
+        optional: true
+      playwright-core:
+        optional: true
 
   playwright@1.48.2:
     resolution: {integrity: sha512-NjYvYgp4BPmiwfe31j4gHLa3J7bD2WiBz8Lk2RoSsmX38SVIARZ18VYjxLjAcDsAhA+F4iSEXTSGgjua0rrlgQ==}
@@ -26925,6 +26943,15 @@ snapshots:
       find-up: 3.0.0
 
   playwright-core@1.48.2: {}
+
+  playwright-extra@4.3.6(playwright-core@1.48.2)(playwright@1.48.2):
+    dependencies:
+      debug: 4.3.7(supports-color@5.5.0)
+    optionalDependencies:
+      playwright: 1.48.2
+      playwright-core: 1.48.2
+    transitivePeerDependencies:
+      - supports-color
 
   playwright@1.48.2:
     dependencies:

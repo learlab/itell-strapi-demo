@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-
+import NextImage from "next/image";
 import { cn } from "@itell/utils";
 import { ExpandIcon } from "lucide-react";
-import NextImage from "next/image";
 
 import { Button } from "./button.js";
 import { Dialog, DialogContent } from "./dialog.js";
 
-interface FigureProps {
+interface FigureProps extends React.ComponentProps<typeof NextImage> {
   src: string;
   alt: string;
   width?: number;
@@ -41,6 +40,7 @@ export function Figure({
   showCaption = false,
   expandable = true,
   onExpandClick,
+  ...rest
 }: FigureProps) {
   const shouldExpand = expandable && expandable !== "false";
   return (
@@ -62,6 +62,7 @@ export function Figure({
           height={height}
           layout={layout}
           priority={priority}
+          {...rest}
         />
         {shouldExpand ? (
           <Button

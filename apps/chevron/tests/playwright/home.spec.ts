@@ -1,13 +1,13 @@
 import test, { expect } from "@playwright/test";
 import { volume } from "#content";
 
-test.describe("home page", () => {
+test.describe("homepage", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
-  test("metadata", async ({ page }) => {
-    expect(await page.title()).toBe(volume.title);
+  test("metadata matches volume title and description", async ({ page }) => {
+    expect(page).toHaveTitle(volume.title);
     expect(
       await page.locator("meta[name='description']").getAttribute("content")
     ).toBe(volume.description);

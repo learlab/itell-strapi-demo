@@ -33,7 +33,10 @@ export async function MainNav({ scrollProgress, read }: Props) {
               height={30}
               priority
             />
-            <span className="hidden font-bold md:inline-block">
+            <span
+              className="hidden font-bold md:inline-block"
+              data-testid="site-title"
+            >
               {volume.title}
             </span>
           </Link>
