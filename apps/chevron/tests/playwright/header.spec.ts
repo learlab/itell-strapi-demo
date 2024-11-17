@@ -14,3 +14,4 @@ test("header in textbook pages shows volume title", async ({ page }) => {
   await page.goto(makePageHref(firstPage.slug));
   expect(await page.getByTestId("site-title").innerText()).toBe(volume.title);
 });
+
