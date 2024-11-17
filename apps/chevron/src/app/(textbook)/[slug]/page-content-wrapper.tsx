@@ -13,7 +13,7 @@ export function PageContentWrapper({
       className="min-h-screen !px-0 !pt-0 pb-4"
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr min(85ch, calc(100% - 64px)) 1fr",
+        gridTemplateColumns: "1fr min(75ch, calc(100% - 64px)) 1fr",
       }}
     >
       {children}

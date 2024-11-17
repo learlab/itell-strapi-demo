@@ -82,6 +82,7 @@ export function UserAccountNav({ user }: { user: User | null }) {
         <DropdownMenuTrigger
           className="flex items-center gap-1"
           aria-label="user navigation menu"
+          data-test-id="user-nav-menu"
         >
           <UserAvatar user={user} className="h-8 w-8" />
           {open ? (
