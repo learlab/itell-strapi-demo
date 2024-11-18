@@ -134,14 +134,9 @@ export function UserRadarChart({
             {data[3].userScaled > 1 ? "ahead of" : "behind"} the median.
           </li>
           <li>
-            User scored {data[4].user} in summary language score, median is{" "}
-            {data[4].other ? Math.round(data[4].other) : "NA"}, user is{" "}
+            User had {data[4].user} correct answer to questions, median is{" "}
+            {Math.round(data[4].other || 0)}, user is{" "}
             {data[4].userScaled > 1 ? "ahead of" : "behind"} the median.
-          </li>
-          <li>
-            User had {data[5].user} correct answer to questions, median is{" "}
-            {Math.round(data[5].other || 0)}, user is{" "}
-            {data[5].userScaled > 1 ? "ahead of" : "behind"} the median.
           </li>
         </ul>
       </div>
