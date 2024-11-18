@@ -62,8 +62,6 @@ export default async function Loading() {
       <PageContentWrapper>
         <PageHeader
           page={page}
-          user={user}
-          pageCount={allPagesSorted.length}
           pageStatus={getPageStatus({
             pageSlug: page.slug,
             userPageSlug: user?.pageSlug ?? null,
