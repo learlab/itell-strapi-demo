@@ -102,6 +102,7 @@ export const users = pgTable("users", {
     .notNull(),
   createdAt: CreatedAt,
   updatedAt: UpdatedAt,
+  consent: boolean("consent").default(null),
 });
 
 export type ConditionAssignments = Record<string, string>;
