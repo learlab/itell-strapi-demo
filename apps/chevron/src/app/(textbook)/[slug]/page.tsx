@@ -78,14 +78,23 @@ export default async function Page(props: {
             <PageTitle className="mb-8">{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />
             <SelectionPopover user={user} pageSlug={pageSlug} />
-            <Pager
-              pageIndex={page.order}
-              userPageSlug={user?.pageSlug ?? null}
-            />
+
             <p className="mt-4 text-right text-sm text-muted-foreground">
               <span>Last updated at </span>
               <time>{page.last_modified}</time>
             </p>
+            {user && page.summary ? (
+              <PageAssignments
+                pageSlug={pageSlug}
+                pageStatus={pageStatus}
+                user={user}
+                condition={userCondition}
+              />
+            ) : null}
+            <Pager
+              pageIndex={page.order}
+              userPageSlug={user?.pageSlug ?? null}
+            />
           </div>
         </PageContentWrapper>
       </TextbookWrapper>
@@ -95,14 +104,6 @@ export default async function Page(props: {
       </Suspense>
 
       {user ? <NoteLoader pageSlug={pageSlug} /> : null}
-      {user && page.summary ? (
-        <PageAssignments
-          pageSlug={pageSlug}
-          pageStatus={pageStatus}
-          user={user}
-          condition={userCondition}
-        />
-      ) : null}
 
       {isProduction ? (
         <PageStatusModal user={user} pageStatus={pageStatus} />

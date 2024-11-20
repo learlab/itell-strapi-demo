@@ -1,7 +1,15 @@
 import { Suspense } from "react";
 import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@itell/ui/card";
 import { type User } from "lucia";
+import { PencilIcon } from "lucide-react";
 
 import { Condition } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
@@ -34,55 +42,59 @@ export function PageAssignments({
 
   return (
     <section
-      className="gird-cols-1 mx-auto mb-20 grid max-w-[1800px] gap-8 border-t-2 p-4 lg:grid-cols-3 lg:p-8"
       id={Elements.PAGE_ASSIGNMENTS}
       aria-labelledby="page-assignments-heading"
+      className="mt-12"
     >
       <h2 className="sr-only" id="page-assignments-heading">
         assignments
       </h2>
-      {condition === Condition.SIMPLE ? (
-        <div className="col-span-full mx-auto max-w-2xl space-y-4">
-          <SummaryFormSimple page={page} pageStatus={pageStatus} />
-        </div>
-      ) : (
-        <>
-          <div className="col-span-full hidden md:block lg:col-span-1">
-            <SummaryDescription condition={condition} />
-            {condition !== Condition.SIMPLE && (
+      <Card className="border-info">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2">Summary</CardTitle>
+          <CardDescription>
+            You can unlock the next page by submitting{" "}
+            <span className="font-bold underline decoration-warning decoration-dashed decoration-4 underline-offset-4">
+              a good summary
+            </span>{" "}
+            of this page
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {condition === Condition.SIMPLE ? (
+            <SummaryFormSimple page={page} pageStatus={pageStatus} />
+          ) : null}
+          {user.finished ? (
+            <Suspense fallback={<FinishedPrompt.Skeleton />}>
+              <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+            </Suspense>
+          ) : null}
+          {condition !== Condition.SIMPLE ? (
+            <PageQuizModal page={page} pageStatus={pageStatus} />
+          ) : null}
+          {condition === Condition.RANDOM_REREAD ? (
+            <SummaryFormReread
+              user={user}
+              page={page}
+              pageStatus={pageStatus}
+            />
+          ) : condition === Condition.STAIRS ? (
+            <SummaryFormStairs
+              user={user}
+              page={page}
+              pageStatus={pageStatus}
+            />
+          ) : null}
+          {condition !== Condition.SIMPLE ? (
+            <>
               <Suspense fallback={<SummaryCount.Skeleton />}>
-                <div className="mt-8">
-                  <SummaryCount pageSlug={page.slug} />
-                </div>
+                <SummaryCount pageSlug={pageSlug} />
               </Suspense>
-            )}
-          </div>
-
-          <div className="col-span-full space-y-2 lg:col-span-2">
-            {user.finished ? (
-              <Suspense fallback={<FinishedPrompt.Skeleton />}>
-                <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
-              </Suspense>
-            ) : null}
-            {condition !== Condition.SIMPLE ? (
-              <PageQuizModal page={page} pageStatus={pageStatus} />
-            ) : null}
-            {condition === Condition.RANDOM_REREAD ? (
-              <SummaryFormReread
-                user={user}
-                page={page}
-                pageStatus={pageStatus}
-              />
-            ) : condition === Condition.STAIRS ? (
-              <SummaryFormStairs
-                user={user}
-                page={page}
-                pageStatus={pageStatus}
-              />
-            ) : null}
-          </div>
-        </>
-      )}
+              <SummaryDescription condition={condition} />
+            </>
+          ) : null}
+        </CardContent>
+      </Card>
     </section>
   );
 }
