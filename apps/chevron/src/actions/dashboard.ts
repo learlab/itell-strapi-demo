@@ -296,7 +296,7 @@ export type OtherStats = Awaited<ReturnType<typeof getOtherStatsHandler>>;
 /**
  * Get an array of users to compare with the current user
  *
- * - If user is in a class, get all other users in the class
+ * - If user is in a class, get other users from the class
  * - If user is not in a class, get all other users
  */
 export const getOtherUsersAction = authedProcedure.handler(async ({ ctx }) => {

@@ -56,12 +56,11 @@ export async function UserDetails({ classId, pageSlug }: Props) {
 
   const pageIndex = getPageData(pageSlug)?.order;
   const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
-  const otherProgress = otherUsers.map((user) => {
+  const otherProgressArr = otherUsers.map((user) => {
     const pageIndex = getPageData(user.pageSlug)?.order;
     return pageIndex !== undefined ? pageIndex + 1 : 0;
   });
-
-  const midProgress = median(otherProgress) ?? 0;
+  const otherProgress = median(otherProgressArr) ?? 0;
 
   const diffs = {
     totalSummaries: userStats.totalSummaries - otherStats.totalSummaries,
@@ -76,14 +75,63 @@ export async function UserDetails({ classId, pageSlug }: Props) {
         : null,
   };
 
+  const radarChartData = {
+    progress: {
+      label: "Progress",
+      user: userProgress,
+      other: otherProgress,
+      userScaled: scale(userProgress, otherProgress),
+      otherScaled: 1,
+      description: "Number of pages unlocked",
+    },
+    totalSummaries: {
+      label: "Total Summaries",
+      user: userStats.totalSummaries,
+      other: otherStats.totalSummaries,
+      userScaled: scale(userStats.totalSummaries, otherStats.totalSummaries),
+      otherScaled: 1,
+      description: "Total number of summaries submitted",
+    },
+    passedSummaries: {
+      label: "Passed Summaries",
+      user: userStats.totalPassedSummaries,
+      other: otherStats.totalPassedSummaries,
+      userScaled: scale(
+        userStats.totalPassedSummaries,
+        otherStats.totalPassedSummaries
+      ),
+      otherScaled: 1,
+      description:
+        "Total number of summaries that scored well in both content score and language score",
+    },
+    contentScore: {
+      label: "Content Score",
+      user: userStats.contentScore,
+      other: otherStats.contentScore,
+      userScaled:
+        userStats.contentScore && otherStats.contentScore
+          ? scale(userStats.contentScore, otherStats.contentScore)
+          : 0,
+      otherScaled: 1,
+      description:
+        "Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
+    },
+    correctCriAnswers: {
+      label: "Correct Question Answers",
+      user: userStats.totalPassedAnswers,
+      other: otherStats.totalPassedAnswers,
+      userScaled: scale(
+        userStats.totalPassedAnswers,
+        otherStats.totalPassedAnswers
+      ),
+      otherScaled: 1,
+      description: "Total number of questions answered during reading.",
+    },
+  };
+
   return (
     <div className="space-y-4">
-      <UserRadarChart
-        userStats={userStats}
-        otherStats={otherStats}
-        userProgress={userProgress}
-        otherProgress={midProgress}
-      />
+      <UserRadarChart data={radarChartData} />
       <p aria-hidden="true" className="text-center text-muted-foreground">
         percentages are relative to the median
       </p>
@@ -209,3 +257,12 @@ async function StudentCount({ classId }: { classId: string }) {
     return <span>{pluralize("student", numStudents, true)}</span>;
   }
 }
+
+// function to scale the user's value relative to that of the others, which is treated as 1
+const scale = (a: number, b: number) => {
+  if (Math.abs(b) < Number.EPSILON) {
+    return a === 0 ? 0 : 2;
+  }
+
+  return a / Math.abs(b);
+};

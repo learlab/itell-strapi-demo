@@ -29,81 +29,36 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-type Props = {
-  userStats: UserStats;
-  otherStats: OtherStats;
-  userProgress: number;
-  otherProgress: number;
+type DataItem = {
+  label: string;
+  user: number | null;
+  other: number | null;
+  userScaled: number;
+  otherScaled: number;
+  description: string;
 };
 
-export function UserRadarChart({
-  userStats,
-  otherStats,
-  userProgress,
-  otherProgress,
-}: Props) {
-  const data = [
-    {
-      label: "Progress",
-      user: userProgress,
-      other: otherProgress,
-      userScaled: scale(userProgress, otherProgress),
-      otherScaled: 1,
-      description: "Number of pages unlocked",
-    },
-    {
-      label: "Total Summaries",
-      user: userStats.totalSummaries,
-      other: otherStats.totalSummaries,
-      userScaled: scale(userStats.totalSummaries, otherStats.totalSummaries),
-      otherScaled: 1,
-      description: "Total number of summaries submitted",
-    },
-    {
-      label: "Passed Summaries",
-      user: userStats.totalPassedSummaries,
-      other: otherStats.totalPassedSummaries,
-      userScaled: scale(
-        userStats.totalPassedSummaries,
-        otherStats.totalPassedSummaries
-      ),
-      otherScaled: 1,
-      description:
-        "Total number of summaries that scored well in both content score and language score",
-    },
-    {
-      label: "Content Score",
-      user: userStats.contentScore,
-      other: otherStats.contentScore,
-      userScaled:
-        userStats.contentScore && otherStats.contentScore
-          ? scale(userStats.contentScore, otherStats.contentScore)
-          : 0,
-      otherScaled: 1,
-      description:
-        "Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
-    },
+type Props = {
+  data: Record<
+    | "progress"
+    | "totalSummaries"
+    | "passedSummaries"
+    | "contentScore"
+    | "correctCriAnswers",
+    DataItem
+  >;
+};
 
-    {
-      label: "Correct Answers",
-      user: userStats.totalPassedAnswers,
-      other: otherStats.totalPassedAnswers,
-      userScaled: scale(
-        userStats.totalPassedAnswers,
-        otherStats.totalPassedAnswers
-      ),
-      otherScaled: 1,
-      description: "Total number of questions answered during reading.",
-    },
-  ];
+export function UserRadarChart({ data }: Props) {
+  const chartData = Object.entries(data).map(([key, value]) => value);
 
   return (
     <div className="flex items-center justify-center">
       <div className="sr-only" id="radar-chart-title">
         <h3>
           Radar Chart: user is{" "}
-          <span>{data[0].userScaled > 1 ? "ahead of" : "behind"}</span> median
-          reading progress
+          <span>{data.progress.userScaled > 1 ? "ahead of" : "behind"}</span>{" "}
+          median reading progress
         </h3>
       </div>
 
@@ -115,28 +70,35 @@ export function UserRadarChart({
         </p>
         <ul>
           <li>
-            User completed {data[0].user} pages, median is {data[0].other}, user
-            is {data[0].userScaled > 1 ? "ahead of" : "behind"} the median.
+            User completed {data.progress.user} pages, median is{" "}
+            {data.progress.other}, user is{" "}
+            {data.progress.userScaled > 1 ? "ahead of" : "behind"} the median.
           </li>
           <li>
-            User submitted {data[1].user} summaries, median is{" "}
-            {Math.round(data[1].other ?? 0)}, user is{" "}
-            {data[1].userScaled > 1 ? "ahead of" : "behind"} the median.
+            User submitted {data.totalSummaries.user} summaries, median is{" "}
+            {Math.round(data.totalSummaries.other ?? 0)}, user is{" "}
+            {data.totalSummaries.userScaled > 1 ? "ahead of" : "behind"} the
+            median.
           </li>
           <li>
-            User passed {data[2].user} summaries, median is{" "}
-            {Math.round(data[2].other ?? 0)}, user is{" "}
-            {data[2].userScaled > 1 ? "ahead of" : "behind"} the median.
+            User passed {data.totalSummaries.user} summaries, median is{" "}
+            {Math.round(data.totalSummaries.other ?? 0)}, user is{" "}
+            {data.totalSummaries.userScaled > 1 ? "ahead of" : "behind"} the
+            median.
           </li>
           <li>
-            User scored {data[3].user} in summary content score, median is{" "}
-            {data[3].other ? Math.round(data[3].other) : "NA"}, user is{" "}
-            {data[3].userScaled > 1 ? "ahead of" : "behind"} the median.
+            User scored {data.contentScore.user} in summary quality, median is{" "}
+            {data.contentScore.other
+              ? Math.round(data.contentScore.other)
+              : "NA"}
+            , user is {data.contentScore.userScaled > 1 ? "ahead of" : "behind"}{" "}
+            the median.
           </li>
           <li>
-            User had {data[4].user} correct answer to questions, median is{" "}
-            {Math.round(data[4].other || 0)}, user is{" "}
-            {data[4].userScaled > 1 ? "ahead of" : "behind"} the median.
+            User had {data.correctCriAnswers.user} correct answer to questions,
+            median is {Math.round(data.correctCriAnswers.other || 0)}, user is{" "}
+            {data.correctCriAnswers.userScaled > 1 ? "ahead of" : "behind"} the
+            median.
           </li>
         </ul>
       </div>
@@ -148,7 +110,7 @@ export function UserRadarChart({
         aria-describedby="radar-chart-description"
       >
         <BaseRadarChart
-          data={data}
+          data={chartData}
           margin={{
             right: 60,
             left: 60,
@@ -181,7 +143,7 @@ export function UserRadarChart({
             dataKey="label"
             // eslint-disable-next-line react/no-unstable-nested-components
             tick={({ x, y, textAnchor, index, ...props }) => {
-              const d = data[index];
+              const d = chartData[index];
               const label = getComparisonText(d.user, d.other);
               return (
                 <text
