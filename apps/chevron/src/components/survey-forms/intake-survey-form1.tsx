@@ -2,6 +2,11 @@
 
 import React, { useState } from "react";
 import { Button } from "@itell/ui/button"
+import { createSurveyAction } from "@/actions/surveys";
+import { useServerAction } from "zsa-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { reportSentry } from "@/lib/utils";
 
 interface SurveyData {
   age: string;
@@ -19,17 +24,27 @@ const SurveyForm: React.FC = () => {
     ethnicity: "",
     occupation: "",
   });
+  
+  const { isPending, execute, isError, error } =
+      useServerAction(createSurveyAction);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Survey Data Submitted:", formData);
-    // Handle data submission (e.g., send to API endpoint)
+    const [_, err] = await execute({ surveyType: 'intake', data: formData });
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Error with consent.");
+      reportSentry("consent", { error });
+    }
+  }, [isError]);
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex max-w-lg flex-col gap-6 p-4 shadow-lg">

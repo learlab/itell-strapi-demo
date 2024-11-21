@@ -15,12 +15,10 @@ export async function ContinueReading({ text, className, ...rest }: Props) {
   const { user } = await getSession();
   let href = firstPage.href
   if (user?.consent === null) {
-    console.log('ITS NULL!!!!!')
     href = '/consent';
   } else {
     href = user?.pageSlug ? makePageHref(user.pageSlug) : firstPage.href;
   }
-  console.log(href)
   return (
     <NavigationButton
       href={href}
