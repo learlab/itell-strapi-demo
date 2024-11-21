@@ -157,10 +157,10 @@ export function UserRadarChart({ data }: Props) {
                   <tspan
                     className="lg:text-sm"
                     fill={
-                      label === "NA" || label === "same" || label === 0
+                      label === "NA" || label === "Same" || label === 0
                         ? "var(--color-muted-foreground)"
                         : (typeof label === "number" && label > 0) ||
-                            label === "ahead"
+                            label === "Ahead"
                           ? "var(--color-otherScaled)"
                           : "var(--color-userScaled)"
                     }
@@ -210,7 +210,7 @@ const getComparisonText = (user: number | null, other: number | null) => {
   }
 
   if (other === 0) {
-    return user === 0 ? "same" : user > 0 ? "ahead" : "behind";
+    return user === 0 ? "Same" : user > 0 ? "Ahead" : "Behind";
   }
 
   return "NA";

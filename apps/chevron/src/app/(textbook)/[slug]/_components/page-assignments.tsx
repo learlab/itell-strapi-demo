@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@itell/ui/card";
 import { type User } from "lucia";
-import { PencilIcon } from "lucide-react";
 
 import { Condition } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
@@ -20,6 +19,7 @@ import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
 import { SummaryFormSimple } from "./summary/summary-form-simple";
+import { SummaryFormSkip } from "./summary/summary-form-skip";
 import { SummaryFormStairs } from "./summary/summary-form-stairs";
 
 type Props = {
@@ -38,6 +38,24 @@ export function PageAssignments({
   const page = getPageData(pageSlug);
   if (!page) {
     return <Errorbox>failed to load assignments</Errorbox>;
+  }
+
+  const canSkipSummary = user.personalization.available_summary_skips > 0;
+
+  if (canSkipSummary) {
+    return (
+      <AssignmentsShell>
+        <Card className="border-info">
+          <CardContent>
+            <SummaryFormSkip
+              pageStatus={pageStatus}
+              page={page}
+              streak={user.personalization.summary_streak}
+            />
+          </CardContent>
+        </Card>
+      </AssignmentsShell>
+    );
   }
 
   return (
@@ -61,9 +79,6 @@ export function PageAssignments({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {condition === Condition.SIMPLE ? (
-            <SummaryFormSimple page={page} pageStatus={pageStatus} />
-          ) : null}
           {user.finished ? (
             <Suspense fallback={<FinishedPrompt.Skeleton />}>
               <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
@@ -71,6 +86,9 @@ export function PageAssignments({
           ) : null}
           {condition !== Condition.SIMPLE ? (
             <PageQuizModal page={page} pageStatus={pageStatus} />
+          ) : null}
+          {condition === Condition.SIMPLE ? (
+            <SummaryFormSimple page={page} pageStatus={pageStatus} />
           ) : null}
           {condition === Condition.RANDOM_REREAD ? (
             <SummaryFormReread
@@ -95,6 +113,21 @@ export function PageAssignments({
           ) : null}
         </CardContent>
       </Card>
+    </section>
+  );
+}
+
+function AssignmentsShell({ children }: { children: React.ReactNode }) {
+  return (
+    <section
+      id={Elements.PAGE_ASSIGNMENTS}
+      aria-labelledby="page-assignments-heading"
+      className="mt-12"
+    >
+      <h2 className="sr-only" id="page-assignments-heading">
+        assignments
+      </h2>
+      {children}
     </section>
   );
 }

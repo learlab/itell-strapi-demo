@@ -22,6 +22,7 @@ import {
 } from "@/lib/constants";
 import { isLastPage } from "@/lib/pages";
 import { getPageData, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { updatePersonalization } from "@/lib/personalization";
 import { authedProcedure } from "./utils";
 
 /**
@@ -46,7 +47,6 @@ export const createSummaryAction = authedProcedure
   .handler(async ({ input, ctx }) => {
     let shouldRevalidate = false;
     const data = await db.transaction(async (tx) => {
-      // count
       let canProceed =
         input.summary.condition === Condition.STAIRS
           ? input.summary.isPassed
@@ -97,8 +97,13 @@ export const createSummaryAction = authedProcedure
         ctx.user.pageSlug
       );
 
+      // update user summary streak info
       if (canProceed) {
         shouldRevalidate = true;
+
+        const newPersonalization = updatePersonalization(ctx.user, {
+          isSummaryPassed: input.summary.isPassed,
+        });
 
         const page = getPageData(input.summary.pageSlug);
         if (page) {
@@ -107,6 +112,7 @@ export const createSummaryAction = authedProcedure
             .set({
               pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
               finished: isLastPage(page),
+              personalization: newPersonalization,
             })
             .where(eq(users.id, ctx.user.id));
         }

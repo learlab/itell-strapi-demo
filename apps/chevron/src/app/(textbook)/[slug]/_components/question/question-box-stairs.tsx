@@ -211,10 +211,10 @@ export function QuestionBoxStairs({
                 <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                   <Flame
                     color="#b91c1c"
-                    className={cn("size-4", {
-                      "motion-safe:animate-ping": streak >= 7,
-                      "motion-safe:animate-pulse": streak >= 5 && streak < 7,
-                      "motion-safe:animate-bounce": streak >= 2 && streak < 5,
+                    className={cn({
+                      "motion-safe:animate-ping size-8": streak >= 7,
+                      "motion-safe:animate-pulse size-6": streak >= 5 && streak < 7,
+                      "motion-safe:animate-bounce size-4": streak >= 2 && streak < 5,
                     })}
                   />
                 </div>

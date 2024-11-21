@@ -34,8 +34,12 @@ export const lucia = new Lucia(adapter, {
       personalization: {
         summary_streak: attributes.personalization?.summary_streak ?? 0,
         max_summary_streak: attributes.personalization?.max_summary_streak ?? 0,
+        available_summary_skips:
+          attributes.personalization?.available_summary_skips ?? 0,
         cri_streak: attributes.personalization?.cri_streak ?? 0,
         max_cri_streak: attributes.personalization?.max_cri_streak ?? 0,
+        available_cri_skips:
+          attributes.personalization?.available_cri_skips ?? 0,
       },
       preferences: {
         note_color_light:

@@ -120,8 +120,10 @@ export const PersonalizationDataSchema = z
   .object({
     summary_streak: z.number(),
     max_summary_streak: z.number(),
+    available_summary_skips: z.number(),
     cri_streak: z.number(),
     max_cri_streak: z.number(),
+    available_cri_skips: z.number(),
   })
   .partial();
 
