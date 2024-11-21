@@ -129,6 +129,7 @@ export function QuestionBoxStairs({
         error: null,
         input,
       });
+      setOptimisticStreak((streak) => (streak ? streak + 1 : 1));
     }
 
     if (score === 1) {
@@ -145,9 +146,8 @@ export function QuestionBoxStairs({
         error: null,
         input,
       });
+      setOptimisticStreak(0);
     }
-
-    setOptimisticStreak((streak) => (streak ? streak + 1 : 1));
   });
 
   const isPending = useDebounce(_isPending, 100);

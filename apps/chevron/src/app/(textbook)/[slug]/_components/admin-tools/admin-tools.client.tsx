@@ -43,9 +43,8 @@ import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
+import { updatePersonalization } from "@/lib/personalization";
 import { makePageHref } from "@/lib/utils";
-
-import { handleSummaryStreak } from "@/lib/summary-streak"
 
 type Props = {
   user: User;
@@ -108,21 +107,24 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
       [pageSlug]: newCondition,
     };
 
-    if (user.personalizationData) {
-      user.personalizationData.summary_streak = newSummaryStreak;
+    if (user.personalization) {
+      user.personalization.summary_streak = newSummaryStreak;
     } else {
-      user.personalizationData = {
+      user.personalization = {
         summary_streak: newSummaryStreak,
-      } as User['personalizationData'];
+      } as User["personalization"];
     }
 
-    const personalizationData = handleSummaryStreak(user.personalizationData ?? {}, true);
+    const newPersonalization = updatePersonalization(user, {
+      isSummaryPassed: true,
+    });
 
     const [_, err] = await execute({
       conditionAssignments: newConditionAssignments,
       pageSlug: newPageSlug,
+      // always set finished to false, some changes are not shown for a finished user
       finished: false,
-      personalizationData: personalizationData,
+      personalization: newPersonalization,
     });
     if (!err) {
       setOpen(false);

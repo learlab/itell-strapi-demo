@@ -18,10 +18,9 @@ import {
   useQuizStore,
 } from "@/components/provider/page-provider";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage, PageData } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import type { PageData } from "@/lib/pages/pages.client";
 import type { FormEvent } from "react";
 
 type Props = {

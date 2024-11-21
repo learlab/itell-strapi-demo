@@ -4,9 +4,8 @@ import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-import { getPageData } from "@/lib/pages/pages.client";
-import { allPagesSorted } from "@/lib/pages/pages.server";
-import type { PageData } from "@/lib/pages/pages.client";
+import { PageData } from "@/lib/pages";
+import { allPagesSorted, getPageData } from "@/lib/pages/pages.server";
 
 const getPagerLinks = ({
   pageIndex,

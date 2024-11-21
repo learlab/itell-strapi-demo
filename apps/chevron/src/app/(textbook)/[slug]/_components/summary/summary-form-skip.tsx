@@ -6,6 +6,7 @@ import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/callout";
 import { StatusButton } from "@itell/ui/status-button";
+import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { ArrowRightIcon, CheckSquare2Icon, StepForward } from "lucide-react";
 import { toast } from "sonner";
@@ -17,15 +18,12 @@ import {
   useQuestionStore,
   useQuizStore,
 } from "@/components/provider/page-provider";
+import { Confetti } from "@/components/ui/confetti";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage, PageData } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import type { PageData } from "@/lib/pages/pages.client";
 import type { FormEvent } from "react";
-
-import { Confetti } from "@/components/ui/confetti";
-import { cn } from "@itell/utils";
 
 type Props = {
   pageStatus: PageStatus;
@@ -40,7 +38,6 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   const router = useRouter();
   const [finished, setFinished] = useState(pageStatus.unlocked);
   const duration = Math.max(1000 - streak * 100, 200);
-
 
   const {
     action,
@@ -70,7 +67,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         console.log("Incrementing user page slug");
         const [_, err] = await incrementUserPageSlugAction({
           currentPageSlug: page.slug,
-          updateStreak: true,
+          withStreakSkip: true,
         });
         if (err) {
           throw new Error("increment user page slug action", { cause: err });
@@ -84,7 +81,6 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         router.push(page.next_slug);
         return;
       }
-      
     },
     { delayTimeout: 3000 }
   );
@@ -115,19 +111,33 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         <hr />
       </div>
       <div className="mb-4 text-base" role="status">
-        {finished
-          ? "You are currently on a streak of writing good summaries! You can skip writing a summary on a page you haven't completed yet."
-          : (
-            <>
+        {finished ? (
+          "You are currently on a streak of writing good summaries! You can skip writing a summary on a page you haven't completed yet."
+        ) : (
+          <>
             <div>
-              You are currently on <span className="underline decoration-sky-500 decoration-2 decoration-solid font-bold"> a streak of writing good summaries! </span> <br />
-              You have earned the right to skip writing a summary for this page. <br />
+              You are currently on{" "}
+              <span className="font-bold underline decoration-sky-500 decoration-solid decoration-2">
+                {" "}
+                a streak of writing good summaries!{" "}
+              </span>{" "}
+              <br />
+              You have earned the right to skip writing a summary for this page.{" "}
+              <br />
             </div>
             <div className="flex">
-              <span className={cn("motion-safe:animate-spin ease", `duration-${duration}`)}>⭐</span> Streak count: <span className="text-rose-700">{streak}</span>{' '}
+              <span
+                className={cn(
+                  "ease motion-safe:animate-spin",
+                  `duration-${duration}`
+                )}
+              >
+                ⭐
+              </span>{" "}
+              Streak count: <span className="text-rose-700">{streak}</span>{" "}
             </div>
-            </>
-          )}
+          </>
+        )}
       </div>
 
       <h2 id="completion-form-heading" className="sr-only">

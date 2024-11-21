@@ -13,15 +13,14 @@ import { Meta } from "@/config/metadata";
 import { type User } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
-import { getPageData } from "@/lib/pages/pages.client";
-import { firstAssignmentPage } from "@/lib/pages/pages.server";
+import { firstAssignmentPage, getPageData } from "@/lib/pages/pages.server";
 
 interface PageProps {
   params: Promise<unknown>;
   searchParams?: Promise<unknown>;
 }
 
-export default async function(props: PageProps) {
+export default async function (props: PageProps) {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const { user } = await getSession();

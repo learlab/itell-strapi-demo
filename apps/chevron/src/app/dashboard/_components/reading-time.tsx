@@ -78,7 +78,7 @@ export async function ReadingTime({ params, name }: Props) {
         </CardTitle>
         <CardDescription>
           {name ? name : "You"} spent {Math.round(totalViewTime / 60)} minutes
-          reading the textbook, wrote
+          reading the textbook, wrote{" "}
           <Link className="font-semibold underline" href="/dashboard/summaries">
             {pluralize("summary", summaryCount, true)}
           </Link>{" "}

@@ -1,5 +1,25 @@
+import "server-only";
+
 import { pages } from "#content";
 import { groupBy } from "es-toolkit";
+
+import { PageData } from ".";
+
+export const getPageData = (slug: string | null): PageData | null => {
+  const index = pages.findIndex((s) => s.slug === slug);
+  if (index === -1) {
+    return null;
+  }
+  const page = pages[index];
+
+  return {
+    title: page.title,
+    slug: page.slug,
+    next_slug: page.next_slug,
+    order: page.order,
+    quiz: page.quiz,
+  };
+};
 
 export const allPagesSorted = pages.sort((a, b) => {
   return a.order - b.order;

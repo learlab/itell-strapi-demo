@@ -83,8 +83,15 @@ const getUserQuestionStreakHandler = cache(async (userId: string) => {
     .where(eq(constructed_responses.userId, userId))
     .orderBy(desc(constructed_responses.createdAt));
 
-  const idx = records.findIndex((record) => record.score !== 2);
-  return idx === -1 ? records.length : idx;
+  const idx = records.findIndex((record) => record.score === 0);
+  const streakRecords = idx === -1 ? records : records.slice(0, idx);
+  let count = 0;
+  for (const record of streakRecords) {
+    if (record.score === 2) {
+      count++;
+    }
+  }
+  return count;
 });
 
 /**

@@ -56,6 +56,7 @@ export default async function Page(props: {
     userPageSlug,
     userFinished,
   });
+
   return (
     <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
       <MobilePopup />
@@ -72,19 +73,28 @@ export default async function Page(props: {
         </div>
 
         <PageContentWrapper>
-          <PageHeader page={page} user={user} />
+          <PageHeader page={page} pageStatus={pageStatus} />
           <div className="col-span-1 col-start-2">
             <PageTitle className="mb-8">{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />
             <SelectionPopover user={user} pageSlug={pageSlug} />
-            <Pager
-              pageIndex={page.order}
-              userPageSlug={user?.pageSlug ?? null}
-            />
+
             <p className="mt-4 text-right text-sm text-muted-foreground">
               <span>Last updated at </span>
               <time>{page.last_modified}</time>
             </p>
+            {user && page.summary ? (
+              <PageAssignments
+                pageSlug={pageSlug}
+                pageStatus={pageStatus}
+                user={user}
+                condition={userCondition}
+              />
+            ) : null}
+            <Pager
+              pageIndex={page.order}
+              userPageSlug={user?.pageSlug ?? null}
+            />
           </div>
         </PageContentWrapper>
       </TextbookWrapper>
@@ -94,14 +104,6 @@ export default async function Page(props: {
       </Suspense>
 
       {user ? <NoteLoader pageSlug={pageSlug} /> : null}
-      {user && page.summary ? (
-        <PageAssignments
-          pageSlug={pageSlug}
-          pageStatus={pageStatus}
-          user={user}
-          condition={userCondition}
-        />
-      ) : null}
 
       {isProduction ? (
         <PageStatusModal user={user} pageStatus={pageStatus} />

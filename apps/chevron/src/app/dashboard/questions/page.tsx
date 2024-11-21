@@ -15,8 +15,7 @@ import { getAnswerStatsAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
 import { type ConstructedResponse } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
-import { getPageData } from "@/lib/pages/pages.client";
-import { allPagesSorted } from "@/lib/pages/pages.server";
+import { allPagesSorted, getPageData } from "@/lib/pages/pages.server";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { getLabel } from "./get-label";
 
@@ -44,6 +43,7 @@ export default async function () {
   }
   const { records, byScore } = data;
   const byPage = groupBy(records, (d) => d.pageSlug);
+
   const pages = Object.keys(byPage)
     .map((k) => getPageData(k))
     .filter(Boolean);

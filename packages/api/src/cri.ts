@@ -29,11 +29,7 @@ export const createCriRouter = ({
         const json = c.req.valid("json");
         const response = await fetcher(`${apiUrl}/score/answer`, {
           method: "POST",
-          body: JSON.stringify({
-            page_slug: json.page_slug,
-            chunk_slug: json.chunk_slug,
-            answer: json.answer,
-          }),
+          body: JSON.stringify(json),
           headers: {
             "Content-Type": "application/json",
           },
@@ -75,11 +71,7 @@ export const createCriRouter = ({
         const json = c.req.valid("json");
         const response = await fetcher(`${apiUrl}/chat/CRI`, {
           method: "POST",
-          body: JSON.stringify({
-            page_slug: json.page_slug,
-            chunk_slug: json.chunk_slug,
-            student_response: json.student_response,
-          }),
+          body: JSON.stringify(json),
           headers: {
             "Content-Type": "application/json",
           },

@@ -4,11 +4,16 @@ import { revalidateTag } from "next/cache";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
+<<<<<<< HEAD
 import { handleSummaryStreak } from "@/lib/summary-streak"
+=======
+
+>>>>>>> main
 import { db, first } from "@/actions/db";
 import {
   CreateSummarySchema,
   events,
+  focus_times,
   summaries,
   users,
 } from "@/drizzle/schema";
@@ -19,8 +24,8 @@ import {
   PAGE_SUMMARY_THRESHOLD,
   Tags,
 } from "@/lib/constants";
-import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isLastPage } from "@/lib/pages";
+import { getPageData, isPageAfter, nextPage } from "@/lib/pages/pages.server";
 import { authedProcedure } from "./utils";
 
 /**
@@ -135,6 +140,42 @@ export const createSummaryAction = authedProcedure
     }
 
     return data;
+  });
+
+/**
+ * Get data to make the summary scoring request
+ *
+ */
+export const getSummaryScoreRequestAction = authedProcedure
+  .input(z.object({ pageSlug: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    return await db.transaction(async (tx) => {
+      const contentScoreHistory = (
+        await tx
+          .select({
+            content: summaries.contentScore,
+          })
+          .from(summaries)
+          .where(and(eq(summaries.userId, ctx.user.id)))
+      ).map((v) => v.content);
+
+      const focusTimes = first(
+        await tx
+          .select()
+          .from(focus_times)
+          .where(
+            and(
+              eq(focus_times.userId, ctx.user.id),
+              eq(focus_times.pageSlug, input.pageSlug)
+            )
+          )
+      );
+
+      return {
+        contentScoreHistory,
+        focusTimes,
+      };
+    });
   });
 
 /**

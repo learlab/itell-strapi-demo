@@ -7,20 +7,13 @@ import {
 import { type User } from "lucia";
 import { EyeIcon, LockIcon, UnlockIcon } from "lucide-react";
 
-import { getPageStatus } from "@/lib/page-status";
+import { getPageStatus, PageStatus } from "@/lib/page-status";
 
 type Props = {
-  user: User | null;
-  pageSlug: string;
+  status: PageStatus;
 };
 
-export function PageStatusInfo({ user, pageSlug }: Props) {
-  const status = getPageStatus({
-    pageSlug,
-    userPageSlug: user?.pageSlug ?? null,
-    userFinished: user?.finished ?? false,
-  });
-
+export function PageStatusInfo({ status }: Props) {
   return (
     <HoverCard>
       <HoverCardTrigger>

@@ -21,8 +21,13 @@ import {
   users,
 } from "@/drizzle/schema";
 import { isProduction, Tags } from "@/lib/constants";
-import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { firstPage, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isLastPage } from "@/lib/pages";
+import {
+  firstPage,
+  getPageData,
+  isPageAfter,
+  nextPage,
+} from "@/lib/pages/pages.server";
 import { authedProcedure } from "./utils";
 
 /**
@@ -204,62 +209,46 @@ export const createUserAction = createServerAction()
  This should only be used for the simple condition, for conditions with a summary, use createSummaryAction instead.
  */
 
- export const incrementUserPageSlugAction = authedProcedure
- .input(z.object({ currentPageSlug: z.string(),
-                   updateStreak: z.boolean().optional(),
-  }))
- .handler(async ({ input, ctx }) => {
-   const nextPageSlug = nextPage(input.currentPageSlug);
-   const shouldUpdateUserPageSlug = isPageAfter(
-     nextPageSlug,
-     ctx.user.pageSlug
-   );
-   const page = getPageData(input.currentPageSlug);
+export const incrementUserPageSlugAction = authedProcedure
+  .input(
+    z.object({
+      currentPageSlug: z.string(),
+      withStreakSkip: z.boolean().optional(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    const nextPageSlug = nextPage(input.currentPageSlug);
+    const shouldUpdateUserPageSlug = isPageAfter(
+      nextPageSlug,
+      ctx.user.pageSlug
+    );
+    const page = getPageData(input.currentPageSlug);
 
-   if (page) {
-     const updateResult = await db
-       .update(users)
-       .set({
-         pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
-         finished: isLastPage(page),
-       })
-       .where(eq(users.id, ctx.user.id));
+    if (page) {
+      let newPersonalization = ctx.user.personalization;
+      if (input.withStreakSkip) {
+        newPersonalization = {
+          ...newPersonalization,
+          available_summary_skips:
+            newPersonalization.available_summary_skips > 0
+              ? newPersonalization.available_summary_skips - 1
+              : 0,
+        };
+      }
 
-     console.log('Update Result:', updateResult);
-   } else {
-     console.log('Page not found for the given currentPageSlug');
-   }
+      await db
+        .update(users)
+        .set({
+          pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
+          finished: isLastPage(page),
+          personalization: newPersonalization,
+        })
+        .where(eq(users.id, ctx.user.id));
+    }
 
-   if (input.updateStreak !== undefined) {
-      // Update skip summary number if user skips summary
-      const data = await db.transaction(async (tx) => {
-        // count
-        const user = first(
-          await tx.select().from(users).where(eq(users.id, ctx.user.id))
-        );
-        if (user) {
-          
-          const personalizationData = user.personalizationData || {};
-          const skipSummaryNumber = personalizationData.skip_summary_number ?? 0;
-          const newSkipSummaryNumber = skipSummaryNumber > 0 ? skipSummaryNumber - 1 : skipSummaryNumber;
+    revalidateTag(Tags.GET_SESSION);
 
-          await tx
-            .update(users)
-            .set({
-              personalizationData: {
-                ...personalizationData,
-                skip_summary_number: newSkipSummaryNumber,
-              },
-            })
-            .where(eq(users.id, ctx.user.id));
-
-        }
-      })
-   }
-
-   revalidateTag(Tags.GET_SESSION);
-
-   return {
-     nextPageSlug: shouldUpdateUserPageSlug ? nextPageSlug : ctx.user.pageSlug,
-   };
- });
+    return {
+      nextPageSlug: shouldUpdateUserPageSlug ? nextPageSlug : ctx.user.pageSlug,
+    };
+  });

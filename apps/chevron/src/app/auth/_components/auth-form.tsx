@@ -52,6 +52,7 @@ export function GoogleLoginButton() {
       variant="outline"
       disabled={pending}
       pending={pending}
+      data-testid="google-login-button"
     >
       <span className="flex items-center gap-2">
         <BrandIcon
@@ -88,6 +89,7 @@ export function OutlookLoginButton() {
       variant="outline"
       disabled={pending}
       pending={pending}
+      data-testid="outlook-login-button"
     >
       <span className="flex items-center gap-2">
         <BrandIcon

@@ -19,7 +19,7 @@ import {
 } from "@/actions/dashboard";
 import { CreateErrorFallback } from "@/components/error-fallback";
 import { Spinner } from "@/components/spinner";
-import { getPageData } from "@/lib/pages/pages.client";
+import { getPageData } from "@/lib/pages/pages.server";
 import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
 
@@ -56,12 +56,11 @@ export async function UserDetails({ classId, pageSlug }: Props) {
 
   const pageIndex = getPageData(pageSlug)?.order;
   const userProgress = pageIndex !== undefined ? pageIndex + 1 : 0;
-  const otherProgress = otherUsers.map((user) => {
+  const otherProgressArr = otherUsers.map((user) => {
     const pageIndex = getPageData(user.pageSlug)?.order;
     return pageIndex !== undefined ? pageIndex + 1 : 0;
   });
-
-  const midProgress = median(otherProgress) ?? 0;
+  const otherProgress = median(otherProgressArr) ?? 0;
 
   const diffs = {
     totalSummaries: userStats.totalSummaries - otherStats.totalSummaries,
@@ -74,20 +73,65 @@ export async function UserDetails({ classId, pageSlug }: Props) {
       userStats.contentScore && otherStats.contentScore
         ? userStats.contentScore - otherStats.contentScore
         : null,
-    languageScore:
-      userStats.languageScore && otherStats.languageScore
-        ? userStats.languageScore - otherStats.languageScore
-        : null,
+  };
+
+  const radarChartData = {
+    progress: {
+      label: "Progress",
+      user: userProgress,
+      other: otherProgress,
+      userScaled: scale(userProgress, otherProgress),
+      otherScaled: 1,
+      description: "Number of pages unlocked",
+    },
+    totalSummaries: {
+      label: "Total Summaries",
+      user: userStats.totalSummaries,
+      other: otherStats.totalSummaries,
+      userScaled: scale(userStats.totalSummaries, otherStats.totalSummaries),
+      otherScaled: 1,
+      description: "Total number of summaries submitted",
+    },
+    passedSummaries: {
+      label: "Passed Summaries",
+      user: userStats.totalPassedSummaries,
+      other: otherStats.totalPassedSummaries,
+      userScaled: scale(
+        userStats.totalPassedSummaries,
+        otherStats.totalPassedSummaries
+      ),
+      otherScaled: 1,
+      description:
+        "Total number of summaries that scored well in both content score and language score",
+    },
+    contentScore: {
+      label: "Content Score",
+      user: userStats.contentScore,
+      other: otherStats.contentScore,
+      userScaled:
+        userStats.contentScore && otherStats.contentScore
+          ? scale(userStats.contentScore, otherStats.contentScore)
+          : 0,
+      otherScaled: 1,
+      description:
+        "Measures the semantic similarity between the summary and the original text. The higher the score, the better the summary describes the main points of the text.",
+    },
+    correctCriAnswers: {
+      label: "Correct Question Answers",
+      user: userStats.totalPassedAnswers,
+      other: otherStats.totalPassedAnswers,
+      userScaled: scale(
+        userStats.totalPassedAnswers,
+        otherStats.totalPassedAnswers
+      ),
+      otherScaled: 1,
+      description: "Total number of questions answered during reading.",
+    },
   };
 
   return (
     <div className="space-y-4">
-      <UserRadarChart
-        userStats={userStats}
-        otherStats={otherStats}
-        userProgress={userProgress}
-        otherProgress={midProgress}
-      />
+      <UserRadarChart data={radarChartData} />
       <p aria-hidden="true" className="text-center text-muted-foreground">
         percentages are relative to the median
       </p>
@@ -185,38 +229,6 @@ export async function UserDetails({ classId, pageSlug }: Props) {
               : "class stats unavailable"}
           </p>
         </DashboardBadge>
-        <DashboardBadge
-          title="Median Language Score"
-          icon={<WholeWordIcon className="size-4" />}
-          className={cn({
-            "border-green-500": diffs.languageScore && diffs.languageScore > 0,
-            "border-destructive":
-              diffs.languageScore && diffs.languageScore < 0,
-          })}
-        >
-          <div className="mb-2 flex h-6 items-baseline gap-2">
-            <div className="text-2xl font-bold">
-              {userStats.languageScore
-                ? userStats.languageScore.toFixed(2)
-                : "NA"}
-            </div>
-            {userStats.languageScoreLastWeek ? (
-              <TrendChart
-                prev={userStats.languageScoreLastWeek}
-                current={userStats.languageScore}
-                label="Language Score"
-              />
-            ) : null}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {diffs.languageScore
-              ? `
-					${diffs.languageScore > 0 ? "+" : ""}${diffs.languageScore.toFixed(
-            2
-          )} compared to others`
-              : "class stats unavailable"}
-          </p>
-        </DashboardBadge>
       </div>
     </div>
   );
@@ -245,3 +257,12 @@ async function StudentCount({ classId }: { classId: string }) {
     return <span>{pluralize("student", numStudents, true)}</span>;
   }
 }
+
+// function to scale the user's value relative to that of the others, which is treated as 1
+const scale = (a: number, b: number) => {
+  if (Math.abs(b) < Number.EPSILON) {
+    return a === 0 ? 0 : 2;
+  }
+
+  return a / Math.abs(b);
+};

@@ -37,7 +37,7 @@ import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry, scrollToElement } from "@/lib/utils";
 import {
@@ -46,7 +46,7 @@ import {
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
-import type { PageData } from "@/lib/pages/pages.client";
+import type { PageData } from "@/lib/pages";
 import type { SummaryResponse } from "@itell/core/summary";
 
 type Props = {
@@ -100,32 +100,32 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         page_slug: pageSlug,
       });
       console.log("requestBody", requestBodyRef.current);
-      const response = await apiClient.api.summary.$post({
+      const apiResponse = await apiClient.api.summary.$post({
         json: {
           summary: input,
           page_slug: pageSlug,
         },
       });
-      const json = await response.json();
+      const json = await apiResponse.json();
       const parsed = SummaryResponseSchema.safeParse(json);
       if (!parsed.success) {
         throw new Error("summary response in wrong shape", {
           cause: parsed.error,
         });
       }
-      const scores = parsed.data;
-      summaryResponseRef.current = scores;
+      const response = parsed.data;
+      summaryResponseRef.current = response;
 
       const [_, err] = await createSummaryAction({
         summary: {
           text: input,
           pageSlug,
           condition: Condition.RANDOM_REREAD,
-          isPassed: scores.is_passed ?? false,
-          containmentScore: scores.containment,
-          similarityScore: scores.similarity,
-          languageScore: scores.language,
-          contentScore: scores.content,
+          isPassed: response.is_passed ?? false,
+          containmentScore: response.metrics.containment?.score ?? -1,
+          similarityScore: response.metrics.similarity?.score ?? -1,
+          contentScore: response.metrics.content?.score,
+          contentThreshold: response.metrics.content?.threshold,
         },
         keystroke: {
           start: prevInput.current ?? getSummaryLocal(pageSlug) ?? "",
@@ -244,7 +244,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
       <div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
         <div role="status">
           {finished && page.next_slug ? (
-            <div className="space-x-2 space-y-2">
+            <div className="flex flex-col gap-2">
               <p>
                 You have finished this page and can move on. You are still
                 welcome to improve the summary.

@@ -3,14 +3,12 @@
 import { useCallback, useEffect, useRef } from "react";
 
 // keycode, cursor position, downtime, uptime
-type KeystrokeEvent = [string, number, number, number, boolean];
+type KeystrokeEvent = [string, number, number, number];
 
 export const useKeystroke = () => {
   const ref = useRef<HTMLElement>(null);
   const keys = useRef<Map<string, number>>(new Map());
   const data = useRef<KeystrokeEvent[]>([]);
-
-  const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
 
   const handleKeydown = (e: KeyboardEvent) => {
     keys.current.set(e.code, e.timeStamp);
@@ -24,7 +22,6 @@ export const useKeystroke = () => {
         (ref.current as HTMLTextAreaElement).selectionStart,
         keyDowntime,
         e.timeStamp,
-        isMobileDevice,
       ] as KeystrokeEvent;
       data.current.push(d);
     }

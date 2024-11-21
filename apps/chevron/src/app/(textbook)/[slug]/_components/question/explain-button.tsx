@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAnimatedText } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
@@ -23,6 +24,7 @@ type Props = {
 
 export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
   const [response, setResponse] = useState("");
+  const animatedResponse = useAnimatedText(response);
   const { pending: formPending } = useFormStatus();
   const { action, isPending, isDelayed, isError, error } = useActionStatus(
     async () => {
@@ -70,25 +72,18 @@ export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
   return (
     <div className="flex flex-col items-center justify-center">
       <div role="status">
-        {response ? (
-          <p className="text-sm text-muted-foreground">{response}</p>
+        {animatedResponse !== "" ? (
+          <p className="text-sm text-muted-foreground">{animatedResponse}</p>
         ) : null}
       </div>
 
       <Button
         variant="secondary"
-        className="gap-2"
         type="button"
         disabled={formPending || isPending}
         onClick={action}
         pending={isPending}
       >
-        {/* <div className="relative flex items-center">
-        <HelpCircleIcon className="size-4 text-sky-500 animate-ping absolute" />
-        <HelpCircleIcon className="size-4 text-sky-500 absolute" />
-      </div>
-      <span className="ml-2">How can I improve my answer?</span> */}
-
         <div className="flex items-center gap-2">
           <div className="grid grid-cols-1 grid-rows-1">
             <HelpCircleIcon className="col-start-1 row-start-1 size-4 text-sky-500 motion-safe:animate-ping" />

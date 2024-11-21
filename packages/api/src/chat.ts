@@ -17,6 +17,7 @@ export const createChatRouter = ({
         z.object({
           page_slug: z.string(),
           message: z.string(),
+          current_chunk: z.string().optional().nullable(),
           history: z
             .array(
               z.object({
@@ -25,7 +26,6 @@ export const createChatRouter = ({
               })
             )
             .optional(),
-          current_chunk: z.string().optional().nullable(),
           summary: z.string().optional(),
         })
       ),
@@ -48,6 +48,7 @@ export const createChatRouter = ({
         z.object({
           page_slug: z.string(),
           message: z.string(),
+          current_chunk: z.string(),
           history: z
             .array(
               z.object({
@@ -56,13 +57,42 @@ export const createChatRouter = ({
               })
             )
             .optional(),
-          current_chunk: z.string(),
           summary: z.string().optional(),
         })
       ),
       async (c) => {
         const json = c.req.valid("json");
-        const response = await fetcher(`${apiUrl}/chat/SERT`, {
+        const response = await fetcher(`${apiUrl}/chat/sert`, {
+          method: "POST",
+          body: JSON.stringify(json),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        return response;
+      }
+    )
+    .post(
+      "/think_aloud",
+      zValidator(
+        "json",
+        z.object({
+          page_slug: z.string(),
+          chunk_slug: z.string(),
+          message: z.string(),
+          history: z.array(
+            z.object({
+              agent: z.string(),
+              text: z.string(),
+            })
+          ),
+          question: z.string().optional(),
+          student_response: z.string().optional(),
+        })
+      ),
+      async (c) => {
+        const json = c.req.valid("json");
+        const response = await fetcher(`${apiUrl}/chat/think_aloud`, {
           method: "POST",
           body: JSON.stringify(json),
           headers: {
