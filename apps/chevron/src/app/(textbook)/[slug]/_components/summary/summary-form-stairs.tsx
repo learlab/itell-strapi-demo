@@ -459,7 +459,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
           submit summary
         </h2>
         <form
-          className="mt-2 space-y-4"
+          className="flex flex-col gap-4"
           onSubmit={action}
           aria-labelledby="summary-form-heading"
         >
@@ -481,11 +481,12 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
             ref={ref}
           />
 
-          <div className="flex justify-end">
+          <div>
             <Button
               type="submit"
               disabled={isPending || !isSummaryReady}
               pending={isPending}
+              className="w-40"
             >
               <span className="inline-flex items-center gap-2">
                 <SendHorizontalIcon className="size-3" />

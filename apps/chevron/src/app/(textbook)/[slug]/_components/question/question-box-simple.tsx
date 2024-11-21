@@ -34,8 +34,9 @@ export function QuestionBoxSimple({
   const disabled = isSummaryReady || currentChunk !== chunkSlug;
   const chunks = useChunks();
   const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
+
   return (
-    <QuestionBoxShell className="border-info">
+    <QuestionBoxShell>
       <QuestionBoxContent className="prose-p:my-2">
         <p className="text-muted-foreground">
           Below is a question related to the content you just read. When you

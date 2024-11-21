@@ -185,14 +185,23 @@ export function QuestionBoxStairs({
 
   if (collapsed) {
     return (
-      <Button
-        variant="outline"
-        onClick={() => {
-          setCollapsed(false);
-        }}
-      >
-        Reveal optional question
-      </Button>
+      <QuestionBoxShell>
+        <QuestionBoxContent>
+          <p className="my-2">
+            You can skip the following question or click to reveal.
+          </p>
+          <div>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setCollapsed(false);
+              }}
+            >
+              Reveal optional question
+            </Button>
+          </div>
+        </QuestionBoxContent>
+      </QuestionBoxShell>
     );
   }
 

@@ -23,7 +23,8 @@ export function NoteCount() {
       </HoverCardTrigger>
       <HoverCardContent className="w-48 text-sm">
         <p>
-          You can take note by selecting text and click the "take note" button.
+          You can add a note by selecting text and click the &quot;take
+          note&quot; button.
         </p>
       </HoverCardContent>
     </HoverCard>

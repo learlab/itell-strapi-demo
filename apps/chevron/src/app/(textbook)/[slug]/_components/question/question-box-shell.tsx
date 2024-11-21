@@ -7,7 +7,7 @@ export function QuestionBoxShell({
   ...rest
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <Card className={cn("animate-in fade-in", className)} {...rest}>
+    <Card className={cn("border-info animate-in fade-in", className)} {...rest}>
       {children}
     </Card>
   );

@@ -114,19 +114,28 @@ export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
 
   if (!state.show) {
     return (
-      <Button
-        variant="outline"
-        onClick={() => {
-          setState((state) => ({ ...state, show: true }));
-        }}
-      >
-        Reveal optional question
-      </Button>
+      <QuestionBoxShell>
+        <QuestionBoxContent>
+          <p className="my-2">
+            You can skip the following question or click to reveal.
+          </p>
+          <div>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setState((state) => ({ ...state, show: true }));
+              }}
+            >
+              Reveal optional question
+            </Button>
+          </div>
+        </QuestionBoxContent>
+      </QuestionBoxShell>
     );
   }
 
   return (
-    <QuestionBoxShell className="border-info">
+    <QuestionBoxShell>
       <QuestionBoxHeader isOptional={!shouldBlur} question={question} />
       <QuestionBoxContent>
         <div role="status">

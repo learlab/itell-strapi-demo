@@ -59,14 +59,7 @@ export function PageAssignments({
   }
 
   return (
-    <section
-      id={Elements.PAGE_ASSIGNMENTS}
-      aria-labelledby="page-assignments-heading"
-      className="mt-12"
-    >
-      <h2 className="sr-only" id="page-assignments-heading">
-        assignments
-      </h2>
+    <AssignmentsShell>
       <Card className="border-info">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2">Summary</CardTitle>
@@ -78,7 +71,7 @@ export function PageAssignments({
             of this page
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-4">
           {user.finished ? (
             <Suspense fallback={<FinishedPrompt.Skeleton />}>
               <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
@@ -113,7 +106,7 @@ export function PageAssignments({
           ) : null}
         </CardContent>
       </Card>
-    </section>
+    </AssignmentsShell>
   );
 }
 
@@ -122,7 +115,7 @@ function AssignmentsShell({ children }: { children: React.ReactNode }) {
     <section
       id={Elements.PAGE_ASSIGNMENTS}
       aria-labelledby="page-assignments-heading"
-      className="mt-12"
+      className="mt-6 border-t-2 pt-6"
     >
       <h2 className="sr-only" id="page-assignments-heading">
         assignments

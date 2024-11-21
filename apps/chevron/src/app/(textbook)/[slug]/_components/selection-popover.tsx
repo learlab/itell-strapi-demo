@@ -70,7 +70,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
   } as const;
 
   const takeNoteAction = {
-    label: "Take Note",
+    label: "Add Note",
     icon: <PencilIcon className="size-5" />,
     action: () => {
       if (state && user) {
