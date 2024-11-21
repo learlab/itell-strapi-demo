@@ -6,7 +6,7 @@ export function updatePersonalization(
   user: User,
   { isSummaryPassed }: { isSummaryPassed: boolean }
 ): PersonalizationData {
-  const personalization: PersonalizationData = user.personalization ?? {};
+  const personalization = { ...user.personalization };
 
   // increment streak count by one if summary is a passing one
   const newSummaryStreak = isSummaryPassed

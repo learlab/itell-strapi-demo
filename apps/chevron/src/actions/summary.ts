@@ -4,11 +4,7 @@ import { revalidateTag } from "next/cache";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
-<<<<<<< HEAD
-import { handleSummaryStreak } from "@/lib/summary-streak"
-=======
 
->>>>>>> main
 import { db, first } from "@/actions/db";
 import {
   CreateSummarySchema,
@@ -26,6 +22,7 @@ import {
 } from "@/lib/constants";
 import { isLastPage } from "@/lib/pages";
 import { getPageData, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { updatePersonalization } from "@/lib/personalization";
 import { authedProcedure } from "./utils";
 
 /**
@@ -50,11 +47,6 @@ export const createSummaryAction = authedProcedure
   .handler(async ({ input, ctx }) => {
     let shouldRevalidate = false;
     const data = await db.transaction(async (tx) => {
-      // count
-      const user = first(
-        await tx.select().from(users).where(eq(users.id, ctx.user.id))
-      );
-
       let canProceed =
         input.summary.condition === Condition.STAIRS
           ? input.summary.isPassed
@@ -106,10 +98,12 @@ export const createSummaryAction = authedProcedure
       );
 
       // update user summary streak info
-      if (canProceed && user) {
+      if (canProceed) {
         shouldRevalidate = true;
 
-        const personalizationData = handleSummaryStreak(user.personalizationData ?? {}, input.summary.isPassed);
+        const newPersonalization = updatePersonalization(ctx.user, {
+          isSummaryPassed: input.summary.isPassed,
+        });
 
         const page = getPageData(input.summary.pageSlug);
         if (page) {
@@ -118,9 +112,7 @@ export const createSummaryAction = authedProcedure
             .set({
               pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
               finished: isLastPage(page),
-              personalizationData: {
-                ...personalizationData,
-              },
+              personalization: newPersonalization,
             })
             .where(eq(users.id, ctx.user.id));
         }
