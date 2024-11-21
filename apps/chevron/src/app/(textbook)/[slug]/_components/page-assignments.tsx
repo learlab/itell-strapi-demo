@@ -9,12 +9,10 @@ import {
   CardTitle,
 } from "@itell/ui/card";
 import { type User } from "lucia";
-import { PencilIcon } from "lucide-react";
 
 import { Condition } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/pages/pages.server";
-import { getSkipSummaryNumber } from "@/lib/personalization";
 import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
