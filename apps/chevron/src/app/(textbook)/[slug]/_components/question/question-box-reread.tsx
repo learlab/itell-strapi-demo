@@ -3,11 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
-import { Card, CardContent } from "@itell/ui/card";
 import { Label } from "@itell/ui/label";
 import { StatusButton } from "@itell/ui/status-button";
 import { TextArea } from "@itell/ui/textarea";
-import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 import { PencilIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -21,6 +19,11 @@ import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { FinishQuestionButton } from "./finish-question-button";
+import {
+  QuestionBoxContent,
+  QuestionBoxHeader,
+  QuestionBoxShell,
+} from "./question-box-shell";
 import { StatusReread } from "./types";
 import type { QuestionScore } from "./types";
 
@@ -123,21 +126,9 @@ export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
   }
 
   return (
-    <Card
-      className={cn(
-        "zoom-10 question-co flex flex-col items-center justify-center space-y-2 px-6 py-4 animate-in fade-in",
-        state.status === StatusReread.ANSWERED ? "border-2 border-border" : ""
-      )}
-    >
-      <CardContent className="mx-auto flex w-4/5 flex-col items-center justify-center gap-4">
-        {question ? (
-          <p>
-            <span className="font-bold">Question </span>
-            {!shouldBlur && <span className="font-bold">(Optional)</span>}:{" "}
-            {question}
-          </p>
-        ) : null}
-
+    <QuestionBoxShell className="border-info">
+      <QuestionBoxHeader isOptional={!shouldBlur} question={question} />
+      <QuestionBoxContent>
         <div role="status">
           {state.status === StatusReread.ANSWERED && (
             <p className="text-sm text-muted-foreground">
@@ -154,14 +145,14 @@ export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
           ref={form}
           aria-labelledby="form-question-heading"
           onSubmit={onSubmit}
-          className="w-full space-y-2"
+          className="flex flex-col gap-4"
         >
-          <Label>
+          <Label className="font-normal">
             <span className="sr-only">your answer</span>
             <TextArea
               name="input"
-              rows={2}
-              className="mx-auto max-w-lg rounded-md p-4 shadow-md"
+              rows={3}
+              className="rounded-md p-4 shadow-md lg:text-lg"
               onPaste={(e) => {
                 if (isProduction) {
                   e.preventDefault();
@@ -184,18 +175,19 @@ export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
           </Label>
 
           {state.error ? (
-            <InternalError className="text-center">
+            <InternalError>
               <p>{state.error}</p>
             </InternalError>
           ) : null}
 
-          <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
             {state.status === StatusReread.UNANSWERED ? (
               <StatusButton
                 pending={isPending}
                 type="submit"
                 disabled={_isPending}
                 variant="outline"
+                className="w-40"
               >
                 <span className="flex items-center gap-2">
                   <PencilIcon className="size-4" />
@@ -214,7 +206,7 @@ export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
             ) : null}
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </QuestionBoxContent>
+    </QuestionBoxShell>
   );
 }

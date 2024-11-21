@@ -111,7 +111,7 @@ export const SummaryInput = forwardRef<HTMLElement, Props>(
             }}
             className={cn(
               "flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm font-normal ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-              "w-full resize-none rounded-md p-4 shadow-md xl:text-lg"
+              "w-full resize-none rounded-md p-4 shadow-md lg:text-lg"
             )}
           />
         </Label>

@@ -29,7 +29,6 @@ import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
 import { createEventAction } from "@/actions/event";
-import { getFocusTimeAction } from "@/actions/focus-time";
 import {
   createSummaryAction,
   getSummaryScoreRequestAction,
@@ -92,7 +91,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
 
   // for debugging
   const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
-  const requestBodyRef = useRef<{} | null>(null);
+  const requestBodyRef = useRef<any | null>(null);
   const summaryResponseRef = useRef<SummaryResponse | null>(null);
   const stairsDataRef = useRef<StairsQuestion | null>(null);
   const stairsAnsweredRef = useRef(false);

@@ -86,6 +86,7 @@
     "autoprefixer": "^10.4.15",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.28.0",
+    "eslint": "8.57.0",
     "eslint-plugin-drizzle": "^0.2.3",
     "playwright-extra": "^4.3.6",
     "postcss": "^8.4.29",

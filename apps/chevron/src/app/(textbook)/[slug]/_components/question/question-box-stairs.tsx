@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@itell/core/hooks";
 import { Button } from "@itell/ui/button";
-import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
+import { CardDescription, CardFooter } from "@itell/ui/card";
 import {
   HoverCard,
   HoverCardContent,
@@ -20,7 +20,12 @@ import {
 } from "@itell/ui/tooltip";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
+import {
+  Flame,
+  FlaskConicalIcon,
+  KeyRoundIcon,
+  PencilIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useServerAction } from "zsa-react";
@@ -37,6 +42,11 @@ import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
 import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
+import {
+  QuestionBoxContent,
+  QuestionBoxHeader,
+  QuestionBoxShell,
+} from "./question-box-shell";
 import { QuestionFeedback } from "./question-feedback";
 import { borderColors, StatusStairs } from "./types";
 import type { QuestionScore } from "./types";
@@ -187,111 +197,107 @@ export function QuestionBoxStairs({
   }
 
   return (
-    <Card
-      className={cn(
-        "zoom-10 flex flex-col items-center justify-center space-y-2 px-6 py-4 animate-in fade-in",
-        borderColor,
-        { shake: state.status === StatusStairs.BOTH_INCORRECT }
-      )}
+    <QuestionBoxShell
+      className={cn(borderColor, {
+        shake: state.status === StatusStairs.BOTH_INCORRECT,
+      })}
     >
       <Confetti active={status === StatusStairs.BOTH_CORRECT} />
 
-      <CardHeader className="flex w-full flex-row items-baseline justify-center gap-1 p-2">
-        <CardDescription className="mx-auto flex max-w-96 items-center justify-center gap-2 text-xs font-light text-muted-foreground">
-          <span>🔍</span>
-          <span>
-            iTELL evaluation is based on AI and may not always be accurate
-          </span>
-        </CardDescription>
+      <QuestionBoxHeader isOptional={!shouldBlur} question={question}>
+        {streak !== undefined && streak >= 2 ? (
+          <CardDescription>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                    <Flame
+                      color="#b91c1c"
+                      className={cn({
+                        "size-8 motion-safe:animate-ping": streak >= 7,
+                        "size-6 motion-safe:animate-pulse":
+                          streak >= 5 && streak < 7,
+                        "size-4 motion-safe:animate-bounce":
+                          streak >= 2 && streak < 5,
+                      })}
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    You have answered {streak} questions correctly in a row,
+                    good job!
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </CardDescription>
+        ) : null}
+      </QuestionBoxHeader>
 
-        {streak !== undefined && streak >= 2 && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                  <Flame
-                    color="#b91c1c"
-                    className={cn({
-                      "motion-safe:animate-ping size-8": streak >= 7,
-                      "motion-safe:animate-pulse size-6": streak >= 5 && streak < 7,
-                      "motion-safe:animate-bounce size-4": streak >= 2 && streak < 5,
-                    })}
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  You have answered {streak} questions correctly in a row, good
-                  job!
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
-      </CardHeader>
-
-      <CardContent className="mx-auto mt-0.5 flex w-4/5 flex-col items-center justify-center space-y-4">
-        <div role="status" className="space-y-4">
+      <QuestionBoxContent>
+        <div role="status">
           {status === StatusStairs.BOTH_INCORRECT && (
-            <div className="text-sm">
-              <p className="mt-0.5 text-red-400">
-                <b>iTELL AI says:</b> You likely got a part of the answer wrong.
-                Please try again.
-              </p>
-              {/* <p className="underline">
-                {isLastQuestion
-                  ? 'If you believe iTELL AI has made an error, you can click on the "Unlock summary" button to skip this question and start writing a summary.'
-                  : 'If you believe iTELL AI has made an error, you can click on the "Continue reading" button to skip this question.'}
-              </p> */}
-            </div>
+            <p className="text-sm text-destructive-foreground">
+              <b>iTELL AI says:</b> You likely got a part of the answer wrong.
+              Please try again.
+            </p>
           )}
 
           {status === StatusStairs.SEMI_CORRECT && (
-            <p className="mt-0.5 text-xs text-yellow-600">
+            <p className="text-sm text-warning">
               <b>iTELL AI says:</b> You may have missed something, but you were
               generally close.
             </p>
           )}
 
           {status === StatusStairs.BOTH_CORRECT ? (
-            <div className="flex flex-col items-center">
-              <p className="text-xl2 mt-0.5 text-center text-emerald-600">
-                Your answer is correct!
-              </p>
-              {/* {shouldBlur ? (
-                <p className="text-sm">
-                  Click on the button below to continue reading.
-                </p>
-              ) : null} */}
-            </div>
-          ) : (
-            question && (
-              <p className="flex items-baseline gap-2">
-                <span className="flex-1">
-                  <span className="font-bold">Question </span>
-                  {!shouldBlur && <span className="font-bold">(Optional)</span>}
-                  : <span>{question}</span>
-                </span>
-              </p>
-            )
-          )}
+            <p className="text-center text-xl text-emerald-600">
+              Your answer is correct!
+            </p>
+          ) : null}
         </div>
 
         <h3 id="form-question-heading" className="sr-only">
           Answer the question
         </h3>
+
+        <div className="flex items-center gap-2">
+          {(status === StatusStairs.SEMI_CORRECT ||
+            status === StatusStairs.BOTH_INCORRECT) && (
+            <ExplainButton
+              chunkSlug={chunkSlug}
+              pageSlug={pageSlug}
+              input={state.input}
+            />
+          )}
+          {status !== StatusStairs.UNANSWERED && (
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button variant="outline" type="button" className="gap-2">
+                  <KeyRoundIcon className="size-4" />
+                  Reveal Answer
+                </Button>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <p className="no-select leading-relaxed">{answer}</p>
+              </HoverCardContent>
+            </HoverCard>
+          )}
+        </div>
+
         <form
           ref={form}
           aria-labelledby="form-question-heading"
           onSubmit={onSubmit}
-          className="w-full space-y-2"
+          className="flex flex-col gap-4"
         >
-          <Label>
+          <Label className="font-normal">
             <span className="sr-only">your answer</span>
             <TextArea
               name="input"
-              rows={2}
-              className="mx-auto max-w-lg rounded-md p-4 shadow-md"
+              rows={3}
+              className="rounded-md p-4 shadow-md lg:text-lg"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && e.shiftKey) {
                   e.preventDefault();
@@ -313,21 +319,7 @@ export function QuestionBoxStairs({
             />
           </Label>
 
-          <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
-            {status !== StatusStairs.UNANSWERED && (
-              <HoverCard>
-                <HoverCardTrigger asChild>
-                  <Button variant="outline" type="button" className="gap-2">
-                    <KeyRoundIcon className="size-4" />
-                    Reveal Answer
-                  </Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-80">
-                  <p className="no-select leading-relaxed">{answer}</p>
-                </HoverCardContent>
-              </HoverCard>
-            )}
-
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
             {status === StatusStairs.BOTH_CORRECT && isNextButtonDisplayed ? (
               // when answer is both correct and next button should be displayed
               <FinishQuestionButton
@@ -344,6 +336,7 @@ export function QuestionBoxStairs({
                     type="submit"
                     disabled={_isPending}
                     variant="outline"
+                    className="min-w-40"
                   >
                     <span className="flex items-center gap-2">
                       <PencilIcon className="size-4" />
@@ -365,41 +358,30 @@ export function QuestionBoxStairs({
           {state.error ? (
             <p className="text-center text-sm text-red-500">{state.error}</p>
           ) : null}
-
-          <div className="mt-4 flex items-center justify-center">
-            {(status === StatusStairs.SEMI_CORRECT ||
-              status === StatusStairs.BOTH_INCORRECT) && (
-              <span className="mx-2 flex items-center gap-2">
-                <ExplainButton
-                  chunkSlug={chunkSlug}
-                  pageSlug={pageSlug}
-                  input={state.input}
-                />
-              </span>
-            )}
-          </div>
-
-          {status !== StatusStairs.UNANSWERED && isNextButtonDisplayed ? (
-            <div className="mx-auto flex max-w-80 items-center justify-around">
-              <div className="flex items-center justify-center text-xs font-light text-muted-foreground">
-                What did you think about the feedback?
-              </div>
-              <div className="space-x-2">
-                <QuestionFeedback
-                  type="positive"
-                  pageSlug={pageSlug}
-                  chunkSlug={chunkSlug}
-                />
-                <QuestionFeedback
-                  type="negative"
-                  pageSlug={pageSlug}
-                  chunkSlug={chunkSlug}
-                />
-              </div>
-            </div>
-          ) : null}
         </form>
-      </CardContent>
-    </Card>
+      </QuestionBoxContent>
+
+      <CardFooter>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <FlaskConicalIcon className="size-4" />
+          <p>
+            iTELL evaluation is based on AI and may not always be accurate.
+            Provide feedback
+          </p>
+          <div className="space-x-2">
+            <QuestionFeedback
+              type="positive"
+              pageSlug={pageSlug}
+              chunkSlug={chunkSlug}
+            />
+            <QuestionFeedback
+              type="negative"
+              pageSlug={pageSlug}
+              chunkSlug={chunkSlug}
+            />
+          </div>
+        </div>
+      </CardFooter>
+    </QuestionBoxShell>
   );
 }

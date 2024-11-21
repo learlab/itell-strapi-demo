@@ -70,7 +70,7 @@ export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
   }, [isError]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div>
       <div role="status">
         {animatedResponse !== "" ? (
           <p className="text-sm text-muted-foreground">{animatedResponse}</p>

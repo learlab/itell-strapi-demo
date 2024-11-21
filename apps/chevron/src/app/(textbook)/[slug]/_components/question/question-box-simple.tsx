@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@itell/ui/button";
-import { Card, CardContent } from "@itell/ui/card";
-import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
 
 import { createEventAction } from "@/actions/event";
@@ -15,6 +13,7 @@ import {
   SelectCurrentChunk,
   SelectSummaryReady,
 } from "@/lib/store/question-store";
+import { QuestionBoxContent, QuestionBoxShell } from "./question-box-shell";
 
 type Props = {
   question: string;
@@ -36,13 +35,9 @@ export function QuestionBoxSimple({
   const chunks = useChunks();
   const isLastQuestion = chunkSlug === chunks[chunks.length - 1];
   return (
-    <Card
-      className={cn(
-        "flex flex-col items-center justify-center space-y-2 px-6 py-4"
-      )}
-    >
-      <CardContent className="mx-auto flex w-4/5 flex-col items-start justify-center space-y-1">
-        <p className="text-sm text-muted-foreground">
+    <QuestionBoxShell className="border-info">
+      <QuestionBoxContent className="prose-p:my-2">
+        <p className="text-muted-foreground">
           Below is a question related to the content you just read. When you
           finished reading its answer, click the finish button below to move on.
         </p>
@@ -76,15 +71,20 @@ export function QuestionBoxSimple({
               },
             });
           }}
-          className="w-full space-y-2"
+          className="flex flex-col gap-4"
         >
-          <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
-            <Button type="submit" variant="outline" disabled={disabled}>
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
+            <Button
+              type="submit"
+              variant="outline"
+              disabled={disabled}
+              className="w-40"
+            >
               Continue
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </QuestionBoxContent>
+    </QuestionBoxShell>
   );
 }
