@@ -36,8 +36,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   const quizStore = useQuizStore();
   const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
   const router = useRouter();
-  const [finished, setFinished] = useState(pageStatus.unlocked);
-  const duration = Math.max(1000 - streak * 100, 200);
+  const [pageFinished, setPageFinished] = useState(pageStatus.unlocked);
 
   const {
     action,
@@ -63,8 +62,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         });
       }
 
-      if (!finished && page.next_slug) {
-        console.log("Incrementing user page slug");
+      if (!pageFinished && page.next_slug) {
         const [_, err] = await incrementUserPageSlugAction({
           currentPageSlug: page.slug,
           withStreakSkip: true,
@@ -72,12 +70,12 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         if (err) {
           throw new Error("increment user page slug action", { cause: err });
         }
-        setFinished(true);
+        setPageFinished(true);
         router.push(page.next_slug);
         return;
       }
 
-      if (finished && page.next_slug) {
+      if (pageFinished && page.next_slug) {
         router.push(page.next_slug);
         return;
       }
@@ -105,43 +103,38 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <Confetti active={finished} />
-      <div className="mb-1.5 text-2xl font-extrabold">
-        Nicely Done!
-        <hr />
-      </div>
-      <div className="mb-4 text-base" role="status">
-        {finished ? (
-          "You are currently on a streak of writing good summaries! You can skip writing a summary on a page you haven't completed yet."
+      <Confetti active={pageFinished} />
+      <h3 className="text-2xl font-extrabold">Nicely Done!</h3>
+      <div>
+        {pageFinished ? (
+          <>
+            <p>You are currently on a streak of writing good summaries!</p>
+            <p>
+              You can skip writing a summary on a page you haven't completed
+              yet.
+            </p>
+          </>
         ) : (
           <>
-            <div>
+            <p>
               You are currently on{" "}
               <span className="font-bold underline decoration-sky-500 decoration-solid decoration-2">
-                {" "}
                 a streak of writing good summaries!{" "}
-              </span>{" "}
-              <br />
-              You have earned the right to skip writing a summary for this page.{" "}
-              <br />
-            </div>
-            <div className="flex">
-              <span
-                className={cn(
-                  "ease motion-safe:animate-spin",
-                  `duration-${duration}`
-                )}
-              >
-                ⭐
-              </span>{" "}
-              Streak count: <span className="text-rose-700">{streak}</span>{" "}
-            </div>
+              </span>
+            </p>
+            <p>
+              You have earned the right to skip writing a summary for this page.
+            </p>
+            <p>
+              Streak count:{" "}
+              <span className="font-semibold text-warning">{streak}</span>{" "}
+            </p>
           </>
         )}
       </div>
 
       <h2 id="completion-form-heading" className="sr-only">
-        completion
+        Page Completion Form
       </h2>
       <form
         aria-labelledby="completion-form-heading"
@@ -150,10 +143,10 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
       >
         <StatusButton
           pending={isPending}
-          disabled={finished ? !page.next_slug : false}
+          disabled={pageFinished ? !page.next_slug : false}
           className="w-44"
         >
-          {!finished ? (
+          {!pageFinished ? (
             <span className="inline-flex items-center gap-1">
               <StepForward className="size-4" /> Skip Summary
             </span>

@@ -102,7 +102,7 @@ export const SummaryFormSimple = memo(({ pageStatus, page }: Props) => {
       <p>placeholder text</p>
 
       <h2 id="completion-form-heading" className="sr-only">
-        completion
+        Page Completion Form
       </h2>
       <form
         aria-labelledby="completion-form-heading"
