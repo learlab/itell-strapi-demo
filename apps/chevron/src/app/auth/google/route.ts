@@ -18,7 +18,5 @@ export async function GET(req: Request): Promise<Response> {
     "email",
   ]);
 
-  console.log("Redirecting to", url);
-
   return Response.redirect(url);
 }
