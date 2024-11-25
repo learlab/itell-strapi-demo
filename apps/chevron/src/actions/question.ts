@@ -4,7 +4,7 @@ import { revalidateTag } from "next/cache";
 import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { db } from "@/actions/db";
+import { db, first } from "@/actions/db";
 import {
   constructed_responses,
   constructed_responses_feedback,
@@ -85,11 +85,14 @@ export const createUserQuestionStreakAction = authedProcedure
     const updatedUser = await db
       .update(users)
       .set({ personalization: newPersonalization })
-      .where(eq(users.id, ctx.user.id));
+      .where(eq(users.id, ctx.user.id))
+      .returning({
+        personalization: users.personalization,
+      });
 
     revalidateTag(Tags.GET_SESSION);
 
-    return updatedUser;
+    return first(updatedUser);
   });
 
 /**

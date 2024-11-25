@@ -77,12 +77,12 @@ export function QuestionBoxStairs({
   const form = useRef<HTMLFormElement>(null);
   const {
     data: streak,
-    execute,
+    execute: getStreak,
     setOptimistic: setStreak,
   } = useServerAction(getUserQuestionStreakAction);
 
   useEffect(() => {
-    execute();
+    getStreak();
   }, []);
 
   const { execute: updateStreak } = useServerAction(
