@@ -11,7 +11,7 @@ import { PageAssignments } from "@textbook/page-assignments";
 import { PageContent } from "@textbook/page-content";
 import { PageStatusModal } from "@textbook/page-status-modal";
 import { Pager } from "@textbook/pager";
-import { QuestionControl } from "@textbook/question/question-control";
+import { ChunkControl } from "@textbook/question/chunk-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
 
@@ -108,7 +108,7 @@ export default async function Page(props: {
       {isProduction ? (
         <PageStatusModal user={user} pageStatus={pageStatus} />
       ) : null}
-      <QuestionControl
+      <ChunkControl
         userId={userId}
         pageSlug={pageSlug}
         hasAssignments={page.assignments.length > 0}
