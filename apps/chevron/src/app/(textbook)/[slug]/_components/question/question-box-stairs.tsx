@@ -32,11 +32,12 @@ import { useServerAction } from "zsa-react";
 
 import {
   createQuestionAnswerAction,
+  createUserQuestionStreakAction,
   getUserQuestionStreakAction,
 } from "@/actions/question";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
-import { apiClient } from "@/lib/api-client";
+// import { apiClient } from "@/lib/api-client";
 import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
@@ -73,12 +74,19 @@ export function QuestionBoxStairs({
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
   const form = useRef<HTMLFormElement>(null);
-
   const {
     data: streak,
-    setOptimistic: setOptimisticStreak,
-    execute: getStreak,
+    execute,
+    setOptimistic: setStreak,
   } = useServerAction(getUserQuestionStreakAction);
+
+  useEffect(() => {
+    execute();
+  }, []);
+
+  const { execute: updateStreak } = useServerAction(
+    createUserQuestionStreakAction
+  );
   const [collapsed, setCollapsed] = useState(!shouldBlur);
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
@@ -108,19 +116,19 @@ export function QuestionBoxStairs({
       return;
     }
 
-    const res = await apiClient.api.cri.$post({
-      json: {
-        page_slug: pageSlug,
-        chunk_slug: chunkSlug,
-        answer: input,
-      },
-    });
-    if (!res.ok) {
-      const { details, error } = await res.json();
-      throw new Error(error, { cause: details });
-    }
-    const response = await res.json();
-    const score = response.score as QuestionScore;
+    // const res = await apiClient.api.cri.$post({
+    //   json: {
+    //     page_slug: pageSlug,
+    //     chunk_slug: chunkSlug,
+    //     answer: input,
+    //   },
+    // });
+    // if (!res.ok) {
+    //   const { details, error } = await res.json();
+    //   throw new Error(error, { cause: details });
+    // }
+    // const response = await res.json();
+    const score = 2 as QuestionScore;
     createQuestionAnswerAction({
       text: input,
       chunkSlug,
@@ -139,7 +147,8 @@ export function QuestionBoxStairs({
         error: null,
         input,
       });
-      setOptimisticStreak((streak) => (streak ? streak + 1 : 1));
+      setStreak((streak) => (streak ? streak + 1 : 1));
+      updateStreak({ isCorrect: true });
     }
 
     if (score === 1) {
@@ -156,7 +165,8 @@ export function QuestionBoxStairs({
         error: null,
         input,
       });
-      setOptimisticStreak(0);
+      setStreak(0);
+      updateStreak({ isCorrect: false });
     }
   });
 
@@ -178,10 +188,6 @@ export function QuestionBoxStairs({
       reportSentry("evaluate constructed response", { error: error?.cause });
     }
   }, [isError]);
-
-  useEffect(() => {
-    getStreak();
-  }, []);
 
   if (collapsed) {
     return (
@@ -205,6 +211,22 @@ export function QuestionBoxStairs({
     );
   }
 
+  function streakToSize(streakCount: number) {
+    return 4 + (7 * streakCount) / (8 + streakCount);
+  }
+
+  function toClassName(streakCount: number) {
+    let classString = `size-[${streakToSize(streakCount).toString()}]`;
+    if (streakCount < 2) {
+      return "";
+    } else if (streakCount < 5) {
+      return `${classString} motion-safe:animate-bounce`;
+    } else if (streakCount < 7) {
+      return `${classString} motion-safe:animate-pulse`;
+    }
+    return `${classString} motion-safe:animate-ping`;
+  }
+
   return (
     <QuestionBoxShell
       className={cn(borderColor, {
@@ -220,16 +242,7 @@ export function QuestionBoxStairs({
               <Tooltip>
                 <TooltipTrigger>
                   <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                    <Flame
-                      color="#b91c1c"
-                      className={cn({
-                        "size-8 motion-safe:animate-ping": streak >= 7,
-                        "size-6 motion-safe:animate-pulse":
-                          streak >= 5 && streak < 7,
-                        "size-4 motion-safe:animate-bounce":
-                          streak >= 2 && streak < 5,
-                      })}
-                    />
+                    <Flame color="#b91c1c" className={toClassName(streak)} />
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
