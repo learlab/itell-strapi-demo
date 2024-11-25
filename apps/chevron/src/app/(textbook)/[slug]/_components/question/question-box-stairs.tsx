@@ -371,13 +371,13 @@ export function QuestionBoxStairs({
         </QuestionBoxContent>
 
         <CardFooter>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
             <FlaskConicalIcon className="size-4" />
-            <p>
+            <p className="text-sm text-muted-foreground">
               iTELL evaluation is based on AI and may not always be accurate.
               Provide feedback
             </p>
-            <div className="space-x-2">
+            <div className="space-x-1">
               <QuestionFeedback
                 type="positive"
                 pageSlug={pageSlug}
