@@ -1,13 +1,13 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@itell/core/hooks";
 import { ErrorFeedback, ErrorType } from "@itell/core/summary";
 import { Warning } from "@itell/ui/callout";
 import { StatusButton } from "@itell/ui/status-button";
 import { useSelector } from "@xstate/store/react";
-import { ArrowRightIcon, StepForward } from "lucide-react";
+import { ArrowRightIcon, CheckSquare2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
@@ -17,26 +17,23 @@ import {
   useQuestionStore,
   useQuizStore,
 } from "@/components/provider/page-provider";
-import { Confetti } from "@/components/ui/confetti";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages";
+import { isLastPage, PageData } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import type { PageData } from "@/lib/pages";
 import type { FormEvent } from "react";
 
 type Props = {
   pageStatus: PageStatus;
   page: PageData;
-  streak: number;
 };
 
-export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
+export const SummaryFormSimple = memo(({ pageStatus, page }: Props) => {
   const questionStore = useQuestionStore();
   const quizStore = useQuizStore();
   const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
   const router = useRouter();
-  const [pageFinished, setPageFinished] = useState(pageStatus.unlocked);
+  const [finished, setFinished] = useState(pageStatus.unlocked);
 
   const {
     action,
@@ -47,6 +44,16 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   } = useActionStatus(
     async (e: FormEvent) => {
       e.preventDefault();
+      if (finished && page.next_slug) {
+        router.push(page.next_slug);
+        return;
+      }
+      const [_, err] = await incrementUserPageSlugAction({
+        currentPageSlug: page.slug,
+      });
+      if (err) {
+        throw new Error("increment user page slug action", { cause: err });
+      }
 
       if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
         quizStore.send({
@@ -62,23 +69,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         });
       }
 
-      if (!pageFinished && page.next_slug) {
-        const [_, err] = await incrementUserPageSlugAction({
-          currentPageSlug: page.slug,
-          withStreakSkip: true,
-        });
-        if (err) {
-          throw new Error("increment user page slug action", { cause: err });
-        }
-        setPageFinished(true);
-        router.push(page.next_slug);
-        return;
-      }
-
-      if (pageFinished && page.next_slug) {
-        router.push(page.next_slug);
-        return;
-      }
+      setFinished(true);
     },
     { delayTimeout: 3000 }
   );
@@ -86,7 +77,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
 
   useEffect(() => {
     if (isError) {
-      reportSentry("summary skip", {
+      reportSentry("summary simple", {
         pageSlug: page.slug,
         error: error?.cause,
       });
@@ -103,35 +94,12 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <Confetti active={pageFinished} />
-      <h3 className="text-2xl font-extrabold">Nicely Done!</h3>
-      <div>
-        {pageFinished ? (
-          <>
-            <p>You are currently on a streak of writing good summaries!</p>
-            <p>
-              You can skip writing a summary on a page you haven&apos;t
-              completed yet.
-            </p>
-          </>
-        ) : (
-          <>
-            <p>
-              You are currently on{" "}
-              <span className="font-bold underline decoration-sky-500 decoration-solid decoration-2">
-                a streak of writing good summaries!{" "}
-              </span>
-            </p>
-            <p>
-              You have earned the right to skip writing a summary for this page.
-            </p>
-            <p>
-              Streak count:{" "}
-              <span className="font-semibold text-warning">{streak}</span>{" "}
-            </p>
-          </>
-        )}
-      </div>
+      <p className="mb-4 text-lg font-light" role="status">
+        {finished
+          ? "You have completed this page, but you are still welcome to read the reference summary below to enhance understanding."
+          : "Below is a reference summary for this page. Please read it carefully to better understand the information presented."}
+      </p>
+      <p>placeholder text</p>
 
       <h2 id="completion-form-heading" className="sr-only">
         Page Completion Form
@@ -143,12 +111,12 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
       >
         <StatusButton
           pending={isPending}
-          disabled={pageFinished ? !page.next_slug : false}
+          disabled={finished ? !page.next_slug : false}
           className="w-44"
         >
-          {!pageFinished ? (
+          {!finished ? (
             <span className="inline-flex items-center gap-1">
-              <StepForward className="size-4" /> Skip Summary
+              <CheckSquare2Icon className="size-4" /> Mark as completed
             </span>
           ) : page.next_slug ? (
             <span className="inline-flex items-center gap-1">
