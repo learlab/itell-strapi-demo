@@ -42,13 +42,13 @@ import { apiClient } from "@/lib/api-client";
 import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
 import { insertNewline, reportSentry } from "@/lib/utils";
-import { ExplainButton } from "./explain-button";
 import { FinishQuestionButton } from "./finish-question-button";
 import {
   QuestionBoxContent,
   QuestionBoxHeader,
   QuestionBoxShell,
 } from "./question-box-shell";
+import { QuestionExplainButton } from "./question-explain-button";
 import { QuestionFeedback } from "./question-feedback";
 import { borderColors, StatusStairs } from "./types";
 import type { QuestionScore } from "./types";
@@ -288,7 +288,7 @@ export function QuestionBoxStairs({
         <div className="flex items-center gap-2">
           {(status === StatusStairs.SEMI_CORRECT ||
             status === StatusStairs.BOTH_INCORRECT) && (
-            <ExplainButton
+            <QuestionExplainButton
               chunkSlug={chunkSlug}
               pageSlug={pageSlug}
               input={state.input}

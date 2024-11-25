@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -11,7 +12,7 @@ import {
   CreateConstructedResponseSchema,
   users,
 } from "@/drizzle/schema";
-import { isProduction } from "@/lib/constants";
+import { isProduction, Tags } from "@/lib/constants";
 import { updatePersonalizationCRIStreak } from "@/lib/personalization";
 import { authedProcedure } from "./utils";
 
@@ -80,12 +81,14 @@ export const createUserQuestionStreakAction = authedProcedure
     const newPersonalization = updatePersonalizationCRIStreak(ctx.user, {
       isQuestionCorrect: input.isCorrect,
     });
-    const updatedUser = await db.transaction(async (tx) => {
-      return await tx
-        .update(users)
-        .set({ personalization: newPersonalization })
-        .where(eq(users.id, ctx.user.id));
-    });
+
+    const updatedUser = await db
+      .update(users)
+      .set({ personalization: newPersonalization })
+      .where(eq(users.id, ctx.user.id));
+
+    revalidateTag(Tags.GET_SESSION);
+
     return updatedUser;
   });
 

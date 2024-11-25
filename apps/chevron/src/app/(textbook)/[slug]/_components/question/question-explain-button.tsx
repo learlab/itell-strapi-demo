@@ -22,7 +22,7 @@ type Props = {
   input: string;
 };
 
-export function ExplainButton({ pageSlug, chunkSlug, input }: Props) {
+export function QuestionExplainButton({ pageSlug, chunkSlug, input }: Props) {
   const [response, setResponse] = useState("");
   const animatedResponse = useAnimatedText(response);
   const { pending: formPending } = useFormStatus();

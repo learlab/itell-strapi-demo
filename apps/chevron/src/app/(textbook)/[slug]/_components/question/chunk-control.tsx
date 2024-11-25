@@ -27,7 +27,7 @@ type Props = {
   hasAssignments: boolean;
 };
 
-export function QuestionControl({
+export function ChunkControl({
   userId,
   pageSlug,
   condition,
