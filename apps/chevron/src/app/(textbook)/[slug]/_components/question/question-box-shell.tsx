@@ -18,20 +18,25 @@ export function QuestionBoxHeader({
   question,
   isOptional,
   className,
+  headerRight,
   ...rest
 }: {
   children?: React.ReactNode;
   question: string;
   isOptional?: boolean;
+  headerRight?: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <CardHeader className={cn("flex gap-1 py-2", className)} {...rest}>
-      <CardTitle className="font-normal">
-        <p>
-          <span className="font-bold">Question </span>
-          {isOptional ? <span>(Optional)</span> : null}
-        </p>
-        <p>{question}</p>
+      <CardTitle className="flex items-center justify-between font-normal">
+        <div>
+          <p>
+            <span className="font-bold">Question </span>
+            {isOptional ? <span>(Optional)</span> : null}
+          </p>
+          <p>{question}</p>
+        </div>
+        {headerRight}
       </CardTitle>
       {children}
     </CardHeader>

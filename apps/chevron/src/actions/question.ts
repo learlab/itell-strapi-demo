@@ -1,10 +1,9 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { db, first } from "@/actions/db";
+import { db } from "@/actions/db";
 import {
   constructed_responses,
   constructed_responses_feedback,
@@ -12,7 +11,7 @@ import {
   CreateConstructedResponseSchema,
   users,
 } from "@/drizzle/schema";
-import { isProduction, Tags } from "@/lib/constants";
+import { isProduction } from "@/lib/constants";
 import { updatePersonalizationCRIStreak } from "@/lib/personalization";
 import { authedProcedure } from "./utils";
 
@@ -71,13 +70,18 @@ export const getAnswerStatsAction = authedProcedure.handler(async ({ ctx }) => {
 /**
  * Change streak of correctly answered questions for user
  */
-export const createUserQuestionStreakAction = authedProcedure
+export const updateCRIStreakAction = authedProcedure
   .input(
     z.object({
-      isCorrect: z.boolean(),
+      isCorrect: z.boolean().optional(),
     })
   )
   .handler(async ({ ctx, input }) => {
+    if (input.isCorrect === undefined) {
+      // Return current streak, to fill the initial streak render for QuestionBoxStairs
+      return ctx.user.personalization.cri_streak;
+    }
+
     const newPersonalization = updatePersonalizationCRIStreak(ctx.user, {
       isQuestionCorrect: input.isCorrect,
     });
@@ -90,9 +94,7 @@ export const createUserQuestionStreakAction = authedProcedure
         personalization: users.personalization,
       });
 
-    revalidateTag(Tags.GET_SESSION);
-
-    return first(updatedUser);
+    return updatedUser[0].personalization?.cri_streak ?? 0;
   });
 
 /**

@@ -58,8 +58,15 @@ const getTeacherActionHandler = memoize(
 export const updateUserAction = authedProcedure
   .input(UpdateUserSchema)
   .handler(async ({ input, ctx }) => {
-    await db.update(users).set(input).where(eq(users.id, ctx.user.id));
+    const updatedUser = await db
+      .update(users)
+      .set(input)
+      .where(eq(users.id, ctx.user.id))
+      .returning();
+
     revalidateTag(Tags.GET_SESSION);
+
+    return updatedUser[0];
   });
 
 export const updateUserPrefsAction = authedProcedure
