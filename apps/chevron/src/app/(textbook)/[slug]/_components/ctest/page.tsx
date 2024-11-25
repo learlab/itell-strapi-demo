@@ -1,5 +1,5 @@
 'use client';
-import { TextTestingComponent } from './TextTestingComponent';
+import { TextTestingComponent } from './text-testing';
 
 // Example data - replace with API response later 
 const sampleText = "This is a sample text. More text here for testing.";

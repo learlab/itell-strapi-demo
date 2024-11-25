@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { InputBox } from './InputBox';
-import { DisplayBox } from './DisplayBox';
+import { InputBox } from './input-box';
+import { DisplayBox } from './display-box';
 
 interface WordProps {
   word: string;
