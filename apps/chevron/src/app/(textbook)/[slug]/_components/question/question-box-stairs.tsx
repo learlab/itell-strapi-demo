@@ -37,6 +37,7 @@ import {
 } from "@/actions/question";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
+import { apiClient } from "@/lib/api-client";
 // import { apiClient } from "@/lib/api-client";
 import { Condition, isProduction } from "@/lib/constants";
 import { SelectShouldBlur } from "@/lib/store/question-store";
@@ -116,19 +117,19 @@ export function QuestionBoxStairs({
       return;
     }
 
-    // const res = await apiClient.api.cri.$post({
-    //   json: {
-    //     page_slug: pageSlug,
-    //     chunk_slug: chunkSlug,
-    //     answer: input,
-    //   },
-    // });
-    // if (!res.ok) {
-    //   const { details, error } = await res.json();
-    //   throw new Error(error, { cause: details });
-    // }
-    // const response = await res.json();
-    const score = 2 as QuestionScore;
+    const res = await apiClient.api.cri.$post({
+      json: {
+        page_slug: pageSlug,
+        chunk_slug: chunkSlug,
+        answer: input,
+      },
+    });
+    if (!res.ok) {
+      const { details, error } = await res.json();
+      throw new Error(error, { cause: details });
+    }
+    const response = await res.json();
+    const score = response.score as QuestionScore;
     createQuestionAnswerAction({
       text: input,
       chunkSlug,
