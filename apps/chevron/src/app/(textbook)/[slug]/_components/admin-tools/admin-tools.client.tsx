@@ -43,7 +43,7 @@ import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
-import { updatePersonalization } from "@/lib/personalization";
+import { updatePersonalizationSummaryStreak } from "@/lib/personalization";
 import { makePageHref } from "@/lib/utils";
 
 type Props = {
@@ -115,7 +115,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
       } as User["personalization"];
     }
 
-    const newPersonalization = updatePersonalization(user, {
+    const newPersonalization = updatePersonalizationSummaryStreak(user, {
       isSummaryPassed: true,
     });
 
