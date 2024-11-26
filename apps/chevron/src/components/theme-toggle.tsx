@@ -37,7 +37,7 @@ export function ThemeToggle() {
   const { execute } = useServerAction(updateUserPrefsAction);
 
   const setTheme = (theme: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+     
     if (!document.startViewTransition) _setTheme(theme);
     document.startViewTransition(() => {
       if (isProduction) {

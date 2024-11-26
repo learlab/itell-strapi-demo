@@ -160,10 +160,9 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
         let stairsChunk: string | null = null;
 
         while (!done) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const { value, done: doneReading } = await reader.read();
           done = doneReading;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
           const chunk = decoder.decode(value, { stream: true });
           if (chunkIndex === 0) {
             const data = chunk
@@ -215,7 +214,6 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
         }
 
         if (stairsChunk) {
-          // eslint-disable-next-line prefer-named-capture-group
           const regex = /data: ({"request_id":.*?})\n*/;
           const match = regex.exec(stairsChunk.trim());
           console.log("final stairs chunk\n", stairsChunk);

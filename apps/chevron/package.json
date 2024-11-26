@@ -1,5 +1,6 @@
 {
   "name": "@itell/chevron",
+  "type": "module",
   "version": "0.1.0",
   "scripts": {
     "setup": "pnpm install && pnpm drizzle-kit migrate && pnpm run build:deps && pnpm run assets",
@@ -86,7 +87,6 @@
     "autoprefixer": "^10.4.15",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.28.0",
-    "eslint": "8.57.0",
     "eslint-plugin-drizzle": "^0.2.3",
     "msw": "^2.6.5",
     "playwright-extra": "^4.3.6",

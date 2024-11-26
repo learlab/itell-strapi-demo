@@ -18,7 +18,7 @@ export function ResourceLoader({ condition }: { condition: string }) {
     if (volume.latex) {
       addStylesheet("/katex.min.css");
     }
-  }, []);
+  }, [condition]);
 
   return <></>;
 }

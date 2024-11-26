@@ -141,7 +141,7 @@ export function UserRadarChart({ data }: Props) {
           <PolarGrid />
           <PolarAngleAxis
             dataKey="label"
-            // eslint-disable-next-line react/no-unstable-nested-components
+             
             tick={({ x, y, textAnchor, index, ...props }) => {
               const d = chartData[index];
               const label = getComparisonText(d.user, d.other);

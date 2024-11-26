@@ -240,7 +240,7 @@ function findParentChunk(range: Range) {
       node instanceof HTMLElement &&
       node.classList.contains("content-chunk")
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       return node.dataset.chunkSlug!;
     }
     node = node.parentElement;

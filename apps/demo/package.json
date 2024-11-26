@@ -1,6 +1,7 @@
 {
   "name": "@itell/demo",
   "version": "0.1.0",
+  "type": "module",
   "scripts": {
     "setup": "pnpm install && pnpm drizzle-kit migrate && pnpm run build:deps && pnpm run assets",
     "build": "next build",
@@ -72,6 +73,8 @@
     "zsa-react": "^0.2.2"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
     "@itell/rehype-add-cri": "workspace:^",
     "@itell/rehype-wrap-heading-section": "workspace:^",
     "@next/bundle-analyzer": "15.0.2",

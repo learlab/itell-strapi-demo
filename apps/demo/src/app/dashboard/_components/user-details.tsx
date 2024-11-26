@@ -3,12 +3,7 @@ import Link from "next/link";
 import { DashboardBadge } from "@itell/ui/dashboard-badge";
 import { Skeleton } from "@itell/ui/skeleton";
 import { cn, median } from "@itell/utils";
-import {
-  FileTextIcon,
-  FlagIcon,
-  PencilIcon,
-  WholeWordIcon,
-} from "lucide-react";
+import { FileTextIcon, FlagIcon, PencilIcon } from "lucide-react";
 import pluralize from "pluralize";
 
 import {

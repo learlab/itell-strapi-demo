@@ -129,7 +129,7 @@ export const createSummaryAction = authedProcedure
       };
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+     
     if (shouldRevalidate) {
       revalidateTag(Tags.GET_SESSION);
     }

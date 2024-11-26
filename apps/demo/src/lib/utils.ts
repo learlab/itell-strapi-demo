@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/nextjs";
 import { env } from "@/env.mjs";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
-  // eslint-disable-next-line prefer-named-capture-group
+   
   const regex = /embed\/([\w-]+)\?/;
   const match = regex.exec(url);
 
