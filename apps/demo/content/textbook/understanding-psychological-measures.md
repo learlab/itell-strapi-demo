@@ -3,47 +3,47 @@ assignments:
 - summary
 chunks:
 - title: Learning Objectives
-  slug: Learning-Objectives-256pt
+  slug: Learning-Objectives-449pt
   type: plain
 - title: What Is Measurement?
-  slug: What-Is-Measurement?-884t
+  slug: What-Is-Measurement?-1657t
   type: regular
 - title: Psychological Constructs
-  slug: Psychological-Constructs-886t
+  slug: Psychological-Constructs-1658t
   type: regular
 - title: Operational Definitions
-  slug: Operational-Definitions-885t
+  slug: Operational-Definitions-1659t
   type: regular
 - title: Levels of Measurement
-  slug: Levels-of-Measurement-887t
+  slug: Levels-of-Measurement-1660t
   type: regular
 - title: References
-  slug: References-257pt
+  slug: References-450pt
   type: plain
 cri:
 - question: What is the key requirement for measurement according to the passage?
   answer: Measurement requires a systematic procedure for assigning scores to individuals or objects so that those scores represent the characteristic of interest.
-  slug: What-Is-Measurement?-884t
-- question: Why do researchers not simply look up psychological constructs like self-esteem or neuroticism in the dictionary?
-  answer: Because many scientific constructs do not have counterparts in everyday language and researchers aim to develop more detailed and precise definitions through empirical testing and revision.
-  slug: Psychological-Constructs-886t
+  slug: What-Is-Measurement?-1657t
+- question: Why are constructs studied by psychologists often not straightforward or simple to measure?
+  answer: Constructs are often not straightforward or simple to measure because they involve internal processes and represent tendencies to think, feel, or act in certain ways.
+  slug: Psychological-Constructs-1658t
 - question: What is the purpose of using multiple operational definitions of the same construct in psychology?
-  answer: To ensure that the various measures are closely related, produce similar patterns of results, and effectively measure the construct.
-  slug: Operational-Definitions-885t
-- question: What are the levels of measurement according to S. S. Stevens?
-  answer: Nominal, ordinal, interval, and ratio levels of measurement.
-  slug: Levels-of-Measurement-887t
+  answer: To use converging operations where various operational definitions come together on the same construct, providing evidence that the construct is being effectively measured and is useful.
+  slug: Operational-Definitions-1659t
+- question: What distinguishes the ordinal level of measurement from the nominal level?
+  answer: The ordinal level of measurement involves assigning scores that represent the rank order of individuals, unlike the nominal level which assigns category labels without implying any ordering among responses.
+  slug: Levels-of-Measurement-1660t
 next_slug: 20-reliability-and-validity-of-measurement
 order: 19
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement
 quiz: null
-slug: 19-understanding-psychological-measurement
+slug: understanding-psychological-measures
 title: 19. Understanding Psychological Measurement
 ---
 
-## Learning Objectives {#Learning-Objectives-256pt .sr-only} 
+## Learning Objectives {#Learning-Objectives-449pt .sr-only} 
 
 <i-callout variant="info" title="Learning Objectives">
 
@@ -57,23 +57,23 @@ title: 19. Understanding Psychological Measurement
 
 </i-callout>
 
-## What Is Measurement? {#What-Is-Measurement?-884t} 
+## What Is Measurement? {#What-Is-Measurement?-1657t} 
 
-**Measurement** is the assignment of scores to individuals so that the scores represent some characteristic of the individuals. This very general definition is consistent with the kinds of measurement that everyone is familiar with—for example, weighing oneself by stepping onto a bathroom scale, or checking the internal temperature of a roasting turkey using a meat thermometer. It is also consistent with measurement in the other sciences. In physics, for example, one might measure the potential energy of an object in Earth’s gravitational field by finding its mass and height (which of course requires measuring __those__ variables) and then multiplying them together along with the gravitational acceleration of Earth (9.8 m/s2). The result of this procedure is a score that represents the object’s potential energy. 
+**Measurement** is the assignment of scores to individuals so that the scores represent some characteristic of the individuals. This very general definition is consistent with the kinds of measurement that everyone is familiar with—for example, weighing oneself by stepping onto a bathroom scale, or checking the internal temperature of a roasting turkey using a meat thermometer. It is also consistent with measurement in the other sciences. In physics, for example, one might measure the potential energy of an object in Earth’s gravitational field by finding its mass and height (which of course requires measuring _those_ variables) and then multiplying them together along with the gravitational acceleration of Earth (9.8 m/s2). The result of this procedure is a score that represents the object’s potential energy.   
 
 This general definition of measurement is consistent with measurement in psychology too. (Psychological measurement is often referred to as **psychometrics**.) Imagine, for example, that a cognitive psychologist wants to measure a person’s working memory capacity—their ability to hold in mind and think about several pieces of information all at the same time. To do this, she might use a backward digit span task, in which she reads a list of two digits to the person and asks them to repeat them in reverse order. She then repeats this several times, increasing the length of the list by one digit each time, until the person makes an error. The length of the longest list for which the person responds correctly is the score and represents their working memory capacity. Or imagine a clinical psychologist who is interested in how depressed a person is. He administers the Beck Depression Inventory, which is a 21-item self-report questionnaire in which the person rates the extent to which they have felt sad, lost energy, and experienced other symptoms of depression over the past 2 weeks. The sum of these 21 ratings is the score and represents the person’s current level of depression.
 
-The important point here is that measurement does not require any particular instruments or procedures. What it __does__ require is __some__ systematic procedure for assigning scores to individuals or objects so that those scores represent the characteristic of interest.
+The important point here is that measurement does not require any particular instruments or procedures. What it _does_ require is _some_ systematic procedure for assigning scores to individuals or objects so that those scores represent the characteristic of interest.
 
-## Psychological Constructs {#Psychological-Constructs-886t} 
+## Psychological Constructs {#Psychological-Constructs-1658t} 
 
-Many variables studied by psychologists are straightforward and simple to measure. These include age, height, weight, and birth order. You can ask people how old they are and be reasonably sure that they know and will tell you. Although people might not know or want to tell you how much they weigh, you can have them step onto a bathroom scale. Other variables studied by psychologists—perhaps the majority—are not so straightforward or simple to measure. We cannot accurately assess people’s level of intelligence by looking at them, and we certainly cannot put their self-esteem on a bathroom scale. These kinds of variables are called **constructs** (pronounced __CON-structs__) and include personality traits (e.g., extraversion), emotional states (e.g., fear), attitudes (e.g., toward taxes), and abilities (e.g., athleticism).
+Many variables studied by psychologists are straightforward and simple to measure. These include age, height, weight, and birth order. You can ask people how old they are and be reasonably sure that they know and will tell you. Although people might not know or want to tell you how much they weigh, you can have them step onto a bathroom scale. Other variables studied by psychologists—perhaps the majority—are not so straightforward or simple to measure. We cannot accurately assess people’s level of intelligence by looking at them, and we certainly cannot put their self-esteem on a bathroom scale. These kinds of variables are called **constructs** (pronounced _CON-structs_) and include personality traits (e.g., extraversion), emotional states (e.g., fear), attitudes (e.g., toward taxes), and abilities (e.g., athleticism). 
 
-Psychological constructs cannot be observed directly. One reason is that they often represent __tendencies__ to think, feel, or act in certain ways. For example, to say that a particular university student is highly extraverted does not necessarily mean that she is behaving in an extraverted way right now. In fact, she might be sitting quietly by herself, reading a book. Instead, it means that she has a general tendency to behave in extraverted ways (e.g., being outgoing, enjoying social interactions) across a variety of situations. Another reason psychological constructs cannot be observed directly is that they often involve internal processes. Fear, for example, involves the activation of certain central and peripheral nervous system structures, along with certain kinds of thoughts, feelings, and behaviors—none of which is necessarily obvious to an outside observer. Notice also that neither extraversion nor fear “reduces to” any particular thought, feeling, act, or physiological structure or process. Instead, each is a kind of summary of a complex set of behaviors and internal processes.
+Psychological constructs cannot be observed directly. One reason is that they often represent _tendencies_ to think, feel, or act in certain ways. For example, to say that a particular university student is highly extraverted does not necessarily mean that she is behaving in an extraverted way right now. In fact, she might be sitting quietly by herself, reading a book. Instead, it means that she has a general tendency to behave in extraverted ways (e.g., being outgoing, enjoying social interactions) across a variety of situations. Another reason psychological constructs cannot be observed directly is that they often involve internal processes. Fear, for example, involves the activation of certain central and peripheral nervous system structures, along with certain kinds of thoughts, feelings, and behaviors—none of which is necessarily obvious to an outside observer. Notice also that neither extraversion nor fear “reduces to” any particular thought, feeling, act, or physiological structure or process. Instead, each is a kind of summary of a complex set of behaviors and internal processes.
 
 _**The Big Five**_
 
-The Big Five is a set of five broad dimensions that capture much of the variation in human personality. Each of the Big Five can even be defined in terms of six more specific constructs called “facets” (Costa & McCrae, 1992)[\[1\]](https://kpu.pressbooks.pub/psychmethods4e/chapter/understanding-psychological-measurement/#footnote-54-1 "Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. Psychological Assessment, 4, 5–13.").
+The Big Five is a set of five broad dimensions that capture much of the variation in human personality. Each of the Big Five can even be defined in terms of six more specific constructs called “facets” (Costa & McCrae, 1992)[\[1\]](https://kpu.pressbooks.pub/psychmethods4e/chapter/understanding-psychological-measurement/#footnote-54-1).
 
 |     |     |     |     |     |     |     |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -97,17 +97,17 @@ The **conceptual definition** of a psychological construct describes the beha
 
 Students sometimes wonder why, when researchers want to understand a construct like self-esteem or neuroticism, they do not simply look it up in the dictionary. One reason is that many scientific constructs do not have counterparts in everyday language (e.g., working memory capacity). More important, researchers are in the business of developing definitions that are more detailed and precise—and that more accurately describe the way the world is—than the informal definitions in the dictionary. As we will see, they do this by proposing conceptual definitions, testing them empirically, and revising them as necessary. Sometimes they throw them out altogether. This is why the research literature often includes different conceptual definitions of the same construct. In some cases, an older conceptual definition has been replaced by a newer one that fits and works better. In others, researchers are still in the process of deciding which of various conceptual definitions is the best.
 
-## Operational Definitions {#Operational-Definitions-885t} 
+## Operational Definitions {#Operational-Definitions-1659t} 
 
-An **operational definition** is a definition of a variable in terms of precisely how it is to be measured. These measures generally fall into one of three broad categories. **Self-report measures** are those in which participants report on their own thoughts, feelings, and actions, as with the Rosenberg Self-Esteem Scale (Rosenberg, 1965)\[2\]. **Behavioral measures** are those in which some other aspect of participants’ behavior is observed and recorded. This is an extremely broad category that includes the observation of people’s behavior both in highly structured laboratory tasks and in more natural settings. A good example of the former would be measuring working memory capacity using the backward digit span task. A good example of the latter is a famous operational definition of physical aggression from researcher Albert Bandura and his colleagues (Bandura, Ross, & Ross, 1961)\[3\]. They let each of several children play for 20 minutes in a room that contained a clown-shaped punching bag called a Bobo doll. They filmed each child and counted the number of acts of physical aggression the child committed. These included hitting the doll with a mallet, punching it, and kicking it. Their operational definition, then, was the number of these specifically defined acts that the child committed during the 20-minute period. Finally, **physiological measures** are those that involve recording any of a wide variety of physiological processes, including heart rate and blood pressure, galvanic skin response, hormone levels, and electrical activity and blood flow in the brain.
+An **operational definition** is a definition of a variable in terms of precisely how it is to be measured. These measures generally fall into one of three broad categories. **Self-report measures** are those in which participants report on their own thoughts, feelings, and actions, as with the Rosenberg Self-Esteem Scale (Rosenberg, 1965)\[2\]. **Behavioral measures** are those in which some other aspect of participants’ behavior is observed and recorded. This is an extremely broad category that includes the observation of people’s behavior both in highly structured laboratory tasks and in more natural settings. A good example of the former would be measuring working memory capacity using the backward digit span task. A good example of the latter is a famous operational definition of physical aggression from researcher Albert Bandura and his colleagues (Bandura, Ross, & Ross, 1961)\[3\]. They let each of several children play for 20 minutes in a room that contained a clown-shaped punching bag called a Bobo doll. They filmed each child and counted the number of acts of physical aggression the child committed. These included hitting the doll with a mallet, punching it, and kicking it. Their operational definition, then, was the number of these specifically defined acts that the child committed during the 20-minute period. Finally, **physiological measures** are those that involve recording any of a wide variety of physiological processes, including heart rate and blood pressure, galvanic skin response, hormone levels, and electrical activity and blood flow in the brain. 
 
 For any given variable or construct, there will be multiple operational definitions. Stress is a good example. A rough conceptual definition is that stress is an adaptive response to a perceived danger or threat that involves physiological, cognitive, affective, and behavioral components. But researchers have operationally defined it in several ways. The Social Readjustment Rating Scale (Holmes & Rahe, 1967)\[4\] is a self-report questionnaire on which people identify stressful events that they have experienced in the past year and assigns points for each one depending on its severity. For example, a man who has been divorced (73 points), changed jobs (36 points), and had a change in sleeping habits (16 points) in the past year would have a total score of 125. The Hassles and Uplifts Scale (Delongis, Coyne, Dakof, Folkman & Lazarus, 1982) \[5\] is similar but focuses on everyday stressors like misplacing things and being concerned about one’s weight. The Perceived Stress Scale (Cohen, Kamarck, & Mermelstein, 1983) \[6\] is another self-report measure that focuses on people’s feelings of stress (e.g., “How often have you felt nervous and stressed?”). Researchers have also operationally defined stress in terms of several physiological variables including blood pressure and levels of the stress hormone cortisol.
 
 When psychologists use multiple operational definitions of the same construct—either within a study or across studies—they are using **converging operations**. The idea is that the various operational definitions are “converging” or coming together on the same construct. When scores based on several different operational definitions are closely related to each other and produce similar patterns of results, this constitutes good evidence that the construct is being measured effectively and that it is useful. The various measures of stress, for example, are all correlated with each other and have all been shown to be correlated with other variables such as immune system functioning (also measured in a variety of ways) (Segerstrom & Miller, 2004)\[7\]. This is what allows researchers eventually to draw useful general conclusions, such as “stress is negatively correlated with immune system functioning,” as opposed to more specific and less useful ones, such as “people’s scores on the Perceived Stress Scale are negatively correlated with their white blood counts.”
 
-## Levels of Measurement {#Levels-of-Measurement-887t} 
+## Levels of Measurement {#Levels-of-Measurement-1660t} 
 
-The psychologist S. S. Stevens suggested that scores can be assigned to individuals in a way that communicates more or less quantitative information about the variable of interest (Stevens, 1946)\[8\]. For example, the officials at a 100-m race could simply rank order the runners as they crossed the finish line (first, second, etc.), or they could time each runner to the nearest tenth of a second using a stopwatch (11.5 s, 12.1 s, etc.). In either case, they would be measuring the runners’ times by systematically assigning scores to represent those times. But while the rank ordering procedure communicates the fact that the second-place runner took longer to finish than the first-place finisher, the stopwatch procedure also communicates __how much__ longer the second-place finisher took. Stevens actually suggested four different [**levels of measurement**](https://kpu.pressbooks.pub/psychmethods4e/chapter/understanding-psychological-measurement/#term_54_963) (which he called “scales of measurement”) that correspond to four types of information that can be communicated by a set of scores, and the statistical procedures that can be used with the information.
+The psychologist S. S. Stevens suggested that scores can be assigned to individuals in a way that communicates more or less quantitative information about the variable of interest (Stevens, 1946)\[8\]. For example, the officials at a 100-m race could simply rank order the runners as they crossed the finish line (first, second, etc.), or they could time each runner to the nearest tenth of a second using a stopwatch (11.5 s, 12.1 s, etc.). In either case, they would be measuring the runners’ times by systematically assigning scores to represent those times. But while the rank ordering procedure communicates the fact that the second-place runner took longer to finish than the first-place finisher, the stopwatch procedure also communicates _how much_ longer the second-place finisher took. Stevens actually suggested four different [**levels of measurement**](https://kpu.pressbooks.pub/psychmethods4e/chapter/understanding-psychological-measurement/#term_54_963) (which he called “scales of measurement”) that correspond to four types of information that can be communicated by a set of scores, and the statistical procedures that can be used with the information. 
 
 The **nominal level** of measurement is used for categorical variables and involves assigning scores that are category labels. Category labels communicate whether any two individuals are the same or different in terms of the variable being measured. For example, if you ask your participants about their marital status, you are engaged in nominal-level measurement. Or if you ask your participants to indicate which of several ethnicities they identify themselves with, you are again engaged in nominal-level measurement. The essential point about nominal scales is that they do not imply any ordering among the responses. For example, when classifying people according to their favorite color, there is no sense in which green is placed “ahead of” blue. Responses are merely categorized. Nominal scales thus embody the lowest level of measurement\[9\].
 
@@ -137,9 +137,9 @@ Stevens’s levels of measurement are important for at least two reasons. First,
 | **INTERVAL** | X   | X   | X   |     |
 | **RATIO** | X   | X   | X   | X   |
 
-__**Table 4.1 Summary of Levels of Measurements**__
+_**Table 4.1 Summary of Levels of Measurements**_
 
-## References {#References-257pt} 
+## References {#References-450pt} 
 
 1.  Costa, P. T., Jr., & McCrae, R. R. (1992). Normal personality assessment in clinical practice: The NEO Personality Inventory. _Psychological Assessment, 4_, 5–13.
 2.  Rosenberg, M. (1965). _Society and the adolescent self-image_. Princeton, NJ: Princeton University Press

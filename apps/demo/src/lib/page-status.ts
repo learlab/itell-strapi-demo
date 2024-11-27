@@ -1,3 +1,4 @@
+import { volume } from "#content";
 import { isLastPage } from "./pages";
 import {
   firstAssignmentPage,
@@ -7,7 +8,7 @@ import {
 } from "./pages/pages.server";
 
 const isPageUnlockedWithoutUser = (pageSlug: string) => {
-  return pageSlug === firstPage.slug;
+  return volume.free_pages.includes(pageSlug);
 };
 
 export type PageStatus = {

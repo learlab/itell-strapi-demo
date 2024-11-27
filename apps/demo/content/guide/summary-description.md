@@ -2,10 +2,6 @@
 condition: summary_description_stairs
 ---
 
-<p className="text-xl leading-relaxed">Write your summary for this page</p>
-
-<p className="font-light leading-relaxed">You can unlock the next page by submitting <span className="underline underline-offset-4 decoration-warning decoration-4 decoration-dashed font-bold">a good summary</span> of this page</p>
-
 <i-accordion value="first">
 
 <i-accordion-item value='first' title="What makes a successful summary">

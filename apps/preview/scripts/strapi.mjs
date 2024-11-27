@@ -1,7 +1,7 @@
 import qs from "qs";
 
 const pageSlug = "2-understanding-science";
-const base = "https://itell-strapi-um5h.onrender.com/api";
+const base = "https://itell-strapi-um5h.onrender.com";
 const filters = qs.stringify({
   filters: {
     Slug: {
@@ -41,28 +41,46 @@ const volumeFilter = qs.stringify({
         Quiz: {
           populate: {
             Questions: {
-              populate: {
-                Answers: true,
-              },
+              populate: "*",
             },
           },
         },
+        // Quiz: {
+        //   populate: {
+        //     Questions: {
+        //       populate: {
+        //         Answers: true,
+        //       },
+        //     },
+        //   },
+        // },
       },
     },
   },
 });
 
+const id = "nhm9t3owr7ze7ij01uduaiop";
+
 const fetchVolume = async () => {
+  const url = new URL(`/api/texts/${id}`, base);
+  url.search = volumeFilter;
   console.log(volumeFilter);
-  const response = await fetch(`${base}/texts/9?${volumeFilter}`);
+  const response = await fetch(url);
+  if (!response.ok) {
+    console.log("error response", await response.json());
+    throw new Error("failed to fetch strapi");
+  }
+
   const data = await response.json();
 
-  data.data.attributes.Pages.data.forEach((page, index) => {
-    if (page.attributes.Quiz.data !== null) {
-        page.attributes.Quiz.data.attributes.Questions.forEach(q => console.log(q))
+  console.log("volume fields", Object.keys(data.data));
+  data.data.Pages.forEach((page, index) => {
+    if (index === 0) {
+      // console.log("page fields", Object.keys(page));
     }
-    if (index === 15) {
-      // console.log(page.attributes.Content[0]);
+    if (page.Quiz) {
+      // console.log("quiz page", page["Title"]);
+      // page.Quiz.Questions.forEach((q) => console.log(q));
     }
   });
 };
