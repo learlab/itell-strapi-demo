@@ -63,7 +63,12 @@ export function QuestionChart({ data }: Props) {
           <YAxis dataKey="value" type="number" hide />
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent indicator="line" />}
+            content={
+              <ChartTooltipContent
+                indicator="line"
+                descriptionKey="description"
+              />
+            }
           />
           <Bar dataKey="value" radius={5}>
             <LabelList

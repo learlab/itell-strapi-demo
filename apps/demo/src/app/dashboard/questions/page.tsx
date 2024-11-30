@@ -17,7 +17,7 @@ import { type ConstructedResponse } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted, getPageData } from "@/lib/pages/pages.server";
 import { redirectWithSearchParams } from "@/lib/utils";
-import { getLabel } from "./get-label";
+import { getScoreMeta } from "./get-label";
 
 const questions = allPagesSorted.reduce<
   Record<string, { slug: string; question: string; answer: string }[]>
@@ -29,7 +29,7 @@ const questions = allPagesSorted.reduce<
   return acc;
 }, {});
 
-export default async function () {
+export default async function Page() {
   const { user } = await getSession();
   if (!user) {
     return redirectWithSearchParams("/auth");
@@ -51,11 +51,12 @@ export default async function () {
   pages.sort((a, b) => a.order - b.order);
 
   const chartData = byScore.map((s) => {
-    const name = getLabel(s.score);
+    const { label, description } = getScoreMeta(s.score);
     return {
-      name,
+      name: label,
       value: s.count,
-      fill: `var(--color-${name})`,
+      fill: `var(--color-${label})`,
+      description,
     };
   });
 
@@ -155,7 +156,7 @@ function AnswerItem({
             <li key={answer.id} className="ml-4 flex justify-between">
               <p>{answer.text}</p>
               <div className="flex gap-2 text-sm text-muted-foreground">
-                <p>{getLabel(answer.score)}</p>
+                <p>{getScoreMeta(answer.score).label}</p>
                 <time>{answer.createdAt.toLocaleDateString()}</time>
               </div>
             </li>

@@ -27,8 +27,8 @@ export function NavStatistics() {
             href={item.href}
             onClick={(event) => {
               event.preventDefault();
-              setActiveRoute(item.href);
               startTransition(() => {
+                setActiveRoute(item.href);
                 router.push(item.href);
               });
             }}

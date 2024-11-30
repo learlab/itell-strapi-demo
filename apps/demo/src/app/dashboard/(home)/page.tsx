@@ -39,10 +39,7 @@ export default async function Page(props: Props) {
       <DashboardHeader heading={Meta.home.title} text={Meta.home.description} />
       <Card>
         <CardContent className="space-y-4">
-          <div className="text-center">
-            <UserProgress pageSlug={user.pageSlug} finished={user.finished} />
-          </div>
-
+          <UserProgress pageSlug={user.pageSlug} finished={user.finished} />
           <UserStatistics
             classId={user.classId}
             pageSlug={user.pageSlug}

@@ -5,7 +5,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default async function ({ children }: Props) {
+export default async function Layout({ children }: Props) {
   const { user } = await getSession();
   if (!user) {
     return redirectWithSearchParams("auth");

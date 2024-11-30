@@ -72,7 +72,7 @@ export default async function DashboardLayout({
   const isTeacher = Boolean(teacher);
   const sidebarState = (await cookies()).get(SIDEBAR_STATE_COOKIE)?.value;
   return (
-    (<DashboardProvider
+    <DashboardProvider
       defaultRole={
         ((await cookies()).get(DASHBOARD_ROLE_COOKIE)?.value ??
           (isTeacher ? ClassRole.TEACHER : ClassRole.STUDENT)) as Role
@@ -86,7 +86,11 @@ export default async function DashboardLayout({
         <SiteNav mainContentId={Elements.DASHBOARD_MAIN}>
           <DashboardNav />
         </SiteNav>
-        <main id={Elements.DASHBOARD_MAIN} className="min-h-screen">
+        <main
+          id={Elements.DASHBOARD_MAIN}
+          className="min-h-screen"
+          suppressHydrationWarning
+        >
           <section
             aria-label="dashboard main panel"
             className="flex max-w-screen-xl flex-col px-4 py-4 group-has-[[data-pending]]:animate-pulse lg:px-8"
@@ -98,6 +102,6 @@ export default async function DashboardLayout({
           </section>
         </main>
       </SidebarLayout>
-    </DashboardProvider>)
+    </DashboardProvider>
   );
 }

@@ -5,7 +5,7 @@ import { UserDetails } from "@dashboard/user-details";
 
 import { Meta } from "@/config/metadata";
 
-export default function () {
+export default function Loading() {
   return (
     <DashboardShell>
       <DashboardHeader heading={Meta.home.title} text={Meta.home.description} />

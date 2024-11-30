@@ -17,6 +17,7 @@ import { Spinner } from "@/components/spinner";
 import { getPageData } from "@/lib/pages/pages.server";
 import { TrendChart } from "./trend-chart";
 import { UserRadarChart } from "./user-radar-chart";
+import { Card, CardContent, CardFooter } from "@itell/ui/card";
 
 type Props = {
   classId: string | null;
@@ -125,30 +126,8 @@ export async function UserDetails({ classId, pageSlug }: Props) {
   };
 
   return (
-    <div className="space-y-4">
-      <UserRadarChart data={radarChartData} />
-      <p aria-hidden="true" className="text-center text-muted-foreground">
-        percentages are relative to the median
-      </p>
-      {classId ? (
-        <p className="text-center text-muted-foreground">
-          comparing with{" "}
-          <Suspense fallback={<Spinner className="inline" />}>
-            <StudentCount classId={classId} />
-          </Suspense>{" "}
-          from the same class
-        </p>
-      ) : (
-        <p className="text-center text-muted-foreground">
-          Enter your class code in{" "}
-          <Link href="/dashboard/settings#enroll" className="underline">
-            Settings
-          </Link>{" "}
-          to join a class.
-        </p>
-      )}
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="col-span-1 flex lg:flex-col gap-4">
         <DashboardBadge
           title="Total Summaries"
           icon={<PencilIcon className="size-4" />}
@@ -225,6 +204,34 @@ export async function UserDetails({ classId, pageSlug }: Props) {
           </p>
         </DashboardBadge>
       </div>
+
+      <Card className="col-span-full lg:col-span-2">
+        <CardContent>
+          <UserRadarChart data={radarChartData} />
+        </CardContent>
+        <CardFooter className="text-muted-foreground">
+          <p>
+            Percentages are relative to the median,{" "}
+            {classId ? (
+              <span>
+                Comparing with{" "}
+                <Suspense fallback={<Spinner className="inline" />}>
+                  <StudentCount classId={classId} />
+                </Suspense>{" "}
+                from the same class
+              </span>
+            ) : (
+              <span>
+                enter your class code in{" "}
+                <Link href="/dashboard/settings#enroll" className="underline">
+                  Settings
+                </Link>{" "}
+                to join a class.
+              </span>
+            )}
+          </p>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
@@ -233,15 +240,21 @@ UserDetails.ErrorFallback = CreateErrorFallback(
   "Failed to calculate learning statistics"
 );
 
-UserDetails.Skeleton = function () {
+UserDetails.Skeleton = function UserDetailsSkeleton() {
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col items-center justify-center gap-2">
-        <Skeleton className="aspect-square h-[300px]" />
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="col-span-1 flex lg:flex-col gap-4">
         <DashboardBadge.Skeletons />
       </div>
+
+      <Card className="col-span-full lg:col-span-2">
+        <CardContent>
+          <Skeleton className="w-full h-[300px]" />
+        </CardContent>
+        <CardFooter>
+          <Skeleton className="w-full h-6" />
+        </CardFooter>
+      </Card>
     </div>
   );
 };

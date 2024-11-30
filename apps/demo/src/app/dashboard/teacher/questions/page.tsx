@@ -7,10 +7,10 @@ import pluralize from "pluralize";
 import { incrementViewAction } from "@/actions/dashboard";
 import { getAnswerStatsClassAction } from "@/actions/question";
 import { Meta } from "@/config/metadata";
-import { getLabel } from "../../questions/get-label";
+import { getScoreMeta } from "../../questions/get-label";
 import { checkTeacher } from "../check-teacher";
 
-export default async function () {
+export default async function Page() {
   const teacher = await checkTeacher();
   if (!teacher) {
     return notFound();
@@ -27,11 +27,12 @@ export default async function () {
   const count = byScore.reduce((acc, s) => acc + s.count, 0);
 
   const chartData = byScore.map((s) => {
-    const name = getLabel(s.score);
+    const { label, description } = getScoreMeta(s.score);
     return {
-      name,
+      name: label,
       value: s.count,
-      fill: `var(--color-${name})`,
+      fill: `var(--color-${label})`,
+      description,
     };
   });
 

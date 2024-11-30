@@ -51,9 +51,8 @@ type Props = {
 
 export function UserRadarChart({ data }: Props) {
   const chartData = Object.entries(data).map(([key, value]) => value);
-
   return (
-    <div className="flex items-center justify-center">
+    <>
       <div className="sr-only" id="radar-chart-title">
         <h3>
           Radar Chart: user is{" "}
@@ -64,7 +63,7 @@ export function UserRadarChart({ data }: Props) {
 
       <div className="sr-only" id="radar-chart-description">
         <p>
-          This radar chart compares the user's statistics across several
+          This radar chart compares the user&apos;s statistics across several
           categories with the median of other users. Key observations are the
           following:
         </p>
@@ -105,7 +104,6 @@ export function UserRadarChart({ data }: Props) {
 
       <ChartContainer
         config={chartConfig}
-        className="mx-auto min-h-[350px] max-w-2xl"
         aria-labelledby="radar-chart-title"
         aria-describedby="radar-chart-description"
       >
@@ -141,7 +139,6 @@ export function UserRadarChart({ data }: Props) {
           <PolarGrid />
           <PolarAngleAxis
             dataKey="label"
-             
             tick={({ x, y, textAnchor, index, ...props }) => {
               const d = chartData[index];
               const label = getComparisonText(d.user, d.other);
@@ -195,7 +192,7 @@ export function UserRadarChart({ data }: Props) {
           <ChartLegend className="mt-8" content={<ChartLegendContent />} />
         </BaseRadarChart>
       </ChartContainer>
-    </div>
+    </>
   );
 }
 

@@ -11,7 +11,7 @@ export function PageTitle({
   return (
     <h1
       className={cn(
-        "text-balance text-center text-2xl font-extrabold tracking-tight md:text-3xl 2xl:text-4xl",
+        "text-balance text-2xl font-extrabold tracking-tight md:text-3xl 2xl:text-4xl",
         className
       )}
       id={Elements.PAGE_TITLE}
