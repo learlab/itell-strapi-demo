@@ -19,13 +19,18 @@ import { MobilePopup } from "@/components/mobile-popup";
 import { PageProvider } from "@/components/provider/page-provider";
 import { getSession } from "@/lib/auth";
 import { getUserCondition } from "@/lib/auth/conditions";
-import { Condition, isProduction } from "@/lib/constants";
+import {
+  Condition,
+  isProduction,
+  PAGE_HEADER_PIN_COOKIE,
+} from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
 import { getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
+import { cookies } from "next/headers";
 
 const ResourceLoader = dynamic(() =>
   import("./resource-loader").then((mod) => mod.ResourceLoader)
@@ -73,7 +78,13 @@ export default async function Page(props: {
         </div>
 
         <PageContentWrapper>
-          <PageHeader page={page} pageStatus={pageStatus} />
+          <PageHeader
+            page={page}
+            pageStatus={pageStatus}
+            pin={
+              (await cookies()).get(PAGE_HEADER_PIN_COOKIE)?.value === "true"
+            }
+          />
           <div className="mt-4 col-span-1 col-start-2">
             <PageTitle className="mb-8">{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />

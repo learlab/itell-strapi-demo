@@ -11,17 +11,21 @@ import { PinIcon, TableOfContentsIcon } from "lucide-react";
 import { PageStatus } from "@/lib/page-status";
 import { NoteCount } from "./_components/note/note-count";
 import { PageStatusInfo } from "./_components/page-status-info";
+import { setCookie } from "@/lib/cookie";
+import { PAGE_HEADER_PIN_COOKIE } from "@/lib/constants";
 
 export function PageHeader({
   page,
   pageStatus,
+  pin,
 }: {
   page: Page;
   pageStatus: PageStatus;
+  pin: boolean;
 }) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [shouldAutoHide, setShouldAutoHide] = useState(true);
+  const [shouldAutoHide, setShouldAutoHide] = useState(pin);
 
   useEffect(() => {
     const controlNavbar = () => {
@@ -63,7 +67,13 @@ export function PageHeader({
       <div className="flex items-center gap-4">
         <button
           aria-hidden="true"
-          onClick={() => setShouldAutoHide(!shouldAutoHide)}
+          onClick={() => {
+            setShouldAutoHide(!shouldAutoHide);
+            setCookie(
+              PAGE_HEADER_PIN_COOKIE,
+              !shouldAutoHide ? "true" : "false"
+            );
+          }}
         >
           <PinIcon
             className={cn("transition-all size-4 rotate-45", {

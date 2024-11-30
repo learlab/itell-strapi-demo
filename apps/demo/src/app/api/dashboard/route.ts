@@ -13,10 +13,11 @@ export const GET = async (req: Request) => {
   const [teacher, _] = await getTeacherAction();
   const isTeacher = Boolean(teacher);
 
+  const c = await cookies();
   if (isTeacher) {
-    (await cookies()).set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);
+    c.set(DASHBOARD_ROLE_COOKIE, ClassRole.TEACHER);
   } else {
-    (await cookies()).set(DASHBOARD_ROLE_COOKIE, ClassRole.STUDENT);
+    c.set(DASHBOARD_ROLE_COOKIE, ClassRole.STUDENT);
   }
   const redirectPath = isTeacher ? "/dashboard/teacher" : "/dashboard";
   return redirect(redirectPath);

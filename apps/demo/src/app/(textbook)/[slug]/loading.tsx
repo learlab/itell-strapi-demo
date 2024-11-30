@@ -13,6 +13,7 @@ import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
+import { PAGE_HEADER_PIN_COOKIE } from "@/lib/constants";
 
 const getUser = cache(async () => {
   const sessionId =
@@ -67,6 +68,7 @@ export default async function Loading() {
             userPageSlug: user?.pageSlug ?? null,
             userFinished: user?.finished ?? false,
           })}
+          pin={(await cookies()).get(PAGE_HEADER_PIN_COOKIE)?.value === "true"}
         />
         <div className="mt-4 col-span-1 col-start-2">
           <PageTitle className="mb-8">{page.title}</PageTitle>
