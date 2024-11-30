@@ -74,7 +74,7 @@ export default async function Page(props: {
 
         <PageContentWrapper>
           <PageHeader page={page} pageStatus={pageStatus} />
-          <div className="col-span-1 col-start-2">
+          <div className="mt-4 col-span-1 col-start-2">
             <PageTitle className="mb-8">{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />
             <SelectionPopover user={user} pageSlug={pageSlug} />

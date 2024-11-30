@@ -84,12 +84,8 @@ export function UserAccountNav({ user }: { user: User | null }) {
           aria-label="user navigation menu"
           data-test-id="user-nav-menu"
         >
-          <UserAvatar user={user} className="h-8 w-8" />
-          {open ? (
-            <ChevronUpIcon className="size-4" />
-          ) : (
-            <ChevronDownIcon className="size-4" />
-          )}
+          <UserAvatar user={user} className="size-8" />
+          <ChevronDownIcon className="size-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-40">
           {/* user name and email */}

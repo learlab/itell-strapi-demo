@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useDebounce } from "@itell/core/hooks";
-import { DropdownMenu, DropdownMenuTrigger } from "@itell/ui/dropdown";
 import { Popover, PopoverContent, PopoverTrigger } from "@itell/ui/popover";
 import { cn } from "@itell/utils";
 import { Page } from "#content";
-import { TableOfContentsIcon } from "lucide-react";
+import { PinIcon, TableOfContentsIcon } from "lucide-react";
 
 import { PageStatus } from "@/lib/page-status";
 import { NoteCount } from "./_components/note/note-count";
@@ -22,9 +21,11 @@ export function PageHeader({
 }) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [shouldAutoHide, setShouldAutoHide] = useState(true);
 
   useEffect(() => {
     const controlNavbar = () => {
+      if (!shouldAutoHide) return;
       if (window.scrollY > lastScrollY) {
         // if scroll down hide the navbar
         setIsVisible(false);
@@ -43,7 +44,7 @@ export function PageHeader({
     return () => {
       window.removeEventListener("scroll", controlNavbar);
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, shouldAutoHide]);
 
   return (
     <header
@@ -53,11 +54,24 @@ export function PageHeader({
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <div className="flex items-center gap-3">
-        <h2 className="text-lg font-medium tracking-tight">{page.title}</h2>
+      <div className="flex items-center gap-4">
+        <h2 className="text-lg font-medium tracking-tight text-balance">
+          {page.title}
+        </h2>
         <TableOfContents page={page} />
       </div>
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4">
+        <button
+          aria-hidden="true"
+          onClick={() => setShouldAutoHide(!shouldAutoHide)}
+        >
+          <PinIcon
+            className={cn("transition-all size-4 rotate-45", {
+              "rotate-0": !shouldAutoHide,
+            })}
+          />
+        </button>
+
         <NoteCount />
         <PageStatusInfo status={pageStatus} />
       </div>
@@ -102,13 +116,10 @@ function TableOfContents({ page }: { page: Page }) {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [page]);
 
   return (
-    <div className="flex items-center gap-2">
-      <p className="fade-up font-light" key={activeHeadingTitle}>
-        {activeHeadingTitle}
-      </p>
+    <div className="hidden lg:flex items-center gap-2">
       <Popover>
         <PopoverTrigger>
           <span className="sr-only">Table of Contents</span>
@@ -122,7 +133,9 @@ function TableOfContents({ page }: { page: Page }) {
                   href={`#${chunk.slug}`}
                   className={cn(
                     "text-sm hover:underline",
-                    chunk.slug === activeHeading ? "font-bold" : "font-light"
+                    chunk.slug === activeHeading
+                      ? "font-semibold"
+                      : "font-light"
                   )}
                 >
                   {chunk.title}
@@ -132,6 +145,15 @@ function TableOfContents({ page }: { page: Page }) {
           </ul>
         </PopoverContent>
       </Popover>
+      <p
+        className={cn(
+          "font-light",
+          _activeHeading !== page.chunks[0].slug && "fade-up"
+        )}
+        key={activeHeadingTitle}
+      >
+        {activeHeadingTitle}
+      </p>
     </div>
   );
 }

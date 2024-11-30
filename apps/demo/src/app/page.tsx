@@ -17,7 +17,7 @@ export default function Page() {
         id={Elements.TEXTBOOK_MAIN}
         tabIndex={-1}
       >
-        <HtmlRenderer html={home.html} />
+        <HtmlRenderer html={home.html} className="underline-offset-2" />
         <MobilePopup />
         <div className="flex items-center justify-center">
           <ContinueReading />

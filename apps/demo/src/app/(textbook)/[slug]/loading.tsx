@@ -68,7 +68,7 @@ export default async function Loading() {
             userFinished: user?.finished ?? false,
           })}
         />
-        <div className="col-span-1 col-start-2">
+        <div className="mt-4 col-span-1 col-start-2">
           <PageTitle className="mb-8">{page.title}</PageTitle>
 
           {arr.map((i) => (
