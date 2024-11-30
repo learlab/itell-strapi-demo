@@ -12,8 +12,9 @@ import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { SummaryListSelect } from "./_components/summary-list-select";
+import { Summary } from "@/drizzle/schema";
 
-export default async function(props: { searchParams: Promise<unknown> }) {
+export default async function Page(props: { searchParams: Promise<unknown> }) {
   const searchParams = await props.searchParams;
   const { user } = await getSession();
   if (!user) {
@@ -41,10 +42,18 @@ export default async function(props: { searchParams: Promise<unknown> }) {
       };
     })
     .filter((s) => s !== undefined);
+  console.log("summariesWithPage", summariesWithPage);
 
-  const summariesByPage = groupBy(
-    summariesWithPage,
-    (summary) => summary.pageTitle
+  const summariesByPage = summariesWithPage.reduce(
+    (acc, summary) => {
+      if (!acc[summary.pageSlug]) {
+        acc[summary.pageSlug] = [];
+      }
+      acc[summary.pageSlug].push(summary);
+
+      return acc;
+    },
+    {} as Record<string, Summary[]>
   );
 
   const summariesByPassing = summaries.reduce(

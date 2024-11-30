@@ -11,7 +11,7 @@ import { allPagesSorted } from "@/lib/pages/pages.server";
 import { SummaryListSelect } from "../../summaries/_components/summary-list-select";
 import { checkTeacher } from "../check-teacher";
 
-export default async function(props: { searchParams: Promise<unknown> }) {
+export default async function Page(props: { searchParams: Promise<unknown> }) {
   const searchParams = await props.searchParams;
   const teacher = await checkTeacher();
   if (!teacher) {
@@ -28,20 +28,6 @@ export default async function(props: { searchParams: Promise<unknown> }) {
   if (err) {
     throw new Error("failed to get summaries", { cause: err });
   }
-
-  const summariesWithPage = summaries
-    .map((s) => {
-      const page = allPagesSorted.find((page) => page.slug === s.pageSlug);
-      if (!page) {
-        return undefined;
-      }
-
-      return {
-        ...s,
-        pageTitle: page.title,
-      };
-    })
-    .filter((s) => s !== undefined);
 
   const summariesByPassing = summaries.reduce(
     (acc, summary) => {
@@ -82,7 +68,7 @@ export default async function(props: { searchParams: Promise<unknown> }) {
         heading={Meta.summaries.title}
         text={Meta.summaries.description}
       />
-      <Card className="w-full">
+      <Card>
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <SummaryChart

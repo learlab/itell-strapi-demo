@@ -9,9 +9,7 @@ export function InternalError({
   children?: React.ReactNode;
 }) {
   return (
-    <div
-      className={cn("tex-sm font-light leading-snug text-red-500", className)}
-    >
+    <div className={cn("tex-sm leading-snug text-destructive", className)}>
       {children ? (
         children
       ) : (
