@@ -7,25 +7,31 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@itell/ui/dialog";
 import { Label } from "@itell/ui/label";
 import { TextArea } from "@itell/ui/textarea";
-import { SendHorizontalIcon, ThumbsDown, ThumbsUp } from "lucide-react";
+import {
+  MessageCircleCodeIcon,
+  SendHorizontalIcon,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 
 import { createQuestionFeedbackAction } from "@/actions/question";
 import { InternalError } from "@/components/internal-error";
+import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
 
 type Props = {
-  type: "positive" | "negative";
   chunkSlug: string;
   pageSlug: string;
 };
 
-export function QuestionFeedback({ type, pageSlug, chunkSlug }: Props) {
-  const isPositive = type === "positive";
+export function QuestionFeedback({ pageSlug, chunkSlug }: Props) {
+  const [isPositive, setIsPositive] = useState(true);
   const allTags = isPositive
     ? ["informative", "supportive", "helpful"]
     : ["nonsensical", "inaccurate", "harmful"];
@@ -41,26 +47,13 @@ export function QuestionFeedback({ type, pageSlug, chunkSlug }: Props) {
           setOpen(true);
         }}
       >
-        <button
-          type="button"
-          aria-label={
-            isPositive ? "submit positive feedback" : "submit negative feedback"
-          }
-        >
-          {isPositive ? (
-            <ThumbsUp className="size-4 hover:stroke-emerald-400" />
-          ) : (
-            <ThumbsDown className="size-4 hover:stroke-rose-700" />
-          )}
+        <button type="button" aria-label="Provide feedback">
+          <MessageCircleCodeIcon className="size-4" />
         </button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader id="feedback-form-heading">
-          Provide feedback to the question
-        </DialogHeader>
         <form
-          aria-labelledby="feedback-form-heading"
-          className="grid gap-2"
+          className="grid gap-6"
           onSubmit={async (e) => {
             e.preventDefault();
             setPending(true);
@@ -89,20 +82,38 @@ export function QuestionFeedback({ type, pageSlug, chunkSlug }: Props) {
             setPending(false);
           }}
         >
+          <DialogTitle>Was the feedback helpful?</DialogTitle>
+          <RadioGroup
+            name="is-helpful"
+            className="flex gap-4"
+            required
+            value={isPositive ? "yes" : "no"}
+            onValueChange={(value) =>
+              setIsPositive(value === "yes" ? true : false)
+            }
+          >
+            <Label className="flex items-center gap-2">
+              <RadioGroupItem value="yes" />
+              <span>Yes</span>
+            </Label>
+            <Label className="flex items-center gap-2">
+              <RadioGroupItem value="no" />
+              <span>No</span>
+            </Label>
+          </RadioGroup>
+
           <Label>
-            <span className="sr-only">your feedback</span>
+            <span className="sr-only">Your feedback</span>
             <TextArea
               name="text"
-              className="mb-4"
               rows={3}
-              placeholder="Tell us more about your experience and how we can improve iTELL AI."
+              placeholder="Tell us more about your experience and how we may improve iTELL AI."
             />
           </Label>
 
-          <div className="flex flex-col space-y-2">
-            <p className="sr-only">
-              Pick one or more tags that best describes the feedback you had
-              (Optional)
+          <div className="flex flex-col gap-3">
+            <p className="text-muted-foreground text-sm">
+              (Optional) Select the tags that best describe the feedback:
             </p>
             {allTags.map((tag) => (
               <Label key={tag} className="inline-flex items-center gap-2">

@@ -371,24 +371,12 @@ export function QuestionBoxStairs({
         </QuestionBoxContent>
 
         <CardFooter>
-          <div className="flex items-center gap-2">
-            <FlaskConicalIcon className="size-4" />
+          <div className="flex items-center gap-1.5">
             <p className="text-sm text-muted-foreground">
               iTELL evaluation is based on AI and may not always be accurate.
               Provide feedback
             </p>
-            <div className="space-x-1">
-              <QuestionFeedback
-                type="positive"
-                pageSlug={pageSlug}
-                chunkSlug={chunkSlug}
-              />
-              <QuestionFeedback
-                type="negative"
-                pageSlug={pageSlug}
-                chunkSlug={chunkSlug}
-              />
-            </div>
+            <QuestionFeedback pageSlug={pageSlug} chunkSlug={chunkSlug} />
           </div>
         </CardFooter>
       </QuestionBoxShell>
