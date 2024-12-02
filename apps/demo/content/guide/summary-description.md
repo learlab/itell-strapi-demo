@@ -22,7 +22,7 @@ A successful summary will
 
 <i-accordion-item value='second' title = "Scoring details">
 
-Your summary will be automatically score based on the following attributes
+Your summary will be automatically scored based on the following attributes
 
 - content which will include main points, details to support those main points, and general organization of summary
 
