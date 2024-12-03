@@ -1,3 +1,1 @@
-# Business Law and the Legal Environment
-
-ITELL textbook
+Please see the (root readme)(../../README.md) for more information on the project.

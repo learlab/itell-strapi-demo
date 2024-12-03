@@ -47,7 +47,7 @@ Go the specific volume folder you are working on. For example, if you are workin
 cd apps/app-1
 ```
 
-Create a new file `.env` in the volume folder. Fill in the necessary environment variables. Contact a team member for the values.
+Create a new file `.env` in the volume folder. Fill in the necessary environment variables, see [instructions](./vercel.md)
 
 > [!IMPORTANT]
 > Replace the `DATABASE_URL` value in `.env` with the URL of your postgres database.
