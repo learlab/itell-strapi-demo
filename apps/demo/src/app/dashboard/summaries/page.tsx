@@ -8,11 +8,11 @@ import { groupBy } from "es-toolkit";
 import { incrementViewAction } from "@/actions/dashboard";
 import { getSummariesAction } from "@/actions/summary";
 import { Meta } from "@/config/metadata";
+import { Summary } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { SummaryListSelect } from "./_components/summary-list-select";
-import { Summary } from "@/drizzle/schema";
 
 export default async function Page(props: { searchParams: Promise<unknown> }) {
   const searchParams = await props.searchParams;
@@ -42,7 +42,6 @@ export default async function Page(props: { searchParams: Promise<unknown> }) {
       };
     })
     .filter((s) => s !== undefined);
-  console.log("summariesWithPage", summariesWithPage);
 
   const summariesByPage = summariesWithPage.reduce(
     (acc, summary) => {
@@ -53,7 +52,7 @@ export default async function Page(props: { searchParams: Promise<unknown> }) {
 
       return acc;
     },
-    {} as Record<string, Summary[]>
+    {} as Record<string, Array<Summary & { pageTitle: string }>>
   );
 
   const summariesByPassing = summaries.reduce(
