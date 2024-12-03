@@ -86,7 +86,7 @@ export default async function Page(props: {
             }
           />
           <div className="mt-4 col-span-1 col-start-2">
-            <PageTitle className="mb-8">{page.title}</PageTitle>
+            <PageTitle>{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />
             <SelectionPopover user={user} pageSlug={pageSlug} />
 

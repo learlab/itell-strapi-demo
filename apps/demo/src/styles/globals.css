@@ -13,6 +13,10 @@
   animation: fade-up 0.3s ease-out;
 }
 
+.fade-in2 {
+  animation: fade-in2 0.3s ease-out;
+}
+
 .question-container {
   margin: 1em 0;
   user-select: none;
@@ -143,6 +147,16 @@
 
     100% {
       transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-in2 {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
       opacity: 1;
     }
   }

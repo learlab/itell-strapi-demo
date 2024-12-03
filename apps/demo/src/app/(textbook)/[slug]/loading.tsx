@@ -71,8 +71,7 @@ export default async function Loading() {
           pin={(await cookies()).get(PAGE_HEADER_PIN_COOKIE)?.value === "true"}
         />
         <div className="mt-4 col-span-1 col-start-2">
-          <PageTitle className="mb-8">{page.title}</PageTitle>
-
+          <PageTitle>{page.title}</PageTitle>
           {arr.map((i) => (
             <Skeleton className="mb-4 h-28 w-full" key={i} />
           ))}

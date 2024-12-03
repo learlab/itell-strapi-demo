@@ -54,7 +54,7 @@ export function PageHeader({
     <header
       id="page-header"
       className={cn(
-        "sticky top-[calc(var(--nav-height))] z-40 col-span-full mb-4 flex items-center justify-between border-b-2 bg-background/95 px-4 py-3 backdrop-blur transition-all duration-300 ease-in-out supports-[backdrop-filter]:bg-background/60",
+        "sticky top-[calc(var(--nav-height))] z-40 col-span-full flex items-center justify-between border-b-2 bg-background/95 px-4 py-3 backdrop-blur transition-all duration-300 ease-in-out supports-[backdrop-filter]:bg-background/60",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
@@ -158,7 +158,7 @@ function TableOfContents({ page }: { page: Page }) {
       <p
         className={cn(
           "font-light",
-          _activeHeading !== page.chunks[0].slug && "fade-up"
+          _activeHeading !== page.chunks[0].slug && "fade-in2"
         )}
         key={activeHeadingTitle}
       >
