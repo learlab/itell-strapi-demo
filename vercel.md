@@ -2,7 +2,7 @@ The vercel CLI is used to share environmental variables.
 
 ## Installation
 
-See installation instructions at https://vercel.com/docs/cli
+See installation instructions at <https://vercel.com/docs/cli>
 
 ## Authenticate
 
@@ -20,9 +20,13 @@ Link local folder to Vercel project.
 vercel link --repo
 ```
 
+> [!NOTE] You will need to run `vercel link --repo` again if you start working
+> on a new project that does not exist at the last time of linking.
+
 ## Getting environmental variables
 
-Run the following command at the project folder where you need the environmental variables.
+Run the following command at the project folder where you need the environmental
+variables.
 
 ```bash
 vercel env pull .env --environment=development
