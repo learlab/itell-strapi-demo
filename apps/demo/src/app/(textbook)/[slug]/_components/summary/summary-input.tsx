@@ -15,7 +15,6 @@ import { cn, numOfWords } from "@itell/utils";
 import { InfoIcon } from "lucide-react";
 import pluralize from "pluralize";
 import { toast } from "sonner";
-
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { type StageItem } from "@/lib/hooks/use-summary-stage";
@@ -135,9 +134,8 @@ function Distance({ distance }: { distance: number }) {
     <div className="mb-2 flex items-center gap-2">
       <div className="relative h-8 flex-1 overflow-hidden rounded-full bg-accent">
         <div
-          className={`absolute left-0 top-0 h-full transition-all duration-300 ease-out ${
-            distance >= distanceThreshold ? "bg-info" : "bg-warning"
-          }`}
+          className={`absolute left-0 top-0 h-full transition-all duration-300 ease-out ${distance >= distanceThreshold ? "bg-info" : "bg-warning"
+            }`}
           style={{ width: `${String(distance)}%` }}
         />
         <div
