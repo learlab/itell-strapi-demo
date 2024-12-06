@@ -10,9 +10,10 @@ export interface BaseQuestion {
   type: "single_choice" | "multiple_choice" | "number_input" | "true_false" | "grid";
   options?: Option[];
   correct_answer?: string;
-  display_logic?: {
+  required: boolean;
+  display_condition?: {
     depends_on: string;
-    not_equals: string;
+    not_equals: string | number;
   };
 }
 
@@ -61,3 +62,18 @@ export interface SurveyData {
   sections: Section[];
 }
 
+export function isSingleChoiceQuestion(question: Question): question is SingleChoiceQuestion {
+  return question.type === "single_choice" || question.type === "true_false";
+}
+
+export function isMultipleChoiceQuestion(question: Question): question is MultipleChoiceQuestion {
+  return question.type === "multiple_choice";
+}
+
+export function isGridQuestion(question: Question): question is GridQuestion {
+  return question.type === "grid";
+}
+
+export function isNumberInputQuestion(question: Question): question is NumberInputQuestion {
+  return question.type === "number_input";
+}

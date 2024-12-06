@@ -1,88 +1,72 @@
 {
-  "survey_name": "iTELL Intake - Middle Georgia",
+  "survey_name": "iTELL Outtake - Middle Georgia Survey",
   "sections": [
     {
-      "id": "tech_access",
-      "title": "Technology Access",
+      "id": "CoI",
+      "title": "Community of Inquiry",
       "questions": [
         {
-          "id": "device_primary",
-          "text": "Which of the following do you use as your primary device for learning?",
-          "type": "single_choice",
-          "options": [
+          "id": "CoI1",
+          "text": "Please indicate your level of agreement with the following statements.",
+          "type": "grid",
+          "rows": [
             {
-              "text": "Your own personal laptop or desktop computer",
-              "value": 1
+              "text": "The textbook clearly communicated important course topics.",
+              "value": "1"
             },
             {
-              "text": "Shared or borrowed (e.g., household laptop or desktop computer)",
-              "value": 7
+              "text": "The textbook provided clear instructions on how to participate in course learning activities.",
+              "value": "2"
             },
             {
-              "text": "Public (e.g., library) laptop or desktop computer",
-              "value": 8
-            },
-            { "text": "Your own personal tablet", "value": 2 },
-            {
-              "text": "Shared or borrowed (e.g., household) tablet",
-              "value": 3
-            },
-            { "text": "Your own personal mobile/cellphone", "value": 4 },
-            { "text": "Shared or borrowed mobile/cellphone", "value": 9 }
-          ],
-          "required": true
-        },
-        {
-          "id": "device_hours",
-          "text": "How many hours per day do you use a computer, tablet, or smartphone?",
-          "type": "single_choice",
-          "options": [
-            { "text": "None", "value": 1 },
-            { "text": "1 hour", "value": 2 },
-            { "text": "1 to 2 hours", "value": 3 },
-            { "text": "2 to 3 hours", "value": 4 },
-            { "text": "3 to 5 hours", "value": 5 },
-            { "text": "More than 5 hours per day", "value": 6 }
-          ],
-          "required": true
-        },
-        {
-          "id": "tech_access_place",
-          "text": "Which of the following best describes your internet access situation for class work?",
-          "type": "single_choice",
-          "options": [
-            { "text": "I rely on strong home internet access", "value": 1 },
-            {
-              "text": "I rely on weak or unreliable home internet access",
-              "value": 2
+              "text": "The textbook was helpful in guiding me towards understanding course topics in a way that helped me clarify my thinking.",
+              "value": "3"
             },
             {
-              "text": "I rely on library, coffee shop, or other free wifi",
-              "value": 3
+              "text": "The textbook helped to keep me engaged and participating in productive dialogue.",
+              "value": "4"
+            },
+            {
+              "text": "The textbook helped keep me on task in a way that helped me to learn.",
+              "value": "5"
+            },
+            {
+              "text": "The textbook encouraged me to explore new concepts in this course.",
+              "value": "6"
+            },
+            {
+              "text": "The textbook helped to focus discussion on relevant issues in a way that helped me to learn.",
+              "value": "7"
+            },
+            {
+              "text": "The textbook provided feedback that helped me understand my strengths and weaknesses relative to the course's goals and objectives.",
+              "value": "8"
+            },
+            {
+              "text": "The textbook provided feedback in a timely fashion.",
+              "value": "9"
             }
           ],
-          "required": true
-        },
-        {
-          "id": "tech_access",
-          "text": "All things considered, do you have concerns about access to the technology (devices OR internet access) that you need to complete your classwork?",
-          "type": "single_choice",
-          "options": [
+          "columns": [
             {
-              "text": "I am not concerned about my technology access.",
-              "value": 1
+              "text": "Strongly disagree",
+              "value": "1"
             },
             {
-              "text": "I am mildly concerned about my technology access.",
-              "value": 2
+              "text": "Somewhat disagree",
+              "value": "2"
             },
             {
-              "text": "I am moderately concerned about my technology access.",
-              "value": 3
+              "text": "Neither agree nor disagree",
+              "value": "3"
             },
             {
-              "text": "I am very concerned about my technology access.",
-              "value": 4
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
             }
           ],
           "required": true
@@ -90,610 +74,385 @@
       ]
     },
     {
-      "id": "digital_text_experience",
-      "title": "Digital Text Experience",
+      "id": "CoI",
+      "title": "Community of Inquiry",
       "questions": [
         {
-          "id": "device_comfort",
-          "text": "How would you rate your comfort level in using technology?",
-          "type": "single_choice",
-          "options": [
-            { "text": "Very comfortable", "value": 1 },
-            { "text": "Comfortable", "value": 2 },
-            { "text": "Neutral", "value": 3 },
-            { "text": "Uncomfortable", "value": 4 },
-            { "text": "Very uncomfortable", "value": 5 }
-          ],
-          "required": true
-        },
-        {
-          "id": "text_num_per_week",
-          "text": "How many hours do you spend reading online per week?",
-          "type": "single_choice",
-          "options": [
-            { "text": "None", "value": 1 },
-            { "text": "1-3", "value": 2 },
-            { "text": "4-10", "value": 3 },
-            { "text": "10-20", "value": 4 },
-            { "text": "More than 20", "value": 5 }
-          ],
-          "required": true
-        },
-        {
-          "id": "text_satisfaction",
-          "text": "Overall, how satisfied or dissatisfied are you with the digital texts you have used?",
-          "type": "single_choice",
-          "options": [
-            { "text": "Extremely satisfied", "value": 1 },
-            { "text": "Somewhat satisfied", "value": 2 },
-            { "text": "Neither satisfied nor dissatisfied", "value": 3 },
-            { "text": "Somewhat dissatisfied", "value": 4 },
-            { "text": "Extremely dissatisfied", "value": 5 }
-          ],
-          "required": true
-        },
-        {
-          "id": "text_compare",
-          "text": "How would you compare your learning from printed texts to digital texts?",
-          "type": "single_choice",
-          "options": [
-            { "text": "Printed texts are much better.", "value": 1 },
-            { "text": "Printed texts are somewhat better.", "value": 2 },
+          "id": "CoI2",
+          "text": "Please indicate your level of agreement with the following statements.",
+          "type": "grid",
+          "rows": [
             {
-              "text": "I am neutral about printed texts and digital texts.",
-              "value": 3
+              "text": "The textbook utilized a variety of information sources to explore problems posed in this course.",
+              "value": "10"
             },
-            { "text": "Digital texts are somewhat better.", "value": 4 },
-            { "text": "Digital texts are much better.", "value": 5 }
+            {
+              "text": "The textbook helped me brainstorm and find relevant information to resolve content related questions.",
+              "value": "11"
+            },
+            {
+              "text": "The textbook helped me combine new information to answer questions raised in course activities.",
+              "value": "12"
+            },
+            {
+              "text": "Learning activities in the textbook helped me construct explanations/solutions.",
+              "value": "13"
+            },
+            {
+              "text": "Reflection within the textbook on course content and discussions helped me understand fundamental concepts in this class.",
+              "value": "14"
+            },
+            {
+              "text": "The textbook helped me describe ways to test and apply the knowledge created in this course.",
+              "value": "15"
+            },
+            {
+              "text": "The textbook helped me develop solutions to course problems that can be applied in practice.",
+              "value": "16"
+            },
+            {
+              "text": "The textbook helped me apply the course knowledge to my work or other non-class related activities.",
+              "value": "17"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
           ],
           "required": true
         }
       ]
     },
     {
-      "id": "demographics",
-      "title": "Demographics",
+      "id": "trad_text_comparison",
+      "title": "Compared to a traditional textbook",
       "questions": [
         {
-          "id": "demo_age",
-          "text": "How old are you? Please write your age as a number.",
-          "type": "number_input",
-          "required": true
-        },
-        {
-          "id": "demo_gender",
-          "text": "What gender do you identify as?",
-          "type": "single_choice",
-          "options": [
-            { "text": "Man", "value": 1 },
-            { "text": "Woman", "value": 2 },
-            { "text": "Nonbinary", "value": 3 },
-            { "text": "Other", "value": 4 },
-            { "text": "Prefer not to say", "value": 5 }
+          "id": "trad_text_comparison1",
+          "text": "Compared to a traditional textbook...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "I found interacting with this textbook to be more interesting.",
+              "value": "1"
+            },
+            {
+              "text": "I found interacting with this textbook to improve my learning.",
+              "value": "2"
+            },
+            {
+              "text": "I found interacting with this textbook to be easier.",
+              "value": "3"
+            },
+            {
+              "text": "This textbook was more motivating.",
+              "value": "4"
+            }
           ],
-          "required": true
-        },
-        {
-          "id": "demo_ethnicity",
-          "text": "How would you describe yourself? (Check all that apply)",
-          "type": "multiple_choice",
-          "options": [
-            { "text": "American Indian or Alaska Native", "value": 1 },
-            { "text": "Hawaiian or Pacific Islander", "value": 8 },
+          "columns": [
             {
-              "text": "Black / African American / African Caribbean",
-              "value": 2
-            },
-            { "text": "Latino/a/e/x", "value": 4 },
-            { "text": "Middle Eastern", "value": 3 },
-            { "text": "Central Asian", "value": 5 },
-            { "text": "Southeast / East Asian", "value": 6 },
-            { "text": "Maori", "value": 7 },
-            { "text": "White", "value": 9 },
-            { "text": "Prefer not to self-identify", "value": 10 }
-          ],
-          "required": true
-        },
-        {
-          "id": "populations",
-          "text": "Do you identify as part of one or more of these populations? Please check all that apply",
-          "type": "multiple_choice",
-          "options": [
-            {
-              "text": "Single parent",
-              "value": 1
+              "text": "Strongly disagree",
+              "value": "1"
             },
             {
-              "text": "Primary caregiver of child under age 10",
-              "value": 2
+              "text": "Somewhat disagree",
+              "value": "2"
             },
             {
-              "text": "Primary caregiver of child over age 10",
-              "value": 3
+              "text": "Neither agree nor disagree",
+              "value": "3"
             },
             {
-              "text": "Out of work force individual / unemployed",
-              "value": 4
+              "text": "Somewhat agree",
+              "value": "4"
             },
             {
-              "text": "English learner",
-              "value": 5
-            },
-            {
-              "text": "Economically disadvantaged",
-              "value": 6
-            },
-            {
-              "text": "Non-traditional student (e.g. due to age)",
-              "value": 7
-            },
-            {
-              "text": "First in family to attend college",
-              "value": 8
-            },
-            {
-              "text": "Disabled",
-              "value": 9
-            },
-            {
-              "text": "None of the above",
-              "value": 13
-            },
-            {
-              "text": "Prefer not to answer",
-              "value": 11
+              "text": "Strongly agree",
+              "value": "5"
             }
           ],
           "required": true
-        },
-        {
-          "id": "work_schedule",
-          "text": "Your current work schedule:",
-          "type": "single_choice",
-          "options": [
-            {
-              "text": "Don't work",
-              "value": 1
-            },
-            {
-              "text": "Regular hours (part-time)",
-              "value": 2
-            },
-            {
-              "text": "Variable hours (e.g., gig work, hours change often)",
-              "value": 3
-            },
-            {
-              "text": "Regular hours (full-time)",
-              "value": 4
-            },
-            {
-              "text": "Regular hours (>40 per week)",
-              "value": 5
-            }
-          ],
-          "required": true
-        },
-        {
-          "id": "num_courses",
-          "text": "Number of courses you are taking this semester",
-          "type": "single_choice",
-          "options": [
-            {
-              "text": "One",
-              "value": 1
-            },
-            {
-              "text": "Two",
-              "value": 2
-            },
-            {
-              "text": "Three",
-              "value": 3
-            },
-            {
-              "text": "Four or more",
-              "value": 4
-            }
-          ],
-          "required": true
-        },
-        {
-          "id": "demo_country",
-          "text": "What is your country of birth?",
-          "type": "single_choice",
-          "options": [
-            { "text": "Afghanistan", "value": 1 },
-            { "text": "Albania", "value": 2 },
-            { "text": "Algeria", "value": 3 },
-            { "text": "Andorra", "value": 4 },
-            { "text": "Angola", "value": 5 },
-            { "text": "Antigua and Barbuda", "value": 6 },
-            { "text": "Argentina", "value": 7 },
-            { "text": "Armenia", "value": 8 },
-            { "text": "Australia", "value": 9 },
-            { "text": "Austria", "value": 10 },
-            { "text": "Azerbaijan", "value": 11 },
-            { "text": "Bahamas", "value": 12 },
-            { "text": "Bahrain", "value": 13 },
-            { "text": "Bangladesh", "value": 14 },
-            { "text": "Barbados", "value": 15 },
-            { "text": "Belarus", "value": 16 },
-            { "text": "Belgium", "value": 17 },
-            { "text": "Belize", "value": 18 },
-            { "text": "Benin", "value": 19 },
-            { "text": "Bhutan", "value": 20 },
-            { "text": "Bolivia", "value": 21 },
-            { "text": "Bosnia and Herzegovina", "value": 22 },
-            { "text": "Botswana", "value": 23 },
-            { "text": "Brazil", "value": 24 },
-            { "text": "Brunei Darussalam", "value": 25 },
-            { "text": "Bulgaria", "value": 26 },
-            { "text": "Burkina Faso", "value": 27 },
-            { "text": "Burundi", "value": 28 },
-            { "text": "Cambodia", "value": 29 },
-            { "text": "Cameroon", "value": 30 },
-            { "text": "Canada", "value": 31 },
-            { "text": "Cape Verde", "value": 32 },
-            { "text": "Central African Republic", "value": 33 },
-            { "text": "Chad", "value": 34 },
-            { "text": "Chile", "value": 35 },
-            { "text": "China", "value": 36 },
-            { "text": "Colombia", "value": 37 },
-            { "text": "Comoros", "value": 38 },
-            { "text": "Congo, Republic of the...", "value": 39 },
-            { "text": "Costa Rica", "value": 40 },
-            { "text": "Côte d'Ivoire", "value": 41 },
-            { "text": "Croatia", "value": 42 },
-            { "text": "Cuba", "value": 43 },
-            { "text": "Cyprus", "value": 44 },
-            { "text": "Czech Republic", "value": 45 },
-            { "text": "Democratic Republic of the Congo", "value": 47 },
-            { "text": "Denmark", "value": 48 },
-            { "text": "Djibouti", "value": 49 },
-            { "text": "Dominica", "value": 50 },
-            { "text": "Dominican Republic", "value": 51 },
-            { "text": "Ecuador", "value": 52 },
-            { "text": "Egypt", "value": 53 },
-            { "text": "El Salvador", "value": 54 },
-            { "text": "Equatorial Guinea", "value": 55 },
-            { "text": "Eritrea", "value": 56 },
-            { "text": "Estonia", "value": 57 },
-            { "text": "Ethiopia", "value": 58 },
-            { "text": "Fiji", "value": 59 },
-            { "text": "Finland", "value": 60 },
-            { "text": "France", "value": 61 },
-            { "text": "Gabon", "value": 62 },
-            { "text": "Gambia", "value": 63 },
-            { "text": "Georgia", "value": 64 },
-            { "text": "Germany", "value": 65 },
-            { "text": "Ghana", "value": 66 },
-            { "text": "Greece", "value": 67 },
-            { "text": "Grenada", "value": 68 },
-            { "text": "Guatemala", "value": 69 },
-            { "text": "Guinea", "value": 70 },
-            { "text": "Guinea-Bissau", "value": 71 },
-            { "text": "Guyana", "value": 72 },
-            { "text": "Haiti", "value": 73 },
-            { "text": "Honduras", "value": 74 },
-            { "text": "Hong Kong (S.A.R.)", "value": 75 },
-            { "text": "Hungary", "value": 76 },
-            { "text": "Iceland", "value": 77 },
-            { "text": "India", "value": 78 },
-            { "text": "Indonesia", "value": 79 },
-            { "text": "Iran", "value": 80 },
-            { "text": "Iraq", "value": 81 },
-            { "text": "Ireland", "value": 82 },
-            { "text": "Israel", "value": 83 },
-            { "text": "Italy", "value": 84 },
-            { "text": "Jamaica", "value": 85 },
-            { "text": "Japan", "value": 86 },
-            { "text": "Jordan", "value": 87 },
-            { "text": "Kazakhstan", "value": 88 },
-            { "text": "Kenya", "value": 89 },
-            { "text": "Kiribati", "value": 90 },
-            { "text": "Kuwait", "value": 91 },
-            { "text": "Kyrgyzstan", "value": 92 },
-            { "text": "Lao People's Democratic Republic", "value": 93 },
-            { "text": "Latvia", "value": 94 },
-            { "text": "Lebanon", "value": 95 },
-            { "text": "Lesotho", "value": 96 },
-            { "text": "Liberia", "value": 97 },
-            { "text": "Libyan Arab Jamahiriya", "value": 98 },
-            { "text": "Liechtenstein", "value": 99 },
-            { "text": "Lithuania", "value": 100 },
-            { "text": "Luxembourg", "value": 101 },
-            { "text": "Madagascar", "value": 102 },
-            { "text": "Malawi", "value": 103 },
-            { "text": "Malaysia", "value": 104 },
-            { "text": "Maldives", "value": 105 },
-            { "text": "Mali", "value": 106 },
-            { "text": "Malta", "value": 107 },
-            { "text": "Marshall Islands", "value": 108 },
-            { "text": "Mauritania", "value": 109 },
-            { "text": "Mauritius", "value": 110 },
-            { "text": "Mexico", "value": 111 },
-            { "text": "Micronesia, Federated States of...", "value": 112 },
-            { "text": "Monaco", "value": 113 },
-            { "text": "Mongolia", "value": 114 },
-            { "text": "Montenegro", "value": 115 },
-            { "text": "Morocco", "value": 116 },
-            { "text": "Mozambique", "value": 117 },
-            { "text": "Myanmar", "value": 118 },
-            { "text": "Namibia", "value": 119 },
-            { "text": "Nauru", "value": 120 },
-            { "text": "Nepal", "value": 121 },
-            { "text": "Netherlands", "value": 122 },
-            { "text": "New Zealand", "value": 123 },
-            { "text": "Nicaragua", "value": 124 },
-            { "text": "Niger", "value": 125 },
-            { "text": "Nigeria", "value": 126 },
-            { "text": "North Korea", "value": 127 },
-            { "text": "Norway", "value": 128 },
-            { "text": "Oman", "value": 129 },
-            { "text": "Pakistan", "value": 130 },
-            { "text": "Palau", "value": 131 },
-            { "text": "Panama", "value": 132 },
-            { "text": "Papua New Guinea", "value": 133 },
-            { "text": "Paraguay", "value": 134 },
-            { "text": "Peru", "value": 135 },
-            { "text": "Philippines", "value": 136 },
-            { "text": "Poland", "value": 137 },
-            { "text": "Portugal", "value": 138 },
-            { "text": "Qatar", "value": 139 },
-            { "text": "Republic of Moldova", "value": 141 },
-            { "text": "Romania", "value": 142 },
-            { "text": "Russian Federation", "value": 143 },
-            { "text": "Rwanda", "value": 144 },
-            { "text": "Saint Kitts and Nevis", "value": 145 },
-            { "text": "Saint Lucia", "value": 146 },
-            { "text": "Saint Vincent and the Grenadines", "value": 147 },
-            { "text": "Samoa", "value": 148 },
-            { "text": "San Marino", "value": 149 },
-            { "text": "Sao Tome and Principe", "value": 150 },
-            { "text": "Saudi Arabia", "value": 151 },
-            { "text": "Senegal", "value": 152 },
-            { "text": "Serbia", "value": 153 },
-            { "text": "Seychelles", "value": 154 },
-            { "text": "Sierra Leone", "value": 155 },
-            { "text": "Singapore", "value": 156 },
-            { "text": "Slovakia", "value": 157 },
-            { "text": "Slovenia", "value": 158 },
-            { "text": "Solomon Islands", "value": 159 },
-            { "text": "Somalia", "value": 160 },
-            { "text": "South Africa", "value": 161 },
-            { "text": "South Korea", "value": 162 },
-            { "text": "Spain", "value": 163 },
-            { "text": "Sri Lanka", "value": 164 },
-            { "text": "Sudan", "value": 165 },
-            { "text": "Suriname", "value": 166 },
-            { "text": "Swaziland", "value": 167 },
-            { "text": "Sweden", "value": 168 },
-            { "text": "Switzerland", "value": 169 },
-            { "text": "Syrian Arab Republic", "value": 170 },
-            { "text": "Tajikistan", "value": 171 },
-            { "text": "Thailand", "value": 172 },
-            { "text": "The former Yugoslav Republic of Macedonia", "value": 173 },
-            { "text": "Timor-Leste", "value": 174 },
-            { "text": "Togo", "value": 175 },
-            { "text": "Tonga", "value": 176 },
-            { "text": "Trinidad and Tobago", "value": 177 },
-            { "text": "Tunisia", "value": 178 },
-            { "text": "Turkey", "value": 179 },
-            { "text": "Turkmenistan", "value": 180 },
-            { "text": "Tuvalu", "value": 181 },
-            { "text": "Uganda", "value": 182 },
-            { "text": "Ukraine", "value": 183 },
-            { "text": "United Arab Emirates", "value": 184 },
-            { "text": "United Kingdom of Great Britain and Northern Ireland", "value": 185 },
-            { "text": "United Republic of Tanzania", "value": 186 },
-            { "text": "United States of America", "value": 187 },
-            { "text": "Uruguay", "value": 188 },
-            { "text": "Uzbekistan", "value": 189 },
-            { "text": "Vanuatu", "value": 190 },
-            { "text": "Venezuela, Bolivarian Republic of...", "value": 191 },
-            { "text": "Viet Nam", "value": 192 },
-            { "text": "Yemen", "value": 193 },
-            { "text": "Zambia", "value": 580 },
-            { "text": "Zimbabwe", "value": 1357 }
-          ],
-          "required": true
-        },
-        {
-          "id": "demo_interests",
-          "text": "What do you like to learn about?",
-          "type": "multiple_choice",
-          "options": [
-            { "text": "Engineering", "value": 1 },
-            { "text": "Business", "value": 2 },
-            { "text": "History", "value": 3 },
-            { "text": "English", "value": 4 },
-            { "text": "Mathematics", "value": 5 },
-            { "text": "Communications", "value": 6 },
-            { "text": "Education", "value": 8 },
-            { "text": "Sciences", "value": 9 },
-            { "text": "Psychology", "value": 10 },
-            { "text": "Computer Science", "value": 11 },
-            { "text": "Economics", "value": 12 },
-            { "text": "Other", "value": 13 }
-          ],
-          "required": true
-        },
-        {
-          "id": "demo_education",
-          "text": "What is the highest degree or level of school you have completed? If currently enrolled, highest degree received",
-          "type": "single_choice",
-          "options": [
-            { "text": "No schooling completed", "value": 1 },
-            { "text": "Nursery school to 8th grade", "value": 2 },
-            { "text": "Some high school, no diploma", "value": 3 },
-            { "text": "High school graduate, diploma or the equivalent (e.g., GED)", "value": 4 },
-            { "text": "Some college credit, no degree", "value": 5 },
-            { "text": "Trade/technical/vocational training", "value": 6 },
-            { "text": "Associate degree", "value": 7 },
-            { "text": "Bachelor’s degree", "value": 8 },
-            { "text": "Master’s degree", "value": 9 },
-            { "text": "Professional degree", "value": 10 },
-            { "text": "Doctorate degree", "value": 11 }
-          ],
-          "required": true
-        },
-        {
-          "id": "demo_income",
-          "text": "What is your total combined family income for the past 12 months, before taxes, from all sources, wages, public assistance/benefits, help from relatives, alimony, and so on? If you don't know your exact income, please estimate.",
-          "type": "single_choice",
-          "options": [
-            { "text": "Less than $9,999", "value": 1 },
-            { "text": "$10,000 - $19,999", "value": 2 },
-            { "text": "$20,000 - $49,999", "value": 3 },
-            { "text": "$50,000 - $99,999", "value": 4 },
-            { "text": "$100,000 - $149,999", "value": 5 },
-            { "text": "More than $150,000", "value": 6 }
-          ],
-          "required": true
-        },
-        {
-          "id": "demo_english_prof",
-          "text": "Which of the following would best describe your English proficiency?",
-          "type": "single_choice",
-          "options": [
-            { "text": "Native/Bilingual proficiency", "value": 1 },
-            { "text": "Full professional proficiency", "value": 2 },
-            { "text": "Professional working proficiency", "value": 3 },
-            { "text": "Limited working proficiency", "value": 4 },
-            { "text": "Elementary proficiency", "value": 5 }
-          ],
-          "required": true
-        },
-        {
-          "id": "demo-native-lang",
-          "text": "What is your native language?",
-          "type": "text_input",
-          "required": true,
-          "display_condition": {
-            "question_id": "demo-english-prof",
-            "operator": "!=",
-            "value": 1
-          }
-        },
-        {
-          "id": "demo-english-aoe",
-          "text": "At what age did you start learning English?",
-          "type": "number_input",
-          "required": true,
-          "display_condition": {
-            "question_id": "demo-english-prof",
-            "operator": "!=",
-            "value": 1
-          }
-        },
-        {
-          "id": "demo-english-years",
-          "text": "How many years have you studied English?",
-          "type": "number_input",
-          "required": true,
-          "display_condition": {
-            "question_id": "demo-english-prof",
-            "operator": "!=",
-            "value": 1
-          }
         }
-        
-
-        
-        
-        
-        
-        
-        
-        
       ]
     },
     {
-      "id": "pretest",
-      "title": "Pretest",
+      "id": "organization",
+      "title": "Layout",
       "questions": [
         {
-          "id": "Q00",
-          "text": "Basic research in psychology is conducted primarily to address some practical problem.",
+          "id": "organization1",
+          "text": "I found the layout of the digital textbook to...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "Be intuitive and easy to work with",
+              "value": "1"
+            },
+            {
+              "text": "Keep the text organized and comprehensible",
+              "value": "2"
+            },
+            {
+              "text": "Be free from errors and bugs",
+              "value": "3"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "annotation",
+      "title": "Annotation",
+      "questions": [
+        {
+          "id": "annotation1",
+          "text": "I found the annotation and note-taking features of the textbook to be valuable.",
           "type": "single_choice",
           "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
+            {
+              "text": "Strongly agree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly disagree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "questions": [
+        {
+          "id": "summary1",
+          "text": "I found the section summary section of the digital textbook to...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "Be accurate",
+              "value": "1"
+            },
+            {
+              "text": "Be easy to understand",
+              "value": "2"
+            },
+            {
+              "text": "Be easy to interact with",
+              "value": "3"
+            },
+            {
+              "text": "Help to improve my learning",
+              "value": "4"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "sa",
+      "title": "Short Answer",
+      "questions": [
+        {
+          "id": "sa1",
+          "text": "I found the short answer sections in the digital textbook to...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "Provide questions that were relevant to the subsection",
+              "value": "1"
+            },
+            {
+              "text": "Be accurate",
+              "value": "2"
+            },
+            {
+              "text": "Be easy to interact with",
+              "value": "3"
+            },
+            {
+              "text": "Help improve my learning",
+              "value": "4"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "overall",
+      "title": "Overall",
+      "questions": [
+        {
+          "id": "improve",
+          "text": "Did the digital text improve your ability to learn this subject?",
+          "type": "single_choice",
+          "options": [
+            {
+              "text": "Yes",
+              "value": "1"
+            },
+            {
+              "text": "No",
+              "value": "2"
+            }
           ],
           "required": true
         },
         {
-          "id": "Q01",
-          "text": "Psychological disorders and behavioral problems are considered part of the natural world and can be studied scientifically.",
+          "id": "overall1",
+          "text": "Overall, how satisfied were you with this digital textbook?",
           "type": "single_choice",
           "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
+            {
+              "text": "Very satisfied",
+              "value": "1"
+            },
+            {
+              "text": "Satisfied",
+              "value": "2"
+            },
+            {
+              "text": "Neutral",
+              "value": "3"
+            },
+            {
+              "text": "Unsatisfied",
+              "value": "4"
+            },
+            {
+              "text": "Very unsatisfied",
+              "value": "5"
+            }
           ],
           "required": true
         },
         {
-          "id": "Q02",
-          "text": "The purpose of publishing a research article is to conclusively answer questions about the world.",
+          "id": "recommend",
+          "text": "Would you recommend the digital text to others as a good way to learn?",
           "type": "single_choice",
           "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q03",
-          "text": "A Type I error occurs when researchers incorrectly conclude that there is an effect in the population when there is no real effect.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q04",
-          "text": "The APA Ethics Code allows for the use of deception in research as long as the deception is revealed to participants at the conclusion of the study.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q05",
-          "text": "Pre-screening procedures should be used to eliminate participants from a study.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q06",
-          "text": "The interval level of measurement has a true zero point, which allows for meaningful ratios between scores.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q07",
-          "text": "When creating your own measure, it is better to include multiple items to ensure reliability and content validity.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
+            {
+              "text": "Definitely YES",
+              "value": "1"
+            },
+            {
+              "text": "YES",
+              "value": "2"
+            },
+            {
+              "text": "NO",
+              "value": "3"
+            },
+            {
+              "text": "Definitely NO",
+              "value": "4"
+            }
           ],
           "required": true
         }
       ]
     }
+
   ]
 }

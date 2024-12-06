@@ -1,63 +1,81 @@
-
-export interface Option {
-  text: string;
-  value: number;
-}
-
-export interface BaseQuestion {
+export type BaseQuestion = {
   id: string;
   text: string;
-  type: "single_choice" | "multiple_choice" | "number_input" | "true_false" | "grid";
-  options?: Option[];
-  correct_answer?: string;
-  display_logic?: {
-    depends_on: string;
-    not_equals: string;
-  };
-}
+  required: boolean;
+  display_condition?: string;
+};
 
-export interface SingleChoiceQuestion extends BaseQuestion {
-  type: "single_choice" | "true_false";
-  options: Option[];
-}
-export interface MultipleChoiceQuestion extends BaseQuestion {
-  type: "multiple_choice";
-  options: Option[];
-}
+export type SingleChoiceQuestion = BaseQuestion & {
+  type: 'single_choice';
+  options: Array<{
+    text: string;
+    value: string | number;
+  }>;
+};
 
-export interface NumberInputQuestion extends BaseQuestion {
-  type: "number_input";
-}
+export type MultipleChoiceQuestion = BaseQuestion & {
+  type: 'multiple_choice';
+  options: Array<{
+    text: string;
+    value: number;
+  }>;
+};
 
-export interface GridQuestion extends BaseQuestion {
-  type: "grid";
-  rows: string[];
-  columns: string[];
-}
+export type TrueFalseQuestion = BaseQuestion & {
+  type: 'true_false';
+  options: Array<{
+    text: string;
+    value: boolean;
+  }>;
+};
 
-export type Question = SingleChoiceQuestion | MultipleChoiceQuestion | NumberInputQuestion | GridQuestion;
+export type NumberInputQuestion = BaseQuestion & {
+  type: 'number_input';
+};
 
-export type AnswerValue = string | number | string[] | number[] | Record<number, string>;
+export type TextInputQuestion = BaseQuestion & {
+  type: 'text_input';
+};
 
-export interface Answer {
+export type GridQuestion = BaseQuestion & {
+  type: 'grid';
+  rows: Array<{
+    text: string;
+    value: string;
+  }>;
+  columns: Array<{
+    text: string;
+    value: string;
+  }>;
+};
+
+export type Question = 
+  | SingleChoiceQuestion 
+  | MultipleChoiceQuestion 
+  | TrueFalseQuestion 
+  | NumberInputQuestion 
+  | TextInputQuestion 
+  | GridQuestion;
+
+export type Section = {
+  id: string;
+  title: string;
+  questions: Question[];
+};
+
+export type Survey = {
+  sections: Section[];
+};
+
+export type AnswerValue = 
+  | string 
+  | number 
+  | boolean 
+  | number[] 
+  | Record<number, string>;
+
+export type Answer = {
   sectionId: string;
   questionId: string;
   value: AnswerValue;
-}
-export interface Section {
-  id: string;
-  title: string;
-  questions: Question[];
-}
-
-export interface Section {
-  id: string;
-  title: string;
-  questions: Question[];
-}
-
-export interface SurveyData {
-  survey_name: string;
-  sections: Section[];
-}
-
+};

@@ -3,14 +3,23 @@ import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button, buttonVariants } from "@itell/ui/button";
 import surveyData from './outtake-survey-schema.json';
-import { Answer, AnswerValue } from './survey-questions';
+import { 
+  Question, 
+  Answer, 
+  AnswerValue, 
+  GridQuestion,
+  SingleChoiceQuestion,
+  MultipleChoiceQuestion,
+  Survey
+} from './survey-questions';
 
-export default function Survey() {
+export default function OuttakeSurvey() {
   const [currentSection, setCurrentSection] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
 
-  const section = surveyData.sections[currentSection];
+  const typedSurveyData = surveyData as Survey;
+  const section = typedSurveyData.sections[currentSection];
   const question = section.questions[currentQuestion];
 
   const getCurrentAnswer = (): AnswerValue | undefined => {
@@ -37,16 +46,85 @@ export default function Survey() {
     const answer = getCurrentAnswer();
     if (answer === undefined) return false;
 
-    if (question.type === 'grid' && 'rows' in question && Array.isArray(question.rows)) {
-      return question.rows.every((_: any, index: number) => (answer as Record<number, string>)[index]);
+    if (question.type === 'grid') {
+      const gridQuestion = question as GridQuestion;
+      return gridQuestion.rows.every((_, index) => (answer as Record<number, string>)[index] !== undefined);
     }
     return true;
   };
 
-  const renderQuestion = () => {
-    const currentAnswer = getCurrentAnswer();
+  const renderGridQuestion = (question: GridQuestion) => {
+    const currentAnswer = (getCurrentAnswer() as Record<number, string>) || {};
 
+    return (
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr>
+              <th className="p-2 border"></th>
+              {question.columns.map((col, i) => (
+                <th key={i} className="p-2 border text-center">
+                  {col.text}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {question.rows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                <td className="p-2 border font-medium">{row.text}</td>
+                {question.columns.map((col, colIndex) => (
+                  <td key={colIndex} className="p-2 border text-center">
+                    <Button
+                      variant={currentAnswer[rowIndex] === col.value ? "default" : "outline"}
+                      onClick={() => {
+                        const newAnswer = { ...currentAnswer, [rowIndex]: col.value };
+                        handleAnswer(newAnswer);
+                      }}
+                      className="w-full"
+                    >
+                      {col.value}
+                    </Button>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+
+
+  const renderMultipleChoiceQuestion = (question: MultipleChoiceQuestion) => {
+    const currentAnswer = (getCurrentAnswer() as number[]) || [];
+    return (
+      <div className="space-y-4">
+        {question.options.map((option, i) => (
+          <Button
+            key={i}
+            onClick={() => {
+              const newAnswer = currentAnswer.includes(option.value)
+                ? currentAnswer.filter(a => a !== option.value)
+                : [...currentAnswer, option.value];
+              handleAnswer(newAnswer);
+            }}
+            variant={currentAnswer.includes(option.value) ? "default" : "outline"}
+            className="w-full justify-start h-auto py-4"
+          >
+            {option.text}
+          </Button>
+        ))}
+      </div>
+    );
+  };
+
+  const renderQuestion = () => {
     switch (question.type) {
+      case 'grid':
+        return renderGridQuestion(question);
+
       case 'single_choice':
       case 'true_false':
         return (
@@ -55,7 +133,7 @@ export default function Survey() {
               <Button
                 key={i}
                 onClick={() => handleAnswer(option.value)}
-                variant={currentAnswer === option.value ? "default" : "outline"}
+                variant={getCurrentAnswer() === option.value ? "default" : "outline"}
                 className="w-full justify-start h-auto py-4"
               >
                 {option.text}
@@ -65,26 +143,7 @@ export default function Survey() {
         );
 
       case 'multiple_choice':
-        const multiAnswer = (currentAnswer as number[]) || [];
-        return (
-          <div className="space-y-4">
-            {question.options?.map((option, i) => (
-              <Button
-                key={i}
-                onClick={() => {
-                  const newAnswer = multiAnswer.includes(option.value)
-                    ? multiAnswer.filter(a => a !== option.value)
-                    : [...multiAnswer, option.value];
-                  handleAnswer(newAnswer);
-                }}
-                variant={multiAnswer.includes(option.value) ? "default" : "outline"}
-                className="w-full justify-start h-auto py-4"
-              >
-                {option.text}
-              </Button>
-            ))}
-          </div>
-        );
+        return renderMultipleChoiceQuestion(question);
 
       case 'number_input':
       case 'text_input':
@@ -97,11 +156,11 @@ export default function Survey() {
                 e.target.value
             )}
             value={
-              Array.isArray(currentAnswer)
-                ? currentAnswer.join(', ')
-                : typeof currentAnswer === 'object'
-                ? Object.values(currentAnswer).join(', ')
-                : currentAnswer ?? ''
+              Array.isArray(getCurrentAnswer())
+                ? (getCurrentAnswer() as number[]).join(', ')
+                : typeof getCurrentAnswer() === 'boolean'
+                ? getCurrentAnswer()?.toString() ?? ''
+                : (getCurrentAnswer() as string | number) ?? ''
             }
             className="w-full p-4 border-2 rounded-lg"
             placeholder={question.type === 'number_input' ? "Enter a number" : "Enter text"}
@@ -114,7 +173,7 @@ export default function Survey() {
     if (direction === 'next') {
       if (currentQuestion < section.questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
-      } else if (currentSection < surveyData.sections.length - 1) {
+      } else if (currentSection < typedSurveyData.sections.length - 1) {
         setCurrentSection(prev => prev + 1);
         setCurrentQuestion(0);
       }
@@ -123,13 +182,13 @@ export default function Survey() {
         setCurrentQuestion(prev => prev - 1);
       } else if (currentSection > 0) {
         setCurrentSection(prev => prev - 1);
-        setCurrentQuestion(surveyData.sections[currentSection - 1].questions.length - 1);
+        setCurrentQuestion(typedSurveyData.sections[currentSection - 1].questions.length - 1);
       }
     }
   };
 
-  const totalQuestions = surveyData.sections.reduce((acc, section) => acc + section.questions.length, 0);
-  const questionsAnswered = surveyData.sections.slice(0, currentSection)
+  const totalQuestions = typedSurveyData.sections.reduce((acc, section) => acc + section.questions.length, 0);
+  const questionsAnswered = typedSurveyData.sections.slice(0, currentSection)
     .reduce((acc, section) => acc + section.questions.length, 0) + currentQuestion + 1;
   const progress = (questionsAnswered / totalQuestions) * 100;
 
@@ -152,7 +211,7 @@ export default function Survey() {
           <p className="text-gray-600">{question.text}</p>
         </div>
         <div className="min-h-[200px]">
-        {renderQuestion()}
+          {renderQuestion()}
         </div>
 
         <div className="flex justify-between pt-4">
@@ -168,7 +227,7 @@ export default function Survey() {
             onClick={() => handleNavigation('next')}
             disabled={!isQuestionAnswered()}
           >
-            {currentSection === surveyData.sections.length - 1 && 
+            {currentSection === typedSurveyData.sections.length - 1 && 
              currentQuestion === section.questions.length - 1 ? 'Submit' : 'Next'}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
