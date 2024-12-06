@@ -7,7 +7,7 @@ export interface Option {
 export interface BaseQuestion {
   id: string;
   text: string;
-  type: "single_choice" | "multiple_choice" | "number_input" | "true_false" | "grid";
+  type: "single_choice" | "multiple_choice" | "number_input" | "true_false" | "grid" | "text_input";
   options?: Option[];
   correct_answer?: string;
   required: boolean;
@@ -36,7 +36,11 @@ export interface GridQuestion extends BaseQuestion {
   columns: string[];
 }
 
-export type Question = SingleChoiceQuestion | MultipleChoiceQuestion | NumberInputQuestion | GridQuestion;
+export interface TextInputQuestion extends BaseQuestion {
+  type: "text_input";
+}
+
+export type Question = SingleChoiceQuestion | MultipleChoiceQuestion | NumberInputQuestion | GridQuestion | TextInputQuestion;
 
 export type AnswerValue = string | number | string[] | number[] | Record<number, string>;
 
@@ -62,18 +66,3 @@ export interface SurveyData {
   sections: Section[];
 }
 
-export function isSingleChoiceQuestion(question: Question): question is SingleChoiceQuestion {
-  return question.type === "single_choice" || question.type === "true_false";
-}
-
-export function isMultipleChoiceQuestion(question: Question): question is MultipleChoiceQuestion {
-  return question.type === "multiple_choice";
-}
-
-export function isGridQuestion(question: Question): question is GridQuestion {
-  return question.type === "grid";
-}
-
-export function isNumberInputQuestion(question: Question): question is NumberInputQuestion {
-  return question.type === "number_input";
-}

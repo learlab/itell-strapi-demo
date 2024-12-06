@@ -130,7 +130,12 @@
             { "text": "Somewhat dissatisfied", "value": 4 },
             { "text": "Extremely dissatisfied", "value": 5 }
           ],
-          "required": true
+          "required": true,
+          "display_condition": {
+            "question_id": "text_num_per_week",
+            "operator": "!=",
+            "value": 1
+          }
         },
         {
           "id": "text_compare",
@@ -145,6 +150,147 @@
             },
             { "text": "Digital texts are somewhat better.", "value": 4 },
             { "text": "Digital texts are much better.", "value": 5 }
+          ],
+          "required": true,
+          "display_condition": {
+            "question_id": "text_num_per_week",
+            "operator": "!=",
+            "value": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "pre_attitudes",
+      "title": "Pre-Attitudes",
+      "questions": [
+        {
+          "id": "pre_attitudes1",
+          "text": "Use the scale below to indicate your degree of agreement with each statement as it APPLIES TO YOU.",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "I study best in a group or with others.",
+              "value": "1"
+            },
+            {
+              "text": "I am not very good at learning online.",
+              "value": "2"
+            },
+            {
+              "text": "Doing guided problems (in class or online) really helps me.",
+              "value": "3"
+            },
+            {
+              "text": "I have a difficult time finding enough time to study.",
+              "value": "4"
+            },
+            {
+              "text": "I often need help at unusual times (e.g., after 9 PM).",
+              "value": "5"
+            },
+            {
+              "text": "I am a fast learner.",
+              "value": "7"
+            },
+            {
+              "text": "I could use help remembering class details, like assignment and test dates.",
+              "value": "10"
+            },
+            {
+              "text": "I feel alone when working on homework problems online.",
+              "value": "11"
+            },
+            {
+              "text": "I study better when I am working with other students.",
+              "value": "12"
+            },
+            {
+              "text": "I like it when I can work a problem online at my own pace, rather than in class.",
+              "value": "13"
+            },
+            {
+              "text": "I think that using online learning tools will increase the amount of time I need for studying.",
+              "value": "14"
+            },
+            {
+              "text": "I think online learning tools are too hard to use.",
+              "value": "15"
+            },
+            {
+              "text": "I can usually figure out how to use online tools quickly.",
+              "value": "16"
+            },
+            {
+              "text": "I like having AI tools that can help me with my work.",
+              "value": "17"
+            },
+            {
+              "text": "I could use help getting to know/networking with other people in my classes.",
+              "value": "18"
+            },
+            {
+              "text": "I can tell whether I am learning something well.",
+              "value": "19"
+            },
+            {
+              "text": "I am aware of what strategies I use.",
+              "value": "20"
+            },
+            {
+              "text": "I am a hard worker.",
+              "value": "21"
+            },
+            {
+              "text": "I finish whatever I begin.",
+              "value": "22"
+            },
+            {
+              "text": "Setbacks discourage me.",
+              "value": "23"
+            },
+            {
+              "text": "I stay away from things I do not understand.",
+              "value": "24"
+            },
+            {
+              "text": "I love to learn.",
+              "value": "25"
+            },
+            {
+              "text": "I can learn new things.",
+              "value": "26"
+            },
+            {
+              "text": "I control my learning outcomes.",
+              "value": "27"
+            },
+            {
+              "text": "I do not work very well on my own.",
+              "value": "28"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly Disagree",
+              "value": "1"
+            },
+            {
+              "text": "Disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neutral",
+              "value": "3"
+            },
+            {
+              "text": "Agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly Agree",
+              "value": "5"
+            }
           ],
           "required": true
         }
@@ -473,7 +619,10 @@
             { "text": "Syrian Arab Republic", "value": 170 },
             { "text": "Tajikistan", "value": 171 },
             { "text": "Thailand", "value": 172 },
-            { "text": "The former Yugoslav Republic of Macedonia", "value": 173 },
+            {
+              "text": "The former Yugoslav Republic of Macedonia",
+              "value": 173
+            },
             { "text": "Timor-Leste", "value": 174 },
             { "text": "Togo", "value": 175 },
             { "text": "Tonga", "value": 176 },
@@ -485,7 +634,10 @@
             { "text": "Uganda", "value": 182 },
             { "text": "Ukraine", "value": 183 },
             { "text": "United Arab Emirates", "value": 184 },
-            { "text": "United Kingdom of Great Britain and Northern Ireland", "value": 185 },
+            {
+              "text": "United Kingdom of Great Britain and Northern Ireland",
+              "value": 185
+            },
             { "text": "United Republic of Tanzania", "value": 186 },
             { "text": "United States of America", "value": 187 },
             { "text": "Uruguay", "value": 188 },
@@ -527,7 +679,10 @@
             { "text": "No schooling completed", "value": 1 },
             { "text": "Nursery school to 8th grade", "value": 2 },
             { "text": "Some high school, no diploma", "value": 3 },
-            { "text": "High school graduate, diploma or the equivalent (e.g., GED)", "value": 4 },
+            {
+              "text": "High school graduate, diploma or the equivalent (e.g., GED)",
+              "value": 4
+            },
             { "text": "Some college credit, no degree", "value": 5 },
             { "text": "Trade/technical/vocational training", "value": 6 },
             { "text": "Associate degree", "value": 7 },
@@ -566,132 +721,37 @@
           "required": true
         },
         {
-          "id": "demo-native-lang",
+          "id": "demo_native_lang",
           "text": "What is your native language?",
           "type": "text_input",
           "required": true,
           "display_condition": {
-            "question_id": "demo-english-prof",
+            "question_id": "demo_english_prof",
             "operator": "!=",
             "value": 1
           }
         },
         {
-          "id": "demo-english-aoe",
+          "id": "demo_english-aoe",
           "text": "At what age did you start learning English?",
           "type": "number_input",
           "required": true,
           "display_condition": {
-            "question_id": "demo-english-prof",
+            "question_id": "demo_english_prof",
             "operator": "!=",
             "value": 1
           }
         },
         {
-          "id": "demo-english-years",
+          "id": "demo_english_years",
           "text": "How many years have you studied English?",
           "type": "number_input",
           "required": true,
           "display_condition": {
-            "question_id": "demo-english-prof",
+            "question_id": "demo_english_prof",
             "operator": "!=",
             "value": 1
           }
-        }
-        
-
-        
-        
-        
-        
-        
-        
-        
-      ]
-    },
-    {
-      "id": "pretest",
-      "title": "Pretest",
-      "questions": [
-        {
-          "id": "Q00",
-          "text": "Basic research in psychology is conducted primarily to address some practical problem.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q01",
-          "text": "Psychological disorders and behavioral problems are considered part of the natural world and can be studied scientifically.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q02",
-          "text": "The purpose of publishing a research article is to conclusively answer questions about the world.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q03",
-          "text": "A Type I error occurs when researchers incorrectly conclude that there is an effect in the population when there is no real effect.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q04",
-          "text": "The APA Ethics Code allows for the use of deception in research as long as the deception is revealed to participants at the conclusion of the study.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q05",
-          "text": "Pre-screening procedures should be used to eliminate participants from a study.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q06",
-          "text": "The interval level of measurement has a true zero point, which allows for meaningful ratios between scores.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
-        },
-        {
-          "id": "Q07",
-          "text": "When creating your own measure, it is better to include multiple items to ensure reliability and content validity.",
-          "type": "single_choice",
-          "options": [
-            { "text": "False", "value": 21 },
-            { "text": "True", "value": 22 }
-          ],
-          "required": true
         }
       ]
     }
