@@ -1,20 +1,29 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { Word } from './Word';
-import { isContentWord, splitIntoParagraphs, splitFirstSentence } from './utils';
+"use client";
+
+import React, { useCallback, useRef, useState } from "react";
+
+import {
+  isContentWord,
+  splitFirstSentence,
+  splitIntoParagraphs,
+} from "./utils";
+import { Word } from "./Word";
 
 interface TextTestingComponentProps {
   text: string;
-  type?: 'ctest' | 'cloze';
+  type?: "ctest" | "cloze";
 }
 
 export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
-  text, 
-  type = 'ctest'
+  text,
+  type = "ctest",
 }) => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
-  const wordsRef = useRef<Map<string, { checkAnswer: () => boolean }>>(new Map());
+  const wordsRef = useRef<Map<string, { checkAnswer: () => boolean }>>(
+    new Map()
+  );
 
   const calculateScore = useCallback(() => {
     let correct = 0;
@@ -58,9 +67,8 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
         return;
       }
       if (part.trim()) {
-        const shouldTarget = !isFirstSentence && 
-                           isContentWord(part) && 
-                           wordCounter % 2 === 1;
+        const shouldTarget =
+          !isFirstSentence && isContentWord(part) && wordCounter % 2 === 1;
         words.push({ text: part, isTarget: shouldTarget });
         wordCounter++;
       }
@@ -87,13 +95,7 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
       showFeedback={showFeedback}
       type={type}
       isResetting={isResetting}
-      className={`
-        ${showFeedback && wordObj.isTarget ? "transition-colors duration-300" : ""}
-        ${!showFeedback && wordObj.isTarget ? "bg-gray-100" : ""}
-        ${showFeedback && wordObj.isTarget ? "border-2" : ""}
-        ${showFeedback && wordObj.isTarget && wordsRef.current.get(`${pIndex}-${section}-${wIndex}`)?.checkAnswer() ? "bg-green-100 border-green-500" : ""}
-        ${showFeedback && wordObj.isTarget && !wordsRef.current.get(`${pIndex}-${section}-${wIndex}`)?.checkAnswer() ? "bg-red-100 border-red-500" : ""}
-      `}
+      className={` ${showFeedback && wordObj.isTarget ? "transition-colors duration-300" : ""} ${!showFeedback && wordObj.isTarget ? "bg-gray-100" : ""} ${showFeedback && wordObj.isTarget ? "border-2" : ""} ${showFeedback && wordObj.isTarget && wordsRef.current.get(`${pIndex}-${section}-${wIndex}`)?.checkAnswer() ? "border-green-500 bg-green-100" : ""} ${showFeedback && wordObj.isTarget && !wordsRef.current.get(`${pIndex}-${section}-${wIndex}`)?.checkAnswer() ? "border-red-500 bg-red-100" : ""} `}
     />
   );
 
@@ -102,30 +104,30 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className={`
-        p-6 bg-white rounded-lg shadow-sm
-        transition-opacity duration-300
-        ${isResetting ? "opacity-50" : "opacity-100"}
-      `}>
+      <div
+        className={`rounded-lg bg-white p-6 shadow-sm transition-opacity duration-300 ${isResetting ? "opacity-50" : "opacity-100"} `}
+      >
         <article className="prose prose-slate max-w-none">
           {paragraphs.map((paragraph, pIndex) => {
             if (!isFirstParagraphProcessed) {
               isFirstParagraphProcessed = true;
               const { firstSentence, rest } = splitFirstSentence(paragraph);
-              
+
               return (
                 <p key={pIndex} className="mb-4">
-                  {firstSentence && processText(firstSentence, true).map((wordObj, wIndex) => 
-                    renderWord(
-                      { ...wordObj, isTarget: false },
-                      pIndex,
-                      wIndex,
-                      'first'
-                    )
-                  )}
-                  {rest && processText(rest, false).map((wordObj, wIndex) =>
-                    renderWord(wordObj, pIndex, wIndex, 'rest')
-                  )}
+                  {firstSentence &&
+                    processText(firstSentence, true).map((wordObj, wIndex) =>
+                      renderWord(
+                        { ...wordObj, isTarget: false },
+                        pIndex,
+                        wIndex,
+                        "first"
+                      )
+                    )}
+                  {rest &&
+                    processText(rest, false).map((wordObj, wIndex) =>
+                      renderWord(wordObj, pIndex, wIndex, "rest")
+                    )}
                 </p>
               );
             }
@@ -133,7 +135,7 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
             return (
               <p key={pIndex} className="mb-4">
                 {processText(paragraph, false).map((wordObj, wIndex) =>
-                  renderWord(wordObj, pIndex, wIndex, 'normal')
+                  renderWord(wordObj, pIndex, wIndex, "normal")
                 )}
               </p>
             );
@@ -143,12 +145,13 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
 
       <div className="space-y-4">
         {showFeedback && score.total > 0 && (
-          <div className="bg-white p-4 rounded-lg shadow-sm animate-fade-in">
-            <h3 className="text-lg font-medium mb-2">Score</h3>
+          <div className="animate-fade-in rounded-lg bg-white p-4 shadow-sm">
+            <h3 className="mb-2 text-lg font-medium">Score</h3>
             <p className="text-gray-700">
-              You got <span className="font-bold text-blue-600">{score.correct}</span> out 
-              of <span className="font-bold">{score.total}</span> correct 
-              ({Math.round((score.correct / score.total) * 100)}%)
+              You got{" "}
+              <span className="font-bold text-blue-600">{score.correct}</span>{" "}
+              out of <span className="font-bold">{score.total}</span> correct (
+              {Math.round((score.correct / score.total) * 100)}%)
             </p>
           </div>
         )}
@@ -157,23 +160,14 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
           <button
             onClick={handleSubmit}
             disabled={showFeedback}
-            className={`
-              flex-1 px-4 py-2 text-white rounded-md
-              focus:outline-none focus:ring-2
-              transition-all duration-300
-              ${showFeedback ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 focus:ring-blue-400"}
-            `}
+            className={`flex-1 rounded-md px-4 py-2 text-white transition-all duration-300 focus:outline-none focus:ring-2 ${showFeedback ? "cursor-not-allowed bg-gray-400" : "bg-blue-500 hover:bg-blue-600 focus:ring-blue-400"} `}
           >
             Check Answers
           </button>
 
           <button
             onClick={handleReset}
-            className="
-              flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-md
-              hover:bg-gray-200 focus:outline-none focus:ring-2
-              focus:ring-gray-400 transition-all duration-300
-            "
+            className="flex-1 rounded-md bg-gray-100 px-4 py-2 text-gray-700 transition-all duration-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             Reset
           </button>
@@ -182,8 +176,14 @@ export const TextTestingComponent: React.FC<TextTestingComponentProps> = ({
 
       <style jsx>{`
         @keyframes fade-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            transform: translateY(-10px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
         .animate-fade-in {
           animation: fade-in 0.3s ease-out;
