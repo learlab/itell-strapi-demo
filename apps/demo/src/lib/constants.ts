@@ -1,7 +1,11 @@
 import type { AnimationProps } from "framer-motion";
 
 export const FOCUS_TIME_SAVE_INTERVAL = 60000;
+
 export const PAGE_SUMMARY_THRESHOLD = 2;
+
+export const SUMMARY_DESCRIPTION_ID = "summary-description";
+
 export const SIDEBAR_STATE_COOKIE = "sidebar:state";
 export const DASHBOARD_ROLE_COOKIE = "dashboard:role";
 export const PAGE_HEADER_PIN_COOKIE = "page-header:pin";
@@ -35,6 +39,7 @@ export const Tags = {
   GET_SESSION: "get-session",
   GET_ANSWER_STREAK: "get-answer-streak",
   GET_QUIZ_ATTEMPTS: "get-quiz-attempts",
+  COUNT_SUMMARY: "count-summary",
 } as const;
 
 export const animationProps = {

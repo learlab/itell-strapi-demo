@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import { revalidateTag } from "next/cache";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
@@ -129,10 +130,11 @@ export const createSummaryAction = authedProcedure
       };
     });
 
-     
     if (shouldRevalidate) {
       revalidateTag(Tags.GET_SESSION);
     }
+
+    revalidateTag(Tags.COUNT_SUMMARY);
 
     return data;
   });
@@ -256,6 +258,11 @@ export const getSummariesHandler = memoize(
 export const countSummaryByPassingAction = authedProcedure
   .input(z.object({ pageSlug: z.string() }))
   .handler(async ({ input, ctx }) => {
+    return countSummaryByPassingHandler(ctx.user.id, input.pageSlug);
+  });
+
+const countSummaryByPassingHandler = memoize(
+  async (userId: string, pageSlug: string) => {
     const record = await db
       .select({
         passed: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
@@ -263,11 +270,10 @@ export const countSummaryByPassingAction = authedProcedure
       })
       .from(summaries)
       .where(
-        and(
-          eq(summaries.userId, ctx.user.id),
-          eq(summaries.pageSlug, input.pageSlug)
-        )
+        and(eq(summaries.userId, userId), eq(summaries.pageSlug, pageSlug))
       );
 
     return record[0];
-  });
+  },
+  { persist: false, revalidateTags: [Tags.COUNT_SUMMARY] }
+);

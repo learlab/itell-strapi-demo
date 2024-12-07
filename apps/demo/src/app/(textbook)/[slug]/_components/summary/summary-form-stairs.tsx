@@ -76,13 +76,19 @@ interface Props {
   user: User;
   page: PageData;
   pageStatus: PageStatus;
+  afterSubmit?: React.ReactNode;
 }
 
 type ApiRequest = Parameters<
   typeof apiClient.api.summary.stairs.$post
 >[0]["json"];
 
-export function SummaryFormStairs({ user, page, pageStatus }: Props) {
+export function SummaryFormStairs({
+  user,
+  page,
+  pageStatus,
+  afterSubmit,
+}: Props) {
   const pageSlug = page.slug;
   const isLast = isLastPage(page);
   const { portals, addPortal, removePortals } = usePortal();
@@ -479,7 +485,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
             ref={ref}
           />
 
-          <div>
+          <div className="flex items-center justify-between">
             <Button
               type="submit"
               disabled={isPending || !isSummaryReady}
@@ -491,6 +497,8 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
                 Submit
               </span>
             </Button>
+
+            {afterSubmit}
           </div>
         </form>
       </div>

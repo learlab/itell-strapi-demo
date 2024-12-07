@@ -17,19 +17,19 @@ export async function SummaryCount({ pageSlug }: Props) {
 
   return (
     <Link
-      className="text-pretty text-sm font-medium underline-offset-4 hover:underline xl:text-base"
+      className="text-sm text-muted-foreground underline-offset-4 hover:underline xl:text-base"
       href="/dashboard/summaries"
       aria-label="past summary submissions for this page"
     >
-      <p>
-        You have written {pluralize("summary", summaryCount, true)} for this
-        section.
-        {summaryCount > 0 && (
-          <span className="ml-1">
+      <span>
+        {pluralize("summary", summaryCount, true)} were written
+        {summaryCount > 0 ? (
+          <span>
+            {", "}
             {data.passed} passed, {data.failed} failed.
           </span>
-        )}
-      </p>
+        ) : null}
+      </span>
     </Link>
   );
 }

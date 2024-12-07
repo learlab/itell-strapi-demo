@@ -86,7 +86,7 @@ export function Pager({ userPageSlug, pageIndex }: Props) {
   });
   return (
     <nav
-      className={cn("pager mt-5 flex flex-row items-center justify-between", {
+      className={cn("pager flex flex-row items-center justify-between", {
         "justify-end": next && !prev,
         "justify-start": prev && !next,
       })}

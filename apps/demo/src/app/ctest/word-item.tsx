@@ -1,10 +1,4 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "@itell/ui/input";
 import { cn } from "@itell/utils";
 
@@ -26,8 +20,13 @@ export function WordItem({
   isTarget = false,
   className,
 }: Props) {
-  const letters = word.split("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  if (!isTarget) {
+    return <span>{word}</span>;
+  }
+
+  const letters = word.split("");
 
   const focusInput = (index: number) => {
     if (inputRefs.current[index]) {
@@ -53,12 +52,9 @@ export function WordItem({
     inputRefs.current[index] = el;
   };
 
-  if (!isTarget) {
-    return <span>{word}</span>;
-  }
-
-  const startMaskIdx =
-    typeof showLetter === "function" ? showLetter(word) : showLetter;
+  // TODO: figure out if we should support showLetter to be a function
+  // if we do if might need to be a server action to be passed to here
+  const startMaskIdx = typeof showLetter === "function" ? 0 : showLetter;
 
   return (
     <fieldset
@@ -114,10 +110,12 @@ function LetterInput({ letter, onNext, onPrev, ref }: LetterInputProps) {
     if (e.key == "ArrowLeft") {
       e.preventDefault();
       onPrev?.();
+      return;
     }
     if (e.key === "ArrowRight") {
       e.preventDefault();
       onNext?.();
+      return;
     }
 
     if (e.key === "Backspace") {
@@ -130,6 +128,7 @@ function LetterInput({ letter, onNext, onPrev, ref }: LetterInputProps) {
         e.currentTarget.value = "";
         setIsCorrect(undefined);
       }
+      return;
     }
   };
 

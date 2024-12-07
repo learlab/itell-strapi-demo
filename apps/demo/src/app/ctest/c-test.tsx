@@ -8,7 +8,7 @@ import { WordItem } from "./word-item";
 import type { ShowLetter } from "./word-item";
 
 interface Props {
-  text: string;
+  paragraphs: string[];
   // number of revealed letters of each word,  0 = cloze test, 2 = c-test
   showLetter?: ShowLetter;
 }
@@ -25,10 +25,11 @@ type TestResult = {
   data: Array<TestResultDataItem>;
 };
 
-export const CTest = ({ text, showLetter = 0 }: Props) => {
+export const CTest = ({ paragraphs, showLetter = 0 }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
-  const paragraphs = splitSentences(text);
   const [result, setResult] = useState<TestResult | null>(null);
+
+  if (paragraphs.length < 1) return <p>not enough paragraphs</p>;
 
   const handleSubmit = (e: FormEvent) => {
     if (!formRef.current) return;
@@ -81,8 +82,6 @@ export const CTest = ({ text, showLetter = 0 }: Props) => {
     formRef.current?.reset();
   };
 
-  if (paragraphs.length < 1) return <p>not enough paragraphs</p>;
-
   const { firstSentence, rest: firstParagraphRest } = splitFirstSentence(
     paragraphs[0]
   );
@@ -100,19 +99,21 @@ export const CTest = ({ text, showLetter = 0 }: Props) => {
               return (
                 <div key={pIndex}>
                   {firstSentence &&
-                    splitWords(firstSentence, true).map((wordObj, wIndex) => (
-                      <WordItem
-                        key={`first-${wordObj.text}-${wIndex}`}
-                        word={wordObj.text}
-                        showLetter={showLetter}
-                        isTarget={wordObj.isTarget}
-                      />
-                    ))}
-                  {firstParagraphRest &&
-                    splitWords(firstParagraphRest, false).map(
+                    splitWords({ text: paragraph, shouldTarget: false }).map(
                       (wordObj, wIndex) => (
                         <WordItem
-                          key={`first--${wIndex}`}
+                          key={`${pIndex}-${wIndex}`}
+                          word={wordObj.text}
+                          showLetter={showLetter}
+                          isTarget={wordObj.isTarget}
+                        />
+                      )
+                    )}
+                  {firstParagraphRest &&
+                    splitWords({ text: paragraph, shouldTarget: true }).map(
+                      (wordObj, wIndex) => (
+                        <WordItem
+                          key={`${pIndex}-${wIndex}`}
                           word={wordObj.text}
                           showLetter={showLetter}
                           isTarget={wordObj.isTarget}
@@ -125,14 +126,16 @@ export const CTest = ({ text, showLetter = 0 }: Props) => {
 
             return (
               <div key={pIndex}>
-                {splitWords(paragraph, false).map((wordObj, wIndex) => (
-                  <WordItem
-                    key={`${pIndex}-${wIndex}`}
-                    word={wordObj.text}
-                    showLetter={showLetter}
-                    isTarget={wordObj.isTarget}
-                  />
-                ))}
+                {splitWords({ text: paragraph, shouldTarget: true }).map(
+                  (wordObj, wIndex) => (
+                    <WordItem
+                      key={`${pIndex}-${wIndex}`}
+                      word={wordObj.text}
+                      showLetter={showLetter}
+                      isTarget={wordObj.isTarget}
+                    />
+                  )
+                )}
               </div>
             );
           })}
@@ -155,7 +158,13 @@ export const CTest = ({ text, showLetter = 0 }: Props) => {
   );
 };
 
-const splitWords = (text: string, isFirstSentence: boolean) => {
+const splitWords = ({
+  text,
+  shouldTarget,
+}: {
+  text: string;
+  shouldTarget: boolean;
+}) => {
   const words: { text: string; isTarget: boolean }[] = [];
   let wordCounter = 0;
 
@@ -168,18 +177,15 @@ const splitWords = (text: string, isFirstSentence: boolean) => {
       return;
     }
     if (part.trim()) {
-      const shouldTarget =
-        !isFirstSentence && isContentWord(part) && wordCounter % 2 === 1;
-      words.push({ text: part, isTarget: shouldTarget });
+      words.push({
+        text: part,
+        isTarget: shouldTarget && isContentWord(part) && wordCounter % 2 === 1,
+      });
       wordCounter++;
     }
   });
 
   return words;
-};
-
-const splitSentences = (text: string): string[] => {
-  return text.split(/\n\s*\n/).filter(Boolean);
 };
 
 const isContentWord = (word: string): boolean => {

@@ -4,7 +4,7 @@ import { guides } from "#content";
 
 import { HtmlRenderer } from "@/components/html-renderer";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { Condition } from "@/lib/constants";
+import { Condition, SUMMARY_DESCRIPTION_ID } from "@/lib/constants";
 
 export function SummaryDescription({ condition }: { condition: string }) {
   const guideCondition =
@@ -17,7 +17,7 @@ export function SummaryDescription({ condition }: { condition: string }) {
   if (!guide) return null;
 
   return (
-    <section aria-labelledby="summary-guide">
+    <section id={SUMMARY_DESCRIPTION_ID} aria-labelledby="summary-guide">
       <h2 id="summary-guide" className="sr-only">
         summary writing guide
       </h2>

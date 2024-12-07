@@ -20,12 +20,7 @@ import {
 } from "@itell/ui/tooltip";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import {
-  Flame,
-  FlaskConicalIcon,
-  KeyRoundIcon,
-  PencilIcon,
-} from "lucide-react";
+import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useServerAction } from "zsa-react";
@@ -192,7 +187,7 @@ export function QuestionBoxStairs({
     return (
       <QuestionBoxShell>
         <QuestionBoxContent>
-          <p className="my-2">
+          <p className="my-2 text-[0.9em] font-light">
             You can skip the following question or click to reveal.
           </p>
           <div>

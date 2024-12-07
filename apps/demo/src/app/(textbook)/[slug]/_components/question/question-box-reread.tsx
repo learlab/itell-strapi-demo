@@ -116,7 +116,7 @@ export function QuestionBoxReread({ question, chunkSlug, pageSlug }: Props) {
     return (
       <QuestionBoxShell>
         <QuestionBoxContent>
-          <p className="my-2">
+          <p className="my-2 text-[0.9em] font-light">
             You can skip the following question or click to reveal.
           </p>
           <div>

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Elements } from "@itell/constants";
 import { PageTitle } from "@itell/ui/page-title";
@@ -30,7 +31,6 @@ import { getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
-import { cookies } from "next/headers";
 
 const ResourceLoader = dynamic(() =>
   import("./resource-loader").then((mod) => mod.ResourceLoader)
@@ -85,13 +85,13 @@ export default async function Page(props: {
               (await cookies()).get(PAGE_HEADER_PIN_COOKIE)?.value === "true"
             }
           />
-          <div className="mt-4 col-span-1 col-start-2">
+          <div className="col-span-1 col-start-2 mt-4 flex flex-col gap-4">
             <PageTitle>{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />
             <SelectionPopover user={user} pageSlug={pageSlug} />
 
             {page.last_modified ? (
-              <p className="mt-4 text-right text-sm text-muted-foreground">
+              <p className="text-right text-sm text-muted-foreground">
                 <span>Last updated at </span>
                 <time>{page.last_modified}</time>
               </p>

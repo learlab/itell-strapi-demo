@@ -8,12 +8,12 @@ import { Skeleton } from "@itell/ui/skeleton";
 import { TextbookToc } from "@textbook/textbook-toc";
 
 import { lucia } from "@/lib/auth/lucia";
+import { PAGE_HEADER_PIN_COOKIE } from "@/lib/constants";
 import { getPageStatus } from "@/lib/page-status";
 import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
-import { PAGE_HEADER_PIN_COOKIE } from "@/lib/constants";
 
 const getUser = cache(async () => {
   const sessionId =
@@ -70,27 +70,13 @@ export default async function Loading() {
           })}
           pin={(await cookies()).get(PAGE_HEADER_PIN_COOKIE)?.value === "true"}
         />
-        <div className="mt-4 col-span-1 col-start-2">
+        <div className="col-span-1 col-start-2 mt-4 flex flex-col gap-4">
           <PageTitle>{page.title}</PageTitle>
           {arr.map((i) => (
-            <Skeleton className="mb-4 h-28 w-full" key={i} />
+            <Skeleton className="h-28 w-full" key={i} />
           ))}
         </div>
       </PageContentWrapper>
-
-      <aside id={Elements.PAGE_NAV} aria-label="table of contents">
-        <div className="sticky top-20 -mt-10 space-y-4 px-1 py-6">
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full ring-2 ring-blue-400" />
-            <h3 className="font-semibold">On this page</h3>
-          </div>
-          <ul className="space-y-2">
-            {arr.slice(0, 5).map((i) => (
-              <Skeleton className="h-7 w-36" key={i} />
-            ))}
-          </ul>
-        </div>
-      </aside>
     </TextbookWrapper>
   );
 }

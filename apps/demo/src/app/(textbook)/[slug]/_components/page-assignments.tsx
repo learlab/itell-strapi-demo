@@ -1,4 +1,7 @@
+import { constants } from "fs/promises";
+
 import { Suspense } from "react";
+import Link from "next/link";
 import { Elements } from "@itell/constants";
 import { Errorbox } from "@itell/ui/callout";
 import {
@@ -10,7 +13,7 @@ import {
 } from "@itell/ui/card";
 import { type User } from "lucia";
 
-import { Condition } from "@/lib/constants";
+import { Condition, SUMMARY_DESCRIPTION_ID } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { getPageData } from "@/lib/pages/pages.server";
 import { FinishedPrompt } from "./finished-prompt";
@@ -65,9 +68,12 @@ export function PageAssignments({
           <CardTitle className="flex items-center gap-2">Summary</CardTitle>
           <CardDescription>
             You can unlock the next page by submitting{" "}
-            <span className="font-bold underline decoration-warning decoration-dashed decoration-4 underline-offset-4">
+            <Link
+              href={`#${SUMMARY_DESCRIPTION_ID}`}
+              className="font-semibold text-info underline underline-offset-4"
+            >
               a good summary
-            </span>{" "}
+            </Link>{" "}
             of this page
           </CardDescription>
         </CardHeader>
@@ -94,15 +100,15 @@ export function PageAssignments({
               user={user}
               page={page}
               pageStatus={pageStatus}
+              afterSubmit={
+                <Suspense fallback={<SummaryCount.Skeleton />}>
+                  <SummaryCount pageSlug={pageSlug} />
+                </Suspense>
+              }
             />
           ) : null}
           {condition !== Condition.SIMPLE ? (
-            <>
-              <Suspense fallback={<SummaryCount.Skeleton />}>
-                <SummaryCount pageSlug={pageSlug} />
-              </Suspense>
-              <SummaryDescription condition={condition} />
-            </>
+            <SummaryDescription condition={condition} />
           ) : null}
         </CardContent>
       </Card>
