@@ -18,7 +18,7 @@ const ConsentPage: React.FC = () => {
     event.preventDefault();
     if (consentGiven) {
       toast.success("Consent given. Thank you!");
-      redirect("/intake1")
+      redirect("/intake")
     } else {
       toast.warning("Consent not given. You will be redirected to the text anyway.");
     }
