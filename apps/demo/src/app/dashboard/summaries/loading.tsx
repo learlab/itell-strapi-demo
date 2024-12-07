@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@itell/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { Skeleton } from "@itell/ui/skeleton";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { SummaryItemSkeleton } from "@summaries/summary-list";
@@ -14,14 +14,16 @@ export default function () {
       />
       <Card>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <p className="text-center text-lg font-semibold">
-              Summary Submission History
-            </p>
-            <div className="flex items-center justify-center">
+          <Card>
+            <CardHeader className="items-center pb-0">
+              <CardTitle className="text-center text-lg font-semibold">
+                Summary Submission History
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-center pb-2">
               <Skeleton className="aspect-square h-[300px]" />
-            </div>
-          </div>
+            </CardContent>
+          </Card>
           <div className="flex flex-col items-center justify-between p-2 sm:flex-row">
             <Skeleton className="h-12 w-[300px]" />
             <Skeleton className="h-12 w-[150px]" />

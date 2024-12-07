@@ -46,14 +46,14 @@ export function SummaryChart({
   chartTitle = "Summary Submission History",
 }: Props) {
   return (
-    <Card className="flex flex-col border-none">
+    <Card>
       <CardHeader className="items-center pb-0">
         <CardTitle>{chartTitle}</CardTitle>
         <CardDescription>
           {startDate}- {endDate}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="pb-0">
         <p className="sr-only" id="summary-chart-title">
           A pie chart of user&apos;s summaries,{" "}
           {data.find((d) => d.name === "passed")?.value} passed,{" "}
