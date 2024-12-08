@@ -1,5 +1,3 @@
-import { constants } from "fs/promises";
-
 import { Suspense } from "react";
 import Link from "next/link";
 import { Elements } from "@itell/constants";
@@ -15,7 +13,7 @@ import { type User } from "lucia";
 
 import { Condition, SUMMARY_DESCRIPTION_ID } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
-import { getPageData } from "@/lib/pages/pages.server";
+import { getPage } from "@/lib/pages/pages.server";
 import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
@@ -38,7 +36,7 @@ export function PageAssignments({
   user,
   condition,
 }: Props) {
-  const page = getPageData(pageSlug);
+  const page = getPage(pageSlug);
   if (!page) {
     return <Errorbox>failed to load assignments</Errorbox>;
   }

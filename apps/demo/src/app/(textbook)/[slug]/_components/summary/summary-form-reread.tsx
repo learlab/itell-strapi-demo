@@ -20,6 +20,7 @@ import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
+import { Page } from "#content";
 import { type User } from "lucia";
 import { SendHorizontalIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -29,7 +30,6 @@ import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import {
-  useChunks,
   useQuestionStore,
   useQuizStore,
 } from "@/components/provider/page-provider";
@@ -46,12 +46,11 @@ import {
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
-import type { PageData } from "@/lib/pages";
 import type { SummaryResponse } from "@itell/core/summary";
 
 type Props = {
   user: User;
-  page: PageData;
+  page: Page;
   pageStatus: PageStatus;
 };
 
@@ -62,15 +61,13 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
   const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
   const [finished, setFinished] = useState(pageStatus.unlocked);
   const questionStore = useQuestionStore();
-  const chunks = useChunks();
   const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
   const isMobile = useIsMobile();
 
   const randomChunkSlug = useMemo(() => {
-    // skip first chunk, which is typically learning objectives
-    const validChunks = chunks.slice(1);
-    return validChunks[Math.floor(Math.random() * validChunks.length)];
-  }, []);
+    const validChunks = page.chunks.filter((chunk) => chunk.type !== "plain");
+    return validChunks[Math.floor(Math.random() * validChunks.length)].slug;
+  }, [page]);
 
   const { addPortal, removePortals, portals } = usePortal();
   const portalId = useRef<string | null>(null);
@@ -223,10 +220,10 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         document.getElementById(Elements.SUMMARY_INPUT)?.focus();
       },
     });
-  }, []);
+  }, [addPortal, pageSlug, randomChunkSlug, removePortals]);
 
   useEffect(() => {
-    if (isError) {
+    if (error) {
       finishStage("Analyzing");
       clearStages();
 
@@ -236,7 +233,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         error: error?.cause,
       });
     }
-  }, [isError]);
+  }, [clearStages, error, finishStage]);
 
   return (
     <>
