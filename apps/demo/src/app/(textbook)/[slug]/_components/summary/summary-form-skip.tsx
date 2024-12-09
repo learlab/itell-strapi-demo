@@ -95,8 +95,16 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
 
   if (!isSummaryReady) {
     return (
-      <div className="mx-auto max-w-2xl">
-        <p>Finish the entire page to move on.</p>
+      <div className="flex flex-col gap-2">
+        <h3 className="text-2xl font-extrabold">You are on a hot streak</h3>
+        <div>
+          <p>
+            Finish the page first to unlock the summary section.
+          </p>
+          <p>
+            You can skip writing a summary for this page once you have completed it.
+          </p>
+        </div>
       </div>
     );
   }
@@ -112,6 +120,10 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
             <p>
               You can skip writing a summary on a page you haven&apos;t
               completed yet.
+            </p>
+            <p>
+              Streak count:{" "}
+              <span className="font-semibold text-warning">{streak}</span>{" "}
             </p>
           </>
         ) : (
