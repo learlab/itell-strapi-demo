@@ -112,6 +112,9 @@ importers:
       drizzle-zod:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.36.0(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(@types/react@19.0.1)(knex@3.1.0(pg@8.13.1))(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(zod@3.23.8)
+      emoji-blast:
+        specifier: ^0.10.2
+        version: 0.10.2
       es-toolkit:
         specifier: ^1.13.1
         version: 1.26.1
@@ -6462,7 +6465,7 @@ packages:
     hasBin: true
 
   addressparser@1.0.1:
-    resolution: {integrity: sha1-R6++GiqSYhkdtoOOT9HTm0CCF0Y=}
+    resolution: {integrity: sha512-aQX7AISOMM7HFE0iZ3+YnD07oIeJqWGVnJ+ZIKaBZAk03ftmVYVqsGas/rbXKR21n4D/hKCSHypvcyOkds/xzg==}
 
   agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -6886,7 +6889,7 @@ packages:
     hasBin: true
 
   buffer-equal-constant-time@1.0.1:
-    resolution: {integrity: sha1-+OcRMvf/5uAaXJaXpMbz5I1cyBk=}
+    resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
@@ -6901,7 +6904,7 @@ packages:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
   buildmail@3.10.0:
-    resolution: {integrity: sha1-xoJtcW55RbtvaxQ0tTmF4CmgMVk=}
+    resolution: {integrity: sha512-6e5sDN/pl3en5Klqdfyir7LEIBiFr9oqZuvYaEyVwjxpIbBZN+98e0j87Fz2Ukl8ud32rbk9VGOZAnsOZ7pkaA==}
     deprecated: This project is unmaintained
 
   builtin-status-codes@3.0.0:
@@ -7309,7 +7312,7 @@ packages:
     resolution: {integrity: sha512-7CEBgcMjVmitjYo5q8JTJVra6X5mQ20uTThdK+0kR7UEaDrAWEQcRiBtWJzga4eRpP6afNwwLsX2SET2JhVB1Q==}
 
   concat-map@0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
   concordance@5.0.4:
     resolution: {integrity: sha512-OAcsnTEYu1ARJqWVGwf4zh4JDfHZEaSNlNccFmt8YjB2l/n19/PF2viLINHc57vO4FKIAFl2FWASIGZZWZ2Kxw==}
@@ -7777,7 +7780,7 @@ packages:
     hasBin: true
 
   dkim-signer@0.2.2:
-    resolution: {integrity: sha1-qoHsBx7u02IngbqpIgRNeADl8wg=}
+    resolution: {integrity: sha512-24OZ3cCA30UTRz+Plpg+ibfPq3h7tDtsJRg75Bo0pGakZePXcPBddY80bKi1Bi7Jsz7tL5Cw527mhCRDvNFgfg==}
 
   dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
@@ -7971,7 +7974,7 @@ packages:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
   ee-first@1.1.1:
-    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
+    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
   electron-to-chromium@1.5.50:
     resolution: {integrity: sha512-eMVObiUQ2LdgeO1F/ySTXsvqvxb6ZH2zPGaMYsWzRDdOddUa77tdmI0ltg+L16UpbWdhPmuF3wIQYyQq65WfZw==}
@@ -7995,6 +7998,10 @@ packages:
   emittery@0.12.1:
     resolution: {integrity: sha512-pYyW59MIZo0HxPFf+Vb3+gacUu0gxVS3TZwB2ClwkEZywgF9f9OJDoVmNLojTn0vKX3tO9LC+pdQEcLP4Oz/bQ==}
     engines: {node: '>=12'}
+
+  emoji-blast@0.10.2:
+    resolution: {integrity: sha512-3VrqajirPj8QeQxQeMHUfD+03H64XTEVPGRjxP5rjDCVEC5NGF3FgutMpU5scIOhcuzG23Qvs32k0Pnj+hRzGA==}
+    engines: {node: '>=18'}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -8686,7 +8693,7 @@ packages:
     resolution: {integrity: sha512-5FvPJP/70WkIprlUZ33bm4UAaFdjcLkJLpWft1BeZKqwR0uhhNGoKwlUaPtVb4LxCSQ++erHapRak9kWGj+FCA==}
 
   github-from-package@0.0.0:
-    resolution: {integrity: sha1-l/tdlr/eiXMxPyDoKI75oWf6ZM4=}
+    resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
 
   github-slugger@2.0.0:
     resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
@@ -9796,7 +9803,7 @@ packages:
     engines: {node: '>= 4'}
 
   koa-range@0.3.0:
-    resolution: {integrity: sha1-NYjjSWRzqDmhvSZNKkKx2FvX/qw=}
+    resolution: {integrity: sha512-Ich3pCz6RhtbajYXRWjIl6O5wtrLs6kE3nkXc9XmaWe+MysJyZO7K4L3oce1Jpg/iMgCbj+5UCiMm/rqVtcDIg==}
     engines: {node: '>=7'}
 
   koa-send@5.0.1:
@@ -9841,7 +9848,7 @@ packages:
     engines: {node: '>= 0.8.0'}
 
   libbase64@0.1.0:
-    resolution: {integrity: sha1-YjUag5VjrF/1vSbxL2Dpgwu3UeY=}
+    resolution: {integrity: sha512-B91jifmFw1DKEqEWstSpg1PbtUbBzR4yQAPT86kCQXBtud1AJVA+Z6RSklSrqmKe4q2eiEufgnhqJKPgozzfIQ==}
 
   libmime@2.1.0:
     resolution: {integrity: sha512-4be2R6/jOasyPTw0BkpIZBVk2cElqjdIdS0PRPhbOCV4wWuL/ZcYYpN1BCTVB+6eIQ0uuAwp5hQTHFrM5Joa8w==}
@@ -9850,7 +9857,7 @@ packages:
     resolution: {integrity: sha512-ABr2f4O+K99sypmkF/yPz2aXxUFHEZzv+iUkxItCeKZWHHXdQPpDXd6rV1kBBwL4PserzLU09EIzJ2lxC9hPfQ==}
 
   libqp@1.1.0:
-    resolution: {integrity: sha1-9ebgatdLeU+1tbZpiL9yjvHe2+g=}
+    resolution: {integrity: sha512-4Rgfa0hZpG++t1Vi2IiqXG9Ad1ig4QTmtuZF946QJP4bPqOYC78ixUXgz5TW/wE7lNaNKlplSYTxQ+fR2KZ0EA==}
 
   liftoff@2.5.0:
     resolution: {integrity: sha512-01zfGFqfORP1CGmZZP2Zn51zsqz4RltDi0RDOhbGoLYdUT5Lw+I2gX6QdwXhPITF6hPOHEOp+At6/L24hIg9WQ==}
@@ -10034,7 +10041,7 @@ packages:
     engines: {node: '>= 12.0.0'}
 
   long-timeout@0.1.1:
-    resolution: {integrity: sha1-lyHXiLR+C8taJMLivuGg2lXatRQ=}
+    resolution: {integrity: sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==}
 
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
@@ -10124,7 +10131,7 @@ packages:
     engines: {node: '>=12'}
 
   mailcomposer@3.12.0:
-    resolution: {integrity: sha1-nF4RiKqOHGLsi4a9Q0aBArY56Pk=}
+    resolution: {integrity: sha512-zBeDoKUTNI8IAsazoMQFt3eVSVRtDtgrvBjBVdBjxDEX+5KLlKtEFCrBXnxPhs8aTYufUS1SmbFnGpjHS53deg==}
     deprecated: This project is unmaintained
 
   make-dir@2.1.0:
@@ -10189,7 +10196,7 @@ packages:
     resolution: {integrity: sha512-z2Rm/LzEE1wzwTSDrI+FlPEveAAbgdAdPhdWarq/ZGJrGW/uCQbKAnhoCsE4hAbc3SEym26+W2z/VQB0cQiA9Q==}
 
   markdown-it-sup@1.0.0:
-    resolution: {integrity: sha1-y5yf+RpSVawI8/09YyhuFd8KH8M=}
+    resolution: {integrity: sha512-E32m0nV9iyhRR7CrhnzL5msqic7rL1juWre6TQNxsnApg7Uf+F97JOKxUijg5YwXz86lZ0mqfOnutoryyNdntQ==}
 
   markdown-it@12.3.2:
     resolution: {integrity: sha512-TchMembfxfNVpHkbtriWltGWc+m3xszaRD0CZup7GFFhzIgQqxIfn3eGj1yZpfuflzPvfkt611B2Q/Bsk1YnGg==}
@@ -10279,7 +10286,7 @@ packages:
     resolution: {integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==}
 
   media-typer@0.3.0:
-    resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}
+    resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
 
   memfs-browser@3.5.10302:
@@ -10603,7 +10610,7 @@ packages:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
   nano-time@1.0.0:
-    resolution: {integrity: sha1-sFVPaa2J4i0JB/ehKwmTpdlhN+8=}
+    resolution: {integrity: sha512-flnngywOoQ0lLQOTRNexn2gGSNuM9bKj9RZAWSzhQ+UJYaAFG9bac4DW9VHjUAzrOaIcajHybCTHe/bkvozQqA==}
 
   nanoclone@0.2.1:
     resolution: {integrity: sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA==}
@@ -10754,10 +10761,10 @@ packages:
     engines: {node: '>=10'}
 
   nodemailer-fetch@1.6.0:
-    resolution: {integrity: sha1-ecSQihwPXzdbc/6IjamCj23JY6Q=}
+    resolution: {integrity: sha512-P7S5CEVGAmDrrpn351aXOLYs1R/7fD5NamfMCHyi6WIkbjS2eeZUB/TkuvpOQr0bvRZicVqo59+8wbhR3yrJbQ==}
 
   nodemailer-shared@1.1.0:
-    resolution: {integrity: sha1-z1mU4v0mjQD1zw+nZ6CBae2wfsA=}
+    resolution: {integrity: sha512-68xW5LSyPWv8R0GLm6veAvm7E+XFXkVgvE3FW0FGxNMMZqMkPFeGDVALfR1DPdSfcoO36PnW7q5AAOgFImEZGg==}
 
   nodemon@3.0.2:
     resolution: {integrity: sha512-9qIN2LNTrEzpOPBaWHTm4Asy1LxXLSickZStAQ4IZe7zsoIpD/A7LWxhZV3t4Zu352uBcqVnRsDXSMR2Sc3lTA==}
@@ -11064,7 +11071,7 @@ packages:
     engines: {node: '>=0.10.0'}
 
   passport-local@1.0.0:
-    resolution: {integrity: sha1-H+YyaMkudWBmJkN+O5BmYsFbpu4=}
+    resolution: {integrity: sha512-9wCE6qKznvf9mQYYbgJ3sVOHmCWoUNMVFoZzNoznmISbhnNNPhN9xfY3sLmScHMetEJeoY7CXwfhCe7argfQow==}
     engines: {node: '>= 0.4.0'}
 
   passport-strategy@1.0.0:
@@ -11139,7 +11146,7 @@ packages:
     engines: {node: '>= 14.16'}
 
   pause@0.0.1:
-    resolution: {integrity: sha1-HUCLP9t2kjuVQ9lvtMnf1TXZy10=}
+    resolution: {integrity: sha512-KG8UEiEVkR3wGEb4m5yZkVCzigAD+cVEJck2CzYZO37ZGJfctvVptVO192MwrtPhzONn6go8ylnOdMhKqi4nfg==}
 
   pbkdf2@3.1.2:
     resolution: {integrity: sha512-iuh7L6jA7JEGu2WxDwtQP1ddOpaJNC4KlDEFfdQajSGgGPNi4OyDc2R7QnbY2bR9QjBVGwgvTdNJZoE7RaxUMA==}
@@ -22240,6 +22247,8 @@ snapshots:
   embla-carousel@8.0.0-rc17: {}
 
   emittery@0.12.1: {}
+
+  emoji-blast@0.10.2: {}
 
   emoji-regex@8.0.0: {}
 
