@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "types": ["react-dom/experimental"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "allowArbitraryExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@textbook/*": ["./src/app/(textbook)/[slug]/_components/*"],
+      "@dashboard/*": ["./src/app/dashboard/_components/*"],
+      "@summaries/*": ["./src/app/dashboard/summaries/_components/*"],
+      "@settings/*": ["./src/app/dashboard/settings/_components/*"],
+      "@questions/*": ["./src/app/dashboard/questions/_components/*"],
+      "@class/*": ["src/app/dashboard/teacher/(home)/_components/*"],
+      "@auth/*": ["./src/app/auth/_components/*"],
+      "@summary/*": ["./src/app/summary/[id]/_components/*"],
+      "react": ["./node_modules/@types/react"],
+      "#content": [".velite"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true,
+    "module": "esnext"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".velite",
+    ".next/types/**/*.ts",
+    "src/env.mjs",
+    "tailwind.config.ts",
+    ".eslintrc.js",
+    "next.config.mjs"
+  ],
+  "exclude": ["node_modules", "scripts"]
+}
