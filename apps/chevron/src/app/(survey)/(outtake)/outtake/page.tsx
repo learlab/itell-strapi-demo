@@ -4,8 +4,13 @@ import { SurveyProvider } from "@/components/survey-forms/survey-context";
 import { validateAnswers } from '@/components/survey-forms/survey-validation';
 import Survey from "./survey";
 import { type Answer } from "@/components/survey-forms/types";
+import { useServerAction } from "zsa-react";
+import { createSurveyAction } from "@/actions/surveys";
+import { useRouter } from 'next/navigation';
 
 export default function OuttakeSurveyPage() {
+  const { isPending, execute, isError, error } = useServerAction(createSurveyAction);
+  const router = useRouter();
   // Load and validate saved progress
   const savedProgress = (() => {
     if (typeof window === 'undefined') return [];
@@ -23,32 +28,18 @@ export default function OuttakeSurveyPage() {
   })();
 
   const handleSurveyComplete = async (answers: Answer[]) => {
-    try {
-      const response = await fetch('/api/survey/outtake', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ answers }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit survey');
-      }
-
-      // Clear saved progress after successful submission
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('outtake-survey-progress');
-      }
-      
-      // Handle successful submission here
-      
-      
-    } catch (error) {
-      console.error('Error submitting survey:', error);
-      throw error;
+    const [_, err] = await execute({ surveyType:"outtake", data: answers});  
+    router.push('/');
+    if (isError) {
+      console.log(err)
+      throw new Error('Failed to submit survey');
     }
-  };
+    // Clear saved progress after successful submission
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('outtake-survey-progress');
+    }
+    
+  } 
 
   const handleSaveProgress = async (answers: Answer[]) => {
     try {

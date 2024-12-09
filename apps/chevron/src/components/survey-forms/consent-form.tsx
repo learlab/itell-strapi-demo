@@ -22,7 +22,7 @@ const ConsentForm: React.FC = () => {
       const [_, err] = await execute({ consent: consent });
       if (consent) {
         toast.success("Consent given. Thank you!");
-        router.push("/intake1");
+        router.push("/intake");
       } else {
         toast.warning("Consent not given. You will be redirected to the text anyway.");
         router.push("/")
