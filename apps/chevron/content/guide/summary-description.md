@@ -16,8 +16,6 @@ A successful summary will
 
 - Not be plagiarized
 
-- Use appropriate language
-
 </i-accordion-item>
 
 <i-accordion-item value='second' title = "Scoring details">
@@ -25,10 +23,6 @@ A successful summary will
 Your summary will be automatically score based on the following attributes
 
 - content which will include main points, details to support those main points, and general organization of summary
-
-- language which will evaluate the lexical and syntactic structures of your summary
-
-- paraphrasing which will include appropriate paraphrasing of text and using objective language
 
 - key words which will include the use of important terms and phases from the text
 

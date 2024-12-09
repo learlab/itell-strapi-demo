@@ -87,7 +87,6 @@ A summary writing activity is located at the bottom of each page. After you answ
 Your summary will be evaluated according to four metrics:
 
 Content: Whether your summary shows good coverage of the page's main points and provides details to support those points.
-Language: Whether your summary shows effective and varied use of sentence structures and vocabulary.
 Language Borrowing: Whether you have written the summary in your own words or borrowed language from the text.
 Relevance: Whether the topics and ideas discussed in your summary are sufficiently relevant to the content of the page.
 
