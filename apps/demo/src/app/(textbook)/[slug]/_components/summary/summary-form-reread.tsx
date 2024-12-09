@@ -65,7 +65,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
   const isMobile = useIsMobile();
 
   const randomChunkSlug = useMemo(() => {
-    const validChunks = page.chunks.filter((chunk) => chunk.type !== "plain");
+    const validChunks = page.chunks.filter((chunk) => chunk.type === "regular");
     return validChunks[Math.floor(Math.random() * validChunks.length)].slug;
   }, [page]);
 
