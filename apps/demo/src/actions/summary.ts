@@ -2,7 +2,7 @@
 
 import { cache } from "react";
 import { revalidateTag } from "next/cache";
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, sql, isNotNull } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
@@ -19,6 +19,7 @@ import {
   EventType,
   isProduction,
   PAGE_SUMMARY_THRESHOLD,
+  EXCELLENT_SUMMARY_THRESHOLD,
   Tags,
 } from "@/lib/constants";
 import { isLastPage } from "@/lib/pages";
@@ -43,7 +44,9 @@ export const createSummaryAction = authedProcedure
     })
   )
   .output(
-    z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() })
+    z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean(), 
+      isExcellent: z.boolean()
+     })
   )
   .handler(async ({ input, ctx }) => {
     let shouldRevalidate = false;
@@ -64,6 +67,33 @@ export const createSummaryAction = authedProcedure
           );
         canProceed = record.count + 1 >= PAGE_SUMMARY_THRESHOLD;
       }
+
+      // Evaluate whether a summary is an "Excellent" summary (> EXCELLENT_SUMMARY_THRESHOLD)
+      // get full summary count and then the last entry in the top N summaries
+      // only use summaries with contentScore
+      const [fullSummaryCount] = await tx
+          .select({ count: count() })
+          .from(summaries)
+          .where(isNotNull(summaries.contentScore))
+      
+      const summaryTotal = fullSummaryCount?.count ?? 0;
+
+      const topSummaryCount = Math.ceil(summaryTotal * EXCELLENT_SUMMARY_THRESHOLD);
+      
+      const topSummaries = await tx
+        .select({
+          content: summaries.contentScore,
+        })
+        .from(summaries)
+        .where(isNotNull(summaries.contentScore))
+        .orderBy(desc(summaries.contentScore))
+        .limit(topSummaryCount);
+      
+      const lastEntryInTopSummary = topSummaries[topSummaries.length - 1];
+      
+      const scoreToBeat = lastEntryInTopSummary?.content ?? Infinity;
+
+      const isExcellent = (input.summary.contentScore ?? -Infinity) > scoreToBeat;
 
       // create summary record
       const { summaryId } = (
@@ -106,6 +136,7 @@ export const createSummaryAction = authedProcedure
           ctx.user,
           {
             isSummaryPassed: input.summary.isPassed,
+            isExcellent: isExcellent,
           }
         );
 
@@ -127,6 +158,7 @@ export const createSummaryAction = authedProcedure
           ? nextPageSlug
           : ctx.user.pageSlug,
         canProceed,
+        isExcellent,
       };
     });
 

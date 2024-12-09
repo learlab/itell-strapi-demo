@@ -27,7 +27,6 @@ import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-
 import { createEventAction } from "@/actions/event";
 import {
   createSummaryAction,
@@ -71,6 +70,7 @@ import {
 import { NextPageButton } from "./summary-next-page-button";
 import type { StairsQuestion } from "@/lib/store/summary-store";
 import type { SummaryResponse } from "@itell/core/summary";
+import { rocketBlast } from "@/lib/animations";
 
 interface Props {
   user: User;
@@ -263,6 +263,14 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
 
         clearKeystroke();
         finishStage("Saving");
+
+        // for rocket blast animation
+        const blastYPos = innerHeight - 10;
+
+        if (data.isExcellent) {
+          console.log("Excellent summary submitted");
+          rocketBlast(blastYPos);
+        }
 
         if (data.canProceed) {
           if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {

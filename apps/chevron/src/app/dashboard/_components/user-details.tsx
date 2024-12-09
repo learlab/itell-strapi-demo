@@ -102,7 +102,7 @@ export async function UserDetails({ classId, pageSlug }: Props) {
       ),
       otherScaled: 1,
       description:
-        "Total number of summaries that scored well in both content score and language score",
+        "Total number of summaries that scored well in content score",
     },
     contentScore: {
       label: "Content Score",
