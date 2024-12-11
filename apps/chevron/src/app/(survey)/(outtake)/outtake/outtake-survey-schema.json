@@ -406,11 +406,11 @@
           "options": [
             {
               "text": "Very satisfied",
-              "value": "1"
+              "value": "5"
             },
             {
               "text": "Satisfied",
-              "value": "2"
+              "value": "4"
             },
             {
               "text": "Neutral",
@@ -418,11 +418,11 @@
             },
             {
               "text": "Unsatisfied",
-              "value": "4"
+              "value": "2"
             },
             {
               "text": "Very unsatisfied",
-              "value": "5"
+              "value": "1"
             }
           ],
           "required": true
@@ -434,19 +434,19 @@
           "options": [
             {
               "text": "Definitely YES",
-              "value": "1"
+              "value": "4"
             },
             {
               "text": "YES",
-              "value": "2"
-            },
-            {
-              "text": "NO",
               "value": "3"
             },
             {
+              "text": "NO",
+              "value": "2"
+            },
+            {
               "text": "Definitely NO",
-              "value": "4"
+              "value": "1"
             }
           ],
           "required": true

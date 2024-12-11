@@ -98,11 +98,11 @@
           "text": "How would you rate your comfort level in using technology?",
           "type": "single_choice",
           "options": [
-            { "text": "Very comfortable", "value": 1 },
-            { "text": "Comfortable", "value": 2 },
+            { "text": "Very comfortable", "value": 5 },
+            { "text": "Comfortable", "value": 4 },
             { "text": "Neutral", "value": 3 },
-            { "text": "Uncomfortable", "value": 4 },
-            { "text": "Very uncomfortable", "value": 5 }
+            { "text": "Uncomfortable", "value": 2 },
+            { "text": "Very uncomfortable", "value": 1 }
           ],
           "required": true
         },
@@ -124,11 +124,11 @@
           "text": "Overall, how satisfied or dissatisfied are you with the digital texts you have used?",
           "type": "single_choice",
           "options": [
-            { "text": "Extremely satisfied", "value": 1 },
-            { "text": "Somewhat satisfied", "value": 2 },
+            { "text": "Extremely satisfied", "value": 5 },
+            { "text": "Somewhat satisfied", "value": 4 },
             { "text": "Neither satisfied nor dissatisfied", "value": 3 },
-            { "text": "Somewhat dissatisfied", "value": 4 },
-            { "text": "Extremely dissatisfied", "value": 5 }
+            { "text": "Somewhat dissatisfied", "value": 2 },
+            { "text": "Extremely dissatisfied", "value": 1 }
           ],
           "required": true,
           "display_condition": {
