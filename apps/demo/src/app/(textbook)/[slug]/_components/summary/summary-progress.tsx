@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@itell/utils";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import { Spinner } from "@/components/spinner";
 import { type StageItem } from "@/lib/hooks/use-summary-stage";
