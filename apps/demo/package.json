@@ -64,7 +64,7 @@
     "react-textarea-autosize": "^8.5.3",
     "recharts": "^2.13.2",
     "server-only": "^0.0.1",
-    "sonner": "^1.2.0",
+    "sonner": "^1.7.1",
     "use-action-status": "^0.0.1",
     "use-immer": "^0.9.0",
     "velite": "^0.2.1",
