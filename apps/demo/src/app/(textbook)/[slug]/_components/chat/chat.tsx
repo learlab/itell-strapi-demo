@@ -98,8 +98,8 @@ export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
       <PopoverTrigger
         ref={triggerRef}
         className={cn(
-          "fixed bottom-12 right-8 z-30 border p-4 text-foreground",
-          isCompact ? "rounded-full" : "rounded-md bg-background"
+          "fixed bottom-12 right-8 z-30 border text-foreground",
+          isCompact ? "rounded-full p-4" : "rounded-md bg-background px-6 py-4"
         )}
       >
         <motion.div className="flex items-center gap-2" layout>
