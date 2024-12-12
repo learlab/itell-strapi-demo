@@ -1,2 +1,2 @@
-content/* merge=ours
+content/**/* merge=ours
 src/config/metadata.ts merge=ours

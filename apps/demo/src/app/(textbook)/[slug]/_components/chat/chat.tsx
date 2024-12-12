@@ -63,7 +63,10 @@ export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
         const isIntersecting = entries[0].isIntersecting;
         if (isIntersecting) {
           checkOverlap();
-          window.addEventListener("resize", checkOverlap);
+          window.addEventListener("resize", () => {
+            console.log("resize");
+            checkOverlap();
+          });
           window.addEventListener("scroll", checkOverlap);
         } else {
           window.removeEventListener("resize", checkOverlap);
@@ -98,8 +101,8 @@ export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
       <PopoverTrigger
         ref={triggerRef}
         className={cn(
-          "fixed bottom-12 right-8 z-30 border text-foreground",
-          isCompact ? "rounded-full p-4" : "rounded-md bg-background px-6 py-4"
+          "fixed bottom-12 right-8 z-30 border bg-background text-foreground",
+          isCompact ? "rounded-full p-4" : "rounded-md px-6 py-4"
         )}
       >
         <motion.div className="flex items-center gap-2" layout>
