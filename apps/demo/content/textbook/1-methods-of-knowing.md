@@ -50,8 +50,6 @@ title: 1. Methods of Knowing
 
 ## Learning Objectives {#Learning-Objectives-280pt .sr-only}
 
-from the rmp branch
-
 <i-callout variant="info" title="Learning Objectives">
 
 1\. Describe the 5 methods of acquiring knowledge. 
