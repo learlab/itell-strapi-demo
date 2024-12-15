@@ -98,11 +98,11 @@
           "text": "How would you rate your comfort level in using technology?",
           "type": "single_choice",
           "options": [
-            { "text": "Very comfortable", "value": 1 },
-            { "text": "Comfortable", "value": 2 },
+            { "text": "Very comfortable", "value": 5 },
+            { "text": "Comfortable", "value": 4 },
             { "text": "Neutral", "value": 3 },
-            { "text": "Uncomfortable", "value": 4 },
-            { "text": "Very uncomfortable", "value": 5 }
+            { "text": "Uncomfortable", "value": 2 },
+            { "text": "Very uncomfortable", "value": 1 }
           ],
           "required": true
         },
@@ -124,11 +124,11 @@
           "text": "Overall, how satisfied or dissatisfied are you with the digital texts you have used?",
           "type": "single_choice",
           "options": [
-            { "text": "Extremely satisfied", "value": 1 },
-            { "text": "Somewhat satisfied", "value": 2 },
+            { "text": "Extremely satisfied", "value": 5 },
+            { "text": "Somewhat satisfied", "value": 4 },
             { "text": "Neither satisfied nor dissatisfied", "value": 3 },
-            { "text": "Somewhat dissatisfied", "value": 4 },
-            { "text": "Extremely dissatisfied", "value": 5 }
+            { "text": "Somewhat dissatisfied", "value": 2 },
+            { "text": "Extremely dissatisfied", "value": 1 }
           ],
           "required": true,
           "display_condition": {
@@ -754,6 +754,621 @@
           }
         }
       ]
+    },
+    {      
+      "id": "LexTALE",
+      "title": "Is this a real word in English?",
+      "questions": [
+        {
+          "id": "intro",
+          "text": "This is a short assessment of your English lexical knowledge \n You will be presented with 60 strings of letters, one string at a time. Please indicate whether you think that the letter string is a real word in English.",
+          "type": "single_choice",
+          "options": [
+            { "text": "I understand", "value": 0 }
+          ],
+          "required": false          
+        },
+        {
+          "id": "mensible",
+          "text": "mensible",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        },
+        {
+          "id": "scornful",
+          "text": "scornful",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        },        
+        {
+          "id": "stoutly",
+          "text": "stoutly",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "ablaze",
+          "text": "ablaze",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        },               
+        {
+          "id": "kermshaw",
+          "text": "kermshaw",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "moonlit",
+          "text": "moonlit",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "lofty",
+          "text": "lofty",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "hurricane",
+          "text": "hurricane",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "flaw",
+          "text": "flaw",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "alberation",
+          "text": "alberation",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "unkempt",
+          "text": "unkempt",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "breeding",
+          "text": "breeding",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "festivity",
+          "text": "festivity",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "screech",
+          "text": "screech",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "savoury",
+          "text": "savoury",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "plaudate",
+          "text": "plaudate",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "shin",
+          "text": "shin",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "fluid",
+          "text": "fluid",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "spaunch",
+          "text": "spaunch",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "allied",
+          "text": "allied",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "slain",
+          "text": "slain",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "recipient",
+          "text": "recipient",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "exprate",
+          "text": "exprate",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "eloquence",
+          "text": "eloquence",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        },
+        {
+          "id": "cleanliness",
+          "text": "cleanliness",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "dispatch",
+          "text": "dispatch",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "rebondicate",
+          "text": "rebondicate",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "ingenious",
+          "text": "ingenious",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "bewitch",
+          "text": "bewitch",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "skave",
+          "text": "skave",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "tangentially",
+          "text": "tangentially",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "kilp",
+          "text": "kilp",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "interfate",
+          "text": "interfate",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "hasty",
+          "text": "hasty",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "lengthy",
+          "text": "lengthy",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "fray",
+          "text": "fray",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "crumper",
+          "text": "crumper",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "upkeep",
+          "text": "upkeep",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "majestic",
+          "text": "majestic",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "magrity",
+          "text": "magrity",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "nourishment",
+          "text": "nourishment",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "abergy",
+          "text": "abergy",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "proom",
+          "text": "proom",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "turmoil",
+          "text": "turmoil",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "carbohydrate",
+          "text": "carbohydrate",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "scholar",
+          "text": "scholar",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "turtle",
+          "text": "turtle",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "fellick",
+          "text": "fellick",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "destription",
+          "text": "destription",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "cylinder",
+          "text": "cylinder",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "censorship",
+          "text": "censorship",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "celestial",
+          "text": "celestial",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "rascal",
+          "text": "rascal",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "purrage",
+          "text": "purrage",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        },
+        {
+          "id": "pulsh",
+          "text": "pulsh",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "muddy",
+          "text": "muddy",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "quirty",
+          "text": "quirty",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "podour",
+          "text": "podour",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "listless",
+          "text": "listless",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }, 
+        {
+          "id": "wrought",
+          "text": "wrought",
+          "type": "single_choice",
+          "options": [
+            { "text": "Yes", "value": 1 },
+            { "text": "No", "value": 0 }
+          ],
+          "required": true          
+        }
+      ]
     }
-  ]
+  ] 
 }

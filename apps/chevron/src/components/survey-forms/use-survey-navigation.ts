@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {shuffle} from "lodash";
 import type { Survey, Answer, Question } from "./types";
 
 interface UseSurveyNavigationProps {
@@ -11,8 +12,29 @@ export function useSurveyNavigation({ surveyData, onComplete }: UseSurveyNavigat
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showingInstruction, setShowingInstruction] = useState<string | null>("start");
+  const [randomizedSurvey, setRandomizedSurvey] = useState<Survey>(surveyData);
 
-  const section = surveyData.sections[currentSection];
+  useEffect(() => {
+    const processedSections = surveyData.sections.map(section => {
+      if (section.id === "LexTALE") {
+        // Keep the intro question first
+        const introQuestion = section.questions[0];
+        const remainingQuestions = shuffle([...section.questions.slice(1)]);
+        return {
+          ...section,
+          questions: [introQuestion, ...remainingQuestions]
+        };
+      }
+      return section;
+    });
+
+    setRandomizedSurvey({
+      ...surveyData,
+      sections: processedSections
+    });
+  }, [surveyData]);
+
+  const section = randomizedSurvey.sections[currentSection];
   const question = section?.questions[currentQuestion] as Question;
 
   const shouldDisplayQuestion = (q: Question): boolean => {
@@ -63,9 +85,9 @@ export function useSurveyNavigation({ surveyData, onComplete }: UseSurveyNavigat
 
     const isEndOfSurvey = (section: number, question: number): boolean => {
       return (
-        section >= surveyData.sections.length ||
-        (section === surveyData.sections.length - 1 &&
-          question >= surveyData.sections[section].questions.length)
+        section >= randomizedSurvey.sections.length ||
+        (section === randomizedSurvey.sections.length - 1 &&
+          question >= randomizedSurvey.sections[section].questions.length)
       );
     };
 
@@ -79,14 +101,14 @@ export function useSurveyNavigation({ surveyData, onComplete }: UseSurveyNavigat
     ) {
       if (
         direction === "next" &&
-        newQuestion >= surveyData.sections[newSection].questions.length
+        newQuestion >= randomizedSurvey.sections[newSection].questions.length
       ) {
         newSection++;
         newQuestion = 0;
       } else if (direction === "back" && newQuestion < 0) {
         newSection--;
         if (newSection >= 0) {
-          newQuestion = surveyData.sections[newSection].questions.length - 1;
+          newQuestion = randomizedSurvey.sections[newSection].questions.length - 1;
         }
       }
 
@@ -94,7 +116,7 @@ export function useSurveyNavigation({ surveyData, onComplete }: UseSurveyNavigat
         return null;
       }
 
-      if (shouldDisplayQuestion(surveyData.sections[newSection].questions[newQuestion])) {
+      if (shouldDisplayQuestion(randomizedSurvey.sections[newSection].questions[newQuestion])) {
         return { newSection, newQuestion };
       }
 
@@ -138,12 +160,12 @@ export function useSurveyNavigation({ surveyData, onComplete }: UseSurveyNavigat
   };
 
   const progress = (() => {
-    const totalQuestions = surveyData.sections.reduce(
+    const totalQuestions = randomizedSurvey.sections.reduce(
       (acc, section) => acc + section.questions.length,
       0
     );
     const questionsAnswered =
-      surveyData.sections
+      randomizedSurvey.sections
         .slice(0, currentSection)
         .reduce((acc, section) => acc + section.questions.length, 0) +
       currentQuestion +
