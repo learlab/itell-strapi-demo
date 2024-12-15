@@ -7,6 +7,7 @@ import { Input } from "@itell/ui/input";
 import { useServerAction } from "zsa-react";
 import { updateUserAction } from "@/actions/user";
 import { useEffect } from "react";
+import { reportSentry } from "@/lib/utils";
 
 const ConsentForm: React.FC = () => {
     const [consent, setConsent] = useState(true);

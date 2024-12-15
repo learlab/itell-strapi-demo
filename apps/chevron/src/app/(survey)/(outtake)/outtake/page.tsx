@@ -7,6 +7,8 @@ import { type Answer } from "@/components/survey-forms/types";
 import { useServerAction } from "zsa-react";
 import { createSurveyAction } from "@/actions/surveys";
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
+import { reportSentry } from "@/lib/utils";
 
 export default function OuttakeSurveyPage() {
   const { isPending, execute, isError, error } = useServerAction(createSurveyAction);
@@ -31,8 +33,8 @@ export default function OuttakeSurveyPage() {
     const [_, err] = await execute({ surveyType:"outtake", data: answers});  
     router.push('/');
     if (isError) {
-      console.log(err)
-      throw new Error('Failed to submit survey');
+      toast.error("Error with consent.");
+      reportSentry("consent", { error });
     }
     // Clear saved progress after successful submission
     if (typeof window !== 'undefined') {

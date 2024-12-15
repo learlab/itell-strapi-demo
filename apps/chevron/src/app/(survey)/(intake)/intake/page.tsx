@@ -8,6 +8,8 @@ import { createSurveyAction } from "@/actions/surveys";
 import { useServerAction } from "zsa-react";
 import { useRouter } from 'next/navigation';
 import { firstPage } from "@/lib/pages/pages.server";
+import { toast } from "sonner";
+import { reportSentry } from "@/lib/utils";
 
 export default function IntakeSurveyPage() {
   const { isPending, execute, isError, error } = useServerAction(createSurveyAction);
@@ -29,9 +31,9 @@ export default function IntakeSurveyPage() {
   const handleSurveyComplete = async (answers: Answer[]) => {
     const [_, err] = await execute({ surveyType:"intake", data: answers});  
     router.push('/');
-    if (isError) {
-      console.log(err)
-      throw new Error('Failed to submit survey');
+      if (isError) {
+        toast.error("Error with consent.");
+        reportSentry("consent", { error });
     }
     // Clear saved progress after successful submission
     if (typeof window !== 'undefined') {
