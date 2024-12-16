@@ -88,6 +88,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
         ? String(formData.get("page-progress"))
         : undefined;
 
+    console.log("summary streak is", formData.get("summary-streak"));
     let newSummaryStreak =
       formData.get("summary-streak") !== ""
         ? Number(formData.get("summary-streak"))
@@ -120,6 +121,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
       isSummaryPassed: true,
       isExcellent: false,
     });
+    console.log("new personalization is", newPersonalization);
 
     const [_, err] = await execute({
       conditionAssignments: newConditionAssignments,
@@ -231,6 +233,9 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
             <legend className="font-semibold">Streak</legend>
             <Label className="flex flex-col gap-2 font-normal">
               <p className="font-semibold">Set your summary streak</p>
+              <p className="text-sm text-muted-foreground">
+                Current streak: {user.personalization.summary_streak}
+              </p>
               <Select name="summary-streak">
                 <SelectTrigger className="h-fit text-left">
                   <SelectValue placeholder="Select summary streak" />

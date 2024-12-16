@@ -15,6 +15,7 @@ import { Pager } from "@textbook/pager";
 import { ChunkControl } from "@textbook/question/chunk-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
+import { delay } from "es-toolkit";
 
 import { MobilePopup } from "@/components/mobile-popup";
 import { PageProvider } from "@/components/provider/page-provider";
@@ -99,7 +100,7 @@ export default async function Page(props: {
 
             {user && page.summary ? (
               <PageAssignments
-                pageSlug={pageSlug}
+                page={page}
                 pageStatus={pageStatus}
                 user={user}
                 condition={userCondition}

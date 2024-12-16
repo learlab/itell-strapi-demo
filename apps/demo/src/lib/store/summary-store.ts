@@ -40,12 +40,14 @@ export const createSummaryStore = ({
       },
       finishPage: (
         context,
-        event: { isNextPageVisible?: boolean; input: string }
+        event: { isNextPageVisible?: boolean; input?: string }
       ) => {
         if (event.isNextPageVisible !== undefined) {
           context.isNextPageVisible = event.isNextPageVisible;
         }
-        context.prevInput = event.input;
+        if (event.input !== undefined) {
+          context.prevInput = event.input;
+        }
       },
     },
   });
