@@ -1,13 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { JSX, RefObject, useEffect, useRef } from 'react';
 import { scrollToElement } from "@/lib/utils";
 import { ChatStairs } from "@textbook/chat-stairs";
 import { removeInert, setInertBackground } from "@itell/driver.js";
 import { Elements } from '@itell/constants';
-import { usePortal } from '@itell/core/hooks';
+import { Driver } from '@itell/driver.js';
 import {
   SummaryFeedbackDetails,
 } from "./summary-feedback";
 import { Condition, EventType } from '@/lib/constants';
+import { StairsQuestion } from '@/lib/store/summary-store';
+import { SummaryResponse } from '@itell/core/summary';
 
 
 const useDriverConfig = ({ 
@@ -22,16 +24,20 @@ const useDriverConfig = ({
   createEventAction,
   FinishReadingButton
 }: {
-  driverObj: any,
+  driverObj: Driver,
   pageSlug: string,
   randomChunkSlug: string | null,
-  addPortal: any,
-  removePortals: any,
-  stairsDataRef: any,
-  summaryResponseRef: any,
-  stairsAnsweredRef: any,
-  createEventAction: any,
-  FinishReadingButton: any,
+  addPortal: (children: React.ReactNode, container: Element) => string,
+  removePortals: () => void,
+  stairsDataRef: RefObject<StairsQuestion | null>,
+  summaryResponseRef: RefObject<SummaryResponse | null>,
+  stairsAnsweredRef: RefObject<boolean | null>,
+  createEventAction: ({type, pageSlug, data}: {
+    type: string,
+    pageSlug: string,
+    data: { chunkSlug: string, time: number } | { stairs: StairsQuestion | null, time: number }
+    }) => void,
+  FinishReadingButton: ({ onClick }: { onClick: (time: number) => void }) => JSX.Element,
 }) => {
   const portalId = useRef<string | null>(null);
   useEffect(() => {
