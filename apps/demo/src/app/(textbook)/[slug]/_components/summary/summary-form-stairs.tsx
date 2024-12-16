@@ -177,7 +177,7 @@ export function SummaryFormStairs({
               .at(1)
               ?.replace(/data:\s+/, "");
 
-            console.log("summary response chunk", data);
+            console.log("summary response chunk", data, chunk);
 
             const parsed = SummaryResponseSchema.safeParse(
               JSON.parse(String(data))
