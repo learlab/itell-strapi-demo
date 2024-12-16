@@ -63,10 +63,7 @@ export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
         const isIntersecting = entries[0].isIntersecting;
         if (isIntersecting) {
           checkOverlap();
-          window.addEventListener("resize", () => {
-            console.log("resize");
-            checkOverlap();
-          });
+          window.addEventListener("resize", checkOverlap);
           window.addEventListener("scroll", checkOverlap);
         } else {
           window.removeEventListener("resize", checkOverlap);

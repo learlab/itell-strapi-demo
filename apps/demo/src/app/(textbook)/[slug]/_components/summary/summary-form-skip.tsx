@@ -16,12 +16,14 @@ import { DelayMessage } from "@/components/delay-message";
 import {
   useQuestionStore,
   useQuizStore,
+  useSummaryStore,
 } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { type PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
-import { reportSentry } from "@/lib/utils";
+import { SelectIsNextPageVisible } from "@/lib/store/summary-store";
+import { makePageHref, reportSentry } from "@/lib/utils";
 import type { PageData } from "@/lib/pages";
 import type { FormEvent } from "react";
 
@@ -35,7 +37,9 @@ type Props = {
 export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   const questionStore = useQuestionStore();
   const quizStore = useQuizStore();
+  const summaryStore = useSummaryStore();
   const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
+  const isNextPageVisible = useSelector(summaryStore, SelectIsNextPageVisible);
   const router = useRouter();
   const [pageFinished, setPageFinished] = useState(pageStatus.unlocked);
 
@@ -49,6 +53,14 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
     async (e: FormEvent) => {
       e.preventDefault();
 
+      const [_, err] = await incrementUserPageSlugAction({
+        currentPageSlug: page.slug,
+        withStreakSkip: true,
+      });
+      if (err) {
+        throw new Error("increment user page slug action", { cause: err });
+      }
+
       if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
         quizStore.send({
           type: "toggleQuiz",
@@ -60,22 +72,11 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         toast.info("You have finished the entire textbook!", {
           duration: 100000,
         });
-      }
-
-      if (!pageFinished && page.next_slug) {
-        const [_, err] = await incrementUserPageSlugAction({
-          currentPageSlug: page.slug,
-          withStreakSkip: true,
-        });
-        if (err) {
-          throw new Error("increment user page slug action", { cause: err });
-        }
-        setPageFinished(true);
-        router.push(page.next_slug);
         return;
       }
 
-      if (pageFinished && page.next_slug) {
+      if (page.next_slug) {
+        setPageFinished(true);
         router.push(page.next_slug);
         return;
       }
@@ -92,6 +93,27 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
       });
     }
   }, [error, page]);
+
+  useEffect(() => {
+    if (isLastPage(page)) {
+      toast.info("You have finished the entire textbook!");
+    } else {
+      const title = "You can now move on 👏";
+      toast(title, {
+        className: "toast",
+        description: "Move to the next page to continue reading",
+        duration: 5000,
+        action: page.next_slug
+          ? {
+              label: "Proceed",
+              onClick: () => {
+                router.push(makePageHref(page.next_slug));
+              },
+            }
+          : undefined,
+      });
+    }
+  }, [isNextPageVisible]);
 
   if (!isSummaryReady) {
     return (
@@ -131,9 +153,7 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
                 a streak of writing good summaries!{" "}
               </span>
             </p>
-            <p>
-              You have earned the right to skip writing a summary for this page.
-            </p>
+            <p>You do not need to write a summary for this page. </p>
             <p>
               Streak count:{" "}
               <span className="font-semibold text-warning">{streak}</span>{" "}
@@ -153,11 +173,11 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
         <StatusButton
           pending={isPending}
           disabled={pageFinished ? !page.next_slug : false}
-          className="w-44"
         >
           {!pageFinished ? (
             <span className="inline-flex items-center gap-1">
-              <StepForward className="size-4" /> Skip Summary
+              <StepForward className="size-4" /> Skip Summary{" "}
+              {page.quiz ? "and Take Quiz" : ""}
             </span>
           ) : page.next_slug ? (
             <span className="inline-flex items-center gap-1">

@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Elements } from "@itell/constants";
-import { Errorbox } from "@itell/ui/callout";
 import {
   Card,
   CardContent,
@@ -9,11 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@itell/ui/card";
+import { Page } from "#content";
 import { type User } from "lucia";
 
 import { Condition, SUMMARY_DESCRIPTION_ID } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
-import { getPage } from "@/lib/pages/pages.server";
 import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";
 import { SummaryCount } from "./summary/summary-count";
@@ -24,30 +23,27 @@ import { SummaryFormSkip } from "./summary/summary-form-skip";
 import { SummaryFormStairs } from "./summary/summary-form-stairs";
 
 type Props = {
-  pageSlug: string;
+  page: Page;
   pageStatus: PageStatus;
   user: User;
   condition: string;
 };
 
-export function PageAssignments({
-  pageSlug,
-  pageStatus,
-  user,
-  condition,
-}: Props) {
-  const page = getPage(pageSlug);
-  if (!page) {
-    return <Errorbox>failed to load assignments</Errorbox>;
-  }
-
+export function PageAssignments({ page, pageStatus, user, condition }: Props) {
   const canSkipSummary = user.personalization.available_summary_skips > 0;
-
   if (canSkipSummary) {
     return (
       <AssignmentsShell>
         <Card className="border-info">
           <CardContent>
+            {user.finished ? (
+              <Suspense fallback={<FinishedPrompt.Skeleton />}>
+                <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+              </Suspense>
+            ) : null}
+            {condition !== Condition.SIMPLE ? (
+              <PageQuizModal page={page} pageStatus={pageStatus} />
+            ) : null}
             <SummaryFormSkip
               pageStatus={pageStatus}
               page={page}
@@ -100,7 +96,7 @@ export function PageAssignments({
               pageStatus={pageStatus}
               afterSubmit={
                 <Suspense fallback={<SummaryCount.Skeleton />}>
-                  <SummaryCount pageSlug={pageSlug} />
+                  <SummaryCount pageSlug={page.slug} />
                 </Suspense>
               }
             />

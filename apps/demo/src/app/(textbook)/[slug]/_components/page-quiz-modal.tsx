@@ -1,6 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@itell/ui/button";
 import {
   Dialog,
@@ -11,7 +12,7 @@ import {
   DialogTrigger,
 } from "@itell/ui/dialog";
 import { useSelector } from "@xstate/store/react";
-import { BookCheckIcon } from "lucide-react";
+import { BookCheckIcon, Router } from "lucide-react";
 
 import {
   useQuizStore,
@@ -21,6 +22,7 @@ import { isProduction, Tags } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
 import { SelectQuizFinished, SelectQuizOpen } from "@/lib/store/quiz-store";
+import { makePageHref } from "@/lib/utils";
 import { PageQuiz } from "./page-quiz";
 import type { PageData } from "@/lib/pages";
 
@@ -32,6 +34,8 @@ export function PageQuizModal({
   pageStatus: PageStatus;
 }) {
   const quizStore = useQuizStore();
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
   const summaryStore = useSummaryStore();
   const searchParams = useSearchParams();
   const quizOpen = useSelector(quizStore, SelectQuizOpen);
@@ -71,11 +75,15 @@ export function PageQuizModal({
         <PageQuiz
           page={page}
           afterSubmit={() => {
-            quizStore.send({ type: "finishQuiz" });
-            summaryStore.send({
-              type: "finishPage",
-              isNextPageVisible: !isLastPage(page),
-              input: "",
+            startTransition(() => {
+              quizStore.send({ type: "finishQuiz" });
+              summaryStore.send({
+                type: "finishPage",
+                isNextPageVisible: !isLastPage(page),
+              });
+              if (!isLastPage(page)) {
+                router.push(makePageHref(page.next_slug));
+              }
             });
 
             fetch("/api/revalidate", {

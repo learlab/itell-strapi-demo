@@ -1,11 +1,14 @@
 import { User } from "lucia";
 
-import type { PersonalizationData } from "@/drizzle/schema";
 import { SKIP_SUMMARY_STREAK_THRESHOLD } from "@/lib/constants";
+import type { PersonalizationData } from "@/drizzle/schema";
 
 export function updatePersonalizationSummaryStreak(
   user: User,
-  { isSummaryPassed, isExcellent }: { isSummaryPassed: boolean; isExcellent: boolean }
+  {
+    isSummaryPassed,
+    isExcellent,
+  }: { isSummaryPassed: boolean; isExcellent: boolean }
 ): PersonalizationData {
   const personalization = { ...user.personalization };
 
@@ -38,7 +41,7 @@ export function updatePersonalizationSummaryStreak(
 
 export function updatePersonalizationCRIStreak(
   user: User,
-  { isQuestionCorrect }: { isQuestionCorrect: boolean },
+  { isQuestionCorrect }: { isQuestionCorrect: boolean }
 ): PersonalizationData {
   const personalization = { ...user.personalization };
 
