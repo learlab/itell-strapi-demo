@@ -17,10 +17,9 @@ import {
   SummaryResponseSchema,
   validateSummary,
 } from "@itell/core/summary";
-import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+import { driver} from "@itell/driver.js";
 import { Button } from "@itell/ui/button";
 import { getChunkElement } from "@itell/utils";
-import { ChatStairs } from "@textbook/chat-stairs";
 import { useSelector } from "@xstate/store/react";
 import { type User } from "lucia";
 import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
@@ -60,7 +59,6 @@ import {
 } from "@/lib/store/summary-store";
 import { makePageHref, reportSentry, scrollToElement } from "@/lib/utils";
 import {
-  SummaryFeedbackDetails,
   SummaryResponseFeedback,
 } from "./summary-feedback";
 import {
@@ -71,6 +69,7 @@ import {
 import { NextPageButton } from "./summary-next-page-button";
 import type { StairsQuestion } from "@/lib/store/summary-store";
 import type { SummaryResponse } from "@itell/core/summary";
+import useDriverConfig from "./summary-driver-hook";
 
 interface Props {
   user: User;
@@ -91,7 +90,7 @@ export function SummaryFormStairs({
 }: Props) {
   const pageSlug = page.slug;
   const isLast = isLastPage(page);
-  const { portals, addPortal, removePortals } = usePortal();
+  const { portals } = usePortal();
   const router = useRouter();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -324,96 +323,106 @@ export function SummaryFormStairs({
     }
   }, [isNextPageVisible]);
 
-  useEffect(() => {
-    driverObj.setConfig({
-      smoothScroll: false,
-      animate: false,
-      allowClose: false,
-      onPopoverRender: (popover) => {
-        addPortal(
-          <ChatStairs
-            id={Elements.STAIRS_CONTAINER}
-            pageSlug={pageSlug}
-            footer={
-              <FinishReadingButton
-                onClick={(time) => {
-                  if (!stairsAnsweredRef.current) {
-                    stairsAnsweredRef.current = true;
-                    createEventAction({
-                      type: Condition.STAIRS,
-                      pageSlug,
-                      data: {
-                        stairs: stairsDataRef.current,
-                        time,
-                      },
-                    });
-                  }
-                  exitQuestion();
-                }}
-              />
-            }
-          />,
-          popover.wrapper
-        );
+  useDriverConfig({
+    driverObj,
+    pageSlug,
+    stairsDataRef,
+    randomChunkSlug: null,
+    summaryResponseRef,
+    stairsAnsweredRef,
+    createEventAction,
+    FinishReadingButton,
+  });
+  // useEffect(() => {
+  //   driverObj.setConfig({
+  //     smoothScroll: false,
+  //     animate: false,
+  //     allowClose: false,
+  //     onPopoverRender: (popover) => {
+  //       addPortal(
+  //         <ChatStairs
+  //           id={Elements.STAIRS_CONTAINER}
+  //           pageSlug={pageSlug}
+  //           footer={
+  //             <FinishReadingButton
+  //               onClick={(time) => {
+  //                 if (!stairsAnsweredRef.current) {
+  //                   stairsAnsweredRef.current = true;
+  //                   createEventAction({
+  //                     type: Condition.STAIRS,
+  //                     pageSlug,
+  //                     data: {
+  //                       stairs: stairsDataRef.current,
+  //                       time,
+  //                     },
+  //                   });
+  //                 }
+  //                 exitQuestion();
+  //               }}
+  //             />
+  //           }
+  //         />,
+  //         popover.wrapper
+  //       );
 
-        setTimeout(() => {
-          document.getElementById(Elements.STAIRS_CONTAINER)?.focus();
-        }, 100);
-      },
-      onHighlightStarted: (element) => {
-        if (element) {
-          element.setAttribute("tabIndex", "0");
-          element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
+  //       setTimeout(() => {
+  //         document.getElementById(Elements.STAIRS_CONTAINER)?.focus();
+  //       }, 100);
+  //     },
+  //     onHighlightStarted: (element) => {
+  //       if (element) {
+  //         element.setAttribute("tabIndex", "0");
+  //         element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
 
-          const link = document.createElement("a");
-          link.href = `#${Elements.STAIRS_READY_BUTTON}`;
-          link.textContent = "answer the question";
-          link.className = "sr-only";
-          link.id = Elements.STAIRS_ANSWER_LINK;
-          element.insertAdjacentElement("afterend", link);
-        }
-      },
-      onHighlighted: () => {
-        if (stairsDataRef.current?.chunk) {
-          setInertBackground(stairsDataRef.current.chunk);
-        }
+  //         const link = document.createElement("a");
+  //         link.href = `#${Elements.STAIRS_READY_BUTTON}`;
+  //         link.textContent = "answer the question";
+  //         link.className = "sr-only";
+  //         link.id = Elements.STAIRS_ANSWER_LINK;
+  //         element.insertAdjacentElement("afterend", link);
+  //       }
+  //     },
+  //     onHighlighted: () => {
+  //       if (stairsDataRef.current?.chunk) {
+  //         setInertBackground(stairsDataRef.current.chunk);
+  //       }
 
-        const chunk = document.getElementById(
-          Elements.STAIRS_HIGHLIGHTED_CHUNK
-        );
-        if (summaryResponseRef.current && chunk) {
-          const node = document.createElement("div");
-          node.id = Elements.STAIRS_FEEDBACK_CONTAINER;
+  //       const chunk = document.getElementById(
+  //         Elements.STAIRS_HIGHLIGHTED_CHUNK
+  //       );
+  //       if (summaryResponseRef.current && chunk) {
+  //         const node = document.createElement("div");
+  //         node.id = Elements.STAIRS_FEEDBACK_CONTAINER;
 
-          addPortal(
-            <SummaryFeedbackDetails response={summaryResponseRef.current} />,
-            node
-          );
-          chunk.prepend(node);
-        }
-      },
-      onDestroyed: (element) => {
-        removeInert();
-        removePortals();
-        document.getElementById(Elements.STAIRS_FEEDBACK_CONTAINER)?.remove();
+  //         addPortal(
+  //           <SummaryFeedbackDetails response={summaryResponseRef.current} />,
+  //           node
+  //         );
+  //         chunk.prepend(node);
+  //       }
+  //     },
+  //     onDestroyed: (element) => {
+  //       removeInert();
+  //       removePortals();
+  //       document.getElementById(Elements.STAIRS_FEEDBACK_CONTAINER)?.remove();
 
-        if (element) {
-          element.removeAttribute("tabIndex");
-          element.removeAttribute("id");
-          document.getElementById(Elements.STAIRS_ANSWER_LINK)?.remove();
-        }
+  //       if (element) {
+  //         element.removeAttribute("tabIndex");
+  //         element.removeAttribute("id");
+  //         document.getElementById(Elements.STAIRS_ANSWER_LINK)?.remove();
+  //       }
 
-        const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-        if (assignments) {
-          setTimeout(() => {
-            scrollToElement(assignments);
-          }, 100);
-        }
+  //       const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+  //       if (assignments) {
+  //         setTimeout(() => {
+  //           scrollToElement(assignments);
+  //         }, 100);
+  //       }
 
-        document.getElementById(Elements.SUMMARY_INPUT)?.focus();
-      },
-    });
-  }, []);
+  //       document.getElementById(Elements.SUMMARY_INPUT)?.focus();
+  //     },
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (error) {
@@ -529,10 +538,6 @@ function FinishReadingButton({ onClick }: { onClick: (_: number) => void }) {
 }
 
 const driverObj = driver();
-
-const exitQuestion = () => {
-  driverObj.destroy();
-};
 
 const goToQuestion = (question: StairsQuestion) => {
   const el = getChunkElement(question.chunk, "data-chunk-slug");

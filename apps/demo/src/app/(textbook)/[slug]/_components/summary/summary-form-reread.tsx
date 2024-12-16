@@ -15,7 +15,7 @@ import {
   ErrorType,
   SummaryResponseSchema,
 } from "@itell/core/summary";
-import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+import { driver } from "@itell/driver.js";
 import { Button } from "@itell/ui/button";
 import { Warning } from "@itell/ui/callout";
 import { getChunkElement } from "@itell/utils";
@@ -34,7 +34,7 @@ import {
   useQuizStore,
 } from "@/components/provider/page-provider";
 import { apiClient } from "@/lib/api-client";
-import { Condition, EventType } from "@/lib/constants";
+import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
 import { isLastPage } from "@/lib/pages";
@@ -47,6 +47,7 @@ import {
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
 import type { SummaryResponse } from "@itell/core/summary";
+import useDriverConfig from "./summary-driver-hook";
 
 type Props = {
   user: User;
@@ -69,8 +70,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
     return validChunks[Math.floor(Math.random() * validChunks.length)].slug;
   }, [page]);
 
-  const { addPortal, removePortals, portals } = usePortal();
-  const portalId = useRef<string | null>(null);
+  const { portals } = usePortal();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
   const requestBodyRef = useRef<string>("");
   const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -160,67 +160,78 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
   );
   const isPending = useDebounce(_isPending, 100);
 
-  useEffect(() => {
-    driverObj.setConfig({
-      animate: false,
-      smoothScroll: false,
-      allowClose: false,
-      onHighlightStarted: (element) => {
-        if (element) {
-          element.setAttribute("tabIndex", "0");
-          element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
+  useDriverConfig({
+    driverObj,
+    pageSlug,
+    randomChunkSlug,
+    stairsDataRef: null,
+    stairsAnsweredRef: null,
+    summaryResponseRef,
+    createEventAction,
+    FinishReadingButton,
+  })
 
-          // append link to jump to the finish reading button
-          const link = document.createElement("a");
-          link.href = `#${Elements.STAIRS_RETURN_BUTTON}`;
-          link.textContent = "go to the finish reading button";
-          link.className = "sr-only";
-          link.id = Elements.STAIRS_ANSWER_LINK;
-          element.insertAdjacentElement("afterend", link);
-        }
-      },
-      onHighlighted: () => {
-        setInertBackground(randomChunkSlug);
-      },
-      onPopoverRender: (popover) => {
-        portalId.current = addPortal(
-          <FinishReadingButton
-            onClick={(time) => {
-              exitChunk();
+  // useEffect(() => {
+  //   driverObj.setConfig({
+  //     animate: false,
+  //     smoothScroll: false,
+  //     allowClose: false,
+  //     onHighlightStarted: (element) => {
+  //       if (element) {
+  //         element.setAttribute("tabIndex", "0");
+  //         element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
 
-              createEventAction({
-                type: EventType.RANDOM_REREAD,
-                pageSlug,
-                data: { chunkSlug: randomChunkSlug, time },
-              });
-            }}
-          />,
-          popover.wrapper
-        );
-      },
-      onDestroyed: (element) => {
-        removeInert();
-        removePortals();
-        if (element) {
-          element.removeAttribute("tabIndex");
-          element.removeAttribute("id");
+  //         // append link to jump to the finish reading button
+  //         const link = document.createElement("a");
+  //         link.href = `#${Elements.STAIRS_RETURN_BUTTON}`;
+  //         link.textContent = "go to the finish reading button";
+  //         link.className = "sr-only";
+  //         link.id = Elements.STAIRS_ANSWER_LINK;
+  //         element.insertAdjacentElement("afterend", link);
+  //       }
+  //     },
+  //     onHighlighted: () => {
+  //       setInertBackground(randomChunkSlug);
+  //     },
+  //     onPopoverRender: (popover) => {
+  //       portalId.current = addPortal(
+  //         <FinishReadingButton
+  //           onClick={(time) => {
+  //             exitChunk();
 
-          const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
-          if (link) {
-            link.remove();
-          }
-        }
+  //             createEventAction({
+  //               type: EventType.RANDOM_REREAD,
+  //               pageSlug,
+  //               data: { chunkSlug: randomChunkSlug, time },
+  //             });
+  //           }}
+  //         />,
+  //         popover.wrapper
+  //       );
+  //     },
+  //     onDestroyed: (element) => {
+  //       removeInert();
+  //       removePortals();
+  //       if (element) {
+  //         element.removeAttribute("tabIndex");
+  //         element.removeAttribute("id");
 
-        const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-        if (assignments) {
-          setTimeout(() => {
-            scrollToElement(element as HTMLElement);
-          }, 100);
-        }
-        document.getElementById(Elements.SUMMARY_INPUT)?.focus();
-      },
-    });
-  }, [addPortal, pageSlug, randomChunkSlug, removePortals]);
+  //         const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
+  //         if (link) {
+  //           link.remove();
+  //         }
+  //       }
+
+  //       const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
+  //       if (assignments) {
+  //         setTimeout(() => {
+  //           scrollToElement(element as HTMLElement);
+  //         }, 100);
+  //       }
+  //       document.getElementById(Elements.SUMMARY_INPUT)?.focus();
+  //     },
+  //   });
+  // }, [addPortal, pageSlug, randomChunkSlug, removePortals]);
 
   useEffect(() => {
     if (error) {
