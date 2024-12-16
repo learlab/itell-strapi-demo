@@ -1,10 +1,11 @@
 import { User } from "lucia";
 
 import type { PersonalizationData } from "@/drizzle/schema";
+import { SKIP_SUMMARY_STREAK_THRESHOLD } from "@/lib/constants";
 
 export function updatePersonalizationSummaryStreak(
   user: User,
-  { isSummaryPassed }: { isSummaryPassed: boolean }
+  { isSummaryPassed, isExcellent }: { isSummaryPassed: boolean; isExcellent: boolean }
 ): PersonalizationData {
   const personalization = { ...user.personalization };
 
@@ -20,10 +21,16 @@ export function updatePersonalizationSummaryStreak(
   }
 
   // every new passing summary after a streak allows user to skip one summary
-  if (isSummaryPassed && newSummaryStreak >= 2) {
+  if (isSummaryPassed && newSummaryStreak >= SKIP_SUMMARY_STREAK_THRESHOLD) {
     personalization.available_summary_skips = 1;
   } else {
     personalization.available_summary_skips = 0;
+  }
+
+  // if summary is excellent, increment summary skip count
+  if (isExcellent) {
+    personalization.available_summary_skips =
+      (personalization.available_summary_skips || 0) + 1;
   }
 
   return personalization;
@@ -31,7 +38,7 @@ export function updatePersonalizationSummaryStreak(
 
 export function updatePersonalizationCRIStreak(
   user: User,
-  { isQuestionCorrect }: { isQuestionCorrect: boolean }
+  { isQuestionCorrect }: { isQuestionCorrect: boolean },
 ): PersonalizationData {
   const personalization = { ...user.personalization };
 
