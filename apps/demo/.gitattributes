@@ -1,3 +1,4 @@
 content/**/* merge=ours
-src/drizzle/**/* merge=ours
+src/drizzle/meta/**/* merge=ours
+src/drizzle/*.sql merge=ours
 src/config/metadata.ts merge=ours
