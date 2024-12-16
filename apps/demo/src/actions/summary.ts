@@ -1,8 +1,7 @@
 "use server";
 
-import { cache } from "react";
 import { revalidateTag } from "next/cache";
-import { and, count, desc, eq, sql, isNotNull } from "drizzle-orm";
+import { and, count, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
@@ -17,9 +16,9 @@ import {
 import {
   Condition,
   EventType,
+  EXCELLENT_SUMMARY_THRESHOLD,
   isProduction,
   PAGE_SUMMARY_THRESHOLD,
-  EXCELLENT_SUMMARY_THRESHOLD,
   Tags,
 } from "@/lib/constants";
 import { isLastPage } from "@/lib/pages";
@@ -44,9 +43,11 @@ export const createSummaryAction = authedProcedure
     })
   )
   .output(
-    z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean(), 
-      isExcellent: z.boolean()
-     })
+    z.object({
+      nextPageSlug: z.string().nullable(),
+      canProceed: z.boolean(),
+      isExcellent: z.boolean(),
+    })
   )
   .handler(async ({ input, ctx }) => {
     let shouldRevalidate = false;
@@ -68,32 +69,22 @@ export const createSummaryAction = authedProcedure
         canProceed = record.count + 1 >= PAGE_SUMMARY_THRESHOLD;
       }
 
-      // Evaluate whether a summary is an "Excellent" summary (> EXCELLENT_SUMMARY_THRESHOLD)
-      // get full summary count and then the last entry in the top N summaries
-      // only use summaries with contentScore
-      const [fullSummaryCount] = await tx
-          .select({ count: count() })
+      // Evaluate whether a summary is an "Excellent" summary (> the content score at a percentile defined by EXCELLENT_SUMMARY_THRESHOLD)
+      const excellentThreshold = first(
+        await tx
+          .select({
+            score: sql<number>`
+          percentile_disc(${1 - EXCELLENT_SUMMARY_THRESHOLD})
+          within group (order by ${summaries.contentScore})
+        `,
+          })
           .from(summaries)
           .where(isNotNull(summaries.contentScore))
-      
-      const summaryTotal = fullSummaryCount?.count ?? 0;
+      );
 
-      const topSummaryCount = Math.ceil(summaryTotal * EXCELLENT_SUMMARY_THRESHOLD);
-      
-      const topSummaries = await tx
-        .select({
-          content: summaries.contentScore,
-        })
-        .from(summaries)
-        .where(isNotNull(summaries.contentScore))
-        .orderBy(desc(summaries.contentScore))
-        .limit(topSummaryCount);
-      
-      const lastEntryInTopSummary = topSummaries[topSummaries.length - 1];
-      
-      const scoreToBeat = lastEntryInTopSummary?.content ?? Infinity;
-
-      const isExcellent = (input.summary.contentScore ?? -Infinity) > scoreToBeat;
+      const isExcellent = input.summary.contentScore
+        ? input.summary.contentScore > (excellentThreshold?.score ?? Infinity)
+        : false;
 
       // create summary record
       const { summaryId } = (
@@ -102,6 +93,7 @@ export const createSummaryAction = authedProcedure
           .values({
             ...input.summary,
             userId: ctx.user.id,
+            isExcellent,
           })
           .returning({ summaryId: summaries.id })
       )[0];

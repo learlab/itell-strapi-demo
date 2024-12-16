@@ -97,14 +97,11 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
     return (
       <div className="flex flex-col gap-2">
         <h3 className="text-2xl font-extrabold">You are on a hot streak</h3>
-        <div>
-          <p>
-            Finish the page first to unlock the summary section.
-          </p>
-          <p>
-            You can skip writing a summary for this page once you have completed it.
-          </p>
-        </div>
+        <p>Finish the page first to unlock the summary section.</p>
+        <p>
+          You can skip writing a summary for this page once you have completed
+          it.
+        </p>
       </div>
     );
   }
