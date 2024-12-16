@@ -27,16 +27,22 @@ current_branch=$(git symbolic-ref --short HEAD)
 copy_env_file() {
   local source="$1"
   local dest="$2"
+  local fallback_source="$3"
 
   # Check if source file exists
   if [ ! -f "$source" ]; then
-    echo "Warning: $source does not exist in $DEMO_DIR!"
-    return 1
+    # If fallback source is provided and exists, use it instead
+    if [ -n "$fallback_source" ] && [ -f "$fallback_source" ]; then
+      source="$fallback_source"
+    else
+      # Silently exit if no valid source file is available
+      return 0
+    fi
   fi
 
   # Create backup of current .env
   if [ -f "$dest" ]; then
-    cp "$dest" "${dest}.backup"
+    cp "$dest" "${dest}.last"
   fi
 
   # Copy the contents
@@ -51,7 +57,8 @@ case "$current_branch" in
   copy_env_file ".env.demo" ".env"
   ;;
 "rmp")
-  copy_env_file ".env.rmp" ".env"
+  # For rmp branch, try .env.rmp first, fallback to .env.demo if it doesn't exist
+  copy_env_file ".env.rmp" ".env" ".env.demo"
   ;;
 *)
   # For all other branches, use .env.demo
