@@ -85,13 +85,13 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   const isPending = useDebounce(_isPending, 100);
 
   useEffect(() => {
-    if (isError) {
+    if (error) {
       reportSentry("summary skip", {
         pageSlug: page.slug,
         error: error?.cause,
       });
     }
-  }, [isError]);
+  }, [error, page]);
 
   if (!isSummaryReady) {
     return (
