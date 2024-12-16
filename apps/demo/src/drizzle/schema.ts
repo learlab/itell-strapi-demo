@@ -211,7 +211,7 @@ export const summaries = pgTable(
     similarityScore: doublePrecision("similarity_score").notNull(),
     contentScore: doublePrecision("content_score"),
     contentThreshold: doublePrecision("content_threshold"),
-    // isExcellent: boolean("is_excellent").default(false),
+    isExcellent: boolean("is_excellent").default(false),
     createdAt: CreatedAt,
     updatedAt: UpdatedAt,
   },
