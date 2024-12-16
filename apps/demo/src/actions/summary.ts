@@ -93,7 +93,8 @@ export const createSummaryAction = authedProcedure
           .values({
             ...input.summary,
             userId: ctx.user.id,
-            isExcellent,
+            // comment out for now
+            // isExcellent,
           })
           .returning({ summaryId: summaries.id })
       )[0];
