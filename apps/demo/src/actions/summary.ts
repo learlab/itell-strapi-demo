@@ -73,7 +73,7 @@ export const createSummaryAction = authedProcedure
       const excellentThreshold = first(
         await tx
           .select({
-            score: sql<number>`
+            score: sql<number | null>`
           percentile_disc(${1 - EXCELLENT_SUMMARY_THRESHOLD})
           within group (order by ${summaries.contentScore})
         `,
