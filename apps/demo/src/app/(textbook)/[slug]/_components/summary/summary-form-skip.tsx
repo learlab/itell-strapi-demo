@@ -31,6 +31,7 @@ type Props = {
   streak: number;
 };
 
+// eslint-disable-next-line react/display-name
 export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   const questionStore = useQuestionStore();
   const quizStore = useQuizStore();
@@ -57,7 +58,6 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
 
       if (isLastPage(page)) {
         toast.info("You have finished the entire textbook!", {
-          important: true,
           duration: 100000,
         });
       }

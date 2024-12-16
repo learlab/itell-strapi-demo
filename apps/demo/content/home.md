@@ -2,6 +2,6 @@
 </i-image>
 
 This is a demo textbook build with [iTELL](https://github.com/learlab/itell), which is adopted from [Research Methods in Psychology](https://kpu.pressbooks.pub/psychmethods4e/). It was redesigned by a team comprised of subject matter expert,
-content and assessment developer, multimedia and web developer.
+content and assessment developer, and web developer.
 
 Learn how to use this textbook in the <a href="/guide">User Guide</a>.

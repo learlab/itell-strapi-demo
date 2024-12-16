@@ -4,12 +4,12 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { Spinner } from "@/components/spinner";
 import { makePageHref } from "@/lib/utils";
-import type { AnimationProps } from "framer-motion";
+import type { AnimationProps } from "motion/react";
 
 const animationProps = {
   initial: { "--x": "100%", scale: 0.8 },

@@ -1,4 +1,4 @@
-import type { AnimationProps } from "framer-motion";
+import type { AnimationProps } from "motion/react";
 
 export const FOCUS_TIME_SAVE_INTERVAL = 60000;
 export const EXCELLENT_SUMMARY_THRESHOLD = 0.2;

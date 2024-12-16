@@ -27,12 +27,12 @@ type Props = {
 export function TextbookTocList({ page, pages }: Props) {
   const [activePage, setActivePage] = useOptimistic(page.slug);
   return (
-    <nav aria-label="textbook primary">
+    <nav aria-label="Textbook primary">
       <a className="sr-only" href={`#${Elements.TEXTBOOK_MAIN}`}>
         skip to main content
       </a>
       <ol
-        aria-label="list of chapters"
+        aria-label="List of chapters"
         className="leading-relaxed tracking-tight"
       >
         {pages.map((item) => {

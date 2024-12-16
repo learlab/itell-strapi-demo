@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Get the new HEAD commit hash (3rd argument passed to post-checkout hook)
+new_head="$3"
+
+# If it's not a branch checkout (e.g., file checkout), exit
+if [ "$new_head" -eq 0 ]; then
+  exit 0
+fi
+
+# Define the target directory
+DEMO_DIR="apps/demo"
+
+# Check if the demo directory exists
+if [ ! -d "$DEMO_DIR" ]; then
+  echo "Warning: $DEMO_DIR directory not found!"
+  exit 0
+fi
+
+# Change to the demo directory
+cd "$DEMO_DIR" || exit 1
+
+# Get the current branch name
+current_branch=$(git symbolic-ref --short HEAD)
+
+# Function to safely copy file contents
+copy_env_file() {
+  local source="$1"
+  local dest="$2"
+  local fallback_source="$3"
+
+  # Check if source file exists
+  if [ ! -f "$source" ]; then
+    # If fallback source is provided and exists, use it instead
+    if [ -n "$fallback_source" ] && [ -f "$fallback_source" ]; then
+      source="$fallback_source"
+    else
+      # Silently exit if no valid source file is available
+      return 0
+    fi
+  fi
+
+  # Create backup of current .env
+  if [ -f "$dest" ]; then
+    cp "$dest" "${dest}.last"
+  fi
+
+  # Copy the contents
+  cp "$source" "$dest"
+
+  echo "Updated $dest with $source"
+}
+
+# Handle different branches
+case "$current_branch" in
+"main")
+  copy_env_file ".env.demo" ".env"
+  ;;
+"rmp")
+  # For rmp branch, try .env.rmp first, fallback to .env.demo if it doesn't exist
+  copy_env_file ".env.rmp" ".env" ".env.demo"
+  ;;
+*)
+  # For all other branches, use .env.demo
+  copy_env_file ".env.demo" ".env"
+  ;;
+esac
+
+# Return to the original directory
+cd - >/dev/null

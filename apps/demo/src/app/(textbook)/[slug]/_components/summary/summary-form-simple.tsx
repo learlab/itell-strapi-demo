@@ -28,6 +28,7 @@ type Props = {
   page: PageData;
 };
 
+// eslint-disable-next-line react/display-name
 export const SummaryFormSimple = memo(({ pageStatus, page }: Props) => {
   const questionStore = useQuestionStore();
   const quizStore = useQuizStore();
@@ -64,7 +65,6 @@ export const SummaryFormSimple = memo(({ pageStatus, page }: Props) => {
 
       if (isLastPage(page)) {
         toast.info("You have finished the entire textbook!", {
-          important: true,
           duration: 100000,
         });
       }

@@ -3,8 +3,8 @@
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
+import { motion } from "motion/react";
 
 import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
