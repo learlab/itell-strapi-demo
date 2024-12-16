@@ -70,7 +70,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
     return validChunks[Math.floor(Math.random() * validChunks.length)].slug;
   }, [page]);
 
-  const { portals } = usePortal();
+  const { portals, addPortal, removePortals } = usePortal();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
   const requestBodyRef = useRef<string>("");
   const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -164,74 +164,14 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
     driverObj,
     pageSlug,
     randomChunkSlug,
+    addPortal, 
+    removePortals,
     stairsDataRef: null,
     stairsAnsweredRef: null,
     summaryResponseRef,
     createEventAction,
     FinishReadingButton,
-  })
-
-  // useEffect(() => {
-  //   driverObj.setConfig({
-  //     animate: false,
-  //     smoothScroll: false,
-  //     allowClose: false,
-  //     onHighlightStarted: (element) => {
-  //       if (element) {
-  //         element.setAttribute("tabIndex", "0");
-  //         element.setAttribute("id", Elements.STAIRS_HIGHLIGHTED_CHUNK);
-
-  //         // append link to jump to the finish reading button
-  //         const link = document.createElement("a");
-  //         link.href = `#${Elements.STAIRS_RETURN_BUTTON}`;
-  //         link.textContent = "go to the finish reading button";
-  //         link.className = "sr-only";
-  //         link.id = Elements.STAIRS_ANSWER_LINK;
-  //         element.insertAdjacentElement("afterend", link);
-  //       }
-  //     },
-  //     onHighlighted: () => {
-  //       setInertBackground(randomChunkSlug);
-  //     },
-  //     onPopoverRender: (popover) => {
-  //       portalId.current = addPortal(
-  //         <FinishReadingButton
-  //           onClick={(time) => {
-  //             exitChunk();
-
-  //             createEventAction({
-  //               type: EventType.RANDOM_REREAD,
-  //               pageSlug,
-  //               data: { chunkSlug: randomChunkSlug, time },
-  //             });
-  //           }}
-  //         />,
-  //         popover.wrapper
-  //       );
-  //     },
-  //     onDestroyed: (element) => {
-  //       removeInert();
-  //       removePortals();
-  //       if (element) {
-  //         element.removeAttribute("tabIndex");
-  //         element.removeAttribute("id");
-
-  //         const link = document.getElementById(Elements.STAIRS_ANSWER_LINK);
-  //         if (link) {
-  //           link.remove();
-  //         }
-  //       }
-
-  //       const assignments = document.getElementById(Elements.PAGE_ASSIGNMENTS);
-  //       if (assignments) {
-  //         setTimeout(() => {
-  //           scrollToElement(element as HTMLElement);
-  //         }, 100);
-  //       }
-  //       document.getElementById(Elements.SUMMARY_INPUT)?.focus();
-  //     },
-  //   });
-  // }, [addPortal, pageSlug, randomChunkSlug, removePortals]);
+  });
 
   useEffect(() => {
     if (error) {

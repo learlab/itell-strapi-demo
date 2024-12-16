@@ -14,6 +14,8 @@ const useDriverConfig = ({
   driverObj,
   pageSlug, 
   randomChunkSlug, 
+  addPortal,
+  removePortals,
   stairsDataRef, 
   summaryResponseRef, 
   stairsAnsweredRef, 
@@ -23,14 +25,14 @@ const useDriverConfig = ({
   driverObj: any,
   pageSlug: string,
   randomChunkSlug: string | null,
+  addPortal: any,
+  removePortals: any,
   stairsDataRef: any,
   summaryResponseRef: any,
   stairsAnsweredRef: any,
   createEventAction: any,
   FinishReadingButton: any,
 }) => {
-  console.log("we here")
-  const { addPortal, removePortals } = usePortal();
   const portalId = useRef<string | null>(null);
   useEffect(() => {
     driverObj.setConfig({

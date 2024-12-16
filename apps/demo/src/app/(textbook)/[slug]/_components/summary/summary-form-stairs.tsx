@@ -90,7 +90,7 @@ export function SummaryFormStairs({
 }: Props) {
   const pageSlug = page.slug;
   const isLast = isLastPage(page);
-  const { portals } = usePortal();
+  const { portals, addPortal, removePortals } = usePortal();
   const router = useRouter();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -184,6 +184,7 @@ export function SummaryFormStairs({
             if (parsed.success) {
               summaryResponseRef.current = parsed.data;
               summaryStore.send({ type: "scored", response: parsed.data });
+              console.log("success")
               finishStage("Scoring");
             } else {
               clearStages();
@@ -199,7 +200,9 @@ export function SummaryFormStairs({
               return;
             }
           } else {
+            console.log("in here")
             if (summaryResponseRef.current?.is_passed) {
+              console.log("is passed, skipping");
               // if the summary passed, we don't need to process later chunks
               // note that if the user pass by summary amount
               // question will still be generated but will not be asked
@@ -211,6 +214,7 @@ export function SummaryFormStairs({
               addStage("Analyzing");
             }
             if (chunk) {
+              console.log("chunk", chunk);
               stairsChunk = chunk;
             }
           }
@@ -282,13 +286,16 @@ export function SummaryFormStairs({
           input,
         });
 
+        console.log("can proceed", data.canProceed, stairsDataRef);
         if (stairsDataRef.current) {
           summaryStore.send({
             type: "stairs",
             data: stairsDataRef.current,
           });
 
-          if (!data.canProceed && !pageStatus.unlocked) {
+
+          console.log(stairsDataRef.current)
+          if (!data.canProceed) {
             goToQuestion(stairsDataRef.current);
           }
         }
@@ -327,6 +334,8 @@ export function SummaryFormStairs({
     driverObj,
     pageSlug,
     stairsDataRef,
+    addPortal,
+    removePortals,
     randomChunkSlug: null,
     summaryResponseRef,
     stairsAnsweredRef,
