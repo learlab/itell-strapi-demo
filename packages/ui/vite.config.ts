@@ -28,7 +28,7 @@ const app = async (): Promise<UserConfigExport> => {
           "next/navigation",
           "next/link",
           "lucide-react",
-          "framer-motion",
+          "motion/react",
           "recharts",
         ],
         plugins: [visualizer() as any, preserveDirectives() as any],

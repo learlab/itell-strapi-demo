@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 import { cn } from "@itell/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 
 import { Button } from "./button.js";
 import { Spinner } from "./spinner.js";

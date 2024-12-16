@@ -117,6 +117,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
 
     const newPersonalization = updatePersonalizationSummaryStreak(user, {
       isSummaryPassed: true,
+      isExcellent: false,
     });
 
     const [_, err] = await execute({

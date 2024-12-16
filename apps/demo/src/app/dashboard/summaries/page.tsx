@@ -1,16 +1,20 @@
 import { redirect } from "next/navigation";
-import { Card, CardContent } from "@itell/ui/card";
+import { Elements } from "@itell/constants";
+import { Card, CardContent, CardDescription, CardHeader } from "@itell/ui/card";
 import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 import { SummaryChart } from "@summaries/summary-chart";
 import { SummaryList } from "@summaries/summary-list";
+import { firstPage } from "tests/utils";
 
 import { incrementViewAction } from "@/actions/dashboard";
 import { getSummariesAction } from "@/actions/summary";
+import { NavigationButton } from "@/components/navigation-button";
 import { Meta } from "@/config/metadata";
 import { Summary } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
-import { allPagesSorted } from "@/lib/pages/pages.server";
+import { allPagesSorted, firstAssignmentPage } from "@/lib/pages/pages.server";
+import { makePageHref } from "@/lib/utils";
 import { SummaryListSelect } from "./_components/summary-list-select";
 
 export default async function Page(props: { searchParams: Promise<unknown> }) {
@@ -26,6 +30,32 @@ export default async function Page(props: { searchParams: Promise<unknown> }) {
   const [summaries, err] = await getSummariesAction({});
   if (err) {
     throw new Error("failed to get summaries", { cause: err });
+  }
+
+  if (summaries.length === 0) {
+    return (
+      <DashboardShell>
+        <DashboardHeader
+          heading={Meta.summaries.title}
+          text={Meta.summaries.description}
+        />
+        <Card>
+          <CardHeader>
+            <CardDescription>No summary found.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <NavigationButton
+              href={`${makePageHref(
+                user.pageSlug ?? firstAssignmentPage?.slug ?? firstPage.slug
+              )}#${Elements.PAGE_ASSIGNMENTS}`}
+              className="px-4"
+            >
+              Write first summary
+            </NavigationButton>
+          </CardContent>
+        </Card>
+      </DashboardShell>
+    );
   }
 
   const summariesWithPage = summaries
@@ -109,11 +139,7 @@ export default async function Page(props: { searchParams: Promise<unknown> }) {
                 failed
               </p>
             </div>
-            {summaries.length > 0 ? (
-              <SummaryList data={summariesByPage} />
-            ) : (
-              <p>No summaries yet.</p>
-            )}
+            <SummaryList data={summariesByPage} />
           </div>
         </CardContent>
       </Card>

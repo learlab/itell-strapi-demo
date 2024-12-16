@@ -34,7 +34,7 @@ export function ChatItems({
     >
       <div className="flex-1 flex-grow space-y-2" role="status">
         {prevData?.map((message) => {
-          return <MessageItem key={message.id} message={message} />;
+          return <MessageItemMemo key={message.id} message={message} />;
         })}
         {prevData && prevData.length > 0 ? (
           <div className="my-4 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
@@ -47,13 +47,7 @@ export function ChatItems({
         ) : null}
         <MessageItemMemo message={initialMessage} />
         {data.map((message) => {
-          return (
-            <MessageItemMemo
-              key={message.id}
-              message={message}
-              shouldAnimate={!message.isUser}
-            />
-          );
+          return <MessageItemMemo key={message.id} message={message} />;
         })}
       </div>
     </div>
@@ -74,13 +68,7 @@ const components = {
 
 const MessageItemMemo = React.memo(MessageItem);
 
-function MessageItem({
-  message,
-  shouldAnimate = false,
-}: {
-  message: Message;
-  shouldAnimate?: boolean;
-}) {
+function MessageItem({ message }: { message: Message }) {
   const isPending = message.text === "";
 
   return (
@@ -118,21 +106,12 @@ function MessageItem({
               "bg-accent": message.isUser,
             })}
           >
-            {shouldAnimate ? (
-              <AnimatedText
-                text={message.text}
-                node={message.node}
-                context={message.context}
-                transform={message.transform}
-              />
-            ) : (
-              <MessageRenderer
-                text={message.text}
-                node={message.node}
-                context={message.context}
-                transform={message.transform}
-              />
-            )}
+            <MessageRenderer
+              text={message.text}
+              node={message.node}
+              context={message.context}
+              transform={message.transform}
+            />
           </div>
         )}
       </div>
@@ -141,11 +120,6 @@ function MessageItem({
 }
 
 type DisplayMessage = Pick<Message, "text" | "context" | "node" | "transform">;
-function AnimatedText(props: DisplayMessage) {
-  const animatedText = useAnimatedText(props.text, { ease: "circInOut" });
-
-  return <MessageRenderer {...props} text={animatedText} />;
-}
 
 function MessageRenderer({ text, context, node, transform }: DisplayMessage) {
   const router = useRouter();

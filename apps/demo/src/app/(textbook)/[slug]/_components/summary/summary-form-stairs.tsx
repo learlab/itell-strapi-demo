@@ -40,6 +40,7 @@ import {
   useSummaryStore,
 } from "@/components/provider/page-provider";
 import { Callout } from "@/components/ui/callout";
+import { rocketBlast } from "@/lib/animations";
 import { apiClient } from "@/lib/api-client";
 import { Condition } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
@@ -270,6 +271,11 @@ export function SummaryFormStairs({
 
         clearKeystroke();
         finishStage("Saving");
+
+        if (data.isExcellent) {
+          const blastYPos = window.innerHeight - 10;
+          rocketBlast(blastYPos);
+        }
 
         if (data.canProceed) {
           if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {

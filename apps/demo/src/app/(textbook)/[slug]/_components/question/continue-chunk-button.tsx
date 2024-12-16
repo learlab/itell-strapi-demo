@@ -3,12 +3,13 @@
 import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
-import { motion } from "framer-motion";
 import { MoveDownIcon } from "lucide-react";
+import { motion } from "motion/react";
 
 import { createEventAction } from "@/actions/event";
 import { useQuestionStore } from "@/components/provider/page-provider";
-import { animationProps, EventType } from "@/lib/constants";
+import { buttonAnimationProps } from "@/lib/animations";
+import { EventType } from "@/lib/constants";
 import { SelectChunkStatus } from "@/lib/store/question-store";
 import type { Button } from "@itell/ui/button";
 
@@ -38,7 +39,7 @@ export function ContinueChunkButton({ chunkSlug, pageSlug, condition }: Props) {
 
   return (
     <motion.button
-      {...animationProps}
+      {...buttonAnimationProps}
       className={cn(
         "relative w-56 rounded-lg px-6 py-2 font-medium backdrop-blur-xl transition-[box-shadow] duration-300 ease-in-out hover:shadow dark:bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/10%)_0%,transparent_60%)] dark:hover:shadow-[0_0_20px_hsl(var(--primary)/10%)]",
         buttonVariants({ variant: "default" })

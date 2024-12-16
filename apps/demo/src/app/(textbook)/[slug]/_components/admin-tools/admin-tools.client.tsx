@@ -14,6 +14,7 @@ import {
 import { Button } from "@itell/ui/button";
 import { Label } from "@itell/ui/label";
 import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
+import { ScrollArea } from "@itell/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -117,6 +118,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
 
     const newPersonalization = updatePersonalizationSummaryStreak(user, {
       isSummaryPassed: true,
+      isExcellent: false,
     });
 
     const [_, err] = await execute({
@@ -201,11 +203,13 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Page</SelectLabel>
-                    {pages.map((page) => (
-                      <SelectItem key={page.slug} value={page.slug}>
-                        {page.title}
-                      </SelectItem>
-                    ))}
+                    <ScrollArea className="h-[300px]">
+                      {pages.map((page) => (
+                        <SelectItem key={page.slug} value={page.slug}>
+                          {page.title}
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
                   </SelectGroup>
                 </SelectContent>
               </Select>

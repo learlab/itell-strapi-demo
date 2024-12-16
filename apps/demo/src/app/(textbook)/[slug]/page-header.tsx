@@ -8,11 +8,11 @@ import { cn } from "@itell/utils";
 import { Page } from "#content";
 import { PinIcon, TableOfContentsIcon } from "lucide-react";
 
+import { PAGE_HEADER_PIN_COOKIE } from "@/lib/constants";
+import { setCookie } from "@/lib/cookie";
 import { PageStatus } from "@/lib/page-status";
 import { NoteCount } from "./_components/note/note-count";
 import { PageStatusInfo } from "./_components/page-status-info";
-import { setCookie } from "@/lib/cookie";
-import { PAGE_HEADER_PIN_COOKIE } from "@/lib/constants";
 
 export function PageHeader({
   page,
@@ -59,7 +59,7 @@ export function PageHeader({
       )}
     >
       <div className="flex items-center gap-4">
-        <h2 className="text-lg font-medium tracking-tight text-balance">
+        <h2 className="text-balance text-lg font-medium tracking-tight">
           {page.title}
         </h2>
         <TableOfContents page={page} />
@@ -76,7 +76,7 @@ export function PageHeader({
           }}
         >
           <PinIcon
-            className={cn("transition-all size-4 rotate-45", {
+            className={cn("size-4 rotate-45 transition-all", {
               "rotate-0": !shouldAutoHide,
             })}
           />
@@ -129,11 +129,21 @@ function TableOfContents({ page }: { page: Page }) {
   }, [page]);
 
   return (
-    <div className="hidden lg:flex items-center gap-2">
+    <div className="hidden items-center gap-2 lg:flex">
       <Popover>
-        <PopoverTrigger>
-          <span className="sr-only">Table of Contents</span>
-          <TableOfContentsIcon className="size-4" />
+        <PopoverTrigger aria-label="Table of Contents">
+          <div className="flex items-center gap-2">
+            <TableOfContentsIcon className="size-4" />
+            <p
+              className={cn(
+                "font-light",
+                _activeHeading !== page.chunks[0].slug && "fade-in2"
+              )}
+              key={activeHeadingTitle}
+            >
+              {activeHeadingTitle}
+            </p>
+          </div>
         </PopoverTrigger>
         <PopoverContent>
           <ul className="flex flex-col gap-2">
@@ -155,15 +165,6 @@ function TableOfContents({ page }: { page: Page }) {
           </ul>
         </PopoverContent>
       </Popover>
-      <p
-        className={cn(
-          "font-light",
-          _activeHeading !== page.chunks[0].slug && "fade-in2"
-        )}
-        key={activeHeadingTitle}
-      >
-        {activeHeadingTitle}
-      </p>
     </div>
   );
 }
