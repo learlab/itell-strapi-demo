@@ -1,8 +1,7 @@
 "use server";
 
-import { cache } from "react";
 import { revalidateTag } from "next/cache";
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
@@ -17,6 +16,7 @@ import {
 import {
   Condition,
   EventType,
+  EXCELLENT_SUMMARY_THRESHOLD,
   isProduction,
   PAGE_SUMMARY_THRESHOLD,
   Tags,
@@ -43,7 +43,11 @@ export const createSummaryAction = authedProcedure
     })
   )
   .output(
-    z.object({ nextPageSlug: z.string().nullable(), canProceed: z.boolean() })
+    z.object({
+      nextPageSlug: z.string().nullable(),
+      canProceed: z.boolean(),
+      isExcellent: z.boolean(),
+    })
   )
   .handler(async ({ input, ctx }) => {
     let shouldRevalidate = false;
@@ -65,6 +69,23 @@ export const createSummaryAction = authedProcedure
         canProceed = record.count + 1 >= PAGE_SUMMARY_THRESHOLD;
       }
 
+      // Evaluate whether a summary is an "Excellent" summary (> the content score at a percentile defined by EXCELLENT_SUMMARY_THRESHOLD)
+      const excellentThreshold = first(
+        await tx
+          .select({
+            score: sql<number>`
+          percentile_disc(${1 - EXCELLENT_SUMMARY_THRESHOLD})
+          within group (order by ${summaries.contentScore})
+        `,
+          })
+          .from(summaries)
+          .where(isNotNull(summaries.contentScore))
+      );
+
+      const isExcellent = input.summary.contentScore
+        ? input.summary.contentScore > (excellentThreshold?.score ?? Infinity)
+        : false;
+
       // create summary record
       const { summaryId } = (
         await tx
@@ -72,6 +93,7 @@ export const createSummaryAction = authedProcedure
           .values({
             ...input.summary,
             userId: ctx.user.id,
+            isExcellent,
           })
           .returning({ summaryId: summaries.id })
       )[0];
@@ -106,6 +128,7 @@ export const createSummaryAction = authedProcedure
           ctx.user,
           {
             isSummaryPassed: input.summary.isPassed,
+            isExcellent: isExcellent,
           }
         );
 
@@ -127,6 +150,7 @@ export const createSummaryAction = authedProcedure
           ? nextPageSlug
           : ctx.user.pageSlug,
         canProceed,
+        isExcellent,
       };
     });
 
