@@ -7,7 +7,6 @@ import {
   useDebounce,
   useIsMobile,
   useKeystroke,
-  usePortal,
   useTimer,
 } from "@itell/core/hooks";
 import { PortalContainer } from "@itell/core/portal-container";
@@ -17,7 +16,7 @@ import {
   SummaryResponseSchema,
   validateSummary,
 } from "@itell/core/summary";
-import { driver} from "@itell/driver.js";
+import { driver } from "@itell/driver.js";
 import { Button } from "@itell/ui/button";
 import { getChunkElement } from "@itell/utils";
 import { useSelector } from "@xstate/store/react";
@@ -27,7 +26,6 @@ import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
-import { createEventAction } from "@/actions/event";
 import {
   createSummaryAction,
   getSummaryScoreRequestAction,
@@ -59,18 +57,16 @@ import {
   SelectStairs,
 } from "@/lib/store/summary-store";
 import { makePageHref, reportSentry, scrollToElement } from "@/lib/utils";
-import {
-  SummaryResponseFeedback,
-} from "./summary-feedback";
+import { SummaryResponseFeedback } from "./summary-feedback";
 import {
   getSummaryLocal,
   saveSummaryLocal,
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
+import useDriver from "./use-driver";
 import type { StairsQuestion } from "@/lib/store/summary-store";
 import type { SummaryResponse } from "@itell/core/summary";
-import useDriverConfig from "./summary-driver-hook";
 
 interface Props {
   user: User;
@@ -91,7 +87,6 @@ export function SummaryFormStairs({
 }: Props) {
   const pageSlug = page.slug;
   const isLast = isLastPage(page);
-  const { portals, addPortal, removePortals } = usePortal();
   const router = useRouter();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
 
@@ -329,17 +324,13 @@ export function SummaryFormStairs({
     }
   }, [isNextPageVisible]);
 
-  useDriverConfig({
-    driverObj,
+  const { portals } = useDriver(driverObj, {
     pageSlug,
-    stairsDataRef,
-    addPortal,
-    removePortals,
-    randomChunkSlug: null,
-    summaryResponseRef,
-    stairsAnsweredRef,
-    createEventAction,
-    FinishReadingButton,
+    condition: Condition.STAIRS,
+    stairsData: stairsDataRef,
+    summaryResponse: summaryResponseRef,
+    stairsAnswered: stairsAnsweredRef,
+    exitButton: FinishReadingButton,
   });
 
   useEffect(() => {

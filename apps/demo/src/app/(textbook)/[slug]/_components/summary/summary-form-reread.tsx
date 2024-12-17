@@ -26,7 +26,6 @@ import { SendHorizontalIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 
-import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import {
@@ -46,14 +45,16 @@ import {
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
+import useDriver from "./use-driver";
 import type { SummaryResponse } from "@itell/core/summary";
-import useDriverConfig from "./summary-driver-hook";
 
 type Props = {
   user: User;
   page: Page;
   pageStatus: PageStatus;
 };
+
+const driverObj = driver();
 
 export function SummaryFormReread({ user, page, pageStatus }: Props) {
   const pageSlug = page.slug;
@@ -70,7 +71,6 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
     return validChunks[Math.floor(Math.random() * validChunks.length)].slug;
   }, [page]);
 
-  const { portals, addPortal, removePortals } = usePortal();
   const { addStage, clearStages, finishStage, stages } = useSummaryStage();
   const requestBodyRef = useRef<string>("");
   const summaryResponseRef = useRef<SummaryResponse | null>(null);
@@ -96,7 +96,6 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         summary: input,
         page_slug: pageSlug,
       });
-      console.log("requestBody", requestBodyRef.current);
       const apiResponse = await apiClient.api.summary.$post({
         json: {
           summary: input,
@@ -160,17 +159,11 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
   );
   const isPending = useDebounce(_isPending, 100);
 
-  useDriverConfig({
-    driverObj,
+  const { portals } = useDriver(driverObj, {
     pageSlug,
+    condition: Condition.RANDOM_REREAD,
     randomChunkSlug,
-    addPortal, 
-    removePortals,
-    stairsDataRef: null,
-    stairsAnsweredRef: null,
-    summaryResponseRef,
-    createEventAction,
-    FinishReadingButton,
+    exitButton: FinishReadingButton,
   });
 
   useEffect(() => {
@@ -241,12 +234,6 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
     </>
   );
 }
-
-const driverObj = driver();
-
-const exitChunk = () => {
-  driverObj.destroy();
-};
 
 function FinishReadingButton({ onClick }: { onClick: (_: number) => void }) {
   const { time, clearTimer } = useTimer();
