@@ -9,16 +9,16 @@ export const getUserCondition = (user: User, pageSlug: string) => {
 };
 
 export const getPageConditions = (pages: Page[]): Record<string, string> => {
-  return Object.fromEntries(pages.map((page) => [page.slug, Condition.STAIRS]));
-  // const groups = getUniqueGroups(pages);
-  // const shuffledGroups = shuffle(groups);
-  // const groupConditions = assignConditionsToGroups(shuffledGroups);
+  // return Object.fromEntries(pages.map((page) => [page.slug, Condition.STAIRS]));
+  const groups = getUniqueGroups(pages);
+  const shuffledGroups = shuffle(groups);
+  const groupConditions = assignConditionsToGroups(shuffledGroups);
 
-  // return pages.reduce<Record<string, string>>((acc, page) => {
-  //   const group = page.parent?.slug ?? page.slug;
-  //   acc[page.slug] = groupConditions[group];
-  //   return acc;
-  // }, {});
+  return pages.reduce<Record<string, string>>((acc, page) => {
+    const group = page.parent?.slug ?? page.slug;
+    acc[page.slug] = groupConditions[group];
+    return acc;
+  }, {});
 };
 
 const getUniqueGroups = (pages: Page[]) => {
