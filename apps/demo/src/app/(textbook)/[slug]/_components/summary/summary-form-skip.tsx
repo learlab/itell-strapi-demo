@@ -94,27 +94,6 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
     }
   }, [error, page]);
 
-  useEffect(() => {
-    if (isLastPage(page)) {
-      toast.info("You have finished the entire textbook!");
-    } else {
-      const title = "You can now move on 👏";
-      toast(title, {
-        className: "toast",
-        description: "Move to the next page to continue reading",
-        duration: 5000,
-        action: page.next_slug
-          ? {
-              label: "Proceed",
-              onClick: () => {
-                router.push(makePageHref(page.next_slug));
-              },
-            }
-          : undefined,
-      });
-    }
-  }, [isNextPageVisible]);
-
   if (!isSummaryReady) {
     return (
       <div className="flex flex-col gap-2">

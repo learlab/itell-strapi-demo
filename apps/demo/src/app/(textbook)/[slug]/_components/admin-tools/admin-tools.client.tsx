@@ -157,8 +157,9 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
         <SheetHeader>
           <SheetTitle>Configure ITELL</SheetTitle>
           <SheetDescription className="text-left">
-            You can view this because you are recognized as an admin. Apply the
-            configuration by clicking &quot;Save Changes&quot;.
+            You can view this because you are recognized as an admin. Click
+            &quot;Apply Changes&quot; at the bottom to reload the page with the
+            new settings.
           </SheetDescription>
         </SheetHeader>
         <form className="grid gap-8 py-4" onSubmit={onSubmit}>
@@ -198,7 +199,10 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
             <legend className="font-semibold">Progress</legend>
             <Label className="flex flex-col gap-2 font-normal">
               <p className="font-semibold">Set your progress to a page</p>
-              <Select name="page-progress">
+              <Select
+                name="page-progress"
+                defaultValue={user.pageSlug ?? undefined}
+              >
                 <SelectTrigger className="h-fit text-left">
                   <SelectValue placeholder="Select page" />
                 </SelectTrigger>
@@ -233,10 +237,10 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
             <legend className="font-semibold">Streak</legend>
             <Label className="flex flex-col gap-2 font-normal">
               <p className="font-semibold">Set your summary streak</p>
-              <p className="text-sm text-muted-foreground">
-                Current streak: {user.personalization.summary_streak}
-              </p>
-              <Select name="summary-streak">
+              <Select
+                name="summary-streak"
+                defaultValue={String(user.personalization.summary_streak ?? 0)}
+              >
                 <SelectTrigger className="h-fit text-left">
                   <SelectValue placeholder="Select summary streak" />
                 </SelectTrigger>
@@ -256,7 +260,7 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
 
           <footer className="flex justify-end">
             <Button type="submit" disabled={isPending} pending={isPending}>
-              Save changes
+              Apply Changes
             </Button>
           </footer>
 
