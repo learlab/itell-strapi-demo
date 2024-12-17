@@ -61,14 +61,23 @@ export function PageAssignments({ page, pageStatus, user, condition }: Props) {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2">Summary</CardTitle>
           <CardDescription>
-            You can unlock the next page by submitting{" "}
-            <Link
-              href={`#${SUMMARY_DESCRIPTION_ID}`}
-              className="font-semibold text-info underline underline-offset-4"
-            >
-              a good summary
-            </Link>{" "}
-            of this page
+            {pageStatus.unlocked ? (
+              <>
+                You have finished this page, you are still welcome to improve
+                the summary.
+              </>
+            ) : (
+              <>
+                You can unlock the next page by submitting{" "}
+                <Link
+                  href={`#${SUMMARY_DESCRIPTION_ID}`}
+                  className="font-semibold text-info underline underline-offset-4"
+                >
+                  a good summary
+                </Link>{" "}
+                of this page
+              </>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
