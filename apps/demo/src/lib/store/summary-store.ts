@@ -14,16 +14,20 @@ export type StairsQuestion = {
 export type SummaryStore = ReturnType<typeof createSummaryStore>;
 export const createSummaryStore = ({
   pageStatus,
+  showFloatingSummary,
 }: {
   pageStatus: PageStatus;
+  showFloatingSummary: boolean;
 }) => {
   return createStoreWithProducer(produce, {
     context: {
+      input: undefined as string | undefined,
       prevInput: undefined as string | undefined,
       error: null as ErrorType | null,
       response: null as SummaryResponse | null,
       stairsQuestion: null as StairsQuestion | null,
       isNextPageVisible: pageStatus.unlocked,
+      showFloatingSummary,
     },
     on: {
       submit: (context) => {
@@ -37,6 +41,13 @@ export const createSummaryStore = ({
       },
       stairs: (context, event: { data: StairsQuestion }) => {
         context.stairsQuestion = event.data;
+      },
+      setInput: (context, event: { input: string }) => {
+        context.input = event.input;
+      },
+      toggleShowFloatingSummary: (context, event: any, { emit }) => {
+        context.showFloatingSummary = !context.showFloatingSummary;
+        emit({ type: "toggleShowFloatingSummary" });
       },
       finishPage: (
         context,
@@ -54,6 +65,8 @@ export const createSummaryStore = ({
 };
 
 type Selector<T> = (_: SnapshotFromStore<SummaryStore>) => T;
+export const SelectInput: Selector<string | undefined> = (state) =>
+  state.context.input;
 export const SelectResponse: Selector<SummaryResponse | null> = (state) =>
   state.context.response;
 export const SelectPrevInput: Selector<string | undefined> = (state) =>
@@ -64,3 +77,5 @@ export const SelectStairs: Selector<StairsQuestion | null> = (state) =>
   state.context.stairsQuestion;
 export const SelectError: Selector<ErrorType | null> = (state) =>
   state.context.error;
+export const SelectShowFloatingSummary: Selector<boolean> = (state) =>
+  state.context.showFloatingSummary;

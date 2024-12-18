@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Elements } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
 import { levenshteinDistance } from "@itell/core/summary";
@@ -12,13 +12,17 @@ import {
   TooltipTrigger,
 } from "@itell/ui/tooltip";
 import { cn, numOfWords } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
 import { InfoIcon } from "lucide-react";
 import pluralize from "pluralize";
 import { toast } from "sonner";
+
+import { useSummaryStore } from "@/components/provider/page-provider";
 import { isAdmin } from "@/lib/auth/role";
 import { isProduction } from "@/lib/constants";
 import { type StageItem } from "@/lib/hooks/use-summary-stage";
 import { useSafeSearchParams } from "@/lib/navigation";
+import { SelectInput } from "@/lib/store/summary-store";
 import { makeInputKey } from "@/lib/utils";
 import { SummaryProgress } from "./summary-progress";
 import type { RefObject } from "react";
@@ -59,22 +63,31 @@ export const SummaryInput = ({
   ref,
 }: Props) => {
   const { summary } = useSafeSearchParams("textbook");
-  const text = summary
-    ? Buffer.from(summary, "base64").toString("ascii")
-    : value;
-  const [input, setInput] = useState(text);
-  const debounced = useDebounce(input, 500);
+  const summaryStore = useSummaryStore();
+  const input = useSelector(summaryStore, SelectInput);
+
+  useEffect(() => {
+    // initialize summary text
+    // 1. from searchParams, base64 encoded
+    // 2. from local storage
+    // 3. from value prop
+    const savedSummary = getSummaryLocal(pageSlug);
+    summaryStore.send({
+      type: "setInput",
+      input: summary
+        ? Buffer.from(summary, "base64").toString("ascii")
+        : savedSummary
+          ? savedSummary
+          : value,
+    });
+  }, [pageSlug, summary, summaryStore, value]);
+
+  const debouncedInput = useDebounce(input, 500);
 
   const distance =
     enableSimilarity && prevInput
-      ? levenshteinDistance(debounced, prevInput)
+      ? levenshteinDistance(debouncedInput || "", prevInput)
       : undefined;
-
-  useEffect(() => {
-    if (!summary) {
-      setInput(getSummaryLocal(pageSlug) ?? value);
-    }
-  }, [pageSlug, summary, value]);
 
   return (
     <div className="relative">
@@ -83,7 +96,7 @@ export const SummaryInput = ({
         aria-hidden="true"
         className="z-1 absolute bottom-2 right-2 text-sm font-light opacity-70"
       >
-        {pluralize("word", numOfWords(input), true)}
+        {pluralize("word", numOfWords(input ?? ""), true)}
       </p>
 
       <Label>
@@ -97,7 +110,10 @@ export const SummaryInput = ({
           disabled={disabled}
           placeholder="Write your summary here"
           onChange={(e) => {
-            setInput(e.currentTarget.value);
+            summaryStore.send({
+              type: "setInput",
+              input: e.currentTarget.value,
+            });
           }}
           rows={10}
           onPaste={(e) => {
@@ -134,8 +150,9 @@ function Distance({ distance }: { distance: number }) {
     <div className="mb-2 flex items-center gap-2">
       <div className="relative h-8 flex-1 overflow-hidden rounded-full bg-accent">
         <div
-          className={`absolute left-0 top-0 h-full transition-all duration-300 ease-out ${distance >= distanceThreshold ? "bg-info" : "bg-warning"
-            }`}
+          className={`absolute left-0 top-0 h-full transition-all duration-300 ease-out ${
+            distance >= distanceThreshold ? "bg-info" : "bg-warning"
+          }`}
           style={{ width: `${String(distance)}%` }}
         />
         <div

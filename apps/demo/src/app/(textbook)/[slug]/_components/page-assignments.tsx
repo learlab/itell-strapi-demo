@@ -10,11 +10,16 @@ import {
 } from "@itell/ui/card";
 import { Page } from "#content";
 import { type User } from "lucia";
+import { createPortal } from "react-dom";
 
 import { Condition, SUMMARY_DESCRIPTION_ID } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { FinishedPrompt } from "./finished-prompt";
 import { PageQuizModal } from "./page-quiz-modal";
+import {
+  FloatingSummary,
+  ToggleShowFloatingSummary,
+} from "./summary/floating-summary";
 import { SummaryCount } from "./summary/summary-count";
 import { SummaryDescription } from "./summary/summary-description";
 import { SummaryFormReread } from "./summary/summary-form-reread";
@@ -59,7 +64,10 @@ export function PageAssignments({ page, pageStatus, user, condition }: Props) {
     <AssignmentsShell>
       <Card className="border-info">
         <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2">Summary</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <span>Summary</span>
+            <ToggleShowFloatingSummary />
+          </CardTitle>
           <CardDescription>
             You can unlock the next page by submitting{" "}
             <Link
@@ -102,7 +110,10 @@ export function PageAssignments({ page, pageStatus, user, condition }: Props) {
             />
           ) : null}
           {condition !== Condition.SIMPLE ? (
-            <SummaryDescription condition={condition} />
+            <>
+              <SummaryDescription condition={condition} />
+              <FloatingSummary />
+            </>
           ) : null}
         </CardContent>
       </Card>

@@ -47,6 +47,11 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     page.quiz ? false : undefined
   );
 
+  const [showFloatingSummary, setShowFloatingSummary] = useLocalStorage(
+    "show-floating-summary",
+    false
+  );
+
   const chunkQuestion = useMemo(() => {
     return getPageQuestions(page);
   }, [page]);
@@ -72,6 +77,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
   if (!summaryStoreRef.current) {
     summaryStoreRef.current = createSummaryStore({
       pageStatus,
+      showFloatingSummary,
     });
   }
 
@@ -86,6 +92,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
   useEffect(() => {
     let questionSubscription: Subscription | undefined;
     let quizSubscription: Subscription | undefined;
+    let summarySubscription: Subscription | undefined;
     if (questionStoreRef.current) {
       questionSubscription = questionStoreRef.current.subscribe((state) => {
         setSnapshot(state.context);
@@ -98,11 +105,21 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
       });
     }
 
+    if (summaryStoreRef.current) {
+      summarySubscription = summaryStoreRef.current.on(
+        "toggleShowFloatingSummary",
+        () => {
+          setShowFloatingSummary((prev) => !prev);
+        }
+      );
+    }
+
     return () => {
       questionSubscription?.unsubscribe();
       quizSubscription?.unsubscribe();
+      summarySubscription?.unsubscribe();
     };
-  }, []);
+  }, [setQuizFinished, setShowFloatingSummary, setSnapshot]);
 
   return (
     <PageContext.Provider
@@ -182,7 +199,7 @@ const getPageQuestions = (page: Page): ChunkQuestion => {
     });
 
     // Each page will have at least one question
-     
+
     if (!withQuestion) {
       const randomQuestion =
         page.cri[Math.floor(Math.random() * page.cri.length)];
