@@ -49,7 +49,7 @@ export function Chat({ pageSlug, pageTitle, updatedAt, data }: Props) {
     );
 
     setIsCompact(hasOverlap);
-  }, []);
+  }, [isCompact]);
 
   useEffect(() => {
     const anchor = document.getElementById(Elements.PAGE_ASSIGNMENTS);
