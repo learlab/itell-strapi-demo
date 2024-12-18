@@ -96,7 +96,7 @@ export const users = pgTable("users", {
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
   surveyCompleted: boolean("survey_completed").default(false).notNull(),
-  consentGiven: boolean("consent_given").default(false),
+  consentGiven: boolean("consent_given"),
   personalization: jsonb("personalization_data").$type<PersonalizationData>(),
   conditionAssignments: jsonb("condition_assignments")
     .$type<ConditionAssignments>()
@@ -127,6 +127,7 @@ export const PersonalizationDataSchema = z
   })
   .partial();
 
+const s = createInsertSchema(users);
 export const CreateUserSchema = createInsertSchema(users, {
   preferences: UserPreferencesSchema.optional(),
   personalization: PersonalizationDataSchema.optional(),

@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "consent_given" DROP DEFAULT;

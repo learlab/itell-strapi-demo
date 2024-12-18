@@ -72,7 +72,7 @@ interface DatabaseUserAttributes {
   role: string;
   finished: boolean;
   surveyCompleted: boolean;
-  consentGiven: boolean;
+  consentGiven: boolean | null;
   classId: string | null;
   pageSlug: string | null;
   conditionAssignments: ConditionAssignments;

@@ -16,10 +16,12 @@ export const { routes, useSafeParams, useSafeSearchParams } =
         .object({
           error: z.string().optional(),
           join_class_code: z.string().optional(),
+          redirect_to: z.string().optional(),
         })
         .default({
           error: undefined,
           join_class_code: undefined,
+          redirect_to: undefined,
         }),
     }),
     textbook: defineRoute("/[slug]", {
