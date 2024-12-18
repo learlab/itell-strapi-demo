@@ -15,6 +15,20 @@
       "when": 1734380417548,
       "tag": "0001_amusing_stephen_strange",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734548702191,
+      "tag": "0002_bored_ronan",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1734549317893,
+      "tag": "0003_vengeful_blizzard",
+      "breakpoints": true
     }
   ]
 }

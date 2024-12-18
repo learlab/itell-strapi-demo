@@ -95,7 +95,8 @@ export const users = pgTable("users", {
   classId: text("class_id"),
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
-  survey_completed: boolean("survey_completed").default(false).notNull(),
+  surveyCompleted: boolean("survey_completed").default(false).notNull(),
+  consentGiven: boolean("consent_given").default(false),
   personalization: jsonb("personalization_data").$type<PersonalizationData>(),
   conditionAssignments: jsonb("condition_assignments")
     .$type<ConditionAssignments>()
@@ -365,3 +366,17 @@ export const ChatMessageDataSchema = z.object({
 
 export type ChatMessageData = z.infer<typeof ChatMessageDataSchema>;
 export type FocusTimeData = Record<string, number>;
+
+export const survey_answers = pgTable("survey_answers", {
+  id: serial("id").primaryKey().notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  surveyType: text("survey_type").notNull(),
+  data: jsonb("data"),
+  createdAt: CreatedAt,
+});
+
+export const CreateSurveySchema = createInsertSchema(survey_answers);
+export const UpdateSurveySchema = CreateSurveySchema.partial();
+export type SurveyAnswer = InferSelectModel<typeof survey_answers>;
