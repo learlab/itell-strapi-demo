@@ -28,9 +28,11 @@ export const lucia = new Lucia(adapter, {
       email: attributes.email,
       role: attributes.role,
       conditionAssignments: attributes.conditionAssignments,
-      finished: attributes.finished,
-      classId: attributes.classId,
       pageSlug: attributes.pageSlug,
+      finished: attributes.finished,
+      consentGiven: attributes.consentGiven,
+      surveyCompleted: attributes.surveyCompleted,
+      classId: attributes.classId,
       personalization: {
         summary_streak: attributes.personalization?.summary_streak ?? 0,
         max_summary_streak: attributes.personalization?.max_summary_streak ?? 0,
@@ -69,6 +71,8 @@ interface DatabaseUserAttributes {
   email: string | null;
   role: string;
   finished: boolean;
+  surveyCompleted: boolean;
+  consentGiven: boolean | null;
   classId: string | null;
   pageSlug: string | null;
   conditionAssignments: ConditionAssignments;

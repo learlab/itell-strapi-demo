@@ -21,8 +21,9 @@ const ErrorDict: Record<string, string> = {
 export const generateMetadata = async (props: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> => {
-  const searchParams = await props.searchParams;
-  const fromDashboard = searchParams.from_dashboard === "true";
+  const searchParams = routes.auth.$parseSearchParams(await props.searchParams);
+  const dst = searchParams.redirect_to;
+  const fromDashboard = dst === "/dashboard";
   if (fromDashboard) {
     const title = "Dashboard";
     const description = `Learning statistics on the ${volume.title} intelligent textbook`;

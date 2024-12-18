@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/summary/")) {
     if (!request.cookies.has("auth_session")) {
       const url = new URL("/auth", request.nextUrl.origin);
-      url.searchParams.set("from_dashboard", "true");
+      url.searchParams.set("redirect_to", "/dashboard");
       return NextResponse.redirect(url);
     }
   }
