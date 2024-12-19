@@ -31,10 +31,11 @@ type Props = {
   pageStatus: PageStatus;
   page: PageData;
   streak: number;
+  available_summary_skips: number;
 };
 
 // eslint-disable-next-line react/display-name
-export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
+export const SummaryFormSkip = memo(({ pageStatus, page, streak, available_summary_skips }: Props) => {
   const questionStore = useQuestionStore();
   const quizStore = useQuizStore();
   const summaryStore = useSummaryStore();
@@ -97,11 +98,10 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
   if (!isSummaryReady) {
     return (
       <div className="flex flex-col gap-2">
-        <h3 className="text-2xl font-extrabold">You are on a hot streak</h3>
+        <h3 className="text-2xl font-extrabold">You have earned the write to skip writing a summary!</h3>
         <p>Finish the page first to unlock the summary section.</p>
         <p>
-          You can skip writing a summary for this page once you have completed
-          it.
+          You can skip writing a summary for this page once you have answered all the questions.
         </p>
       </div>
     );
@@ -114,28 +114,36 @@ export const SummaryFormSkip = memo(({ pageStatus, page, streak }: Props) => {
       <div>
         {pageFinished ? (
           <>
-            <p>You are currently on a streak of writing good summaries!</p>
+            <p>You have earned the write to skip writing a summary by writing good summaries consistently or by writing an excellent summary.</p>
             <p>
               You can skip writing a summary on a page you haven&apos;t
               completed yet.
             </p>
             <p>
-              Streak count:{" "}
+              🔥{" "}Streak count:{" "}
               <span className="font-semibold text-warning">{streak}</span>{" "}
+            </p>
+            <p>
+              ⏭️{" "}Summary skips available:{" "}
+              <span className="font-semibold text-warning">{available_summary_skips}</span>{" "}
             </p>
           </>
         ) : (
           <>
             <p>
-              You are currently on{" "}
+            You have earned the write to skip writing a summary by writing good summaries consistently or by writing an excellent summary.{" "}
               <span className="font-bold underline decoration-sky-500 decoration-solid decoration-2">
                 a streak of writing good summaries!{" "}
               </span>
             </p>
-            <p>You do not need to write a summary for this page. </p>
+            <p>Click on the skip summary button below to skip writing a summary for this page. </p>
             <p>
-              Streak count:{" "}
+              🔥{" "}Streak count:{" "}
               <span className="font-semibold text-warning">{streak}</span>{" "}
+            </p>
+            <p>
+              ⏭️{" "}Summary skips available:{" "}
+              <span className="font-semibold text-warning">{available_summary_skips}</span>{" "}
             </p>
           </>
         )}
