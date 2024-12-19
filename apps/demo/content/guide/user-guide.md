@@ -12,16 +12,7 @@ This document provides guidelines for using Intelligent Texts for Enhanced Lifel
 
 1\. Click on the _sign in_ button **1** on the top right of your screen.
 
-<i-image
-  style="aspect-ratio:1600/813;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide1.png-503dcbf337a6596e27e6e9b32522aa76.png"
-  alt="userguide1.png"
-  width="1600"
-  height="813">
-
- The landing page. Sign in button is on the top right.
-
-</i-image>
+![login_itell.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/login_itell.png-eac45b983d9a9180b84bc623e8db2699.png)
 
 2\. Login using your Google or Microsoft account. If you are part of a class, make sure to use the account that was provided by to you by your school.
 
@@ -44,28 +35,21 @@ The textbook's contents are divided into Pages. You can access different Pages u
 
 Below is an overview of a Page in iTELL.
 
-<i-image
-  style="aspect-ratio:1756/875;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_prolific_2.png-52541f2f2b5fd9f9cdc2d757594117c8.png"
-  alt="userguide_prolific_2.png"
-  width="1756"
-  height="875">
+![itell_layout.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/itell_layout.png-8c4295cbe13f58010f4b888ac03327b2.png)
 
-What each Page looks like.
+1\. The top-side navigation bar shows your current progress (Page and Chunk headers).
 
-</i-image>
+2 The left hand navigation bar will have links to different Chapters and Pages within the Module. Pages with checkmarks mean that you have completed those pages. Pages with locks mean that you have to complete the preceding page to unlock those pages.
 
-1\. The progress bar (in blue) shows how far you have scrolled down the page.
+3\. Click on the "Assignment" link to move to the bottom of the page where the Summary-writing activity is located.
 
-2 The left hand navigation bar will have links to different Chapters and Sections within the Module. Pages with checkmarks mean that you have completed those pages. Pages with locks mean that you have to complete the preceding page to unlock those pages.
+4\. Click on the "Reset" button to reset the progress for the page.
 
-3\. Click on the "Write summary" link to move to the bottom of the page where the Summary-writing activity is located.
+5\. Click on the "Back to top" link to move to the top of the page.
 
-5 Click on the "Back to top" link to move to the top of the page.
+6\. iTELL AI is a conversational agent that is available to discuss the page that you are currently reading. To interact with iTELL AI, click on the chat box in the bottom right of your screen.
 
-6 The right hand navigation bar contains links to subsections within the current page.
-
-7\. iTELL AI is a conversational agent that is available to discuss the page that you are currently reading. To interact with iTELL AI, click on the chat box in the bottom right of your screen.
+7\. Keep track of any notes you have made on the page using this indicator at the top-right side of the page.
 
 ### Making Progress
 
@@ -73,14 +57,14 @@ Most iTELL pages will have one more short answer questions and a single summary 
 
 #### Read
 
-Most of the content in a page will be blurred at the beginning. As you read through the page, click on the red button that reads "Click here to continue reading" to _unblur_ the next section and continue reading.
+Most of the content in a page will be blurred at the beginning. As you read through the page, click on the red button that reads "Continue reading" to _unblur_ the next section and continue reading.
 
 <i-image
-  style="aspect-ratio:1764/916;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_read.png-c1a7354292f6d8c1752a2db49b310f20.png"
-  alt="userguide_read.png"
-  width="1764"
-  height="916">
+  style="aspect-ratio:1883/1019;"
+  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/cont_reading.png-ae051951f3ee4f167e9a2d27ebd6a5ae.png"
+  alt="cont_reading.png"
+  width="1883"
+  height="1019">
 
 Unblur the next section by clicking on the red button when you are ready to continue.
 
@@ -88,46 +72,44 @@ Unblur the next section by clicking on the red button when you are ready to cont
 
 #### Answer Questions
 
-Sometimes you will see "Click here to see question" button. After clicking the button, you will provide a brief explanation of a concept to demonstrate your understanding of the text that you have read.
+Sometimes you will see a Constructed Response Item instead of the Continue Reading button. After clicking the button, you will provide a brief explanation of a concept to demonstrate your understanding of the text that you have read.
 
 <i-image
-  style="aspect-ratio:1655/709;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_prolific_3.png-e99bc454865d0932cd68974e52babef9.png"
-  alt="userguide_prolific_3.png"
-  width="1655"
-  height="709">
+  style="aspect-ratio:1883/1022;"
+  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/cri0.png-8fd7cfe2704407638cf9676adde9cc2d.png"
+  alt="cri0.png"
+  width="1883"
+  height="1022">
 
- You will need to answer the constructed response item first to unblur the next section.
+A constructed response item might spawn when you are reading
 
 </i-image><i-image
-  style="aspect-ratio:1732/755;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_prolific_4.png-c2b8adad9e165ca16abb58b51e323fd5.png"
-  alt="userguide_prolific_4.png"
-  width="1732"
-  height="755">
+  style="aspect-ratio:1896/1021;"
+  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/cri1.png-4a0234d9acf7b5550fb4eb58205296dc.png"
+  alt="cri1.png"
+  width="1896"
+  height="1021">
 
 Submitting the correct answer to the constructed response item will unlock the next section.
 
+</i-image><i-image
+  style="aspect-ratio:1887/1022;"
+  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/cri2.png-d65f6298630c9475325a77f6b3b73a5f.png"
+  alt="cri2.png"
+  width="1887"
+  height="1022">
+
+If you submit an incorrect answer, iTELL AI will provide support to help you revise your answer
+
 </i-image>
 
-![userguide_prolific_5.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_prolific_5.png-0e7c064377390dff9c73547c4b0cba86.png)
-
-After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Skip this question".
+After submitting an incorrect answer, you can try to revise your answer and resubmit by clicking on the "Resubmit" button. You can also click on the "Reveal Answer" button to reveal the correct answer, or click on the "How can I improve my answer?" button to receive a more detailed feedback. You can also choose to skip the question by clicking on "Continue reading".
 
 #### Write a Summary
 
 A summary writing activity is located at the bottom of each page. After you answer all short answer questions on the current page, you will be asked to summarize the contents of the page before you can move on to the next page. Write a summary and submit it to receive feedback.
 
-<i-image
-  style="aspect-ratio:1827/890;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_summary.png-94b2571a4d1ad8a41db7843316ef7f7f.png"
-  alt="userguide_summary.png"
-  width="1827"
-  height="890">
-
-The summary feature is disabled until you finish reading the whole page and answer all constructed response items on the page.
-
-</i-image>
+![summ.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/summ.png-4c29282ba7012795160e650188da5001.png)
 
 ### Evaluation
 
@@ -143,16 +125,7 @@ Your summary will be evaluated according to four metrics:
 
 If your summary fails to pass the evaluation, you will be given additional attempts to revise and resubmit your summary. Click on the \_Details\_ tab to access more detailed feedback to help you write a better summary.
 
-<i-image
-  style="aspect-ratio:1600/803;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide9.png-92883764442f9253d2e5e302af350d83.png"
-  alt="userguide9.png"
-  width="1600"
-  height="803">
-
-Summaries that do not receive a passing grade will be given detailed feedback.
-
-</i-image>
+![summ2.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/summ2.png-f85f695f4afdf3cc84aae08ca13b34e8.png)
 
 ### Re-reading
 
@@ -168,16 +141,7 @@ Your past summaries will be accessible from your dashboard.
 
 iTELL provides a conversational agent that will answer any questions related to the textbook. Click on the module located at the bottom right of the screen to start
 
-<i-image
-  style="aspect-ratio:1756/875;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_prolific_2.png-52541f2f2b5fd9f9cdc2d757594117c8.png"
-  alt="userguide_prolific_2.png"
-  width="1756"
-  height="875">
-
- iTELL AI's module is located at the bottom right side of the screen (7)
-
-</i-image>
+![itai.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/itai.png-99b4f131241c2551de437113e8b9054e.png)
 
 ### Assisted Re-reading
 
@@ -209,18 +173,15 @@ iTELL AI will ask you a question about the highlighted passage.
 
 Answer the question and engage in a conversation with iTELL AI to gain a better understanding of the passage. Once you feel that you have a better understanding of the text, click on the \`Return to summary\` button to go back to the summary module and rewrite your summary. After responding to iTELL AI's question, you can continue to engage with iTELL AI, or go back to the summary module
 
-iTELL AI will only automatically redirect you for re-reading once per page. If you submit more summaries that fail the evaluation, you will have the choice to manually engage in this re-reading activity by clicking on the \`See question\` button. Please note that this button will only appear if you submit a **failing** summary.
+iTELL AI will only automatically redirect you for re-reading once per page. 
 
-<i-image
-  style="aspect-ratio:1681/738;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide_iTELLAI_4.png-0eaf43fbae1318ac35352bad214e8b9d.png"
-  alt="userguide_iTELLAI_4.png"
-  width="1681"
-  height="738">
+### Ask iTELL AI
 
-Click on the `See question` button to start the assisted re-reading feature
+Another way to engage with iTELL AI is to ask them to clarify certain parts of the text. After highlighting a part of the text, you can click on the "Ask AI" button to ask iTELL AI to elaborate on the highlighted text.
 
-</i-image>
+![itai2.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/itai2.png-93a355353c12c2407edc2b03dff0c134.png)
+
+![itai3.png](https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/itai3.png-9b8cda0beeb8edae8aed206e7cf67a76.png)
 
 #### Notes
 
@@ -308,21 +269,6 @@ Highlighted text.
 Click and drag through the text to activate the notes and highlights function. Click on the Note button to open up a notepad on the right side of your screen. Type your note into the textbox and click on the return button (**1**) to save your note. The text color will change for the relevant part of the text.
 
 <i-image
-  style="aspect-ratio:1600/578;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide17.png-bfda4957588bf7f8b8f91ec2bcc0b2b7.png"
-  alt="userguide17.png"
-  width="1600"
-  height="578">
-
-Click on the highlighted text to remove the highlight.
-
-</i-image>
-
-### Notes
-
-Click and drag through the text to activate the notes and highlights function. Click on the Note button to open up a notepad on the right side of your screen. Type your note into the textbox and click on the return button (**1**) to save your note. The text color will change for the relevant part of the text.
-
-<i-image
   style="aspect-ratio:1600/492;"
   src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide18.png-6e284b87ab23f6339610940e880af2c3.png"
   alt="userguide18.png"
@@ -355,9 +301,7 @@ You can also click on the created notes to edit them. You can change their color
 
 Note color can also be changed when initially creating the note.
 
-</i-image>
-
-<i-image
+</i-image><i-image
   style="aspect-ratio:1600/471;"
   src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/userguide21.png-ac1573f32d05728c55b13354c8e523ce.png"
   alt="userguide21.png"
