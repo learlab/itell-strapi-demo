@@ -106,7 +106,13 @@ Probably the most common inspiration for new research ideas, however, is previou
 
 </i-youtube>
 
-
+<i-image
+  style="aspect-ratio:445/727;"
+  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/8.1.png-646bdb6edeee9f5b2561df8db1a8837f.png"
+  alt="8.1.png"
+  width="445"
+  height="727">
+</i-image>
 
 ## Reviewing the Research Literature {#Reviewing-the-Research-Literature-1502t} 
 
@@ -116,14 +122,6 @@ Once again, one of the most common sources of inspiration is previous research. 
 * It can help you evaluate the interestingness of a research question.
 * It can give you ideas for how to conduct your own study.
 * It can tell you how your study fits into the research literature.
-
-<i-image
-  style="aspect-ratio:445/727;"
-  src="https://pxeblicvfnzlnounkznu.supabase.co/storage/v1/object/public/strapi/files/8.1.png-646bdb6edeee9f5b2561df8db1a8837f.png"
-  alt="8.1.png"
-  width="445"
-  height="727">
-</i-image>
 
 The research literature in psychology is enormous—including millions of scholarly articles and books dating to the beginning of the field—and it continues to grow. Although its boundaries are somewhat fuzzy, the research literature definitely does not include self-help and other pop psychology books, dictionary and encyclopedia entries, websites, and similar sources that are intended mainly for the general public. These are considered unreliable because they are not reviewed by other researchers and are often based on little more than common sense or personal experience. Wikipedia contains much valuable information, but because its authors are anonymous and may not have any formal training or expertise in that subject area, and its content continually changes it is unsuitable as a basis of sound scientific research. For our purposes, it helps to define the research literature as consisting almost entirely of two types of sources: articles in professional journals, and scholarly books in psychology and related fields.
 
