@@ -40,7 +40,6 @@ merge_status=$?
 if [ -f "$tmp_dir/protected_files.txt" ] && [ "$merge_status" -eq 0 ]; then
     # Check if we have any files to restore
     if [ -s "$tmp_dir/protected_files.txt" ]; then
-        echo "Restoring files:"
         while read -r file; do
             [ -z "$file" ] && continue
             echo "→ $file"
@@ -48,6 +47,13 @@ if [ -f "$tmp_dir/protected_files.txt" ] && [ "$merge_status" -eq 0 ]; then
             git add "$file"
         done < "$tmp_dir/protected_files.txt"
         git commit --amend --no-edit
+
+        # After restoring all protected files, check if there are any differences
+        if [ -z "$(git diff HEAD^ HEAD --name-only)" ]; then
+            echo "No changes after restoring protected files. Cancelling merge."
+            git reset --hard HEAD^
+            merge_status=1
+        fi
     fi
     rm -rf "$tmp_dir"
 fi
