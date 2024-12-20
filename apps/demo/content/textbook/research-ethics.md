@@ -15,7 +15,7 @@ cri:
   answer: There is no evidence to support the hypothesis that vaccines cause autism.
   slug: Vaccines-Dont-Cause-Autism-Healthcare-Triage-#12-24
 next_slug: 15-moral-foundations-of-ethical-research
-order: 14
+order: 13
 parent:
   title: III. Research Ethics
   slug: iii-research-ethics

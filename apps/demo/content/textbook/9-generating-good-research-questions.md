@@ -29,7 +29,7 @@ cri:
   answer: Time, money, equipment and materials, technical knowledge and skill, and access to research participants are factors that affect feasibility.
   slug: Feasibility-1540t
 next_slug: 10-developing-a-hypothesis
-order: 9
+order: 8
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method

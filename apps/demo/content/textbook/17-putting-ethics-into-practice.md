@@ -52,7 +52,7 @@ cri:
   answer: Stick to the protocol submitted or seek additional approval for any major changes.
   slug: Follow-Through-1632t
 next_slug: page-23
-order: 17
+order: 16
 parent:
   title: III. Research Ethics
   slug: iii-research-ethics

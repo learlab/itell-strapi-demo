@@ -19,7 +19,7 @@ cri:
   answer: Inferential statistics allow researchers to draw conclusions about a population based on data from a sample.
   slug: Inferential-Statistics-1584t
 next_slug: 13-drawing-conclusions-and-reporting-the-results
-order: 12
+order: 11
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method

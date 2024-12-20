@@ -9,7 +9,7 @@ chunks:
   slug: Finding-Inspiration-1501t
   type: regular
 - title: How to Develop a Good Research Topic
-  slug: How-to-Develop-a-Good-Research-Topic-21
+  slug: How-to-Develop-a-Good-Research-Topic-28
   type: video
 - title: Reviewing the Research Literature
   slug: Reviewing-the-Research-Literature-1502t
@@ -28,13 +28,13 @@ chunks:
     slug: using-psycinfo-and-other-databases
     title: Using PsycINFO and Other Databases 
 - title: Peer-Reviewed Empirical Articles - Searching APA PsycInfo on APA PsycNet
-  slug: Peer-Reviewed-Empirical-Articles-Searching-APA-PsycInfo-on-APA-PsycNet-22
+  slug: Peer-Reviewed-Empirical-Articles-Searching-APA-PsycInfo-on-APA-PsycNet-29
   type: video
 - title: Using Other Search Techniques
   slug: Using-Other-Search-Techniques-1506t
   type: regular
 - title: Using Google Scholar
-  slug: Using-Google-Scholar-23
+  slug: Using-Google-Scholar-30
   type: video
 cri:
 - question: What are three common sources of inspiration for research ideas?
@@ -42,7 +42,7 @@ cri:
   slug: Finding-Inspiration-1501t
 - question: Why is it important to choose a research topic that interests you?
   answer: Choosing a research topic that interests you ensures that you stay engaged and motivated throughout the writing process.
-  slug: How-to-Develop-a-Good-Research-Topic-21
+  slug: How-to-Develop-a-Good-Research-Topic-28
 - question: What is considered as research literature in the field of psychology?
   answer: Articles in professional journals and scholarly books in psychology and related fields.
   slug: Reviewing-the-Research-Literature-1502t
@@ -57,15 +57,15 @@ cri:
   slug: Literature-Search-Strategies-1505t
 - question: How can you filter search results in APA PsycINFO to only show peer-reviewed empirical studies?
   answer: You can filter search results in APA PsycINFO to only show peer-reviewed empirical studies by selecting 'peer-reviewed journals only' and 'empirical study' in the filters on the left-hand side of the results page.
-  slug: Peer-Reviewed-Empirical-Articles-Searching-APA-PsycInfo-on-APA-PsycNet-22
+  slug: Peer-Reviewed-Empirical-Articles-Searching-APA-PsycInfo-on-APA-PsycNet-29
 - question: What are some techniques you can use to search the research literature aside from entering search terms into databases?
   answer: You can look through the reference list of a good article or book chapter, start with a classic article, do a general Internet search, or talk to people knowledgeable about your topic for suggestions.
   slug: Using-Other-Search-Techniques-1506t
 - question: How can you configure Google Scholar for your library resources?
   answer: In the 'Library Links' box in 'scholar preferences,' type the name of your college or university and choose the checkboxes that match.
-  slug: Using-Google-Scholar-23
-next_slug: 9-generating-good-research-questions
-order: 8
+  slug: Using-Google-Scholar-30
+next_slug: null
+order: 21
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method
@@ -98,7 +98,7 @@ Practical problems can also inspire research ideas, leading directly to applied 
 
 Probably the most common inspiration for new research ideas, however, is previous research. Recall that science is a kind of large-scale collaboration in which many different researchers read and evaluate each other’s work and conduct new studies to build on it. Of course, experienced researchers are familiar with previous research in their area of expertise and probably have a long list of ideas. This suggests that novice researchers can find inspiration by consulting with a more experienced researcher (e.g., students can consult a faculty member). But they can also find inspiration by picking up a copy of almost any professional journal and reading the titles and abstracts. In one typical issue of _Psychological Science_, for example, you can find articles on the perception of shapes, anti-Semitism, police lineups, the meaning of death, second-language learning, people who seek negative emotional experiences, and many other topics. If you can narrow your interests down to a particular topic (e.g., memory) or domain (e.g., health care), you can also look through more specific journals, such as _Memory & Cognition_ or _Health Psychology_.
 
-## How to Develop a Good Research Topic {#How-to-Develop-a-Good-Research-Topic-21} 
+## How to Develop a Good Research Topic {#How-to-Develop-a-Good-Research-Topic-28} 
 
 
 
@@ -108,14 +108,7 @@ Probably the most common inspiration for new research ideas, however, is previou
 
 
 
-## Reviewing the Research Literature {#Reviewing-the-Research-Literature-1502t} 
-
-Once again, one of the most common sources of inspiration is previous research. Therefore, it is important to review the literature early in the research process. The **research literature** in any field is all the published research in that field. Reviewing the research literature means finding, reading, and summarizing the published research relevant to your topic of interest. In addition to helping you discover new research questions, reviewing the literature early in the research process can help you in several other ways. 
-
-* It can tell you if a research question has already been answered.
-* It can help you evaluate the interestingness of a research question.
-* It can give you ideas for how to conduct your own study.
-* It can tell you how your study fits into the research literature.
+## Reviewing the Research Literature {#Reviewing-the-Research-Literature-1502t .sr-only} 
 
 <i-image
   style="aspect-ratio:445/727;"
@@ -124,6 +117,16 @@ Once again, one of the most common sources of inspiration is previous research. 
   width="445"
   height="727">
 </i-image>
+
+**Reviewing the Research Literature**
+-------------------------------------
+
+Once again, one of the most common sources of inspiration is previous research. Therefore, it is important to review the literature early in the research process. The **research literature** in any field is all the published research in that field. Reviewing the research literature means finding, reading, and summarizing the published research relevant to your topic of interest. In addition to helping you discover new research questions, reviewing the literature early in the research process can help you in several other ways. 
+
+* It can tell you if a research question has already been answered.
+* It can help you evaluate the interestingness of a research question.
+* It can give you ideas for how to conduct your own study.
+* It can tell you how your study fits into the research literature.
 
 The research literature in psychology is enormous—including millions of scholarly articles and books dating to the beginning of the field—and it continues to grow. Although its boundaries are somewhat fuzzy, the research literature definitely does not include self-help and other pop psychology books, dictionary and encyclopedia entries, websites, and similar sources that are intended mainly for the general public. These are considered unreliable because they are not reviewed by other researchers and are often based on little more than common sense or personal experience. Wikipedia contains much valuable information, but because its authors are anonymous and may not have any formal training or expertise in that subject area, and its content continually changes it is unsuitable as a basis of sound scientific research. For our purposes, it helps to define the research literature as consisting almost entirely of two types of sources: articles in professional journals, and scholarly books in psychology and related fields.
 
@@ -153,7 +156,7 @@ Given that there are nearly four million records in PsycINFO, you may have to tr
 
 Depending on the vendor that provides the interface to PsycINFO, you may be able to save, print, or e-mail the relevant PsycINFO records. The records might even contain links to full-text copies of the works themselves. (PsycARTICLES is a database that provides full-text access to articles in all journals published by the APA.) If not, and you want a copy of the work, you will have to find out if your library carries the journal or has the book and the hard copy on the library shelves. Be sure to ask a librarian if you need help.
 
-## Peer-Reviewed Empirical Articles - Searching APA PsycInfo on APA PsycNet {#Peer-Reviewed-Empirical-Articles-Searching-APA-PsycInfo-on-APA-PsycNet-22} 
+## Peer-Reviewed Empirical Articles - Searching APA PsycInfo on APA PsycNet {#Peer-Reviewed-Empirical-Articles-Searching-APA-PsycInfo-on-APA-PsycNet-29} 
 
 
 
@@ -167,7 +170,7 @@ Depending on the vendor that provides the interface to PsycINFO, you may be able
 
 In addition to entering search terms into PsycINFO and other databases, there are several other techniques you can use to search the research literature. First, if you have one good article or book chapter on your topic—a recent review article is best—you can look through the reference list of that article for other relevant articles, books, and book chapters. In fact, you should do this with any relevant article or book chapter you find. You can also start with a classic article or book chapter on your topic, find its record in PsycINFO (by entering the author’s name or article’s title as a search term), and link from there to a list of other works in PsycINFO that cite that classic article. This works because other researchers working on your topic are likely to be aware of the classic article and cite it in their own work. You can also do a general Internet search using search terms related to your topic or the name of a researcher who conducts research on your topic. This might lead you directly to works that are part of the research literature (e.g., articles in open-access journals or posted on researchers’ own websites). The search engine Google Scholar is especially useful for this purpose. A general Internet search might also lead you to websites that are not part of the research literature but might provide references to works that are. Finally, you can talk to people (e.g., your instructor or other faculty members in psychology) who know something about your topic and can suggest relevant articles and book chapters.
 
-## Using Google Scholar {#Using-Google-Scholar-23} 
+## Using Google Scholar {#Using-Google-Scholar-30} 
 
 
 

@@ -47,8 +47,8 @@ cri:
 - question: How should researchers proceed if their newly collected data cast doubt on the reliability or validity of their measure?
   answer: Researchers should investigate potential issues with the measure, administration, conceptual definition, or experimental manipulation to determine the cause of the doubt.
   slug: Evaluating-the-Measure-1680t
-next_slug: null
-order: 21
+next_slug: 8-finding-a-research-topic
+order: 20
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement

@@ -19,7 +19,7 @@ cri:
   answer: Research findings can be reported through peer-reviewed journal articles, book chapters, and conference presentations.
   slug: Reporting-the-Results-1588t
 next_slug: research-ethics
-order: 13
+order: 12
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method
