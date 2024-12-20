@@ -5,31 +5,48 @@ import "./styles.css";
 
 import { updateUserAction } from "@/actions/user";
 import { ContinueReading } from "@/components/continue-reading";
+import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
+import { redirectWithSearchParams } from "@/lib/utils";
 import { ConsentForm } from "./form";
 
 export default async function ConsentPage() {
-  const session = await getSession();
-  if (!session.user) {
-    redirect("/auth");
+  const { user } = await getSession();
+  if (!user) {
+    return redirectWithSearchParams("/auth", { redirect_to: "/consent" });
   }
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-6">
-      {session.user.consentGiven !== null ? (
-        <div className="space-y-4">
-          <h2 className="text-lg font-bold tracking-tight">
-            You gave consent previously.
-          </h2>
-          <ContinueReading />
-        </div>
-      ) : (
-        <ConsentText />
-      )}
+      <div className="text-muted-foreground lg:text-lg">
+        {user.consentGiven !== null ? (
+          <div className="flex flex-col gap-2">
+            <p>
+              You have completed the consent form, you can review it or go back
+              to the textbook.
+            </p>
+            <ContinueReading user={user} />
+          </div>
+        ) : (
+          <p>
+            Please complete the following consent form before you start on the
+            textbook.{" "}
+          </p>
+        )}
+      </div>
+      <ConsentText
+        value={
+          user.consentGiven === null
+            ? undefined
+            : user.consentGiven
+              ? "yes"
+              : "no"
+        }
+      />
     </div>
   );
 }
 
-function ConsentText() {
+function ConsentText({ value }: { value?: "yes" | "no" }) {
   return (
     <div
       id="consent-form"
@@ -157,6 +174,7 @@ function ConsentText() {
               await updateUserAction({ consentGiven: val });
               redirect("/");
             }}
+            value={value}
           />
         </FormSection>
       </div>

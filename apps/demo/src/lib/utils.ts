@@ -4,7 +4,6 @@ import * as Sentry from "@sentry/nextjs";
 import { env } from "@/env.mjs";
 
 export const getYoutubeLinkFromEmbed = (url: string) => {
-   
   const regex = /embed\/([\w-]+)\?/;
   const match = regex.exec(url);
 
@@ -33,13 +32,12 @@ export const makePageHref = (slug: string | null, chunk?: string) => {
 
 export const redirectWithSearchParams = (
   path: string,
-  searchParams?: unknown
+  searchParams?: Record<string, string>
 ) => {
   const url = new URL(path, env.NEXT_PUBLIC_HOST);
-  if (typeof searchParams === "object" && searchParams !== null) {
+  if (searchParams !== null) {
     for (const key in searchParams) {
-      // @ts-expect-error search params is not typed
-      url.searchParams.append(key, searchParams[key] as string);
+      url.searchParams.append(key, searchParams[key]);
     }
   }
   return redirect(url.toString());

@@ -43,7 +43,7 @@ export function PageAssignments({ page, pageStatus, user, condition }: Props) {
           <CardContent>
             {user.finished ? (
               <Suspense fallback={<FinishedPrompt.Skeleton />}>
-                <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+                <FinishedPrompt href="/outtake" />
               </Suspense>
             ) : null}
             {condition !== Condition.SIMPLE ? (
@@ -91,7 +91,7 @@ export function PageAssignments({ page, pageStatus, user, condition }: Props) {
         <CardContent className="flex flex-col gap-4">
           {user.finished ? (
             <Suspense fallback={<FinishedPrompt.Skeleton />}>
-              <FinishedPrompt href="https://peabody.az1.qualtrics.com/jfe/form/SV_9zgxet1MhcfKxM2" />
+              <FinishedPrompt href="/outtake" />
             </Suspense>
           ) : null}
           {condition !== Condition.SIMPLE ? (

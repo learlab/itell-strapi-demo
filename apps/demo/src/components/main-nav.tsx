@@ -42,6 +42,7 @@ export async function MainNav({ scrollProgress, read }: Props) {
           </Link>
           {read ? (
             <ContinueReading
+              user={user}
               className="hidden md:flex"
               text="Read"
               variant="outline"

@@ -1,18 +1,23 @@
 import React from "react";
 import { cn } from "@itell/utils";
+import { User } from "lucia";
 
-import { getSession } from "@/lib/auth";
 import { firstPage } from "@/lib/pages/pages.server";
 import { makePageHref } from "@/lib/utils";
 import { NavigationButton } from "./navigation-button";
 import type { Button } from "@itell/ui/button";
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
+  user: User | null;
   text?: string;
 }
 
-export async function ContinueReading({ text, className, ...rest }: Props) {
-  const { user } = await getSession();
+export async function ContinueReading({
+  user,
+  text,
+  className,
+  ...rest
+}: Props) {
   const href = user?.pageSlug ? makePageHref(user.pageSlug) : firstPage.href;
   return (
     <NavigationButton

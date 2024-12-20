@@ -1,7 +1,10 @@
-import { ContinueReading } from "@/components/continue-reading";
 import Link from "next/link";
 
-export default function NotFound() {
+import { ContinueReading } from "@/components/continue-reading";
+import { getSession } from "@/lib/auth";
+
+export default async function NotFound() {
+  const { user } = await getSession();
   return (
     <div className="grid place-items-center px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">
@@ -14,7 +17,7 @@ export default function NotFound() {
         </p>
 
         <div className="mt-10 flex items-center justify-center gap-x-6">
-          <ContinueReading />
+          <ContinueReading user={user} />
           <Link href="/" className="text-sm font-semibold">
             Go to home <span aria-hidden="true">&rarr;</span>
           </Link>

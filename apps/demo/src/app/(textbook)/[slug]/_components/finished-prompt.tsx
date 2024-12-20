@@ -16,7 +16,7 @@ export async function FinishedPrompt({ href }: Props) {
     return (
       <div className="mb-8 space-y-4 rounded-md border-2 border-info p-4 xl:text-lg xl:leading-relaxed">
         <p>
-          You have finished the textbook but we failed to get your quiz
+          You have finished the textbook, but we failed to get your quiz
           completion status at this point. You can still visit the link below to
           complete the course.
         </p>
@@ -37,16 +37,17 @@ export async function FinishedPrompt({ href }: Props) {
       {allQuizFinished ? (
         <>
           <p>
-            You have finished the entire textbook. Please visit the link below
-            to complete the course.
+            Congratulations! You have finished the entire textbook. Please
+            complete the outtake survey to finish the course.
           </p>
           <FinishedLink href={href} />
         </>
       ) : (
         <p>
-          You have finished all pages in the textbook. Please also make sure you
-          finished all the following quizzes to get full credit. Once you
-          finished all the quizzes, you will get a link to complete the course.
+          Congratulations! You have finished the entire textbook. Please also
+          make sure you finished all the following quizzes to get full credit.
+          Once you finished all the quizzes, you will get a link to complete the
+          course.
         </p>
       )}
       <QuizList pages={pages} />

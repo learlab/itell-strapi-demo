@@ -7,6 +7,8 @@ import { ContinueReading } from "@/components/continue-reading";
 import { HtmlRenderer } from "@/components/html-renderer";
 import { MainNav } from "@/components/main-nav";
 import { MobilePopup } from "@/components/mobile-popup";
+import { TakeConsent } from "@/components/take-consent";
+import { getSession } from "@/lib/auth";
 
 export default function Page() {
   return (
@@ -20,12 +22,21 @@ export default function Page() {
         <HtmlRenderer html={home.html} className="underline-offset-2" />
         <MobilePopup />
         <div className="flex items-center justify-center">
-          <ContinueReading />
+          <ActionButton />
         </div>
       </main>
       <SiteFooter />
     </>
   );
+}
+
+async function ActionButton() {
+  const { user } = await getSession();
+  if (user && user.consentGiven === null) {
+    return <TakeConsent />;
+  }
+
+  return <ContinueReading user={user} className="w-44" />;
 }
 
 function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {

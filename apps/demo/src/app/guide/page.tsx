@@ -7,7 +7,7 @@ import { HtmlRenderer } from "@/components/html-renderer";
 import { getSession } from "@/lib/auth";
 import { Condition } from "@/lib/constants";
 
-export default async function () {
+export default async function GuidePage() {
   const { user } = await getSession();
   const userCondition = Condition.STAIRS;
   const guide = guides.find((g) => g.condition === userCondition);

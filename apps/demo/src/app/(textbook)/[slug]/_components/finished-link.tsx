@@ -22,7 +22,7 @@ function SurveyLink({
       className={cn(buttonVariants({ variant: "outline" }), "w-fit")}
       {...rest}
     >
-      Outtake survey
+      Outtake Survey
     </a>
   );
 }
@@ -35,8 +35,8 @@ export function FinishedLink({ href }: Props) {
     toast.info(
       <div className="space-y-2">
         <p>
-          Congratulations! You have finished the entire textbook. Visit the link
-          below to complete the course.
+          Congratulations! You have finished the entire textbook. Please
+          complete the outtake survey to finish the course.
         </p>
         <SurveyLink
           href={href}
