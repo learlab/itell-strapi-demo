@@ -34,7 +34,7 @@ cri:
   answer: The ordinal level of measurement involves assigning scores that represent the rank order of individuals, unlike the nominal level which assigns category labels without implying any ordering among responses.
   slug: Levels-of-Measurement-1660t
 next_slug: 20-reliability-and-validity-of-measurement
-order: 19
+order: 18
 parent:
   title: IV. Psychological Measurement
   slug: iv-psychological-measurement

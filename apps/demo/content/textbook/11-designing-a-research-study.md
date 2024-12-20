@@ -47,7 +47,7 @@ cri:
   answer: When internal validity is high, external validity tends to be low, and when internal validity is low, external validity tends to be high.
   slug: Laboratory-vs-Field-Research-1576t
 next_slug: 12-analyzing-the-data
-order: 11
+order: 10
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method

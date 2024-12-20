@@ -31,7 +31,7 @@ cri:
 - question: What did researchers find regarding the effect of cell phone use on driving performance?
   answer: Researchers found that people's ability to detect road hazards, reaction time, and maintain control of the vehicle were all impaired by cell phone use.
   slug: Cell-Phones-and-Driving-1496t
-next_slug: 8-finding-a-research-topic
+next_slug: 9-generating-good-research-questions
 order: 7
 parent:
   title: II. Overview of the Scientific Method

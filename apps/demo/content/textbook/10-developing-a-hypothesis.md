@@ -34,7 +34,7 @@ cri:
   answer: A good hypothesis must be testable and falsifiable, logical, and positive in nature.
   slug: Characteristics-of-a-Good-Hypothesis-1557t
 next_slug: 11-designing-a-research-study
-order: 10
+order: 9
 parent:
   title: II. Overview of the Scientific Method
   slug: ii-overview-of-the-scientific-method
