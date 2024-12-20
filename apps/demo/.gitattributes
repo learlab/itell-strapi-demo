@@ -1,6 +1,0 @@
-content/**/* merge=ours
-src/drizzle/meta/**/* merge=ours
-src/drizzle/*.sql merge=ours
-src/config/metadata.ts merge=ours
-src/lib/auth/conditions.ts merge=ours
-apps/demo/src/drizzle/schema.ts merge-filter=keep-ours
