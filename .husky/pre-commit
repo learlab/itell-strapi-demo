@@ -1,0 +1,28 @@
+#!/bin/bash
+echo pre-commit called
+# Check if we're in a merge state
+if [ -f .git/MERGE_HEAD ]; then
+  echo "Merge in progress, checking protected files..."
+
+  # Get list of protected files
+  protected_files=$(git ls-files | git check-attr merge --stdin | grep "merge: keep-ours" | cut -d: -f1)
+
+  if [ -n "$protected_files" ]; then
+    # Get the commit we're merging from
+    merge_head=$(cat .git/MERGE_HEAD)
+    our_head=$(cat .git/HEAD)
+
+    echo "$protected_files" | while read -r file; do
+      if git diff --name-only $our_head $merge_head | grep -q "^${file}$"; then
+        echo "Protecting $file from merge changes..."
+        # Get our version of the file
+        our_blob=$(git rev-parse $our_head:$file)
+        # Write our version to the index
+        git update-index --cacheinfo 100644,$our_blob,$file
+        echo "Protected $file"
+      fi
+    done
+  fi
+fi
+
+exit 0
