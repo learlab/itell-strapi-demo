@@ -1,21 +1,41 @@
 #!/bin/bash
-# Get the current branch
-current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-# List of protected files (can be moved to a separate config file)
-protected_patterns=$(git config --get-all merge.keep-ours.driver | while read -r line; do
-  git check-attr merge -- * | grep "merge: keep-ours" | cut -d: -f1
-done)
+# Enable debugging
+set -x
 
-# Check each changed file
+echo "Running pre-merge-commit hook..."
+
+# Get list of files that are marked as keep-ours
+echo "Getting protected files..."
+protected_files=$(git ls-files | git check-attr merge --stdin | grep "merge: keep-ours" | cut -d: -f1)
+echo "Protected files:"
+echo "$protected_files"
+
+if [ -z "$protected_files" ]; then
+    echo "No protected files found"
+    exit 0
+fi
+
+# Get the files that were changed in this merge
+echo "Getting changed files..."
 changed_files=$(git diff --name-only ORIG_HEAD HEAD)
-for file in $changed_files; do
-  if echo "$protected_patterns" | grep -q "^${file}$"; then
-    if ! git diff --quiet ORIG_HEAD HEAD -- "$file"; then
-      echo "Notice: Protected file $file keeping current branch version"
-      git checkout HEAD -- "$file"
+echo "Changed files:"
+echo "$changed_files"
+
+# Check each protected file
+echo "$protected_files" | while read -r protected_file; do
+    echo "Checking protected file: $protected_file"
+    if echo "$changed_files" | grep -q "^${protected_file}$"; then
+        echo "File $protected_file was changed during merge"
+        echo "Restoring $protected_file from ORIG_HEAD..."
+        # Restore the file from our branch (ORIG_HEAD)
+        git checkout ORIG_HEAD -- "$protected_file"
+        git add "$protected_file"
+        echo "Restored and staged $protected_file"
+    else
+        echo "File $protected_file was not changed"
     fi
-  fi
 done
 
+echo "Pre-merge-commit hook completed"
 exit 0

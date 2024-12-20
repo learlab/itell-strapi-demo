@@ -1,9 +1,6 @@
 apps/demo/content/**/* merge=keep-ours
-
 apps/demo/src/config/metadata.ts merge=keep-ours
-
 apps/demo/src/lib/auth/conditions.ts merge=keep-ours
-
 apps/demo/src/drizzle/*.sql merge=keep-ours
 apps/demo/src/drizzle/meta/**/* merge=keep-ours
 apps/demo/src/drizzle/schema.ts merge=keep-ours
