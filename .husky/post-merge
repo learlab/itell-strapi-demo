@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# First, clean up any existing configurations
-git config --local --remove-section merge.keep-ours 2>/dev/null || true
-
-# Create a post-merge hook
-cat >.husky/post-merge <<'EOF'
-#!/bin/bash
-
 # Get the previous HEAD before merge
 previous_head=$(git rev-parse ORIG_HEAD)
 current_head=$(git rev-parse HEAD)
@@ -39,15 +32,3 @@ if [ "$needs_commit" = true ]; then
     git commit -m "fix: restore protected files after merge"
 fi
 
-EOF
-
-chmod +x .husky/post-merge
-
-echo "Git post-merge hook has been set up successfully!"
-echo
-echo "Protected files (from .gitattributes):"
-git ls-files | git check-attr merge --stdin | grep "merge: keep-ours" || true
-echo
-echo "To test the configuration:"
-echo "1. Make sure you're on your feature branch"
-echo "2. Run: git merge main"
