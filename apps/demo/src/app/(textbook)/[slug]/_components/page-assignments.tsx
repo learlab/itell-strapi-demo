@@ -53,6 +53,7 @@ export function PageAssignments({ page, pageStatus, user, condition }: Props) {
               pageStatus={pageStatus}
               page={page}
               streak={user.personalization.summary_streak}
+              available_summary_skips={user.personalization.available_summary_skips}
             />
           </CardContent>
         </Card>
