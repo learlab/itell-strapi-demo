@@ -1,34 +1,24 @@
 #!/bin/bash
 
-# Get the previous HEAD before merge
-previous_head=$(git rev-parse ORIG_HEAD)
-current_head=$(git rev-parse HEAD)
+# Check if we have stashed files to restore
+if [ -f .git/MERGE_STASH ]; then
+    echo "Restoring protected files from stash..."
 
-# Get list of protected files
-protected_files=$(git ls-files | git check-attr merge --stdin | grep "merge: keep-ours" | cut -d: -f1)
+    # Get the stash commit
+    stash_commit=$(cat .git/MERGE_STASH)
 
-# Get files changed in the merge
-changed_files=$(git diff --name-only $previous_head $current_head)
+    # Apply just the protected files from the stash
+    git checkout stash@{0} -- $(git ls-files | git check-attr merge --stdin | grep "merge: keep-ours" | cut -d: -f1)
 
-echo "Previous HEAD: $previous_head"
-echo "Current HEAD: $current_head"
-echo "Changed files: $changed_files"
+    # Add the restored files
+    git add $(git ls-files | git check-attr merge --stdin | grep "merge: keep-ours" | cut -d: -f1)
 
-# Reset protected files that were changed
-needs_commit=false
-echo "$protected_files" | while read -r file; do
-    if echo "$changed_files" | grep -q "^${file}$"; then
-        echo "Resetting protected file: $file"
-        # Get the content from the previous commit
-        git show "$previous_head:$file" > "$file"
-        git add "$file"
-        needs_commit=true
-    fi
-done
+    # Amend the merge commit to include the restored files
+    git commit --amend --no-edit
 
-# If we made any changes, create a new commit
-if [ "$needs_commit" = true ]; then
-    echo "Creating new commit for protected files"
-    git commit -m "fix: restore protected files after merge"
+    # Drop the temporary stash
+    git stash drop
+
+    # Clean up
+    rm .git/MERGE_STASH
 fi
-
