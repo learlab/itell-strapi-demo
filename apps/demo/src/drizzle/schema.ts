@@ -96,7 +96,7 @@ export const users = pgTable("users", {
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
   surveyCompleted: boolean("survey_completed").default(false).notNull(),
-  consentGiven: boolean("consent_given"),
+  consentGiven: boolean("consent_given").default(true),
   personalization: jsonb("personalization_data").$type<PersonalizationData>(),
   conditionAssignments: jsonb("condition_assignments")
     .$type<ConditionAssignments>()
