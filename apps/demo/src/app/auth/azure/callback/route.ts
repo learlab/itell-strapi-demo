@@ -136,7 +136,7 @@ export const GET = async (req: Request) => {
     }
 
     // redirect to dst, which can be
-    // - the "redirect_to" searchParam in the /auth page
+    // - the "redirect_to" searchParam present on the /auth page
     // - referrer header
     // - homepage (fallback)
     return new Response(null, {
