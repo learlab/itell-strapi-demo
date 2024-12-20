@@ -2,14 +2,19 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { generateIdFromEntropySize } from "lucia";
 
-import { createUserAction, getUserByProviderAction } from "@/actions/user";
+import { getTeacherByClassAction } from "@/actions/dashboard";
+import {
+  createUserAction,
+  getUserByProviderAction,
+  updateUserAction,
+} from "@/actions/user";
 import { env } from "@/env.mjs";
 import { getPageConditions } from "@/lib/auth/conditions";
 import { lucia } from "@/lib/auth/lucia";
 import {
   googleProvider,
+  readAuthData,
   readGoogleOAuthState,
-  readJoinClassCode,
 } from "@/lib/auth/provider";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { reportSentry } from "@/lib/utils";
@@ -36,12 +41,9 @@ export async function GET(req: Request) {
     });
   }
 
-  const {
-    state: storedState,
-    codeVerifier: storedCodeVerifier,
-    referer,
-  } = await readGoogleOAuthState();
-  const join_class_code = await readJoinClassCode();
+  const { state: storedState, codeVerifier: storedCodeVerifier } =
+    await readGoogleOAuthState();
+  const { dst, join_class_code } = await readAuthData();
 
   if (
     !code ||
@@ -54,7 +56,6 @@ export async function GET(req: Request) {
   }
 
   try {
-    console.log("validating google oauth code");
     const tokens = await googleProvider.validateAuthorizationCode(
       code,
       storedCodeVerifier
@@ -70,6 +71,7 @@ export async function GET(req: Request) {
       }
     );
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
+    // eslint-disable-next-line
     let [user, err] = await getUserByProviderAction({
       provider_id: "google",
       provider_user_id: googleUser.id,
@@ -80,6 +82,7 @@ export async function GET(req: Request) {
 
     if (!user) {
       const pageConditions = getPageConditions(allPagesSorted);
+
       const [newUser, err] = await createUserAction({
         user: {
           id: generateIdFromEntropySize(16),
@@ -88,16 +91,35 @@ export async function GET(req: Request) {
           email: googleUser.email,
           conditionAssignments: pageConditions,
           role: env.ADMINS?.includes(googleUser.email) ? "admin" : "user",
+          // new users are enrolled in class if the class code is valid (check in createUserAction), pass undefined if it is null or empty string
+          classId: join_class_code || undefined,
         },
         provider_id: "google",
         provider_user_id: googleUser.id,
       });
-      console.log("err from createUserAction", err);
       if (err) {
         throw new Error(err.message, { cause: err });
       }
 
       user = newUser;
+    } else {
+      // for existing users without a class id, update their record
+      if (
+        user.classId === null &&
+        join_class_code !== null &&
+        join_class_code !== ""
+      ) {
+        const [teacher, err] = await getTeacherByClassAction({
+          classId: join_class_code,
+        });
+        if (err) {
+          throw new Error(err.message, { cause: err });
+        }
+
+        if (teacher) {
+          updateUserAction({ id: user.id, classId: join_class_code });
+        }
+      }
     }
 
     const session = await lucia.createSession(user.id, {});
@@ -108,28 +130,30 @@ export async function GET(req: Request) {
       sessionCookie.attributes
     );
 
-    if (join_class_code !== null) {
+    // redirect users to consent form if it is untouched
+    if (user.consentGiven === null) {
       return new Response(null, {
-        status: 302,
+        status: 303,
         headers: {
-          Location: `/dashboard/settings?join_class_code=${join_class_code}`,
+          Location: "/consent",
         },
       });
     }
 
+    // redirect to dst, which can be
+    // - the "redirect_to" searchParam present on the /auth page
+    // - referrer header
+    // - homepage (fallback)
     return new Response(null, {
-      status: 302,
+      status: 303,
       headers: {
-        Location: referer ?? "/",
+        Location: dst ?? "/",
       },
     });
   } catch (error) {
     reportSentry("google oauth error", { error });
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/auth?error=oauth",
-      },
-    });
+    const url = new URL("/auth", env.NEXT_PUBLIC_HOST);
+    url.searchParams.append("error", "oauth");
+    return Response.redirect(url.toString());
   }
 }

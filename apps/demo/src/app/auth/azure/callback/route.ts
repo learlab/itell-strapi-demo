@@ -3,14 +3,19 @@ import { notFound } from "next/navigation";
 import { decodeIdToken } from "arctic";
 import { generateIdFromEntropySize } from "lucia";
 
-import { createUserAction, getUserByProviderAction } from "@/actions/user";
+import { getTeacherByClassAction } from "@/actions/dashboard";
+import {
+  createUserAction,
+  getUserByProviderAction,
+  updateUserAction,
+} from "@/actions/user";
 import { env } from "@/env.mjs";
 import { getPageConditions } from "@/lib/auth/conditions";
 import { lucia } from "@/lib/auth/lucia";
 import {
   azureProvider,
+  readAuthData,
   readAzureOAuthState,
-  readJoinClassCode,
 } from "@/lib/auth/provider";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { reportSentry } from "@/lib/utils";
@@ -27,12 +32,9 @@ export const GET = async (req: Request) => {
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
 
-  const join_class_code = await readJoinClassCode();
-  const {
-    state: storedState,
-    codeVerifier: storedCodeVerifier,
-    referer,
-  } = await readAzureOAuthState();
+  const { state: storedState, codeVerifier: storedCodeVerifier } =
+    await readAzureOAuthState();
+  const { dst, join_class_code } = await readAuthData();
 
   if (
     !code ||
@@ -84,6 +86,8 @@ export const GET = async (req: Request) => {
           email: azureUser.email,
           conditionAssignments: pageConditions,
           role: env.ADMINS?.includes(azureUser.email ?? "") ? "admin" : "user",
+          // new users are enrolled in class if the class code is valid (check in createUserAction), pass undefined if it is null or empty string
+          classId: join_class_code || undefined,
         },
         provider_id: "azure",
         provider_user_id: azureUser.oid,
@@ -93,6 +97,24 @@ export const GET = async (req: Request) => {
       }
 
       user = newUser;
+    } else {
+      // for existing users without a class id, update their record
+      if (
+        user.classId === null &&
+        join_class_code !== null &&
+        join_class_code !== ""
+      ) {
+        const [teacher, err] = await getTeacherByClassAction({
+          classId: join_class_code,
+        });
+        if (err) {
+          throw new Error(err.message, { cause: err });
+        }
+
+        if (teacher) {
+          updateUserAction({ id: user.id, classId: join_class_code });
+        }
+      }
     }
 
     const session = await lucia.createSession(user.id, {});
@@ -102,19 +124,25 @@ export const GET = async (req: Request) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    if (join_class_code !== null) {
+
+    // redirect users to consent form if it is untouched
+    if (user.consentGiven === null) {
       return new Response(null, {
-        status: 302,
+        status: 303,
         headers: {
-          Location: `/dashboard/settings?join_class_code=${join_class_code}`,
+          Location: "/consent",
         },
       });
     }
 
+    // redirect to dst, which can be
+    // - the "redirect_to" searchParam in the /auth page
+    // - referrer header
+    // - homepage (fallback)
     return new Response(null, {
-      status: 302,
+      status: 303,
       headers: {
-        Location: referer ?? "/",
+        Location: dst ?? "/",
       },
     });
   } catch (error) {

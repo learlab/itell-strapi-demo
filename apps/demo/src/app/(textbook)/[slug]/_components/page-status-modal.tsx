@@ -14,6 +14,7 @@ import {
 import { LoginButton } from "@auth//auth-form";
 import { type User } from "lucia";
 
+import { TakeConsent } from "@/components/take-consent";
 import { isProduction } from "@/lib/constants";
 import { type PageStatus } from "@/lib/page-status";
 import { makePageHref } from "@/lib/utils";
@@ -30,6 +31,21 @@ export function PageStatusModal({ user, pageStatus }: Props) {
   }
 
   if (user) {
+    if (user.consentGiven === null) {
+      return (
+        <Modal title="Please review the consent form first">
+          <p>
+            {" "}
+            Before starting on the textbook, please review the participation
+            policies in the consent form.
+          </p>
+          <DialogFooter>
+            <TakeConsent />
+          </DialogFooter>
+        </Modal>
+      );
+    }
+
     if (latest) {
       return null;
     }
@@ -39,13 +55,13 @@ export function PageStatusModal({ user, pageStatus }: Props) {
     // user with locked page
     return (
       <Modal title="You haven't unlocked this page yet">
-        <div>
+        <p>
           Submit a passing summary for
           <Link href={href} className="mx-1 font-semibold underline">
             <span> this page </span>
           </Link>
           first.
-        </div>
+        </p>
         <DialogFooter>
           <Button>
             <Link href={href}>Go to page</Link>

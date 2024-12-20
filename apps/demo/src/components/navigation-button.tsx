@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useTransition } from "react";
+import React, { useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@itell/core/hooks";
@@ -12,7 +12,7 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Button> {
   href: string;
 }
 
-export function NavigationButton({ children, href, onClick, ...props }: Props) {
+export function NavigationButton({ children, href, ...props }: Props) {
   const [pending, startTransition] = useTransition();
   const pendingDebounced = useDebounce(pending, 100);
   const router = useRouter();

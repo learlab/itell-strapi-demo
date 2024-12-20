@@ -16,6 +16,7 @@ import {
   focus_times,
   oauthAccounts,
   summaries,
+  teachers,
   TeacherSchema,
   UpdateUserSchema,
   users,
@@ -199,7 +200,24 @@ export const createUserAction = createServerAction()
   )
   .handler(async ({ input }) => {
     return await db.transaction(async (tx) => {
-      const [newUser] = await tx.insert(users).values(input.user).returning();
+      let classExists = false;
+      // if classId is provided, check if class exists, if not, ignore classId
+      if (input.user.classId) {
+        classExists =
+          first(
+            await tx
+              .select()
+              .from(teachers)
+              .where(eq(teachers.classId, input.user.classId))
+          ) !== null;
+      }
+      const [newUser] = await tx
+        .insert(users)
+        .values({
+          ...input.user,
+          classId: classExists ? input.user.classId : undefined,
+        })
+        .returning();
 
       await tx.insert(oauthAccounts).values({
         provider_id: input.provider_id,

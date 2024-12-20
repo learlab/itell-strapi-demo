@@ -33,24 +33,31 @@ const cookieOptions: Partial<ResponseCookie> = {
   sameSite: "lax",
 };
 
-export const setJoinClassCode = async (join_class_code: string | null) => {
-  if (join_class_code !== null) {
-    (await cookies()).set("join_class_code", join_class_code);
-  }
+export const setAuthData = async ({
+  dst,
+  join_class_code,
+}: {
+  dst?: string;
+  join_class_code?: string;
+}) => {
+  const c = await cookies();
+  c.set("auth_dst", dst ?? "/", cookieOptions);
+  c.set("join_class_code", join_class_code ?? "", cookieOptions);
 };
 
-export const readJoinClassCode = async () => {
+export const readAuthData = async () => {
   const c = await cookies();
-
+  const dst = c.get("auth_dst")?.value ?? null;
   const join_class_code = c.get("join_class_code")?.value ?? null;
-
+  // eslint-disable-next-line drizzle/enforce-delete-with-where
+  c.delete("auth_dst");
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   c.delete("join_class_code");
 
-  return join_class_code;
+  return { dst, join_class_code };
 };
 
-export const setAzureOAuthState = async (referer?: string) => {
+export const setAzureOAuthState = async () => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
@@ -58,9 +65,6 @@ export const setAzureOAuthState = async (referer?: string) => {
 
   c.set("azure_oauth_state", state, cookieOptions);
   c.set("azure_oauth_code_verifier", codeVerifier, cookieOptions);
-  if (referer) {
-    c.set("azure_oauth_referer", referer, cookieOptions);
-  }
 
   return { state, codeVerifier };
 };
@@ -69,21 +73,17 @@ export const readAzureOAuthState = async () => {
   const c = await cookies();
   const state = c.get("azure_oauth_state")?.value ?? null;
   const codeVerifier = c.get("azure_oauth_code_verifier")?.value ?? null;
-  const referer = c.get("azure_oauth_referer")?.value ?? null;
 
-  return { state, codeVerifier, referer };
+  return { state, codeVerifier };
 };
 
-export const setGoogleOAuthState = async (referer?: string) => {
+export const setGoogleOAuthState = async () => {
   const c = await cookies();
 
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
   c.set("google_oauth_state", state, cookieOptions);
   c.set("google_oauth_code_verifier", codeVerifier, cookieOptions);
-  if (referer) {
-    c.set("google_oauth_referer", referer, cookieOptions);
-  }
 
   return { state, codeVerifier };
 };
@@ -93,6 +93,5 @@ export const readGoogleOAuthState = async () => {
 
   const state = c.get("google_oauth_state")?.value ?? null;
   const codeVerifier = c.get("google_oauth_code_verifier")?.value ?? null;
-  const referer = c.get("google_oauth_referer")?.value ?? null;
-  return { state, codeVerifier, referer };
+  return { state, codeVerifier };
 };
