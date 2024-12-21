@@ -5,7 +5,6 @@ import "./styles.css";
 
 import { updateUserAction } from "@/actions/user";
 import { ContinueReading } from "@/components/continue-reading";
-import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { ConsentForm } from "./form";
