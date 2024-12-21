@@ -6,7 +6,7 @@ import { buttonVariants } from "@itell/ui/button";
 import { cn } from "@itell/utils";
 import { toast } from "sonner";
 import type { AnchorHTMLAttributes } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type Props = {
   href: string;

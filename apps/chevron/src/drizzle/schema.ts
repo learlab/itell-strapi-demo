@@ -87,7 +87,7 @@ const UpdatedAt = timestamp("updated_at", {
   .$onUpdate(() => new Date())
   .notNull();
 
-export const surveys = pgTable("surveys", {
+export const surveys = pgTable("survey_answers", {
   id: serial("id").primaryKey().notNull(),
   userId: text("user_id")
     .notNull()
