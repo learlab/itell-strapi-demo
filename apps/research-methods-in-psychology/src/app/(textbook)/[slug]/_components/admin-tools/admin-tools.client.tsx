@@ -43,6 +43,7 @@ import { InternalError } from "@/components/internal-error";
 import { useQuestionStore } from "@/components/provider/page-provider";
 import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition } from "@/lib/constants";
+import { updatePersonalizationSummaryStreak } from "@/lib/personalization";
 import { makePageHref } from "@/lib/utils";
 
 type Props = {
@@ -86,6 +87,14 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
         ? String(formData.get("page-progress"))
         : undefined;
 
+    let newSummaryStreak =
+      formData.get("summary-streak") !== ""
+        ? Number(formData.get("summary-streak"))
+        : 0;
+
+    // subtract one since we'll be treating things as if a new passing summary has been submitted
+    newSummaryStreak = (newSummaryStreak ?? 0) - 1;
+
     if (formData.get("page-unblur") === "on") {
       startTransition(() => {
         store.send({ type: "finishPage" });
@@ -98,10 +107,24 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
       [pageSlug]: newCondition,
     };
 
+    if (user.personalization) {
+      user.personalization.summary_streak = newSummaryStreak;
+    } else {
+      user.personalization = {
+        summary_streak: newSummaryStreak,
+      } as User["personalization"];
+    }
+
+    const newPersonalization = updatePersonalizationSummaryStreak(user, {
+      isSummaryPassed: true,
+    });
+
     const [_, err] = await execute({
       conditionAssignments: newConditionAssignments,
       pageSlug: newPageSlug,
+      // always set finished to false, some changes are not shown for a finished user
       finished: false,
+      personalization: newPersonalization,
     });
     if (!err) {
       setOpen(false);
@@ -198,6 +221,28 @@ export function AdminToolsClient({ user, pageSlug, pages }: Props) {
               <Switch name="page-unblur" aria-describedby="unblur-desc" />
             </Label>
             <RestartTextbook />
+          </fieldset>
+
+          <fieldset className="flex flex-col gap-4 border p-4">
+            <legend className="font-semibold">Streak</legend>
+            <Label className="flex flex-col gap-2 font-normal">
+              <p className="font-semibold">Set your summary streak</p>
+              <Select name="summary-streak">
+                <SelectTrigger className="h-fit text-left">
+                  <SelectValue placeholder="Select summary streak" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Streak count</SelectLabel>
+                    {Array.from({ length: 10 }, (_, i) => i).map((value) => (
+                      <SelectItem key={value} value={value.toString()}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Label>
           </fieldset>
 
           <footer className="flex justify-end">

@@ -111,6 +111,7 @@ export const users = pgTable("users", {
   classId: text("class_id"),
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
+  survey_completed: boolean("survey_completed").default(false).notNull(),
   personalization: jsonb("personalization_data").$type<PersonalizationData>(),
   conditionAssignments: jsonb("condition_assignments")
     .$type<ConditionAssignments>()
@@ -135,8 +136,10 @@ export const PersonalizationDataSchema = z
   .object({
     summary_streak: z.number(),
     max_summary_streak: z.number(),
+    available_summary_skips: z.number(),
     cri_streak: z.number(),
     max_cri_streak: z.number(),
+    available_cri_skips: z.number(),
   })
   .partial();
 

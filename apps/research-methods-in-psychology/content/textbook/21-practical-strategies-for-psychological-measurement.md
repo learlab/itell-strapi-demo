@@ -3,51 +3,51 @@ assignments:
 - summary
 chunks:
 - title: Learning Objectives
-  slug: Learning-Objectives-260pt
+  slug: Learning-Objectives-462pt
   type: plain
 - title: Conceptually Defining the Construct
-  slug: Conceptually-Defining-the-Construct-892t
+  slug: Conceptually-Defining-the-Construct-1681t
   type: regular
 - title: Operationally Defining the Construct
-  slug: Operationally-Defining-the-Construct-894t
+  slug: Operationally-Defining-the-Construct-1682t
   type: regular
   headings:
   - level: 3
     slug: using-an-existing-measure
     title: Using an Existing Measure
 - title: Operationally Defining the Construct 2
-  slug: Operationally-Defining-the-Construct-2-893t
+  slug: Operationally-Defining-the-Construct-2-1683t
   type: regular
   headings:
   - level: 3
     slug: creating-your-own-measure
-    title: Creating Your Own Measure
+    title: Creating Your Own Measure 
 - title: Implementing the Measure
-  slug: Implementing-the-Measure-895t
+  slug: Implementing-the-Measure-1684t
   type: regular
 - title: Evaluating the Measure
-  slug: Evaluating-the-Measure-896t
+  slug: Evaluating-the-Measure-1680t
   type: regular
 - title: References
-  slug: References-261pt
+  slug: References-463pt
   type: plain
 cri:
 - question: Why is having a clear and complete conceptual definition of a construct important for good measurement?
-  answer: It allows you to make sound decisions about how to measure the construct effectively.
-  slug: Conceptually-Defining-the-Construct-892t
-- question: Why is it usually a good idea to use an existing measure when operationally defining a variable?
-  answer: You save time, benefit from existing evidence of validity, and facilitate comparison with previous research results.
-  slug: Operationally-Defining-the-Construct-894t
-- question: Why is it important to strive for simplicity when creating a new measure?
-  answer: To ensure that participants can understand and carry out the task without becoming bored or frustrated, leading to unreliable responses.
-  slug: Operationally-Defining-the-Construct-2-893t
-- question: How can researchers minimize participants' reactivity in studies?
-  answer: Researchers can make procedures clear and brief, guarantee anonymity, seat participants far apart in groups, use the same writing implement for all, ensure questionnaires are sealed immediately, avoid revealing hypotheses, and standardize interactions between researchers and participants.
-  slug: Implementing-the-Measure-895t
+  answer: It allows you to make sound decisions about exactly how to measure the construct.
+  slug: Conceptually-Defining-the-Construct-1681t
+- question: Why is it usually a good idea to use an existing measure in research?
+  answer: Using an existing measure can save time, has evidence of validity, and allows for easier comparison with previous research results.
+  slug: Operationally-Defining-the-Construct-1682t
+- question: What are some considerations to keep in mind when creating a new measure in psychology?
+  answer: When creating a new measure, strive for simplicity, include clear instructions, provide practice items, keep it brief yet include multiple items, and test it on several people for feedback.
+  slug: Operationally-Defining-the-Construct-2-1683t
+- question: How can you minimize participant reactivity in a research study?
+  answer: You can make the procedure clear and brief, guarantee anonymity, seat participants far apart in groups, use the same writing implement, not reveal your hypothesis, and standardize interactions between researchers and participants.
+  slug: Implementing-the-Measure-1684t
 - question: How should researchers proceed if their newly collected data cast doubt on the reliability or validity of their measure?
   answer: Researchers should investigate potential issues with the measure, administration, conceptual definition, or experimental manipulation to determine the cause of the doubt.
-  slug: Evaluating-the-Measure-896t
-next_slug: page-12
+  slug: Evaluating-the-Measure-1680t
+next_slug: null
 order: 21
 parent:
   title: IV. Psychological Measurement
@@ -177,7 +177,7 @@ slug: 21-practical-strategies-for-psychological-measurement
 title: 21. Practical Strategies for Psychological Measurement
 ---
 
-## Learning Objectives {#Learning-Objectives-260pt .sr-only} 
+## Learning Objectives {#Learning-Objectives-462pt} 
 
 <i-callout variant="info" title="Learning Objectives">
 
@@ -195,13 +195,13 @@ title: 21. Practical Strategies for Psychological Measurement
 
 So far in this chapter, we have considered several basic ideas about the nature of psychological constructs and their measurement. But now imagine that you are in the position of actually having to measure a psychological construct for a research project. How should you proceed? Broadly speaking, there are four steps in the measurement process: (a) conceptually defining the construct, (b) operationally defining the construct, (c) implementing the measure, and (d) evaluating the measure. In this section, we will look at each of these steps in turn.
 
-## Conceptually Defining the Construct {#Conceptually-Defining-the-Construct-892t} 
+## Conceptually Defining the Construct {#Conceptually-Defining-the-Construct-1681t} 
 
 Having a clear and complete conceptual definition of a construct is a prerequisite for good measurement. For one thing, it allows you to make sound decisions about exactly how to measure the construct. If you had only a vague idea that you wanted to measure people’s “memory,” for example, you would have no way to choose whether you should have them remember a list of vocabulary words, a set of photographs, a newly learned skill, an experience from long ago, or have them remember to perform a task at a later time. Because psychologists now conceptualize memory as a set of semi-independent systems, you would have to be more precise about what you mean by “memory.” If you are interested in long-term episodic memory (memory for previous experiences), then having participants remember a list of words that they learned last week would make sense, but having them try to remember to execute a task in the future would not. In general, there is no substitute for reading the research literature on a construct and paying close attention to how others have defined it.
 
-## Operationally Defining the Construct {#Operationally-Defining-the-Construct-894t} 
+## Operationally Defining the Construct {#Operationally-Defining-the-Construct-1682t} 
 
-Once you have a conceptual definition of the construct you are interested in studying it is time to operationally define the construct. Recall an operational definition is a definition of the variable in terms of precisely how it is to be measured. Since most variables are relatively abstract concepts that cannot be directly observed (e.g., stress), and observation is at the heart of the scientific method, conceptual definitions must be transformed into something that can be directly observed and measured. Most variables can be operationally defined in many different ways. For example, stress can be operationally defined as people’s scores on a stress scale such as the Perceived Stress Scale (Cohen, Kamarck, & Mermelstein, 1983) \[1\], cortisol concentrations in their saliva, or the number of stressful life events they have recently experienced. As described below, operationally defining your variable(s) of interest may involve using an existing measure or creating your own measure.
+Once you have a conceptual definition of the construct you are interested in studying it is time to operationally define the construct. Recall an operational definition is a definition of the variable in terms of precisely how it is to be measured. Since most variables are relatively abstract concepts that cannot be directly observed (e.g., stress), and observation is at the heart of the scientific method, conceptual definitions must be transformed into something that can be directly observed and measured. Most variables can be operationally defined in many different ways. For example, stress can be operationally defined as people’s scores on a stress scale such as the Perceived Stress Scale (Cohen, Kamarck, & Mermelstein, 1983) \[1\], cortisol concentrations in their saliva, or the number of stressful life events they have recently experienced. As described below, operationally defining your variable(s) of interest may involve using an existing measure or creating your own measure. 
 
 ### Using an Existing Measure {#using-an-existing-measure}
 
@@ -209,11 +209,11 @@ It is usually a good idea to use an existing measure that has been used successf
 
 If you choose to use an existing measure, you may still have to choose among several alternatives. You might choose the most common one, the one with the best evidence of reliability and validity, the one that best measures a particular aspect of a construct that you are interested in (e.g., a physiological measure of stress if you are most interested in its underlying physiology), or even the one that would be easiest to use. For example, the Ten-Item Personality Inventory (TIPI) is a self-report questionnaire that measures all the Big Five personality dimensions with just 10 items (Gosling, Rentfrow, & Swann, 2003)\[2\]. It is not as reliable or valid as longer and more comprehensive measures, but a researcher might choose to use it when testing time is severely limited.
 
-When an existing measure was created primarily for use in scientific research, it is usually described in detail in a published research article and is free to use in your own research—with a proper citation. You might find that later researchers who use the same measure describe it only briefly but provide a reference to the original article, in which case you would have to get the details from the original article. The American Psychological Association also publishes the __Directory of Unpublished Experimental Measures__ and __PsycTESTS__, which are extensive catalogs/collections of measures that have been used in previous research. Many existing measures—especially those that have applications in clinical psychology—are proprietary. This means that a publisher owns the rights to them and that you would have to purchase them. These include many standard intelligence tests, the Beck Depression Inventory, and the Minnesota Multiphasic Personality Inventory (MMPI). Details about many of these measures and how to obtain them can be found in other reference books, including __Tests in Print__ and the __Mental Measurements Yearbook__. There is a good chance you can find these reference books in your university library.
+When an existing measure was created primarily for use in scientific research, it is usually described in detail in a published research article and is free to use in your own research—with a proper citation. You might find that later researchers who use the same measure describe it only briefly but provide a reference to the original article, in which case you would have to get the details from the original article. The American Psychological Association also publishes the _Directory of Unpublished Experimental Measures_ and _PsycTESTS_, which are extensive catalogs/collections of measures that have been used in previous research. Many existing measures—especially those that have applications in clinical psychology—are proprietary. This means that a publisher owns the rights to them and that you would have to purchase them. These include many standard intelligence tests, the Beck Depression Inventory, and the Minnesota Multiphasic Personality Inventory (MMPI). Details about many of these measures and how to obtain them can be found in other reference books, including _Tests in Print_ and the _Mental Measurements Yearbook_. There is a good chance you can find these reference books in your university library.
 
-## Operationally Defining the Construct 2 {#Operationally-Defining-the-Construct-2-893t .sr-only} 
+## Operationally Defining the Construct 2 {#Operationally-Defining-the-Construct-2-1683t .sr-only} 
 
-### Creating Your Own Measure {#creating-your-own-measure}
+### Creating Your Own Measure  {#creating-your-own-measure}
 
 Instead of using an existing measure, you might want to create your own. Perhaps there is no existing measure of the construct you are interested in or existing ones are too difficult or time-consuming to use. Or perhaps you want to use a new measure specifically to see whether it works in the same way as existing measures—that is, to evaluate convergent validity. In this section, we consider some general issues in creating new measures that apply equally to self-report, behavioral, and physiological measures. More detailed guidelines for creating self-report measures are presented in Chapter 7.
 
@@ -225,25 +225,19 @@ The need for brevity, however, needs to be weighed against the fact that it is n
 
 Finally, the very best way to assure yourself that your measure has clear instructions, includes sufficient practice, and is an appropriate length is to test several people. Observe them as they complete the task, time them, and ask them afterward to comment on how easy or difficult it was, whether the instructions were clear, and anything else you might be wondering about. Obviously, it is better to discover problems with a measure before beginning any large-scale data collection.
 
-## Implementing the Measure {#Implementing-the-Measure-895t} 
+## Implementing the Measure {#Implementing-the-Measure-1684t} 
 
-You will want to implement any measure in a way that maximizes its reliability and validity. In most cases, it is best to test everyone under similar conditions that, ideally, are quiet and free of distractions. Participants are often tested in groups because it is efficient, but be aware that it can create distractions that reduce the reliability and validity of the measure. As always, it is good to use previous research as a guide. If others have successfully tested people in groups using a particular measure, then you should consider doing it too.
+You will want to implement any measure in a way that maximizes its reliability and validity. In most cases, it is best to test everyone under similar conditions that, ideally, are quiet and free of distractions. Participants are often tested in groups because it is efficient, but be aware that it can create distractions that reduce the reliability and validity of the measure. As always, it is good to use previous research as a guide. If others have successfully tested people in groups using a particular measure, then you should consider doing it too. 
 
 Be aware also that people can react in a variety of ways to being measured that reduce the reliability and validity of the scores. Although some disagreeable participants might intentionally respond in ways meant to disrupt a study, participant reactivity is more likely to take the opposite form. Agreeable participants might respond in ways they believe they are expected to. Some participants might engage in **socially desirable responding**, doing or saying things because they think it is the socially appropriate thing. For example, people with low self-esteem agree that they feel they are a person of worth not because they really feel this way but because they believe this is the socially appropriate response and do not want to look bad in the eyes of the researcher. Additionally, research studies can have built-in **demand characteristics**: subtle cues that reveal how the researcher expects participants to behave. For example, a participant whose attitude toward exercise is measured immediately after she is asked to read a passage about the dangers of heart disease might reasonably conclude that the passage was meant to improve her attitude. As a result, she might respond more favorably because she believes she is expected to by the researcher. Finally, your own expectations can bias participants’ behaviors in unintended ways.
 
 There are several precautions you can take to minimize these kinds of reactivity. One is to make the procedure as clear and brief as possible so that participants are not tempted to vent their frustrations on your results. Another is to guarantee participants’ anonymity and make clear to them that you are doing so. If you are testing them in groups, be sure that they are seated far enough apart that they cannot see each other’s responses. Give them all the same type of writing implement so that they cannot be identified by, for example, the pink glitter pen that they used. You can even allow them to seal completed questionnaires into individual envelopes or put them into a drop box where they immediately become mixed with others’ questionnaires. Although informed consent requires telling participants what they will be doing, it does not require revealing your hypothesis or other information that might suggest to participants how you expect them to respond. A questionnaire designed to measure financial responsibility need not be titled “Are You Financially Responsible?” It could be titled “Money Questionnaire” or have no title at all. Finally, the effects of your expectations can be minimized by arranging to have the measure administered by a helper who is “blind” or unaware of its intent or of any hypothesis being tested. Regardless of whether this is possible, you should standardize all interactions between researchers and participants—for example, by always reading the same set of instructions word for word.
 
-## Evaluating the Measure {#Evaluating-the-Measure-896t} 
+## Evaluating the Measure {#Evaluating-the-Measure-1680t} 
 
-Once you have used your measure on a sample of people and have a set of scores, you are in a position to evaluate it more thoroughly in terms of reliability and validity. Even if the measure has been used extensively by other researchers and has already shown evidence of reliability and validity, you should not assume that it worked as expected for your particular sample and under your particular testing conditions. Regardless, you now have additional evidence bearing on the reliability and validity of the measure, and it would make sense to add that evidence to the research literature.
+Researchers should investigate potential issues with the measure, administration, conceptual definition, or experimental manipulation to determine the cause of the doubt.
 
-In most research designs, it is not possible to assess test-retest reliability because participants are tested at only one time. For a new measure, you might design a study specifically to assess its test-retest reliability by testing the same set of participants at two separate times. In other cases, a study designed to answer a different question still allows for the assessment of test-retest reliability. For example, a psychology instructor might measure his students’ attitude toward critical thinking using the same measure at the beginning and end of the semester to see if there is any change. Even if there is no change, he could still look at the correlation between students’ scores at the two times to assess the measure’s test-retest reliability. It is also customary to assess internal consistency for any multiple-item measure—usually by looking at a split-half correlation or Cronbach’s α.
-
-Criterion validity can be assessed in various ways. For example, if your study included more than one measure of the same construct or measures of conceptually distinct constructs, then you should look at the correlations among these measures to be sure that they fit your expectations. Note also that a successful experimental manipulation also provides evidence of criterion validity. Recall that MacDonald and Martineau manipulated participant’s moods by having them think either positive or negative thoughts, and after the manipulation, their mood measure showed a distinct difference between the two groups. This simultaneously provided evidence that their mood manipulation worked __and__ that their mood measure was valid.
-
-But what if your newly collected data cast doubt on the reliability or validity of your measure? The short answer is that you have to ask why. It could be that there is something wrong with your measure or how you administered it. It could be that there is something wrong with your conceptual definition. It could be that your experimental manipulation failed. For example, if a mood measure showed no difference between people whom you instructed to think positive versus negative thoughts, maybe it is because the participants did not actually think the thoughts they were supposed to or that the thoughts did not actually affect their moods. In short, it is “back to the drawing board” to revise the measure, revise the conceptual definition, or try a new manipulation.
-
-## References {#References-261pt} 
+## References {#References-463pt} 
 
 1.  Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. _Journal of Health and Social Behavior, 24_, 386-396.
 2.  Gosling, S. D., Rentfrow, P. J., & Swann, W. B., Jr. (2003). A very brief measure of the Big Five personality domains. _Journal of Research in Personality, 37_, 504–528.

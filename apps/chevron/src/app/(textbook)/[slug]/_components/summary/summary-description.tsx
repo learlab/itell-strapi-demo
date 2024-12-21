@@ -22,10 +22,9 @@ export function SummaryDescription({ condition }: { condition: string }) {
         summary writing guide
       </h2>
       <a className="sr-only" href={`#${Elements.SUMMARY_FORM}`}>
-        skip to summary submission
+        jump to summary submission
       </a>
       <HtmlRenderer
-        className="xl:text-lg xl:leading-relaxed"
         components={{
           "i-image": Image,
           "i-accordion": Accordion,

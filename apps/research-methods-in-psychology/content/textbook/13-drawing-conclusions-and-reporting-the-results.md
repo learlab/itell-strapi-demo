@@ -3,21 +3,21 @@ assignments:
 - summary
 chunks:
 - title: Learning Objectives
-  slug: Learning-Objectives-191pt
+  slug: Learning-Objectives-405pt
   type: plain
 - title: Drawing Conclusions
-  slug: Drawing-Conclusions-746t
+  slug: Drawing-Conclusions-1587t
   type: regular
 - title: Reporting the Results
-  slug: Reporting-the-Results-745t
+  slug: Reporting-the-Results-1588t
   type: regular
 cri:
 - question: Why do scientists tend to avoid using the word 'prove' when discussing theories?
-  answer: Scientists tend to avoid using the word 'prove' when discussing theories because confirming a hypothesis can strengthen a theory but can never definitively prove it due to the possibility of type I errors, multiple plausible theories making the same prediction, and the potential for disconfirming cases in the future.
-  slug: Drawing-Conclusions-746t
-- question: What are the different ways in which research findings can be reported?
+  answer: Scientists tend to avoid using the word 'prove' when discussing theories because results may reflect type I errors, there may be other plausible theories that imply the same hypothesis, and new observations could lead to revisions in theories.
+  slug: Drawing-Conclusions-1587t
+- question: What are the different ways to report research findings?
   answer: Research findings can be reported through peer-reviewed journal articles, book chapters, and conference presentations.
-  slug: Reporting-the-Results-745t
+  slug: Reporting-the-Results-1588t
 next_slug: research-ethics
 order: 13
 parent:
@@ -59,7 +59,7 @@ quiz:
   - answer: "a.\tChoose a research design"
     correct: false
   - answer: "b.\tDevelop a research question"
-    correct: true
+    correct: false
   - answer: "c.\tForm operational definitions"
     correct: false
   - answer: "d.\tAnalyze your data"
@@ -158,7 +158,7 @@ slug: 13-drawing-conclusions-and-reporting-the-results
 title: 13. Drawing Conclusions and Reporting the Results
 ---
 
-## Learning Objectives {#Learning-Objectives-191pt} 
+## Learning Objectives {#Learning-Objectives-405pt} 
 
 <i-callout variant="info" title="Learning Objectives">
 
@@ -170,23 +170,23 @@ title: 13. Drawing Conclusions and Reporting the Results
 
 </i-callout>
 
-## Drawing Conclusions {#Drawing-Conclusions-746t} 
+## Drawing Conclusions {#Drawing-Conclusions-1587t} 
 
-Since statistics are probabilistic in nature and findings can reflect type I or type II errors, we cannot use the results of a single study to conclude with certainty that a theory is true. Rather theories are supported, refuted, or modified based on the results of research. 
+Since statistics are probabilistic in nature and findings can reflect type I or type II errors, we cannot use the results of a single study to conclude with certainty that a theory is true. Rather theories are supported, refuted, or modified based on the results of research.  
 
 If the results are statistically significant and consistent with the hypothesis and the theory that was used to generate the hypothesis, then researchers can conclude that the theory is supported. Not only did the theory make an accurate prediction, but there is now a new phenomenon that the theory accounts for. If a hypothesis is disconfirmed in a systematic empirical study, then the theory has been weakened. It made an inaccurate prediction, and there is now a new phenomenon that it does not account for.
 
 Although this seems straightforward, there are some complications. First, confirming a hypothesis can strengthen a theory but it can never prove a theory. In fact, scientists tend to avoid the word “prove” when talking and writing about theories. One reason for this avoidance is that the result may reflect a type I error.  Another reason for this avoidance is that there may be other plausible theories that imply the same hypothesis, which means that confirming the hypothesis strengthens all those theories equally. A third reason is that it is always possible that another test of the hypothesis or a test of a new hypothesis derived from the theory will be disconfirmed. This difficulty is a version of the famous philosophical “problem of induction.” One cannot definitively prove a general principle (e.g., “All swans are white.”) just by observing confirming cases (e.g., white swans)—no matter how many. It is always possible that a disconfirming case (e.g., a black swan) will eventually come along. For these reasons, scientists tend to think of theories—even highly successful ones—as subject to revision based on new and unexpected observations.
 
-A second complication has to do with what it means when a hypothesis is disconfirmed. According to the strictest version of the hypothetico-deductive method, disconfirming a hypothesis disproves the theory it was derived from. In formal logic, the premises “if __A__ then __B__” and “not __B__” necessarily lead to the conclusion “not __A__.” If __A__ is the theory and __B__ is the hypothesis (“if __A__ then __B__”), then disconfirming the hypothesis (“not __B__”) must mean that the theory is incorrect (“not __A__”). In practice, however, scientists do not give up on their theories so easily. One reason is that one disconfirmed hypothesis could be a missed opportunity (the result of a type II error) or it could be the result of a faulty research design. Perhaps the researcher did not successfully manipulate the independent variable or measure the dependent variable.
+A second complication has to do with what it means when a hypothesis is disconfirmed. According to the strictest version of the hypothetico-deductive method, disconfirming a hypothesis disproves the theory it was derived from. In formal logic, the premises “if _A_ then _B_” and “not _B_” necessarily lead to the conclusion “not _A_.” If _A_ is the theory and _B_ is the hypothesis (“if _A_ then _B_”), then disconfirming the hypothesis (“not _B_”) must mean that the theory is incorrect (“not _A_”). In practice, however, scientists do not give up on their theories so easily. One reason is that one disconfirmed hypothesis could be a missed opportunity (the result of a type II error) or it could be the result of a faulty research design. Perhaps the researcher did not successfully manipulate the independent variable or measure the dependent variable.
 
 A disconfirmed hypothesis could also mean that some unstated but relatively minor assumption of the theory was not met. For example, if Zajonc had failed to find social facilitation in cockroaches, he could have concluded that drive theory is still correct but it applies only to animals with sufficiently complex nervous systems. That is, the evidence from a study can be used to modify a theory. This practice does not mean that researchers are free to ignore disconfirmations of their theories. If they cannot improve their research designs or modify their theories to account for repeated disconfirmations, then they eventually must abandon their theories and replace them with ones that are more successful.
 
 The bottom line here is that because statistics are probabilistic in nature and because all research studies have flaws there is no such thing as scientific proof, there is only scientific evidence.
 
-## Reporting the Results {#Reporting-the-Results-745t} 
+## Reporting the Results {#Reporting-the-Results-1588t} 
 
-The final step in the research process involves reporting the results. As described in the section on Reviewing the Research Literature in this chapter, results are typically reported in peer-reviewed journal articles and at conferences.
+The final step in the research process involves reporting the results. As described in the section on Reviewing the Research Literature in this chapter, results are typically reported in peer-reviewed journal articles and at conferences. 
 
 The most prestigious way to report one’s findings is by writing a manuscript and having it published in a peer-reviewed scientific journal. Manuscripts published in psychology journals typically must adhere to the writing style of the American Psychological Association (APA style). You will likely be learning the major elements of this writing style in this course.
 

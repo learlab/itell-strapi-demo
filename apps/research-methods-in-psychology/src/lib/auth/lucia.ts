@@ -5,7 +5,11 @@ import { Lucia } from "lucia";
 import { db } from "@/actions/db";
 import { sessions, users } from "@/drizzle/schema";
 import { isProduction } from "../constants";
-import type { ConditionAssignments, UserPreferences } from "@/drizzle/schema";
+import type {
+  ConditionAssignments,
+  PersonalizationData,
+  UserPreferences,
+} from "@/drizzle/schema";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
@@ -27,6 +31,16 @@ export const lucia = new Lucia(adapter, {
       finished: attributes.finished,
       classId: attributes.classId,
       pageSlug: attributes.pageSlug,
+      personalization: {
+        summary_streak: attributes.personalization?.summary_streak ?? 0,
+        max_summary_streak: attributes.personalization?.max_summary_streak ?? 0,
+        available_summary_skips:
+          attributes.personalization?.available_summary_skips ?? 0,
+        cri_streak: attributes.personalization?.cri_streak ?? 0,
+        max_cri_streak: attributes.personalization?.max_cri_streak ?? 0,
+        available_cri_skips:
+          attributes.personalization?.available_cri_skips ?? 0,
+      },
       preferences: {
         note_color_light:
           attributes.preferences?.note_color_light ??
@@ -59,6 +73,7 @@ interface DatabaseUserAttributes {
   pageSlug: string | null;
   conditionAssignments: ConditionAssignments;
   preferences: UserPreferences | null;
+  personalization: PersonalizationData | null;
 }
 
 interface DatabaseSessionAttributes {}

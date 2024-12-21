@@ -27,9 +27,7 @@ import { FileQuestionIcon, SendHorizontalIcon } from "lucide-react";
 import Confetti from "react-dom-confetti";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
-
 import { createEventAction } from "@/actions/event";
-import { getFocusTimeAction } from "@/actions/focus-time";
 import {
   createSummaryAction,
   getSummaryScoreRequestAction,
@@ -72,6 +70,7 @@ import {
 import { NextPageButton } from "./summary-next-page-button";
 import type { StairsQuestion } from "@/lib/store/summary-store";
 import type { SummaryResponse } from "@itell/core/summary";
+import { rocketBlast } from "@/lib/animations";
 
 interface Props {
   user: User;
@@ -92,7 +91,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
 
   // for debugging
   const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
-  const requestBodyRef = useRef<{} | null>(null);
+  const requestBodyRef = useRef<any | null>(null);
   const summaryResponseRef = useRef<SummaryResponse | null>(null);
   const stairsDataRef = useRef<StairsQuestion | null>(null);
   const stairsAnsweredRef = useRef(false);
@@ -161,10 +160,10 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
         let stairsChunk: string | null = null;
 
         while (!done) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+           
           const { value, done: doneReading } = await reader.read();
           done = doneReading;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+           
           const chunk = decoder.decode(value, { stream: true });
           if (chunkIndex === 0) {
             const data = chunk
@@ -216,7 +215,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
         }
 
         if (stairsChunk) {
-          // eslint-disable-next-line prefer-named-capture-group
+           
           const regex = /data: ({"request_id":.*?})\n*/;
           const match = regex.exec(stairsChunk.trim());
           console.log("final stairs chunk\n", stairsChunk);
@@ -264,6 +263,14 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
 
         clearKeystroke();
         finishStage("Saving");
+
+        // for rocket blast animation
+        const blastYPos = innerHeight - 10;
+
+        if (data.isExcellent) {
+          console.log("Excellent summary submitted");
+          rocketBlast(blastYPos);
+        }
 
         if (data.canProceed) {
           if (page.quiz && page.quiz.length > 0 && !pageStatus.unlocked) {
@@ -460,7 +467,7 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
           submit summary
         </h2>
         <form
-          className="mt-2 space-y-4"
+          className="flex flex-col gap-4"
           onSubmit={action}
           aria-labelledby="summary-form-heading"
         >
@@ -482,11 +489,12 @@ export function SummaryFormStairs({ user, page, pageStatus }: Props) {
             ref={ref}
           />
 
-          <div className="flex justify-end">
+          <div>
             <Button
               type="submit"
               disabled={isPending || !isSummaryReady}
               pending={isPending}
+              className="w-40"
             >
               <span className="inline-flex items-center gap-2">
                 <SendHorizontalIcon className="size-3" />

@@ -70,7 +70,7 @@ export const SelectionPopover = ({ user, pageSlug }: Props) => {
   } as const;
 
   const takeNoteAction = {
-    label: "Take Note",
+    label: "Add Note",
     icon: <PencilIcon className="size-5" />,
     action: () => {
       if (state && user) {
@@ -240,7 +240,7 @@ function findParentChunk(range: Range) {
       node instanceof HTMLElement &&
       node.classList.contains("content-chunk")
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       
       return node.dataset.chunkSlug!;
     }
     node = node.parentElement;

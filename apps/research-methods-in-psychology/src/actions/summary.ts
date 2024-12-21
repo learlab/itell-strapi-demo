@@ -1,14 +1,16 @@
 "use server";
 
+import { cache } from "react";
 import { revalidateTag } from "next/cache";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { memoize } from "nextjs-better-unstable-cache";
 import { z } from "zod";
 
-import { db } from "@/actions/db";
+import { db, first } from "@/actions/db";
 import {
   CreateSummarySchema,
   events,
+  focus_times,
   summaries,
   users,
 } from "@/drizzle/schema";
@@ -19,8 +21,9 @@ import {
   PAGE_SUMMARY_THRESHOLD,
   Tags,
 } from "@/lib/constants";
-import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isLastPage } from "@/lib/pages";
+import { getPageData, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { updatePersonalizationSummaryStreak } from "@/lib/personalization";
 import { authedProcedure } from "./utils";
 
 /**
@@ -45,7 +48,6 @@ export const createSummaryAction = authedProcedure
   .handler(async ({ input, ctx }) => {
     let shouldRevalidate = false;
     const data = await db.transaction(async (tx) => {
-      // count
       let canProceed =
         input.summary.condition === Condition.STAIRS
           ? input.summary.isPassed
@@ -96,8 +98,16 @@ export const createSummaryAction = authedProcedure
         ctx.user.pageSlug
       );
 
+      // update user summary streak info
       if (canProceed) {
         shouldRevalidate = true;
+
+        const newPersonalization = updatePersonalizationSummaryStreak(
+          ctx.user,
+          {
+            isSummaryPassed: input.summary.isPassed,
+          }
+        );
 
         const page = getPageData(input.summary.pageSlug);
         if (page) {
@@ -106,6 +116,7 @@ export const createSummaryAction = authedProcedure
             .set({
               pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
               finished: isLastPage(page),
+              personalization: newPersonalization,
             })
             .where(eq(users.id, ctx.user.id));
         }
@@ -119,12 +130,49 @@ export const createSummaryAction = authedProcedure
       };
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (shouldRevalidate) {
       revalidateTag(Tags.GET_SESSION);
     }
 
+    revalidateTag(Tags.COUNT_SUMMARY);
+
     return data;
+  });
+
+/**
+ * Get data to make the summary scoring request
+ *
+ */
+export const getSummaryScoreRequestAction = authedProcedure
+  .input(z.object({ pageSlug: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    return await db.transaction(async (tx) => {
+      const contentScoreHistory = (
+        await tx
+          .select({
+            content: summaries.contentScore,
+          })
+          .from(summaries)
+          .where(and(eq(summaries.userId, ctx.user.id)))
+      ).map((v) => v.content);
+
+      const focusTimes = first(
+        await tx
+          .select()
+          .from(focus_times)
+          .where(
+            and(
+              eq(focus_times.userId, ctx.user.id),
+              eq(focus_times.pageSlug, input.pageSlug)
+            )
+          )
+      );
+
+      return {
+        contentScoreHistory,
+        focusTimes,
+      };
+    });
   });
 
 /**
@@ -158,7 +206,7 @@ export const getSummariesClassHandler = memoize(
   },
   {
     persist: false,
-    // @ts-expect-error make server action check happy
+    // @ts-expect-error bypass server action check
     revalidateTags: async (classId, pageSlug) => [
       "get-summaries-class",
       classId,
@@ -193,7 +241,7 @@ export const getSummariesHandler = memoize(
   },
   {
     persist: false,
-    // @ts-expect-error make server action check happy
+    // @ts-expect-error bypass server action check
     revalidateTags: async (userId, summaryId) => [
       "get-summaries",
       userId,
@@ -210,6 +258,11 @@ export const getSummariesHandler = memoize(
 export const countSummaryByPassingAction = authedProcedure
   .input(z.object({ pageSlug: z.string() }))
   .handler(async ({ input, ctx }) => {
+    return countSummaryByPassingHandler(ctx.user.id, input.pageSlug);
+  });
+
+const countSummaryByPassingHandler = memoize(
+  async (userId: string, pageSlug: string) => {
     const record = await db
       .select({
         passed: count(sql`CASE WHEN ${summaries.isPassed} THEN 1 END`),
@@ -217,11 +270,10 @@ export const countSummaryByPassingAction = authedProcedure
       })
       .from(summaries)
       .where(
-        and(
-          eq(summaries.userId, ctx.user.id),
-          eq(summaries.pageSlug, input.pageSlug)
-        )
+        and(eq(summaries.userId, userId), eq(summaries.pageSlug, pageSlug))
       );
 
     return record[0];
-  });
+  },
+  { persist: false, revalidateTags: [Tags.COUNT_SUMMARY] }
+);

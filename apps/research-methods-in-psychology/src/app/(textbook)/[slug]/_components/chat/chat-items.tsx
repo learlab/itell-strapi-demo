@@ -51,7 +51,7 @@ export function ChatItems({
             <MessageItemMemo
               key={message.id}
               message={message}
-              canAnimate={!message.isUser}
+              shouldAnimate={!message.isUser}
             />
           );
         })}
@@ -76,10 +76,10 @@ const MessageItemMemo = React.memo(MessageItem);
 
 function MessageItem({
   message,
-  canAnimate = false,
+  shouldAnimate = false,
 }: {
   message: Message;
-  canAnimate?: boolean;
+  shouldAnimate?: boolean;
 }) {
   const isPending = message.text === "";
 
@@ -118,7 +118,7 @@ function MessageItem({
               "bg-accent": message.isUser,
             })}
           >
-            {canAnimate ? (
+            {shouldAnimate ? (
               <AnimatedText
                 text={message.text}
                 node={message.node}

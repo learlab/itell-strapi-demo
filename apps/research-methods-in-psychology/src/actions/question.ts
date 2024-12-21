@@ -1,7 +1,6 @@
 "use server";
 
-import { cache } from "react";
-import { count, desc, eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@/actions/db";
@@ -13,6 +12,7 @@ import {
   users,
 } from "@/drizzle/schema";
 import { isProduction } from "@/lib/constants";
+import { updatePersonalizationCRIStreak } from "@/lib/personalization";
 import { authedProcedure } from "./utils";
 
 /**
@@ -68,24 +68,44 @@ export const getAnswerStatsAction = authedProcedure.handler(async ({ ctx }) => {
 });
 
 /**
+ * Change streak of correctly answered questions for user
+ */
+export const updateCRIStreakAction = authedProcedure
+  .input(
+    z.object({
+      isCorrect: z.boolean().optional(),
+    })
+  )
+  .handler(async ({ ctx, input }) => {
+    if (input.isCorrect === undefined) {
+      // Return current streak, to fill the initial streak render for QuestionBoxStairs
+      return ctx.user.personalization.cri_streak;
+    }
+
+    const newPersonalization = updatePersonalizationCRIStreak(ctx.user, {
+      isQuestionCorrect: input.isCorrect,
+    });
+
+    const updatedUser = await db
+      .update(users)
+      .set({ personalization: newPersonalization })
+      .where(eq(users.id, ctx.user.id))
+      .returning({
+        personalization: users.personalization,
+      });
+
+    return updatedUser[0].personalization?.cri_streak ?? 0;
+  });
+
+/**
  * Get streak of correctly answered questions for user
  */
+
 export const getUserQuestionStreakAction = authedProcedure.handler(
   async ({ ctx }) => {
-    return await getUserQuestionStreakHandler(ctx.user.id);
+    return ctx.user.personalization.cri_streak;
   }
 );
-
-const getUserQuestionStreakHandler = cache(async (userId: string) => {
-  const records = await db
-    .select()
-    .from(constructed_responses)
-    .where(eq(constructed_responses.userId, userId))
-    .orderBy(desc(constructed_responses.createdAt));
-
-  const idx = records.findIndex((record) => record.score !== 2);
-  return idx === -1 ? records.length : idx;
-});
 
 /**
  * Get question-answer statistics for class

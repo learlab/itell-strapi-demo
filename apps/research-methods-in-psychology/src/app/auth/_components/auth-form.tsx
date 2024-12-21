@@ -22,11 +22,8 @@ export function AuthForm({ joinClassCode }: Props) {
           automatically added to the class.
         </p>
       ) : null}
-      <p className="text-center text-sm text-muted-foreground">
-        Please log in using your school email
-      </p>
       <div className="flex flex-col gap-2">
-        {/* <GoogleLoginButton /> */}
+        <GoogleLoginButton />
         <OutlookLoginButton />
       </div>
     </div>
@@ -55,6 +52,7 @@ export function GoogleLoginButton() {
       variant="outline"
       disabled={pending}
       pending={pending}
+      data-testid="google-login-button"
     >
       <span className="flex items-center gap-2">
         <BrandIcon
@@ -91,6 +89,7 @@ export function OutlookLoginButton() {
       variant="outline"
       disabled={pending}
       pending={pending}
+      data-testid="outlook-login-button"
     >
       <span className="flex items-center gap-2">
         <BrandIcon

@@ -1,4 +1,5 @@
 import { ContinueReading } from "@/components/continue-reading";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -11,11 +12,12 @@ export default function NotFound() {
         <p className="mt-6 text-base leading-7 text-gray-600">
           Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
+
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <ContinueReading />
-          <a href="/" className="text-sm font-semibold">
+          <Link href="/" className="text-sm font-semibold">
             Go to home <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

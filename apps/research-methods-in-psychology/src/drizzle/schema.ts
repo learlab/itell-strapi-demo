@@ -1,4 +1,3 @@
-import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   doublePrecision,
@@ -14,6 +13,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
+
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
 export const code_challenge_method = pgEnum("code_challenge_method", [
@@ -94,6 +95,8 @@ export const users = pgTable("users", {
   classId: text("class_id"),
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
+  survey_completed: boolean("survey_completed").default(false).notNull(),
+  personalization: jsonb("personalization_data").$type<PersonalizationData>(),
   conditionAssignments: jsonb("condition_assignments")
     .$type<ConditionAssignments>()
     .notNull(),
@@ -112,13 +115,26 @@ export const UserPreferencesSchema = z
   })
   .partial();
 
+export const PersonalizationDataSchema = z
+  .object({
+    summary_streak: z.number(),
+    max_summary_streak: z.number(),
+    available_summary_skips: z.number(),
+    cri_streak: z.number(),
+    max_cri_streak: z.number(),
+    available_cri_skips: z.number(),
+  })
+  .partial();
+
 export const CreateUserSchema = createInsertSchema(users, {
   preferences: UserPreferencesSchema.optional(),
+  personalization: PersonalizationDataSchema.optional(),
   conditionAssignments: z.record(z.string()),
 });
 export const UpdateUserSchema = CreateUserSchema.partial();
 
 export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
+export type PersonalizationData = z.infer<typeof PersonalizationDataSchema>;
 
 export const sessions = pgTable(
   "sessions",
@@ -133,11 +149,7 @@ export const sessions = pgTable(
     }).notNull(),
     createdAt: CreatedAt,
   },
-  (table) => {
-    return {
-      sessions_user_id_idx: index("sessions_user_id_idx").on(table.userId),
-    };
-  }
+  (table) => [index("sessions_user_id_idx").on(table.userId)]
 );
 
 export const oauthAccounts = pgTable(
@@ -149,14 +161,12 @@ export const oauthAccounts = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
   },
-  (table) => {
-    return {
-      oauth_accounts_pkey: primaryKey({
-        columns: [table.provider_id, table.provider_user_id],
-        name: "oauth_accounts_pk",
-      }),
-    };
-  }
+  (table) => [
+    primaryKey({
+      columns: [table.provider_id, table.provider_user_id],
+      name: "oauth_accounts_pk",
+    }),
+  ]
 );
 
 export const events = pgTable(
@@ -171,12 +181,10 @@ export const events = pgTable(
     data: jsonb("data"),
     createdAt: CreatedAt,
   },
-  (table) => {
-    return {
-      events_user_id_idx: index("events_user_id_idx").on(table.userId),
-      events_type_idx: index("events_type_idx").on(table.type),
-    };
-  }
+  (table) => [
+    index("events_user_id_idx").on(table.userId),
+    index("events_type_idx").on(table.type),
+  ]
 );
 export const CreateEventSchema = createInsertSchema(events);
 
@@ -201,16 +209,12 @@ export const summaries = pgTable(
     isPassed: boolean("is_passed").notNull(),
     containmentScore: doublePrecision("containment_score").notNull(),
     similarityScore: doublePrecision("similarity_score").notNull(),
-    languageScore: doublePrecision("language_score"),
     contentScore: doublePrecision("content_score"),
+    contentThreshold: doublePrecision("content_threshold"),
     createdAt: CreatedAt,
     updatedAt: UpdatedAt,
   },
-  (table) => {
-    return {
-      summaries_user_id_idx: index("summaries_user_id_idx").on(table.userId),
-    };
-  }
+  (table) => [index("summaries_user_id_idx").on(table.userId)]
 );
 
 export type Summary = InferSelectModel<typeof summaries>;
@@ -233,13 +237,12 @@ export const notes = pgTable(
     createdAt: CreatedAt,
     updatedAt: UpdatedAt,
   },
-  (table) => {
-    return {
-      notes_user_id_idx: index("notes_user_id_idx").on(table.userId),
-      notes_page_slug_idx: index("notes_page_slug_idx").on(table.pageSlug),
-    };
-  }
+  (table) => [
+    index("notes_user_id_idx").on(table.userId),
+    index("notes_page_slug_idx").on(table.pageSlug),
+  ]
 );
+
 export const CreateNoteSchema = createInsertSchema(notes);
 export const UpdateNoteSchema = CreateNoteSchema.partial();
 export type Note = InferSelectModel<typeof notes>;
@@ -261,14 +264,10 @@ export const constructed_responses = pgTable(
     chunkSlug: text("chunk_slug").notNull(),
     createdAt: CreatedAt,
   },
-  (table) => {
-    return {
-      user_id_idx: index("constructed_responses_user_id_idx").on(table.userId),
-      page_slug_idx: index("constructed_responses_page_slug_idx").on(
-        table.pageSlug
-      ),
-    };
-  }
+  (table) => [
+    index("constructed_responses_user_id_idx").on(table.userId),
+    index("constructed_responses_page_slug_idx").on(table.pageSlug),
+  ]
 );
 
 export type ConstructedResponse = InferSelectModel<
@@ -318,14 +317,12 @@ export const focus_times = pgTable(
     createdAt: CreatedAt,
     updatedAt: UpdatedAt,
   },
-  (table) => {
-    return {
-      focus_times_pkey: primaryKey({
-        columns: [table.userId, table.pageSlug],
-        name: "focus_times_pkey",
-      }),
-    };
-  }
+  (table) => [
+    primaryKey({
+      columns: [table.userId, table.pageSlug],
+      name: "focus_times_pkey",
+    }),
+  ]
 );
 export const CreateFocusTimeSchema = createInsertSchema(focus_times);
 
@@ -343,14 +340,12 @@ export const chat_messages = pgTable(
     createdAt: CreatedAt,
     updatedAt: UpdatedAt,
   },
-  (table) => {
-    return {
-      chat_messages_pkey: primaryKey({
-        columns: [table.userId, table.pageSlug],
-        name: "chat_messages_pkey",
-      }),
-    };
-  }
+  (table) => [
+    primaryKey({
+      columns: [table.userId, table.pageSlug],
+      name: "chat_messages_pkey",
+    }),
+  ]
 );
 export const ChatMessageDataSchema = z.object({
   text: z.string(),

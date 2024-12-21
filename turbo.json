@@ -16,7 +16,10 @@
         "ITELL_API_KEY",
         "VELITE_STARTED",
         "NEXT_PUBLIC_API_URL",
-        "NEXT_PUBLIC_HOST"
+        "NEXT_PUBLIC_HOST",
+        "NEXT_RUNTIME",
+        "MOCK_ENABLED",
+        "CI"
       ],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]

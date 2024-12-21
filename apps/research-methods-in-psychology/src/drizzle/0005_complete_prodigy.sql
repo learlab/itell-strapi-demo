@@ -1,1 +1,0 @@
-CREATE INDEX IF NOT EXISTS "events_type_idx" ON "events" ("event_type");

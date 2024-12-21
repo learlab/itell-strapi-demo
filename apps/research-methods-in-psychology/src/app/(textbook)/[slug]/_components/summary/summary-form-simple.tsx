@@ -18,10 +18,9 @@ import {
   useQuizStore,
 } from "@/components/provider/page-provider";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage, PageData } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry } from "@/lib/utils";
-import type { PageData } from "@/lib/pages/pages.client";
 import type { FormEvent } from "react";
 
 type Props = {
@@ -103,7 +102,7 @@ export const SummaryFormSimple = memo(({ pageStatus, page }: Props) => {
       <p>placeholder text</p>
 
       <h2 id="completion-form-heading" className="sr-only">
-        completion
+        Page Completion Form
       </h2>
       <form
         aria-labelledby="completion-form-heading"

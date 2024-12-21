@@ -1,69 +1,54 @@
-const { resolve } = require("node:path");
+import js from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginReact from "eslint-plugin-react";
+import globals from "globals";
+import pluginNext from "@next/eslint-plugin-next";
+import { config as baseConfig } from "./base.js";
+import { FlatCompat } from "@eslint/eslintrc";
 
-const project = resolve(process.cwd(), "tsconfig.json");
+const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 
-/*
- * This is a custom ESLint configuration for use with
- * Next.js apps.
+/**
+ * A custom ESLint configuration for libraries that use Next.js.
  *
- * This config extends the Vercel Engineering Style Guide.
- * For more information, see https://github.com/vercel/style-guide
- *
- */
-
-module.exports = {
-  extends: [
-    require.resolve("@vercel/style-guide/eslint/node"),
-    require.resolve("@vercel/style-guide/eslint/typescript"),
-    require.resolve("@vercel/style-guide/eslint/browser"),
-    require.resolve("@vercel/style-guide/eslint/react"),
-    require.resolve("@vercel/style-guide/eslint/next"),
-    // Turborepo custom eslint configuration configures the following rules:
-    //  - https://github.com/vercel/turborepo/blob/main/packages/eslint-plugin-turbo/docs/rules/no-undeclared-env-vars.md
-    "eslint-config-turbo",
-  ].map(require.resolve),
-  parserOptions: {
-    project,
-  },
-  globals: {
-    React: true,
-    JSX: true,
-  },
-  settings: {
-    "import/resolver": {
-      typescript: {
-        project,
+ * @type {import("eslint").Linter.Config}
+ * */
+export const nextJsConfig = [
+  ...baseConfig,
+  js.configs.recommended,
+  eslintConfigPrettier,
+  ...tseslint.configs.recommended,
+  ...compat.extends("plugin:drizzle/recommended"),
+  {
+    ...pluginReact.configs.flat.recommended,
+    languageOptions: {
+      ...pluginReact.configs.flat.recommended.languageOptions,
+      globals: {
+        ...globals.serviceworker,
       },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/"],
-  // add rules configurations here
-  rules: {
-    "no-nested-ternary": "off",
-    "no-console": "off",
-    "no-unused-vars": "warn",
-    "no-param-reassign": "warn",
-    "func-names": "warn",
-    "import/named": "warn",
-    camelcase: "warn",
-    "import/order": "off",
-    "import/no-default-export": "off",
-    "eslint-comments/require-description": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/no-shadow": "off",
-    "@typescript-eslint/require-await": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-unnecessary-condition": "warn",
-    "@typescript-eslint/no-unsafe-assignment": "warn",
-    "@typescript-eslint/no-unsafe-call": "warn",
-    "@typescript-eslint/no-unsafe-member-access": "warn",
-    "@typescript-eslint/no-misused-promises": "off",
-    "@typescript-eslint/naming-convention": "off",
-    "@typescript-eslint/no-empty-interface": "warn",
-    "@typescript-eslint/only-throw-error": "warn",
-    "@typescript-eslint/no-floating-promises": "off",
-    "react/jsx-no-leaked-render": "error",
-    "react/display-name": "off",
+  {
+    plugins: {
+      "@next/next": pluginNext,
+    },
+    rules: {
+      ...pluginNext.configs.recommended.rules,
+      ...pluginNext.configs["core-web-vitals"].rules,
+    },
   },
-};
+  {
+    plugins: {
+      "react-hooks": pluginReactHooks,
+    },
+    settings: { react: { version: "detect" } },
+    rules: {
+      ...pluginReactHooks.configs.recommended.rules,
+      // React scope no longer necessary with new JSX transform.
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+    },
+  },
+];

@@ -90,7 +90,7 @@ const pages = defineCollection({
         remarkPlugins: [remarkHeadingAttrs, remarkMath],
         rehypePlugins: [
           rehypeWrapHeadingSection,
-          // @ts-ignore
+          // @ts-expect-error plugin has wrong type
           rehypeKatex,
           rehypeAddCri,
           rehypeFormat,

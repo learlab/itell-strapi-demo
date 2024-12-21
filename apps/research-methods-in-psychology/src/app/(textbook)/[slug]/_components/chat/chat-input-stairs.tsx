@@ -245,7 +245,7 @@ export function ChatInputStairs({ className, pageSlug }: ChatInputProps) {
         onSubmit={(e) => {
           e.preventDefault();
           if (!e.currentTarget.input.value) return;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+           
           onMessage(e.currentTarget.input.value);
           e.currentTarget.input.value = "";
         }}

@@ -27,6 +27,4 @@ module.exports = {
     ".css$",
   ],
   tailwindFunctions: ["clsx", "cn"],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
 };

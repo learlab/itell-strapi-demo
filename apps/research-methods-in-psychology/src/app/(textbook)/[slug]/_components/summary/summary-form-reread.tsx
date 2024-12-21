@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Elements } from "@itell/constants";
 import {
   useDebounce,
@@ -15,12 +16,20 @@ import {
   SummaryResponseSchema,
 } from "@itell/core/summary";
 import { driver, removeInert, setInertBackground } from "@itell/driver.js";
+import { Button } from "@itell/ui/button";
+import { Warning } from "@itell/ui/callout";
+import { getChunkElement } from "@itell/utils";
+import { useSelector } from "@xstate/store/react";
+import { Page } from "#content";
+import { type User } from "lucia";
+import { SendHorizontalIcon } from "lucide-react";
+import { toast } from "sonner";
+import { useActionStatus } from "use-action-status";
 
 import { createEventAction } from "@/actions/event";
 import { createSummaryAction } from "@/actions/summary";
 import { DelayMessage } from "@/components/delay-message";
 import {
-  useChunks,
   useQuestionStore,
   useQuizStore,
 } from "@/components/provider/page-provider";
@@ -28,34 +37,20 @@ import { apiClient } from "@/lib/api-client";
 import { Condition, EventType } from "@/lib/constants";
 import { useSummaryStage } from "@/lib/hooks/use-summary-stage";
 import { type PageStatus } from "@/lib/page-status";
-import { isLastPage } from "@/lib/pages/pages.client";
+import { isLastPage } from "@/lib/pages";
 import { SelectSummaryReady } from "@/lib/store/question-store";
 import { reportSentry, scrollToElement } from "@/lib/utils";
-import type { PageData } from "@/lib/pages/pages.client";
-import type { SummaryResponse } from "@itell/core/summary";
-
-import "@itell/driver.js/dist/driver.css";
-
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "@itell/ui/button";
-import { Warning } from "@itell/ui/callout";
-import { getChunkElement } from "@itell/utils";
-import { useSelector } from "@xstate/store/react";
-import { type User } from "lucia";
-import { SendHorizontalIcon } from "lucide-react";
-import { toast } from "sonner";
-import { useActionStatus } from "use-action-status";
-
 import {
   getSummaryLocal,
   saveSummaryLocal,
   SummaryInput,
 } from "./summary-input";
 import { NextPageButton } from "./summary-next-page-button";
+import type { SummaryResponse } from "@itell/core/summary";
 
 type Props = {
   user: User;
-  page: PageData;
+  page: Page;
   pageStatus: PageStatus;
 };
 
@@ -66,15 +61,13 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
   const { ref, data: keystrokes, clear: clearKeystroke } = useKeystroke();
   const [finished, setFinished] = useState(pageStatus.unlocked);
   const questionStore = useQuestionStore();
-  const chunks = useChunks();
   const isSummaryReady = useSelector(questionStore, SelectSummaryReady);
   const isMobile = useIsMobile();
 
   const randomChunkSlug = useMemo(() => {
-    // skip first chunk, which is typically learning objectives
-    const validChunks = chunks.slice(1);
-    return validChunks[Math.floor(Math.random() * validChunks.length)];
-  }, []);
+    const validChunks = page.chunks.filter((chunk) => chunk.type === "regular");
+    return validChunks[Math.floor(Math.random() * validChunks.length)].slug;
+  }, [page]);
 
   const { addPortal, removePortals, portals } = usePortal();
   const portalId = useRef<string | null>(null);
@@ -104,32 +97,32 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         page_slug: pageSlug,
       });
       console.log("requestBody", requestBodyRef.current);
-      const response = await apiClient.api.summary.$post({
+      const apiResponse = await apiClient.api.summary.$post({
         json: {
           summary: input,
           page_slug: pageSlug,
         },
       });
-      const json = await response.json();
+      const json = await apiResponse.json();
       const parsed = SummaryResponseSchema.safeParse(json);
       if (!parsed.success) {
         throw new Error("summary response in wrong shape", {
           cause: parsed.error,
         });
       }
-      const scores = parsed.data;
-      summaryResponseRef.current = scores;
+      const response = parsed.data;
+      summaryResponseRef.current = response;
 
       const [_, err] = await createSummaryAction({
         summary: {
           text: input,
           pageSlug,
           condition: Condition.RANDOM_REREAD,
-          isPassed: scores.is_passed ?? false,
-          containmentScore: scores.containment,
-          similarityScore: scores.similarity,
-          languageScore: scores.language,
-          contentScore: scores.content,
+          isPassed: response.is_passed ?? false,
+          containmentScore: response.metrics.containment?.score ?? -1,
+          similarityScore: response.metrics.similarity?.score ?? -1,
+          contentScore: response.metrics.content?.score,
+          contentThreshold: response.metrics.content?.threshold,
         },
         keystroke: {
           start: prevInput.current ?? getSummaryLocal(pageSlug) ?? "",
@@ -227,10 +220,10 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         document.getElementById(Elements.SUMMARY_INPUT)?.focus();
       },
     });
-  }, []);
+  }, [addPortal, pageSlug, randomChunkSlug, removePortals]);
 
   useEffect(() => {
-    if (isError) {
+    if (error) {
       finishStage("Analyzing");
       clearStages();
 
@@ -240,7 +233,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
         error: error?.cause,
       });
     }
-  }, [isError]);
+  }, [clearStages, error, finishStage]);
 
   return (
     <>
@@ -248,7 +241,7 @@ export function SummaryFormReread({ user, page, pageStatus }: Props) {
       <div className="flex flex-col gap-2" id={Elements.SUMMARY_FORM}>
         <div role="status">
           {finished && page.next_slug ? (
-            <div className="space-x-2 space-y-2">
+            <div className="flex flex-col gap-2">
               <p>
                 You have finished this page and can move on. You are still
                 welcome to improve the summary.

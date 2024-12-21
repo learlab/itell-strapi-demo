@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "survey_completed" boolean DEFAULT false NOT NULL;

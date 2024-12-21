@@ -11,7 +11,7 @@ import { PageAssignments } from "@textbook/page-assignments";
 import { PageContent } from "@textbook/page-content";
 import { PageStatusModal } from "@textbook/page-status-modal";
 import { Pager } from "@textbook/pager";
-import { QuestionControl } from "@textbook/question/question-control";
+import { ChunkControl } from "@textbook/question/chunk-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
 
@@ -22,7 +22,7 @@ import { getUserCondition } from "@/lib/auth/conditions";
 import { Condition, isProduction } from "@/lib/constants";
 import { routes } from "@/lib/navigation";
 import { getPageStatus } from "@/lib/page-status";
-import { allPagesSorted, getPage } from "@/lib/pages/pages.server";
+import { getPage } from "@/lib/pages/pages.server";
 import { PageContentWrapper } from "./page-content-wrapper";
 import { PageHeader } from "./page-header";
 import { TextbookWrapper } from "./textbook-wrapper";
@@ -73,24 +73,28 @@ export default async function Page(props: {
         </div>
 
         <PageContentWrapper>
-          <PageHeader
-            page={page}
-            user={user}
-            pageCount={allPagesSorted.length}
-            pageStatus={pageStatus}
-          />
+          <PageHeader page={page} pageStatus={pageStatus} />
           <div className="col-span-1 col-start-2">
             <PageTitle className="mb-8">{page.title}</PageTitle>
             <PageContent title={page.title} html={page.html} />
             <SelectionPopover user={user} pageSlug={pageSlug} />
-            <Pager
-              pageIndex={page.order}
-              userPageSlug={user?.pageSlug ?? null}
-            />
+
             <p className="mt-4 text-right text-sm text-muted-foreground">
               <span>Last updated at </span>
               <time>{page.last_modified}</time>
             </p>
+            {user && page.summary ? (
+              <PageAssignments
+                pageSlug={pageSlug}
+                pageStatus={pageStatus}
+                user={user}
+                condition={userCondition}
+              />
+            ) : null}
+            <Pager
+              pageIndex={page.order}
+              userPageSlug={user?.pageSlug ?? null}
+            />
           </div>
         </PageContentWrapper>
       </TextbookWrapper>
@@ -100,19 +104,11 @@ export default async function Page(props: {
       </Suspense>
 
       {user ? <NoteLoader pageSlug={pageSlug} /> : null}
-      {user && page.summary ? (
-        <PageAssignments
-          pageSlug={pageSlug}
-          pageStatus={pageStatus}
-          user={user}
-          condition={userCondition}
-        />
-      ) : null}
 
       {isProduction ? (
         <PageStatusModal user={user} pageStatus={pageStatus} />
       ) : null}
-      <QuestionControl
+      <ChunkControl
         userId={userId}
         pageSlug={pageSlug}
         hasAssignments={page.assignments.length > 0}

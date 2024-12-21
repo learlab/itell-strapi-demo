@@ -21,8 +21,13 @@ import {
   users,
 } from "@/drizzle/schema";
 import { isProduction, Tags } from "@/lib/constants";
-import { getPageData, isLastPage } from "@/lib/pages/pages.client";
-import { firstPage, isPageAfter, nextPage } from "@/lib/pages/pages.server";
+import { isLastPage } from "@/lib/pages";
+import {
+  firstPage,
+  getPageData,
+  isPageAfter,
+  nextPage,
+} from "@/lib/pages/pages.server";
 import { authedProcedure } from "./utils";
 
 /**
@@ -53,8 +58,15 @@ const getTeacherActionHandler = memoize(
 export const updateUserAction = authedProcedure
   .input(UpdateUserSchema)
   .handler(async ({ input, ctx }) => {
-    await db.update(users).set(input).where(eq(users.id, ctx.user.id));
+    const updatedUser = await db
+      .update(users)
+      .set(input)
+      .where(eq(users.id, ctx.user.id))
+      .returning();
+
     revalidateTag(Tags.GET_SESSION);
+
+    return updatedUser[0];
   });
 
 export const updateUserPrefsAction = authedProcedure
@@ -205,7 +217,12 @@ export const createUserAction = createServerAction()
  */
 
 export const incrementUserPageSlugAction = authedProcedure
-  .input(z.object({ currentPageSlug: z.string() }))
+  .input(
+    z.object({
+      currentPageSlug: z.string(),
+      withStreakSkip: z.boolean().optional(),
+    })
+  )
   .handler(async ({ input, ctx }) => {
     const nextPageSlug = nextPage(input.currentPageSlug);
     const shouldUpdateUserPageSlug = isPageAfter(
@@ -213,12 +230,25 @@ export const incrementUserPageSlugAction = authedProcedure
       ctx.user.pageSlug
     );
     const page = getPageData(input.currentPageSlug);
+
     if (page) {
+      let newPersonalization = ctx.user.personalization;
+      if (input.withStreakSkip) {
+        newPersonalization = {
+          ...newPersonalization,
+          available_summary_skips:
+            newPersonalization.available_summary_skips > 0
+              ? newPersonalization.available_summary_skips - 1
+              : 0,
+        };
+      }
+
       await db
         .update(users)
         .set({
           pageSlug: shouldUpdateUserPageSlug ? nextPageSlug : undefined,
           finished: isLastPage(page),
+          personalization: newPersonalization,
         })
         .where(eq(users.id, ctx.user.id));
     }

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Elements } from "@itell/constants";
+import { volume } from "#content";
 
-import { SiteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth";
 import { allPagesSorted } from "@/lib/pages/pages.server";
 import { CommandMenu } from "./command-menu";
@@ -22,7 +22,7 @@ export async function MainNav({ scrollProgress, read }: Props) {
   const { user } = await getSession();
 
   return (
-    <SiteNav mainContentId={Elements.TEXTBOOK_MAIN}>
+    <SiteNav mainContentId={Elements.TEXTBOOK_MAIN} className="border-b-2">
       <div className="flex h-[var(--nav-height)] items-center justify-between px-6 sm:space-x-0">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-6">
@@ -33,13 +33,16 @@ export async function MainNav({ scrollProgress, read }: Props) {
               height={30}
               priority
             />
-            <span className="hidden font-bold md:inline-block">
-              {SiteConfig.title}
+            <span
+              className="hidden font-bold md:inline-block"
+              data-testid="site-title"
+            >
+              {volume.title}
             </span>
           </Link>
           {read ? (
             <ContinueReading
-              className="hidden w-28 md:block"
+              className="hidden md:flex"
               text="Read"
               variant="outline"
               size="default"

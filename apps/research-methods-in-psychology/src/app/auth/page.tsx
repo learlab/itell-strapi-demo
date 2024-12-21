@@ -4,9 +4,9 @@ import { Button } from "@itell/ui/button";
 import { Errorbox } from "@itell/ui/callout";
 import { AuthForm, LogoutButton } from "@auth/auth-form";
 import { KnowledgeCarousel } from "@auth/knowledge-carousel";
+import { volume } from "#content";
 import { ChevronLeftIcon, CommandIcon } from "lucide-react";
 
-import { SiteConfig } from "@/config/site";
 import { env } from "@/env.mjs";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
@@ -15,7 +15,7 @@ const ErrorDict: Record<string, string> = {
   oauth: "A problem occurred while logging in. Please try again later.",
   access_denied:
     "This application needs your consent to access your social account. You may come back at any time.",
-  wrong_email: "Please sign in with your school email (ending with 'mga.edu').",
+  wrong_email: "Please sign in with your company email.",
 };
 
 export const generateMetadata = async (props: {
@@ -25,13 +25,13 @@ export const generateMetadata = async (props: {
   const fromDashboard = searchParams.from_dashboard === "true";
   if (fromDashboard) {
     const title = "Dashboard";
-    const description = `Learning statistics on the ${SiteConfig.title} intelligent textbook`;
+    const description = `Learning statistics on the ${volume.title} intelligent textbook`;
     return {
       title,
       description,
       metadataBase: new URL(env.NEXT_PUBLIC_HOST),
       openGraph: {
-        title: `${title} | ${SiteConfig.title}`,
+        title: `${title} | ${volume.title}`,
         description,
         type: "article",
         url: `${env.NEXT_PUBLIC_HOST}/dashboard`,
@@ -50,7 +50,7 @@ export const generateMetadata = async (props: {
     title,
     description,
     openGraph: {
-      title: `${title} | ${SiteConfig.title}`,
+      title: `${title} | ${volume.title}`,
       description,
       type: "article",
       url: `${env.NEXT_PUBLIC_HOST}/auth`,
@@ -63,14 +63,12 @@ export const generateMetadata = async (props: {
   };
 };
 
-export default async function ({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+export default async function Page(props: {
+  searchParams: Promise<Record<string, string> | undefined>;
 }) {
-  const { error, join_class_code } = routes.auth.$parseSearchParams(
-    await searchParams
-  );
+  const searchParams = await props.searchParams;
+  const { error, join_class_code } =
+    routes.auth.$parseSearchParams(searchParams);
   const { user } = await getSession();
   let errorMessage: string | null = null;
   if (error) {
@@ -96,9 +94,7 @@ export default async function ({
           <div className="flex flex-col space-y-2 text-center">
             <CommandIcon className="mx-auto size-6" />
             <h1 className="text-2xl font-semibold tracking-tight">Welcome</h1>
-            <p className="text-lg font-light tracking-tight">
-              {SiteConfig.title}
-            </p>
+            <p className="text-lg font-light tracking-tight">{volume.title}</p>
           </div>
           {error ? (
             <Errorbox role="alert">

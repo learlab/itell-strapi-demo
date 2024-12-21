@@ -3,28 +3,28 @@ assignments:
 - summary
 chunks:
 - title: Learning Objectives
-  slug: Learning-Objectives-244pt
+  slug: Learning-Objectives-419pt
   type: plain
 - title: A Framework for Thinking About Research Ethics
-  slug: A-Framework-for-Thinking-About-Research-Ethics-870t
+  slug: A-Framework-for-Thinking-About-Research-Ethics-1594t
   type: regular
-- title: Moral Principles
-  slug: Moral-Principles-871t
+- title: ' Moral Principles'
+  slug: Moral-Principles-1595t
   type: regular
   headings:
   - level: 3
     slug: weighing-risks-against-benefits
-    title: Weighing Risks Against Benefits
+    title: Weighing Risks Against Benefits 
   - level: 3
     slug: acting-responsibly-and-with-integrity
     title: Acting Responsibly and With Integrity
 - title: Moral Principles
-  slug: Moral-Principles-872t
+  slug: Moral-Principles-1596t
   type: regular
   headings:
   - level: 3
     slug: seeking-justice
-    title: Seeking Justice
+    title: Seeking Justice 
   - level: 3
     slug: respecting-peoples-rights-and-dignity
     title: Respecting People’s Rights and Dignity
@@ -32,18 +32,18 @@ chunks:
     slug: unavoidable-ethical-conflict
     title: Unavoidable Ethical Conflict
 - title: References
-  slug: References-245pt
+  slug: References-420pt
   type: plain
 cri:
 - question: What are the four general moral principles that apply to scientific research according to Table 3.1?
-  answer: weighing risks against benefits, acting responsibly and with integrity, seeking justice, and respecting people’s rights and dignity.
-  slug: A-Framework-for-Thinking-About-Research-Ethics-870t
-- question: What is the importance of researchers acting responsibly and with integrity?
-  answer: Researchers must act responsibly and with integrity to promote trust, which is essential for effective human relationships.
-  slug: Moral-Principles-871t
-- question: What significant event led to President Bill Clinton formally apologizing on behalf of the US government in 1997?
-  answer: The Tuskegee Syphilis Study where poor African American men were observed without being treated for syphilis.
-  slug: Moral-Principles-872t
+  answer: Weighing risks against benefits, acting responsibly and with integrity, seeking justice, and respecting people's rights and dignity.
+  slug: A-Framework-for-Thinking-About-Research-Ethics-1594t
+- question: Was the harm caused to the research participants in Milgram's obedience study worth the resulting scientific knowledge?
+  answer: The debate over the ethics of Milgram's study revolves around whether the scientific knowledge gained was worth the psychological harm inflicted on participants.
+  slug: Moral-Principles-1595t
+- question: What is one element of respecting people's rights and dignity as human beings in psychological research?
+  answer: Respecting their autonomy by obtaining and documenting informed consent.
+  slug: Moral-Principles-1596t
 next_slug: 16-from-moral-principles-to-ethics-codes
 order: 15
 parent:
@@ -54,7 +54,7 @@ slug: 15-moral-foundations-of-ethical-research
 title: 15. Moral Foundations of Ethical Research
 ---
 
-## Learning Objectives {#Learning-Objectives-244pt .sr-only} 
+## Learning Objectives {#Learning-Objectives-419pt .sr-only} 
 
 <i-callout variant="info" title="Learning Objectives">
 
@@ -66,9 +66,9 @@ title: 15. Moral Foundations of Ethical Research
 
 **Ethics** is the branch of philosophy that is concerned with morality—what it means to behave morally and how people can achieve that goal. It can also refer to a set of principles and practices that provide moral guidance in a particular field. There is an ethics of business, medicine, teaching, and of course, scientific research. As the opening example illustrates, many kinds of ethical issues can arise in scientific research, especially when it involves human participants. For this reason, it is useful to begin with a general framework for thinking through these issues.
 
-## A Framework for Thinking About Research Ethics {#A-Framework-for-Thinking-About-Research-Ethics-870t} 
+## A Framework for Thinking About Research Ethics {#A-Framework-for-Thinking-About-Research-Ethics-1594t} 
 
-Table 3.1 presents a framework for thinking through the ethical issues involved in psychological research. The rows of Table 3.1 represent four general moral principles that apply to scientific research: weighing risks against benefits, acting responsibly and with integrity, seeking justice, and respecting people’s rights and dignity. (These principles are adapted from those in the American Psychological Association \[APA\] Ethics Code.) The columns of Table 3.1 represent three groups of people that are affected by scientific research: the research participants, the scientific community, and society more generally. The idea is that a thorough consideration of the ethics of any research project must take into account how each of the four moral principles applies to each of the three groups of people.
+Table 3.1 presents a framework for thinking through the ethical issues involved in psychological research. The rows of Table 3.1 represent four general moral principles that apply to scientific research: weighing risks against benefits, acting responsibly and with integrity, seeking justice, and respecting people’s rights and dignity. (These principles are adapted from those in the American Psychological Association \[APA\] Ethics Code.) The columns of Table 3.1 represent three groups of people that are affected by scientific research: the research participants, the scientific community, and society more generally. The idea is that a thorough consideration of the ethics of any research project must take into account how each of the four moral principles applies to each of the three groups of people. 
 
 Table 3.1 A Framework for Thinking About Ethical Issues in Scientific Research
 
@@ -80,11 +80,11 @@ Table 3.1 A Framework for Thinking About Ethical Issues in Scientific Research
 | Seeking justice |     |     |     |
 | Respecting people’s rights and dignity |     |     |     |
 
-## Moral Principles {#Moral-Principles-871t} 
+##  Moral Principles {#Moral-Principles-1595t} 
 
 Let us look more closely at each of the moral principles and how they can be applied to each of the three groups.
 
-### Weighing Risks Against Benefits {#weighing-risks-against-benefits}
+### Weighing Risks Against Benefits  {#weighing-risks-against-benefits}
 
 Scientific research in psychology can be ethical only if its risks are outweighed by its benefits. Among the risks to research participants are that a treatment might fail to help or even be harmful, a procedure might result in physical or psychological harm, and their right to privacy might be violated. Among the potential benefits are receiving a helpful treatment, learning about psychology, experiencing the satisfaction of contributing to scientific knowledge, and receiving money or course credit for participating. Scientific research can have risks and benefits to the scientific community and to society too (Rosenthal, 1994).\[1\] A risk to science is that if a research question is uninteresting or a study is poorly designed, then the time, money, and effort spent on that research could have been spent on more productive research. A risk to society is that research results could be misunderstood or misapplied with harmful consequences. The research that mistakenly linked the measles, mumps, and rubella (MMR) vaccine to autism resulted in both of these kinds of harm. Of course, the benefits of scientific research to science and society are that it advances scientific knowledge and can contribute to the welfare of society.
 
@@ -110,9 +110,9 @@ Researchers must act responsibly and with integrity. This means carrying out the
 
 The scientific community and society must also be able to trust that researchers have conducted their research thoroughly and competently and that they have reported on it honestly. Again, the example at the beginning of the chapter illustrates what can happen when this trust is violated. In this case, other researchers wasted resources on unnecessary follow-up research and people avoided the MMR vaccine, putting their children at increased risk of measles, mumps, and rubella. Indeed, many people, including children have died as a result of parents’ misinformed decisions not to vaccinate their children.
 
-## Moral Principles {#Moral-Principles-872t .sr-only} 
+## Moral Principles {#Moral-Principles-1596t .sr-only} 
 
-### Seeking Justice {#seeking-justice}
+### Seeking Justice  {#seeking-justice}
 
 Researchers must conduct their research in a just manner. They should treat their participants fairly, for example, by giving them adequate compensation for their participation and making sure that benefits and risks are distributed across all participants. For example, in a study of a new and potentially beneficial psychotherapy, some participants might receive the psychotherapy while others serve as a control group that receives no treatment. If the psychotherapy turns out to be effective, it would be fair to offer it to participants in the control group when the study ends.
 
@@ -144,7 +144,7 @@ Of course, many ethical conflicts are fairly easy to resolve. Nearly everyone wo
 
 The point here is that although it may not be possible to eliminate ethical conflict completely, it is possible to deal with it in responsible and constructive ways. In general, this means thoroughly and carefully thinking through the ethical issues that are raised, minimizing the risks, and weighing the risks against the benefits. It also means being able to explain one’s ethical decisions to others, seeking feedback on them, and ultimately taking responsibility for them.
 
-## References {#References-245pt} 
+## References {#References-420pt} 
 
 1.  Rosenthal, R. M. (1994). Science and ethics in conducting, analyzing, and reporting psychological research. _Psychological Science, 5_, 127–133.
 2.  Milgram, S. (1963). Behavioral study of obedience. _Journal of Abnormal and Social Psychology, 67_, 371–378.

@@ -51,7 +51,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     return getPageQuestions(page);
   }, [page]);
 
-  const questionStoreRef = useRef<QuestionStore>(null);
+  const questionStoreRef = useRef<QuestionStore>(undefined);
   if (!questionStoreRef.current) {
     questionStoreRef.current = createQuestionStore(
       {
@@ -63,19 +63,19 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     );
   }
 
-  const chatStoreRef = useRef<ChatStore>(null);
+  const chatStoreRef = useRef<ChatStore>(undefined);
   if (!chatStoreRef.current) {
     chatStoreRef.current = createChatStore();
   }
 
-  const summaryStoreRef = useRef<SummaryStore>(null);
+  const summaryStoreRef = useRef<SummaryStore>(undefined);
   if (!summaryStoreRef.current) {
     summaryStoreRef.current = createSummaryStore({
       pageStatus,
     });
   }
 
-  const quizStoreRef = useRef<QuizStore>(null);
+  const quizStoreRef = useRef<QuizStore>(undefined);
   if (!quizStoreRef.current) {
     quizStoreRef.current = createQuizStore({
       finished: quizFinished,
@@ -162,7 +162,7 @@ const getPageQuestions = (page: Page): ChunkQuestion => {
   if (page.chunks.length > 0) {
     let withQuestion = false;
     page.cri.forEach((item) => {
-      let baseProb = 1 / 3;
+      const baseProb = 1 / 3;
 
       // adjust the probability of cri based on the current streak
       // if (answerStreak >= 7) {
@@ -182,7 +182,7 @@ const getPageQuestions = (page: Page): ChunkQuestion => {
     });
 
     // Each page will have at least one question
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+     
     if (!withQuestion) {
       const randomQuestion =
         page.cri[Math.floor(Math.random() * page.cri.length)];

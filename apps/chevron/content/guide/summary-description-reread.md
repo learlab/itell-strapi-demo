@@ -2,10 +2,9 @@
 condition: summary_description_reread
 ---
 
-<p className="text-xl leading-relaxed">Write your summary for this page</p>
-<p className="font-light leading-relaxed">You can unlock the next page by submitting a summary for this page</p>
+<i-accordion>
 
-<div className="mt-2 font-light">
+<i-accordion-item value='first' title="What makes a successful summary">
 
 A successful summary will
 
@@ -17,6 +16,6 @@ A successful summary will
 
 - Not be plagiarized
 
-- Use appropriate language
+</i-accordion-item>
 
-</div>
+</i-accordion>

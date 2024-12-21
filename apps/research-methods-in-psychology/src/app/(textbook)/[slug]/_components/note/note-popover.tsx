@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { darkColors, lightColors } from "@itell/constants";
 import { useDebounce } from "@itell/core/hooks";
 import {
@@ -24,9 +24,9 @@ import { Label } from "@itell/ui/label";
 import { cn, getChunkElement } from "@itell/utils";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import {
-  ForwardIcon,
+  NotepadTextIcon,
   PaletteIcon,
-  StickyNoteIcon,
+  SaveIcon,
   TrashIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -58,7 +58,7 @@ export const NotePopover = memo(
     color,
     local = false,
   }: Props) => {
-    const elements = useRef<HTMLElement[]>([]);
+    const elements = useRef<HTMLElement[]>(undefined);
     const [positionFailed, setPositionFailed] = useState(
       local ? false : undefined
     );
@@ -279,7 +279,7 @@ export const NotePopover = memo(
           ) : positionFailed ? (
             <span>Note</span>
           ) : (
-            <StickyNoteIcon
+            <NotepadTextIcon
               className="opacity-60 hover:opacity-100"
               style={{ fill: noteColor }}
             />
@@ -308,8 +308,8 @@ export const NotePopover = memo(
                 name="input"
                 defaultValue={noteText}
                 ref={textareaRef}
-                minRows={2}
-                className="block w-full resize-none bg-inherit font-normal focus:outline-none"
+                minRows={3}
+                className="block w-full resize-none bg-inherit font-normal focus:outline-none lg:text-lg"
               />
             </Label>
             <footer className="flex justify-end gap-1">
@@ -326,7 +326,7 @@ export const NotePopover = memo(
                     aria-label="delete note"
                     onClick={() => popoverRef.current?.hidePopover()}
                   >
-                    <TrashIcon className="size-3" />
+                    <TrashIcon className="size-4" />
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -359,7 +359,7 @@ export const NotePopover = memo(
                 aria-label="save note"
                 onClick={handleUpsert}
               >
-                <ForwardIcon className="size-3" />
+                <SaveIcon className="size-4" />
               </button>
             </footer>
           </form>
@@ -409,7 +409,7 @@ function ColorPicker({ id, color, onChange }: ColorPickerProps) {
         popovertarget={popoverId}
         ref={triggerRef}
       >
-        <PaletteIcon className="size-3" />
+        <PaletteIcon className="size-4" />
       </button>
       <div
         id={popoverId}
