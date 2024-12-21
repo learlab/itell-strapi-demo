@@ -29,3 +29,4 @@ dist-ssr
 .velite
 .env
 .vercel
+.protect-merge-cache
