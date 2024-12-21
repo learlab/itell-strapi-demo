@@ -1,1 +1,0 @@
-ALTER TABLE "summaries" ADD COLUMN "is_excellent" boolean DEFAULT false;

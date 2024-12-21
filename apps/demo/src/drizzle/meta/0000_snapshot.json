@@ -1,5 +1,5 @@
 {
-  "id": "f03f5269-93f8-426b-9c9b-0864aa63c814",
+  "id": "9b0314d1-8a38-4d9c-a75f-d6d1806dc790",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -721,6 +721,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "is_excellent": {
+          "name": "is_excellent",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -757,6 +764,64 @@
         "summaries_user_id_users_id_fk": {
           "name": "summaries_user_id_users_id_fk",
           "tableFrom": "summaries",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.survey_answers": {
+      "name": "survey_answers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "survey_type": {
+          "name": "survey_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "survey_answers_user_id_users_id_fk": {
+          "name": "survey_answers_user_id_users_id_fk",
+          "tableFrom": "survey_answers",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -879,6 +944,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
+        },
+        "consent_given": {
+          "name": "consent_given",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "personalization_data": {
           "name": "personalization_data",

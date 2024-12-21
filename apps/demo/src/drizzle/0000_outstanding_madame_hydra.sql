@@ -94,8 +94,17 @@ CREATE TABLE IF NOT EXISTS "summaries" (
 	"similarity_score" double precision NOT NULL,
 	"content_score" double precision,
 	"content_threshold" double precision,
+	"is_excellent" boolean DEFAULT false,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "survey_answers" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
+	"survey_type" text NOT NULL,
+	"data" jsonb,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "teachers" (
@@ -116,6 +125,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"finished" boolean DEFAULT false NOT NULL,
 	"preferences" jsonb,
 	"survey_completed" boolean DEFAULT false NOT NULL,
+	"consent_given" boolean DEFAULT true,
 	"personalization_data" jsonb,
 	"condition_assignments" jsonb NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -172,6 +182,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "summaries" ADD CONSTRAINT "summaries_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "survey_answers" ADD CONSTRAINT "survey_answers_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
