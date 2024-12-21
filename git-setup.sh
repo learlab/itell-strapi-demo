@@ -30,7 +30,8 @@ if [ "$has_ff_flag" = false ]; then
     merge_args+=("--no-ff")
 fi
 
-cache_dir=".protect-merge-cache"
+repo_root=$(git rev-parse --show-toplevel)
+cache_dir="$repo_root/.protect-merge-cache"
 cache_manifest="$cache_dir/manifest.txt"
 
 update_cache() {
@@ -148,4 +149,10 @@ chmod +x .git/protect-merge
 # Create a Git alias
 git config --local alias.protect-merge '!.git/protect-merge'
 
+# Add .protect-merge-cache to .gitignore if not already present
+if ! grep -q "^\.protect-merge-cache$" .gitignore 2>/dev/null; then
+  echo ".protect-merge-cache" >>.gitignore
+fi
+
 echo "Protected merge command has been set up successfully."
+echo "Usage: git protect-merge <target-branch> [-v,--no-cache]"
