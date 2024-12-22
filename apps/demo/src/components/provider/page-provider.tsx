@@ -10,6 +10,7 @@ import { createChatStore } from "@/lib/store/chat-store";
 import { createQuestionStore } from "@/lib/store/question-store";
 import { createQuizStore } from "@/lib/store/quiz-store";
 import { createSummaryStore } from "@/lib/store/summary-store";
+import { createStreakStore } from "@/lib/store/streak-store";
 import type { ChatStore } from "@/lib/store/chat-store";
 import type {
   ChunkQuestion,
@@ -18,12 +19,14 @@ import type {
 } from "@/lib/store/question-store";
 import type { QuizStore } from "@/lib/store/quiz-store";
 import type { SummaryStore } from "@/lib/store/summary-store";
+import type { StreakStore } from "@/lib/store/streak-store";
 
 type Props = {
   children: React.ReactNode;
   condition: string;
   page: Page;
   pageStatus: PageStatus;
+  criStreak: number;
 };
 
 type State = {
@@ -33,10 +36,11 @@ type State = {
   chatStore: ChatStore;
   summaryStore: SummaryStore;
   quizStore: QuizStore;
+  streakStore: StreakStore;
 };
 const PageContext = createContext<State>({} as State);
 
-export function PageProvider({ children, condition, page, pageStatus }: Props) {
+export function PageProvider({ children, condition, page, pageStatus, criStreak }: Props) {
   const slugs = page.chunks.map(({ slug }) => slug);
   const [snapshot, setSnapshot] = useLocalStorage<QuestionSnapshot | undefined>(
     `question-store-${page.slug}`,
@@ -52,6 +56,11 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     false
   );
 
+  const [criAnswerStreak, setCriAnswerStreak] = useLocalStorage<number | undefined>(
+    `cri-answer-streak`,
+    undefined
+  );
+
   const chunkQuestion = useMemo(() => {
     return getPageQuestions(page);
   }, [page]);
@@ -63,6 +72,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
         chunks: page.chunks,
         pageStatus,
         chunkQuestion,
+        criStreak,
       },
       snapshot
     );
@@ -89,10 +99,19 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
     });
   }
 
+  const streakStoreRef = useRef<StreakStore>(undefined);
+  if (!streakStoreRef.current) {
+    streakStoreRef.current = createStreakStore({
+      criStreak,
+    });
+  }
+
   useEffect(() => {
     let questionSubscription: Subscription | undefined;
     let quizSubscription: Subscription | undefined;
     let summarySubscription: Subscription | undefined;
+    let streakSubscription: Subscription | undefined;
+
     if (questionStoreRef.current) {
       questionSubscription = questionStoreRef.current.subscribe((state) => {
         setSnapshot(state.context);
@@ -114,12 +133,19 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
       );
     }
 
+    if (streakStoreRef.current) {
+      streakSubscription = streakStoreRef.current.subscribe((state) => {
+        setCriAnswerStreak(state.context.criStreak);
+      });
+    }
+
     return () => {
       questionSubscription?.unsubscribe();
       quizSubscription?.unsubscribe();
       summarySubscription?.unsubscribe();
+      streakSubscription?.unsubscribe();
     };
-  }, [setQuizFinished, setShowFloatingSummary, setSnapshot]);
+  }, [setQuizFinished, setShowFloatingSummary, setSnapshot, setCriAnswerStreak]);
 
   return (
     <PageContext.Provider
@@ -129,6 +155,7 @@ export function PageProvider({ children, condition, page, pageStatus }: Props) {
         summaryStore: summaryStoreRef.current,
         quizStore: quizStoreRef.current,
         chunks: slugs,
+        streakStore: streakStoreRef.current,
         condition,
       }}
     >
@@ -166,6 +193,11 @@ export const useQuizStore = () => {
   const value = useContext(PageContext);
   return value.quizStore;
 };
+
+export const useStreakStore = () => {
+  const value = useContext(PageContext);
+  return value.streakStore;
+}
 
 const getPageQuestions = (page: Page): ChunkQuestion => {
   if (page.cri.length === 0) {
