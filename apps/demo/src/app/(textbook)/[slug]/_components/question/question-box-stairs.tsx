@@ -24,12 +24,13 @@ import { Flame, KeyRoundIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useActionStatus } from "use-action-status";
 import { useServerAction } from "zsa-react";
+import { SelectCriStreak } from "@/lib/store/streak-store";
 
 import {
   createQuestionAnswerAction,
   updateCRIStreakAction,
 } from "@/actions/question";
-import { useQuestionStore } from "@/components/provider/page-provider";
+import { useQuestionStore, useStreakStore } from "@/components/provider/page-provider";
 import { Confetti } from "@/components/ui/confetti";
 import { apiClient } from "@/lib/api-client";
 // import { apiClient } from "@/lib/api-client";
@@ -68,11 +69,14 @@ export function QuestionBoxStairs({
 }: Props) {
   const store = useQuestionStore();
   const shouldBlur = useSelector(store, SelectShouldBlur);
+
+  const streakStore = useStreakStore();
+  const streak = useSelector(streakStore, SelectCriStreak) ?? 0;
   const form = useRef<HTMLFormElement>(null);
 
   const {
     execute: updateStreak,
-    data: streak,
+    data: trueStreak,
     setOptimistic: setStreak,
   } = useServerAction(updateCRIStreakAction);
 
@@ -81,6 +85,12 @@ export function QuestionBoxStairs({
     updateStreak({});
   }, []);
 
+  const setStreaks = (streak: number) => {
+    const updatedStreak = streak === 0 ? 0 : streak + 1;
+    setStreak(updatedStreak);
+    streakStore.send({ type: "updateCriStreak", criStreak: updatedStreak });
+  };
+  
   const [collapsed, setCollapsed] = useState(!shouldBlur);
   const [state, setState] = useState<State>({
     status: StatusStairs.UNANSWERED,
@@ -141,7 +151,7 @@ export function QuestionBoxStairs({
         error: null,
         input,
       });
-      setStreak((streak) => (streak ? streak + 1 : 1));
+      setStreaks(streak);
       updateStreak({ isCorrect: true });
     }
 
@@ -159,7 +169,7 @@ export function QuestionBoxStairs({
         error: null,
         input,
       });
-      setStreak(0);
+      setStreaks(0);
       updateStreak({ isCorrect: false });
     }
   });
@@ -266,14 +276,6 @@ export function QuestionBoxStairs({
           </h3>
 
           <div className="flex items-center gap-2">
-            {(status === StatusStairs.SEMI_CORRECT ||
-              status === StatusStairs.BOTH_INCORRECT) && (
-              <QuestionExplainButton
-                chunkSlug={chunkSlug}
-                pageSlug={pageSlug}
-                input={state.input}
-              />
-            )}
             {status !== StatusStairs.UNANSWERED && (
               <HoverCard>
                 <HoverCardTrigger asChild>
@@ -286,6 +288,17 @@ export function QuestionBoxStairs({
                   <p className="no-select leading-relaxed">{answer}</p>
                 </HoverCardContent>
               </HoverCard>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {(status === StatusStairs.SEMI_CORRECT ||
+              status === StatusStairs.BOTH_INCORRECT) && (
+              <QuestionExplainButton
+                chunkSlug={chunkSlug}
+                pageSlug={pageSlug}
+                input={state.input}
+              />
             )}
           </div>
 

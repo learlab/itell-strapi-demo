@@ -15,6 +15,7 @@ import { Pager } from "@textbook/pager";
 import { ChunkControl } from "@textbook/question/chunk-control";
 import { SelectionPopover } from "@textbook/selection-popover";
 import { TextbookToc } from "@textbook/textbook-toc";
+import { delay } from "es-toolkit";
 
 import { MobilePopup } from "@/components/mobile-popup";
 import { PageProvider } from "@/components/provider/page-provider";
@@ -56,6 +57,8 @@ export default async function Page(props: {
   const userCondition = user
     ? getUserCondition(user, pageSlug)
     : Condition.STAIRS;
+  const criStreak = user?.personalization?.cri_streak ?? 0;
+
   const pageStatus = getPageStatus({
     pageSlug,
     userPageSlug,
@@ -63,7 +66,7 @@ export default async function Page(props: {
   });
 
   return (
-    <PageProvider condition={userCondition} page={page} pageStatus={pageStatus}>
+    <PageProvider condition={userCondition} page={page} pageStatus={pageStatus} criStreak={criStreak}>
       <MobilePopup />
       <ResourceLoader condition={userCondition} />
       <TextbookWrapper>
