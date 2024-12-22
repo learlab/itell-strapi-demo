@@ -276,14 +276,6 @@ export function QuestionBoxStairs({
           </h3>
 
           <div className="flex items-center gap-2">
-            {(status === StatusStairs.SEMI_CORRECT ||
-              status === StatusStairs.BOTH_INCORRECT) && (
-              <QuestionExplainButton
-                chunkSlug={chunkSlug}
-                pageSlug={pageSlug}
-                input={state.input}
-              />
-            )}
             {status !== StatusStairs.UNANSWERED && (
               <HoverCard>
                 <HoverCardTrigger asChild>
@@ -296,6 +288,17 @@ export function QuestionBoxStairs({
                   <p className="no-select leading-relaxed">{answer}</p>
                 </HoverCardContent>
               </HoverCard>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {(status === StatusStairs.SEMI_CORRECT ||
+              status === StatusStairs.BOTH_INCORRECT) && (
+              <QuestionExplainButton
+                chunkSlug={chunkSlug}
+                pageSlug={pageSlug}
+                input={state.input}
+              />
             )}
           </div>
 

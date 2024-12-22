@@ -72,7 +72,6 @@ export function PageProvider({ children, condition, page, pageStatus, criStreak 
         chunks: page.chunks,
         pageStatus,
         chunkQuestion,
-        criStreak,
       },
       snapshot
     );

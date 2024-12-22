@@ -80,7 +80,7 @@ export function QuestionExplainButton({ pageSlug, chunkSlug, input }: Props) {
       <Button
         variant="secondary"
         type="button"
-        disabled={formPending || isPending}
+        disabled={formPending || isPending  || response !== ""}
         onClick={action}
         pending={isPending}
       >
