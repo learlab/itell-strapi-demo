@@ -89,7 +89,7 @@ export const CTest = ({ paragraphs, showLetter = 0 }: Props) => {
   return (
     <div className="space-y-8">
       <form
-        className={`flex flex-col gap-4 rounded-lg p-6`}
+        className="flex flex-col gap-4 rounded-lg p-6"
         ref={formRef}
         onSubmit={handleSubmit}
       >

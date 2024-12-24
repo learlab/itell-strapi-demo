@@ -76,4 +76,15 @@ export const { routes, useSafeParams, useSafeSearchParams } =
         })
         .default({ join_class_code: undefined }),
     }),
+    surveyHome: defineRoute("/survey/[surveyId]", {
+      params: z.object({
+        surveyId: z.string(),
+      }),
+    }),
+    surveySection: defineRoute("/survey/[surveyId]/[sectionId]", {
+      params: z.object({
+        surveyId: z.string(),
+        sectionId: z.string(),
+      }),
+    }),
   }));
