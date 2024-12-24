@@ -454,13 +454,16 @@ const MultipleSelector = React.forwardRef<
         filter={commandFilter()}
       >
         {/* placeholder to so we can access the selected values in formData */}
-        <input
-          name={formInputName}
-          type="text"
-          className="hidden"
-          aria-hidden="true"
-          value={selected.map((option) => option.value).join(",")}
-        />
+        {formInputName && (
+          <input
+            name={formInputName}
+            type="text"
+            className="hidden"
+            aria-hidden="true"
+            value={selected.map((option) => option.value).join(",")}
+          />
+        )}
+
         <div
           className={cn(
             "min-h-10 rounded-md border border-input text-base ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 md:text-sm",

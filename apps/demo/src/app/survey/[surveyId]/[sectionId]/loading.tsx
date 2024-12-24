@@ -5,6 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@itell/ui/breadcrumb";
+import { Card, CardContent } from "@itell/ui/card";
 import { Separator } from "@itell/ui/separator";
 import { Skeleton } from "@itell/ui/skeleton";
 
@@ -28,10 +29,22 @@ export default function Loading() {
           </BreadcrumbList>
         </Breadcrumb>
       </header>
-      <div className="flex w-full flex-1 flex-col gap-4 p-6">
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" />
-        <Skeleton className="h-12 w-full" />
+      <div className="flex w-full flex-1 flex-col gap-8 bg-muted p-6">
+        <Card>
+          <CardContent>
+            <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

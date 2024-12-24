@@ -1,16 +1,12 @@
 import Form from "next/form";
 import { notFound, redirect } from "next/navigation";
-import { Button } from "@itell/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
-import { Input } from "@itell/ui/input";
-import { Label } from "@itell/ui/label";
-import { RadioGroup, RadioGroupItem } from "@itell/ui/radio";
-import { ChevronRight } from "lucide-react";
 
 import { routes } from "@/lib/navigation";
 import { getNextSection, getSurvey, getSurveySection } from "./data";
 import { SurveyHeader } from "./survey-header";
 import { SurveyQuestionRenderer } from "./survey-question-renderer";
+import { SurveySubmitButton } from "./survey-submit-button";
 
 export default async function SurveyQuestionPage(props: {
   params: Promise<unknown>;
@@ -66,25 +62,18 @@ export default async function SurveyQuestionPage(props: {
           ))}
 
           <footer className="flex items-center justify-between">
-            <ForwardButton
-              text={
-                sectionIdx === survey.sections.length - 1
-                  ? "Save"
-                  : "Save and Next"
-              }
-            />
+            <div className="ml-auto">
+              <SurveySubmitButton
+                text={
+                  sectionIdx === survey.sections.length - 1
+                    ? "Save"
+                    : "Save and Next"
+                }
+              />
+            </div>
           </footer>
         </Form>
       </div>
     </div>
-  );
-}
-
-function ForwardButton({ text }: { text: string }) {
-  return (
-    <Button type="submit" size={"lg"} className="ml-auto gap-1">
-      <span>Save and Next</span>
-      <ChevronRight />
-    </Button>
   );
 }

@@ -128,7 +128,7 @@ function MultipleChoiceQuestion({
           className="flex items-center gap-2 xl:text-lg"
         >
           <Checkbox
-            name={`${question.id}-${idx}`}
+            name={`${question.id}--${idx}`}
             value={String(option.value)}
           />
           <span>{option.text}</span>
@@ -224,7 +224,7 @@ function GridQuestion({
                   <span className="sr-only">{col.text}</span>
                   <input
                     type="radio"
-                    name={`${question.id}-${String(row.value)}`}
+                    name={`${question.id}--${String(row.value)}`}
                     value={String(col.value)}
                     className="peer sr-only"
                     required={true}
