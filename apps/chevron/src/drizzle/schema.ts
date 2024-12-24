@@ -16,6 +16,7 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { json } from "stream/consumers";
 
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
 export const code_challenge_method = pgEnum("code_challenge_method", [
@@ -86,6 +87,20 @@ const UpdatedAt = timestamp("updated_at", {
   .$onUpdate(() => new Date())
   .notNull();
 
+export const surveys = pgTable("survey_answers", {
+  id: serial("id").primaryKey().notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  surveyType: text("survey_type").notNull(),
+  data: jsonb('data'),
+  createdAt: CreatedAt,
+})
+
+export const CreateSurveySchema = createInsertSchema(surveys);
+export const UpdateSurveySchema = CreateSurveySchema.partial();
+export type Survey = InferSelectModel<typeof surveys>;
+
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
   name: text("name"),
@@ -103,6 +118,7 @@ export const users = pgTable("users", {
     .notNull(),
   createdAt: CreatedAt,
   updatedAt: UpdatedAt,
+  consent: boolean("consent").default(null),
 });
 
 export type ConditionAssignments = Record<string, string>;
