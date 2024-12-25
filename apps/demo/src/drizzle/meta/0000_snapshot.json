@@ -1,5 +1,5 @@
 {
-  "id": "9b0314d1-8a38-4d9c-a75f-d6d1806dc790",
+  "id": "fc1bb31d-497f-45f1-af85-41f8eaa29068",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -781,8 +781,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.survey_answers": {
-      "name": "survey_answers",
+    "public.survey_sessions": {
+      "name": "survey_sessions",
       "schema": "",
       "columns": {
         "id": {
@@ -797,8 +797,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "survey_type": {
-          "name": "survey_type",
+        "survey_id": {
+          "name": "survey_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -815,13 +815,19 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "finished_at": {
+          "name": "finished_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "survey_answers_user_id_users_id_fk": {
-          "name": "survey_answers_user_id_users_id_fk",
-          "tableFrom": "survey_answers",
+        "survey_sessions_user_id_users_id_fk": {
+          "name": "survey_sessions_user_id_users_id_fk",
+          "tableFrom": "survey_sessions",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -937,13 +943,6 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false
-        },
-        "survey_completed": {
-          "name": "survey_completed",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
         },
         "consent_given": {
           "name": "consent_given",

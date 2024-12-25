@@ -161,8 +161,8 @@ const CommandEmpty = forwardRef<
 
   return (
     <div
-      ref={forwardedRef}
       className={cn("py-6 text-center text-sm", className)}
+      ref={forwardedRef}
       cmdk-empty=""
       role="presentation"
       {...props}
@@ -460,7 +460,8 @@ const MultipleSelector = React.forwardRef<
             type="text"
             className="hidden"
             aria-hidden="true"
-            value={selected.map((option) => option.value).join(",")}
+            value={JSON.stringify(selected)}
+            readOnly
           />
         )}
 

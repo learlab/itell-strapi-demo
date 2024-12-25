@@ -4,13 +4,7 @@ import { z } from "zod";
 
 export const { routes, useSafeParams, useSafeSearchParams } =
   createNavigationConfig((defineRoute) => ({
-    home: defineRoute("/", {
-      search: z
-        .object({
-          login: z.string().optional(),
-        })
-        .default({ login: undefined }),
-    }),
+    home: defineRoute("/"),
     auth: defineRoute("/auth", {
       search: z
         .object({

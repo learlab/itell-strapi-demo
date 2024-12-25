@@ -1,3 +1,4 @@
+import React from "react";
 import { buttonVariants } from "@itell/ui/button";
 import { Checkbox } from "@itell/ui/checkbox";
 import { Input } from "@itell/ui/input";
@@ -23,58 +24,118 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@itell/ui/toggle-group";
 import { cn } from "@itell/utils";
 import { type Survey } from "#content";
+import { z } from "zod";
 
+const SingleChoiceDataSchema = z.string();
+const SingleSelectDataSchema = z.string();
+const NumberInputDataSchema = z.union([z.string(), z.number()]);
+const TextInputDataSchema = z.string();
+const MultipleChoiceDataSchema = z.array(z.string());
+const MultipleSelectDataSchema = z.array(
+  z.object({
+    label: z.string(),
+    value: z.string(),
+  })
+);
+const GridDataSchema = z.record(z.string());
+const ToggleGroupDataSchema = z.array(z.string());
+
+export const SurveyQuestionDataSchema = z.union([
+  SingleChoiceDataSchema,
+  SingleChoiceDataSchema,
+  NumberInputDataSchema,
+  MultipleChoiceDataSchema,
+  MultipleSelectDataSchema,
+  GridDataSchema,
+  ToggleGroupDataSchema,
+]);
+export type SurveyQuestionData = z.infer<typeof SurveyQuestionDataSchema>;
 type SurveyQuestion = Survey["sections"][0]["questions"][0];
-type SingleChoiceQuestion = Extract<SurveyQuestion, { type: "single_choice" }>;
 
 export function SurveyQuestionRenderer({
   question,
+  sessionData,
 }: {
   question: SurveyQuestion;
+  sessionData?: SurveyQuestionData | null;
 }) {
   if (question.type === "single_choice") {
-    return <SingleChoiceQuestion question={question} />;
+    const result = SingleChoiceDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return (
+      <SingleChoiceQuestion question={question} defaultValue={defaultValue} />
+    );
   }
 
   if (question.type === "single_select") {
-    return <SingleSelectQuestion question={question} />;
+    const result = SingleSelectDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return (
+      <SingleSelectQuestion question={question} defaultValue={defaultValue} />
+    );
   }
 
   if (question.type === "multiple_choice") {
-    return <MultipleChoiceQuestion question={question} />;
+    const result = MultipleChoiceDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return (
+      <MultipleChoiceQuestion question={question} defaultValue={defaultValue} />
+    );
   }
 
   if (question.type === "multiple_select") {
-    return <MultiSelectQuestion question={question} />;
+    const result = MultipleSelectDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return (
+      <MultiSelectQuestion question={question} defaultValue={defaultValue} />
+    );
   }
 
   if (question.type === "number_input") {
-    return <NumberInputQuestion question={question} />;
+    const result = NumberInputDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return (
+      <NumberInputQuestion
+        question={question}
+        defaultValue={Number(defaultValue)}
+      />
+    );
   }
 
   if (question.type === "text_input") {
-    return <TextInput question={question} />;
+    const result = TextInputDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return <TextInput question={question} defaultValue={defaultValue} />;
   }
 
   if (question.type === "grid") {
-    return <GridQuestion question={question} />;
+    const result = GridDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return <GridQuestion question={question} defaultValue={defaultValue} />;
   }
 
   if (question.type === "toggle_group") {
-    return <ToggleGroupQuestion question={question} />;
+    const result = ToggleGroupDataSchema.safeParse(sessionData);
+    const defaultValue = result.success ? result.data : undefined;
+    return (
+      <ToggleGroupQuestion question={question} defaultValue={defaultValue} />
+    );
   }
 }
 
 function SingleChoiceQuestion({
   question,
+  defaultValue,
 }: {
-  question: SingleChoiceQuestion;
+  question: Extract<SurveyQuestion, { type: "single_choice" }>;
+  defaultValue?: string;
 }) {
   return (
     <RadioGroup
       name={question.id}
       required={question.required}
       className="flex flex-col gap-1.5"
+      defaultValue={defaultValue}
     >
       {question.options.map((option) => (
         <Label
@@ -82,9 +143,9 @@ function SingleChoiceQuestion({
             buttonVariants({ size: "lg", variant: "ghost" }),
             "h-fit justify-start text-wrap py-3 pl-2 has-[:checked]:bg-primary/85 has-[:checked]:text-primary-foreground xl:text-base"
           )}
-          key={option.text}
+          key={String(option.value)}
         >
-          <RadioGroupItem value={String(option.value)} className="sr-only" />
+          <RadioGroupItem value={String(option.text)} className="sr-only" />
           <span>{option.text}</span>
         </Label>
       ))}
@@ -94,18 +155,24 @@ function SingleChoiceQuestion({
 
 function SingleSelectQuestion({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "single_select" }>;
+  defaultValue?: string;
 }) {
   return (
-    <Select name={question.id} required={question.required}>
+    <Select
+      name={question.id}
+      required={question.required}
+      defaultValue={defaultValue}
+    >
       <SelectTrigger className="w-96">
         <SelectValue placeholder="Select an option" />
       </SelectTrigger>
       <SelectContent>
         <ScrollArea className="h-[60vh]">
           {question.options.map((option) => (
-            <SelectItem key={String(option.text)} value={String(option.value)}>
+            <SelectItem key={String(option.value)} value={String(option.text)}>
               {option.text}
             </SelectItem>
           ))}
@@ -117,19 +184,22 @@ function SingleSelectQuestion({
 
 function MultipleChoiceQuestion({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "multiple_choice" }>;
+  defaultValue?: string[];
 }) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3">
-      {question.options.map((option, idx) => (
+      {question.options.map((option) => (
         <Label
           key={String(option.value)}
           className="flex items-center gap-2 xl:text-lg"
         >
           <Checkbox
-            name={`${question.id}--${idx}`}
-            value={String(option.value)}
+            name={`${question.id}--${option.value}`}
+            value={String(option.text)}
+            defaultChecked={defaultValue?.includes(option.text)}
           />
           <span>{option.text}</span>
         </Label>
@@ -140,26 +210,33 @@ function MultipleChoiceQuestion({
 
 function MultiSelectQuestion({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "multiple_select" }>;
+  defaultValue?: React.ComponentPropsWithoutRef<
+    typeof MultipleSelector
+  >["defaultOptions"];
 }) {
   return (
     <MultipleSelector
-      options={question.options.map((option) => ({
+      defaultOptions={question.options.map((option) => ({
         value: String(option.value),
         label: option.text,
       }))}
       placeholder="Select all that apply"
       badgeClassName="bg-secondary text-secondary-foreground lg:text-base  hover:bg-primary/80 hover:text-primary-foreground"
       formInputName={question.id}
+      value={defaultValue}
     />
   );
 }
 
 function NumberInputQuestion({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "number_input" }>;
+  defaultValue?: number;
 }) {
   return (
     <Label>
@@ -170,7 +247,8 @@ function NumberInputQuestion({
         required={question.required}
         className="w-80"
         min={1}
-        placeholder={"20"}
+        placeholder="Enter your answer"
+        defaultValue={defaultValue}
       />
     </Label>
   );
@@ -178,8 +256,10 @@ function NumberInputQuestion({
 
 function TextInput({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "text_input" }>;
+  defaultValue?: string;
 }) {
   return (
     <Label>
@@ -190,6 +270,7 @@ function TextInput({
         className="w-80"
         placeholder={"Enter your answer"}
         name={question.id}
+        defaultValue={defaultValue}
       />
     </Label>
   );
@@ -197,8 +278,10 @@ function TextInput({
 
 function GridQuestion({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "grid" }>;
+  defaultValue?: Record<string, string>;
 }) {
   return (
     <Table className="caption-top">
@@ -224,8 +307,11 @@ function GridQuestion({
                   <span className="sr-only">{col.text}</span>
                   <input
                     type="radio"
-                    name={`${question.id}--${String(row.value)}`}
-                    value={String(col.value)}
+                    name={`${question.id}--${String(row.text)}`}
+                    value={String(col.text)}
+                    defaultChecked={
+                      String(col.text) === defaultValue?.[row.text]
+                    }
                     className="peer sr-only"
                     required={true}
                   />
@@ -246,19 +332,33 @@ function GridQuestion({
 
 function ToggleGroupQuestion({
   question,
+  defaultValue,
 }: {
   question: Extract<SurveyQuestion, { type: "toggle_group" }>;
+  defaultValue?: string[];
 }) {
+  console.log(defaultValue);
   return (
-    <ToggleGroup
-      type="multiple"
-      className="grid grid-cols-1 gap-4 lg:grid-cols-3"
-    >
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       {question.options.map((option) => (
-        <ToggleGroupItem key={option} value={option} className="lg:text-base">
-          {option}
-        </ToggleGroupItem>
+        <RadioGroup
+          name={`${question.id}--${option}`}
+          key={option}
+          className="flex flex-col gap-1.5"
+          defaultValue={defaultValue?.includes(option) ? option : undefined}
+        >
+          <Label
+            className={cn(
+              buttonVariants({ size: "lg", variant: "ghost" }),
+              "h-fit justify-start text-wrap py-3 pl-2 has-[:checked]:bg-primary/85 has-[:checked]:text-primary-foreground xl:text-base"
+            )}
+            key={option}
+          >
+            <RadioGroupItem value={option} className="sr-only" />
+            <span>{option}</span>
+          </Label>
+        </RadioGroup>
       ))}
-    </ToggleGroup>
+    </div>
   );
 }

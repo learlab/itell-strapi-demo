@@ -14,6 +14,7 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { SurveyQuestionData } from "@/app/survey/[surveyId]/[sectionId]/survey-question-renderer";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
@@ -95,7 +96,6 @@ export const users = pgTable("users", {
   classId: text("class_id"),
   finished: boolean("finished").default(false).notNull(),
   preferences: jsonb("preferences").$type<UserPreferences>(),
-  surveyCompleted: boolean("survey_completed").default(false).notNull(),
   // do not mandate consent for the demo volume
   consentGiven: boolean("consent_given").default(true),
   personalization: jsonb("personalization_data").$type<PersonalizationData>(),
@@ -369,16 +369,23 @@ export const ChatMessageDataSchema = z.object({
 export type ChatMessageData = z.infer<typeof ChatMessageDataSchema>;
 export type FocusTimeData = Record<string, number>;
 
-export const survey_answers = pgTable("survey_answers", {
+export const survey_sessions = pgTable("survey_sessions", {
   id: serial("id").primaryKey().notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  surveyType: text("survey_type").notNull(),
-  data: jsonb("data"),
+  surveyId: text("survey_id").notNull(),
+  data: jsonb("data").$type<SurveyData>(),
   createdAt: CreatedAt,
+  finishedAt: timestamp("finished_at", {
+    mode: "date",
+    withTimezone: true,
+  }),
 });
 
-export const CreateSurveySchema = createInsertSchema(survey_answers);
-export const UpdateSurveySchema = CreateSurveySchema.partial();
-export type SurveyAnswer = InferSelectModel<typeof survey_answers>;
+export const CreateSurveySessionSchema = createInsertSchema(survey_sessions);
+export const UpdateSurveySessionSchema = CreateSurveySessionSchema.partial();
+export type SurveySession = InferSelectModel<typeof survey_sessions>;
+
+// { sectionId: { questionId: answer } }
+export type SurveyData = Record<string, Record<string, SurveyQuestionData>>;
