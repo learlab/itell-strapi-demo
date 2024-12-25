@@ -17,7 +17,7 @@ interface PageProps {
   }>;
 }
 
-export default async function(props: PageProps) {
+export default async function SummaryPage(props: PageProps) {
   const params = await props.params;
   const summaryId = Number(params.id);
   const { user } = await getSession();

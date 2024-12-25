@@ -11,6 +11,8 @@ import remarkHeadingAttrs from "remark-heading-attrs";
 import remarkMath from "remark-math";
 import { defineCollection, defineConfig, defineSchema, s } from "velite";
 
+import { SurveySchema } from "@/lib/survey";
+
 const execAsync = promisify(exec);
 const timestamp = defineSchema(() =>
   s
@@ -127,6 +129,12 @@ const home = defineCollection({
   }),
 });
 
+const surveys = defineCollection({
+  name: "Survey",
+  pattern: "survey/*.json",
+  schema: SurveySchema,
+});
+
 const volume = defineCollection({
   name: "Volume",
   single: true,
@@ -142,7 +150,7 @@ const volume = defineCollection({
 
 export default defineConfig({
   root: "./content",
-  collections: { pages, guides, home, volume },
+  collections: { pages, guides, surveys, home, volume },
   markdown: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeUnwrapImages],

@@ -11,6 +11,7 @@ export function getComponentEntries(): Record<string, string> {
 		"avatar": comp("avatar"),
 		"badge": comp("badge"),
 		"blockquote": comp("blockquote"),
+		"breadcrumb": comp("breadcrumb"),
 		"button": comp("button"),
 		"callout": comp("callout"),
 		"caption": comp("caption"),
@@ -31,6 +32,7 @@ export function getComponentEntries(): Record<string, string> {
 		"label": comp("label"),
 		"link": comp("link"),
 		"login-button": comp("login-button"),
+		"multi-select": comp("multi-select"),
 		"page-title": comp("page-title"),
 		"pager": comp("pager"),
 		"popover": comp("popover"),
@@ -41,6 +43,7 @@ export function getComponentEntries(): Record<string, string> {
 		"select": comp("select"),
 		"separator": comp("separator"),
 		"sheet": comp("sheet"),
+		"sidebar": comp("sidebar"),
 		"skeleton": comp("skeleton"),
 		"spinner": comp("spinner"),
 		"status-button": comp("status-button"),
@@ -49,6 +52,8 @@ export function getComponentEntries(): Record<string, string> {
 		"table": comp("table"),
 		"tabs": comp("tabs"),
 		"textarea": comp("textarea"),
+		"toggle-group": comp("toggle-group"),
+		"toggle": comp("toggle"),
 		"tooltip": comp("tooltip"),
 	};
 }

@@ -4,13 +4,7 @@ import { z } from "zod";
 
 export const { routes, useSafeParams, useSafeSearchParams } =
   createNavigationConfig((defineRoute) => ({
-    home: defineRoute("/", {
-      search: z
-        .object({
-          login: z.string().optional(),
-        })
-        .default({ login: undefined }),
-    }),
+    home: defineRoute("/"),
     auth: defineRoute("/auth", {
       search: z
         .object({
@@ -75,5 +69,16 @@ export const { routes, useSafeParams, useSafeSearchParams } =
           join_class_code: z.string().optional(),
         })
         .default({ join_class_code: undefined }),
+    }),
+    surveyHome: defineRoute("/survey/[surveyId]", {
+      params: z.object({
+        surveyId: z.string(),
+      }),
+    }),
+    surveySection: defineRoute("/survey/[surveyId]/[sectionId]", {
+      params: z.object({
+        surveyId: z.string(),
+        sectionId: z.string(),
+      }),
     }),
   }));

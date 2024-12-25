@@ -11,13 +11,9 @@
             "types": "./src/status-button.tsx",
             "default": "./dist/status-button.js"
         },
-        "./server": {
-            "types": "./src/components-server.ts",
-            "default": "./dist/server.js"
-        },
-        "./client": {
-            "types": "./src/components-client.ts",
-            "default": "./dist/client.js"
+        "./sidebar": {
+            "types": "./src/sidebar.tsx",
+            "default": "./dist/sidebar.js"
         },
         "./accordion": {
             "types": "./src/accordion.tsx",
@@ -191,7 +187,23 @@
             "types": "./src/tooltip.tsx",
             "default": "./dist/tooltip.js"
         },
-        "./dist/style.css": "./dist/style.css"
+        "./dist/style.css": "./dist/style.css",
+        "./breadcrumb": {
+            "types": "./src/breadcrumb.tsx",
+            "default": "./dist/breadcrumb.js"
+        },
+        "./multi-select": {
+            "types": "./src/multi-select.tsx",
+            "default": "./dist/multi-select.js"
+        },
+        "./toggle-group": {
+            "types": "./src/toggle-group.tsx",
+            "default": "./dist/toggle-group.js"
+        },
+        "./toggle": {
+            "types": "./src/toggle.tsx",
+            "default": "./dist/toggle.js"
+        }
     },
     "files": [
         "dist"
@@ -205,10 +217,10 @@
     },
     "dependencies": {
         "@itell/constants": "workspace:^",
+        "@itell/eslint-config": "workspace:^",
+        "@itell/prettier-config": "workspace:^",
         "@itell/tailwind": "workspace:^",
         "@itell/utils": "workspace:^",
-        "@itell/prettier-config": "workspace:^",
-        "@itell/eslint-config": "workspace:^",
         "@radix-ui/react-accordion": "^1.1.2",
         "@radix-ui/react-alert-dialog": "^1.0.5",
         "@radix-ui/react-avatar": "^1.0.3",
@@ -227,6 +239,8 @@
         "@radix-ui/react-slot": "^1.0.2",
         "@radix-ui/react-switch": "^1.0.3",
         "@radix-ui/react-tabs": "^1.0.4",
+        "@radix-ui/react-toggle": "^1.1.1",
+        "@radix-ui/react-toggle-group": "^1.1.1",
         "@radix-ui/react-tooltip": "^1.0.6",
         "@tailwindcss/typography": "^0.5.10",
         "autoprefixer": "^10.4.15",
