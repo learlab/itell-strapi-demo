@@ -8,6 +8,7 @@ export default async function SurveySectionLayout(props: {
   children: React.ReactNode;
 }) {
   const params = routes.surveySection.$parseParams(await props.params);
+
   return (
     <SidebarProvider>
       <SurveySidebar

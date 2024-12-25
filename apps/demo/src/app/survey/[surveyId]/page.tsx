@@ -16,6 +16,7 @@ import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
 import { getSurvey } from "./[sectionId]/data";
+import { SurveyHomeShell } from "./shell";
 import { SurveySidebar } from "./survey-sidebar";
 
 export default async function SurveyHomePage(props: {
@@ -37,42 +38,21 @@ export default async function SurveyHomePage(props: {
     <SidebarProvider>
       <SurveySidebar variant="inset" surveyId={params.surveyId} />
       <SidebarInset>
-        <div className="flex h-[100vh] flex-col">
-          <header className="flex h-[var(--nav-height)] items-center justify-between border-b px-6 py-4">
-            <div className="flex items-center gap-1">
-              <SidebarTrigger />
-              <ThemeToggle />
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              <ContinueReading
-                user={user}
-                text="Back to textbook"
-                variant="ghost"
-              >
-                <span className="inline-flex items-center gap-2">
-                  <ChevronLeft />
-                  <span>Back to Textbook</span>
-                </span>
-              </ContinueReading>
-              <UserAccountNav user={user} />
-            </div>
-          </header>
-          <div className="flex flex-1 flex-col items-center justify-center gap-4">
-            <h1 className="text-3xl font-semibold tracking-tight">
-              {survey.survey_name}
-            </h1>
-            <p>{survey.survey_description}</p>
-            <NavigationButton
-              href={routes.surveySection({
-                surveyId: survey.survey_id,
-                sectionId: survey.sections[0].id,
-              })}
-              className={cn(buttonVariants({ size: "lg" }), "text-lg")}
-            >
-              Start Survey
-            </NavigationButton>
-          </div>
-        </div>
+        <SurveyHomeShell user={user}>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {survey.survey_name}
+          </h1>
+          <p>{survey.survey_description}</p>
+          <NavigationButton
+            href={routes.surveySection({
+              surveyId: survey.survey_id,
+              sectionId: survey.sections[0].id,
+            })}
+            className={cn(buttonVariants({ size: "lg" }), "text-lg")}
+          >
+            Start Survey
+          </NavigationButton>
+        </SurveyHomeShell>
       </SidebarInset>
     </SidebarProvider>
   );

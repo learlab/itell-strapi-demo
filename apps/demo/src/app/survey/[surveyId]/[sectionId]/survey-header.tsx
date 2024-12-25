@@ -8,6 +8,7 @@ import {
 } from "@itell/ui/breadcrumb";
 import { Separator } from "@itell/ui/separator";
 import { SidebarTrigger } from "@itell/ui/sidebar";
+import { CheckIcon, Hourglass } from "lucide-react";
 
 import { CommandMenu } from "@/components/command-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -19,10 +20,12 @@ export async function SurveyHeader({
   surveyId,
   surveyTitle,
   sectionTitle,
+  finished,
 }: {
   surveyId: string;
   surveyTitle: string;
   sectionTitle: string;
+  finished?: boolean;
 }) {
   const { user } = await getSession();
 
@@ -39,7 +42,14 @@ export async function SurveyHeader({
           </BreadcrumbItem>
           <BreadcrumbSeparator className="hidden md:block" />
           <BreadcrumbItem>
-            <BreadcrumbPage>{sectionTitle}</BreadcrumbPage>
+            <BreadcrumbPage className="inline-flex items-center gap-2">
+              <span>{sectionTitle}</span>
+              {finished ? (
+                <CheckIcon className="size-6 stroke-green-500" />
+              ) : (
+                <Hourglass className="size-6 fill-warning" />
+              )}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

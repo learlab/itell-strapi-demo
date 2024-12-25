@@ -52,6 +52,7 @@ export default async function SurveyQuestionPage(props: {
         surveyId={params.surveyId}
         surveyTitle={survey.survey_name}
         sectionTitle={section.title}
+        finished={!!session?.sectionData}
       />
       <div className="w-full flex-1 bg-muted p-6">
         {err && (
@@ -143,7 +144,6 @@ async function formDataToSectionJson(
         break;
       case "toggle_group":
       case "multiple_choice":
-        console.log("output for toggle group is", Object.fromEntries(entries));
         entries.forEach(([key, value]) => {
           if (!key.startsWith(`${question.id}--`)) {
             return;
