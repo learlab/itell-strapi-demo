@@ -1,17 +1,9 @@
 import { notFound } from "next/navigation";
 import { buttonVariants } from "@itell/ui/button";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@itell/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@itell/ui/sidebar";
 import { cn } from "@itell/utils";
-import { ChevronLeft } from "lucide-react";
 
-import { ContinueReading } from "@/components/continue-reading";
 import { NavigationButton } from "@/components/navigation-button";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { UserAccountNav } from "@/components/user-account-nav";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
@@ -48,7 +40,7 @@ export default async function SurveyHomePage(props: {
               surveyId: survey.survey_id,
               sectionId: survey.sections[0].id,
             })}
-            className={cn(buttonVariants({ size: "lg" }), "text-lg")}
+            className={cn(buttonVariants({ size: "lg" }), "md:text-lg")}
           >
             Start Survey
           </NavigationButton>

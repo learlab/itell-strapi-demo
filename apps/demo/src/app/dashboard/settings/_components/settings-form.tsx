@@ -52,10 +52,10 @@ export function SettingsForm({ user }: { user: User }) {
       </h3>
       <form
         onSubmit={onSubmit}
-        className="grid max-w-2xl gap-2"
+        className="grid max-w-3xl gap-3"
         aria-labelledby="settings-form-heading"
       >
-        <Label className="flex items-center gap-2">
+        <Label className="flex flex-col gap-2">
           <span>Note color</span>
           <ColorPicker
             backgroundLight={noteColorLight}
@@ -71,7 +71,12 @@ export function SettingsForm({ user }: { user: User }) {
 
         {isError ? <InternalError /> : null}
         <footer>
-          <Button disabled={isPending} pending={isPending} type="submit">
+          <Button
+            disabled={isPending}
+            pending={isPending}
+            type="submit"
+            className="w-32"
+          >
             Save
           </Button>
         </footer>

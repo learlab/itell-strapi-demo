@@ -58,9 +58,10 @@ Create a new file `.env` in the volume folder. Fill in the necessary environment
 variables, see [instructions](./vercel.md)
 
 > [!IMPORTANT] Replace the `DATABASE_URL` value in `.env` with the URL of your
-> postgres database.
+> postgres database, this string looks like
+> `DATABASE_URL=postgresql://postgres:<username>@localhost:5432/<dbname>`
 
-With the `.env` file in place, you can initialize your database and build the
+After you have `.env` set up, you can initialize your database and build the
 app.
 
 ```bash

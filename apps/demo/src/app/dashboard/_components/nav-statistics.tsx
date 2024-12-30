@@ -8,7 +8,7 @@ import { cn } from "@itell/utils";
 import { dashboardConfig } from "./config";
 import { useDashboard } from "./dashboard-context";
 
-export function NavStatistics() {
+export function DashboardLinks() {
   const { role } = useDashboard();
   const [pending, startTransition] = useTransition();
   const pathname = usePathname();

@@ -44,7 +44,7 @@ export function JoinClassForm({ user }: Props) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
         If you are enrolled in a class that uses this textbook, you can ask your
         teacher for a class code to enter it here. This will allow you to
@@ -66,7 +66,12 @@ export function JoinClassForm({ user }: Props) {
           defaultValue={join_class_code || ""}
         />
         {isError ? <InternalError /> : null}
-        <Button disabled={isPending} type="submit" pending={isPending}>
+        <Button
+          disabled={isPending}
+          type="submit"
+          pending={isPending}
+          className="w-32"
+        >
           Submit
         </Button>
       </form>

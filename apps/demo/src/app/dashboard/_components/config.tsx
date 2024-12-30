@@ -36,6 +36,10 @@ export const dashboardConfig = {
         title: "Settings",
         href: "/dashboard/settings",
       },
+      {
+        title: "Forms",
+        href: "/dashboard/forms",
+      },
     ],
   },
   sidebarNav: {
@@ -81,6 +85,11 @@ export const dashboardConfig = {
         title: "Settings",
         href: "/dashboard/settings",
         icon: SettingsIcon,
+      },
+      {
+        title: "Forms",
+        href: "/dashboard/forms",
+        icon: FileEditIcon,
       },
     ],
   },

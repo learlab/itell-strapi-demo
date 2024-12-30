@@ -5,7 +5,7 @@ import {
   SidebarItem,
   SidebarLabel,
 } from "@/components/sidebar";
-import { NavStatistics } from "./nav-statistics";
+import { DashboardLinks } from "./nav-statistics";
 import { RoleSwitcher } from "./role-switch";
 
 export function DashboardSidebar({ isTeacher }: { isTeacher: boolean }) {
@@ -19,7 +19,7 @@ export function DashboardSidebar({ isTeacher }: { isTeacher: boolean }) {
         ) : null}
         <SidebarItem>
           <SidebarLabel>Statistics</SidebarLabel>
-          <NavStatistics />
+          <DashboardLinks />
         </SidebarItem>
       </SidebarContent>
       {/* <SidebarFooter>
