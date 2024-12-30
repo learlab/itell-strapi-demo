@@ -3,7 +3,7 @@ import { DashboardHeader, DashboardShell } from "@dashboard/shell";
 
 import { Meta } from "@/config/metadata";
 
-export default function () {
+export default function QuestionsLoading() {
   return (
     <DashboardShell>
       <DashboardHeader

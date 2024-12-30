@@ -38,10 +38,14 @@ export const Meta = {
     description: "Manage account settings",
     slug: "settings",
   },
-
   student: {
     title: "Student Details",
     description: "View student details",
     slug: "student",
+  },
+  forms: {
+    title: "Forms",
+    description: "Help us improve iTELL",
+    slug: "forms",
   },
 } satisfies Record<string, PageMeta>;
