@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 import { getSurveySectionAction, upsertSurveyAction } from "@/actions/survey";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
+import ScrollToTop from "../scroll-to-top";
 import { getNextSection, getSurvey, getSurveySection } from "./data";
 import { SurveyHeader } from "./survey-header";
 import {
@@ -45,6 +46,7 @@ export default async function SurveyQuestionPage(props: {
 
   return (
     <div className="flex min-h-[100vh] flex-col">
+      <ScrollToTop />
       <SurveyHeader
         surveyId={params.surveyId}
         surveyTitle={survey.survey_name}

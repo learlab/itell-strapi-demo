@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import { buttonVariants } from "@itell/ui/button";
 import { SidebarInset, SidebarProvider } from "@itell/ui/sidebar";
 import { cn } from "@itell/utils";
+import { Survey } from "#content";
 
 import { getSurveyAction } from "@/actions/survey";
 import { NavigationButton } from "@/components/navigation-button";
+import { SurveySession } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
@@ -29,6 +31,10 @@ export default async function SurveyHomePage(props: {
   }
 
   const [surveySession] = await getSurveyAction({ surveyId: params.surveyId });
+  const targetSectionId =
+    !surveySession || !surveySession.data
+      ? survey.sections[0].id
+      : getTargetSectionId(survey, surveySession.data);
 
   return (
     <SidebarProvider>
@@ -46,14 +52,28 @@ export default async function SurveyHomePage(props: {
           <NavigationButton
             href={routes.surveySection({
               surveyId: survey.survey_id,
-              sectionId: survey.sections[0].id,
+              sectionId: targetSectionId,
             })}
             className={cn(buttonVariants({ size: "lg" }), "md:text-lg")}
           >
-            Start Survey
+            {surveySession ? "Continue Survey" : "Start Survey"}
           </NavigationButton>
         </SurveyHomeShell>
       </SidebarInset>
     </SidebarProvider>
   );
 }
+
+const getTargetSectionId = (survey: Survey, data: Record<string, unknown>) => {
+  const visitedSections = Object.keys(data);
+  const lastIdx = visitedSections.reduce((acc, sectionId) => {
+    const idx = survey.sections.findIndex(
+      (section) => section.id === sectionId
+    );
+    return Math.max(acc, idx);
+  }, 0);
+  if (lastIdx === survey.sections.length - 1) {
+    return survey.sections[lastIdx].id;
+  }
+  return survey.sections[lastIdx + 1].id;
+};
