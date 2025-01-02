@@ -12,7 +12,6 @@
     "dev": "next dev -p 3000",
     "start": "next start -p 3000",
     "analyze": "ANALYZE=true next build",
-    "prestart": "next build",
     "assets": "tsx assets.ts",
     "test": "pnpm exec playwright test",
     "test:ui": "pnpm exec playwright test --ui"

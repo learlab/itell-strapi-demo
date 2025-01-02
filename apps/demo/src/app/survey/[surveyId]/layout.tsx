@@ -1,15 +1,7 @@
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@itell/ui/sidebar";
-import { and, eq, isNotNull } from "drizzle-orm";
+import { SidebarInset, SidebarProvider } from "@itell/ui/sidebar";
 
-import { db, first } from "@/actions/db";
-import { getSurveySessionAction } from "@/actions/survey";
+import { getSurveyAction } from "@/actions/survey";
 import { ContinueReading } from "@/components/continue-reading";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { survey_sessions } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
@@ -32,22 +24,15 @@ export default async function Layout({
     });
   }
 
-  const session = first(
-    await db
-      .select()
-      .from(survey_sessions)
-      .where(
-        and(
-          eq(survey_sessions.userId, user.id),
-          eq(survey_sessions.surveyId, surveyId),
-          isNotNull(survey_sessions.finishedAt)
-        )
-      )
-  );
-  if (session) {
+  const [session] = await getSurveyAction({ surveyId });
+  if (session?.finishedAt !== null) {
     return (
       <SidebarProvider>
-        <SurveySidebar variant="inset" surveyId={surveyId} />
+        <SurveySidebar
+          variant="inset"
+          surveyId={surveyId}
+          surveySession={session ?? undefined}
+        />
         <SidebarInset>
           <SurveyHomeShell user={user}>
             <p className="text-lg font-medium">
