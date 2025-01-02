@@ -11,24 +11,33 @@ import {
   SidebarRail,
 } from "@itell/ui/sidebar";
 import { cn } from "@itell/utils";
-import { GalleryVerticalEnd } from "lucide-react";
+import { CheckCircle, GalleryVerticalEnd } from "lucide-react";
 
+import { SurveySession } from "@/drizzle/schema";
 import { routes } from "@/lib/navigation";
 import { getSurvey } from "./[sectionId]/data";
 
 export async function SurveySidebar({
-  surveyId,
+  surveyId = "intake",
   sectionId,
+  surveySession,
   ...props
 }: {
-  surveyId: string;
+  // all accept undefined for convenient loading UI
+  surveyId?: string;
   sectionId?: string;
+  surveySession?: SurveySession;
 } & React.ComponentProps<typeof Sidebar>) {
-  const data = getSurvey(surveyId);
-
-  if (!data) {
+  const survey = getSurvey(surveyId);
+  if (!survey) {
     return null;
   }
+
+  const sections = survey.sections.map((section) => ({
+    ...section,
+    finished: surveySession?.data?.[section.id] ?? false,
+  }));
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -40,7 +49,7 @@ export async function SurveySidebar({
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">{data.survey_name}</span>
+                  <span className="font-semibold">{survey.survey_name}</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -50,7 +59,7 @@ export async function SurveySidebar({
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.sections.map((section, index) => (
+            {sections.map((section) => (
               <SidebarMenuItem key={section.id}>
                 <SidebarMenuButton asChild>
                   <Link
@@ -59,14 +68,17 @@ export async function SurveySidebar({
                       sectionId: section.id,
                     })}
                     className={cn(
-                      "h-fit rounded-md py-1.5 font-medium hover:bg-muted hover:text-muted-foreground",
+                      "flex h-fit items-center justify-between rounded-md py-1.5 font-medium hover:bg-muted hover:text-muted-foreground",
                       {
                         "bg-accent text-accent-foreground":
                           section.id === sectionId,
                       }
                     )}
                   >
-                    {section.title}
+                    <span>{section.title}</span>
+                    {section.finished && (
+                      <CheckCircle className="size-4 stroke-green-500" />
+                    )}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -3,10 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { Errorbox } from "@itell/ui/callout";
 import { Card, CardContent, CardHeader, CardTitle } from "@itell/ui/card";
 
-import {
-  getSurveySessionAction,
-  upsertSurveySessionAction,
-} from "@/actions/survey";
+import { getSurveySectionAction, upsertSurveyAction } from "@/actions/survey";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { getNextSection, getSurvey, getSurveySection } from "./data";
@@ -37,7 +34,7 @@ export default async function SurveyQuestionPage(props: {
     return notFound();
   }
 
-  const [session, err] = await getSurveySessionAction({
+  const [session, err] = await getSurveySectionAction({
     surveyId: params.surveyId,
     sectionId: section.id,
   });
@@ -66,7 +63,7 @@ export default async function SurveyQuestionPage(props: {
           action={async (formData: FormData) => {
             "use server";
             const sectionData = await formDataToSectionJson(section, formData);
-            await upsertSurveySessionAction({
+            await upsertSurveyAction({
               surveyId: params.surveyId,
               sectionId: section.id,
               isFinished: sectionIdx === survey.sections.length - 1,

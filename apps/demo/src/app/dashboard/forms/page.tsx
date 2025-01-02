@@ -9,6 +9,7 @@ import {
 import { Card, CardDescription, CardHeader, CardTitle } from "@itell/ui/card";
 import { and, eq, inArray } from "drizzle-orm";
 import { User } from "lucia";
+import { FileTextIcon } from "lucide-react";
 
 import { db } from "@/actions/db";
 import { Meta } from "@/config/metadata";
@@ -116,7 +117,10 @@ export default async function FormsPage() {
         className="flex flex-col gap-6"
       >
         <AccordionItem value="pending">
-          <AccordionTrigger>Pending</AccordionTrigger>
+          <AccordionTrigger className="justify-start gap-2">
+            <FileTextIcon className="size-6" />
+            <span>Pending</span>
+          </AccordionTrigger>
           <AccordionContent className="space-y-2 xl:text-base">
             {items.pending.length === 0 ? (
               <p>No forms are required currently.</p>
@@ -130,7 +134,10 @@ export default async function FormsPage() {
         </AccordionItem>
 
         <AccordionItem value="completed">
-          <AccordionTrigger>Completed</AccordionTrigger>
+          <AccordionTrigger className="justify-start gap-2">
+            <FileTextIcon className="size-6" />
+            <span>Completed</span>
+          </AccordionTrigger>
           <AccordionContent className="space-y-2 xl:text-base">
             <p>Thank you for completing the following forms.</p>
             <FormCards items={items.completed} />
@@ -138,7 +145,10 @@ export default async function FormsPage() {
         </AccordionItem>
 
         <AccordionItem value="not-applicable">
-          <AccordionTrigger>Not Applicable</AccordionTrigger>
+          <AccordionTrigger className="justify-start gap-2">
+            <FileTextIcon className="size-6" />
+            <span>Not Applicable</span>
+          </AccordionTrigger>
           <AccordionContent className="space-y-2 xl:text-base">
             <p>These forms are not relevant currently.</p>
             <FormCards items={items["not-applicable"]} />

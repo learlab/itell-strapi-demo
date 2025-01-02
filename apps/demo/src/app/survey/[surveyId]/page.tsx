@@ -3,6 +3,7 @@ import { buttonVariants } from "@itell/ui/button";
 import { SidebarInset, SidebarProvider } from "@itell/ui/sidebar";
 import { cn } from "@itell/utils";
 
+import { getSurveyAction } from "@/actions/survey";
 import { NavigationButton } from "@/components/navigation-button";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
@@ -26,9 +27,16 @@ export default async function SurveyHomePage(props: {
   if (!survey) {
     return notFound();
   }
+
+  const [surveySession] = await getSurveyAction({ surveyId: params.surveyId });
+
   return (
     <SidebarProvider>
-      <SurveySidebar variant="inset" surveyId={params.surveyId} />
+      <SurveySidebar
+        variant="inset"
+        surveyId={params.surveyId}
+        surveySession={surveySession ?? undefined}
+      />
       <SidebarInset>
         <SurveyHomeShell user={user}>
           <h1 className="text-3xl font-semibold tracking-tight">

@@ -1,4 +1,5 @@
 import React from "react";
+import { Skeleton } from "@itell/ui/skeleton";
 import { User } from "lucia";
 import { ChevronLeft } from "lucide-react";
 
@@ -12,7 +13,7 @@ export function SurveyHomeShell({
   user,
 }: {
   children: React.ReactNode;
-  user: User;
+  user?: User;
 }) {
   return (
     <div className="flex h-[100vh] flex-col">
@@ -22,13 +23,23 @@ export function SurveyHomeShell({
           <ThemeToggle />
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <ContinueReading user={user} text="Back to textbook" variant="ghost">
-            <span className="inline-flex items-center gap-2">
-              <ChevronLeft />
-              <span>Back to Textbook</span>
-            </span>
-          </ContinueReading>
-          <UserAccountNav user={user} />
+          {user ? (
+            <>
+              <ContinueReading
+                user={user}
+                text="Back to textbook"
+                variant="ghost"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <ChevronLeft />
+                  <span>Back to Textbook</span>
+                </span>
+              </ContinueReading>
+              <UserAccountNav user={user} />
+            </>
+          ) : (
+            <Skeleton className="h-8 w-32 rounded-full" />
+          )}
         </div>
       </header>
       <div className="flex flex-1 flex-col items-center justify-center gap-4">

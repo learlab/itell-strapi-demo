@@ -11,7 +11,7 @@ import { survey_sessions } from "@/drizzle/schema";
 import { db, first } from "./db";
 import { authedProcedure } from "./utils";
 
-export const upsertSurveySessionAction = authedProcedure
+export const upsertSurveyAction = authedProcedure
   .input(
     z.object({
       isFinished: z.boolean().optional(),
@@ -53,7 +53,23 @@ export const upsertSurveySessionAction = authedProcedure
     });
   });
 
-export const getSurveySessionAction = authedProcedure
+export const getSurveyAction = authedProcedure
+  .input(z.object({ surveyId: z.string() }))
+  .handler(async ({ ctx, input }) => {
+    return first(
+      await db
+        .select()
+        .from(survey_sessions)
+        .where(
+          and(
+            eq(survey_sessions.userId, ctx.user.id),
+            eq(survey_sessions.surveyId, input.surveyId)
+          )
+        )
+    );
+  });
+
+export const getSurveySectionAction = authedProcedure
   .input(
     z.object({
       surveyId: z.string(),
