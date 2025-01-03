@@ -33,10 +33,13 @@ export async function SurveySidebar({
     return null;
   }
 
-  const sections = survey.sections.map((section) => ({
-    ...section,
-    finished: surveySession?.data?.[section.id] ?? false,
-  }));
+  const sections = survey.sections
+    // only display non-conditional sections
+    .filter((section) => !section.display_rules)
+    .map((section) => ({
+      ...section,
+      finished: surveySession?.data?.[section.id] ?? false,
+    }));
 
   return (
     <Sidebar {...props}>

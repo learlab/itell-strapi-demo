@@ -25,7 +25,7 @@ export default async function Layout({
   }
 
   const [session] = await getSurveyAction({ surveyId });
-  if (session?.finishedAt !== null) {
+  if (session && session.finishedAt !== null) {
     return (
       <SidebarProvider>
         <SurveySidebar

@@ -76,7 +76,7 @@
             },
             {
               "text": "I am mildly concerned about my technology access.",
-              "value": 2
+              "value": 3
             },
             {
               "text": "I am moderately concerned about my technology access.",
@@ -120,7 +120,23 @@
             { "text": "More than 20", "value": 5 }
           ],
           "required": true
-        },
+        }
+      ]
+    },
+    {
+      "id": "text_num_follow_up",
+      "title": "Digital Text Experience Follow-Up",
+      "display_rules": {
+        "operator": "and",
+        "conditions": [
+          {
+            "question_id": "text_num_per_week",
+            "operator": "ne",
+            "value": "None"
+          }
+        ]
+      },
+      "questions": [
         {
           "id": "text_satisfaction",
           "text": "Overall, how satisfied or dissatisfied are you with the digital texts you have used?",
@@ -132,12 +148,7 @@
             { "text": "Somewhat dissatisfied", "value": 2 },
             { "text": "Extremely dissatisfied", "value": 1 }
           ],
-          "required": true,
-          "display_condition": {
-            "question_id": "text_num_per_week",
-            "operator": "!=",
-            "value": 1
-          }
+          "required": true
         },
         {
           "id": "text_compare",
@@ -153,12 +164,7 @@
             { "text": "Digital texts are somewhat better.", "value": 4 },
             { "text": "Digital texts are much better.", "value": 5 }
           ],
-          "required": true,
-          "display_condition": {
-            "question_id": "text_num_per_week",
-            "operator": "!=",
-            "value": 1
-          }
+          "required": true
         }
       ]
     },
@@ -721,39 +727,40 @@
             { "text": "Elementary proficiency", "value": 5 }
           ],
           "required": true
-        },
+        }
+      ]
+    },
+    {
+      "id": "demo_english_prof_follow_up",
+      "title": "English Proficiency Follow-Up",
+      "display_rules": {
+        "operator": "and",
+        "conditions": [
+          {
+            "question_id": "demo_english_prof",
+            "operator": "ne",
+            "value": "Native/Bilingual proficiency"
+          }
+        ]
+      },
+      "questions": [
         {
           "id": "demo_native_lang",
           "text": "What is your native language?",
           "type": "text_input",
-          "required": true,
-          "display_condition": {
-            "question_id": "demo_english_prof",
-            "operator": "!=",
-            "value": 1
-          }
+          "required": true
         },
         {
           "id": "demo_english-aoe",
           "text": "At what age did you start learning English?",
           "type": "number_input",
-          "required": true,
-          "display_condition": {
-            "question_id": "demo_english_prof",
-            "operator": "!=",
-            "value": 1
-          }
+          "required": true
         },
         {
           "id": "demo_english_years",
           "text": "How many years have you studied English?",
           "type": "number_input",
-          "required": true,
-          "display_condition": {
-            "question_id": "demo_english_prof",
-            "operator": "!=",
-            "value": 1
-          }
+          "required": true
         }
       ]
     },
@@ -764,7 +771,7 @@
         {
           "id": "intro",
           "text": "This is a short assessment of your English lexical knowledge \n You will be presented with 60 strings of letters. Click on the string if you think it is a real word in English.",
-          "type": "toggle_group",
+          "type": "lextale",
           "options": [
             "mensible",
             "scornful",
