@@ -44,256 +44,6 @@ importers:
         specifier: 5.6.0-beta
         version: 5.6.0-beta
 
-  apps/chevron:
-    dependencies:
-      '@floating-ui/dom':
-        specifier: ^1.6.8
-        version: 1.6.12
-      '@floating-ui/react':
-        specifier: ^0.26.22
-        version: 0.26.28(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@itell/api':
-        specifier: workspace:^
-        version: link:../../packages/api
-      '@itell/constants':
-        specifier: workspace:^
-        version: link:../../packages/constants
-      '@itell/core':
-        specifier: workspace:^
-        version: link:../../packages/core
-      '@itell/driver.js':
-        specifier: workspace:^
-        version: link:../../packages/driverjs
-      '@itell/eslint-config':
-        specifier: workspace:^
-        version: link:../../toolings/eslint
-      '@itell/prettier-config':
-        specifier: workspace:^
-        version: link:../../toolings/prettier
-      '@itell/tailwind':
-        specifier: workspace:^
-        version: link:../../packages/tailwind
-      '@itell/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      '@itell/utils':
-        specifier: workspace:^
-        version: link:../../packages/utils
-      '@lucia-auth/adapter-drizzle':
-        specifier: ^1.1.0
-        version: 1.1.0(drizzle-orm@0.36.4(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.1)(knex@2.5.0)(postgres@3.4.5)(react@19.0.0))(lucia@3.2.2)
-      '@next/eslint-plugin-next':
-        specifier: 15.0.2
-        version: 15.0.2
-      '@next/third-parties':
-        specifier: 15.0.2
-        version: 15.0.2(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
-      '@sentry/nextjs':
-        specifier: ^8.36.0
-        version: 8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.19.12))
-      '@tanstack/react-table':
-        specifier: ^8.9.10
-        version: 8.20.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@xstate/store':
-        specifier: ^2.6.0
-        version: 2.6.2(react@19.0.0)
-      arctic:
-        specifier: 2.2.1
-        version: 2.2.1
-      babel-plugin-react-compiler:
-        specifier: 19.0.0-beta-6fc168f-20241025
-        version: 19.0.0-beta-6fc168f-20241025
-      client-only:
-        specifier: ^0.0.1
-        version: 0.0.1
-      cmdk:
-        specifier: ^1.0.1
-        version: 1.0.4(@types/react-dom@19.0.1)(@types/react@19.0.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      drizzle-orm:
-        specifier: ^0.36.0
-        version: 0.36.4(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.1)(knex@2.5.0)(postgres@3.4.5)(react@19.0.0)
-      drizzle-zod:
-        specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.36.4(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.1)(knex@2.5.0)(postgres@3.4.5)(react@19.0.0))(zod@3.23.8)
-      emoji-blast:
-        specifier: ^0.10.2
-        version: 0.10.2
-      es-toolkit:
-        specifier: ^1.13.1
-        version: 1.29.0
-      export-to-csv:
-        specifier: ^1.4.0
-        version: 1.4.0
-      framer-motion:
-        specifier: ^12.0.0-alpha.1
-        version: 12.0.0-alpha.2(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      geist:
-        specifier: ^1.0.0
-        version: 1.3.1(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
-      hono:
-        specifier: ^4.6.8
-        version: 4.6.13
-      htmr:
-        specifier: ^1.0.2
-        version: 1.0.2(patch_hash=v7i4blma6aws3ekrmuhlcogrwq)(react@19.0.0)
-      immer:
-        specifier: ^10.1.1
-        version: 10.1.1
-      lucia:
-        specifier: ^3.2.2
-        version: 3.2.2
-      lucide-react:
-        specifier: ^0.426.0
-        version: 0.426.0(react@19.0.0)
-      next:
-        specifier: 15.0.3
-        version: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      next-safe-navigation:
-        specifier: ^0.3.2
-        version: 0.3.3(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.6.0-beta)(zod@3.23.8)
-      next-themes:
-        specifier: ^0.2.1
-        version: 0.2.1(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      nextjs-better-unstable-cache:
-        specifier: ^1.1.0
-        version: 1.1.0(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
-      oslo:
-        specifier: ^1.2.1
-        version: 1.2.1
-      pluralize:
-        specifier: ^8.0.0
-        version: 8.0.0
-      postgres:
-        specifier: ^3.4.5
-        version: 3.4.5
-      react:
-        specifier: 19.0.0
-        version: 19.0.0
-      react-dom:
-        specifier: 19.0.0
-        version: 19.0.0(react@19.0.0)
-      react-dom-confetti:
-        specifier: ^0.2.0
-        version: 0.2.0(react@19.0.0)
-      react-error-boundary:
-        specifier: ^4.0.12
-        version: 4.1.2(react@19.0.0)
-      react-textarea-autosize:
-        specifier: ^8.5.3
-        version: 8.5.6(@types/react@19.0.1)(react@19.0.0)
-      recharts:
-        specifier: ^2.13.2
-        version: 2.14.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
-      sonner:
-        specifier: ^1.2.0
-        version: 1.7.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      use-action-status:
-        specifier: ^0.0.1
-        version: 0.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      use-immer:
-        specifier: ^0.9.0
-        version: 0.9.0(immer@10.1.1)(react@19.0.0)
-      velite:
-        specifier: ^0.2.1
-        version: 0.2.1(acorn@8.14.0)
-      zod:
-        specifier: ^3.22.2
-        version: 3.23.8
-      zsa:
-        specifier: ^0.5.1
-        version: 0.5.1(zod@3.23.8)
-      zsa-react:
-        specifier: ^0.2.2
-        version: 0.2.3(react@19.0.0)(zod@3.23.8)
-    devDependencies:
-      '@itell/rehype-add-cri':
-        specifier: workspace:^
-        version: link:../../packages/rehype-add-cri
-      '@itell/rehype-wrap-heading-section':
-        specifier: workspace:^
-        version: link:../../packages/rehype-wrap-heading-section
-      '@next/bundle-analyzer':
-        specifier: 15.0.2
-        version: 15.0.2
-      '@playwright/test':
-        specifier: ^1.48.2
-        version: 1.49.0
-      '@total-typescript/ts-reset':
-        specifier: ^0.4.2
-        version: 0.4.2
-      '@types/dom-view-transitions':
-        specifier: ^1.0.4
-        version: 1.0.5
-      '@types/hast':
-        specifier: ^3.0.4
-        version: 3.0.4
-      '@types/node':
-        specifier: ^22.4.1
-        version: 22.10.1
-      '@types/pluralize':
-        specifier: ^0.0.31
-        version: 0.0.31
-      '@types/react':
-        specifier: 19.0.1
-        version: 19.0.1
-      '@types/react-dom':
-        specifier: 19.0.1
-        version: 19.0.1
-      autoprefixer:
-        specifier: ^10.4.15
-        version: 10.4.20(postcss@8.4.49)
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.7
-      drizzle-kit:
-        specifier: ^0.28.0
-        version: 0.28.1
-      eslint-plugin-drizzle:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@9.16.0(jiti@1.21.6))
-      msw:
-        specifier: ^2.6.5
-        version: 2.6.8(@types/node@22.10.1)(typescript@5.6.0-beta)
-      playwright-extra:
-        specifier: ^4.3.6
-        version: 4.3.6(playwright-core@1.49.0)(playwright@1.49.0)
-      postcss:
-        specifier: ^8.4.29
-        version: 8.4.49
-      prettier:
-        specifier: ^3.3.3
-        version: 3.4.2
-      rehype-format:
-        specifier: ^5.0.0
-        version: 5.0.1
-      rehype-katex:
-        specifier: ^6.0.3
-        version: 6.0.3
-      rehype-unwrap-images:
-        specifier: ^1.0.0
-        version: 1.0.0
-      remark-gfm:
-        specifier: ^4.0.0
-        version: 4.0.0
-      remark-heading-attrs:
-        specifier: ^0.0.2
-        version: 0.0.2
-      remark-math:
-        specifier: ^6.0.0
-        version: 6.0.0
-      require-in-the-middle:
-        specifier: ^7.4.0
-        version: 7.4.0
-      tailwindcss:
-        specifier: ^3.4.0
-        version: 3.4.16
-      typescript:
-        specifier: 5.6.0-beta
-        version: 5.6.0-beta
-
   apps/demo:
     dependencies:
       '@floating-ui/dom':
@@ -340,7 +90,7 @@ importers:
         version: 15.1.0(next@15.1.0(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       '@sentry/nextjs':
         specifier: ^8.36.0
-        version: 8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.1.0(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.24.0))
+        version: 8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.1.0(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.19.12))
       '@tanstack/react-table':
         specifier: ^8.9.10
         version: 8.20.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -18156,33 +17906,6 @@ snapshots:
       '@sentry/types': 6.19.7
       tslib: 1.14.1
 
-  '@sentry/nextjs@8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.19.12))':
-    dependencies:
-      '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/semantic-conventions': 1.28.0
-      '@rollup/plugin-commonjs': 28.0.1(rollup@3.29.5)
-      '@sentry-internal/browser-utils': 8.42.0
-      '@sentry/core': 8.42.0
-      '@sentry/node': 8.42.0
-      '@sentry/opentelemetry': 8.42.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)
-      '@sentry/react': 8.42.0(react@19.0.0)
-      '@sentry/vercel-edge': 8.42.0
-      '@sentry/webpack-plugin': 2.22.6(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.19.12))
-      chalk: 3.0.0
-      next: 15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      resolve: 1.22.8
-      rollup: 3.29.5
-      stacktrace-parser: 0.1.10
-    transitivePeerDependencies:
-      - '@opentelemetry/core'
-      - '@opentelemetry/instrumentation'
-      - '@opentelemetry/sdk-trace-base'
-      - encoding
-      - react
-      - supports-color
-      - webpack
-
   '@sentry/nextjs@8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.0.3(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.24.0))':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -18210,7 +17933,7 @@ snapshots:
       - supports-color
       - webpack
 
-  '@sentry/nextjs@8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.1.0(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.24.0))':
+  '@sentry/nextjs@8.42.0(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(next@15.1.0(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.19.12))':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
@@ -18222,7 +17945,7 @@ snapshots:
       '@sentry/opentelemetry': 8.42.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.29.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)
       '@sentry/react': 8.42.0(react@19.0.0)
       '@sentry/vercel-edge': 8.42.0
-      '@sentry/webpack-plugin': 2.22.6(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.24.0))
+      '@sentry/webpack-plugin': 2.22.6(webpack@5.97.1(@swc/core@1.10.1(@swc/helpers@0.5.15))(esbuild@0.19.12))
       chalk: 3.0.0
       next: 15.1.0(@opentelemetry/api@1.9.0)(@playwright/test@1.49.0)(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       resolve: 1.22.8
