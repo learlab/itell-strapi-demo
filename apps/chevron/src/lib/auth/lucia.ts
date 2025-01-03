@@ -31,6 +31,7 @@ export const lucia = new Lucia(adapter, {
       finished: attributes.finished,
       classId: attributes.classId,
       pageSlug: attributes.pageSlug,
+      consent: attributes.consent,
       personalization: {
         summary_streak: attributes.personalization?.summary_streak ?? 0,
         max_summary_streak: attributes.personalization?.max_summary_streak ?? 0,

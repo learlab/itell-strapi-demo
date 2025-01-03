@@ -1,0 +1,458 @@
+{
+  "survey_name": "iTELL Outtake - Middle Georgia Survey",
+  "sections": [
+    {
+      "id": "CoI",
+      "title": "Community of Inquiry",
+      "questions": [
+        {
+          "id": "CoI1",
+          "text": "Please indicate your level of agreement with the following statements.",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "The textbook clearly communicated important course topics.",
+              "value": "1"
+            },
+            {
+              "text": "The textbook provided clear instructions on how to participate in course learning activities.",
+              "value": "2"
+            },
+            {
+              "text": "The textbook was helpful in guiding me towards understanding course topics in a way that helped me clarify my thinking.",
+              "value": "3"
+            },
+            {
+              "text": "The textbook helped to keep me engaged and participating in productive dialogue.",
+              "value": "4"
+            },
+            {
+              "text": "The textbook helped keep me on task in a way that helped me to learn.",
+              "value": "5"
+            },
+            {
+              "text": "The textbook encouraged me to explore new concepts in this course.",
+              "value": "6"
+            },
+            {
+              "text": "The textbook helped to focus discussion on relevant issues in a way that helped me to learn.",
+              "value": "7"
+            },
+            {
+              "text": "The textbook provided feedback that helped me understand my strengths and weaknesses relative to the course's goals and objectives.",
+              "value": "8"
+            },
+            {
+              "text": "The textbook provided feedback in a timely fashion.",
+              "value": "9"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "CoI",
+      "title": "Community of Inquiry",
+      "questions": [
+        {
+          "id": "CoI2",
+          "text": "Please indicate your level of agreement with the following statements.",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "The textbook utilized a variety of information sources to explore problems posed in this course.",
+              "value": "10"
+            },
+            {
+              "text": "The textbook helped me brainstorm and find relevant information to resolve content related questions.",
+              "value": "11"
+            },
+            {
+              "text": "The textbook helped me combine new information to answer questions raised in course activities.",
+              "value": "12"
+            },
+            {
+              "text": "Learning activities in the textbook helped me construct explanations/solutions.",
+              "value": "13"
+            },
+            {
+              "text": "Reflection within the textbook on course content and discussions helped me understand fundamental concepts in this class.",
+              "value": "14"
+            },
+            {
+              "text": "The textbook helped me describe ways to test and apply the knowledge created in this course.",
+              "value": "15"
+            },
+            {
+              "text": "The textbook helped me develop solutions to course problems that can be applied in practice.",
+              "value": "16"
+            },
+            {
+              "text": "The textbook helped me apply the course knowledge to my work or other non-class related activities.",
+              "value": "17"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "trad_text_comparison",
+      "title": "Compared to a traditional textbook",
+      "questions": [
+        {
+          "id": "trad_text_comparison1",
+          "text": "Compared to a traditional textbook...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "I found interacting with this textbook to be more interesting.",
+              "value": "1"
+            },
+            {
+              "text": "I found interacting with this textbook to improve my learning.",
+              "value": "2"
+            },
+            {
+              "text": "I found interacting with this textbook to be easier.",
+              "value": "3"
+            },
+            {
+              "text": "This textbook was more motivating.",
+              "value": "4"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "organization",
+      "title": "Layout",
+      "questions": [
+        {
+          "id": "organization1",
+          "text": "I found the layout of the digital textbook to...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "Be intuitive and easy to work with",
+              "value": "1"
+            },
+            {
+              "text": "Keep the text organized and comprehensible",
+              "value": "2"
+            },
+            {
+              "text": "Be free from errors and bugs",
+              "value": "3"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "annotation",
+      "title": "Annotation",
+      "questions": [
+        {
+          "id": "annotation1",
+          "text": "I found the annotation and note-taking features of the textbook to be valuable.",
+          "type": "single_choice",
+          "options": [
+            {
+              "text": "Strongly agree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly disagree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "questions": [
+        {
+          "id": "summary1",
+          "text": "I found the section summary section of the digital textbook to...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "Be accurate",
+              "value": "1"
+            },
+            {
+              "text": "Be easy to understand",
+              "value": "2"
+            },
+            {
+              "text": "Be easy to interact with",
+              "value": "3"
+            },
+            {
+              "text": "Help to improve my learning",
+              "value": "4"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "sa",
+      "title": "Short Answer",
+      "questions": [
+        {
+          "id": "sa1",
+          "text": "I found the short answer sections in the digital textbook to...",
+          "type": "grid",
+          "rows": [
+            {
+              "text": "Provide questions that were relevant to the subsection",
+              "value": "1"
+            },
+            {
+              "text": "Be accurate",
+              "value": "2"
+            },
+            {
+              "text": "Be easy to interact with",
+              "value": "3"
+            },
+            {
+              "text": "Help improve my learning",
+              "value": "4"
+            }
+          ],
+          "columns": [
+            {
+              "text": "Strongly disagree",
+              "value": "1"
+            },
+            {
+              "text": "Somewhat disagree",
+              "value": "2"
+            },
+            {
+              "text": "Neither agree nor disagree",
+              "value": "3"
+            },
+            {
+              "text": "Somewhat agree",
+              "value": "4"
+            },
+            {
+              "text": "Strongly agree",
+              "value": "5"
+            }
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "overall",
+      "title": "Overall",
+      "questions": [
+        {
+          "id": "improve",
+          "text": "Did the digital text improve your ability to learn this subject?",
+          "type": "single_choice",
+          "options": [
+            {
+              "text": "Yes",
+              "value": "1"
+            },
+            {
+              "text": "No",
+              "value": "2"
+            }
+          ],
+          "required": true
+        },
+        {
+          "id": "overall1",
+          "text": "Overall, how satisfied were you with this digital textbook?",
+          "type": "single_choice",
+          "options": [
+            {
+              "text": "Very satisfied",
+              "value": "5"
+            },
+            {
+              "text": "Satisfied",
+              "value": "4"
+            },
+            {
+              "text": "Neutral",
+              "value": "3"
+            },
+            {
+              "text": "Unsatisfied",
+              "value": "2"
+            },
+            {
+              "text": "Very unsatisfied",
+              "value": "1"
+            }
+          ],
+          "required": true
+        },
+        {
+          "id": "recommend",
+          "text": "Would you recommend the digital text to others as a good way to learn?",
+          "type": "single_choice",
+          "options": [
+            {
+              "text": "Definitely YES",
+              "value": "4"
+            },
+            {
+              "text": "YES",
+              "value": "3"
+            },
+            {
+              "text": "NO",
+              "value": "2"
+            },
+            {
+              "text": "Definitely NO",
+              "value": "1"
+            }
+          ],
+          "required": true
+        }
+      ]
+    }
+
+  ]
+}

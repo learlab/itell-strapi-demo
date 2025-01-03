@@ -120,6 +120,48 @@ function AssignmentsShell({ children }: { children: React.ReactNode }) {
       <h2 className="sr-only" id="page-assignments-heading">
         assignments
       </h2>
+      {condition === Condition.SIMPLE ? (
+        <div className="col-span-full mx-auto max-w-2xl space-y-4">
+          <SummaryFormSimple page={page} pageStatus={pageStatus} />
+        </div>
+      ) : (
+        <>
+          <div className="col-span-full hidden md:block lg:col-span-1">
+            <SummaryDescription condition={condition} />
+            {condition !== Condition.SIMPLE && (
+              <Suspense fallback={<SummaryCount.Skeleton />}>
+                <div className="mt-8">
+                  <SummaryCount pageSlug={page.slug} />
+                </div>
+              </Suspense>
+            )}
+          </div>
+
+          <div className="col-span-full space-y-2 lg:col-span-2">
+            {user.finished ? (
+              <Suspense fallback={<FinishedPrompt.Skeleton />}>
+                <FinishedPrompt href="/outtake" />
+              </Suspense>
+            ) : null}
+            {condition !== Condition.SIMPLE ? (
+              <PageQuizModal page={page} pageStatus={pageStatus} />
+            ) : null}
+            {condition === Condition.RANDOM_REREAD ? (
+              <SummaryFormReread
+                user={user}
+                page={page}
+                pageStatus={pageStatus}
+              />
+            ) : condition === Condition.STAIRS ? (
+              <SummaryFormStairs
+                user={user}
+                page={page}
+                pageStatus={pageStatus}
+              />
+            ) : null}
+          </div>
+        </>
+      )}
       {children}
     </section>
   );
