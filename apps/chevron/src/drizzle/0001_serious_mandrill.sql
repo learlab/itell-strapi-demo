@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "personalization_data" jsonb;

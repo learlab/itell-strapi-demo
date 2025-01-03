@@ -1,1 +1,0 @@
-ALTER TABLE "summaries" ADD COLUMN "content_threshold" double precision;
