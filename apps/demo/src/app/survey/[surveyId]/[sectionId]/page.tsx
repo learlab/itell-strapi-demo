@@ -80,7 +80,7 @@ export default async function SurveyQuestionPage(props: {
             });
             const nextSectionId = getNextSectionId({
               sections: unfinishedSections,
-              submission: submission,
+              submission,
             });
             // finished when there is no applicable section left
             const isFinished = nextSectionId === null;
