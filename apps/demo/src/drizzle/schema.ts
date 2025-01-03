@@ -14,7 +14,10 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-import { SurveyQuestionData } from "@/app/survey/[surveyId]/[sectionId]/survey-question-renderer";
+import {
+  SurveyQuestionData,
+  SurveySubmission,
+} from "@/app/survey/[surveyId]/[sectionId]/survey-question-renderer";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export const aal_level = pgEnum("aal_level", ["aal1", "aal2", "aal3"]);
@@ -388,4 +391,4 @@ export const UpdateSurveySessionSchema = CreateSurveySessionSchema.partial();
 export type SurveySession = InferSelectModel<typeof survey_sessions>;
 
 // { sectionId: { questionId: answer } }
-export type SurveyData = Record<string, Record<string, SurveyQuestionData>>;
+export type SurveyData = Record<string, SurveySubmission>;

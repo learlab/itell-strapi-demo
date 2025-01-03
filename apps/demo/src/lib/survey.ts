@@ -1,3 +1,4 @@
+import { Survey } from "#content";
 import { s } from "velite";
 
 // Basic option schema for single/multiple choice questions
@@ -7,11 +8,16 @@ const OptionSchema = s.object({
 });
 
 // Display condition schema
-const DisplayConditionSchema = s
+const DisplayRulesSchema = s
   .object({
-    question_id: s.string(),
-    operator: s.string(),
-    value: s.union([s.string(), s.number()]),
+    operator: s.union([s.literal("and"), s.literal("or")]),
+    conditions: s.array(
+      s.object({
+        question_id: s.string(),
+        operator: s.union([s.literal("eq"), s.literal("ne")]),
+        value: s.union([s.string(), s.number()]),
+      })
+    ),
   })
   .optional();
 
@@ -20,7 +26,6 @@ const BaseQuestionSchema = s.object({
   id: s.string(),
   text: s.string(),
   required: s.boolean(),
-  display_condition: DisplayConditionSchema,
 });
 
 // Specific question type schemas
@@ -52,8 +57,8 @@ const NumberInputQuestionSchema = BaseQuestionSchema.extend({
   type: s.literal("number_input"),
 });
 
-const ToggleGroupQuestionSchema = BaseQuestionSchema.extend({
-  type: s.literal("toggle_group"),
+const LexTaleQuestionSchema = BaseQuestionSchema.extend({
+  type: s.literal("lextale"),
   options: s.array(s.string()),
 });
 
@@ -72,7 +77,7 @@ const QuestionSchema = s.discriminatedUnion("type", [
   TextInputQuestionSchema,
   NumberInputQuestionSchema,
   GridQuestionSchema,
-  ToggleGroupQuestionSchema,
+  LexTaleQuestionSchema,
 ]);
 
 // Section schema
@@ -80,6 +85,7 @@ const SectionSchema = s.object({
   id: s.string(),
   title: s.string(),
   questions: s.array(QuestionSchema),
+  display_rules: DisplayRulesSchema,
 });
 
 // Main survey schema
@@ -89,3 +95,4 @@ export const SurveySchema = s.object({
   survey_description: s.string(),
   sections: s.array(SectionSchema),
 });
+export type SurveySection = Survey["sections"][0];

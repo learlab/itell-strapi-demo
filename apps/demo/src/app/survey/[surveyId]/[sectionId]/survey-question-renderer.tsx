@@ -16,6 +16,7 @@ import {
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -39,7 +40,7 @@ const questionDataMap = {
   multiple_choice: z.array(z.string()),
   multiple_select: z.array(z.object({ label: z.string(), value: z.string() })),
   grid: z.record(z.string()),
-  toggle_group: z.array(z.string()),
+  lextale: z.array(z.string()),
 } as const;
 
 //  Object.values(questionDataMap) yields type error
@@ -51,9 +52,10 @@ export const SurveyQuestionDataSchema = z.union([
   questionDataMap.multiple_choice,
   questionDataMap.multiple_select,
   questionDataMap.grid,
-  questionDataMap.toggle_group,
+  questionDataMap.lextale,
 ]);
 export type SurveyQuestionData = z.infer<typeof SurveyQuestionDataSchema>;
+export type SurveySubmission = Record<string, SurveyQuestionData>;
 type SurveyQuestion = Survey["sections"][0]["questions"][0];
 
 const StyledLabel = ({
@@ -87,11 +89,11 @@ function SingleChoiceQuestion({
     <RadioGroup
       name={question.id}
       required={question.required}
-      className="flex flex-col gap-1.5"
+      className="flex flex-col gap-1.5 text-foreground"
       defaultValue={defaultValue}
     >
       {question.options.map((option) => (
-        <StyledLabel key={String(option.value)}>
+        <StyledLabel key={String(option.text)}>
           <RadioGroupItem value={String(option.text)} className="sr-only" />
           <span>{option.text}</span>
         </StyledLabel>
@@ -196,8 +198,11 @@ function GridQuestion({
 }: BaseQuestionProps<Extract<SurveyQuestion, { type: "grid" }>>) {
   return (
     <Table className="caption-top">
+      <TableCaption className="mb-4 text-left">
+        Please select an option for each row that best describes your feeling.
+      </TableCaption>
       <TableHeader>
-        <TableRow>
+        <TableRow className="sticky top-0">
           <TableHead></TableHead>
           {question.columns.map((col) => (
             <TableHead key={String(col.value)}>
@@ -219,9 +224,9 @@ function GridQuestion({
                   <input
                     type="radio"
                     name={`${question.id}--${String(row.text)}`}
-                    value={String(col.text)}
+                    value={String(col.value)}
                     defaultChecked={
-                      String(col.text) === defaultValue?.[row.text]
+                      String(col.value) === defaultValue?.[String(row.text)]
                     }
                     className="peer sr-only"
                     required={true}
@@ -241,10 +246,10 @@ function GridQuestion({
   );
 }
 
-function ToggleGroupQuestion({
+function LexTaleQuestion({
   question,
   defaultValue,
-}: BaseQuestionProps<Extract<SurveyQuestion, { type: "toggle_group" }>>) {
+}: BaseQuestionProps<Extract<SurveyQuestion, { type: "lextale" }>>) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       {question.options.map((option) => (
@@ -272,7 +277,7 @@ const componentMap = {
   number_input: (props: any) => <InputQuestion {...props} type="number" />,
   text_input: (props: any) => <InputQuestion {...props} type="text" />,
   grid: GridQuestion,
-  toggle_group: ToggleGroupQuestion,
+  lextale: LexTaleQuestion,
 } as const;
 
 export function SurveyQuestionRenderer({
