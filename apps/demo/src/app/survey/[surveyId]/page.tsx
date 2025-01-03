@@ -6,7 +6,6 @@ import { Survey } from "#content";
 
 import { getSurveyAction } from "@/actions/survey";
 import { NavigationButton } from "@/components/navigation-button";
-import { SurveySession } from "@/drizzle/schema";
 import { getSession } from "@/lib/auth";
 import { routes } from "@/lib/navigation";
 import { redirectWithSearchParams } from "@/lib/utils";
